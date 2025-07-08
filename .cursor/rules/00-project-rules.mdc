@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Ideomni Project Rules
+
+## Package Management
+- **ALWAYS use pnpm** for package management operations
+- Never use npm or yarn - this project uses pnpm exclusively
+- When installing dependencies, use `pnpm add <package>` or `pnpm add -D <package>` for dev dependencies
+- For running scripts, use `pnpm run <script>` or `pnpm <script>`
+
+## Project Structure
+This is a Next.js 15+ project with App Router using TypeScript. Key directories:
+
+### Core Application
+- `src/app/` - Next.js App Router pages and API routes
+- `src/components/` - Reusable React components
+- `src/@Ideomni/` - Core Ideomni framework components and utilities
+- `src/@auth/` - Authentication related components and logic
+
+### Key Configuration Files
+- [package.json](mdc:package.json) - Project dependencies and scripts
+- [next.config.ts](mdc:next.config.ts) - Next.js configuration
+- [tsconfig.json](mdc:tsconfig.json) - TypeScript configuration
+- [tailwind.config.js](mdc:tailwind.config.js) - Tailwind CSS configuration (if exists)
+
+## Technology Stack
+- **Framework**: Next.js 15+ with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Material-UI
+- **Rich Text Editor**: TipTap
+- **Package Manager**: pnpm
+
+## Development Guidelines
+
+### Code Organization
+- Use the existing folder structure patterns
+- Place reusable components in `src/components/`
+- App-specific logic goes in `src/app/`
+- Shared utilities in `src/utils/`
+- Custom hooks in `src/hooks/`
+
+### File Naming
+- Use kebab-case for directories
+- Use PascalCase for React components
+- Use camelCase for utility functions and hooks
+- Use lowercase for API routes following Next.js conventions
+
+### Import Conventions
+- Use absolute imports when possible (configured in [tsconfig.json](mdc:tsconfig.json))
+- Group imports: external packages first, then internal modules
+- Use TypeScript interfaces and types consistently
+
+### Component Development
+- Create TypeScript interfaces for all component props
+- Use functional components with hooks
+- Follow React best practices for state management
+- Utilize existing Ideomni components from `src/@Ideomni/` when available
+
+## Best Practices
+- Always run type checking before committing code
+- Use meaningful commit messages
+- Test new features thoroughly across different screen sizes
+- Follow the existing authentication patterns when adding protected routes
+- Utilize the existing navigation and layout components

@@ -1,0 +1,40 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Ideomni Project UI/UX Guidelines
+
+This document outlines the UI/UX guidelines to ensure consistency and a high-quality user experience across the Ideomni project.
+
+## Core Principles
+- **Consistency**: Strive for a consistent look and feel across all parts of the application.
+- **Reusability**: Leverage existing components and patterns before creating new ones.
+- **User-Centricity**: Design with the end-user in mind, focusing on ease of use and intuitive navigation.
+
+## Component Usage
+- **Ideomni Core Components**: Prioritize the use of components from the `src/@Ideomni/` directory. These components are designed to work seamlessly within the Ideomni ecosystem.
+    - Page Layouts: Utilize `[IdeomniPageCarded](mdc:src/@Ideomni/core/IdeomniPageCarded/index.ts)` and `[IdeomniPageSimple](mdc:src/@Ideomni/core/IdeomniPageSimple/index.ts)` for consistent page structures.
+    - Navigation: Implement navigation using `[IdeomniNavigation](mdc:src/@Ideomni/core/IdeomniNavigation/index.ts)`.
+    - Messaging & Feedback: Use `[IdeomniMessage](mdc:src/@Ideomni/core/IdeomniMessage/index.ts)` for notifications and `[IdeomniDialog](mdc:src/@Ideomni/core/IdeomniDialog/index.ts)` for modal dialogs.
+- **Material-UI**: Use [Material-UI components](mdc:https:/mui.com/material-ui/getting-started/overview) as the base for UI elements. Ensure adherence to Material Design principles where appropriate.
+- **Custom Components**: When custom components are necessary, place them in `src/components/` and ensure they align with the overall design language.
+
+## Styling
+- **Tailwind CSS**: Utilize [Tailwind CSS](mdc:https:/tailwindcss.com) for utility-first styling. Refer to the project's `[tailwind.config.js](mdc:tailwind.config.js)` (if present) for custom configurations.
+- **Theming**: Adhere to the existing theming structure provided by `[IdeomniTheme](mdc:src/@Ideomni/core/IdeomniTheme/index.tsx)`. Default theme settings can be found in `[src/@Ideomni/default-settings/](mdc:src/@Ideomni/default-settings/index.ts)`.
+- **Layouts**: Follow the established theme layouts in `[src/components/theme-layouts/](mdc:src/components/theme-layouts)`.
+
+## Rich Text Editing
+- **TipTap**: For all rich text editing functionalities, use the integrated [TipTap editor components](mdc:src/components/tiptap/index.ts). Ensure consistent styling and toolbar configurations.
+
+## Responsiveness and Accessibility
+- **Responsive Design**: Ensure all new UI elements are responsive and adapt gracefully to different screen sizes.
+- **Accessibility (a11y)**: Follow accessibility best practices (WCAG guidelines) to make the application usable for as many people as possible.
+
+## Workflow
+- **Review Existing UI**: Before developing new UI, review existing implementations within the project to maintain consistency.
+- **Consult `src/@Ideomni/`**: Check the `src/@Ideomni/` directory for pre-built solutions that meet your needs.
+- **Configuration**: Key configuration files that might affect UI/UX include `[next.config.ts](mdc:next.config.ts)`, `[tsconfig.json](mdc:tsconfig.json)`, and potentially `[tailwind.config.js](mdc:tailwind.config.js)`.
+
+By following these guidelines, we can maintain a cohesive, intuitive, and high-quality user experience throughout the Ideomni application.

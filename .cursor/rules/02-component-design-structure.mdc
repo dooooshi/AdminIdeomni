@@ -1,0 +1,290 @@
+---
+alwaysApply: true
+---
+
+# Component Design & Structure Guidelines
+
+## Organizational Principles
+
+### Complex Component Modules
+For complex component modules (like [src/components/map/](mdc:src/components/map/)), use this structured approach:
+
+```
+src/components/[module-name]/
+├── index.ts                    # Main exports (clean, organized)
+├── components/                 # Core functional components
+├── ui/                        # UI/Layout components  
+├── hooks/                     # Custom hooks
+├── utils/                     # Utility functions
+├── types/                     # Type definitions and data
+└── README.md                  # Documentation
+```
+
+### Component Categories
+
+#### Core Components (`components/`)
+- Primary functional components that contain business logic
+- Interactive components with complex state management
+- Components that handle data processing and manipulation
+- Example: [HexagonalMap.tsx](mdc:src/components/map/components/HexagonalMap.tsx)
+
+#### UI Components (`ui/`)
+- Layout and presentation components
+- Containers and wrappers
+- Headers, panels, and display components
+- Components focused on visual presentation
+- Example: [MapContainer.tsx](mdc:src/components/map/ui/MapContainer.tsx)
+
+#### Custom Hooks (`hooks/`)
+- Reusable stateful logic
+- Complex state management patterns
+- Side effects and lifecycle management
+- Example: [useMapZoom.ts](mdc:src/components/map/hooks/useMapZoom.ts)
+
+#### Utilities (`utils/`)
+- Pure functions and calculations
+- Helper functions without side effects
+- Mathematical operations and transformations
+- Example: [hexUtils.ts](mdc:src/components/map/utils/hexUtils.ts)
+
+#### Types (`types/`)
+- TypeScript interfaces and type definitions
+- Data models and API contracts
+- Configuration objects and constants
+- Example: [types/index.ts](mdc:src/components/map/types/index.ts)
+
+## Design Patterns
+
+### Import Organization
+```typescript
+// External packages first
+import React from 'react';
+import { useTheme } from '@mui/material/styles';
+
+// Ideomni core components
+import IdeomniSvgIcon from '@Ideomni/core/IdeomniSvgIcon';
+
+// Local imports (relative paths)
+import { ComponentProps } from '../types';
+import { useCustomHook } from '../hooks/useCustomHook';
+import { helperFunction } from '../utils/helpers';
+```
+
+### Export Strategy
+Main [index.ts](mdc:src/components/map/index.ts) should group exports by category:
+```typescript
+// Core components
+export { default as MainComponent } from './components/MainComponent';
+
+// UI components  
+export { default as ComponentContainer } from './ui/ComponentContainer';
+
+// Hooks
+export { useCustomHook } from './hooks/useCustomHook';
+
+// Utilities
+export * from './utils/helpers';
+
+// Types and data
+export * from './types';
+```
+
+### Component Design Principles
+
+#### Separation of Concerns
+- Core components handle business logic and state
+- UI components focus on presentation and layout
+- Hooks manage reusable stateful logic
+- Utils provide pure helper functions
+
+#### Type Safety
+- Define comprehensive TypeScript interfaces
+- Use proper prop types for all components
+- Avoid `any` types - be explicit about data shapes
+- Example: [types/index.ts](mdc:src/components/map/types/index.ts)
+
+#### Styling Consistency
+- Use Material-UI theme system consistently
+- Follow [IdeomniTheme](mdc:src/@Ideomni/core/IdeomniTheme/index.tsx) patterns
+- Implement responsive design with theme breakpoints
+- Use alpha transparency for sophisticated visual effects
+
+#### Documentation
+- Include comprehensive README.md for complex modules
+- Document component props and usage examples
+- Explain technical concepts and design decisions
+- Example: [README.md](mdc:src/components/map/README.md)
+
+## Implementation Guidelines
+
+### When to Apply This Structure
+- Components with 5+ related files
+- Modules with multiple component types
+- Complex interactive features
+- Reusable component systems
+
+### File Naming Conventions
+- Use PascalCase for React components
+- Use camelCase for hooks (prefix with `use`)
+- Use camelCase for utility functions
+- Use kebab-case for directories
+- Use descriptive, specific names
+
+### Dependency Management
+- Keep dependencies at appropriate levels
+- Core components can import from utils, hooks, types
+- UI components should be lightweight
+- Avoid circular dependencies
+- Use relative imports within modules
+
+### Testing Strategy
+- Place tests adjacent to components
+- Test core components thoroughly
+- Test custom hooks in isolation
+- Test utility functions comprehensively
+- Mock external dependencies appropriately
+
+This structure ensures maintainability, scalability, and developer experience while following React and TypeScript best practices.
+# Component Design & Structure Guidelines
+
+## Organizational Principles
+
+### Complex Component Modules
+For complex component modules (like [src/components/map/](mdc:src/components/map/)), use this structured approach:
+
+```
+src/components/[module-name]/
+├── index.ts                    # Main exports (clean, organized)
+├── components/                 # Core functional components
+├── ui/                        # UI/Layout components  
+├── hooks/                     # Custom hooks
+├── utils/                     # Utility functions
+├── types/                     # Type definitions and data
+└── README.md                  # Documentation
+```
+
+### Component Categories
+
+#### Core Components (`components/`)
+- Primary functional components that contain business logic
+- Interactive components with complex state management
+- Components that handle data processing and manipulation
+- Example: [HexagonalMap.tsx](mdc:src/components/map/components/HexagonalMap.tsx)
+
+#### UI Components (`ui/`)
+- Layout and presentation components
+- Containers and wrappers
+- Headers, panels, and display components
+- Components focused on visual presentation
+- Example: [MapContainer.tsx](mdc:src/components/map/ui/MapContainer.tsx)
+
+#### Custom Hooks (`hooks/`)
+- Reusable stateful logic
+- Complex state management patterns
+- Side effects and lifecycle management
+- Example: [useMapZoom.ts](mdc:src/components/map/hooks/useMapZoom.ts)
+
+#### Utilities (`utils/`)
+- Pure functions and calculations
+- Helper functions without side effects
+- Mathematical operations and transformations
+- Example: [hexUtils.ts](mdc:src/components/map/utils/hexUtils.ts)
+
+#### Types (`types/`)
+- TypeScript interfaces and type definitions
+- Data models and API contracts
+- Configuration objects and constants
+- Example: [types/index.ts](mdc:src/components/map/types/index.ts)
+
+## Design Patterns
+
+### Import Organization
+```typescript
+// External packages first
+import React from 'react';
+import { useTheme } from '@mui/material/styles';
+
+// Ideomni core components
+import IdeomniSvgIcon from '@Ideomni/core/IdeomniSvgIcon';
+
+// Local imports (relative paths)
+import { ComponentProps } from '../types';
+import { useCustomHook } from '../hooks/useCustomHook';
+import { helperFunction } from '../utils/helpers';
+```
+
+### Export Strategy
+Main [index.ts](mdc:src/components/map/index.ts) should group exports by category:
+```typescript
+// Core components
+export { default as MainComponent } from './components/MainComponent';
+
+// UI components  
+export { default as ComponentContainer } from './ui/ComponentContainer';
+
+// Hooks
+export { useCustomHook } from './hooks/useCustomHook';
+
+// Utilities
+export * from './utils/helpers';
+
+// Types and data
+export * from './types';
+```
+
+### Component Design Principles
+
+#### Separation of Concerns
+- Core components handle business logic and state
+- UI components focus on presentation and layout
+- Hooks manage reusable stateful logic
+- Utils provide pure helper functions
+
+#### Type Safety
+- Define comprehensive TypeScript interfaces
+- Use proper prop types for all components
+- Avoid `any` types - be explicit about data shapes
+- Example: [types/index.ts](mdc:src/components/map/types/index.ts)
+
+#### Styling Consistency
+- Use Material-UI theme system consistently
+- Follow [IdeomniTheme](mdc:src/@Ideomni/core/IdeomniTheme/index.tsx) patterns
+- Implement responsive design with theme breakpoints
+- Use alpha transparency for sophisticated visual effects
+
+#### Documentation
+- Include comprehensive README.md for complex modules
+- Document component props and usage examples
+- Explain technical concepts and design decisions
+- Example: [README.md](mdc:src/components/map/README.md)
+
+## Implementation Guidelines
+
+### When to Apply This Structure
+- Components with 5+ related files
+- Modules with multiple component types
+- Complex interactive features
+- Reusable component systems
+
+### File Naming Conventions
+- Use PascalCase for React components
+- Use camelCase for hooks (prefix with `use`)
+- Use camelCase for utility functions
+- Use kebab-case for directories
+- Use descriptive, specific names
+
+### Dependency Management
+- Keep dependencies at appropriate levels
+- Core components can import from utils, hooks, types
+- UI components should be lightweight
+- Avoid circular dependencies
+- Use relative imports within modules
+
+### Testing Strategy
+- Place tests adjacent to components
+- Test core components thoroughly
+- Test custom hooks in isolation
+- Test utility functions comprehensively
+- Mock external dependencies appropriately
+
+This structure ensures maintainability, scalability, and developer experience while following React and TypeScript best practices.
