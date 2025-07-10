@@ -1,9 +1,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import authEn from '../configs/auth-i18n/en';
-import authZhCn from '../configs/auth-i18n/zh-cn';
-import mapEn from '../configs/map-i18n/en';
-import mapZhCn from '../configs/map-i18n/zh-cn';
+import authEn from './auth-i18n/en';
+import authZhCn from './auth-i18n/zh-cn';
+import mapEn from './map-i18n/en';
+import mapZhCn from './map-i18n/zh-cn';
 
 /**
  * resources is an object that contains all the translations for the different languages.

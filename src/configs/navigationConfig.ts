@@ -1,7 +1,7 @@
 import i18n from '@i18n';
 import { IdeomniNavItemType } from '@ideomni/core/IdeomniNavigation/types/IdeomniNavItemType';
-import en from './navigation-i18n/en';
-import zhCN from './navigation-i18n/zh-cn';
+import en from '@i18n/navigation-i18n/en';
+import zhCN from '@i18n/navigation-i18n/zh-cn';
 
 i18n.addResourceBundle('en', 'navigation', en);
 i18n.addResourceBundle('zh-CN', 'navigation', zhCN);
