@@ -109,19 +109,64 @@ const StyledNavbar = styled('div')<StyledNavBarProps>(({ theme }) => ({
 						height: 44
 					},
 					'& .logo-text': {
-						opacity: 0
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
 					},
 					'& .react-badge': {
-						opacity: 0
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
 					},
 					'& .ideomni-list-item': {
-						width: 52
+						width: 52,
+						justifyContent: 'center'
 					},
-					'& .ideomni-list-item-text, & .arrow-icon, & .item-badge': {
-						opacity: 0
+					'& .Ideomni-list-item-text': {
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
+					},
+					'& .Ideomni-list-item-text-primary': {
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
+					},
+					'& .Ideomni-list-item-text-secondary': {
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
+					},
+					'& .arrow-icon, & .item-badge': {
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
 					},
 					'& .ideomni-list-subheader .ideomni-list-subheader-text': {
-						opacity: 0
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
+					},
+					'& .Ideomni-list-subheader-text': {
+						opacity: 0,
+						transition: theme.transitions.create('opacity', {
+							easing: theme.transitions.easing.sharp,
+							duration: theme.transitions.duration.shorter
+						})
 					},
 					'& .ideomni-list-subheader:before': {
 						content: '""',
@@ -137,16 +182,32 @@ const StyledNavbar = styled('div')<StyledNavBarProps>(({ theme }) => ({
 					'& .user-menu': {
 						minWidth: 52,
 						'& .title': {
-							opacity: 0
+							opacity: 0,
+							transition: theme.transitions.create('opacity', {
+								easing: theme.transitions.easing.sharp,
+								duration: theme.transitions.duration.shorter
+							})
 						},
 						'& .subtitle': {
-							opacity: 0
+							opacity: 0,
+							transition: theme.transitions.create('opacity', {
+								easing: theme.transitions.easing.sharp,
+								duration: theme.transitions.duration.shorter
+							})
 						},
 						'& .info-icon': {
-							opacity: 0
+							opacity: 0,
+							transition: theme.transitions.create('opacity', {
+								easing: theme.transitions.easing.sharp,
+								duration: theme.transitions.duration.shorter
+							})
 						},
 						'& .arrow': {
-							opacity: 0
+							opacity: 0,
+							transition: theme.transitions.create('opacity', {
+								easing: theme.transitions.easing.sharp,
+								duration: theme.transitions.duration.shorter
+							})
 						}
 					}
 				}

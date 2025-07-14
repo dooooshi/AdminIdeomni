@@ -37,16 +37,55 @@ const StyledNavBar = styled('div')<StyledNavBarProps>(({ theme, dense }) => ({
 		minWidth: 56,
 		width: 56,
 		'& .title': {
-			opacity: 0
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .subtitle': {
-			opacity: 0
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .info-icon': {
-			opacity: 0
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .arrow': {
-			opacity: 0
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
+		}
+	},
+	'& #ideomni-navbar-side-panel': {
+		'& .Ideomni-list-item-text': {
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
+		},
+		'& .Ideomni-list-item-text-primary': {
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
+		},
+		'& .Ideomni-list-item-text-secondary': {
+			opacity: 0,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		}
 	},
 	variants: [
@@ -161,11 +200,11 @@ const StyledNavBar = styled('div')<StyledNavBarProps>(({ theme, dense }) => ({
 	]
 }));
 
-const StyledNavBarMobile = styled(SwipeableDrawer)<StyledNavBarProps>(() => ({
+const StyledNavBarMobile = styled(SwipeableDrawer)<StyledNavBarProps>(({ theme }) => ({
 	'& .MuiDrawer-paper': {
 		'& #ideomni-navbar-side-panel': {
 			minWidth: 'auto',
-			wdith: 'auto'
+			width: 'auto'
 		},
 		'& #ideomni-navbar-panel': {
 			opacity: '1!important',
@@ -173,19 +212,35 @@ const StyledNavBarMobile = styled(SwipeableDrawer)<StyledNavBarProps>(() => ({
 		}
 	},
 	'& .user-menu': {
-		minWidth: 56,
-		width: 56,
+		minWidth: 'auto',
+		width: 'auto',
 		'& .title': {
-			opacity: 0
+			opacity: 1,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .subtitle': {
-			opacity: 0
+			opacity: 1,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .info-icon': {
-			opacity: 0
+			opacity: 1,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		},
 		'& .arrow': {
-			opacity: 0
+			opacity: 1,
+			transition: theme.transitions.create('opacity', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.shorter
+			})
 		}
 	}
 }));
