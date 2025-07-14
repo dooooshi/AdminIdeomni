@@ -1,0 +1,355 @@
+# MANDATORY INTERNATIONALIZATION (i18n) RULES
+
+## Core Requirements
+**CRITICAL**: Every new module, component, page, and feature MUST implement internationalization from the start. No exceptions.
+
+### 1. Translation Hook Usage
+**REQUIRED**: Every React component displaying user-facing text MUST use translation hooks:
+
+```typescript
+// For general translations
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
+
+// For namespace-specific translations
+const { t } = useTranslation('auth');
+const { t } = useTranslation('navigation');
+const { t } = useTranslation('map');
+
+// For multiple namespaces
+const { t } = useTranslation(['common', 'auth']);
+```
+
+### 2. Text Content Rules
+**FORBIDDEN**: Hard-coded text strings in components
+**REQUIRED**: All user-facing text MUST use translation keys
+
+```typescript
+// ❌ WRONG - Hard-coded text
+<Button>Save</Button>
+<Typography>Welcome to the application</Typography>
+
+// ✅ CORRECT - Using translations
+<Button>{t('SAVE')}</Button>
+<Typography>{t('auth:WELCOME_MESSAGE')}</Typography>
+```
+
+### 3. Translation Key Structure
+**REQUIRED**: Follow the established key naming conventions:
+
+#### Key Naming Patterns:
+- Use UPPERCASE_SNAKE_CASE for all translation keys
+- Use descriptive, contextual names
+- Group related keys logically
+- Use namespace prefixes for specific domains
+
+#### Common Keys (available globally):
+```typescript
+// Basic actions
+t('SAVE'), t('CANCEL'), t('DELETE'), t('EDIT'), t('ADD'), t('REMOVE')
+t('CONFIRM'), t('CLOSE'), t('BACK'), t('NEXT'), t('SUBMIT'), t('RESET')
+
+// Status messages
+t('LOADING'), t('SUCCESS'), t('ERROR'), t('WARNING'), t('INFO')
+
+// Common words
+t('YES'), t('NO'), t('OK'), t('NAME'), t('TITLE'), t('DESCRIPTION')
+t('DATE'), t('TIME'), t('TYPE'), t('STATUS'), t('ACTIVE'), t('INACTIVE')
+```
+
+#### Namespace-Specific Keys:
+```typescript
+// Authentication namespace
+t('auth:SIGNIN_SUCCESS'), t('auth:INVALID_CREDENTIALS'), t('auth:WELCOME_BACK')
+
+// Navigation namespace  
+t('navigation:APPLICATIONS'), t('navigation:DASHBOARDS'), t('navigation:MAP')
+
+// Module-specific namespaces
+t('map:TERRAIN_TYPES'), t('map:MARINE'), t('map:COASTAL')
+```
+
+### 4. Locale Files Structure
+**REQUIRED**: When creating new modules, add corresponding locale files to [src/@i18n/locales/](mdc:src/@i18n/locales/):
+
+```
+src/@i18n/locales/
+├── en-US/
+│   ├── common.ts          # Shared across all modules
+│   ├── auth.ts            # Authentication module
+│   ├── navigation.ts      # Navigation module
+│   ├── map.ts            # Map module
+│   └── [new-module].ts   # Your new module
+└── zh-CN/
+    ├── common.ts
+    ├── auth.ts
+    ├── navigation.ts
+    ├── map.ts
+    └── [new-module].ts   # Your new module (translated)
+```
+
+#### Locale File Template:
+```typescript
+// src/@i18n/locales/en-US/your-module.ts
+const yourModule = {
+  // Page/Section titles
+  PAGE_TITLE: 'Your Module Title',
+  SECTION_HEADER: 'Section Header',
+  
+  // Actions specific to this module
+  CREATE_ITEM: 'Create Item',
+  UPDATE_ITEM: 'Update Item',
+  DELETE_ITEM: 'Delete Item',
+  
+  // Status messages
+  CREATION_SUCCESS: 'Item created successfully',
+  UPDATE_SUCCESS: 'Item updated successfully',
+  DELETE_SUCCESS: 'Item deleted successfully',
+  CREATION_ERROR: 'Failed to create item',
+  
+  // Form labels and placeholders
+  ITEM_NAME_LABEL: 'Item Name',
+  ITEM_NAME_PLACEHOLDER: 'Enter item name...',
+  DESCRIPTION_LABEL: 'Description',
+  
+  // Validation messages
+  NAME_REQUIRED: 'Name is required',
+  INVALID_FORMAT: 'Invalid format',
+  
+  // Help text and tooltips
+  NAME_HELP_TEXT: 'Choose a unique name for your item',
+  DESCRIPTION_HELP_TEXT: 'Provide a detailed description'
+};
+
+export default yourModule;
+```
+
+#### Locale Index Updates:
+```typescript
+// Update src/@i18n/locales/en-US/index.ts and src/@i18n/locales/zh-CN/index.ts
+import common from './common';
+import auth from './auth';
+import navigation from './navigation';
+import map from './map';
+import yourModule from './your-module'; // Add your module
+
+const enUS = {
+  ...common,
+  auth,
+  navigation,
+  map,
+  yourModule // Add to export
+};
+
+export default enUS;
+```
+
+### 5. Form Validation with i18n
+**REQUIRED**: All form validation messages MUST be translatable:
+
+```typescript
+// ❌ WRONG - Hard-coded validation
+const schema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email format')
+});
+
+// ✅ CORRECT - Translated validation
+const createSchema = (t: TFunction) => z.object({
+  name: z.string().min(1, t('auth:NAME_REQUIRED')),
+  email: z.string().email(t('auth:INVALID_EMAIL_FORMAT'))
+});
+
+// In component
+const { t } = useTranslation('auth');
+const schema = createSchema(t);
+```
+
+### 6. Notification Messages
+**REQUIRED**: All notifications, alerts, and toast messages MUST use translations:
+
+```typescript
+// Success notifications
+dispatch(showMessage({
+  message: t('auth:SIGNIN_SUCCESS'),
+  variant: 'success',
+  autoHideDuration: 4000,
+}));
+
+// Error notifications
+dispatch(showMessage({
+  message: t('auth:SIGNIN_ERROR'),
+  variant: 'error',
+  autoHideDuration: 6000,
+}));
+```
+
+### 7. Dynamic Content Translation
+**REQUIRED**: For dynamic content with interpolation:
+
+```typescript
+// Locale file
+WELCOME_USER: 'Welcome back, {{userName}}!',
+ITEMS_COUNT: 'You have {{count}} items',
+
+// Component usage
+<Typography>{t('auth:WELCOME_USER', { userName: user.name })}</Typography>
+<Typography>{t('ITEMS_COUNT', { count: items.length })}</Typography>
+```
+
+### 8. Page Metadata and SEO
+**REQUIRED**: Page titles, descriptions, and SEO content MUST be translatable:
+
+```typescript
+// In page components
+export function generateMetadata(): Metadata {
+  const { t } = useTranslation('your-module');
+  
+  return {
+    title: t('PAGE_TITLE'),
+    description: t('PAGE_DESCRIPTION'),
+  };
+}
+```
+
+### 9. Error Boundaries and Error Messages
+**REQUIRED**: All error messages displayed to users MUST be translatable:
+
+```typescript
+// Error boundary content
+const ErrorFallback = ({ error }: { error: Error }) => {
+  const { t } = useTranslation();
+  
+  return (
+    <div>
+      <Typography>{t('ERROR_OCCURRED')}</Typography>
+      <Typography>{t('ERROR_MESSAGE_PREFIX')}: {error.message}</Typography>
+    </div>
+  );
+};
+```
+
+### 10. Development Workflow
+**REQUIRED**: Follow this workflow for every new feature:
+
+1. **Plan translations first**: Before writing components, define all required translation keys
+2. **Create locale files**: Add translations for all supported languages (en-US, zh-CN)
+3. **Update locale indexes**: Ensure new translations are exported properly in [src/@i18n/locales/en-US/index.ts](mdc:src/@i18n/locales/en-US/index.ts) and [src/@i18n/locales/zh-CN/index.ts](mdc:src/@i18n/locales/zh-CN/index.ts)
+4. **Implement components**: Use translation hooks from the start
+5. **Test translations**: Verify all text displays correctly in both languages
+6. **Review completeness**: Ensure no hard-coded text remains
+
+### 11. Code Review Requirements
+**MANDATORY**: Code reviews MUST verify:
+
+- [ ] No hard-coded user-facing text strings
+- [ ] All components use appropriate translation hooks
+- [ ] Translation keys follow naming conventions
+- [ ] All supported languages have corresponding translations
+- [ ] Form validation messages are translated
+- [ ] Error messages and notifications are translated
+- [ ] Dynamic content uses proper interpolation
+- [ ] Locale files are properly structured and exported
+
+### 12. Language Switching Support
+**REQUIRED**: Ensure all new content supports runtime language switching:
+
+```typescript
+// Components must re-render when language changes
+const MyComponent = () => {
+  const { t } = useTranslation('your-module');
+  
+  // This will automatically update when language switches
+  return <Typography>{t('CONTENT_KEY')}</Typography>;
+};
+```
+
+### 13. Testing Requirements
+**REQUIRED**: Include i18n testing in your test suites:
+
+```typescript
+// Test that translations are used
+it('should display translated content', () => {
+  render(<YourComponent />);
+  expect(screen.getByText(t('YOUR_MODULE.EXPECTED_TEXT'))).toBeInTheDocument();
+});
+
+// Test language switching
+it('should update content when language changes', () => {
+  // Test implementation
+});
+```
+
+## Implementation Checklist
+For every new module/component, verify:
+
+- [ ] **Translation hook imported and used**
+- [ ] **No hard-coded text strings**
+- [ ] **Locale files created for all languages**
+- [ ] **Translation keys follow naming conventions**
+- [ ] **Form validation messages translated**
+- [ ] **Error handling uses translations**
+- [ ] **Notifications use translation keys**
+- [ ] **Dynamic content properly interpolated**
+- [ ] **Page metadata translatable**
+- [ ] **Runtime language switching works**
+- [ ] **All supported languages implemented**
+- [ ] **Code review checklist completed**
+
+**ENFORCEMENT**: Pull requests with hard-coded text or missing translations will be rejected. No exceptions.
+
+**RESOURCES**: 
+- Main i18n provider: [src/@i18n/I18nProvider.tsx](mdc:src/@i18n/I18nProvider.tsx)
+- Translation hooks: [src/@i18n/hooks/useTranslation.ts](mdc:src/@i18n/hooks/useTranslation.ts)
+- Locale resources: [src/@i18n/locales/](mdc:src/@i18n/locales/)
+- Example usage: [src/components/map/](mdc:src/components/map/) module demonstrates proper i18n implementation
+
+## Common Patterns from Existing Code
+
+### Navigation Integration
+Based on [src/components/theme-layouts/components/navigation/hooks/useNavigation.tsx](mdc:src/components/theme-layouts/components/navigation/hooks/useNavigation.tsx):
+
+```typescript
+// Navigation items with translation
+const navigationItem = {
+  title: i18n.t(`navigation:${item?.translate}`),
+  // ... other properties
+};
+```
+
+### Form Implementation
+Based on [src/lib/auth/forms/UserSignInForm.tsx](mdc:src/lib/auth/forms/UserSignInForm.tsx):
+
+```typescript
+export default function MyForm() {
+  const { t } = useTranslation();
+  const schema = createSchema(t);
+  
+  // Form implementation with translated messages
+  const onSubmit = async (data) => {
+    // Success notification
+    dispatch(showMessage({
+      message: t('auth:SIGNIN_SUCCESS'),
+      variant: 'success',
+      autoHideDuration: 4000,
+    }));
+  };
+}
+```
+
+### Component with Namespace
+Based on [src/components/map/ui/MapLegend.tsx](mdc:src/components/map/ui/MapLegend.tsx):
+
+```typescript
+const MapLegend: React.FC = () => {
+  const { t } = useTranslation('map');
+  
+  return (
+    <Typography>{t('TERRAIN_TYPES')}</Typography>
+  );
+};
+```
+---
+alwaysApply: true
+description: "Mandatory internationalization (i18n) implementation for all modules, components, and features"
+---
