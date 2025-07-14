@@ -1,4 +1,4 @@
-const locale = {
+const navigation = {
 	APPLICATIONS: 'Applications',
 	DASHBOARDS: 'Dashboards',
 	CALENDAR: 'Calendar',
@@ -38,4 +38,4 @@ const locale = {
 	TEST_MAP: 'Test Map'
 };
 
-export default locale;
+export default navigation; 

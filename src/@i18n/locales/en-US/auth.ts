@@ -1,4 +1,4 @@
-const locale = {
+const auth = {
 	// Sign In Page
 	SIGN_IN: 'Sign in',
 	NO_ACCOUNT: "Don't have an account?",
@@ -51,10 +51,10 @@ const locale = {
 	SIGNIN_EMAIL_CREATE: 'Try signing in with a different account.',
 	SIGNIN_CALLBACK: 'Try signing in with a different account.',
 	SIGNIN_ACCOUNT_NOT_LINKED: 'To confirm your identity, sign in with the same account you used originally.',
-	SIGNIN_EMAIL: 'The e-mail could not be sent.',
-	SIGNIN_CREDENTIALS: 'Sign in failed. Check the details you provided are correct.',
+	SIGNIN_EMAIL: 'Check your email and follow the instructions',
+	SIGNIN_CREDENTIALS: 'Sign in failed. Check that the details you provided are correct.',
 	SIGNIN_SESSION_REQUIRED: 'Please sign in to access this page.',
 	SIGNIN_UNEXPECTED_ERROR: 'An unexpected error occurred.'
 };
 
-export default locale; 
+export default auth; 

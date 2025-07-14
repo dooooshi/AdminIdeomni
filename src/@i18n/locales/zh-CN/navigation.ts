@@ -1,4 +1,4 @@
-const locale = {
+const navigation = {
 	APPLICATIONS: '应用程序',
 	DASHBOARDS: '仪表板',
 	CALENDAR: '日历',
@@ -38,4 +38,4 @@ const locale = {
 	TEST_MAP: '测试地图'
 };
 
-export default locale; 
+export default navigation; 

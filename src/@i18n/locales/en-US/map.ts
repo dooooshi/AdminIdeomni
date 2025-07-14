@@ -1,4 +1,4 @@
-const locale = {
+const map = {
 	// Page titles and headers
 	MAP: 'Map',
 	INTERACTIVE_MAP: 'Interactive Map',
@@ -47,4 +47,4 @@ const locale = {
 	TERRAIN_COASTAL: 'coastal'
 };
 
-export default locale; 
+export default map; 

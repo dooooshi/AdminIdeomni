@@ -1,4 +1,4 @@
-const locale = {
+const auth = {
 	// Sign In Page
 	SIGN_IN: '登录',
 	NO_ACCOUNT: '还没有账户？',
@@ -16,6 +16,9 @@ const locale = {
 	BACK_TO_USER_SIGNIN: '返回用户登录',
 	
 	// Trust Indicators
+	SECURE: '安全',
+	FAST: '快速',
+	TRUSTED: '可信',
 	
 	// Form Fields
 	EMAIL: '邮箱',
@@ -54,4 +57,4 @@ const locale = {
 	SIGNIN_UNEXPECTED_ERROR: '发生了意外错误'
 };
 
-export default locale; 
+export default auth; 

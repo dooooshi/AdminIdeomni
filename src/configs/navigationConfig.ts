@@ -1,10 +1,10 @@
 import i18n from '@i18n';
 import { IdeomniNavItemType } from '@ideomni/core/IdeomniNavigation/types/IdeomniNavItemType';
-import en from '@i18n/navigation-i18n/en';
-import zhCN from '@i18n/navigation-i18n/zh-cn';
+import { enUS, zhCN } from '@i18n/locales';
 
-i18n.addResourceBundle('en', 'navigation', en);
-i18n.addResourceBundle('zh-CN', 'navigation', zhCN);
+// Add navigation translations to i18n
+i18n.addResourceBundle('en-US', 'navigation', enUS.navigation);
+i18n.addResourceBundle('zh-CN', 'navigation', zhCN.navigation);
 
 /**
  * The navigationConfig object is an array of navigation items for the Ideomni application.

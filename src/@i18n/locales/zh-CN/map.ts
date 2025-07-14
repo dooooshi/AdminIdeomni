@@ -1,4 +1,4 @@
-const locale = {
+const map = {
 	// Page titles and headers
 	MAP: '地图',
 	INTERACTIVE_MAP: '交互式地图',
@@ -47,4 +47,4 @@ const locale = {
 	TERRAIN_COASTAL: '海岸'
 };
 
-export default locale; 
+export default map; 
