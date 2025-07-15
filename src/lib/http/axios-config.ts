@@ -100,6 +100,11 @@ class TokenManagerImpl implements TokenManager {
       
       const response = await axios.post(`${baseUrl}${endpoint}`, {
         refreshToken,
+      }, {
+        headers: {
+          'Accept-Language': getAcceptLanguageHeader(),
+          'Content-Type': 'application/json',
+        },
       });
 
       const { accessToken, refreshToken: newRefreshToken } = response.data.data;
@@ -114,18 +119,8 @@ class TokenManagerImpl implements TokenManager {
 // Create token manager instance
 const tokenManager = new TokenManagerImpl();
 
-// Language detection helper
-function getCurrentLanguage(): string {
-  if (typeof window !== 'undefined') {
-    // Check localStorage first
-    const storedLang = localStorage.getItem('i18nextLng');
-    if (storedLang) return storedLang;
-    
-    // Fall back to browser language
-    return navigator.language.split('-')[0] || 'en';
-  }
-  return 'en';
-}
+// Import language utilities
+import { getAcceptLanguageHeader } from './language-utils';
 
 // Create Axios instance
 const axiosInstance: AxiosInstance = axios.create({
@@ -146,7 +141,7 @@ axiosInstance.interceptors.request.use(
     }
 
     // Add language header
-    const language = getCurrentLanguage();
+    const language = getAcceptLanguageHeader();
     if (language) {
       config.headers.set('Accept-Language', language);
     }

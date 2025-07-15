@@ -128,6 +128,31 @@ await tokenManager.refreshToken();
 tokenManager.clearTokens();
 ```
 
+### Language Headers
+
+```typescript
+import { getCurrentLanguage, getAcceptLanguageHeader, createLanguageHeaders } from '@lib/http';
+
+// Get current language code
+const currentLang = getCurrentLanguage(); // 'en-US', 'zh-CN', etc.
+
+// Get properly formatted Accept-Language header value
+const acceptLang = getAcceptLanguageHeader(); // 'en-US', 'zh-CN', etc.
+
+// Create headers object with Accept-Language
+const headers = createLanguageHeaders({
+  'Custom-Header': 'custom-value'
+});
+// Result: { 'Accept-Language': 'en-US', 'Custom-Header': 'custom-value' }
+
+// Use with custom fetch calls
+const response = await fetch('/api/endpoint', {
+  headers: createLanguageHeaders({
+    'Content-Type': 'application/json'
+  })
+});
+```
+
 ## Configuration
 
 ### Environment Variables
@@ -179,7 +204,11 @@ The module is configured with TypeScript path mapping:
 - `X-User-Type: admin|user` - User type for backend routing
 
 ### Language Headers
-- `Accept-Language: en|es|fr|...` - Based on i18n settings
+- `Accept-Language: en-US|zh-CN|...` - Based on i18n settings
+  - Automatically detects current language from i18n instance
+  - Falls back to localStorage (`i18nextLng`) if i18n not available
+  - Finally falls back to browser language or 'en'
+  - Supports proper locale formatting (e.g., 'en' becomes 'en-US')
 
 ### Content Headers
 - `Content-Type: application/json` - For JSON requests

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryFn, FetchArgs, FetchBaseQueryError, FetchBaseQueryMeta } from '@reduxjs/toolkit/query';
-import { API_BASE_URL, globalHeaders } from '@/utils/apiFetch';
+import { API_BASE_URL, globalHeaders } from '../utils/apiFetch';
+import { getAcceptLanguageHeader } from '../lib/http/language-utils';
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, object, FetchBaseQueryMeta> = async (
 	args,
@@ -10,8 +11,12 @@ const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError, o
 	const result = await fetchBaseQuery({
 		baseUrl: API_BASE_URL,
 		prepareHeaders: (headers) => {
+			// Add Accept-Language header
+			headers.set('Accept-Language', getAcceptLanguageHeader());
+			
+			// Add global headers
 			Object.entries(globalHeaders).forEach(([key, value]) => {
-				headers.set(key, value);
+				headers.set(key, String(value));
 			});
 			return headers;
 		}

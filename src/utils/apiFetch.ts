@@ -32,14 +32,18 @@ export const removeGlobalHeaders = (headerKeys: string[]) => {
 	});
 };
 
+// Import language utilities for consistent language detection
+import { getAcceptLanguageHeader } from '../lib/http/language-utils';
+
 // Main apiFetch function with interceptors and type safety
 const apiFetch = async (endpoint: string, options: FetchOptions = {}) => {
 	const { headers, ...restOptions } = options;
 	const method = restOptions.method || 'GET';
-	// Set default headers, including global headers
+	// Set default headers, including global headers and Accept-Language
 	const config: FetchOptions = {
 		headers: {
 			...(method !== 'GET' && { 'Content-Type': 'application/json' }),
+			'Accept-Language': getAcceptLanguageHeader(),
 			...globalHeaders,
 			...headers
 		},

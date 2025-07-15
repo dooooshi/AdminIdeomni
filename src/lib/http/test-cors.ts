@@ -59,7 +59,11 @@ export async function testProxyRouting() {
     });
     
     console.log('📡 Proxy Response Status:', response.status);
-    console.log('📡 Proxy Response Headers:', Object.fromEntries(response.headers.entries()));
+    const headersObj: Record<string, string> = {};
+    response.headers.forEach((value, key) => {
+      headersObj[key] = value;
+    });
+    console.log('📡 Proxy Response Headers:', headersObj);
     
     const data = await response.text();
     console.log('📡 Proxy Response Data:', data);
