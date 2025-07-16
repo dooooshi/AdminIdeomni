@@ -8,10 +8,10 @@ i18n.addResourceBundle('zh-CN', 'navigation', zhCN.navigation);
 
 
 /**
- * Admin Navigation Configuration
- * Full access navigation for admin users
+ * Super Admin Navigation Configuration (adminType: 1)
+ * Full access navigation for super admin users
  */
-const adminNavigationConfig: IdeomniNavItemType[] = [
+const superAdminNavigationConfig: IdeomniNavItemType[] = [
 	{
 		id: 'map',
 		title: 'Map',
@@ -193,8 +193,110 @@ const adminNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['admin']
 			}
 		]
+	},
+	
+	{
+		id: 'admin-management',
+		title: 'Admin Management',
+		subtitle: 'Super admin exclusive features',
+		type: 'group',
+		icon: 'heroicons-outline:shield-check',
+		translate: 'ADMIN_MANAGEMENT',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'admin-management.admin-users',
+				title: 'Admin Users',
+				type: 'item',
+				icon: 'heroicons-outline:users',
+				url: '/admin/admin-users',
+				translate: 'ADMIN_USERS',
+				auth: ['admin']
+			},
+			{
+				id: 'admin-management.system-logs',
+				title: 'System Logs',
+				type: 'item',
+				icon: 'heroicons-outline:document-text',
+				url: '/admin/system-logs',
+				translate: 'SYSTEM_LOGS',
+				auth: ['admin']
+			},
+			{
+				id: 'admin-management.system-settings',
+				title: 'System Settings',
+				type: 'item',
+				icon: 'heroicons-outline:cog-6-tooth',
+				url: '/admin/system-settings',
+				translate: 'SYSTEM_SETTINGS',
+				auth: ['admin']
+			}
+		]
 	}
 ];
+
+/**
+ * Limited Admin Navigation Configuration (adminType: 2)
+ * Restricted navigation for limited admin users
+ */
+const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
+	{
+		id: 'map',
+		title: 'Map',
+		subtitle: 'Map applications and tools',
+		type: 'group',
+		icon: 'heroicons-outline:map',
+		translate: 'MAP',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'map.test-map',
+				title: 'Test Map',
+				type: 'item',
+				icon: 'heroicons-outline:beaker',
+				url: '/map',
+				translate: 'TEST_MAP',
+				auth: ['admin']
+			}
+		]
+	},
+	
+	{
+		id: 'apps',
+		title: 'Applications',
+		subtitle: 'Limited application access',
+		type: 'group',
+		icon: 'heroicons-outline:squares-2x2',
+		translate: 'APPLICATIONS',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'apps.notifications',
+				title: 'Notifications',
+				type: 'item',
+				icon: 'heroicons-outline:bell',
+				url: '/apps/notifications',
+				translate: 'NOTIFICATIONS',
+				auth: ['admin']
+			},
+			{
+				id: 'pages.activities',
+				title: 'Activities',
+				type: 'item',
+				icon: 'heroicons-outline:bars-3-bottom-left',
+				url: '/pages/activities',
+				translate: 'ACTIVITIES',
+				auth: ['admin']
+			}
+		]
+	}
+];
+
+/**
+ * Legacy Admin Navigation Configuration
+ * For backward compatibility - defaults to super admin config
+ */
+const adminNavigationConfig: IdeomniNavItemType[] = superAdminNavigationConfig;
 
 /**
  * User Navigation Configuration
@@ -224,11 +326,21 @@ const userNavigationConfig: IdeomniNavItemType[] = [
 ];
 
 /**
- * Get navigation configuration based on user type
+ * Get navigation configuration based on user type and admin type
  */
-export function getNavigationConfig(userType: 'admin' | 'user' | null): IdeomniNavItemType[] {
+export function getNavigationConfig(
+	userType: 'admin' | 'user' | null, 
+	adminType?: 1 | 2
+): IdeomniNavItemType[] {
 	if (userType === 'admin') {
-		return adminNavigationConfig;
+		// For admin users, check adminType to return appropriate navigation
+		if (adminType === 1) {
+			return superAdminNavigationConfig; // Super Admin gets full access
+		} else if (adminType === 2) {
+			return limitedAdminNavigationConfig; // Limited Admin gets restricted access
+		}
+		// Fallback to super admin config for backward compatibility
+		return superAdminNavigationConfig;
 	}
 	if (userType === 'user') {
 		return userNavigationConfig;
@@ -238,10 +350,28 @@ export function getNavigationConfig(userType: 'admin' | 'user' | null): IdeomniN
 }
 
 /**
+ * Get admin navigation configuration based on admin type
+ */
+export function getAdminNavigationConfig(adminType: 1 | 2): IdeomniNavItemType[] {
+	if (adminType === 1) {
+		return superAdminNavigationConfig;
+	} else if (adminType === 2) {
+		return limitedAdminNavigationConfig;
+	}
+	// Default fallback to super admin
+	return superAdminNavigationConfig;
+}
+
+/**
  * Default navigation configuration (for backward compatibility)
  * This will be replaced by role-based configs
  */
 const navigationConfig: IdeomniNavItemType[] = adminNavigationConfig;
 
 export default navigationConfig;
-export { adminNavigationConfig, userNavigationConfig };
+export { 
+	adminNavigationConfig, 
+	superAdminNavigationConfig, 
+	limitedAdminNavigationConfig, 
+	userNavigationConfig 
+};

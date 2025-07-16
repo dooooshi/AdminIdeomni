@@ -35,7 +35,12 @@ const navigation = {
 	NOTIFICATIONS: '通知',
 	ACTIVITIES: '活动',
 	// Test Map
-	TEST_MAP: '测试地图'
+	TEST_MAP: '测试地图',
+	// Admin Management
+	ADMIN_MANAGEMENT: '管理员管理',
+	ADMIN_USERS: '管理员用户',
+	SYSTEM_LOGS: '系统日志',
+	SYSTEM_SETTINGS: '系统设置'
 };
 
 export default navigation; 

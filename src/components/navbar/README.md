@@ -4,17 +4,20 @@ This directory contains the role-based navigation components that provide differ
 
 ## Overview
 
-The navigation system automatically displays appropriate menu items based on the user's role:
+The navigation system automatically displays appropriate menu items based on the user's role and admin type:
 
-- **Admin users**: Full access to all features including Map, Dashboards (Project, Analytics, Finance, Crypto), E-commerce, Help Center, Notifications, and Activities
+- **Super Admin (adminType: 1)**: Full access to all features including Map, Dashboards (Project, Analytics, Finance, Crypto), E-commerce, Help Center, Notifications, Activities, and exclusive Admin Management features (Admin Users, System Logs, System Settings)
+- **Limited Admin (adminType: 2)**: Restricted access to Map, Notifications, and Activities only - excluding all Dashboards, E-commerce, Help Center, Finance, Crypto, and Admin Management features
 - **Regular users**: Limited access to only the Project dashboard
 
 ## Components
 
 ### AdminNavbar
 - **File**: `AdminNavbar.tsx`
-- **Purpose**: Navigation component for admin users with full feature access
-- **Features**: Complete navigation tree with all application sections
+- **Purpose**: Navigation component for admin users with role-based feature access
+- **Features**: Dynamically renders navigation based on adminType:
+  - **Super Admin (adminType: 1)**: Complete navigation tree with all application sections including Admin Management
+  - **Limited Admin (adminType: 2)**: Restricted navigation with no dashboard access and limited app access
 
 ### UserNavbar
 - **File**: `UserNavbar.tsx`
@@ -30,17 +33,22 @@ The navigation system automatically displays appropriate menu items based on the
 
 Navigation configurations are defined in `src/configs/navigationConfig.ts`:
 
-- `adminNavigationConfig`: Full navigation tree for admin users
+- `superAdminNavigationConfig`: Full navigation tree for super admin users (adminType: 1)
+- `limitedAdminNavigationConfig`: Restricted navigation tree for limited admin users (adminType: 2)
+- `adminNavigationConfig`: Legacy config, defaults to super admin config for backward compatibility
 - `userNavigationConfig`: Limited navigation tree for regular users
-- `getNavigationConfig(userType)`: Function to get the appropriate config based on user type
+- `getNavigationConfig(userType, adminType?)`: Function to get the appropriate config based on user type and admin type
+- `getAdminNavigationConfig(adminType)`: Specific function to get admin navigation based on admin type
 
 ## Authentication Integration
 
 The system integrates with the authentication system through:
 
 - User type detection: `'admin'` | `'user'`
+- Admin type detection: `1` (Super Admin) | `2` (Limited Admin)
 - Permission checking: Each navigation item has `auth: ['admin']` or `auth: ['user']`
 - Automatic role-based filtering: Items are only shown if the user has the required permissions
+- Dynamic navigation selection: AdminNavbar automatically selects the appropriate navigation config based on the authenticated user's adminType
 
 ## Usage
 
@@ -75,9 +83,16 @@ import { AdminNavbar, UserNavbar, RoleBasedNavbar } from 'src/components/navbar'
 ## User Types
 
 ### Admin Users
-- **Role**: `'admin'`
-- **Access**: Complete application access
-- **Navigation**: All features including advanced tools and management panels
+
+#### Super Admin (adminType: 1)
+- **Role**: `'admin'` with `adminType: 1`
+- **Access**: Complete application access including admin management features
+- **Navigation**: All features including advanced tools, management panels, admin user management, system logs, and system settings
+
+#### Limited Admin (adminType: 2)
+- **Role**: `'admin'` with `adminType: 2`
+- **Access**: Restricted application access with no dashboard access
+- **Navigation**: Map, Notifications, and Activities only
 
 ### Regular Users
 - **Role**: `'user'`

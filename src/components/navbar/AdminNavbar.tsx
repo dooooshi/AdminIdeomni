@@ -9,10 +9,11 @@ import clsx from 'clsx';
 import i18n from '@i18n';
 import useI18n from '@i18n/useI18n';
 import { useAuth } from 'src/lib/auth';
+import { AdminUser } from 'src/lib/auth/types';
 import IdeomniUtils from '@ideomni/utils';
 import IdeomniNavigationHelper from '@ideomni/utils/IdeomniNavigationHelper';
 import { IdeomniNavItemType } from '@ideomni/core/IdeomniNavigation/types/IdeomniNavItemType';
-import { adminNavigationConfig } from 'src/configs/navigationConfig';
+import { getAdminNavigationConfig } from 'src/configs/navigationConfig';
 import { navbarCloseMobile } from '../theme-layouts/components/navbar/navbarSlice';
 
 /**
@@ -33,6 +34,13 @@ function AdminNavbar(props: AdminNavbarProps) {
 	const userRole = userType === 'admin' ? ['admin'] : null;
 
 	const navigation = useMemo(() => {
+		// Get admin type from user
+		const adminUser = user as AdminUser;
+		const adminType = adminUser?.adminType || 1; // Default to super admin if not specified
+		
+		// Get appropriate navigation config based on admin type
+		const navConfig = getAdminNavigationConfig(adminType);
+
 		function setAdditionalData(data: IdeomniNavItemType[]): IdeomniNavItemType[] {
 			return data?.map((item) => ({
 				hasPermission: Boolean(IdeomniUtils.hasPermission(item?.auth, userRole)),
@@ -42,9 +50,9 @@ function AdminNavbar(props: AdminNavbarProps) {
 			}));
 		}
 
-		const translatedValues = setAdditionalData(adminNavigationConfig);
+		const translatedValues = setAdditionalData(navConfig);
 		return translatedValues;
-	}, [userRole, languageId]);
+	}, [userRole, languageId, user]);
 
 	return useMemo(() => {
 		function handleItemClick() {

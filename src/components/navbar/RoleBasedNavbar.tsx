@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { useAuth } from 'src/lib/auth';
+import { AdminUser } from 'src/lib/auth/types';
 import { IdeomniNavigationProps } from '@ideomni/core/IdeomniNavigation/IdeomniNavigation';
 import AdminNavbar from './AdminNavbar';
 import UserNavbar from './UserNavbar';
@@ -16,7 +17,7 @@ import UserNavbar from './UserNavbar';
 type RoleBasedNavbarProps = Partial<IdeomniNavigationProps>;
 
 function RoleBasedNavbar(props: RoleBasedNavbarProps) {
-	const { userType, isAuthenticated } = useAuth();
+	const { userType, isAuthenticated, user } = useAuth();
 
 	const NavbarComponent = useMemo(() => {
 		if (!isAuthenticated || !userType) {
@@ -31,7 +32,7 @@ function RoleBasedNavbar(props: RoleBasedNavbarProps) {
 			default:
 				return null;
 		}
-	}, [userType, isAuthenticated]);
+	}, [userType, isAuthenticated, user]);
 
 	if (!NavbarComponent) {
 		return null;

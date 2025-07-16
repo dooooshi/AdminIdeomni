@@ -4,6 +4,7 @@ import { useAppSelector } from 'src/store/hooks';
 import { useMemo } from 'react';
 import i18n from '@i18n';
 import { useAuth } from 'src/lib/auth';
+import { AdminUser } from 'src/lib/auth/types';
 import useI18n from '@i18n/useI18n';
 import IdeomniUtils from '@ideomni/utils';
 import IdeomniNavigationHelper from '@ideomni/utils/IdeomniNavigationHelper';
@@ -20,8 +21,11 @@ function useNavigation() {
 	const navigationData = useAppSelector(selectNavigationAll);
 
 	const navigation = useMemo(() => {
+		// Get admin type for admin users
+		const adminType = userType === 'admin' ? (user as AdminUser)?.adminType : undefined;
+		
 		// Use role-based navigation config if available, otherwise fall back to store data
-		const roleBasedConfig = getNavigationConfig(userType);
+		const roleBasedConfig = getNavigationConfig(userType, adminType);
 		const _navigation = roleBasedConfig.length > 0 
 			? roleBasedConfig 
 			: IdeomniNavigationHelper.unflattenNavigation(navigationData);
@@ -39,7 +43,7 @@ function useNavigation() {
 
 		return translatedValues;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navigationData, userRole, languageId, userType]);
+	}, [navigationData, userRole, languageId, userType, user]);
 
 	const flattenNavigation = useMemo(() => {
 		return IdeomniNavigationHelper.flattenNavigation(navigation);
