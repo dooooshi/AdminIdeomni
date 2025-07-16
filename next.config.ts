@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-	reactStrictMode: false,
+	reactStrictMode: true, // Enable React Strict Mode for better performance debugging
 	eslint: {
 		// Only enable ESLint in development
 		ignoreDuringBuilds: process.env.NODE_ENV === 'production'

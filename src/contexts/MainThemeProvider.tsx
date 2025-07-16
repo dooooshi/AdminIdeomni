@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import rtlPlugin from 'stylis-plugin-rtl';
 import IdeomniTheme from '@ideomni/core/IdeomniTheme';
 import { useMainTheme } from '@ideomni/core/IdeomniSettings/hooks/IdeomniThemeHooks';
@@ -11,6 +11,7 @@ import { CacheProvider } from '@emotion/react';
 type MainThemeProviderProps = {
 	children: React.ReactNode;
 };
+
 const wrapInLayer: (layerName: string) => StylisPlugin = (layerName) => (node) => {
 	if (node.root) {
 		return;
@@ -46,8 +47,28 @@ const emotionCacheOptions: Record<string, Options> = {
 function MainThemeProvider({ children }: MainThemeProviderProps) {
 	const mainTheme = useMainTheme();
 	const langDirection = mainTheme?.direction;
-
-	const cacheProviderValue = useMemo(() => createCache(emotionCacheOptions[langDirection]), [langDirection]);
+	
+	// Cache references to avoid recreation unless direction actually changes
+	const cacheRefs = useRef<Record<string, ReturnType<typeof createCache>>>({});
+	
+	const cacheProviderValue = useMemo(() => {
+		// Return existing cache if direction hasn't changed
+		if (cacheRefs.current[langDirection]) {
+			return cacheRefs.current[langDirection];
+		}
+		
+		// Create new cache only when direction changes
+		const newCache = createCache(emotionCacheOptions[langDirection]);
+		cacheRefs.current[langDirection] = newCache;
+		
+		// Clean up old cache to prevent memory leaks
+		const otherDirection = langDirection === 'rtl' ? 'ltr' : 'rtl';
+		if (cacheRefs.current[otherDirection]) {
+			delete cacheRefs.current[otherDirection];
+		}
+		
+		return newCache;
+	}, [langDirection]);
 
 	return (
 		<CacheProvider value={cacheProviderValue}>
