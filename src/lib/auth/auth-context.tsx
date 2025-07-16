@@ -14,6 +14,7 @@ import {
   RegularUser,
 } from './types';
 import authService from './auth-service';
+import { extractErrorMessage } from './utils';
 
 // Initial state
 const initialState: AuthState = {
@@ -171,13 +172,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         payload: { user, userType },
       });
     } catch (error: any) {
-      let errorMessage = 'An unexpected error occurred';
-      
-      if (error?.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error?.message) {
-        errorMessage = error.message;
-      }
+      const errorMessage = extractErrorMessage(error, 'Login failed');
 
       dispatch({
         type: 'SET_ERROR',
@@ -224,8 +219,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const updatedUser = await authService.updateProfile(data);
       dispatch({ type: 'UPDATE_USER', payload: updatedUser });
       dispatch({ type: 'SET_LOADING', payload: false });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Profile update failed';
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(error, 'Profile update failed');
+
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
       dispatch({ type: 'SET_LOADING', payload: false });
       throw error;
@@ -240,8 +236,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       await authService.changePassword(data);
       dispatch({ type: 'SET_LOADING', payload: false });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Password change failed';
+    } catch (error: any) {
+      const errorMessage = extractErrorMessage(error, 'Password change failed');
+
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
       dispatch({ type: 'SET_LOADING', payload: false });
       throw error;

@@ -38,6 +38,14 @@ class AuthService {
   async adminLogin(credentials: AdminLoginRequest): Promise<AdminLoginResponse> {
     const response = await apiClient.postAuth<AdminLoginResponse>('/admin/login', credentials);
 
+    // Check if the response indicates success
+    if (!response.success) {
+      // Create an error that mimics axios error structure for consistent error handling
+      const error = new Error(response.message || 'Admin login failed') as any;
+      error.response = { data: response };
+      throw error;
+    }
+
     const tokens = {
       accessToken: response.data.accessToken,
       refreshToken: response.data.refreshToken,
@@ -59,11 +67,25 @@ class AuthService {
 
   async getAdminProfile(): Promise<AdminUser> {
     const response = await apiClient.getAuth<AdminUser>('/admin/profile');
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to get admin profile') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async updateAdminProfile(data: UpdateProfileRequest): Promise<AdminUser> {
     const response = await apiClient.putAuth<AdminUser>('/admin/profile', data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to update admin profile') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
@@ -73,16 +95,37 @@ class AuthService {
 
   async createAdmin(data: AdminCreateRequest): Promise<AdminUser> {
     const response = await apiClient.postAuth<AdminUser>('/admin/create', data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to create admin') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async getAdminList(): Promise<AdminUser[]> {
     const response = await apiClient.getAuth<AdminUser[]>('/admin/list');
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to get admin list') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async updateAdmin(id: string, data: UpdateProfileRequest): Promise<AdminUser> {
     const response = await apiClient.putAuth<AdminUser>(`/admin/${id}`, data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to update admin') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
@@ -93,6 +136,14 @@ class AuthService {
   // User Authentication Methods
   async userLogin(credentials: UserLoginRequest): Promise<UserLoginResponse> {
     const response = await apiClient.postAuth<UserLoginResponse>('/user/login', credentials);
+
+    // Check if the response indicates success
+    if (!response.success) {
+      // Create an error that mimics axios error structure for consistent error handling
+      const error = new Error(response.message || 'Login failed') as any;
+      error.response = { data: response };
+      throw error;
+    }
 
     const tokens = {
       accessToken: response.data.accessToken,
@@ -115,11 +166,25 @@ class AuthService {
 
   async getUserProfile(): Promise<RegularUser> {
     const response = await apiClient.getAuth<RegularUser>('/user/profile');
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to get user profile') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async updateUserProfile(data: UpdateProfileRequest): Promise<RegularUser> {
     const response = await apiClient.putAuth<RegularUser>('/user/profile', data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to update user profile') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
@@ -129,21 +194,49 @@ class AuthService {
 
   async createUser(data: UserCreateRequest): Promise<RegularUser> {
     const response = await apiClient.postAuth<RegularUser>('/user/create', data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to create user') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async getUserList(): Promise<RegularUser[]> {
     const response = await apiClient.getAuth<RegularUser[]>('/user/list');
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to get user list') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async getUsersByType(userType: 1 | 2 | 3): Promise<RegularUser[]> {
     const response = await apiClient.getAuth<RegularUser[]>(`/user/list?userType=${userType}`);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to get users by type') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 
   async updateUser(id: string, data: UpdateProfileRequest): Promise<RegularUser> {
     const response = await apiClient.putAuth<RegularUser>(`/user/${id}`, data);
+    
+    if (!response.success) {
+      const error = new Error(response.message || 'Failed to update user') as any;
+      error.response = { data: response };
+      throw error;
+    }
+    
     return response.data;
   }
 

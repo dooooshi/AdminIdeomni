@@ -20,6 +20,7 @@ import { useLogin } from '../hooks';
 import { AdminLoginRequest } from '../types';
 import { showMessage } from '@ideomni/core/IdeomniMessage/IdeomniMessageSlice';
 import { useAppDispatch } from 'src/store/hooks';
+import { extractErrorMessage } from '../utils';
 
 // Form validation schema
 const createSchema = (t: (key: string) => string) => z.object({
@@ -92,9 +93,17 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
       } else {
         router.push('/dashboards');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Admin login error:', err);
-      // Error is handled by the useLogin hook
+      
+      // Show error notification
+      const errorMessage = extractErrorMessage(err, 'Admin login failed');
+      
+      dispatch(showMessage({
+        message: errorMessage,
+        variant: 'error',
+        autoHideDuration: 6000,
+      }));
     }
   };
 

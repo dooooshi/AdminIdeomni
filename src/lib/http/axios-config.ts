@@ -190,7 +190,11 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // Handle token expiration
-    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+    // Don't try to refresh token for login endpoints or if no refresh token exists
+    const isLoginEndpoint = originalRequest.url?.includes('/login');
+    const hasRefreshToken = !!tokenManager.getRefreshToken();
+    
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry && !isLoginEndpoint && hasRefreshToken) {
       originalRequest._retry = true;
 
       try {
