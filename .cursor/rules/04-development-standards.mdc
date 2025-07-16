@@ -1,0 +1,204 @@
+# Development Standards & Best Practices
+
+## Component Development Guidelines
+
+### Easy-to-Maintain Components
+
+#### Component Structure Requirements
+- **Single Responsibility**: Each component should have one clear purpose and responsibility
+- **Composition over Inheritance**: Use component composition patterns rather than complex inheritance hierarchies
+- **Explicit Props Interface**: Always define TypeScript interfaces for component props with comprehensive documentation
+
+```typescript
+interface ComponentProps {
+  /** Primary data for the component */
+  data: DataType;
+  /** Callback function when action is triggered */
+  onAction?: (value: string) => void;
+  /** Optional CSS class name for styling overrides */
+  className?: string;
+  /** Loading state indicator */
+  isLoading?: boolean;
+}
+```
+
+#### Maintainability Standards
+- **Pure Functions**: Prefer pure components when possible - same props should always render the same output
+- **Minimal State**: Keep component state minimal and local; lift state up only when necessary
+- **Clear Error Boundaries**: Implement proper error handling and recovery mechanisms
+- **Performance Optimization**: Use React.memo, useMemo, and useCallback appropriately to prevent unnecessary re-renders
+- **Accessibility**: Follow WCAG guidelines and ensure proper ARIA attributes
+
+### Reusable Component Design
+
+#### Design Principles
+- **Generic Implementation**: Design components to work across multiple use cases
+- **Configurable Behavior**: Use props to control component behavior rather than hardcoding
+- **Extensible Styling**: Support theme customization through [IdeomniTheme](mdc:src/@ideomni/core/IdeomniTheme/index.tsx)
+- **Consistent API**: Follow established patterns from existing [Ideomni components](mdc:src/@ideomni/core/)
+
+#### Component Categories
+Follow the established structure from [Component Design Guidelines](mdc:.cursor/rules/02-component-design-structure.mdc):
+
+- **Core Components** (`components/`): Business logic and complex state management
+- **UI Components** (`ui/`): Presentation and layout focused
+- **Custom Hooks** (`hooks/`): Reusable stateful logic
+- **Utilities** (`utils/`): Pure helper functions
+- **Types** (`types/`): TypeScript definitions and interfaces
+
+#### Reusability Checklist
+- [ ] Component accepts configuration through props
+- [ ] Styling is theme-aware and customizable
+- [ ] Component is tested across different use cases
+- [ ] Documentation includes usage examples
+- [ ] Component follows established naming conventions
+- [ ] No hardcoded values or business-specific logic
+
+## API Integration Standards
+
+### Mandatory Axios Usage
+
+#### Required Implementation
+**ALWAYS use the pre-configured Axios instances** from [src/lib/http/](mdc:src/lib/http/) for ALL backend communications:
+
+```typescript
+// ✅ CORRECT - Use pre-configured API client
+import apiClient from '@/lib/http/api-client';
+
+// Example usage
+const fetchUserData = async (userId: string) => {
+  try {
+    const response = await apiClient.get<UserData>(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+```
+
+#### Prohibited Practices
+```typescript
+// ❌ FORBIDDEN - Never use raw fetch or plain axios
+import axios from 'axios';
+
+// ❌ FORBIDDEN - Direct fetch calls
+const response = await fetch('/api/users');
+
+// ❌ FORBIDDEN - Bypassing configured instance
+const customAxios = axios.create({...});
+```
+
+#### API Client Features
+The configured [api-client.ts](mdc:src/lib/http/api-client.ts) provides:
+- **Automatic Authentication**: Handles JWT token management and refresh
+- **Request/Response Interceptors**: Logging, error handling, and token refresh
+- **Type Safety**: Generic methods with TypeScript support
+- **Error Handling**: Consistent error responses and retry logic
+- **Language Headers**: Automatic i18n header injection
+- **File Upload/Download**: Specialized methods for file operations
+
+#### Required API Integration Pattern
+```typescript
+// Service layer implementation
+class UserService {
+  async getUser(id: string): Promise<User> {
+    const response = await apiClient.get<ApiResponse<User>>(`/users/${id}`);
+    return response.data.data;
+  }
+
+  async updateUser(id: string, userData: UpdateUserRequest): Promise<User> {
+    const response = await apiClient.put<ApiResponse<User>>(`/users/${id}`, userData);
+    return response.data.data;
+  }
+
+  async uploadAvatar(userId: string, file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    const response = await apiClient.upload<ApiResponse<{ url: string }>>(`/users/${userId}/avatar`, formData);
+    return response.data.data.url;
+  }
+}
+```
+
+### Backend-First Development
+
+#### Mandatory Approach
+- **Real API Integration**: All new features MUST integrate with actual backend endpoints
+- **No Mock Development**: Do NOT create or extend mock data in [src/@mock-utils/](mdc:src/@mock-utils/)
+- **API-Driven Design**: Design components and data flows based on actual API contracts
+- **Error Handling**: Implement proper error states for real network conditions
+
+#### Implementation Requirements
+1. **Define API Contracts First**: Work with backend team to establish endpoint specifications
+2. **Create Service Layer**: Build dedicated service classes for API interactions
+3. **Implement Loading States**: Handle async operations with proper loading indicators
+4. **Error Boundaries**: Implement comprehensive error handling for network failures
+5. **Data Validation**: Validate API responses using TypeScript types
+
+#### Service Layer Pattern
+```typescript
+// services/[feature]Service.ts
+export class FeatureService {
+  private static readonly BASE_PATH = '/features';
+
+  static async getFeatures(params?: GetFeaturesParams): Promise<Feature[]> {
+    const response = await apiClient.get<ApiResponse<Feature[]>>(
+      this.BASE_PATH,
+      { params }
+    );
+    return response.data.data;
+  }
+
+  static async createFeature(featureData: CreateFeatureRequest): Promise<Feature> {
+    const response = await apiClient.post<ApiResponse<Feature>>(
+      this.BASE_PATH,
+      featureData
+    );
+    return response.data.data;
+  }
+}
+```
+
+## Code Quality Standards
+
+### TypeScript Requirements
+- **Strict Mode**: All files must pass TypeScript strict mode compilation
+- **Explicit Types**: Avoid `any` type; define proper interfaces and types
+- **Generic Usage**: Use generics for reusable type definitions
+- **Type Guards**: Implement type guards for runtime type checking
+
+### Testing Requirements
+- **Unit Tests**: All utility functions and hooks must have unit tests
+- **Component Tests**: Test component behavior, not implementation details
+- **Integration Tests**: Test API service layers with proper mocking
+- **Error Case Testing**: Test error states and edge cases
+
+### Documentation Standards
+- **Component Documentation**: Include comprehensive prop documentation and usage examples
+- **API Documentation**: Document service methods with parameter and return type descriptions
+- **README Files**: Complex modules require README.md with setup and usage instructions
+- **Inline Comments**: Explain complex logic and business rules with clear comments
+
+### Performance Guidelines
+- **Lazy Loading**: Implement code splitting for route-based components
+- **Memoization**: Use React.memo and hooks appropriately
+- **Bundle Analysis**: Monitor bundle size and optimize imports
+- **Async Operations**: Handle concurrent operations efficiently
+
+## Migration Guidelines
+
+### Existing Mock Data
+- **Immediate Action**: Do NOT add new mock data or extend existing mock APIs
+- **Gradual Migration**: Replace existing mock integrations with real API calls during feature updates
+- **Documentation**: Mark components using mock data for future migration priority
+
+### Legacy Component Updates
+When updating existing components:
+1. **Assess Reusability**: Evaluate if component can be made more reusable
+2. **Extract Business Logic**: Move API calls to dedicated service layers
+3. **Improve Type Safety**: Add comprehensive TypeScript types
+4. **Update Tests**: Ensure tests cover real-world usage scenarios
+5. **Performance Review**: Optimize rendering and state management
+
+By following these standards, we ensure that all new development contributes to a maintainable, scalable, and production-ready codebase that integrates seamlessly with backend services.
