@@ -1,0 +1,276 @@
+---
+alwaysApply: true
+---
+
+# Module Documentation Requirements
+
+## Mandatory Documentation for New Modules
+
+When creating any new module (especially in `src/components/`, `src/@ideomni/`, or `src/lib/`), you **MUST**:
+
+### 1. Create Module README
+Every new module directory must have a `README.md` file with:
+- **Purpose**: Clear description of what the module does
+- **Structure**: Directory tree showing organization
+- **Features**: Key functionality and capabilities
+- **Usage Examples**: Basic implementation examples
+- **API Documentation**: Props, parameters, return values
+- **Dependencies**: External and internal dependencies
+- **Design Decisions**: Architecture rationale and trade-offs
+
+### 2. Create Comprehensive Module Documentation
+Create detailed documentation in `[docs/modules/](mdc:docs/modules/)` with:
+- **Design Architecture**: High-level design decisions
+- **Technical Implementation**: Implementation details and patterns
+- **Component Relationships**: How components interact
+- **State Management**: How state flows through the module
+- **Performance Considerations**: Optimization strategies
+- **Testing Strategy**: How the module should be tested
+- **Migration Guide**: If replacing existing functionality
+
+## Documentation Structure Template
+
+### Module README.md Template
+```markdown
+# [Module Name]
+
+[Brief description of the module's purpose and functionality]
+
+## Structure
+[Directory tree showing file organization]
+
+## Features
+[List of key features and capabilities]
+
+## Usage
+[Basic usage examples with code snippets]
+
+## API Reference
+[Component props, function parameters, return values]
+
+## Dependencies
+[External and internal dependencies]
+
+## Design Decisions
+[Key architectural decisions and rationale]
+```
+
+### docs/modules/ Documentation Template
+```markdown
+# [Module Name] - Design Documentation
+
+## Overview
+[Comprehensive module description]
+
+## Architecture
+[High-level architecture and design patterns]
+
+## Implementation Details
+[Technical implementation specifics]
+
+## Component Relationships
+[How components interact and communicate]
+
+## State Management
+[State flow and management patterns]
+
+## Performance Considerations
+[Optimization strategies and considerations]
+
+## Testing Strategy
+[Testing approach and requirements]
+
+## Future Enhancements
+[Planned improvements and roadmap]
+```
+
+## Documentation Standards
+
+### File Naming Convention
+- Module README: `README.md` in module root
+- Design docs: `docs/modules/[module-name].md`
+- Use kebab-case for documentation file names
+
+### Content Requirements
+- **Code Examples**: Always include working code examples
+- **Visual Aids**: Use diagrams, flowcharts, or component trees where helpful
+- **Links**: Reference related files using `[filename](mdc:path/to/file)`
+- **Version Info**: Include version/date when content was last updated
+- **Changelog**: Document significant changes and modifications
+
+### Update Requirements
+- **After Every Modification**: Update documentation when changing module functionality
+- **Version Notes**: Add modification dates and change summaries
+- **Breaking Changes**: Clearly document any breaking changes
+- **Migration Notes**: Provide upgrade paths for breaking changes
+
+## Complex Module Requirements
+
+For modules with 5+ files or complex functionality:
+- **Separate documentation files** for different aspects (architecture, API, examples)
+- **Component hierarchy diagrams** showing relationships
+- **State flow diagrams** for complex state management
+- **Performance benchmarks** for critical components
+- **Integration examples** showing usage with other modules
+
+## Documentation Validation
+
+Before considering any module complete:
+- [ ] README.md exists with all required sections
+- [ ] Design documentation exists in `docs/modules/`
+- [ ] All code examples are tested and functional
+- [ ] External dependencies are documented
+- [ ] Performance considerations are addressed
+- [ ] Integration patterns are documented
+
+## Examples of Well-Documented Modules
+
+Reference these existing modules for documentation standards:
+- [Map Module](mdc:src/components/map/README.md) - Complex interactive component system
+- [Component Design Guidelines](mdc:.cursor/rules/02-component-design-structure.mdc)
+
+## Enforcement
+
+This rule applies to:
+- All new component modules in `src/components/`
+- All new utilities in `src/lib/`
+- All new core components in `src/@ideomni/`
+- Any significant modifications to existing modules
+
+**Remember**: Documentation is not optional - it's a critical part of module development that ensures maintainability, team collaboration, and project sustainability.
+# Module Documentation Requirements
+
+## Mandatory Documentation for New Modules
+
+When creating any new module (especially in `src/components/`, `src/@ideomni/`, or `src/lib/`), you **MUST**:
+
+### 1. Create Module README
+Every new module directory must have a `README.md` file with:
+- **Purpose**: Clear description of what the module does
+- **Structure**: Directory tree showing organization
+- **Features**: Key functionality and capabilities
+- **Usage Examples**: Basic implementation examples
+- **API Documentation**: Props, parameters, return values
+- **Dependencies**: External and internal dependencies
+- **Design Decisions**: Architecture rationale and trade-offs
+
+### 2. Create Comprehensive Module Documentation
+Create detailed documentation in `[docs/modules/](mdc:docs/modules/)` with:
+- **Design Architecture**: High-level design decisions
+- **Technical Implementation**: Implementation details and patterns
+- **Component Relationships**: How components interact
+- **State Management**: How state flows through the module
+- **Performance Considerations**: Optimization strategies
+- **Testing Strategy**: How the module should be tested
+- **Migration Guide**: If replacing existing functionality
+
+## Documentation Structure Template
+
+### Module README.md Template
+```markdown
+# [Module Name]
+
+[Brief description of the module's purpose and functionality]
+
+## Structure
+[Directory tree showing file organization]
+
+## Features
+[List of key features and capabilities]
+
+## Usage
+[Basic usage examples with code snippets]
+
+## API Reference
+[Component props, function parameters, return values]
+
+## Dependencies
+[External and internal dependencies]
+
+## Design Decisions
+[Key architectural decisions and rationale]
+```
+
+### docs/modules/ Documentation Template
+```markdown
+# [Module Name] - Design Documentation
+
+## Overview
+[Comprehensive module description]
+
+## Architecture
+[High-level architecture and design patterns]
+
+## Implementation Details
+[Technical implementation specifics]
+
+## Component Relationships
+[How components interact and communicate]
+
+## State Management
+[State flow and management patterns]
+
+## Performance Considerations
+[Optimization strategies and considerations]
+
+## Testing Strategy
+[Testing approach and requirements]
+
+## Future Enhancements
+[Planned improvements and roadmap]
+```
+
+## Documentation Standards
+
+### File Naming Convention
+- Module README: `README.md` in module root
+- Design docs: `docs/modules/[module-name].md`
+- Use kebab-case for documentation file names
+
+### Content Requirements
+- **Code Examples**: Always include working code examples
+- **Visual Aids**: Use diagrams, flowcharts, or component trees where helpful
+- **Links**: Reference related files using `[filename](mdc:path/to/file)`
+- **Version Info**: Include version/date when content was last updated
+- **Changelog**: Document significant changes and modifications
+
+### Update Requirements
+- **After Every Modification**: Update documentation when changing module functionality
+- **Version Notes**: Add modification dates and change summaries
+- **Breaking Changes**: Clearly document any breaking changes
+- **Migration Notes**: Provide upgrade paths for breaking changes
+
+## Complex Module Requirements
+
+For modules with 5+ files or complex functionality:
+- **Separate documentation files** for different aspects (architecture, API, examples)
+- **Component hierarchy diagrams** showing relationships
+- **State flow diagrams** for complex state management
+- **Performance benchmarks** for critical components
+- **Integration examples** showing usage with other modules
+
+## Documentation Validation
+
+Before considering any module complete:
+- [ ] README.md exists with all required sections
+- [ ] Design documentation exists in `docs/modules/`
+- [ ] All code examples are tested and functional
+- [ ] External dependencies are documented
+- [ ] Performance considerations are addressed
+- [ ] Integration patterns are documented
+
+## Examples of Well-Documented Modules
+
+Reference these existing modules for documentation standards:
+- [Map Module](mdc:src/components/map/README.md) - Complex interactive component system
+- [Component Design Guidelines](mdc:.cursor/rules/02-component-design-structure.mdc)
+
+## Enforcement
+
+This rule applies to:
+- All new component modules in `src/components/`
+- All new utilities in `src/lib/`
+- All new core components in `src/@ideomni/`
+- Any significant modifications to existing modules
+
+**Remember**: Documentation is not optional - it's a critical part of module development that ensures maintainability, team collaboration, and project sustainability.
