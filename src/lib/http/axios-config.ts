@@ -207,11 +207,15 @@ axiosInstance.interceptors.response.use(
         // Refresh failed, clear tokens and redirect to login
         tokenManager.clearTokens();
         
-        // Redirect to appropriate login page
+        // Dispatch custom event to handle logout and navigation without page refresh
         if (typeof window !== 'undefined') {
           const userType = tokenManager.getUserType();
           const loginPath = userType === 'admin' ? '/sign-in/admin' : '/sign-in';
-          window.location.href = loginPath;
+          
+          // Dispatch event that auth context can listen to
+          window.dispatchEvent(new CustomEvent('auth:session-expired', { 
+            detail: { redirectPath: loginPath } 
+          }));
         }
         
         return Promise.reject(refreshError);

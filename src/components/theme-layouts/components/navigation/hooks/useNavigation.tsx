@@ -9,6 +9,7 @@ import IdeomniUtils from '@ideomni/utils';
 import IdeomniNavigationHelper from '@ideomni/utils/IdeomniNavigationHelper';
 import { IdeomniNavItemType } from '@ideomni/core/IdeomniNavigation/types/IdeomniNavItemType';
 import { selectNavigationAll } from '../store/navigationSlice';
+import { getNavigationConfig } from 'src/configs/navigationConfig';
 
 function useNavigation() {
 	const { user, userType } = useAuth();
@@ -19,7 +20,11 @@ function useNavigation() {
 	const navigationData = useAppSelector(selectNavigationAll);
 
 	const navigation = useMemo(() => {
-		const _navigation = IdeomniNavigationHelper.unflattenNavigation(navigationData);
+		// Use role-based navigation config if available, otherwise fall back to store data
+		const roleBasedConfig = getNavigationConfig(userType);
+		const _navigation = roleBasedConfig.length > 0 
+			? roleBasedConfig 
+			: IdeomniNavigationHelper.unflattenNavigation(navigationData);
 
 		function setAdditionalData(data: IdeomniNavItemType[]): IdeomniNavItemType[] {
 			return data?.map((item) => ({
@@ -34,7 +39,7 @@ function useNavigation() {
 
 		return translatedValues;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navigationData, userRole, languageId]);
+	}, [navigationData, userRole, languageId, userType]);
 
 	const flattenNavigation = useMemo(() => {
 		return IdeomniNavigationHelper.flattenNavigation(navigation);

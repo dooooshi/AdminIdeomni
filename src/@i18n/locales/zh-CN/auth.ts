@@ -33,8 +33,8 @@ const auth = {
 	ADMIN_SIGNIN_SUCCESS: '欢迎回来，管理员！您已成功登录。',
 	
 	// Notification Messages
-	WELCOME_BACK_NOTIFICATION_TITLE: '欢迎回到 Ideomni React！',
-	WELCOME_BACK_NOTIFICATION_DESC: '希望您有一个愉快的体验！🚀',
+	WELCOME_BACK_NOTIFICATION_TITLE: '欢迎回到 Ideomni ！',
+	WELCOME_BACK_NOTIFICATION_DESC: '希望您有一个愉快的体验！',
 	
 	// Validation Messages
 	EMAIL_REQUIRED: '请输入邮箱地址',

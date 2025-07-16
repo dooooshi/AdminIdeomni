@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   AuthContextType,
   AuthState,
@@ -95,6 +96,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const router = useRouter();
 
   // Initialize authentication state on mount
   useEffect(() => {
@@ -125,6 +127,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     initializeAuth();
   }, []);
+
+  // Listen for session expiration events from HTTP interceptor
+  useEffect(() => {
+    const handleSessionExpired = (event: CustomEvent) => {
+      console.log('Session expired, logging out and redirecting...');
+      dispatch({ type: 'SET_UNAUTHENTICATED' });
+      
+      // Navigate to login page without refresh
+      const redirectPath = event.detail?.redirectPath || '/sign-in';
+      router.push(redirectPath);
+    };
+
+    // Add event listener for session expiration
+    window.addEventListener('auth:session-expired', handleSessionExpired as EventListener);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('auth:session-expired', handleSessionExpired as EventListener);
+    };
+  }, [router]);
 
   // Login function
   const login = async (

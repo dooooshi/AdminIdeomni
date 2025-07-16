@@ -6,10 +6,12 @@ import { enUS, zhCN } from '@i18n/locales';
 i18n.addResourceBundle('en-US', 'navigation', enUS.navigation);
 i18n.addResourceBundle('zh-CN', 'navigation', zhCN.navigation);
 
+
 /**
- * The navigationConfig object is an array of navigation items for the Ideomni application.
+ * Admin Navigation Configuration
+ * Full access navigation for admin users
  */
-const navigationConfig: IdeomniNavItemType[] = [
+const adminNavigationConfig: IdeomniNavItemType[] = [
 	{
 		id: 'map',
 		title: 'Map',
@@ -17,6 +19,7 @@ const navigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:map',
 		translate: 'MAP',
+		auth: ['admin'],
 		children: [
 			{
 				id: 'map.test-map',
@@ -24,7 +27,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:beaker',
 				url: '/map',
-				translate: 'TEST_MAP'
+				translate: 'TEST_MAP',
+				auth: ['admin']
 			}
 		]
 	},
@@ -36,6 +40,7 @@ const navigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:home',
 		translate: 'DASHBOARDS',
+		auth: ['admin'],
 		children: [
 			{
 				id: 'dashboards.project',
@@ -43,7 +48,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:clipboard-document-check',
 				url: '/dashboards/project',
-				translate: 'PROJECT'
+				translate: 'PROJECT',
+				auth: ['admin']
 			},
 			{
 				id: 'dashboards.analytics',
@@ -51,7 +57,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:chart-pie',
 				url: '/dashboards/analytics',
-				translate: 'ANALYTICS'
+				translate: 'ANALYTICS',
+				auth: ['admin']
 			},
 			{
 				id: 'dashboards.finance',
@@ -59,7 +66,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:banknotes',
 				url: '/dashboards/finance',
-				translate: 'FINANCE'
+				translate: 'FINANCE',
+				auth: ['admin']
 			},
 			{
 				id: 'dashboards.crypto',
@@ -67,7 +75,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:currency-dollar',
 				url: '/dashboards/crypto',
-				translate: 'CRYPTO'
+				translate: 'CRYPTO',
+				auth: ['admin']
 			},
 			{
 				id: 'apps.ecommerce',
@@ -75,6 +84,7 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'collapse',
 				icon: 'heroicons-outline:shopping-cart',
 				translate: 'ECOMMERCE',
+				auth: ['admin'],
 				children: [
 					{
 						id: 'e-commerce-products',
@@ -82,21 +92,24 @@ const navigationConfig: IdeomniNavItemType[] = [
 						type: 'item',
 						url: '/apps/e-commerce/products',
 						end: true,
-						translate: 'PRODUCTS'
+						translate: 'PRODUCTS',
+						auth: ['admin']
 					},
 					{
 						id: 'e-commerce-product-detail',
 						title: 'Product Detail',
 						type: 'item',
 						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
-						translate: 'PRODUCT_DETAIL'
+						translate: 'PRODUCT_DETAIL',
+						auth: ['admin']
 					},
 					{
 						id: 'e-commerce-new-product',
 						title: 'New Product',
 						type: 'item',
 						url: '/apps/e-commerce/products/new',
-						translate: 'NEW_PRODUCT'
+						translate: 'NEW_PRODUCT',
+						auth: ['admin']
 					},
 					{
 						id: 'e-commerce-orders',
@@ -104,14 +117,16 @@ const navigationConfig: IdeomniNavItemType[] = [
 						type: 'item',
 						url: '/apps/e-commerce/orders',
 						end: true,
-						translate: 'ORDERS'
+						translate: 'ORDERS',
+						auth: ['admin']
 					},
 					{
 						id: 'e-commerce-order-detail',
 						title: 'Order Detail',
 						type: 'item',
 						url: '/apps/e-commerce/orders/1',
-						translate: 'ORDER_DETAIL'
+						translate: 'ORDER_DETAIL',
+						auth: ['admin']
 					}
 				]
 			},
@@ -122,6 +137,7 @@ const navigationConfig: IdeomniNavItemType[] = [
 				icon: 'heroicons-outline:information-circle',
 				url: '/apps/help-center',
 				translate: 'HELP_CENTER',
+				auth: ['admin'],
 				children: [
 					{
 						id: 'apps.help-center.home',
@@ -129,28 +145,32 @@ const navigationConfig: IdeomniNavItemType[] = [
 						type: 'item',
 						url: '/apps/help-center',
 						end: true,
-						translate: 'HOME'
+						translate: 'HOME',
+						auth: ['admin']
 					},
 					{
 						id: 'apps.help-center.faqs',
 						title: 'FAQs',
 						type: 'item',
 						url: '/apps/help-center/faqs',
-						translate: 'FAQS'
+						translate: 'FAQS',
+						auth: ['admin']
 					},
 					{
 						id: 'apps.help-center.guides',
 						title: 'Guides',
 						type: 'item',
 						url: '/apps/help-center/guides',
-						translate: 'GUIDES'
+						translate: 'GUIDES',
+						auth: ['admin']
 					},
 					{
 						id: 'apps.help-center.support',
 						title: 'Support',
 						type: 'item',
 						url: '/apps/help-center/support',
-						translate: 'SUPPORT'
+						translate: 'SUPPORT',
+						auth: ['admin']
 					}
 				]
 			},
@@ -160,7 +180,8 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:bell',
 				url: '/apps/notifications',
-				translate: 'NOTIFICATIONS'
+				translate: 'NOTIFICATIONS',
+				auth: ['admin']
 			},
 			{
 				id: 'pages.activities',
@@ -168,12 +189,59 @@ const navigationConfig: IdeomniNavItemType[] = [
 				type: 'item',
 				icon: 'heroicons-outline:bars-3-bottom-left',
 				url: '/pages/activities',
-				translate: 'ACTIVITIES'
-			},
-
+				translate: 'ACTIVITIES',
+				auth: ['admin']
+			}
 		]
-	},
-
+	}
 ];
 
+/**
+ * User Navigation Configuration
+ * Limited navigation for regular users - only Project dashboard
+ */
+const userNavigationConfig: IdeomniNavItemType[] = [
+	{
+		id: 'dashboards',
+		title: 'Dashboards',
+		subtitle: 'Project management',
+		type: 'group',
+		icon: 'heroicons-outline:home',
+		translate: 'DASHBOARDS',
+		auth: ['user'],
+		children: [
+			{
+				id: 'dashboards.project',
+				title: 'Project',
+				type: 'item',
+				icon: 'heroicons-outline:clipboard-document-check',
+				url: '/dashboards/project',
+				translate: 'PROJECT',
+				auth: ['user']
+			}
+		]
+	}
+];
+
+/**
+ * Get navigation configuration based on user type
+ */
+export function getNavigationConfig(userType: 'admin' | 'user' | null): IdeomniNavItemType[] {
+	if (userType === 'admin') {
+		return adminNavigationConfig;
+	}
+	if (userType === 'user') {
+		return userNavigationConfig;
+	}
+	// Return empty array for unauthenticated users
+	return [];
+}
+
+/**
+ * Default navigation configuration (for backward compatibility)
+ * This will be replaced by role-based configs
+ */
+const navigationConfig: IdeomniNavItemType[] = adminNavigationConfig;
+
 export default navigationConfig;
+export { adminNavigationConfig, userNavigationConfig };
