@@ -205,10 +205,19 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		auth: ['admin'],
 		children: [
 			{
+				id: 'admin-management.admin-accounts',
+				title: 'Admin Accounts',
+				type: 'item',
+				icon: 'heroicons-outline:user-plus',
+				url: '/admin-management',
+				translate: 'ADMIN_ACCOUNTS',
+				auth: ['admin']
+			},
+			{
 				id: 'admin-management.admin-users',
 				title: 'Admin Users',
 				type: 'item',
-				icon: 'heroicons-outline:users',
+				icon: 'heroicons-outline:user-group',
 				url: '/admin/admin-users',
 				translate: 'ADMIN_USERS',
 				auth: ['admin']

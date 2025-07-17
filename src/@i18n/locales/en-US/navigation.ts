@@ -38,6 +38,7 @@ const navigation = {
 	TEST_MAP: 'Test Map',
 	// Admin Management
 	ADMIN_MANAGEMENT: 'Admin Management',
+	ADMIN_ACCOUNTS: 'Admin Accounts',
 	ADMIN_USERS: 'Admin Users',
 	SYSTEM_LOGS: 'System Logs',
 	SYSTEM_SETTINGS: 'System Settings'
