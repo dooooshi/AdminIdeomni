@@ -13,6 +13,26 @@ i18n.addResourceBundle('zh-CN', 'navigation', zhCN.navigation);
  */
 const superAdminNavigationConfig: IdeomniNavItemType[] = [
 	{
+		id: 'admin-management',
+		title: 'Admin Management',
+		subtitle: 'Super admin exclusive features',
+		type: 'group',
+		icon: 'heroicons-outline:shield-check',
+		translate: 'ADMIN_MANAGEMENT',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'admin-management.admin-accounts',
+				title: 'Admin Accounts',
+				type: 'item',
+				icon: 'heroicons-outline:user-plus',
+				url: '/admin-management',
+				translate: 'ADMIN_ACCOUNTS',
+				auth: ['admin']
+			},
+		]
+	},
+	{
 		id: 'map',
 		title: 'Map',
 		subtitle: 'Map applications and tools',
@@ -195,53 +215,7 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		]
 	},
 	
-	{
-		id: 'admin-management',
-		title: 'Admin Management',
-		subtitle: 'Super admin exclusive features',
-		type: 'group',
-		icon: 'heroicons-outline:shield-check',
-		translate: 'ADMIN_MANAGEMENT',
-		auth: ['admin'],
-		children: [
-			{
-				id: 'admin-management.admin-accounts',
-				title: 'Admin Accounts',
-				type: 'item',
-				icon: 'heroicons-outline:user-plus',
-				url: '/admin-management',
-				translate: 'ADMIN_ACCOUNTS',
-				auth: ['admin']
-			},
-			{
-				id: 'admin-management.admin-users',
-				title: 'Admin Users',
-				type: 'item',
-				icon: 'heroicons-outline:user-group',
-				url: '/admin/admin-users',
-				translate: 'ADMIN_USERS',
-				auth: ['admin']
-			},
-			{
-				id: 'admin-management.system-logs',
-				title: 'System Logs',
-				type: 'item',
-				icon: 'heroicons-outline:document-text',
-				url: '/admin/system-logs',
-				translate: 'SYSTEM_LOGS',
-				auth: ['admin']
-			},
-			{
-				id: 'admin-management.system-settings',
-				title: 'System Settings',
-				type: 'item',
-				icon: 'heroicons-outline:cog-6-tooth',
-				url: '/admin/system-settings',
-				translate: 'SYSTEM_SETTINGS',
-				auth: ['admin']
-			}
-		]
-	}
+
 ];
 
 /**

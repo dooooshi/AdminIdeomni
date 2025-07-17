@@ -136,16 +136,6 @@ const AdminManagementPage: React.FC = () => {
       }
       content={
         <Box sx={{ p: 3 }}>
-          {/* Information Alert */}
-          <Alert severity="info" sx={{ mb: 3 }}>
-            <Typography variant="body2" fontWeight="medium" gutterBottom>
-              {t('ADMIN_MANAGEMENT_INFO')}
-            </Typography>
-            <Typography variant="body2">
-              {t('ADMIN_MANAGEMENT_INFO_DESCRIPTION')}
-            </Typography>
-          </Alert>
-
           {/* Tabs */}
           <Card>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
