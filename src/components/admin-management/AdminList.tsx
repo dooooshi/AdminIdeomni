@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Table,
@@ -31,6 +31,7 @@ import {
   Stack,
   Card,
   CardContent,
+  TableSortLabel,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -41,9 +42,11 @@ import {
   Visibility as ViewIcon,
   Shield as ShieldIcon,
   Person as PersonIcon,
+  KeyboardArrowUp as ArrowUpIcon,
+  KeyboardArrowDown as ArrowDownIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import AdminService, { Admin } from '@/lib/services/adminService';
+import AdminService, { Admin, AdminListParams, AdminSearchResponseDto } from '@/lib/services/adminService';
 
 interface AdminListProps {
   onCreateAdmin: () => void;
@@ -53,8 +56,10 @@ interface AdminListProps {
 
 interface AdminListFilter {
   search: string;
-  adminType: 'all' | '1' | '2';
-  isActive: 'all' | 'true' | 'false';
+  role: string;
+  status: string;
+  sortBy: 'username' | 'email' | 'createdAt' | 'updatedAt';
+  sortOrder: 'asc' | 'desc';
 }
 
 const AdminList: React.FC<AdminListProps> = ({
@@ -64,81 +69,108 @@ const AdminList: React.FC<AdminListProps> = ({
 }) => {
   const { t } = useTranslation('adminManagement');
   const theme = useTheme();
-  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [adminData, setAdminData] = useState<AdminSearchResponseDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [adminToDelete, setAdminToDelete] = useState<Admin | null>(null);
   const [deleting, setDeleting] = useState(false);
   
-  // Pagination
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  // Pagination state
+  const [page, setPage] = useState(0); // Material-UI uses 0-based pagination
+  const [pageSize, setPageSize] = useState(20);
   
-  // Filters
+  // Filters state
   const [filters, setFilters] = useState<AdminListFilter>({
     search: '',
-    adminType: 'all',
-    isActive: 'all',
+    role: '',
+    status: '',
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
   });
 
-  const loadAdmins = async () => {
+  // Debounced search to avoid too many API calls
+  const [searchValue, setSearchValue] = useState('');
+  const [searchDebounceTimeout, setSearchDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const loadAdmins = async (params?: Partial<AdminListParams>) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await AdminService.getAdminList();
-      // Ensure we always set an array
-      setAdmins(Array.isArray(data) ? data : []);
+      
+      const requestParams: AdminListParams = {
+        page: page + 1, // Convert to 1-based pagination for API
+        pageSize,
+        search: filters.search || undefined,
+        role: filters.role || undefined,
+        status: filters.status || undefined,
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        ...params
+      };
+
+      const data = await AdminService.getAdminList(requestParams);
+      setAdminData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load admins');
-      // Set empty array on error to prevent filter issues
-      setAdmins([]);
+      setError(err instanceof Error ? err.message : t('ADMIN_LOAD_ERROR'));
+      setAdminData(null);
     } finally {
       setLoading(false);
     }
   };
 
+  // Load data when dependencies change
   useEffect(() => {
     loadAdmins();
-  }, []);
+  }, [page, pageSize, filters.role, filters.status, filters.sortBy, filters.sortOrder, filters.search]);
 
-  // Filter and search logic
-  const filteredAdmins = useMemo(() => {
-    if (!Array.isArray(admins)) {
-      return [];
+  // Handle search with debouncing - only trigger when user actually types
+  useEffect(() => {
+    // Skip if searchValue is empty on initial load
+    if (!searchValue) {
+      return;
     }
-    return admins.filter((admin) => {
-      // Search filter
-      const searchLower = filters.search.toLowerCase();
-      const matchesSearch = 
-        admin.username.toLowerCase().includes(searchLower) ||
-        admin.email.toLowerCase().includes(searchLower) ||
-        (admin.firstName?.toLowerCase().includes(searchLower)) ||
-        (admin.lastName?.toLowerCase().includes(searchLower));
 
-      // Admin type filter
-      const matchesAdminType = 
-        filters.adminType === 'all' || 
-        admin.adminType.toString() === filters.adminType;
+    if (searchDebounceTimeout) {
+      clearTimeout(searchDebounceTimeout);
+    }
 
-      // Active status filter
-      const matchesActive = 
-        filters.isActive === 'all' || 
-        admin.isActive.toString() === filters.isActive;
+    const timeout = setTimeout(() => {
+      setFilters(prev => ({ ...prev, search: searchValue }));
+      setPage(0); // Reset to first page when searching
+    }, 500);
 
-      return matchesSearch && matchesAdminType && matchesActive;
-    });
-  }, [admins, filters]);
+    setSearchDebounceTimeout(timeout);
 
-  // Paginated data
-  const paginatedAdmins = useMemo(() => {
-    const startIndex = page * rowsPerPage;
-    return filteredAdmins.slice(startIndex, startIndex + rowsPerPage);
-  }, [filteredAdmins, page, rowsPerPage]);
+    return () => {
+      if (searchDebounceTimeout) {
+        clearTimeout(searchDebounceTimeout);
+      }
+    };
+  }, [searchValue]);
 
   const handleFilterChange = (field: keyof AdminListFilter, value: string) => {
     setFilters(prev => ({ ...prev, [field]: value }));
     setPage(0); // Reset to first page when filtering
+  };
+
+  const handleSortChange = (field: 'username' | 'email' | 'createdAt' | 'updatedAt') => {
+    setFilters(prev => ({
+      ...prev,
+      sortBy: field,
+      sortOrder: prev.sortBy === field && prev.sortOrder === 'asc' ? 'desc' : 'asc'
+    }));
+    setPage(0);
+  };
+
+  const handlePageChange = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPageSize = parseInt(event.target.value, 10);
+    setPageSize(newPageSize);
+    setPage(0);
   };
 
   const handleDeleteClick = (admin: Admin) => {
@@ -152,11 +184,11 @@ const AdminList: React.FC<AdminListProps> = ({
     try {
       setDeleting(true);
       await AdminService.deleteAdmin(adminToDelete.id);
-      await loadAdmins(); // Reload the list
+      await loadAdmins(); // Reload the current page
       setDeleteDialogOpen(false);
       setAdminToDelete(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete admin');
+      setError(err instanceof Error ? err.message : t('ADMIN_DELETE_ERROR'));
     } finally {
       setDeleting(false);
     }
@@ -167,12 +199,32 @@ const AdminList: React.FC<AdminListProps> = ({
     setAdminToDelete(null);
   };
 
-  const getAdminTypeColor = (adminType: 1 | 2) => {
-    return adminType === 1 ? 'error' : 'primary';
+  const getAdminTypeColor = (admin: Admin) => {
+    // Handle both new role field and legacy adminType field
+    const type = admin.adminType || (admin.role === 'super_admin' ? 1 : 2);
+    return type === 1 ? 'error' : 'primary';
   };
 
-  const getStatusColor = (isActive: boolean) => {
+  const getStatusColor = (admin: Admin) => {
+    // Handle both new status field and legacy isActive field
+    const isActive = admin.isActive !== undefined ? admin.isActive : admin.status === 'active';
     return isActive ? 'success' : 'default';
+  };
+
+  const getAdminTypeName = (admin: Admin) => {
+    // Handle both new role field and legacy adminType field
+    if (admin.adminType !== undefined) {
+      return admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN');
+    }
+    return admin.role === 'super_admin' ? t('SUPER_ADMIN') : t('LIMITED_ADMIN');
+  };
+
+  const getStatusName = (admin: Admin) => {
+    // Handle both new status field and legacy isActive field
+    if (admin.isActive !== undefined) {
+      return admin.isActive ? t('ACTIVE') : t('INACTIVE');
+    }
+    return admin.status === 'active' ? t('ACTIVE') : t('INACTIVE');
   };
 
   const formatDate = (dateString: string) => {
@@ -185,7 +237,28 @@ const AdminList: React.FC<AdminListProps> = ({
     });
   };
 
-  if (loading) {
+  const admins = adminData?.data || [];
+  const totalCount = adminData?.total || 0;
+
+  // Stats calculations
+  const stats = useMemo(() => {
+    if (!adminData) return { total: 0, superAdmins: 0, limitedAdmins: 0, active: 0 };
+    
+    return {
+      total: adminData.total,
+      superAdmins: admins.filter(admin => 
+        admin.adminType === 1 || admin.role === 'super_admin'
+      ).length,
+      limitedAdmins: admins.filter(admin => 
+        admin.adminType === 2 || admin.role === 'admin'
+      ).length,
+      active: admins.filter(admin => 
+        admin.isActive !== undefined ? admin.isActive : admin.status === 'active'
+      ).length
+    };
+  }, [adminData, admins]);
+
+  if (loading && !adminData) {
     return (
       <Card>
         <CardContent sx={{ textAlign: 'center', py: 8 }}>
@@ -227,8 +300,8 @@ const AdminList: React.FC<AdminListProps> = ({
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
             <TextField
               placeholder={t('SEARCH_PLACEHOLDER')}
-              value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               InputProps={{
                 startAdornment: <SearchIcon sx={{ mr: 1, color: 'action.active' }} />,
               }}
@@ -237,38 +310,39 @@ const AdminList: React.FC<AdminListProps> = ({
             />
             
             <FormControl size="small" sx={{ minWidth: 150 }}>
-              <InputLabel>{t('FILTER_BY_TYPE')}</InputLabel>
+              <InputLabel>{t('FILTER_BY_ROLE')}</InputLabel>
               <Select
-                value={filters.adminType}
-                label={t('FILTER_BY_TYPE')}
-                onChange={(e) => handleFilterChange('adminType', e.target.value)}
+                value={filters.role}
+                label={t('FILTER_BY_ROLE')}
+                onChange={(e) => handleFilterChange('role', e.target.value)}
               >
-                <MenuItem value="all">{t('ALL_TYPES')}</MenuItem>
-                <MenuItem value="1">{t('SUPER_ADMIN')}</MenuItem>
-                <MenuItem value="2">{t('LIMITED_ADMIN')}</MenuItem>
+                <MenuItem value="">{t('ALL_ROLES')}</MenuItem>
+                <MenuItem value="super_admin">{t('SUPER_ADMIN')}</MenuItem>
+                <MenuItem value="admin">{t('LIMITED_ADMIN')}</MenuItem>
               </Select>
             </FormControl>
 
             <FormControl size="small" sx={{ minWidth: 120 }}>
               <InputLabel>{t('FILTER_BY_STATUS')}</InputLabel>
               <Select
-                value={filters.isActive}
+                value={filters.status}
                 label={t('FILTER_BY_STATUS')}
-                onChange={(e) => handleFilterChange('isActive', e.target.value)}
+                onChange={(e) => handleFilterChange('status', e.target.value)}
               >
-                <MenuItem value="all">{t('ALL_STATUSES')}</MenuItem>
-                <MenuItem value="true">{t('ACTIVE')}</MenuItem>
-                <MenuItem value="false">{t('INACTIVE')}</MenuItem>
+                <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
+                <MenuItem value="active">{t('ACTIVE')}</MenuItem>
+                <MenuItem value="inactive">{t('INACTIVE')}</MenuItem>
               </Select>
             </FormControl>
 
             <Button
               variant="outlined"
               startIcon={<RefreshIcon />}
-              onClick={loadAdmins}
+              onClick={() => loadAdmins()}
               size="small"
+              disabled={loading}
             >
-              {t('REFRESH_DATA')}
+              {loading ? <CircularProgress size={20} /> : t('REFRESH_DATA')}
             </Button>
           </Stack>
         </CardContent>
@@ -276,26 +350,26 @@ const AdminList: React.FC<AdminListProps> = ({
 
       {/* Stats */}
       <Box sx={{ mb: 3 }}>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} flexWrap="wrap">
           <Chip
             icon={<PersonIcon />}
-            label={`${filteredAdmins.length} ${t('TOTAL_ADMINS')}`}
+            label={`${stats.total} ${t('TOTAL_ADMINS')}`}
             variant="outlined"
           />
           <Chip
             icon={<ShieldIcon />}
-            label={`${filteredAdmins.filter(a => a.adminType === 1).length} ${t('SUPER_ADMINS')}`}
+            label={`${stats.superAdmins} ${t('SUPER_ADMINS')}`}
             color="error"
             variant="outlined"
           />
           <Chip
             icon={<PersonIcon />}
-            label={`${filteredAdmins.filter(a => a.adminType === 2).length} ${t('LIMITED_ADMINS')}`}
+            label={`${stats.limitedAdmins} ${t('LIMITED_ADMINS')}`}
             color="primary"
             variant="outlined"
           />
           <Chip
-            label={`${filteredAdmins.filter(a => a.isActive).length} ${t('ACTIVE_ADMINS')}`}
+            label={`${stats.active} ${t('ACTIVE_ADMINS')}`}
             color="success"
             variant="outlined"
           />
@@ -307,27 +381,49 @@ const AdminList: React.FC<AdminListProps> = ({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{t('ADMIN')}</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={filters.sortBy === 'username'}
+                  direction={filters.sortBy === 'username' ? filters.sortOrder : 'asc'}
+                  onClick={() => handleSortChange('username')}
+                >
+                  {t('ADMIN')}
+                </TableSortLabel>
+              </TableCell>
               <TableCell>{t('ADMIN_TYPE')}</TableCell>
               <TableCell>{t('STATUS')}</TableCell>
               <TableCell>{t('LAST_LOGIN')}</TableCell>
-              <TableCell>{t('CREATED_AT')}</TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={filters.sortBy === 'createdAt'}
+                  direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
+                  onClick={() => handleSortChange('createdAt')}
+                >
+                  {t('CREATED_AT')}
+                </TableSortLabel>
+              </TableCell>
               <TableCell align="center">{t('ACTIONS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedAdmins.length === 0 ? (
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : admins.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                   <Typography variant="body1" color="text.secondary">
-                    {filters.search || filters.adminType !== 'all' || filters.isActive !== 'all'
+                    {filters.search || filters.role || filters.status
                       ? t('NO_ADMINS_FOUND')
                       : t('NO_ADMINS_FOUND')}
                   </Typography>
                 </TableCell>
               </TableRow>
             ) : (
-              paginatedAdmins.map((admin) => (
+              admins.map((admin) => (
                 <TableRow key={admin.id} hover>
                   <TableCell>
                     <Box>
@@ -347,19 +443,19 @@ const AdminList: React.FC<AdminListProps> = ({
                   
                   <TableCell>
                     <Chip
-                      label={admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN')}
-                      color={getAdminTypeColor(admin.adminType)}
+                      label={getAdminTypeName(admin)}
+                      color={getAdminTypeColor(admin)}
                       size="small"
-                      icon={admin.adminType === 1 ? <ShieldIcon /> : <PersonIcon />}
+                      icon={getAdminTypeColor(admin) === 'error' ? <ShieldIcon /> : <PersonIcon />}
                     />
                   </TableCell>
                   
                   <TableCell>
                     <Chip
-                      label={admin.isActive ? t('ACTIVE') : t('INACTIVE')}
-                      color={getStatusColor(admin.isActive)}
+                      label={getStatusName(admin)}
+                      color={getStatusColor(admin)}
                       size="small"
-                      variant={admin.isActive ? 'filled' : 'outlined'}
+                      variant={getStatusColor(admin) === 'success' ? 'filled' : 'outlined'}
                     />
                   </TableCell>
                   
@@ -418,15 +514,14 @@ const AdminList: React.FC<AdminListProps> = ({
         
         <TablePagination
           component="div"
-          count={filteredAdmins.length}
+          count={totalCount}
           page={page}
-          onPageChange={(_, newPage) => setPage(newPage)}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={(e) => {
-            setRowsPerPage(parseInt(e.target.value, 10));
-            setPage(0);
-          }}
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          onPageChange={handlePageChange}
+          rowsPerPage={pageSize}
+          onRowsPerPageChange={handlePageSizeChange}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          showFirstButton
+          showLastButton
         />
       </TableContainer>
 
@@ -444,12 +539,12 @@ const AdminList: React.FC<AdminListProps> = ({
                 {adminToDelete.email}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {adminToDelete.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN')}
+                {getAdminTypeName(adminToDelete)}
               </Typography>
             </Box>
           )}
           <Alert severity="warning" sx={{ mt: 2 }}>
-            {t('DELETE_ADMIN_MESSAGE')}
+            {t('DELETE_ADMIN_WARNING')}
           </Alert>
         </DialogContent>
         <DialogActions>

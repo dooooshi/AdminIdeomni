@@ -30,6 +30,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				translate: 'ADMIN_ACCOUNTS',
 				auth: ['admin']
 			},
+			{
+				id: 'admin-management.activity-management',
+				title: 'Activity Management',
+				type: 'item',
+				icon: 'heroicons-outline:calendar-days',
+				url: '/activity-management',
+				translate: 'ACTIVITY_MANAGEMENT',
+				auth: ['admin']
+			},
 		]
 	},
 	{

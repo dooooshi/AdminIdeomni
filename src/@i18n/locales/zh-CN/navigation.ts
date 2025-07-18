@@ -39,6 +39,7 @@ const navigation = {
 	// Admin Management
 	ADMIN_MANAGEMENT: '管理员管理',
 	ADMIN_ACCOUNTS: '管理员账户',
+	ACTIVITY_MANAGEMENT: '活动管理',
 };
 
 export default navigation; 

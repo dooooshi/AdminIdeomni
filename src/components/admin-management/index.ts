@@ -14,4 +14,12 @@ export type {
   LoginResponse,
   LogsQueryParams,
   SystemLogsQueryParams,
+  // New paginated API types
+  PaginatedResponse,
+  ApiResponse,
+  AdminSearchResponseDto,
+  AdminListParams,
+  OperationLogDetailsDto,
+  OperationLogsSearchResponseDto,
+  AdminOperationLogsParams,
 } from '@/lib/services/adminService'; 

@@ -1,14 +1,16 @@
 import apiClient from '@/lib/http/api-client';
 
-// Types based on API documentation
+// Updated types based on new API documentation
 export interface Admin {
   id: string;
   username: string;
   email: string;
   firstName?: string;
   lastName?: string;
-  adminType: 1 | 2; // 1: Super Admin, 2: Limited Admin
-  isActive: boolean;
+  role: string; // Updated to match new API
+  status: string; // Updated to match new API
+  adminType?: 1 | 2; // Keep for backward compatibility
+  isActive?: boolean; // Keep for backward compatibility
   lastLoginAt?: string;
   createdAt: string;
   updatedAt: string;
@@ -16,6 +18,72 @@ export interface Admin {
   creator?: string;
 }
 
+// New pagination response types
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message: string;
+  businessCode?: number;
+  timestamp?: string;
+  path?: string;
+}
+
+export interface AdminSearchResponseDto extends PaginatedResponse<Admin> {}
+
+export interface AdminListParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  role?: string;
+  status?: string;
+  sortBy?: 'username' | 'email' | 'createdAt' | 'updatedAt';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Updated operation log types
+export interface OperationLogDetailsDto {
+  id: string;
+  adminId: string;
+  action: string;
+  resource: string;
+  resourceId?: string;
+  details?: object;
+  ipAddress?: string;
+  userAgent?: string;
+  createdAt: string;
+  admin: {
+    id: string;
+    username: string;
+    email: string;
+    role: string;
+  };
+}
+
+export interface OperationLogsSearchResponseDto extends PaginatedResponse<OperationLogDetailsDto> {}
+
+export interface AdminOperationLogsParams {
+  page?: number;
+  pageSize?: number;
+  action?: string;
+  resource?: string;
+  resourceId?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: 'createdAt' | 'action' | 'resource';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Keep existing types for backward compatibility
 export interface AdminOperationLog {
   id: string;
   adminId: string;
@@ -94,8 +162,6 @@ export interface SystemLogsQueryParams extends LogsQueryParams {
   maxDuration?: number;
 }
 
-
-
 export class AdminService {
   // Authentication endpoints
   static async login(credentials: LoginRequest): Promise<LoginResponse> {
@@ -115,7 +181,7 @@ export class AdminService {
     return response.data;
   }
 
-  // Admin management endpoints
+  // Updated admin management endpoints
   static async createAdmin(adminData: CreateAdminRequest): Promise<Admin> {
     const response = await apiClient.post<Admin>('/admin/create', adminData);
     return response.data;
@@ -131,23 +197,40 @@ export class AdminService {
     return response.data;
   }
 
-  static async getAdminList(): Promise<Admin[]> {
-    const response = await apiClient.get<Admin[]>('/admin/list');
-    const data = response.data;
+  // Updated paginated admin list method
+  static async getAdminList(params: AdminListParams = {}): Promise<AdminSearchResponseDto> {
+    const {
+      page = 1,
+      pageSize = 20,
+      search,
+      role,
+      status,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = params;
+
+    const queryParams: Record<string, any> = {
+      page,
+      pageSize,
+      sortBy,
+      sortOrder
+    };
+
+    if (search) queryParams.search = search;
+    if (role) queryParams.role = role;
+    if (status) queryParams.status = status;
+
+    const response = await apiClient.get<ApiResponse<AdminSearchResponseDto>>('/admin/list', {
+      params: queryParams
+    });
     
-    // Ensure we always return an array
-    if (Array.isArray(data)) {
-      return data;
-    }
-    
-    // Handle wrapped response format
-    if (data && typeof data === 'object' && Array.isArray(data.data)) {
-      return data.data;
-    }
-    
-    // Fallback to empty array if data format is unexpected
-    console.warn('Unexpected admin list response format:', data);
-    return [];
+    return response.data.data;
+  }
+
+  // Legacy method for backward compatibility
+  static async getAllAdmins(): Promise<Admin[]> {
+    const response = await this.getAdminList({ page: 1, pageSize: 1000 });
+    return response.data;
   }
 
   static async getProfile(): Promise<Admin> {
@@ -155,8 +238,42 @@ export class AdminService {
     return response.data;
   }
 
-  // Operation logs endpoints
-  static async getAdminLogs(adminId: string, params?: LogsQueryParams): Promise<AdminOperationLog[]> {
+  // Updated operation logs methods
+  static async getAdminLogs(adminId: string, params: AdminOperationLogsParams = {}): Promise<OperationLogsSearchResponseDto> {
+    const {
+      page = 1,
+      pageSize = 20,
+      action,
+      resource,
+      resourceId,
+      startDate,
+      endDate,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = params;
+
+    const queryParams: Record<string, any> = {
+      page,
+      pageSize,
+      sortBy,
+      sortOrder
+    };
+
+    if (action) queryParams.action = action;
+    if (resource) queryParams.resource = resource;
+    if (resourceId) queryParams.resourceId = resourceId;
+    if (startDate) queryParams.startDate = startDate;
+    if (endDate) queryParams.endDate = endDate;
+
+    const response = await apiClient.get<ApiResponse<OperationLogsSearchResponseDto>>(`/admin/${adminId}/logs`, {
+      params: queryParams
+    });
+    
+    return response.data.data;
+  }
+
+  // Legacy log methods for backward compatibility
+  static async getAdminLogsLegacy(adminId: string, params?: LogsQueryParams): Promise<AdminOperationLog[]> {
     const response = await apiClient.get<AdminOperationLog[]>(`/admin/${adminId}/logs`, {
       params
     });
@@ -218,8 +335,6 @@ export class AdminService {
     console.warn('Unexpected system logs response format:', data);
     return [];
   }
-
-
 
   // Password management
   static async changePassword(passwordData: ChangePasswordRequest): Promise<{ message: string }> {

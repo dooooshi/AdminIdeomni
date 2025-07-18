@@ -22,6 +22,7 @@ const adminManagement = {
 	LAST_LOGIN: 'Last Login',
 	CREATED_AT: 'Created',
 	ACTIONS: 'Actions',
+	ADMIN: 'Admin',
 	
 	// Admin Types
 	SUPER_ADMIN: 'Super Admin',
@@ -37,8 +38,10 @@ const adminManagement = {
 	SEARCH_PLACEHOLDER: 'Search admins...',
 	FILTER_BY_TYPE: 'Filter by Type',
 	FILTER_BY_STATUS: 'Filter by Status',
+	FILTER_BY_ROLE: 'Filter by Role',
 	ALL_TYPES: 'All Types',
 	ALL_STATUSES: 'All Statuses',
+	ALL_ROLES: 'All Roles',
 	
 	// Statistics
 	TOTAL_ADMINS: 'Total Admins',
@@ -49,12 +52,15 @@ const adminManagement = {
 	// Admin Form
 	ADMIN_FORM_CREATE_TITLE: 'Create New Administrator',
 	ADMIN_FORM_EDIT_TITLE: 'Edit Administrator',
+	ADMIN_FORM_BASIC_INFO: 'Basic Information',
+	ADMIN_FORM_EDITING_INFO: 'Editing: {{username}} ({{email}})',
 	USERNAME_LABEL: 'Username',
 	USERNAME_PLACEHOLDER: 'Enter username',
 	EMAIL_LABEL: 'Email Address',
 	EMAIL_PLACEHOLDER: 'Enter email address',
 	PASSWORD_LABEL: 'Password',
 	PASSWORD_PLACEHOLDER: 'Enter password',
+	PASSWORD_EDIT_HINT: '(leave blank to keep current)',
 	CONFIRM_PASSWORD_LABEL: 'Confirm Password',
 	CONFIRM_PASSWORD_PLACEHOLDER: 'Confirm password',
 	FIRST_NAME_LABEL: 'First Name',
@@ -71,10 +77,15 @@ const adminManagement = {
 	// Form validation
 	USERNAME_REQUIRED: 'Username is required',
 	USERNAME_MIN_LENGTH: 'Username must be at least 3 characters',
+	USERNAME_MAX_LENGTH: 'Username must be less than 50 characters',
+	USERNAME_INVALID_CHARS: 'Username can only contain letters, numbers, and underscores',
 	EMAIL_REQUIRED: 'Email is required',
 	EMAIL_INVALID: 'Please enter a valid email address',
 	PASSWORD_REQUIRED: 'Password is required',
 	PASSWORD_MIN_LENGTH: 'Password must be at least 6 characters',
+	FIRST_NAME_MAX_LENGTH: 'First name must be less than 100 characters',
+	LAST_NAME_MAX_LENGTH: 'Last name must be less than 100 characters',
+	ADMIN_TYPE_INVALID: 'Invalid admin type',
 	PASSWORDS_MUST_MATCH: 'Passwords must match',
 	ADMIN_TYPE_REQUIRED: 'Admin type is required',
 	
@@ -83,6 +94,9 @@ const adminManagement = {
 	UPDATE_ADMIN_BUTTON: 'Update Administrator',
 	CANCEL_BUTTON: 'Cancel',
 	SAVE_BUTTON: 'Save',
+	
+	// Accessibility labels
+	TOGGLE_PASSWORD_VISIBILITY: 'Toggle password visibility',
 	
 	// Success messages
 	ADMIN_CREATED_SUCCESS: 'Administrator created successfully',
@@ -94,10 +108,14 @@ const adminManagement = {
 	ADMIN_UPDATE_ERROR: 'Failed to update administrator',
 	ADMIN_DELETE_ERROR: 'Failed to delete administrator',
 	ADMIN_LOAD_ERROR: 'Failed to load administrators',
+	FAILED_TO_LOAD_ADMINS: 'Failed to load admins',
+	FAILED_TO_DELETE_ADMIN: 'Failed to delete admin',
+	FAILED_TO_SAVE_ADMIN: 'Failed to save admin',
 	
 	// Delete confirmation
 	DELETE_ADMIN_TITLE: 'Delete Administrator',
 	DELETE_ADMIN_MESSAGE: 'Are you sure you want to delete this administrator? This action cannot be undone.',
+	DELETE_ADMIN_WARNING: 'This action cannot be undone and will permanently remove the administrator account.',
 	DELETE_ADMIN_CONFIRM: 'Delete',
 	DELETE_ADMIN_CANCEL: 'Cancel',
 	
@@ -106,12 +124,14 @@ const adminManagement = {
 	ADMIN_LOGS_TITLE: 'Administrator Logs',
 	SYSTEM_LOGS_TITLE: 'System Operation Logs',
 	OPERATION_LOGS_SUBTITLE: 'View comprehensive operation logs and audit trails',
+	SEARCH_LOGS_PLACEHOLDER: 'Search logs...',
 	
 	// Log columns
 	LOG_ID: 'Log ID',
 	ADMIN: 'Admin',
 	ACTION: 'Action',
 	RESOURCE: 'Resource',
+	RESOURCE_ID: 'Resource ID',
 	TIMESTAMP: 'Timestamp',
 	DURATION: 'Duration',
 	SUCCESS: 'Success',
@@ -149,6 +169,7 @@ const adminManagement = {
 	
 	// Log details
 	LOG_DETAILS: 'Log Details',
+	OPERATION_DETAILS: 'Operation Details',
 	EXPAND_DETAILS: 'Expand Details',
 	COLLAPSE_DETAILS: 'Collapse Details',
 	METADATA: 'Metadata',
@@ -157,6 +178,10 @@ const adminManagement = {
 	ERROR_MESSAGE: 'Error Message',
 	ERROR_CODE: 'Error Code',
 	CHANGES: 'Changes',
+	
+	// Common values
+	NOT_AVAILABLE: 'N/A',
+	UNKNOWN: 'Unknown',
 	
 	// Time formatting
 	MILLISECONDS: 'ms',

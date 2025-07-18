@@ -1,6 +1,26 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { AuthTokens, AuthUserType } from '../auth/types';
 
+// API Response interface for new backend format
+interface StandardApiResponse<T = any> {
+  success: boolean;
+  data: T;
+  message: string;
+  businessCode?: number;
+  timestamp?: string;
+  path?: string;
+}
+
+// Enhanced Error interface for new API format
+interface ApiErrorResponse {
+  success: false;
+  businessCode: number;
+  message: string;
+  data: null;
+  timestamp: string;
+  path: string;
+}
+
 // Constants
 const API_BASE_URL = (() => {
   // In development, use the Next.js proxy to avoid CORS issues
@@ -14,6 +34,29 @@ const ACCESS_TOKEN_KEY = 'ideomni_access_token';
 const REFRESH_TOKEN_KEY = 'ideomni_refresh_token';
 const USER_TYPE_KEY = 'ideomni_user_type';
 const REMEMBER_ME_KEY = 'ideomni_remember_me';
+
+// Enhanced Error class for API errors
+export class ApiError extends Error {
+  public businessCode?: number;
+  public httpStatus?: number;
+  public timestamp?: string;
+  public path?: string;
+
+  constructor(
+    message: string,
+    businessCode?: number,
+    httpStatus?: number,
+    timestamp?: string,
+    path?: string
+  ) {
+    super(message);
+    this.name = 'ApiError';
+    this.businessCode = businessCode;
+    this.httpStatus = httpStatus;
+    this.timestamp = timestamp;
+    this.path = path;
+  }
+}
 
 // Token management interface
 interface TokenManager {
@@ -226,15 +269,68 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    // Handle other errors
-    console.error('❌ API Error:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      url: error.config?.url,
-      data: error.response?.data,
-    });
+    // Enhanced error handling for new API format
+    let apiError: ApiError;
+    
+    if (error.response?.data) {
+      const errorData = error.response.data as any;
+      
+      // Check if it's the new API format with businessCode
+      if (errorData.businessCode && errorData.message) {
+        apiError = new ApiError(
+          errorData.message,
+          errorData.businessCode,
+          error.response.status,
+          errorData.timestamp,
+          errorData.path
+        );
+      } else if (errorData.message) {
+        // Legacy format or other error formats
+        apiError = new ApiError(
+          errorData.message,
+          undefined,
+          error.response.status
+        );
+      } else {
+        // Fallback to HTTP status message
+        apiError = new ApiError(
+          error.response.statusText || `HTTP ${error.response.status}`,
+          undefined,
+          error.response.status
+        );
+      }
+    } else if (error.request) {
+      // Network error
+      apiError = new ApiError(
+        'Network error. Please check your internet connection.',
+        undefined,
+        undefined
+      );
+    } else {
+      // Other errors
+      apiError = new ApiError(
+        error.message || 'An unexpected error occurred.',
+        undefined,
+        undefined
+      );
+    }
 
-    return Promise.reject(error);
+    // Log error details in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error('❌ API Error:', {
+        message: apiError.message,
+        businessCode: apiError.businessCode,
+        httpStatus: apiError.httpStatus,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        url: error.config?.url,
+        data: error.response?.data,
+        timestamp: apiError.timestamp,
+        path: apiError.path,
+      });
+    }
+
+    return Promise.reject(apiError);
   }
 );
 
@@ -245,4 +341,4 @@ export default axiosInstance;
 export { tokenManager };
 
 // Export types for TypeScript
-export type { TokenManager }; 
+export type { TokenManager, StandardApiResponse, ApiErrorResponse }; 

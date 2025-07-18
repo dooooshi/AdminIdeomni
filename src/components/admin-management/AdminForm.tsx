@@ -71,8 +71,8 @@ const AdminForm: React.FC<AdminFormProps> = ({
   const validationSchema = Yup.object({
     username: Yup.string()
       .min(3, t('USERNAME_MIN_LENGTH'))
-      .max(50, 'Username must be less than 50 characters')
-      .matches(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores')
+      .max(50, t('USERNAME_MAX_LENGTH'))
+      .matches(/^[a-zA-Z0-9_]+$/, t('USERNAME_INVALID_CHARS'))
       .required(t('USERNAME_REQUIRED')),
     
     email: Yup.string()
@@ -86,13 +86,13 @@ const AdminForm: React.FC<AdminFormProps> = ({
           .required(t('PASSWORD_REQUIRED')),
     
     firstName: Yup.string()
-      .max(100, 'First name must be less than 100 characters'),
+      .max(100, t('FIRST_NAME_MAX_LENGTH')),
     
     lastName: Yup.string()
-      .max(100, 'Last name must be less than 100 characters'),
+      .max(100, t('LAST_NAME_MAX_LENGTH')),
     
     adminType: Yup.number()
-      .oneOf([1, 2], 'Invalid admin type')
+      .oneOf([1, 2], t('ADMIN_TYPE_INVALID'))
       .required(t('ADMIN_TYPE_REQUIRED')),
     
     isActive: Yup.boolean(),
@@ -145,7 +145,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
         onClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to save admin');
+        setError(err instanceof Error ? err.message : t('ADMIN_CREATE_ERROR'));
       } finally {
         setLoading(false);
       }
@@ -206,7 +206,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
         </Box>
         {isEditMode && admin && (
           <Typography variant="body2" color="text.secondary">
-            Editing: {admin.username} ({admin.email})
+            {t('ADMIN_FORM_EDITING_INFO', { username: admin.username, email: admin.email })}
           </Typography>
         )}
       </DialogTitle>
@@ -223,7 +223,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             {/* Basic Information */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
-                {t('ADMIN_FORM_CREATE_TITLE')}
+                {t('ADMIN_FORM_BASIC_INFO')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
@@ -292,7 +292,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label={isEditMode ? t('PASSWORD_LABEL') + " (leave blank to keep current)" : t('PASSWORD_LABEL')}
+                  label={isEditMode ? t('PASSWORD_LABEL') + " " + t('PASSWORD_EDIT_HINT') : t('PASSWORD_LABEL')}
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formik.values.password}
@@ -308,7 +308,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
                         <IconButton
                           onClick={() => setShowPassword(!showPassword)}
                           edge="end"
-                          aria-label="toggle password visibility"
+                          aria-label={t('TOGGLE_PASSWORD_VISIBILITY')}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>

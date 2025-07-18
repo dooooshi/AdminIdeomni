@@ -33,6 +33,7 @@ import {
   Stack,
   Tooltip,
   Divider,
+  TableSortLabel,
 } from '@mui/material';
 import {
   Close as CloseIcon,
@@ -51,7 +52,12 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import AdminService, { Admin, AdminOperationLog, LogsQueryParams } from '@/lib/services/adminService';
+import AdminService, { 
+  Admin, 
+  AdminOperationLogsParams, 
+  OperationLogsSearchResponseDto,
+  OperationLogDetailsDto 
+} from '@/lib/services/adminService';
 
 interface OperationLogsProps {
   open: boolean;
@@ -63,10 +69,11 @@ interface OperationLogsProps {
 interface LogsFilter {
   search: string;
   action: string;
-  success: 'all' | 'true' | 'false';
+  resource: string;
   startDate: Date | null;
   endDate: Date | null;
-  resource: string;
+  sortBy: 'createdAt' | 'action' | 'resource';
+  sortOrder: 'asc' | 'desc';
 }
 
 const OperationLogs: React.FC<OperationLogsProps> = ({
@@ -76,132 +83,155 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
   title,
 }) => {
   const { t } = useTranslation('adminManagement');
-  const [logs, setLogs] = useState<AdminOperationLog[]>([]);
+  const [logsData, setLogsData] = useState<OperationLogsSearchResponseDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expandedLog, setExpandedLog] = useState<string | null>(null);
   
-  // Pagination
+  // Pagination state
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   
-  // Filters
+  // Filters state
   const [filters, setFilters] = useState<LogsFilter>({
     search: '',
-    action: 'all',
-    success: 'all',
+    action: '',
+    resource: '',
     startDate: null,
     endDate: null,
-    resource: 'all',
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
   });
 
-  const isSystemLogs = !admin; // If no admin specified, show system logs
+  // Debounced search to avoid too many API calls
+  const [searchValue, setSearchValue] = useState('');
+  const [searchDebounceTimeout, setSearchDebounceTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  const loadLogs = async () => {
+  // Available filter options (loaded from current data)
+  const [filterOptions, setFilterOptions] = useState<{
+    actions: string[];
+    resources: string[];
+  }>({
+    actions: [],
+    resources: [],
+  });
+
+  const loadLogs = async (params?: Partial<AdminOperationLogsParams>) => {
+    if (!admin) return;
+
     try {
       setLoading(true);
       setError(null);
 
-      const params: LogsQueryParams = {
-        limit: 1000, // Get more logs for client-side filtering
-        sortBy: 'createdAt',
-        sortOrder: 'desc',
+      const requestParams: AdminOperationLogsParams = {
+        page: page + 1, // Convert to 1-based pagination for API
+        pageSize,
+        action: filters.action || undefined,
+        resource: filters.resource || undefined,
+        startDate: filters.startDate?.toISOString(),
+        endDate: filters.endDate?.toISOString(),
+        sortBy: filters.sortBy,
+        sortOrder: filters.sortOrder,
+        ...params
       };
 
-      // Add filter parameters
-      if (filters.action !== 'all') params.action = filters.action;
-      if (filters.success !== 'all') params.success = filters.success === 'true';
-      if (filters.resource !== 'all') params.resource = filters.resource;
-      if (filters.startDate) params.startDate = filters.startDate.toISOString();
-      if (filters.endDate) params.endDate = filters.endDate.toISOString();
-
-      let data: AdminOperationLog[];
-      if (isSystemLogs) {
-        data = await AdminService.getSystemLogs(params);
-      } else if (admin) {
-        data = await AdminService.getAdminLogs(admin.id, params);
-      } else {
-        data = await AdminService.getOwnLogs(params);
+      // Add search filter if provided
+      if (filters.search) {
+        // Since the API doesn't support text search, we'll handle it client-side
+        // This is a limitation that should be addressed in the backend
       }
 
-      // Ensure we always set an array
-      setLogs(Array.isArray(data) ? data : []);
+      const data = await AdminService.getAdminLogs(admin.id, requestParams);
+      setLogsData(data);
+
+      // Update filter options based on current data
+      const actions = new Set<string>();
+      const resources = new Set<string>();
+      
+      data.data.forEach(log => {
+        if (log.action) actions.add(log.action);
+        if (log.resource) resources.add(log.resource);
+      });
+
+      setFilterOptions({
+        actions: Array.from(actions).sort(),
+        resources: Array.from(resources).sort(),
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load operation logs');
-      setLogs([]); // Set empty array on error
+      setError(err instanceof Error ? err.message : t('LOADING_LOGS'));
+      setLogsData(null);
     } finally {
       setLoading(false);
     }
   };
 
+  // Load data when dependencies change
   useEffect(() => {
-    if (open) {
+    if (open && admin) {
       loadLogs();
     }
-  }, [open, admin]);
+  }, [open, admin, page, pageSize, filters.action, filters.resource, filters.startDate, filters.endDate, filters.sortBy, filters.sortOrder, filters.search]);
 
-  // Filter logs based on search
-  const filteredLogs = useMemo(() => {
-    // Ensure logs is always an array
-    const logsArray = Array.isArray(logs) ? logs : [];
-    
-    if (!filters.search) return logsArray;
-    
-    const searchLower = filters.search.toLowerCase();
-    return logsArray.filter(log => 
-      log.action.toLowerCase().includes(searchLower) ||
-      log.description?.toLowerCase().includes(searchLower) ||
-      log.resource?.toLowerCase().includes(searchLower) ||
-      log.ipAddress?.toLowerCase().includes(searchLower)
-    );
-  }, [logs, filters.search]);
+  // Handle search with debouncing - only trigger when user actually types
+  useEffect(() => {
+    // Skip if searchValue is empty on initial load
+    if (!searchValue) {
+      return;
+    }
 
-  // Paginated logs
-  const paginatedLogs = useMemo(() => {
-    // Ensure filteredLogs is always an array
-    const logsArray = Array.isArray(filteredLogs) ? filteredLogs : [];
-    const startIndex = page * rowsPerPage;
-    return logsArray.slice(startIndex, startIndex + rowsPerPage);
-  }, [filteredLogs, page, rowsPerPage]);
+    if (searchDebounceTimeout) {
+      clearTimeout(searchDebounceTimeout);
+    }
 
-  // Get unique actions and resources for filter dropdowns
-  const uniqueActions = useMemo(() => {
-    const logsArray = Array.isArray(logs) ? logs : [];
-    const actions = new Set(logsArray.map(log => log.action));
-    return Array.from(actions).sort();
-  }, [logs]);
+    const timeout = setTimeout(() => {
+      setFilters(prev => ({ ...prev, search: searchValue }));
+      setPage(0);
+    }, 500);
 
-  const uniqueResources = useMemo(() => {
-    const logsArray = Array.isArray(logs) ? logs : [];
-    const resources = new Set(logsArray.map(log => log.resource).filter(Boolean));
-    return Array.from(resources).sort();
-  }, [logs]);
+    setSearchDebounceTimeout(timeout);
+
+    return () => {
+      if (searchDebounceTimeout) {
+        clearTimeout(searchDebounceTimeout);
+      }
+    };
+  }, [searchValue]);
+
+  // Reset when dialog opens
+  useEffect(() => {
+    if (open) {
+      setPage(0);
+      setExpandedLog(null);
+      setError(null);
+    }
+  }, [open]);
 
   const handleFilterChange = (field: keyof LogsFilter, value: any) => {
     setFilters(prev => ({ ...prev, [field]: value }));
     setPage(0);
   };
 
+  const handleSortChange = (field: 'createdAt' | 'action' | 'resource') => {
+    setFilters(prev => ({
+      ...prev,
+      sortBy: field,
+      sortOrder: prev.sortBy === field && prev.sortOrder === 'asc' ? 'desc' : 'asc'
+    }));
+    setPage(0);
+  };
+
+  const handlePageChange = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPageSize = parseInt(event.target.value, 10);
+    setPageSize(newPageSize);
+    setPage(0);
+  };
+
   const handleExpandLog = (logId: string) => {
     setExpandedLog(expandedLog === logId ? null : logId);
-  };
-
-  const getSuccessIcon = (success: boolean) => {
-    return success ? <CheckIcon color="success" /> : <ErrorIcon color="error" />;
-  };
-
-  const getSuccessColor = (success: boolean) => {
-    return success ? 'success' : 'error';
-  };
-
-  const getSeverityIcon = (log: AdminOperationLog) => {
-    const severity = AdminService.getOperationSeverity(log);
-    switch (severity) {
-      case 'critical': return <ErrorIcon color="error" />;
-      case 'high': return <WarningIcon color="warning" />;
-      case 'medium': return <InfoIcon color="info" />;
-      default: return <CheckIcon color="success" />;
-    }
   };
 
   const formatDate = (dateString: string) => {
@@ -215,14 +245,30 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
     });
   };
 
-  const formatDuration = (duration: number) => {
-    if (duration < 1000) return `${duration}ms`;
-    return `${(duration / 1000).toFixed(2)}s`;
+  const formatAction = (action: string) => {
+    return action
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   };
 
-  const renderLogMetadata = (log: AdminOperationLog) => {
-    const { metadata } = log;
-    
+  const getActionIcon = (action: string) => {
+    const actionLower = action.toLowerCase();
+    if (actionLower.includes('create')) return <CheckIcon color="success" />;
+    if (actionLower.includes('update')) return <InfoIcon color="info" />;
+    if (actionLower.includes('delete')) return <ErrorIcon color="error" />;
+    return <ScheduleIcon color="primary" />;
+  };
+
+  const getActionColor = (action: string) => {
+    const actionLower = action.toLowerCase();
+    if (actionLower.includes('create')) return 'success';
+    if (actionLower.includes('update')) return 'info';
+    if (actionLower.includes('delete')) return 'error';
+    return 'primary';
+  };
+
+  const renderLogDetails = (log: OperationLogDetailsDto) => {
     return (
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle2" gutterBottom>
@@ -230,70 +276,69 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 2 }}>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('DURATION')}</Typography>
-            <Typography variant="body2">{formatDuration(metadata.duration)}</Typography>
+            <Typography variant="caption" color="text.secondary">{t('ADMIN')}</Typography>
+            <Typography variant="body2">{log.admin.username}</Typography>
           </Box>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('SUCCESS')}</Typography>
-            <Typography variant="body2" color={getSuccessColor(metadata.success)}>
-              {metadata.success ? t('YES') : t('NO')}
+            <Typography variant="caption" color="text.secondary">{t('RESOURCE_ID')}</Typography>
+            <Typography variant="body2">{log.resourceId || t('NOT_AVAILABLE')}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="caption" color="text.secondary">{t('IP_ADDRESS')}</Typography>
+            <Typography variant="body2">{log.ipAddress || t('UNKNOWN')}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="caption" color="text.secondary">{t('USER_AGENT')}</Typography>
+            <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+              {log.userAgent || t('UNKNOWN')}
             </Typography>
           </Box>
-          {metadata.responseSize && (
-            <Box>
-              <Typography variant="caption" color="text.secondary">{t('RESPONSE_SIZE')}</Typography>
-              <Typography variant="body2">{metadata.responseSize} bytes</Typography>
-            </Box>
-          )}
-          {metadata.error && (
-            <Box>
-              <Typography variant="caption" color="text.secondary">{t('ERROR_MESSAGE')}</Typography>
-              <Typography variant="body2" color="error">{metadata.error}</Typography>
-            </Box>
-          )}
         </Box>
 
-        {/* Changes (for update operations) */}
-        {metadata.changes && (
+        {/* Details object */}
+        {log.details && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle2" gutterBottom>
-              Changes Made
+              {t('OPERATION_DETAILS')}
             </Typography>
             <Box sx={{ bgcolor: 'grey.50', p: 2, borderRadius: 1 }}>
-              <pre style={{ margin: 0, fontSize: '0.875rem' }}>
-                {JSON.stringify(metadata.changes, null, 2)}
+              <pre style={{ margin: 0, fontSize: '0.875rem', whiteSpace: 'pre-wrap' }}>
+                {JSON.stringify(log.details, null, 2)}
               </pre>
-            </Box>
-          </Box>
-        )}
-
-        {/* Additional metadata */}
-        {Object.keys(metadata).filter(key => 
-          !['duration', 'success', 'responseSize', 'error', 'changes'].includes(key)
-        ).length > 0 && (
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              Additional Information
-            </Typography>
-            <Box sx={{ bgcolor: 'grey.50', p: 2, borderRadius: 1 }}>
-              {Object.entries(metadata)
-                .filter(([key]) => !['duration', 'success', 'responseSize', 'error', 'changes'].includes(key))
-                .map(([key, value]) => (
-                  <Box key={key} sx={{ mb: 1 }}>
-                    <Typography variant="caption" color="text.secondary">
-                      {key}:
-                    </Typography>
-                    <Typography variant="body2" component="span" sx={{ ml: 1 }}>
-                      {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                    </Typography>
-                  </Box>
-                ))}
             </Box>
           </Box>
         )}
       </Box>
     );
   };
+
+  const logs = logsData?.data || [];
+  const totalCount = logsData?.total || 0;
+
+  // Client-side search filtering (since API doesn't support text search)
+  const filteredLogs = useMemo(() => {
+    if (!filters.search) return logs;
+    
+    const searchLower = filters.search.toLowerCase();
+    return logs.filter(log => 
+      log.action.toLowerCase().includes(searchLower) ||
+      log.resource.toLowerCase().includes(searchLower) ||
+      log.resourceId?.toLowerCase().includes(searchLower) ||
+      log.ipAddress?.toLowerCase().includes(searchLower) ||
+      log.admin.username.toLowerCase().includes(searchLower)
+    );
+  }, [logs, filters.search]);
+
+  // Stats calculations
+  const stats = useMemo(() => {
+    if (!logsData) return { total: 0, actions: 0, resources: 0 };
+    
+    return {
+      total: logsData.total,
+      actions: filterOptions.actions.length,
+      resources: filterOptions.resources.length,
+    };
+  }, [logsData, filterOptions]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -317,7 +362,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
           </Box>
           {admin && (
             <Typography variant="body2" color="text.secondary">
-              {admin.email} ({admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN')})
+              {admin.email} ({admin.role || (admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN'))})
             </Typography>
           )}
         </DialogTitle>
@@ -329,9 +374,9 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
               <Stack spacing={2}>
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
                   <TextField
-                    placeholder="Search logs..."
-                    value={filters.search}
-                    onChange={(e) => handleFilterChange('search', e.target.value)}
+                    placeholder={t('SEARCH_LOGS_PLACEHOLDER')}
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                     size="small"
                     InputProps={{
                       startAdornment: <SearchIcon sx={{ mr: 1, color: 'action.active' }} />,
@@ -340,72 +385,57 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                   />
                   
                   <FormControl size="small" sx={{ minWidth: 150 }}>
-                    <InputLabel>Action</InputLabel>
+                    <InputLabel>{t('ACTION')}</InputLabel>
                     <Select
                       value={filters.action}
-                      label="Action"
+                      label={t('ACTION')}
                       onChange={(e) => handleFilterChange('action', e.target.value)}
                     >
-                      <MenuItem value="all">All Actions</MenuItem>
-                      {uniqueActions.map(action => (
+                      <MenuItem value="">{t('ALL_ACTIONS')}</MenuItem>
+                      {filterOptions.actions.map(action => (
                         <MenuItem key={action} value={action}>
-                          {AdminService.formatOperationAction(action)}
+                          {formatAction(action)}
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
 
                   <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <InputLabel>Result</InputLabel>
+                    <InputLabel>{t('RESOURCE')}</InputLabel>
                     <Select
-                      value={filters.success}
-                      label="Result"
-                      onChange={(e) => handleFilterChange('success', e.target.value)}
+                      value={filters.resource}
+                      label={t('RESOURCE')}
+                      onChange={(e) => handleFilterChange('resource', e.target.value)}
                     >
-                      <MenuItem value="all">All</MenuItem>
-                      <MenuItem value="true">Success</MenuItem>
-                      <MenuItem value="false">Failed</MenuItem>
+                      <MenuItem value="">{t('ALL_RESOURCES')}</MenuItem>
+                      {filterOptions.resources.map(resource => (
+                        <MenuItem key={resource} value={resource}>
+                          {resource}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
-
-                  {uniqueResources.length > 0 && (
-                    <FormControl size="small" sx={{ minWidth: 120 }}>
-                      <InputLabel>Resource</InputLabel>
-                      <Select
-                        value={filters.resource}
-                        label="Resource"
-                        onChange={(e) => handleFilterChange('resource', e.target.value)}
-                      >
-                        <MenuItem value="all">All Resources</MenuItem>
-                        {uniqueResources.map(resource => (
-                          <MenuItem key={resource} value={resource}>
-                            {resource}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
 
                   <Button
                     variant="outlined"
                     startIcon={<RefreshIcon />}
-                    onClick={loadLogs}
+                    onClick={() => loadLogs()}
                     size="small"
                     disabled={loading}
                   >
-                    Refresh
+                    {loading ? <CircularProgress size={20} /> : 'Refresh'}
                   </Button>
                 </Stack>
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <DatePicker
-                    label="Start Date"
+                    label={t('START_DATE')}
                     value={filters.startDate}
                     onChange={(date) => handleFilterChange('startDate', date)}
                     slotProps={{ textField: { size: 'small' } }}
                   />
                   <DatePicker
-                    label="End Date"
+                    label={t('END_DATE')}
                     value={filters.endDate}
                     onChange={(date) => handleFilterChange('endDate', date)}
                     slotProps={{ textField: { size: 'small' } }}
@@ -420,19 +450,19 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
             <Stack direction="row" spacing={2} flexWrap="wrap">
               <Chip
                 icon={<ScheduleIcon />}
-                label={`${filteredLogs.length} Operations`}
+                label={`${stats.total} Operations`}
                 variant="outlined"
               />
               <Chip
-                icon={<CheckIcon />}
-                label={`${filteredLogs.filter(l => l.metadata.success).length} Successful`}
-                color="success"
+                icon={<InfoIcon />}
+                label={`${stats.actions} Action Types`}
+                color="info"
                 variant="outlined"
               />
               <Chip
-                icon={<ErrorIcon />}
-                label={`${filteredLogs.filter(l => !l.metadata.success).length} Failed`}
-                color="error"
+                icon={<PersonIcon />}
+                label={`${stats.resources} Resource Types`}
+                color="primary"
                 variant="outlined"
               />
             </Stack>
@@ -446,38 +476,67 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
           )}
 
           {/* Loading */}
-          {loading && (
+          {loading && !logsData && (
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
               <CircularProgress />
             </Box>
           )}
 
           {/* Logs Table */}
-          {!loading && (
+          {!loading || logsData ? (
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell width={40}></TableCell>
-                    <TableCell>Operation</TableCell>
-                    <TableCell>Result</TableCell>
-                    <TableCell>Resource</TableCell>
-                    <TableCell>Duration</TableCell>
+                    <TableCell>
+                      <TableSortLabel
+                        active={filters.sortBy === 'action'}
+                        direction={filters.sortBy === 'action' ? filters.sortOrder : 'asc'}
+                        onClick={() => handleSortChange('action')}
+                      >
+                        Operation
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell>
+                      <TableSortLabel
+                        active={filters.sortBy === 'resource'}
+                        direction={filters.sortBy === 'resource' ? filters.sortOrder : 'asc'}
+                        onClick={() => handleSortChange('resource')}
+                      >
+                        Resource
+                      </TableSortLabel>
+                    </TableCell>
+                    <TableCell>Admin</TableCell>
                     <TableCell>IP Address</TableCell>
-                    <TableCell>Timestamp</TableCell>
+                    <TableCell>
+                      <TableSortLabel
+                        active={filters.sortBy === 'createdAt'}
+                        direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
+                        onClick={() => handleSortChange('createdAt')}
+                      >
+                        Timestamp
+                      </TableSortLabel>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {paginatedLogs.length === 0 ? (
+                  {loading ? (
                     <TableRow>
-                      <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
+                      <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
+                        <CircularProgress />
+                      </TableCell>
+                    </TableRow>
+                  ) : filteredLogs.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                         <Typography variant="body1" color="text.secondary">
                           No operation logs found
                         </Typography>
                       </TableCell>
                     </TableRow>
                   ) : (
-                    paginatedLogs.map((log) => (
+                    filteredLogs.map((log) => (
                       <React.Fragment key={log.id}>
                         <TableRow hover>
                           <TableCell>
@@ -491,44 +550,33 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                           
                           <TableCell>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              {getSeverityIcon(log)}
-                              <Box>
-                                <Typography variant="subtitle2">
-                                  {AdminService.formatOperationAction(log.action)}
-                                </Typography>
-                                {log.description && (
-                                  <Typography variant="caption" color="text.secondary">
-                                    {log.description}
-                                  </Typography>
-                                )}
-                              </Box>
+                              {getActionIcon(log.action)}
+                              <Chip
+                                label={formatAction(log.action)}
+                                color={getActionColor(log.action) as any}
+                                size="small"
+                                variant="outlined"
+                              />
                             </Box>
                           </TableCell>
                           
                           <TableCell>
                             <Chip
-                              icon={getSuccessIcon(log.metadata.success)}
-                              label={log.metadata.success ? 'Success' : 'Failed'}
-                              color={getSuccessColor(log.metadata.success)}
+                              label={log.resource}
                               size="small"
                               variant="outlined"
                             />
                           </TableCell>
                           
                           <TableCell>
-                            {log.resource && (
-                              <Chip
-                                label={log.resource}
-                                size="small"
-                                variant="outlined"
-                              />
-                            )}
-                          </TableCell>
-                          
-                          <TableCell>
-                            <Typography variant="body2">
-                              {formatDuration(log.metadata.duration)}
-                            </Typography>
+                            <Box>
+                              <Typography variant="body2" fontWeight="medium">
+                                {log.admin.username}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {log.admin.email}
+                              </Typography>
+                            </Box>
                           </TableCell>
                           
                           <TableCell>
@@ -549,10 +597,10 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                         
                         {/* Expanded Row */}
                         <TableRow>
-                          <TableCell colSpan={7} sx={{ py: 0 }}>
+                          <TableCell colSpan={6} sx={{ py: 0 }}>
                             <Collapse in={expandedLog === log.id} timeout="auto" unmountOnExit>
                               <Box sx={{ p: 3, bgcolor: 'grey.50' }}>
-                                {renderLogMetadata(log)}
+                                {renderLogDetails(log)}
                               </Box>
                             </Collapse>
                           </TableCell>
@@ -565,18 +613,17 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
               
               <TablePagination
                 component="div"
-                count={filteredLogs.length}
+                count={totalCount}
                 page={page}
-                onPageChange={(_, newPage) => setPage(newPage)}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={(e) => {
-                  setRowsPerPage(parseInt(e.target.value, 10));
-                  setPage(0);
-                }}
-                rowsPerPageOptions={[5, 10, 25, 50]}
+                onPageChange={handlePageChange}
+                rowsPerPage={pageSize}
+                onRowsPerPageChange={handlePageSizeChange}
+                rowsPerPageOptions={[10, 20, 50, 100]}
+                showFirstButton
+                showLastButton
               />
             </TableContainer>
-          )}
+          ) : null}
         </DialogContent>
 
         <DialogActions>

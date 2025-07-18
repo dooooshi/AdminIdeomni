@@ -22,6 +22,7 @@ const adminManagement = {
 	LAST_LOGIN: '最后登录',
 	CREATED_AT: '创建时间',
 	ACTIONS: '操作',
+	ADMIN: '管理员',
 	
 	// Admin Types
 	SUPER_ADMIN: '超级管理员',
@@ -37,8 +38,10 @@ const adminManagement = {
 	SEARCH_PLACEHOLDER: '搜索管理员...',
 	FILTER_BY_TYPE: '按类型筛选',
 	FILTER_BY_STATUS: '按状态筛选',
+	FILTER_BY_ROLE: '按角色筛选',
 	ALL_TYPES: '所有类型',
 	ALL_STATUSES: '所有状态',
+	ALL_ROLES: '所有角色',
 	
 	// Statistics
 	TOTAL_ADMINS: '管理员总数',
@@ -49,12 +52,15 @@ const adminManagement = {
 	// Admin Form
 	ADMIN_FORM_CREATE_TITLE: '创建新管理员',
 	ADMIN_FORM_EDIT_TITLE: '编辑管理员',
+	ADMIN_FORM_BASIC_INFO: '基本信息',
+	ADMIN_FORM_EDITING_INFO: '编辑：{{username}} ({{email}})',
 	USERNAME_LABEL: '用户名',
 	USERNAME_PLACEHOLDER: '请输入用户名',
 	EMAIL_LABEL: '邮箱地址',
 	EMAIL_PLACEHOLDER: '请输入邮箱地址',
 	PASSWORD_LABEL: '密码',
 	PASSWORD_PLACEHOLDER: '请输入密码',
+	PASSWORD_EDIT_HINT: '（留空则保持当前密码）',
 	CONFIRM_PASSWORD_LABEL: '确认密码',
 	CONFIRM_PASSWORD_PLACEHOLDER: '请确认密码',
 	FIRST_NAME_LABEL: '名',
@@ -71,10 +77,15 @@ const adminManagement = {
 	// Form validation
 	USERNAME_REQUIRED: '用户名是必填项',
 	USERNAME_MIN_LENGTH: '用户名至少需要3个字符',
+	USERNAME_MAX_LENGTH: '用户名必须少于50个字符',
+	USERNAME_INVALID_CHARS: '用户名只能包含字母、数字和下划线',
 	EMAIL_REQUIRED: '邮箱是必填项',
 	EMAIL_INVALID: '请输入有效的邮箱地址',
 	PASSWORD_REQUIRED: '密码是必填项',
 	PASSWORD_MIN_LENGTH: '密码至少需要6个字符',
+	FIRST_NAME_MAX_LENGTH: '名必须少于100个字符',
+	LAST_NAME_MAX_LENGTH: '姓必须少于100个字符',
+	ADMIN_TYPE_INVALID: '无效的管理员类型',
 	PASSWORDS_MUST_MATCH: '密码必须匹配',
 	ADMIN_TYPE_REQUIRED: '管理员类型是必填项',
 	
@@ -83,6 +94,9 @@ const adminManagement = {
 	UPDATE_ADMIN_BUTTON: '更新管理员',
 	CANCEL_BUTTON: '取消',
 	SAVE_BUTTON: '保存',
+	
+	// Accessibility labels
+	TOGGLE_PASSWORD_VISIBILITY: '切换密码可见性',
 	
 	// Success messages
 	ADMIN_CREATED_SUCCESS: '管理员创建成功',
@@ -98,6 +112,7 @@ const adminManagement = {
 	// Delete confirmation
 	DELETE_ADMIN_TITLE: '删除管理员',
 	DELETE_ADMIN_MESSAGE: '您确定要删除此管理员吗？此操作无法撤销。',
+	DELETE_ADMIN_WARNING: '此操作无法撤销，将永久删除管理员账户。',
 	DELETE_ADMIN_CONFIRM: '删除',
 	DELETE_ADMIN_CANCEL: '取消',
 	
@@ -106,12 +121,13 @@ const adminManagement = {
 	ADMIN_LOGS_TITLE: '管理员日志',
 	SYSTEM_LOGS_TITLE: '系统操作日志',
 	OPERATION_LOGS_SUBTITLE: '查看全面的操作日志和审计跟踪',
+	SEARCH_LOGS_PLACEHOLDER: '搜索日志...',
 	
 	// Log columns
 	LOG_ID: '日志ID',
-	ADMIN: '管理员',
 	ACTION: '操作',
 	RESOURCE: '资源',
+	RESOURCE_ID: '资源ID',
 	TIMESTAMP: '时间戳',
 	DURATION: '持续时间',
 	SUCCESS: '成功',
@@ -137,11 +153,7 @@ const adminManagement = {
 	CREATE_USER: '创建用户',
 	UPDATE_USER: '更新用户',
 	DELETE_USER: '删除用户',
-	CREATE_ADMIN: '创建管理员',
-	UPDATE_ADMIN: '更新管理员',
-	DELETE_ADMIN: '删除管理员',
 	CHANGE_PASSWORD: '修改密码',
-	VIEW_LOGS: '查看日志',
 	
 	// Log status
 	SUCCEEDED: '成功',
@@ -149,6 +161,7 @@ const adminManagement = {
 	
 	// Log details
 	LOG_DETAILS: '日志详情',
+	OPERATION_DETAILS: '操作详情',
 	EXPAND_DETAILS: '展开详情',
 	COLLAPSE_DETAILS: '收起详情',
 	METADATA: '元数据',
@@ -157,6 +170,10 @@ const adminManagement = {
 	ERROR_MESSAGE: '错误信息',
 	ERROR_CODE: '错误代码',
 	CHANGES: '变更',
+	
+	// Common values
+	NOT_AVAILABLE: '不可用',
+	UNKNOWN: '未知',
 	
 	// Time formatting
 	MILLISECONDS: '毫秒',
@@ -197,7 +214,6 @@ const adminManagement = {
 	SUCCESS: '成功',
 	WARNING: '警告',
 	INFO: '信息',
-	UNKNOWN: '未知',
 	NEVER: '从未',
 	YES: '是',
 	NO: '否',
