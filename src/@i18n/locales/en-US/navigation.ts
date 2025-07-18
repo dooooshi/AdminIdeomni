@@ -39,6 +39,7 @@ const navigation = {
 	// Admin Management
 	ADMIN_MANAGEMENT: 'Admin Management',
 	ADMIN_ACCOUNTS: 'Admin Accounts',
+	USER_MANAGEMENT: 'User Management',
 	ACTIVITY_MANAGEMENT: 'Activity Management',
 };
 

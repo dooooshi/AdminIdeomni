@@ -4,6 +4,7 @@ import map from './map';
 import navigation from './navigation';
 import adminManagement from './adminManagement';
 import activityManagement from './activityManagement';
+import userManagement from './userManagement';
 
 const zhCN = {
 	...common,
@@ -11,7 +12,8 @@ const zhCN = {
 	map,
 	navigation,
 	adminManagement,
-	activityManagement
+	activityManagement,
+	userManagement
 };
 
 export default zhCN; 

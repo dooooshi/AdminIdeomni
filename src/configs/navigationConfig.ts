@@ -31,6 +31,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['admin']
 			},
 			{
+				id: 'admin-management.user-management',
+				title: 'User Management',
+				type: 'item',
+				icon: 'heroicons-outline:users',
+				url: '/user-management',
+				translate: 'USER_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
 				id: 'admin-management.activity-management',
 				title: 'Activity Management',
 				type: 'item',
