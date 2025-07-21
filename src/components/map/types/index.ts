@@ -3,7 +3,12 @@ export interface MapTile {
 	axialQ: number;
 	axialR: number;
 	landType: 'MARINE' | 'PLAIN' | 'COASTAL';
-	isActive: boolean;
+	isActive?: boolean;
+	// Economic data for activity mode
+	currentPrice?: number;
+	currentPopulation?: number;
+	transportationCostUnit?: number;
+	isModified?: boolean; // For highlighting modified tiles
 }
 
 export interface HexagonalMapProps {
@@ -11,8 +16,13 @@ export interface HexagonalMapProps {
 	width?: number;
 	height?: number;
 	onTileClick?: (tile: MapTile) => void;
+	onTileSelect?: (tileId: number) => void;
+	selectedTileId?: number | null;
 	zoomLevel?: number;
 	onZoomChange?: (zoomLevel: number) => void;
+	// Activity tile state management mode
+	showEconomicData?: boolean;
+	activityMode?: boolean;
 }
 
 export interface HexagonalMapRef {

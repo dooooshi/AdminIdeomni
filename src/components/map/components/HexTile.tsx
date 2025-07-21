@@ -12,6 +12,8 @@ const HexTile: React.FC<HexTileProps> = ({
 	hexPath,
 	position,
 	isHovered,
+	isSelected = false,
+	configurationMode = false,
 	onTileClick,
 	onMouseEnter,
 	onMouseLeave
@@ -55,8 +57,12 @@ const HexTile: React.FC<HexTileProps> = ({
 	};
 
 	// Enhanced stroke styling with sophisticated color transitions
-	const getStrokeColor = (isHovered: boolean = false, isActive: boolean = true) => {
+	const getStrokeColor = (isHovered: boolean = false, isSelected: boolean = false, isActive: boolean = true) => {
 		const isDark = theme.palette.mode === 'dark';
+		
+		if (isSelected) {
+			return theme.palette.primary.main;
+		}
 		
 		if (isHovered) {
 			return alpha(theme.palette.primary.main, isDark ? 0.7 : 0.8);
@@ -154,6 +160,84 @@ const HexTile: React.FC<HexTileProps> = ({
 								{getTerrainName(tile.landType)}
 							</Typography>
 						</Box>
+						{/* Economic Data Display */}
+						{tile.currentPrice !== undefined && (
+							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'text.secondary',
+										fontSize: '0.75rem',
+										fontWeight: 500
+									}}
+								>
+									{t('CURRENT_PRICE')}:
+								</Typography>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'success.main',
+										fontSize: '0.75rem',
+										fontWeight: 600,
+										fontFamily: 'monospace'
+									}}
+								>
+									${tile.currentPrice.toFixed(2)}
+								</Typography>
+							</Box>
+						)}
+
+						{tile.currentPopulation !== undefined && (
+							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'text.secondary',
+										fontSize: '0.75rem',
+										fontWeight: 500
+									}}
+								>
+									{t('CURRENT_POPULATION')}:
+								</Typography>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'info.main',
+										fontSize: '0.75rem',
+										fontWeight: 600,
+										fontFamily: 'monospace'
+									}}
+								>
+									{tile.currentPopulation.toLocaleString()}
+								</Typography>
+							</Box>
+						)}
+
+						{tile.isModified && (
+							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'text.secondary',
+										fontSize: '0.75rem',
+										fontWeight: 500
+									}}
+								>
+									{t('STATUS')}:
+								</Typography>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'warning.main',
+										fontSize: '0.75rem',
+										fontWeight: 600
+									}}
+								>
+									{t('MODIFIED')}
+								</Typography>
+							</Box>
+						)}
+
 						<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 							<Typography 
 								variant="caption" 
@@ -202,13 +286,13 @@ const HexTile: React.FC<HexTileProps> = ({
 			<path
 				d={hexPath}
 				fill={getLandTypeColor(tile.landType, isHovered)}
-				stroke={getStrokeColor(isHovered, tile.isActive)}
-				strokeWidth={isHovered ? 1.5 : 0.5}
+				stroke={getStrokeColor(isHovered, isSelected, tile.isActive)}
+				strokeWidth={isSelected ? 3 : isHovered ? 1.5 : 0.5}
 				style={{
 					cursor: onTileClick ? 'pointer' : 'default',
 					transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
 					transformOrigin: `${position.x}px ${position.y}px`,
-					transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+					transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
 					filter: !tile.isActive ? 'grayscale(0.3)' : 'none',
 				}}
 				onMouseEnter={onMouseEnter}

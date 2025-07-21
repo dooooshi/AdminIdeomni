@@ -68,20 +68,20 @@ function NotificationPanel() {
 		});
 
 		setTimeout(() => {
-			addNotification(item);
+			// addNotification(item);
 
-			enqueueSnackbar(item.title, {
-				key: item.id,
-				autoHideDuration: 6000,
-				content: (
-					<NotificationTemplate
-						item={item}
-						onClose={() => {
-							closeSnackbar(item.id);
-						}}
-					/>
-				)
-			});
+			// enqueueSnackbar(item.title, {
+			// 	key: item.id,
+			// 	autoHideDuration: 6000,
+			// 	content: (
+			// 		<NotificationTemplate
+			// 			item={item}
+			// 			onClose={() => {
+			// 				closeSnackbar(item.id);
+			// 			}}
+			// 		/>
+			// 	)
+			// });
 		}, 2000);
 	}, [addNotification, closeSnackbar, enqueueSnackbar, t]);
 

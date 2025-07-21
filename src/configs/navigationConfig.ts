@@ -60,6 +60,24 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		auth: ['admin'],
 		children: [
 			{
+				id: 'map.template-management',
+				title: 'Template Management',
+				type: 'item',
+				icon: 'heroicons-outline:cog-8-tooth',
+				url: '/map-template-management',
+				translate: 'MAP_TEMPLATE_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
+				id: 'map.activity-tile-state-management',
+				title: 'Activity Tile States',
+				type: 'item',
+				icon: 'heroicons-outline:chart-bar-square',
+				url: '/activity-tile-state-management',
+				translate: 'ACTIVITY_TILE_STATE_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
 				id: 'map.test-map',
 				title: 'Test Map',
 				type: 'item',
@@ -250,6 +268,15 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 		translate: 'MAP',
 		auth: ['admin'],
 		children: [
+			{
+				id: 'map.activity-tile-state-management',
+				title: 'Activity Tile States',
+				type: 'item',
+				icon: 'heroicons-outline:chart-bar-square',
+				url: '/activity-tile-state-management',
+				translate: 'ACTIVITY_TILE_STATE_MANAGEMENT',
+				auth: ['admin']
+			},
 			{
 				id: 'map.test-map',
 				title: 'Test Map',

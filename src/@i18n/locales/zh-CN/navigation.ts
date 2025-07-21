@@ -36,6 +36,10 @@ const navigation = {
 	ACTIVITIES: '活动',
 	// Test Map
 	TEST_MAP: '测试地图',
+	// Map Template Management
+	MAP_TEMPLATE_MANAGEMENT: '模板管理',
+	// Activity Tile State Management
+	ACTIVITY_TILE_STATE_MANAGEMENT: '活动瓦片状态',
 	// Admin Management
 	ADMIN_MANAGEMENT: '管理员管理',
 	ADMIN_ACCOUNTS: '管理员账户',

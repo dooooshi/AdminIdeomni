@@ -86,8 +86,12 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 	width = 800,
 	height = 500,
 	onTileClick,
+	onTileUpdate,
 	zoomLevel = 1,
-	onZoomChange
+	onZoomChange,
+	configurationMode = false,
+	selectedTileId,
+	showConfiguration = false
 }, ref) => {
 	const theme = useTheme();
 	const [hoveredTile, setHoveredTile] = useState<number | null>(null);
@@ -157,6 +161,7 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 					const position = axialToPixel(tile.axialQ, tile.axialR, HEX_CONFIG);
 					const hexPath = generateHexPath(position.x, position.y, HEX_CONFIG.baseSize);
 					const isHovered = hoveredTile === tile.id;
+					const isSelected = configurationMode && selectedTileId === tile.id;
 
 					return (
 						<HexTile
@@ -165,6 +170,8 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 							hexPath={hexPath}
 							position={position}
 							isHovered={isHovered}
+							isSelected={isSelected}
+							configurationMode={configurationMode}
 							onTileClick={onTileClick}
 							onMouseEnter={() => setHoveredTile(tile.id)}
 							onMouseLeave={() => setHoveredTile(null)}

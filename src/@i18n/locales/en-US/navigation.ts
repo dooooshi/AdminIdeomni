@@ -36,6 +36,10 @@ const navigation = {
 	ACTIVITIES: 'Activities',
 	// Test Map
 	TEST_MAP: 'Test Map',
+	// Map Template Management
+	MAP_TEMPLATE_MANAGEMENT: 'Template Management',
+	// Activity Tile State Management
+	ACTIVITY_TILE_STATE_MANAGEMENT: 'Activity Tile States',
 	// Admin Management
 	ADMIN_MANAGEMENT: 'Admin Management',
 	ADMIN_ACCOUNTS: 'Admin Accounts',
