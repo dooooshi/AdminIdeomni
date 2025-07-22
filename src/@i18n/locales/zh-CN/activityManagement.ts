@@ -84,6 +84,15 @@ const activityManagement = {
   IS_ACTIVE_LABEL: '活跃状态',
   IS_ACTIVE_HELPER: '非活跃的活动对参与者隐藏',
   
+  // Map Template Fields
+  MAP_TEMPLATE_CONFIGURATION: '地图模板配置',
+  MAP_TEMPLATE_LABEL: '地图模板',
+  MAP_TEMPLATE_PLACEHOLDER: '选择地图模板',
+  MAP_TEMPLATE_EDIT_DISABLED: '编辑活动时无法更改地图模板',
+  LOADING_TEMPLATES: '正在加载模板...',
+  NO_MAP_TEMPLATES_FOUND: '没有可用的地图模板',
+  NO_DESCRIPTION: '没有描述',
+  
   // Form Validation Messages
   ACTIVITY_NAME_REQUIRED: '活动名称是必需的',
   ACTIVITY_NAME_MIN_LENGTH: '活动名称至少需要3个字符',
@@ -96,6 +105,8 @@ const activityManagement = {
   DESCRIPTION_MAX_LENGTH: '描述不能超过1000个字符',
   FUTURE_START_DATE: '开始日期必须是未来时间',
   VALID_DATE_RANGE: '请选择有效的日期范围',
+  MAP_TEMPLATE_REQUIRED: '地图模板是必需的',
+  MAP_TEMPLATE_INVALID: '请选择有效的地图模板',
   
   // Form Actions
   UPDATE_ACTIVITY: '更新活动',

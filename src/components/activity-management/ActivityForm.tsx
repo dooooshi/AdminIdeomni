@@ -33,6 +33,7 @@ import {
   Close as CloseIcon,
   Info as InfoIcon,
   AccessTime as AccessTimeIcon,
+  Map as MapIcon,
 } from '@mui/icons-material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -49,6 +50,8 @@ import ActivityService, {
   UpdateActivityRequest, 
   ActivityType 
 } from '@/lib/services/activityService';
+import { MapTemplateService } from '@/lib/services/mapTemplateService';
+import { MapTemplate } from '@/components/map/types';
 
 interface ActivityFormProps {
   open: boolean;
@@ -67,11 +70,35 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const { languageId } = useI18n();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mapTemplates, setMapTemplates] = useState<MapTemplate[]>([]);
+  const [templatesLoading, setTemplatesLoading] = useState(true);
 
   const isEditMode = Boolean(activity);
 
   // Get the appropriate date-fns locale
   const dateLocale = languageId === 'zh-CN' ? zhCN : enUS;
+
+  // Load map templates when component mounts
+  useEffect(() => {
+    const loadMapTemplates = async () => {
+      try {
+        setTemplatesLoading(true);
+        const response = await MapTemplateService.getMapTemplates({ 
+          page: 1, 
+          pageSize: 100 // Get all templates for selection
+        });
+        setMapTemplates(response.data);
+      } catch (err) {
+        console.error('Failed to load map templates:', err);
+        // Set empty array to prevent form errors
+        setMapTemplates([]);
+      } finally {
+        setTemplatesLoading(false);
+      }
+    };
+
+    loadMapTemplates();
+  }, []);
 
   // Validation schema
   const validationSchema = Yup.object({
@@ -95,6 +122,9 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     endAt: Yup.date()
       .required(t('END_DATE_REQUIRED'))
       .min(Yup.ref('startAt'), t('END_DATE_AFTER_START')),
+    mapTemplateId: Yup.number()
+      .required(t('MAP_TEMPLATE_REQUIRED'))
+      .min(1, t('MAP_TEMPLATE_INVALID')),
     isActive: Yup.boolean(),
   });
 
@@ -106,6 +136,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       activityType: activity?.activityType || ActivityType.BizSimulation2_0,
       startAt: activity?.startAt ? new Date(activity.startAt) : new Date(),
       endAt: activity?.endAt ? new Date(activity.endAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+      mapTemplateId: activity?.mapTemplateId || 0,
       isActive: activity?.isActive ?? true,
     },
     validationSchema,
@@ -114,19 +145,28 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       setError(null);
       
       try {
-        const requestData = {
-          name: values.name,
-          description: values.description,
-          activityType: values.activityType as ActivityType,
-          startAt: values.startAt.toISOString(),
-          endAt: values.endAt.toISOString(),
-          isActive: values.isActive,
-        };
-
         if (isEditMode && activity) {
-          await ActivityService.updateActivity(activity.id, requestData as UpdateActivityRequest);
+          // For updates, include isActive
+          const updateData: UpdateActivityRequest = {
+            name: values.name,
+            description: values.description,
+            activityType: values.activityType as ActivityType,
+            startAt: values.startAt.toISOString(),
+            endAt: values.endAt.toISOString(),
+            isActive: values.isActive,
+          };
+          await ActivityService.updateActivity(activity.id, updateData);
         } else {
-          await ActivityService.createActivity(requestData as CreateActivityRequest);
+          // For creation, exclude isActive and include mapTemplateId
+          const createData: CreateActivityRequest = {
+            name: values.name,
+            description: values.description,
+            activityType: values.activityType as ActivityType,
+            startAt: values.startAt.toISOString(),
+            endAt: values.endAt.toISOString(),
+            mapTemplateId: values.mapTemplateId,
+          };
+          await ActivityService.createActivity(createData);
         }
 
         onSuccess();
@@ -150,6 +190,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           activityType: activity?.activityType || ActivityType.BizSimulation2_0,
           startAt: activity?.startAt ? new Date(activity.startAt) : new Date(),
           endAt: activity?.endAt ? new Date(activity.endAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
+          mapTemplateId: activity?.mapTemplateId || 0,
           isActive: activity?.isActive ?? true,
         },
       });
@@ -299,6 +340,69 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                       error={formik.touched.description && Boolean(formik.errors.description)}
                       helperText={formik.touched.description && formik.errors.description}
                     />
+                  </Stack>
+                </CardContent>
+              </Card>
+
+              {/* Map Template Configuration */}
+              <Card variant="outlined">
+                <CardContent>
+                  <Stack spacing={2}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <MapIcon color="primary" fontSize="small" />
+                      <Typography variant="subtitle1" fontWeight={600}>
+                        {t('MAP_TEMPLATE_CONFIGURATION')}
+                      </Typography>
+                    </Stack>
+
+                    <FormControl fullWidth>
+                      <InputLabel>{t('MAP_TEMPLATE_LABEL')}</InputLabel>
+                      <Select
+                        name="mapTemplateId"
+                        value={formik.values.mapTemplateId}
+                        label={t('MAP_TEMPLATE_LABEL')}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        error={formik.touched.mapTemplateId && Boolean(formik.errors.mapTemplateId)}
+                        disabled={templatesLoading || isEditMode} // Disable during loading or when editing
+                      >
+                        {templatesLoading ? (
+                          <MenuItem value="">
+                            <Stack direction="row" alignItems="center" spacing={1}>
+                              <CircularProgress size={16} />
+                              <Typography>{t('LOADING_TEMPLATES')}</Typography>
+                            </Stack>
+                          </MenuItem>
+                        ) : mapTemplates.length === 0 ? (
+                          <MenuItem value="" disabled>
+                            {t('NO_MAP_TEMPLATES_FOUND')}
+                          </MenuItem>
+                        ) : (
+                          mapTemplates.map((template) => (
+                            <MenuItem key={template.id} value={template.id}>
+                              <Stack>
+                                <Typography variant="body2" fontWeight={500}>
+                                  {template.name}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {template.width}×{template.height} • {template.description || t('NO_DESCRIPTION')}
+                                </Typography>
+                              </Stack>
+                            </MenuItem>
+                          ))
+                        )}
+                      </Select>
+                      {formik.touched.mapTemplateId && formik.errors.mapTemplateId && (
+                        <Typography variant="caption" color="error" sx={{ mt: 0.5, ml: 1.5 }}>
+                          {formik.errors.mapTemplateId}
+                        </Typography>
+                      )}
+                      {isEditMode && (
+                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
+                          {t('MAP_TEMPLATE_EDIT_DISABLED')}
+                        </Typography>
+                      )}
+                    </FormControl>
                   </Stack>
                 </CardContent>
               </Card>

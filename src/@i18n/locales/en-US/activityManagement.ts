@@ -84,6 +84,15 @@ const activityManagement = {
   IS_ACTIVE_LABEL: 'Active Status',
   IS_ACTIVE_HELPER: 'Inactive activities are hidden from participants',
   
+  // Map Template Fields
+  MAP_TEMPLATE_CONFIGURATION: 'Map Template Configuration',
+  MAP_TEMPLATE_LABEL: 'Map Template',
+  MAP_TEMPLATE_PLACEHOLDER: 'Select a map template',
+  MAP_TEMPLATE_EDIT_DISABLED: 'Map template cannot be changed when editing activities',
+  LOADING_TEMPLATES: 'Loading templates...',
+  NO_MAP_TEMPLATES_FOUND: 'No map templates available',
+  NO_DESCRIPTION: 'No description available',
+  
   // Form Validation Messages
   ACTIVITY_NAME_REQUIRED: 'Activity name is required',
   ACTIVITY_NAME_MIN_LENGTH: 'Activity name must be at least 3 characters',
@@ -96,6 +105,8 @@ const activityManagement = {
   DESCRIPTION_MAX_LENGTH: 'Description must not exceed 1000 characters',
   FUTURE_START_DATE: 'Start date must be in the future',
   VALID_DATE_RANGE: 'Please select a valid date range',
+  MAP_TEMPLATE_REQUIRED: 'Map template is required',
+  MAP_TEMPLATE_INVALID: 'Please select a valid map template',
   
   // Form Actions
   UPDATE_ACTIVITY: 'Update Activity',

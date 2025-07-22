@@ -16,6 +16,7 @@ export interface Activity {
   endAt: string; // ISO date string
   description?: string;
   isActive: boolean;
+  mapTemplateId: number; // Map template ID used for this activity
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -35,6 +36,7 @@ export interface CreateActivityRequest {
   startAt: string; // ISO date string
   endAt: string; // ISO date string
   description?: string;
+  mapTemplateId: number; // Required field for activity creation
 }
 
 // Update activity request interface
@@ -258,4 +260,4 @@ export class ActivityService {
   }
 }
 
-export default ActivityService; 
+export default ActivityService;
