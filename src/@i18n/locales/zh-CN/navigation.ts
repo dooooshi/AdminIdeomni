@@ -45,6 +45,7 @@ const navigation = {
 	ADMIN_ACCOUNTS: '管理员账户',
 	USER_MANAGEMENT: '用户管理',
 	ACTIVITY_MANAGEMENT: '活动管理',
+	FACILITY_MANAGEMENT: '设施管理',
 };
 
 export default navigation; 

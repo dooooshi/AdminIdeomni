@@ -48,6 +48,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				translate: 'ACTIVITY_MANAGEMENT',
 				auth: ['admin']
 			},
+			{
+				id: 'admin-management.facility-management',
+				title: 'Facility Management',
+				type: 'item',
+				icon: 'heroicons-outline:building-office-2',
+				url: '/facility-management',
+				translate: 'FACILITY_MANAGEMENT',
+				auth: ['admin']
+			},
 		]
 	},
 	{
@@ -259,6 +268,26 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
  * Restricted navigation for limited admin users
  */
 const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
+	{
+		id: 'admin-management',
+		title: 'Admin Management',
+		subtitle: 'Basic admin features',
+		type: 'group',
+		icon: 'heroicons-outline:shield-check',
+		translate: 'ADMIN_MANAGEMENT',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'admin-management.facility-management',
+				title: 'Facility Management',
+				type: 'item',
+				icon: 'heroicons-outline:building-office-2',
+				url: '/facility-management',
+				translate: 'FACILITY_MANAGEMENT',
+				auth: ['admin']
+			},
+		]
+	},
 	{
 		id: 'map',
 		title: 'Map',

@@ -5,6 +5,7 @@ import navigation from './navigation';
 import adminManagement from './adminManagement';
 import activityManagement from './activityManagement';
 import userManagement from './userManagement';
+import facilityManagement from './facilityManagement';
 
 const enUS = {
 	...common,
@@ -13,7 +14,8 @@ const enUS = {
 	navigation,
 	adminManagement,
 	activityManagement,
-	userManagement
+	userManagement,
+	facilityManagement
 };
 
 export default enUS; 

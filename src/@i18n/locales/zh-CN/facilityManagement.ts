@@ -1,0 +1,646 @@
+const facilityManagement = {
+  // Page titles and headers
+  FACILITY_MANAGEMENT: '设施管理',
+  FACILITY_MANAGEMENT_SUBTITLE: '管理设施类型、配置和运营设置。',
+  FACILITIES: '设施',
+  FACILITY_CONFIGURATIONS: '设施配置',
+  FACILITY_STATISTICS: '设施统计',
+  
+  // Common actions
+  CREATE_FACILITY: '创建设施',
+  EDIT_FACILITY: '编辑设施',
+  DELETE_FACILITY: '删除设施',
+  RESTORE_FACILITY: '恢复设施',
+  VIEW_FACILITY: '查看设施',
+  DUPLICATE_FACILITY: '复制设施',
+  TOGGLE_STATUS: '切换状态',
+  REFRESH_DATA: '刷新数据',
+  EXPORT_DATA: '导出数据',
+  SEARCH_FACILITIES: '搜索设施',
+  
+  // Common UI elements
+  EDIT: '编辑',
+  DELETE: '删除',
+  RESTORE: '恢复',
+  VIEW: '查看',
+  SAVE: '保存',
+  CANCEL: '取消',
+  CLOSE: '关闭',
+  CONFIRM: '确认',
+  YES: '是',
+  NO: '否',
+  OK: '确定',
+  APPLY: '应用',
+  RESET: '重置',
+  CLEAR: '清除',
+  SEARCH: '搜索',
+  FILTER: '筛选',
+  SORT: '排序',
+  REFRESH: '刷新',
+  LOAD_MORE: '加载更多',
+  SHOW_MORE: '显示更多',
+  SHOW_LESS: '显示更少',
+  EXPAND: '展开',
+  COLLAPSE: '收起',
+  
+  // Common states
+  LOADING: '加载中',
+  SAVING: '保存中',
+  DELETING: '删除中',
+  RESTORING: '恢复中',
+  UPDATING: '更新中',
+  CREATING: '创建中',
+  PROCESSING: '处理中',
+  COMPLETED: '已完成',
+  FAILED: '失败',
+  SUCCESS: '成功',
+  ERROR: '错误',
+  WARNING: '警告',
+  INFO: '信息',
+  
+  // Data states
+  NO_DATA: '无数据',
+  NO_RESULTS: '未找到结果',
+  EMPTY_LIST: '列表为空',
+  NOT_AVAILABLE: '不可用',
+  UNKNOWN: '未知',
+  
+  // Facility List Table Headers
+  FACILITY_ID: '设施ID',
+  FACILITY_NAME: '设施名称',
+  NAME: '名称',
+  FACILITY_TYPE: '设施类型',
+  TYPE: '类型',
+  CATEGORY: '类别',
+  DESCRIPTION: '描述',
+  CAPACITY: '容量',
+  BUILD_COST: '建设成本',
+  MAINTENANCE_COST: '维护成本',
+  OPERATION_COST: '运营成本',
+  STATUS: '状态',
+  CREATED_AT: '创建时间',
+  UPDATED_AT: '更新时间',
+  ACTIONS: '操作',
+  
+  // Facility Categories
+  RAW_MATERIAL_PRODUCTION: '原料生产设施',
+  FUNCTIONAL: '功能性设施',
+  INFRASTRUCTURE: '基础设施',
+  OTHER: '其他设施',
+  FACILITY_CATEGORY_RAW_MATERIAL_PRODUCTION: '原料生产设施',
+  FACILITY_CATEGORY_FUNCTIONAL: '功能性设施',
+  FACILITY_CATEGORY_INFRASTRUCTURE: '基础设施',
+  FACILITY_CATEGORY_OTHER: '其他设施',
+  CATEGORY_RAW_MATERIAL_PRODUCTION: '原料生产设施',
+  CATEGORY_FUNCTIONAL: '功能性设施',
+  CATEGORY_INFRASTRUCTURE: '基础设施',
+  CATEGORY_OTHER: '其他设施',
+  
+  // Facility Types - Raw Material Production
+  FACILITY_TYPE_MINE: '矿场',
+  FACILITY_TYPE_QUARRY: '采石场',
+  FACILITY_TYPE_FOREST: '林场',
+  FACILITY_TYPE_FARM: '农场',
+  FACILITY_TYPE_RANCH: '养殖场',
+  FACILITY_TYPE_FISHERY: '渔场',
+  
+  // Facility Types - Functional
+  FACILITY_TYPE_FACTORY: '工厂',
+  FACILITY_TYPE_MALL: '商场',
+  FACILITY_TYPE_WAREHOUSE: '仓库',
+  FACILITY_TYPE_MEDIA_BUILDING: '媒体大楼',
+  
+  // Facility Types - Infrastructure
+  FACILITY_TYPE_WATER_PLANT: '水厂',
+  FACILITY_TYPE_POWER_PLANT: '电厂',
+  FACILITY_TYPE_BASE_STATION: '基站',
+  
+  // Facility Types - Other
+  FACILITY_TYPE_FIRE_STATION: '消防站',
+  FACILITY_TYPE_SCHOOL: '学校',
+  FACILITY_TYPE_HOSPITAL: '医院',
+  FACILITY_TYPE_PARK: '公园',
+  FACILITY_TYPE_CINEMA: '影院',
+  
+  // Legacy facility type names (for backward compatibility)
+  MINE: '矿场',
+  QUARRY: '采石场',
+  FOREST: '林场',
+  FARM: '农场',
+  RANCH: '养殖场',
+  FISHERY: '渔场',
+  
+  // Facility Types - Functional
+  FACTORY: '工厂',
+  MALL: '商场',
+  WAREHOUSE: '仓库',
+  MEDIA_BUILDING: '媒体大楼',
+  
+  // Facility Types - Infrastructure
+  WATER_PLANT: '水厂',
+  POWER_PLANT: '电厂',
+  BASE_STATION: '基站',
+  
+  // Facility Types - Other
+  FIRE_STATION: '消防站',
+  SCHOOL: '学校',
+  HOSPITAL: '医院',
+  PARK: '公园',
+  CINEMA: '影院',
+  
+  // Facility Type Descriptions
+  FACILITY_TYPE_MINE_DESCRIPTION: '从地下矿床开采贵金属和矿物的采矿作业',
+  FACILITY_TYPE_QUARRY_DESCRIPTION: '建筑材料和骨料的石材和花岗岩开采作业',
+  FACILITY_TYPE_FOREST_DESCRIPTION: '具有环境保护实践的可持续木材采伐作业',
+  FACILITY_TYPE_FARM_DESCRIPTION: '生产谷物、蔬菜和农产品的多样化农业经营',
+  FACILITY_TYPE_RANCH_DESCRIPTION: '牛类、家禽和畜牧业务，配备加工设施',
+  FACILITY_TYPE_FISHERY_DESCRIPTION: '具有加工和分销能力的海洋和淡水渔业作业',
+  FACILITY_TYPE_FACTORY_DESCRIPTION: '生产消费品、电子产品和工业产品的制造设施',
+  FACILITY_TYPE_MALL_DESCRIPTION: '拥有多家商店、餐厅和娱乐场所的大型零售综合体',
+  FACILITY_TYPE_WAREHOUSE_DESCRIPTION: '用于物流和供应链管理的大型存储和配送中心',
+  FACILITY_TYPE_MEDIA_BUILDING_DESCRIPTION: '电视、广播和数字内容的媒体制作和广播设施',
+  FACILITY_TYPE_WATER_PLANT_DESCRIPTION: '提供清洁水分配的水处理和净化设施',
+  FACILITY_TYPE_POWER_PLANT_DESCRIPTION: '使用可再生和可持续能源的清洁能源发电设施',
+  FACILITY_TYPE_BASE_STATION_DESCRIPTION: '提供网络连接和通信的电信基础设施枢纽',
+  FACILITY_TYPE_FIRE_STATION_DESCRIPTION: '提供消防安全、救援行动和紧急医疗服务的应急响应设施',
+  FACILITY_TYPE_SCHOOL_DESCRIPTION: '提供小学、中学和职业培训项目的教育机构',
+  FACILITY_TYPE_HOSPITAL_DESCRIPTION: '提供急诊护理、手术和专科治疗的全方位医疗设施',
+  FACILITY_TYPE_PARK_DESCRIPTION: '拥有花园、体育设施和社区聚会区域的公共休闲空间',
+  FACILITY_TYPE_CINEMA_DESCRIPTION: '拥有多个银幕、优质视听系统和小卖部的娱乐场所',
+  
+  // Legacy facility type descriptions (for backward compatibility)
+  MINE_DESCRIPTION: '开采贵金属和矿物的采矿作业',
+  QUARRY_DESCRIPTION: '建筑材料的石材和花岗岩开采',
+  FOREST_DESCRIPTION: '可持续的木材采伐作业',
+  FARM_DESCRIPTION: '谷物和蔬菜的多样化农业',
+  RANCH_DESCRIPTION: '牛类和家禽的畜牧业务',
+  FISHERY_DESCRIPTION: '具有加工能力的海洋渔业运营',
+  FACTORY_DESCRIPTION: '生产消费品的制造设施',
+  MALL_DESCRIPTION: '多店铺和娱乐的零售综合体',
+  WAREHOUSE_DESCRIPTION: '大规模存储和配送中心',
+  MEDIA_BUILDING_DESCRIPTION: '媒体制作和广播设施',
+  WATER_PLANT_DESCRIPTION: '水净化和分配设施',
+  POWER_PLANT_DESCRIPTION: '清洁能源发电设施',
+  BASE_STATION_DESCRIPTION: '电信基础设施中心',
+  FIRE_STATION_DESCRIPTION: '应急响应和消防安全设施',
+  SCHOOL_DESCRIPTION: '中等教育的教育设施',
+  HOSPITAL_DESCRIPTION: '具有急诊护理的全方位医疗设施',
+  PARK_DESCRIPTION: '具有花园和体育设施的公共休闲空间',
+  CINEMA_DESCRIPTION: '具有多屏幕和设施的电影院',
+  
+  // Status
+  ACTIVE: '活跃',
+  INACTIVE: '非活跃',
+  ENABLED: '启用',
+  DISABLED: '禁用',
+  DELETED: '已删除',
+  
+  // Filters and Search
+  SEARCH_PLACEHOLDER: '按名称、类型或描述搜索设施...',
+  FILTER_BY_TYPE: '按类型筛选',
+  FILTER_BY_CATEGORY: '按类别筛选',
+  FILTER_BY_STATUS: '按状态筛选',
+  ALL_TYPES: '所有类型',
+  ALL_CATEGORIES: '所有类别',
+  ALL_STATUSES: '所有状态',
+  APPLY_FILTERS: '应用筛选',
+  CLEAR_FILTERS: '清除筛选',
+  ADVANCED_FILTERS: '高级筛选',
+  
+  // Statistics Cards
+  TOTAL_FACILITIES: '设施总数',
+  ACTIVE_FACILITIES: '活跃设施',
+  INACTIVE_FACILITIES: '非活跃设施',
+  FACILITIES_BY_CATEGORY: '按类别统计设施',
+  FACILITIES_BY_TYPE: '按类型统计设施',
+  CATEGORY_BREAKDOWN: '类别分解',
+  TYPE_BREAKDOWN: '类型分解',
+  
+  // Facility Form
+  FACILITY_FORM_CREATE_TITLE: '创建新设施',
+  FACILITY_FORM_EDIT_TITLE: '编辑设施',
+  FACILITY_FORM_BASIC_INFO: '基本信息',
+  FACILITY_FORM_COST_INFO: '成本信息',
+  FACILITY_FORM_ADVANCED_INFO: '高级设置',
+  
+  // Form Fields
+  NAME_LABEL: '设施名称',
+  NAME_PLACEHOLDER: '输入设施名称',
+  TYPE_LABEL: '设施类型',
+  TYPE_PLACEHOLDER: '选择设施类型',
+  CATEGORY_LABEL: '类别',
+  CATEGORY_PLACEHOLDER: '选择类别',
+  DESCRIPTION_LABEL: '描述',
+  DESCRIPTION_PLACEHOLDER: '输入设施描述（可选）',
+  CAPACITY_LABEL: '容量',
+  CAPACITY_PLACEHOLDER: '输入容量',
+  BUILD_COST_LABEL: '建设成本',
+  BUILD_COST_PLACEHOLDER: '输入建设成本',
+  MAINTENANCE_COST_LABEL: '维护成本（月度）',
+  MAINTENANCE_COST_PLACEHOLDER: '输入月度维护成本',
+  OPERATION_COST_LABEL: '运营成本（日均）',
+  OPERATION_COST_PLACEHOLDER: '输入日均运营成本',
+  STATUS_LABEL: '状态',
+  ACTIVE_STATUS_LABEL: '活跃',
+  INACTIVE_STATUS_LABEL: '非活跃',
+  
+  // Validation Messages
+  NAME_REQUIRED: '设施名称为必填项',
+  NAME_MIN_LENGTH: '设施名称至少需要2个字符',
+  NAME_MAX_LENGTH: '设施名称不能超过100个字符',
+  TYPE_REQUIRED: '设施类型为必填项',
+  CATEGORY_REQUIRED: '类别为必填项',
+  TYPE_CATEGORY_MISMATCH: '选择的设施类型与所选类别不匹配',
+  CAPACITY_INVALID: '容量必须是正数',
+  COST_INVALID: '成本必须是正数',
+  DESCRIPTION_MAX_LENGTH: '描述不能超过500个字符',
+  
+  // Configuration Management
+  CONFIG_MANAGEMENT: '配置管理',
+  CONFIG_MANAGEMENT_SUBTITLE: '管理设施类型的默认配置和模板。',
+  CREATE_CONFIG: '创建配置',
+  EDIT_CONFIG: '编辑配置',
+  DELETE_CONFIG: '删除配置',
+  RESTORE_CONFIG: '恢复配置',
+  INITIALIZE_DEFAULTS: '初始化默认配置',
+  
+  // Configuration Fields
+  DEFAULT_CAPACITY: '默认容量',
+  DEFAULT_BUILD_COST: '默认建设成本',
+  DEFAULT_MAINTENANCE_COST: '默认维护成本',
+  DEFAULT_OPERATION_COST: '默认运营成本',
+  MIN_CAPACITY: '最小容量',
+  MAX_CAPACITY: '最大容量',
+  CONFIG_DATA: '配置数据',
+  CONFIG_TEMPLATE: '配置模板',
+  
+  // Configuration Statistics
+  TOTAL_CONFIGS: '配置总数',
+  ACTIVE_CONFIGS: '活跃配置',
+  INACTIVE_CONFIGS: '非活跃配置',
+  CONFIGS_BY_CATEGORY: '按类别统计配置',
+  
+  // Actions and Buttons
+  SAVE: '保存',
+  CANCEL: '取消',
+  DELETE: '删除',
+  CONFIRM: '确认',
+  CREATE: '创建',
+  UPDATE: '更新',
+  CLOSE: '关闭',
+  EDIT: '编辑',
+  VIEW: '查看',
+  RESTORE: '恢复',
+  DUPLICATE: '复制',
+  EXPORT: '导出',
+  IMPORT: '导入',
+  SELECT_ALL: '全选',
+  DESELECT_ALL: '取消全选',
+  
+  // Confirmation Messages
+  DELETE_FACILITY_CONFIRM: '您确定要删除此设施吗？',
+  DELETE_FACILITY_WARNING: '此操作将软删除设施，稍后可以恢复。',
+  DELETE_CONFIG_CONFIRM: '您确定要删除此配置吗？',
+  DELETE_CONFIG_WARNING: '此操作将软删除配置，稍后可以恢复。',
+  RESTORE_FACILITY_CONFIRM: '您确定要恢复此设施吗？',
+  RESTORE_CONFIG_CONFIRM: '您确定要恢复此配置吗？',
+  TOGGLE_STATUS_CONFIRM: '您确定要更改此设施的状态吗？',
+  INITIALIZE_DEFAULTS_CONFIRM: '这将为所有设施类型创建默认配置。继续？',
+  
+  // Success Messages
+  FACILITY_CREATED_SUCCESS: '设施创建成功',
+  FACILITY_UPDATED_SUCCESS: '设施更新成功',
+  FACILITY_DELETED_SUCCESS: '设施删除成功',
+  FACILITY_RESTORED_SUCCESS: '设施恢复成功',
+  FACILITY_STATUS_UPDATED_SUCCESS: '设施状态更新成功',
+  CONFIG_CREATED_SUCCESS: '配置创建成功',
+  CONFIG_UPDATED_SUCCESS: '配置更新成功',
+  CONFIG_DELETED_SUCCESS: '配置删除成功',
+  CONFIG_RESTORED_SUCCESS: '配置恢复成功',
+  DEFAULTS_INITIALIZED_SUCCESS: '默认配置初始化成功',
+  
+  // Error Messages
+  FACILITY_LOAD_ERROR: '加载设施失败',
+  FACILITY_CREATE_ERROR: '创建设施失败',
+  FACILITY_UPDATE_ERROR: '更新设施失败',
+  FACILITY_DELETE_ERROR: '删除设施失败',
+  FACILITY_RESTORE_ERROR: '恢复设施失败',
+  CONFIG_LOAD_ERROR: '加载配置失败',
+  CONFIG_CREATE_ERROR: '创建配置失败',
+  CONFIG_UPDATE_ERROR: '更新配置失败',
+  CONFIG_DELETE_ERROR: '删除配置失败',
+  CONFIG_RESTORE_ERROR: '恢复配置失败',
+  DEFAULTS_INITIALIZE_ERROR: '初始化默认配置失败',
+  STATISTICS_LOAD_ERROR: '加载统计数据失败',
+  NETWORK_ERROR: '网络错误',
+  PERMISSION_ERROR: '您没有权限执行此操作',
+  VALIDATION_ERROR: '请修正验证错误后再继续',
+  
+  // Pagination
+  ROWS_PER_PAGE: '每页行数',
+  PAGE_OF_PAGES: '第{{page}}页，共{{totalPages}}页',
+  SHOWING_RESULTS: '显示{{start}}-{{end}}，共{{total}}条结果',
+  NO_RESULTS: '未找到设施',
+  NO_CONFIGS: '未找到配置',
+  
+  // Data States
+  LOADING: '加载中...',
+  LOADING_FACILITIES: '正在加载设施...',
+  LOADING_CONFIGS: '正在加载配置...',
+  LOADING_STATISTICS: '正在加载统计数据...',
+  NO_DATA: '暂无数据',
+  NO_FACILITIES_FOUND: '未找到设施',
+  NO_CONFIGS_FOUND: '未找到配置',
+  EMPTY_STATE_MESSAGE: '尚未创建任何设施。',
+  EMPTY_CONFIG_STATE_MESSAGE: '尚未创建任何配置。',
+  CREATE_FIRST_FACILITY: '创建您的第一个设施',
+  CREATE_FIRST_CONFIG: '创建您的第一个配置',
+  
+  // Sorting
+  SORT_BY_NAME: '按名称排序',
+  SORT_BY_TYPE: '按类型排序',
+  SORT_BY_CATEGORY: '按类别排序',
+  SORT_BY_CREATED: '按创建日期排序',
+  SORT_BY_UPDATED: '按更新日期排序',
+  SORT_ASCENDING: '升序排列',
+  SORT_DESCENDING: '降序排列',
+  
+  // Tooltips and Help
+  CAPACITY_TOOLTIP: '设施的最大运营容量',
+  BUILD_COST_TOOLTIP: '初始建设成本（美元）',
+  MAINTENANCE_COST_TOOLTIP: '月度维护成本（美元）',
+  OPERATION_COST_TOOLTIP: '日均运营成本（美元）',
+  CONFIG_DATA_TOOLTIP: 'JSON格式的额外配置参数',
+  TYPE_CATEGORY_HELP: '设施类型必须与所选类别匹配',
+  COST_HELP: '所有成本字段都是可选的，但如果提供必须是正数',
+  
+  // Bulk Operations
+  BULK_OPERATIONS: '批量操作',
+  BULK_UPDATE: '批量更新',
+  BULK_DELETE: '批量删除',
+  BULK_RESTORE: '批量恢复',
+  BULK_EXPORT: '批量导出',
+  SELECT_FACILITIES: '选择设施以执行批量操作',
+  SELECTED_COUNT: '已选择{{count}}个',
+  
+  // Export/Import
+  EXPORT_FACILITIES: '导出设施',
+  EXPORT_CONFIGS: '导出配置',
+  EXPORT_FORMAT: '导出格式',
+  CSV_FORMAT: 'CSV',
+  EXCEL_FORMAT: 'Excel',
+  JSON_FORMAT: 'JSON',
+  IMPORT_FACILITIES: '导入设施',
+  IMPORT_CONFIGS: '导入配置',
+  
+  // Currency and Number Formatting
+  CURRENCY_SYMBOL: '¥',
+  NOT_AVAILABLE: '不可用',
+  UNLIMITED: '无限制',
+  
+  // Time and Dates
+  CREATED: '创建时间',
+  UPDATED: '更新时间',
+  DELETED: '删除时间',
+  NEVER: '从未',
+  TODAY: '今天',
+  YESTERDAY: '昨天',
+  DAYS_AGO: '{{count}}天前',
+  
+  // Misc
+  OPTIONAL: '可选',
+  REQUIRED: '必填',
+  YES: '是',
+  NO: '否',
+  ALL: '全部',
+  NONE: '无',
+  DEFAULT: '默认',
+  CUSTOM: '自定义',
+  SETTINGS: '设置',
+  PREFERENCES: '首选项',
+  
+  // Help and Documentation
+  HELP: '帮助',
+  DOCUMENTATION: '文档',
+  USER_GUIDE: '用户指南',
+  FAQ: '常见问题',
+  SUPPORT: '支持',
+  CONTACT_SUPPORT: '联系支持',
+  
+  // Tabs
+  FACILITY_LIST_TAB: '设施列表',
+  CONFIGURATIONS_TAB: '配置',
+  STATISTICS_TAB: '统计',
+  SETTINGS_TAB: '设置',
+  
+  // Loading and empty states
+  LOADING_CONFIGURATIONS: '加载配置中...',
+  NO_CONFIGURATIONS_FOUND: '未找到配置',
+  CREATE_FIRST_CONFIGURATION: '创建第一个配置',
+  
+  // Configuration specific
+  CONFIGURATION_STATISTICS: '配置统计',
+  TOTAL_CONFIGURATIONS: '总配置数',
+  ACTIVE_CONFIGURATIONS: '活跃配置',
+  INACTIVE_CONFIGURATIONS: '非活跃配置',
+  DELETED_CONFIGURATIONS: '已删除配置',
+  SEARCH_CONFIGURATIONS_PLACEHOLDER: '搜索配置...',
+  CONFIGURATION_DETAILS: '配置详情',
+  
+  // Initialize default configurations
+  INITIALIZE_DEFAULT_CONFIGURATIONS: '初始化默认配置',
+  INITIALIZE_DEFAULT_CONFIGURATIONS_MESSAGE: '这将为所有设施类型创建默认配置模板。现有配置不会受到影响。',
+  INITIALIZE_SUCCESS: '成功初始化了 {{count}} 个默认配置',
+  INITIALIZING: '初始化中...',
+  INITIALIZE: '初始化',
+  
+  // Configuration form specific
+  BASIC_INFORMATION: '基本信息',
+  CAPACITY_CONFIGURATION: '容量配置',
+  COST_CONFIGURATION: '成本配置',
+  BUILD_COST: '建设成本',
+  MAINTENANCE_COST: '维护成本',
+  OPERATION_COST: '运营成本',
+  ACTIVE_CONFIGURATION: '活跃配置',
+  
+  // Cost and capacity fields
+  MIN_CAPACITY: '最小容量',
+  MAX_CAPACITY: '最大容量',
+  DEFAULT_CAPACITY: '默认容量',
+  MIN_BUILD_COST: '最小建设成本',
+  MAX_BUILD_COST: '最大建设成本',
+  DEFAULT_BUILD_COST: '默认建设成本',
+  MIN_MAINTENANCE_COST: '最小维护成本',
+  MAX_MAINTENANCE_COST: '最大维护成本',
+  DEFAULT_MAINTENANCE_COST: '默认维护成本',
+  MIN_OPERATION_COST: '最小运营成本',
+  MAX_OPERATION_COST: '最大运营成本',
+  DEFAULT_OPERATION_COST: '默认运营成本',
+  
+  // Validation messages
+  MIN_CAPACITY_REQUIRED: '最小容量为必填项',
+  MAX_CAPACITY_REQUIRED: '最大容量为必填项',
+  MIN_BUILD_COST_REQUIRED: '最小建设成本为必填项',
+  MAX_BUILD_COST_REQUIRED: '最大建设成本为必填项',
+  MIN_MAINTENANCE_COST_REQUIRED: '最小维护成本为必填项',
+  MAX_MAINTENANCE_COST_REQUIRED: '最大维护成本为必填项',
+  MIN_OPERATION_COST_REQUIRED: '最小运营成本为必填项',
+  MAX_OPERATION_COST_REQUIRED: '最大运营成本为必填项',
+  MAX_CAPACITY_ERROR: '最大容量必须大于或等于最小容量',
+  MAX_BUILD_COST_ERROR: '最大建设成本必须大于或等于最小建设成本',
+  MAX_MAINTENANCE_COST_ERROR: '最大维护成本必须大于或等于最小维护成本',
+  MAX_OPERATION_COST_ERROR: '最大运营成本必须大于或等于最小运营成本',
+  DEFAULT_VALUE_OUT_OF_RANGE: '默认值必须在 {{min}} 和 {{max}} 之间',
+  INVALID_TYPE_CATEGORY_COMBINATION: '此设施类型对所选类别无效',
+  
+  // Configuration actions
+  CREATE_CONFIGURATION: '创建配置',
+  EDIT_CONFIGURATION: '编辑配置',
+  UPDATE_CONFIGURATION: '更新配置',
+  DELETE_CONFIGURATION_CONFIRMATION_MESSAGE: '确定要删除 {{type}} 的配置吗？此操作无法撤销。',
+  RESTORE_CONFIGURATION_CONFIRMATION_MESSAGE: '确定要恢复 {{type}} 的配置吗？',
+  CONFIRM_DELETE_CONFIGURATION: '确认删除配置',
+  CONFIRM_RESTORE_CONFIGURATION: '确认恢复配置',
+  
+  // Error messages
+  ERROR_LOADING_CONFIGURATIONS: '加载配置时出错',
+  ERROR_CREATING_CONFIGURATION: '创建配置时出错',
+  ERROR_UPDATING_CONFIGURATION: '更新配置时出错',
+  ERROR_DELETING_CONFIGURATION: '删除配置时出错',
+  ERROR_RESTORING_CONFIGURATION: '恢复配置时出错',
+  ERROR_INITIALIZING_CONFIGURATIONS: '初始化默认配置时出错',
+  
+  // Table headers
+  CAPACITY_RANGE: '容量范围',
+  BUILD_COST_RANGE: '建设成本范围',
+  
+  // Tooltips and Help Text
+  FACILITY_TYPE_TOOLTIP: '选择您要创建的设施类型',
+  CATEGORY_TOOLTIP: '设施根据其主要功能分组',
+  CAPACITY_TOOLTIP: '此设施可以处理或生产的最大单位数',
+  BUILD_COST_TOOLTIP: '建设此设施所需的一次性成本',
+  MAINTENANCE_COST_TOOLTIP: '维持此设施运行状态所需的月度成本',
+  OPERATION_COST_TOOLTIP: '以满负荷运行此设施所需的日常成本',
+  
+  // Placeholder text
+  FACILITY_NAME_PLACEHOLDER: '输入设施名称...',
+  FACILITY_DESCRIPTION_PLACEHOLDER: '输入设施描述...',
+  SEARCH_PLACEHOLDER: '按名称、类型或描述搜索...',
+  
+  // Units and Formatting
+  UNITS: '单位',
+  PER_MONTH: '每月',
+  PER_DAY: '每天',
+  CURRENCY_SYMBOL: '¥',
+  
+  // Filter options
+  ALL_TYPES: '所有类型',
+  ALL_CATEGORIES: '所有类别',
+  ALL_STATUSES: '所有状态',
+  SHOW_ACTIVE_ONLY: '仅显示活跃',
+  SHOW_INACTIVE_ONLY: '仅显示非活跃',
+  SHOW_DELETED: '显示已删除',
+  
+  // Sorting options
+  SORT_BY_NAME: '按名称排序',
+  SORT_BY_TYPE: '按类型排序',
+  SORT_BY_CATEGORY: '按类别排序',
+  SORT_BY_CAPACITY: '按容量排序',
+  SORT_BY_COST: '按成本排序',
+  SORT_BY_CREATED: '按创建日期排序',
+  SORT_BY_UPDATED: '按更新日期排序',
+  SORT_ASCENDING: '升序',
+  SORT_DESCENDING: '降序',
+  
+  // Bulk actions
+  BULK_ACTIONS: '批量操作',
+  SELECT_ALL: '全选',
+  SELECT_NONE: '取消全选',
+  BULK_DELETE: '删除所选',
+  BULK_ACTIVATE: '激活所选',
+  BULK_DEACTIVATE: '停用所选',
+  BULK_EXPORT: '导出所选',
+  
+  // Import/Export
+  IMPORT_FACILITIES: '导入设施',
+  EXPORT_FACILITIES: '导出设施',
+  IMPORT_SUCCESS: '成功导入 {{count}} 个设施',
+  EXPORT_SUCCESS: '成功导出 {{count}} 个设施',
+  
+  // Advanced features
+  FACILITY_TEMPLATES: '设施模板',
+  SAVE_AS_TEMPLATE: '保存为模板',
+  LOAD_FROM_TEMPLATE: '从模板加载',
+  FACILITY_GROUPS: '设施组',
+  CREATE_GROUP: '创建组',
+  ASSIGN_TO_GROUP: '分配到组',
+  
+  // Performance metrics
+  FACILITY_UTILIZATION: '设施利用率',
+  EFFICIENCY_RATING: '效率评级',
+  MAINTENANCE_SCHEDULE: '维护计划',
+  OPERATIONAL_STATUS: '运营状态',
+  
+  // Environmental impact
+  ENVIRONMENTAL_IMPACT: '环境影响',
+  ENVIRONMENTAL_IMPACT_HIGH: '高影响',
+  ENVIRONMENTAL_IMPACT_MEDIUM: '中等影响',
+  ENVIRONMENTAL_IMPACT_LOW: '低影响',
+  ENVIRONMENTAL_IMPACT_POSITIVE: '正面影响',
+  ENVIRONMENTAL_IMPACT_NEUTRAL: '中性影响',
+  
+  // Resource requirements
+  RESOURCE_REQUIREMENTS: '资源需求',
+  ENERGY_CONSUMPTION: '能源消耗',
+  WATER_USAGE: '用水量',
+  REQUIRED_WORKERS: '所需工人',
+  SPECIAL_REQUIREMENTS: '特殊要求',
+  
+  // Upgrade options
+  UPGRADE_OPTIONS: '升级选项',
+  AVAILABLE_UPGRADES: '可用升级',
+  UPGRADE_COST: '升级成本',
+  UPGRADE_BENEFITS: '升级收益',
+  
+  // Accessibility
+  ACCESSIBILITY_FEATURES: '无障碍功能',
+  WHEELCHAIR_ACCESSIBLE: '轮椅无障碍',
+  HEARING_IMPAIRED_SUPPORT: '听力障碍支持',
+  VISUAL_IMPAIRED_SUPPORT: '视力障碍支持',
+  
+  // Safety and compliance
+  SAFETY_RATING: '安全评级',
+  COMPLIANCE_STATUS: '合规状态',
+  SAFETY_PROTOCOLS: '安全协议',
+  EMERGENCY_PROCEDURES: '应急程序',
+  
+  // Additional form fields
+  LOCATION: '位置',
+  COORDINATES: '坐标',
+  ADDRESS: '地址',
+  CONTACT_INFORMATION: '联系信息',
+  MANAGER: '管理员',
+  PHONE_NUMBER: '电话号码',
+  EMAIL_ADDRESS: '电子邮箱',
+  
+  // Success messages
+  FACILITY_CREATED_SUCCESS: '设施创建成功',
+  FACILITY_UPDATED_SUCCESS: '设施更新成功',
+  FACILITY_DELETED_SUCCESS: '设施删除成功',
+  FACILITY_RESTORED_SUCCESS: '设施恢复成功',
+  CONFIGURATION_CREATED_SUCCESS: '配置创建成功',
+  CONFIGURATION_UPDATED_SUCCESS: '配置更新成功',
+  
+  // Confirmation dialogs
+  UNSAVED_CHANGES_WARNING: '您有未保存的更改。确定要离开吗？',
+  DELETE_CONFIRMATION_TITLE: '确认删除',
+  RESTORE_CONFIRMATION_TITLE: '确认恢复',
+  
+  // Loading states
+  LOADING_FACILITIES: '加载设施中...',
+  SAVING_FACILITY: '保存设施中...',
+  DELETING_FACILITY: '删除设施中...',
+  RESTORING_FACILITY: '恢复设施中...',
+};
+
+export default facilityManagement; 

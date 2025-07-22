@@ -45,6 +45,7 @@ const navigation = {
 	ADMIN_ACCOUNTS: 'Admin Accounts',
 	USER_MANAGEMENT: 'User Management',
 	ACTIVITY_MANAGEMENT: 'Activity Management',
+	FACILITY_MANAGEMENT: 'Facility Management',
 };
 
 export default navigation; 
