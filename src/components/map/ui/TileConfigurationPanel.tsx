@@ -39,7 +39,6 @@ import {
   Save as SaveIcon,
   Undo as UndoIcon,
   Refresh as RefreshIcon,
-  TrendingUp as TrendingUpIcon,
   AttachMoney as AttachMoneyIcon,
   People as PeopleIcon,
   LocalShipping as LocalShippingIcon,
@@ -53,8 +52,10 @@ import MapTemplateService from '@/lib/services/mapTemplateService';
 interface TileConfigurationPanelProps {
   selectedTile: MapTile | null;
   tiles: MapTile[];
+  templateId: number;
   onTileUpdate: (tileId: number, updates: UpdateTileDto) => void;
   onBatchUpdate?: (tileIds: number[], updates: UpdateTileDto) => void;
+  onTemplateRefresh?: () => void;
   onClose?: () => void;
   isLoading?: boolean;
   readOnly?: boolean;
@@ -63,8 +64,10 @@ interface TileConfigurationPanelProps {
 const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
   selectedTile,
   tiles,
+  templateId,
   onTileUpdate,
   onBatchUpdate,
+  onTemplateRefresh,
   onClose,
   isLoading = false,
   readOnly = false,
@@ -88,7 +91,6 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
         initialPrice: selectedTile.initialPrice || MapTemplateService.getDefaultConfiguration(selectedTile.landType).initialPrice,
         initialPopulation: selectedTile.initialPopulation || MapTemplateService.getDefaultConfiguration(selectedTile.landType).initialPopulation,
         transportationCostUnit: selectedTile.transportationCostUnit || MapTemplateService.getDefaultConfiguration(selectedTile.landType).transportationCostUnit,
-        isActive: selectedTile.isActive,
       };
       setFormData(initialData);
       setOriginalData(initialData);
@@ -111,36 +113,36 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
     }
   }, [originalData, validationErrors]);
 
-  // Validate form data
+  // Validate form data using service validation
   const validateForm = useCallback((): boolean => {
+    const validation = MapTemplateService.validateTileConfiguration(formData);
+    
+    // Convert service validation errors to i18n messages
     const errors: Record<string, string> = {};
-
-    if (formData.initialPrice !== undefined) {
-      if (formData.initialPrice < 0) {
-        errors.initialPrice = t('VALIDATION_PRICE_NEGATIVE');
-      } else if (formData.initialPrice > 10000) {
-        errors.initialPrice = t('VALIDATION_PRICE_TOO_HIGH');
+    Object.entries(validation.errors).forEach(([field, message]) => {
+      switch (field) {
+        case 'initialPrice':
+          errors.initialPrice = message.includes('negative') 
+            ? t('VALIDATION_PRICE_NEGATIVE') 
+            : t('VALIDATION_PRICE_TOO_HIGH');
+          break;
+        case 'initialPopulation':
+          errors.initialPopulation = message.includes('negative') 
+            ? t('VALIDATION_POPULATION_NEGATIVE') 
+            : t('VALIDATION_POPULATION_TOO_HIGH');
+          break;
+        case 'transportationCostUnit':
+          errors.transportationCostUnit = message.includes('negative') 
+            ? t('VALIDATION_TRANSPORT_NEGATIVE') 
+            : t('VALIDATION_TRANSPORT_TOO_HIGH');
+          break;
+        default:
+          errors[field] = message;
       }
-    }
-
-    if (formData.initialPopulation !== undefined) {
-      if (formData.initialPopulation < 0) {
-        errors.initialPopulation = t('VALIDATION_POPULATION_NEGATIVE');
-      } else if (formData.initialPopulation > 100000) {
-        errors.initialPopulation = t('VALIDATION_POPULATION_TOO_HIGH');
-      }
-    }
-
-    if (formData.transportationCostUnit !== undefined) {
-      if (formData.transportationCostUnit < 0) {
-        errors.transportationCostUnit = t('VALIDATION_TRANSPORT_NEGATIVE');
-      } else if (formData.transportationCostUnit > 50) {
-        errors.transportationCostUnit = t('VALIDATION_TRANSPORT_TOO_HIGH');
-      }
-    }
+    });
 
     setValidationErrors(errors);
-    return Object.keys(errors).length === 0;
+    return validation.isValid;
   }, [formData, t]);
 
   // Handle save
@@ -153,7 +155,12 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
       if (batchMode && selectedTileIds.length > 1 && onBatchUpdate) {
         await onBatchUpdate(selectedTileIds, formData);
       } else {
-        await onTileUpdate(selectedTile.id, formData);
+        // Use the new template-specific tile configuration API
+        await MapTemplateService.updateTileConfig(templateId, selectedTile.id, formData);
+        // Refresh the template data to show changes in the map
+        if (onTemplateRefresh) {
+          onTemplateRefresh();
+        }
       }
       
       setOriginalData(formData);
@@ -161,7 +168,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
     } catch (error) {
       console.error('Failed to save tile configuration:', error);
     }
-  }, [selectedTile, formData, batchMode, selectedTileIds, onBatchUpdate, onTileUpdate, validateForm]);
+  }, [selectedTile, formData, batchMode, selectedTileIds, onBatchUpdate, onTileUpdate, validateForm, templateId]);
 
   // Handle reset
   const handleReset = useCallback(() => {
@@ -173,14 +180,19 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
   // Handle land type change and apply defaults
   const handleLandTypeChange = useCallback((newLandType: 'MARINE' | 'COASTAL' | 'PLAIN') => {
     const defaults = MapTemplateService.getDefaultConfiguration(newLandType);
-    setFormData(prev => ({
-      ...prev,
-      landType: newLandType,
-      initialPrice: defaults.initialPrice,
-      initialPopulation: defaults.initialPopulation,
-      transportationCostUnit: defaults.transportationCostUnit,
-    }));
-  }, []);
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        landType: newLandType,
+        initialPrice: defaults.initialPrice,
+        initialPopulation: defaults.initialPopulation,
+        transportationCostUnit: defaults.transportationCostUnit,
+      };
+      // Check if the data has changed compared to original
+      setHasChanges(JSON.stringify(updated) !== JSON.stringify(originalData));
+      return updated;
+    });
+  }, [originalData]);
 
   // Get land type color
   const getLandTypeColor = (landType: string) => {
@@ -192,21 +204,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
     return colors[landType] || theme.palette.grey[500];
   };
 
-  // Calculate economic metrics
-  const calculateMetrics = useCallback(() => {
-    if (!formData.initialPrice || !formData.initialPopulation) return null;
-
-    const totalValue = formData.initialPrice * (formData.initialPopulation || 0);
-    const efficiency = formData.transportationCostUnit ? formData.initialPrice / formData.transportationCostUnit : 0;
-
-    return {
-      totalValue,
-      efficiency,
-      density: formData.initialPopulation / 100, // Assuming 100 sq units per tile
-    };
-  }, [formData]);
-
-  const metrics = calculateMetrics();
+  // Removed economic metrics calculation
 
   if (!selectedTile) {
     return (
@@ -398,71 +396,9 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             </Grid>
           </Grid>
 
-          {/* Active Status */}
-          <FormControlLabel
-            control={
-              <Switch
-                checked={formData.isActive ?? true}
-                onChange={(e) => handleFieldChange('isActive', e.target.checked)}
-                disabled={readOnly}
-              />
-            }
-            label={t('TILE_ACTIVE')}
-          />
 
-          {/* Economic Metrics Preview */}
-          {metrics && (
-            <>
-              <Divider />
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('ECONOMIC_METRICS')}
-              </Typography>
-              
-              <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                      <TrendingUpIcon color="primary" />
-                      <Typography variant="caption" display="block">
-                        {t('TOTAL_VALUE')}
-                      </Typography>
-                      <Typography variant="h6">
-                        {MapTemplateService.formatEconomicValue(metrics.totalValue)}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={4}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                      <AttachMoneyIcon color="success" />
-                      <Typography variant="caption" display="block">
-                        {t('EFFICIENCY')}
-                      </Typography>
-                      <Typography variant="h6">
-                        {metrics.efficiency.toFixed(1)}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                
-                <Grid item xs={4}>
-                  <Card variant="outlined">
-                    <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                      <PeopleIcon color="info" />
-                      <Typography variant="caption" display="block">
-                        {t('DENSITY')}
-                      </Typography>
-                      <Typography variant="h6">
-                        {metrics.density.toFixed(0)}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              </Grid>
-            </>
-          )}
+
+
 
           {/* Validation Errors */}
           {Object.keys(validationErrors).length > 0 && (

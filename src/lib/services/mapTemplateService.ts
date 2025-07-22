@@ -202,6 +202,17 @@ export class MapTemplateService {
   }
 
   /**
+   * Update individual tile configuration within a template (Admin only)
+   */
+  static async updateTileConfig(templateId: number, tileId: number, configData: UpdateTileDto): Promise<MapTile> {
+    const response = await apiClient.put<ApiResponse<MapTile>>(
+      `${this.BASE_PATH}/${templateId}/tiles/${tileId}/config`,
+      configData
+    );
+    return this.extractResponseData<MapTile>(response);
+  }
+
+  /**
    * Delete a tile (Admin only)
    */
   static async deleteTile(id: number): Promise<void> {
@@ -221,6 +232,69 @@ export class MapTemplateService {
       { updates }
     );
     return response.data.data;
+  }
+
+  /**
+   * Bulk update tile configurations within a template (Admin only)
+   */
+  static async bulkUpdateTileConfigs(templateId: number, tiles: Array<{
+    tileId: number;
+    landType?: 'MARINE' | 'COASTAL' | 'PLAIN';
+    initialPrice?: number;
+    initialPopulation?: number;
+    transportationCostUnit?: number;
+  }>): Promise<{
+    updated: number;
+    failed: number;
+    details: Array<{ tileId: number; success: boolean; error?: string }>;
+  }> {
+    const response = await apiClient.put<ApiResponse<any>>(
+      `${this.BASE_PATH}/${templateId}/tiles/bulk-update`,
+      { tiles }
+    );
+    return this.extractResponseData<any>(response);
+  }
+
+  /**
+   * Update all tiles of a specific land type using multipliers or fixed values (Admin only)
+   */
+  static async updateTilesByLandType(
+    templateId: number, 
+    landType: 'MARINE' | 'COASTAL' | 'PLAIN',
+    updateData: {
+      // Multipliers
+      priceMultiplier?: number;
+      populationMultiplier?: number;
+      transportationCostMultiplier?: number;
+      // Fixed values (overrides multipliers)
+      fixedPrice?: number;
+      fixedPopulation?: number;
+      fixedTransportationCost?: number;
+    }
+  ): Promise<{
+    updated: number;
+    failed: number;
+    details: Array<{ tileId: number; success: boolean; error?: string }>;
+  }> {
+    const response = await apiClient.put<ApiResponse<any>>(
+      `${this.BASE_PATH}/${templateId}/tiles/land-type/${landType}/bulk-update`,
+      updateData
+    );
+    return this.extractResponseData<any>(response);
+  }
+
+  /**
+   * Reset all tiles in a template to default configuration based on land type (Admin only)
+   */
+  static async resetTilesToDefaults(templateId: number): Promise<{
+    updated: number;
+    failed: number;
+    details: Array<{ tileId: number; success: boolean; error?: string }>;
+  }> {
+    const response = await apiClient.put<ApiResponse<any>>(
+      `${this.BASE_PATH}/${templateId}/tiles/reset-defaults`
+    );
+    return this.extractResponseData<any>(response);
   }
 
   // ==================== ACTIVITY TILE STATE MANAGEMENT ====================
@@ -420,6 +494,96 @@ export class MapTemplateService {
   static calculatePopulationGrowth(currentPopulation: number, initialPopulation: number): number {
     if (initialPopulation === 0) return currentPopulation > 0 ? 100 : 0;
     return ((currentPopulation - initialPopulation) / initialPopulation) * 100;
+  }
+
+  /**
+   * Validate tile configuration values
+   */
+  static validateTileConfiguration(config: UpdateTileDto): { isValid: boolean; errors: Record<string, string> } {
+    const errors: Record<string, string> = {};
+
+    if (config.initialPrice !== undefined) {
+      if (config.initialPrice < 0) {
+        errors.initialPrice = 'Price cannot be negative';
+      } else if (config.initialPrice > 10000) {
+        errors.initialPrice = 'Price cannot exceed $10,000';
+      }
+    }
+
+    if (config.initialPopulation !== undefined) {
+      if (config.initialPopulation < 0) {
+        errors.initialPopulation = 'Population cannot be negative';
+      } else if (config.initialPopulation > 100000) {
+        errors.initialPopulation = 'Population cannot exceed 100,000';
+      }
+    }
+
+    if (config.transportationCostUnit !== undefined) {
+      if (config.transportationCostUnit < 0) {
+        errors.transportationCostUnit = 'Transportation cost cannot be negative';
+      } else if (config.transportationCostUnit > 50) {
+        errors.transportationCostUnit = 'Transportation cost cannot exceed $50';
+      }
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
+  }
+
+  /**
+   * Validate land type batch update parameters
+   */
+  static validateLandTypeBatchUpdate(updateData: {
+    priceMultiplier?: number;
+    populationMultiplier?: number;
+    transportationCostMultiplier?: number;
+    fixedPrice?: number;
+    fixedPopulation?: number;
+    fixedTransportationCost?: number;
+  }): { isValid: boolean; errors: Record<string, string> } {
+    const errors: Record<string, string> = {};
+
+    // Validate multipliers
+    if (updateData.priceMultiplier !== undefined && (updateData.priceMultiplier < 0 || updateData.priceMultiplier > 10)) {
+      errors.priceMultiplier = 'Price multiplier must be between 0 and 10';
+    }
+
+    if (updateData.populationMultiplier !== undefined && (updateData.populationMultiplier < 0 || updateData.populationMultiplier > 10)) {
+      errors.populationMultiplier = 'Population multiplier must be between 0 and 10';
+    }
+
+    if (updateData.transportationCostMultiplier !== undefined && (updateData.transportationCostMultiplier < 0 || updateData.transportationCostMultiplier > 10)) {
+      errors.transportationCostMultiplier = 'Transportation cost multiplier must be between 0 and 10';
+    }
+
+    // Validate fixed values using the same validation as individual tiles
+    if (updateData.fixedPrice !== undefined) {
+      const priceValidation = this.validateTileConfiguration({ initialPrice: updateData.fixedPrice });
+      if (!priceValidation.isValid && priceValidation.errors.initialPrice) {
+        errors.fixedPrice = priceValidation.errors.initialPrice;
+      }
+    }
+
+    if (updateData.fixedPopulation !== undefined) {
+      const populationValidation = this.validateTileConfiguration({ initialPopulation: updateData.fixedPopulation });
+      if (!populationValidation.isValid && populationValidation.errors.initialPopulation) {
+        errors.fixedPopulation = populationValidation.errors.initialPopulation;
+      }
+    }
+
+    if (updateData.fixedTransportationCost !== undefined) {
+      const transportValidation = this.validateTileConfiguration({ transportationCostUnit: updateData.fixedTransportationCost });
+      if (!transportValidation.isValid && transportValidation.errors.transportationCostUnit) {
+        errors.fixedTransportationCost = transportValidation.errors.transportationCostUnit;
+      }
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors
+    };
   }
 }
 

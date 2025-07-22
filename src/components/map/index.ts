@@ -15,6 +15,7 @@ export { default as TileConfigurationPanel } from './ui/TileConfigurationPanel';
 export { default as TemplateGenerationForm } from './ui/TemplateGenerationForm';
 export { default as MapConfigurationInterface } from './ui/MapConfigurationInterface';
 export { default as ActivityTileStateManager } from './ui/ActivityTileStateManager';
+export { default as AdvancedTileConfigurationPanel } from './ui/AdvancedTileConfigurationPanel';
 
 // Activity Tile State Management components
 export { default as ActivitySelector } from './ui/ActivitySelector';

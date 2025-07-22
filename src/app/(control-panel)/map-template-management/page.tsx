@@ -324,6 +324,21 @@ const MapTemplateManagementPage: React.FC = () => {
     }
   }, [selectedTemplate]);
 
+  const handleTemplateRefresh = useCallback(async () => {
+    try {
+      if (selectedTemplate) {
+        const updatedTemplate = await MapTemplateService.getMapTemplate(selectedTemplate.id, {
+          includeTiles: true,
+        });
+        setSelectedTemplateTiles(updatedTemplate.tiles || []);
+        // Also update the template data if needed
+        setSelectedTemplate(updatedTemplate);
+      }
+    } catch (error) {
+      console.error('Failed to refresh template:', error);
+    }
+  }, [selectedTemplate]);
+
   const handleBatchTileUpdate = useCallback(async (tileIds: number[], updates: UpdateTileDto) => {
     try {
       const updateRequests = tileIds.map(tileId => ({ tileId, updates }));
@@ -444,6 +459,7 @@ const MapTemplateManagementPage: React.FC = () => {
                   onTemplateUpdate={() => {}}
                   onTileUpdate={handleTileUpdate}
                   onTileBatchUpdate={handleBatchTileUpdate}
+                  onTemplateRefresh={handleTemplateRefresh}
                   onSave={handleSaveTemplate}
                   isLoading={isLoading}
                 />

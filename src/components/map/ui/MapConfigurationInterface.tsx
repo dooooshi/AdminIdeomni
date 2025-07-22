@@ -14,7 +14,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
-  Grid,
   Paper,
   Toolbar,
   Typography,
@@ -27,8 +26,6 @@ import {
   Chip,
   Stack,
   Divider,
-  Card,
-  CardContent,
   Switch,
   FormControlLabel,
 } from '@mui/material';
@@ -37,11 +34,11 @@ import {
   Refresh as RefreshIcon,
   Fullscreen as FullscreenIcon,
   Settings as SettingsIcon,
+  Tune as TuneIcon,
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   Edit as EditIcon,
   Info as InfoIcon,
-  TrendingUp as TrendingUpIcon,
   Map as MapIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
@@ -51,7 +48,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MapTemplate, MapTile, UpdateTileDto, MapConfigurationPanelProps } from '../types';
 import HexagonalMap from '../components/HexagonalMap';
 import TileConfigurationPanel from './TileConfigurationPanel';
-import MapStatistics from './MapStatistics';
+import AdvancedTileConfigurationPanel from './AdvancedTileConfigurationPanel';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 
 interface MapConfigurationInterfaceProps {
@@ -60,6 +57,7 @@ interface MapConfigurationInterfaceProps {
   onTemplateUpdate: (templateId: number, updates: any) => void;
   onTileUpdate: (tileId: number, updates: UpdateTileDto) => void;
   onTileBatchUpdate?: (tileIds: number[], updates: UpdateTileDto) => void;
+  onTemplateRefresh?: () => void;
   onSave: () => void;
   isLoading?: boolean;
   readOnly?: boolean;
@@ -71,6 +69,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   onTemplateUpdate,
   onTileUpdate,
   onTileBatchUpdate,
+  onTemplateRefresh,
   onSave,
   isLoading = false,
   readOnly = false,
@@ -81,8 +80,8 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   // State management
   const [selectedTileId, setSelectedTileId] = useState<number | null>(null);
   const [configurationMode, setConfigurationMode] = useState(true);
-  const [showStatistics, setShowStatistics] = useState(true);
   const [showConfigPanel, setShowConfigPanel] = useState(true);
+  const [showAdvancedPanel, setShowAdvancedPanel] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [notification, setNotification] = useState<{
@@ -165,42 +164,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
     setIsFullscreen(!isFullscreen);
   }, [isFullscreen]);
 
-  // Calculate statistics
-  const statistics = React.useMemo(() => {
-    const landTypeCounts = tiles.reduce((acc, tile) => {
-      acc[tile.landType] = (acc[tile.landType] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
 
-    const economicStats = tiles.reduce((acc, tile) => {
-      if (tile.initialPrice) {
-        acc.totalValue += tile.initialPrice * (tile.initialPopulation || 0);
-        acc.averagePrice += tile.initialPrice;
-        acc.priceCount++;
-      }
-      if (tile.initialPopulation) {
-        acc.totalPopulation += tile.initialPopulation;
-        acc.populationCount++;
-      }
-      return acc;
-    }, {
-      totalValue: 0,
-      totalPopulation: 0,
-      averagePrice: 0,
-      priceCount: 0,
-      populationCount: 0,
-    });
-
-    if (economicStats.priceCount > 0) {
-      economicStats.averagePrice /= economicStats.priceCount;
-    }
-
-    return {
-      totalTiles: tiles.length,
-      landTypeDistribution: landTypeCounts,
-      economicSummary: economicStats,
-    };
-  }, [tiles]);
 
   // Close notification
   const handleCloseNotification = () => {
@@ -252,16 +216,6 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
 
             <Divider orientation="vertical" flexItem />
 
-            {/* View Controls */}
-            <Tooltip title={showStatistics ? t('HIDE_STATISTICS') : t('SHOW_STATISTICS')}>
-              <IconButton 
-                onClick={() => setShowStatistics(!showStatistics)}
-                color={showStatistics ? 'primary' : 'default'}
-              >
-                <TrendingUpIcon />
-              </IconButton>
-            </Tooltip>
-
             <Tooltip title={showConfigPanel ? t('HIDE_CONFIG_PANEL') : t('SHOW_CONFIG_PANEL')}>
               <IconButton 
                 onClick={() => setShowConfigPanel(!showConfigPanel)}
@@ -302,113 +256,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
 
       {/* Main Content Area */}
       <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {/* Statistics Panel */}
-        <AnimatePresence>
-          {showStatistics && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 320, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <Paper 
-                sx={{ 
-                  width: 320, 
-                  height: '100%', 
-                  overflowY: 'auto',
-                  borderRight: 1,
-                  borderColor: 'divider',
-                }}
-              >
-                <Box p={2}>
-                  <Typography variant="h6" gutterBottom>
-                    {t('TEMPLATE_STATISTICS')}
-                  </Typography>
-                  
-                  {/* Basic Stats */}
-                  <Card variant="outlined" sx={{ mb: 2 }}>
-                    <CardContent>
-                      <Typography variant="subtitle2" gutterBottom>
-                        {t('BASIC_STATISTICS')}
-                      </Typography>
-                      <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            {t('TOTAL_TILES')}
-                          </Typography>
-                          <Typography variant="h6">
-                            {statistics.totalTiles}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            {t('TOTAL_VALUE')}
-                          </Typography>
-                          <Typography variant="h6">
-                            {MapTemplateService.formatEconomicValue(statistics.economicSummary.totalValue)}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            {t('TOTAL_POPULATION')}
-                          </Typography>
-                          <Typography variant="h6">
-                            {MapTemplateService.formatPopulation(statistics.economicSummary.totalPopulation)}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            {t('AVG_PRICE')}
-                          </Typography>
-                          <Typography variant="h6">
-                            {MapTemplateService.formatEconomicValue(statistics.economicSummary.averagePrice)}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
 
-                  {/* Land Distribution */}
-                  <Card variant="outlined">
-                    <CardContent>
-                      <Typography variant="subtitle2" gutterBottom>
-                        {t('LAND_DISTRIBUTION')}
-                      </Typography>
-                      <Stack spacing={1}>
-                        {Object.entries(statistics.landTypeDistribution).map(([landType, count]) => (
-                          <Box key={landType} display="flex" justifyContent="space-between" alignItems="center">
-                            <Box display="flex" alignItems="center" gap={1}>
-                              <Box
-                                sx={{
-                                  width: 12,
-                                  height: 12,
-                                  borderRadius: '50%',
-                                  backgroundColor: 
-                                    landType === 'MARINE' ? theme.palette.info.main :
-                                    landType === 'COASTAL' ? theme.palette.warning.main :
-                                    theme.palette.success.main,
-                                }}
-                              />
-                              <Typography variant="body2">
-                                {t(`TERRAIN_${landType}`)}
-                              </Typography>
-                            </Box>
-                            <Chip 
-                              label={`${count} (${Math.round((count / statistics.totalTiles) * 100)}%)`}
-                              size="small"
-                              variant="outlined"
-                            />
-                          </Box>
-                        ))}
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Box>
-              </Paper>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Map Container */}
         <Box sx={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
@@ -448,17 +296,59 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
               width: drawerWidth,
               position: 'relative',
               height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
             },
           }}
         >
-          <TileConfigurationPanel
-            selectedTile={selectedTile}
-            tiles={tiles}
-            onTileUpdate={handleTileUpdate}
-            onBatchUpdate={onTileBatchUpdate ? handleBatchUpdate : undefined}
-            isLoading={isLoading}
-            readOnly={readOnly}
-          />
+          {/* Toggle between basic and advanced panels */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            {/* Panel Toggle Buttons */}
+            <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
+              <Stack direction="row" spacing={1}>
+                <Button
+                  size="small"
+                  variant={!showAdvancedPanel ? 'contained' : 'outlined'}
+                  onClick={() => setShowAdvancedPanel(false)}
+                  fullWidth
+                >
+                  Basic Config
+                </Button>
+                <Button
+                  size="small"
+                  variant={showAdvancedPanel ? 'contained' : 'outlined'}
+                  onClick={() => setShowAdvancedPanel(true)}
+                  fullWidth
+                >
+                  Advanced Tools
+                </Button>
+              </Stack>
+            </Box>
+
+            {/* Panel Content */}
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              {showAdvancedPanel ? (
+                <AdvancedTileConfigurationPanel
+                  template={template}
+                  tiles={tiles}
+                  onTemplateUpdate={onTemplateRefresh || (() => {})}
+                  isLoading={isLoading}
+                  readOnly={readOnly}
+                />
+              ) : (
+                <TileConfigurationPanel
+                  selectedTile={selectedTile}
+                  tiles={tiles}
+                  templateId={template.id}
+                  onTileUpdate={handleTileUpdate}
+                  onBatchUpdate={onTileBatchUpdate ? handleBatchUpdate : undefined}
+                  onTemplateRefresh={onTemplateRefresh}
+                  isLoading={isLoading}
+                  readOnly={readOnly}
+                />
+              )}
+            </Box>
+          </Box>
         </Drawer>
       </Box>
 
