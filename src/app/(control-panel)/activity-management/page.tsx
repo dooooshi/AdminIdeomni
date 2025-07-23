@@ -12,17 +12,25 @@ import {
   Breadcrumbs,
   Link,
   Alert,
+  Badge,
+  Button,
 } from '@mui/material';
 import {
   Event as EventIcon,
   BarChart as BarChartIcon,
   Dashboard as DashboardIcon,
+  Group as GroupIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
-import ActivityList from '@/components/activity-management/ActivityList';
-import ActivityForm from '@/components/activity-management/ActivityForm';
-import ActivityStatistics from '@/components/activity-management/ActivityStatistics';
+import {
+  ActivityList,
+  ActivityForm,
+  ActivityStatistics,
+  ActivityParticipantsList,
+  BulkUserOperations,
+  UserActivityHistory,
+} from '@/components/activity-management';
 
 import { Activity } from '@/lib/services/activityService';
 
@@ -66,6 +74,14 @@ const ActivityManagementPage: React.FC = () => {
   const [activityFormOpen, setActivityFormOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  
+  // Participants management state
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [bulkOperationsOpen, setBulkOperationsOpen] = useState(false);
+  const [bulkOperation, setBulkOperation] = useState<'add' | 'remove'>('add');
+  const [preSelectedUserIds, setPreSelectedUserIds] = useState<string[]>([]);
+  const [userHistoryOpen, setUserHistoryOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -82,8 +98,9 @@ const ActivityManagementPage: React.FC = () => {
   };
 
   const handleViewActivity = (activity: Activity) => {
-    // For now, open edit dialog. In the future, this could open a read-only view
-    handleEditActivity(activity);
+    // Switch to participants tab and set selected activity
+    setSelectedActivity(activity);
+    setTabValue(2); // Switch to participants tab
   };
 
   const handleActivityFormSuccess = () => {
@@ -96,6 +113,40 @@ const ActivityManagementPage: React.FC = () => {
   const handleCloseActivityForm = () => {
     setActivityFormOpen(false);
     setEditingActivity(null);
+  };
+
+  // Participants management handlers
+  const handleAddUsers = () => {
+    setBulkOperation('add');
+    setPreSelectedUserIds([]);
+    setBulkOperationsOpen(true);
+  };
+
+  const handleRemoveUsers = (userIds: string[]) => {
+    setBulkOperation('remove');
+    setPreSelectedUserIds(userIds);
+    setBulkOperationsOpen(true);
+  };
+
+  const handleUserHistoryView = (userId: string) => {
+    setSelectedUserId(userId);
+    setUserHistoryOpen(true);
+  };
+
+  const handleBulkOperationSuccess = () => {
+    // Refresh participants list
+    setRefreshTrigger(prev => prev + 1);
+    setBulkOperationsOpen(false);
+  };
+
+  const handleCloseBulkOperations = () => {
+    setBulkOperationsOpen(false);
+    setPreSelectedUserIds([]);
+  };
+
+  const handleCloseUserHistory = () => {
+    setUserHistoryOpen(false);
+    setSelectedUserId('');
   };
 
   return (
@@ -145,6 +196,16 @@ const ActivityManagementPage: React.FC = () => {
                   iconPosition="start"
                   {...a11yProps(1)} 
                 />
+                <Tab 
+                  label={
+                    selectedActivity ? 
+                      `${t('PARTICIPANTS_MANAGEMENT')} - ${selectedActivity.name}` : 
+                      t('PARTICIPANTS_MANAGEMENT')
+                  }
+                  icon={selectedActivity ? <Badge color="primary" variant="dot"><GroupIcon /></Badge> : <GroupIcon />}
+                  iconPosition="start"
+                  {...a11yProps(2)}
+                />
               </Tabs>
             </Box>
 
@@ -167,6 +228,39 @@ const ActivityManagementPage: React.FC = () => {
                   <ActivityStatistics />
                 </Box>
               </TabPanel>
+
+              {/* Participants Management Tab */}
+              <TabPanel value={tabValue} index={2}>
+                <Box sx={{ p: 3 }}>
+                  {selectedActivity ? (
+                    <ActivityParticipantsList
+                      key={`${selectedActivity.id}-${refreshTrigger}`}
+                      activity={selectedActivity}
+                      onAddUsers={handleAddUsers}
+                      onRemoveUsers={handleRemoveUsers}
+                      onUserHistoryView={handleUserHistoryView}
+                    />
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 8 }}>
+                      <GroupIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+                      <Typography variant="h6" color="text.secondary" gutterBottom>
+                        {t('NO_ACTIVITY_SELECTED')}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                        {t('SELECT_ACTIVITY_TO_MANAGE_PARTICIPANTS')}
+                      </Typography>
+                      <Button
+                        variant="outlined"
+                        startIcon={<EventIcon />}
+                        onClick={() => setTabValue(0)}
+                        size="large"
+                      >
+                        {t('GO_TO_ACTIVITIES')}
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              </TabPanel>
             </CardContent>
           </Card>
 
@@ -176,6 +270,25 @@ const ActivityManagementPage: React.FC = () => {
             onClose={handleCloseActivityForm}
             activity={editingActivity}
             onSuccess={handleActivityFormSuccess}
+          />
+
+          {/* Bulk User Operations Dialog */}
+          {selectedActivity && (
+            <BulkUserOperations
+              open={bulkOperationsOpen}
+              onClose={handleCloseBulkOperations}
+              activity={selectedActivity}
+              operation={bulkOperation}
+              preSelectedUserIds={preSelectedUserIds}
+              onSuccess={handleBulkOperationSuccess}
+            />
+          )}
+
+          {/* User Activity History Dialog */}
+          <UserActivityHistory
+            open={userHistoryOpen}
+            onClose={handleCloseUserHistory}
+            userId={selectedUserId}
           />
         </Box>
       }

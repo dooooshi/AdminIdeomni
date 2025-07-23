@@ -82,7 +82,44 @@ async function handleRequest(request: NextRequest, method: string) {
       body,
     });
 
-    // Get response data
+    // Handle 204 No Content responses
+    if (response.status === 204) {
+      // Log the response in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`📥 Backend Response (${response.status}): No Content`);
+      }
+
+      // Create empty response for 204
+      const nextResponse = new NextResponse(null, {
+        status: response.status,
+        statusText: response.statusText,
+      });
+
+      // Forward response headers (excluding problematic ones)
+      const headersToForward = [
+        'content-type',
+        'cache-control',
+        'expires',
+        'last-modified',
+        'etag',
+      ];
+
+      headersToForward.forEach(headerName => {
+        const value = response.headers.get(headerName);
+        if (value) {
+          nextResponse.headers.set(headerName, value);
+        }
+      });
+
+      // Add CORS headers for browser compatibility
+      nextResponse.headers.set('Access-Control-Allow-Origin', '*');
+      nextResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+      nextResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, Accept-Language, X-User-Type');
+
+      return nextResponse;
+    }
+
+    // Get response data for non-204 responses
     const responseText = await response.text();
     let responseData;
     

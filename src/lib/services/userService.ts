@@ -29,6 +29,9 @@ export interface AdminUserDetailsDto {
   };
 }
 
+// Type alias for compatibility with activity management components
+export type User = AdminUserDetailsDto;
+
 export interface AdminUserSearchDto {
   q?: string;
   userType?: number;

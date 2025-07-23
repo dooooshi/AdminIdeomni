@@ -224,6 +224,130 @@ const activityManagement = {
   SUPER_ADMIN_ONLY: 'This action is only available to super administrators',
   CREATOR_ONLY: 'You can only modify activities you created',
   READ_ONLY_ACCESS: 'You have read-only access to this activity',
+
+  // User-Activity Relationship Management
+  PARTICIPANTS_MANAGEMENT: 'Participants Management',
+  ACTIVITY_PARTICIPANTS: 'Activity Participants',
+  PARTICIPANTS_LOAD_ERROR: 'Failed to load participants',
+  NO_PARTICIPANTS_FOUND: 'No participants found',
+  NO_PARTICIPANTS_MESSAGE: 'This activity has no participants yet.',
+  ADD_FIRST_PARTICIPANTS: 'Add First Participants',
+  
+  // User Management Actions
+  ADD_USERS: 'Add Users',
+  REMOVE_USERS: 'Remove Users',
+  ADD_USERS_TO_ACTIVITY: 'Add Users to Activity',
+  REMOVE_USERS_FROM_ACTIVITY: 'Remove Users from Activity',
+  REMOVE_SELECTED: 'Remove Selected',
+  UPDATE_STATUS: 'Update Status',
+  BULK_UPDATE_STATUS: 'Bulk Update Status',
+  
+  // User Status Management
+  ENROLLED: 'Enrolled',
+  COMPLETED: 'Completed',
+  CANCELLED: 'Cancelled',
+  NO_SHOW: 'No Show',
+  UPDATE_PARTICIPANT_STATUS: 'Update Participant Status',
+  NEW_STATUS: 'New Status',
+  CURRENT_STATUS: 'Current Status',
+  STATUS_UPDATE_ERROR: 'Failed to update status',
+  BULK_STATUS_UPDATE_ERROR: 'Failed to update statuses',
+  
+  // User Information
+  USER: 'User',
+  USER_TYPE: 'User Type',
+  MANAGER: 'Manager',
+  WORKER: 'Worker',
+  STUDENT: 'Student',
+  UNKNOWN: 'Unknown',
+  ENROLLED_AT: 'Enrolled At',
+  ADDED_BY: 'Added By',
+  SYSTEM: 'System',
+  INACTIVE: 'Inactive',
+  
+  // Search and Filters
+  SEARCH_PARTICIPANTS: 'Search Participants',
+  SEARCH_BY_NAME_EMAIL: 'Search by name or email',
+  ALL_TYPES: 'All Types',
+  ALL_STATUSES: 'All Statuses',
+  INCLUDE_INACTIVE_USERS: 'Include Inactive Users',
+  FILTERS: 'Filters',
+  
+  // Statistics
+  TOTAL_PARTICIPANTS: 'Total Participants',
+  
+  // User Operations
+  SEARCH_USERS: 'Search Users',
+  SEARCH_USERS_BY_NAME_EMAIL: 'Search users by name or email',
+  TYPE_TO_SEARCH: 'Type to search...',
+  SEARCHING_USERS: 'Searching users...',
+  NO_USERS_FOUND: 'No users found',
+  START_TYPING_TO_SEARCH: 'Start typing to search users',
+  SELECTED_USERS: 'Selected Users',
+  USERS_TO_REMOVE: 'Users to Remove',
+  NO_USERS_SELECTED: 'No users selected',
+  NO_USERS_SELECTED_ADD: 'Search and select users to add to this activity',
+  NO_USERS_SELECTED_REMOVE: 'Select users from the participants list to remove',
+  FAILED_TO_LOAD_USERS: 'Failed to load users',
+  
+  // Operation Details
+  OPERATION_DETAILS: 'Operation Details',
+  REASON: 'Reason',
+  REASON_PLACEHOLDER: 'Enter reason for this operation (optional)',
+  REASON_FOR_ADDING_USERS: 'Why are you adding these users to the activity?',
+  REASON_FOR_REMOVING_USERS: 'Why are you removing these users from the activity?',
+  BULK_REASON_PLACEHOLDER: 'Enter reason for bulk status update (optional)',
+  SEND_EMAIL_NOTIFICATION: 'Send Email Notification',
+  
+  // Operation Results
+  OPERATION_RESULTS: 'Operation Results',
+  OPERATION_COMPLETED_AT: 'Operation completed at',
+  TOTAL_PROCESSED: 'Total Processed',
+  SUCCESSFUL: 'Successful',
+  FAILED: 'Failed',
+  DETAILED_RESULTS: 'Detailed Results',
+  OPERATION_SUCCESSFUL: 'Operation successful',
+  OPERATION_FAILED: 'Operation failed',
+  PROCESSING: 'Processing...',
+  CLOSE: 'Close',
+  
+  // User Activity History
+  USER_ACTIVITY_HISTORY: 'User Activity History',
+  LOADING_USER_INFO: 'Loading user information...',
+  FAILED_TO_LOAD_USER: 'Failed to load user information',
+  NO_ACTIVITY_HISTORY: 'No activity history',
+  NO_ACTIVITY_HISTORY_MESSAGE: 'This user has no activity participation history.',
+  LOADING_ACTIVITY_HISTORY: 'Loading activity history...',
+  HISTORY_LOAD_ERROR: 'Failed to load activity history',
+  
+  // History Filters
+  INCLUDE_UPCOMING: 'Include Upcoming',
+  INCLUDE_PAST: 'Include Past',
+  CANCELLED_NO_SHOW: 'Cancelled/No Show',
+  
+  // Time Status
+  TIME_STATUS: 'Time Status',
+  COMPLETED_TIME: 'Completed',
+  DURATION: 'Duration',
+  MINUTES: 'minutes',
+  HOURS: 'hours',
+  DAYS: 'days',
+  
+  // Activity Selection
+  NO_ACTIVITY_SELECTED: 'No Activity Selected',
+  SELECT_ACTIVITY_TO_MANAGE_PARTICIPANTS: 'Select an activity from the list to manage its participants',
+  GO_TO_ACTIVITIES: 'Go to Activities',
+  
+  // Actions
+  VIEW_PARTICIPANTS: 'View Participants',
+  VIEW_USER_HISTORY: 'View User History',
+  SEND_EMAIL: 'Send Email',
+  UPDATE_ALL: 'Update All',
+  REFRESH: 'Refresh',
+  
+  // Participant Actions
+  PARTICIPANTS: 'participants',
+  UPDATE_ALL: 'Update All',
 };
 
 export default activityManagement; 

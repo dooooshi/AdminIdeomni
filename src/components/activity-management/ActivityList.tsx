@@ -647,6 +647,15 @@ const ActivityList: React.FC<ActivityListProps> = ({
                       <Stack direction="row" spacing={1}>
                         {!activity.deletedAt ? (
                           <>
+                            <Tooltip title={t('VIEW_PARTICIPANTS')}>
+                              <IconButton
+                                size="small"
+                                onClick={() => onViewActivity?.(activity)}
+                                color="info"
+                              >
+                                <GroupIcon />
+                              </IconButton>
+                            </Tooltip>
                             <Tooltip title={t('EDIT_TOOLTIP')}>
                               <IconButton
                                 size="small"

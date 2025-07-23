@@ -82,11 +82,38 @@ class ApiClient {
   /**
    * Generic DELETE request
    */
-  async delete<T = any>(
+  async delete<T = any, D = any>(
     url: string,
     config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>>;
+  async delete<T = any, D = any>(
+    url: string,
+    data?: D,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>>;
+  async delete<T = any, D = any>(
+    url: string,
+    dataOrConfig?: D | AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
-    const response: AxiosResponse<T> = await axiosInstance.delete(url, config);
+    let finalConfig: AxiosRequestConfig = {};
+    
+    if (dataOrConfig && typeof dataOrConfig === 'object' && !Array.isArray(dataOrConfig)) {
+      // Check if it's a config object (has axios config properties) or data
+      if ('method' in dataOrConfig || 'headers' in dataOrConfig || 'params' in dataOrConfig || 'data' in dataOrConfig) {
+        finalConfig = dataOrConfig as AxiosRequestConfig;
+      } else {
+        // It's data, put it in the config
+        finalConfig = { data: dataOrConfig, ...config };
+      }
+    } else if (dataOrConfig) {
+      // It's data
+      finalConfig = { data: dataOrConfig, ...config };
+    } else if (config) {
+      finalConfig = config;
+    }
+
+    const response: AxiosResponse<T> = await axiosInstance.delete(url, finalConfig);
     return {
       data: response.data,
       status: response.status,

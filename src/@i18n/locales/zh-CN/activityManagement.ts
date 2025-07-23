@@ -224,6 +224,130 @@ const activityManagement = {
   SUPER_ADMIN_ONLY: '此操作仅限超级管理员使用',
   CREATOR_ONLY: '您只能修改自己创建的活动',
   READ_ONLY_ACCESS: '您对此活动只有只读访问权限',
+
+  // User-Activity Relationship Management
+  PARTICIPANTS_MANAGEMENT: '参与者管理',
+  ACTIVITY_PARTICIPANTS: '活动参与者',
+  PARTICIPANTS_LOAD_ERROR: '加载参与者失败',
+  NO_PARTICIPANTS_FOUND: '未找到参与者',
+  NO_PARTICIPANTS_MESSAGE: '此活动还没有参与者。',
+  ADD_FIRST_PARTICIPANTS: '添加第一批参与者',
+  
+  // User Management Actions
+  ADD_USERS: '添加用户',
+  REMOVE_USERS: '移除用户',
+  ADD_USERS_TO_ACTIVITY: '将用户添加到活动',
+  REMOVE_USERS_FROM_ACTIVITY: '从活动中移除用户',
+  REMOVE_SELECTED: '移除选中的',
+  UPDATE_STATUS: '更新状态',
+  BULK_UPDATE_STATUS: '批量更新状态',
+  
+  // User Status Management
+  ENROLLED: '已报名',
+  COMPLETED: '已完成',
+  CANCELLED: '已取消',
+  NO_SHOW: '未到场',
+  UPDATE_PARTICIPANT_STATUS: '更新参与者状态',
+  NEW_STATUS: '新状态',
+  CURRENT_STATUS: '当前状态',
+  STATUS_UPDATE_ERROR: '更新状态失败',
+  BULK_STATUS_UPDATE_ERROR: '批量更新状态失败',
+  
+  // User Information
+  USER: '用户',
+  USER_TYPE: '用户类型',
+  MANAGER: '管理者',
+  WORKER: '员工',
+  STUDENT: '学生',
+  UNKNOWN: '未知',
+  ENROLLED_AT: '报名时间',
+  ADDED_BY: '添加者',
+  SYSTEM: '系统',
+  INACTIVE: '非活跃',
+  
+  // Search and Filters
+  SEARCH_PARTICIPANTS: '搜索参与者',
+  SEARCH_BY_NAME_EMAIL: '按姓名或邮箱搜索',
+  ALL_TYPES: '所有类型',
+  ALL_STATUSES: '所有状态',
+  INCLUDE_INACTIVE_USERS: '包含非活跃用户',
+  FILTERS: '筛选',
+  
+  // Statistics
+  TOTAL_PARTICIPANTS: '参与者总数',
+  
+  // User Operations
+  SEARCH_USERS: '搜索用户',
+  SEARCH_USERS_BY_NAME_EMAIL: '按姓名或邮箱搜索用户',
+  TYPE_TO_SEARCH: '输入以搜索...',
+  SEARCHING_USERS: '正在搜索用户...',
+  NO_USERS_FOUND: '未找到用户',
+  START_TYPING_TO_SEARCH: '开始输入以搜索用户',
+  SELECTED_USERS: '已选用户',
+  USERS_TO_REMOVE: '要移除的用户',
+  NO_USERS_SELECTED: '未选择用户',
+  NO_USERS_SELECTED_ADD: '搜索并选择要添加到此活动的用户',
+  NO_USERS_SELECTED_REMOVE: '从参与者列表中选择要移除的用户',
+  FAILED_TO_LOAD_USERS: '加载用户失败',
+  
+  // Operation Details
+  OPERATION_DETAILS: '操作详情',
+  REASON: '原因',
+  REASON_PLACEHOLDER: '输入此操作的原因（可选）',
+  REASON_FOR_ADDING_USERS: '为什么要将这些用户添加到活动中？',
+  REASON_FOR_REMOVING_USERS: '为什么要从活动中移除这些用户？',
+  BULK_REASON_PLACEHOLDER: '输入批量状态更新的原因（可选）',
+  SEND_EMAIL_NOTIFICATION: '发送邮件通知',
+  
+  // Operation Results
+  OPERATION_RESULTS: '操作结果',
+  OPERATION_COMPLETED_AT: '操作完成时间',
+  TOTAL_PROCESSED: '总处理数',
+  SUCCESSFUL: '成功',
+  FAILED: '失败',
+  DETAILED_RESULTS: '详细结果',
+  OPERATION_SUCCESSFUL: '操作成功',
+  OPERATION_FAILED: '操作失败',
+  PROCESSING: '处理中...',
+  CLOSE: '关闭',
+  
+  // User Activity History
+  USER_ACTIVITY_HISTORY: '用户活动历史',
+  LOADING_USER_INFO: '正在加载用户信息...',
+  FAILED_TO_LOAD_USER: '加载用户信息失败',
+  NO_ACTIVITY_HISTORY: '没有活动历史',
+  NO_ACTIVITY_HISTORY_MESSAGE: '此用户没有活动参与历史。',
+  LOADING_ACTIVITY_HISTORY: '正在加载活动历史...',
+  HISTORY_LOAD_ERROR: '加载活动历史失败',
+  
+  // History Filters
+  INCLUDE_UPCOMING: '包含即将开始',
+  INCLUDE_PAST: '包含过去',
+  CANCELLED_NO_SHOW: '已取消/未到场',
+  
+  // Time Status
+  TIME_STATUS: '时间状态',
+  COMPLETED_TIME: '已结束',
+  DURATION: '持续时间',
+  MINUTES: '分钟',
+  HOURS: '小时',
+  DAYS: '天',
+  
+  // Activity Selection
+  NO_ACTIVITY_SELECTED: '未选择活动',
+  SELECT_ACTIVITY_TO_MANAGE_PARTICIPANTS: '从列表中选择一个活动来管理其参与者',
+  GO_TO_ACTIVITIES: '转到活动列表',
+  
+  // Actions
+  VIEW_PARTICIPANTS: '查看参与者',
+  VIEW_USER_HISTORY: '查看用户历史',
+  SEND_EMAIL: '发送邮件',
+  UPDATE_ALL: '全部更新',
+  REFRESH: '刷新',
+  
+  // Participant Actions
+  PARTICIPANTS: '参与者',
+  UPDATE_ALL: '全部更新',
 };
 
 export default activityManagement; 

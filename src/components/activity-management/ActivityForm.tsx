@@ -461,37 +461,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                 </CardContent>
               </Card>
 
-              {/* Settings */}
-              <Card variant="outlined">
-                <CardContent>
-                  <Stack spacing={2}>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <SettingsIcon color="primary" fontSize="small" />
-                      <Typography variant="subtitle1" fontWeight={600}>
-                        {t('ACTIVITY_SETTINGS')}
-                      </Typography>
-                    </Stack>
-
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          name="isActive"
-                          checked={formik.values.isActive}
-                          onChange={formik.handleChange}
-                        />
-                      }
-                      label={
-                        <Box>
-                          <Typography variant="body2">{t('IS_ACTIVE_LABEL')}</Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            {t('IS_ACTIVE_HELPER')}
-                          </Typography>
-                        </Box>
-                      }
-                    />
-                  </Stack>
-                </CardContent>
-              </Card>
             </Stack>
           </DialogContent>
 
