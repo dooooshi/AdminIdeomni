@@ -22,13 +22,13 @@ function ScheduleWidget() {
 	const series = widget?.series;
 	const ranges = widget?.ranges;
 	const [tabValue, setTabValue] = useState(0);
-	const currentRange = Object.keys(ranges)[tabValue];
+	const currentRange = ranges ? Object.keys(ranges)[tabValue] : undefined;
 
 	if (isLoading) {
 		return <IdeomniLoading />;
 	}
 
-	if (!widget) {
+	if (!widget || !ranges || !series) {
 		return null;
 	}
 
@@ -52,7 +52,7 @@ function ScheduleWidget() {
 				</div>
 			</div>
 			<List className="py-0 mt-2 divide-y">
-				{series[currentRange].map((item, index) => (
+				{currentRange && series[currentRange]?.map((item, index) => (
 					<ListItem
 						key={index}
 						className="px-0"
@@ -106,7 +106,7 @@ function ScheduleWidget() {
 							</IconButton>
 						</ListItemSecondaryAction>
 					</ListItem>
-				))}
+				)) || []}
 			</List>
 		</Paper>
 	);

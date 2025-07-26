@@ -6,6 +6,8 @@ import adminManagement from './adminManagement';
 import activityManagement from './activityManagement';
 import userManagement from './userManagement';
 import facilityManagement from './facilityManagement';
+import teamManagement from './teamManagement';
+import teamAdministration from './teamAdministration';
 
 const enUS = {
 	...common,
@@ -15,7 +17,9 @@ const enUS = {
 	adminManagement,
 	activityManagement,
 	userManagement,
-	facilityManagement
+	facilityManagement,
+	teamManagement,
+	teamAdministration
 };
 
 export default enUS; 

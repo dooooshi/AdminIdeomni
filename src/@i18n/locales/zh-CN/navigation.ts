@@ -46,6 +46,15 @@ const navigation = {
 	USER_MANAGEMENT: '用户管理',
 	ACTIVITY_MANAGEMENT: '活动管理',
 	FACILITY_MANAGEMENT: '设施管理',
+	// Team Management
+	TEAM_MANAGEMENT: '团队管理',
+	TEAM_DASHBOARD: '团队仪表盘',
+	BROWSE_TEAMS: '浏览团队',
+	CREATE_TEAM: '创建团队',
+	// Team Administration
+	TEAM_ADMINISTRATION: '团队管理后台',
+	TEAM_ADMIN_OVERVIEW: '管理概览',
+	MANAGE_TEAMS: '管理团队',
 };
 
 export default navigation; 

@@ -23,9 +23,11 @@ function useNavigation() {
 	const navigation = useMemo(() => {
 		// Get admin type for admin users
 		const adminType = userType === 'admin' ? (user as AdminUser)?.adminType : undefined;
+		// Get regular user type for regular users
+		const regularUserType = userType === 'user' ? (user as any)?.userType : undefined;
 		
 		// Use role-based navigation config if available, otherwise fall back to store data
-		const roleBasedConfig = getNavigationConfig(userType, adminType);
+		const roleBasedConfig = getNavigationConfig(userType, adminType, regularUserType);
 		const _navigation = roleBasedConfig.length > 0 
 			? roleBasedConfig 
 			: IdeomniNavigationHelper.unflattenNavigation(navigationData);

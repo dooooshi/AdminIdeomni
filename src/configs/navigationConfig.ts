@@ -49,6 +49,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['admin']
 			},
 			{
+				id: 'admin-management.admin-user-activity',
+				title: 'Admin User-Activity Management',
+				type: 'item',
+				icon: 'heroicons-outline:users',
+				url: '/admin-user-activity',
+				translate: 'ADMIN_USER_ACTIVITY_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
 				id: 'admin-management.facility-management',
 				title: 'Facility Management',
 				type: 'item',
@@ -379,6 +388,44 @@ const userNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['user']
 			}
 		]
+	},
+	{
+		id: 'team-management',
+		title: 'Team Management',
+		subtitle: 'Collaborate with your team',
+		type: 'group',
+		icon: 'heroicons-outline:user-group',
+		translate: 'TEAM_MANAGEMENT',
+		auth: ['user'],
+		children: [
+			{
+				id: 'team-management.dashboard',
+				title: 'Team Dashboard',
+				type: 'item',
+				icon: 'heroicons-outline:home',
+				url: '/team-management/dashboard',
+				translate: 'TEAM_DASHBOARD',
+				auth: ['user']
+			},
+			{
+				id: 'team-management.browse',
+				title: 'Browse Teams',
+				type: 'item',
+				icon: 'heroicons-outline:magnifying-glass',
+				url: '/team-management/browse',
+				translate: 'BROWSE_TEAMS',
+				auth: ['user']
+			},
+			{
+				id: 'team-management.create',
+				title: 'Create Team',
+				type: 'item',
+				icon: 'heroicons-outline:plus',
+				url: '/team-management/create',
+				translate: 'CREATE_TEAM',
+				auth: ['user']
+			}
+		]
 	}
 ];
 
@@ -387,7 +434,8 @@ const userNavigationConfig: IdeomniNavItemType[] = [
  */
 export function getNavigationConfig(
 	userType: 'admin' | 'user' | null, 
-	adminType?: 1 | 2
+	adminType?: 1 | 2,
+	regularUserType?: 1 | 2 | 3
 ): IdeomniNavItemType[] {
 	if (userType === 'admin') {
 		// For admin users, check adminType to return appropriate navigation
@@ -400,10 +448,52 @@ export function getNavigationConfig(
 		return superAdminNavigationConfig;
 	}
 	if (userType === 'user') {
-		return userNavigationConfig;
+		return getUserNavigationConfig(regularUserType);
 	}
 	// Return empty array for unauthenticated users
 	return [];
+}
+
+/**
+ * Get user navigation configuration based on user type
+ */
+export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNavItemType[] {
+	const baseNavigation = [...userNavigationConfig];
+	
+	// Add Team Administration for Managers (userType: 1)
+	if (regularUserType === 1) {
+		baseNavigation.push({
+			id: 'team-administration',
+			title: 'Team Administration',
+			subtitle: 'Manage all teams in your activity',
+			type: 'group',
+			icon: 'heroicons-outline:cog-6-tooth',
+			translate: 'TEAM_ADMINISTRATION',
+			auth: ['user'],
+			children: [
+				{
+					id: 'team-administration.overview',
+					title: 'Administration Overview',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar-square',
+					url: '/team-administration/overview',
+					translate: 'TEAM_ADMIN_OVERVIEW',
+					auth: ['user']
+				},
+				{
+					id: 'team-administration.teams',
+					title: 'Manage Teams',
+					type: 'item',
+					icon: 'heroicons-outline:user-group',
+					url: '/team-administration/teams',
+					translate: 'MANAGE_TEAMS',
+					auth: ['user']
+				}
+			]
+		});
+	}
+	
+	return baseNavigation;
 }
 
 /**

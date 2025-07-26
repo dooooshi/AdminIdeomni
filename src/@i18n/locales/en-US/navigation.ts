@@ -45,7 +45,17 @@ const navigation = {
 	ADMIN_ACCOUNTS: 'Admin Accounts',
 	USER_MANAGEMENT: 'User Management',
 	ACTIVITY_MANAGEMENT: 'Activity Management',
+	ADMIN_USER_ACTIVITY_MANAGEMENT: 'Admin User-Activity Management',
 	FACILITY_MANAGEMENT: 'Facility Management',
+	// Team Management
+	TEAM_MANAGEMENT: 'Team Management',
+	TEAM_DASHBOARD: 'Team Dashboard',
+	BROWSE_TEAMS: 'Browse Teams',
+	CREATE_TEAM: 'Create Team',
+	// Team Administration
+	TEAM_ADMINISTRATION: 'Team Administration',
+	TEAM_ADMIN_OVERVIEW: 'Administration Overview',
+	MANAGE_TEAMS: 'Manage Teams',
 };
 
 export default navigation; 
