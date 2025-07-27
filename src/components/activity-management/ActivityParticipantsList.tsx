@@ -485,6 +485,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
                   label={t('STATUS')}
+                  sx={{ minWidth: 140 }}
                 >
                   <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                   {Object.values(UserActivityStatus).map((status) => (
@@ -502,6 +503,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   value={filters.userType}
                   onChange={(e) => handleFilterChange('userType', e.target.value)}
                   label={t('USER_TYPE')}
+                  sx={{ minWidth: 150 }}
                 >
                   <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
                   <MenuItem value={1}>{t('MANAGER')}</MenuItem>

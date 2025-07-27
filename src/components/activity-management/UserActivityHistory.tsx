@@ -398,6 +398,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     value={filters.status}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
                     label={t('STATUS')}
+                    sx={{ minWidth: 140 }}
                   >
                     <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                     {Object.values(UserActivityStatus).map((status) => (

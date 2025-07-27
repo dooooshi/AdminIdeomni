@@ -434,6 +434,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   value={filters.userType}
                   onChange={(e) => handleFilterChange('userType', e.target.value)}
                   label={t('USER_TYPE')}
+                  sx={{ minWidth: 150 }}
                 >
                   <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
                   <MenuItem value={USER_TYPES.MANAGER}>{t('MANAGER')}</MenuItem>
@@ -451,6 +452,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   value={filters.activityStatus}
                   onChange={(e) => handleFilterChange('activityStatus', e.target.value)}
                   label={t('ACTIVITY_STATUS')}
+                  sx={{ minWidth: 170 }}
                 >
                   <MenuItem value="all">{t('ALL_USERS')}</MenuItem>
                   <MenuItem value="assigned">{t('ASSIGNED_USERS')}</MenuItem>
@@ -467,6 +469,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   value={filters.enrollmentStatus}
                   onChange={(e) => handleFilterChange('enrollmentStatus', e.target.value)}
                   label={t('STATUS')}
+                  sx={{ minWidth: 140 }}
                 >
                   <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                   {Object.values(UserActivityStatus).map((status) => (

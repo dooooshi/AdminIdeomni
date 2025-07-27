@@ -395,13 +395,14 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2.5}>
             <FormControl fullWidth>
               <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
               <Select
                 value={filters.facilityType}
                 label={t('FACILITY_TYPE')}
                 onChange={(e) => handleFilterChange('facilityType', e.target.value)}
+                sx={{ minWidth: 160 }}
               >
                 <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
                 {facilityTypes?.map((type) => (
@@ -412,13 +413,14 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2.5}>
             <FormControl fullWidth>
               <InputLabel>{t('CATEGORY')}</InputLabel>
               <Select
                 value={filters.category}
                 label={t('CATEGORY')}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
+                sx={{ minWidth: 180 }}
               >
                 <MenuItem value="">{t('ALL_CATEGORIES')}</MenuItem>
                 {facilityCategories?.map((category) => (
@@ -429,13 +431,14 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={1}>
             <FormControl fullWidth>
               <InputLabel>{t('STATUS')}</InputLabel>
               <Select
                 value={filters.status}
                 label={t('STATUS')}
                 onChange={(e) => handleFilterChange('status', e.target.value)}
+                sx={{ minWidth: 140 }}
               >
                 <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                 <MenuItem value="active">{t('ACTIVE')}</MenuItem>

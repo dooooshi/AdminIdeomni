@@ -475,7 +475,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                   sx={{ maxWidth: { md: 400 } }}
                 />
                 
-                <FormControl size="small" sx={{ minWidth: 150 }}>
+                <FormControl size="small" sx={{ minWidth: 180 }}>
                   <InputLabel>{t('ACTIVITY_TYPE_LABEL')}</InputLabel>
                   <Select
                     value={filters.activityType}
@@ -489,7 +489,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                   </Select>
                 </FormControl>
 
-                <FormControl size="small" sx={{ minWidth: 120 }}>
+                <FormControl size="small" sx={{ minWidth: 140 }}>
                   <InputLabel>{t('STATUS')}</InputLabel>
                   <Select
                     value={filters.isActive}

@@ -309,7 +309,7 @@ const AdminList: React.FC<AdminListProps> = ({
               sx={{ maxWidth: { md: 400 } }}
             />
             
-            <FormControl size="small" sx={{ minWidth: 150 }}>
+            <FormControl size="small" sx={{ minWidth: 170 }}>
               <InputLabel>{t('FILTER_BY_ROLE')}</InputLabel>
               <Select
                 value={filters.role}
@@ -322,7 +322,7 @@ const AdminList: React.FC<AdminListProps> = ({
               </Select>
             </FormControl>
 
-            <FormControl size="small" sx={{ minWidth: 120 }}>
+            <FormControl size="small" sx={{ minWidth: 140 }}>
               <InputLabel>{t('FILTER_BY_STATUS')}</InputLabel>
               <Select
                 value={filters.status}

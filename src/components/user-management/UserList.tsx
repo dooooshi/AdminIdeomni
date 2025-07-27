@@ -345,13 +345,14 @@ const UserList: React.FC<UserListProps> = ({
             </Grid>
 
             {/* Quick Filters */}
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={2.5}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('USER_TYPE')}</InputLabel>
                 <Select
                   value={filters.userType || ''}
                   onChange={(e) => handleFilterChange('userType', e.target.value || undefined)}
                   label={t('USER_TYPE')}
+                  sx={{ minWidth: 150 }}
                 >
                   <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
                   <MenuItem value={1}>{t('MANAGER')}</MenuItem>
@@ -361,13 +362,14 @@ const UserList: React.FC<UserListProps> = ({
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid item xs={12} sm={6} md={1.5}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('STATUS')}</InputLabel>
                 <Select
                   value={filters.isActive !== undefined ? filters.isActive.toString() : ''}
                   onChange={(e) => handleFilterChange('isActive', e.target.value === '' ? undefined : e.target.value === 'true')}
                   label={t('STATUS')}
+                  sx={{ minWidth: 140 }}
                 >
                   <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                   <MenuItem value="true">{t('ACTIVE')}</MenuItem>

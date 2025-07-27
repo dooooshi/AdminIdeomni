@@ -327,13 +327,14 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={2.5}>
               <FormControl fullWidth>
                 <InputLabel>{t('FILTER_BY_CATEGORY')}</InputLabel>
                 <Select
                   value={filters.category}
                   label={t('FILTER_BY_CATEGORY')}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
+                  sx={{ minWidth: 180 }}
                 >
                   <MenuItem value="">{t('ALL_CATEGORIES')}</MenuItem>
                   {facilityCategories.map((category) => (
@@ -344,13 +345,14 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={2.5}>
               <FormControl fullWidth>
                 <InputLabel>{t('FILTER_BY_TYPE')}</InputLabel>
                 <Select
                   value={filters.facilityType}
                   label={t('FILTER_BY_TYPE')}
                   onChange={(e) => handleFilterChange('facilityType', e.target.value)}
+                  sx={{ minWidth: 160 }}
                 >
                   <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
                   {facilityTypes.map((type) => (
@@ -368,6 +370,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   value={filters.status}
                   label={t('FILTER_BY_STATUS')}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
+                  sx={{ minWidth: 140 }}
                 >
                   <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                   <MenuItem value="active">{t('ACTIVE')}</MenuItem>

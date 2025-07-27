@@ -214,6 +214,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as any)}
                     label={t('STATUS')}
+                    sx={{ minWidth: 140 }}
                   >
                     <MenuItem value="all">{t('ALL_STATUSES')}</MenuItem>
                     <MenuItem value="active">{t('ACTIVE', { ns: 'activity' })}</MenuItem>
@@ -229,6 +230,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value)}
                     label={t('TYPE')}
+                    sx={{ minWidth: 150 }}
                   >
                     <MenuItem value="all">{t('ALL_TYPES')}</MenuItem>
                     {getActivityTypes().map((type) => (

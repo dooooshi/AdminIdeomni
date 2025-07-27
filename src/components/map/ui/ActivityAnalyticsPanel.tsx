@@ -228,7 +228,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
           }
           action={
             <Stack direction="row" spacing={1} alignItems="center">
-              <FormControl size="small" sx={{ minWidth: 120 }}>
+              <FormControl size="small" sx={{ minWidth: 150 }}>
                 <InputLabel>{t('LAND_TYPE')}</InputLabel>
                 <Select
                   value={landTypeFilter}
