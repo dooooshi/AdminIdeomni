@@ -530,7 +530,10 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   <Button
                     variant="contained"
                     startIcon={<PersonAddIcon />}
-                    onClick={() => setBulkAssignDialog({ ...bulkAssignDialog, open: true })}
+                    onClick={() => {
+                      setBulkAssignDialog({ ...bulkAssignDialog, open: true });
+                      loadAvailableActivities();
+                    }}
                   >
                     {t('BULK_ASSIGN')} ({selectedUsers.length})
                   </Button>
@@ -1035,6 +1038,230 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             disabled={operationLoading || !transferDialog.newActivity}
           >
             {operationLoading ? <CircularProgress size={20} /> : t('TRANSFER')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Bulk Assign Dialog */}
+      <Dialog
+        open={bulkAssignDialog.open}
+        onClose={() => setBulkAssignDialog({ ...bulkAssignDialog, open: false })}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>{t('BULK_ASSIGN_USERS')}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" gutterBottom>
+              <strong>{t('SELECTED_USERS')}:</strong> {selectedUsers.length} {t('USERS')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('BULK_ASSIGN_DESCRIPTION')}
+            </Typography>
+          </Box>
+          <Divider sx={{ mb: 3 }} />
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>{t('SELECT_ACTIVITY')}</InputLabel>
+                <Select
+                  value={bulkAssignDialog.activityId}
+                  onChange={(e) => setBulkAssignDialog({
+                    ...bulkAssignDialog,
+                    activityId: e.target.value
+                  })}
+                  label={t('SELECT_ACTIVITY')}
+                  disabled={loadingActivities}
+                >
+                  {loadingActivities ? (
+                    <MenuItem disabled>
+                      <CircularProgress size={20} sx={{ mr: 1 }} />
+                      Loading activities...
+                    </MenuItem>
+                  ) : (
+                    availableActivities.map((activity) => (
+                      <MenuItem key={activity.id} value={activity.id}>
+                        <Tooltip 
+                          title={
+                            <Box>
+                              <Typography variant="body2" fontWeight="medium">{activity.name}</Typography>
+                              <Typography variant="caption">{activity.activityType}</Typography>
+                              <Typography variant="caption" display="block">
+                                {format(new Date(activity.startAt), 'yyyy-MM-dd')} - {format(new Date(activity.endAt), 'yyyy-MM-dd')}
+                              </Typography>
+                            </Box>
+                          }
+                          arrow
+                          placement="right"
+                        >
+                          <Box sx={{ width: '100%', minWidth: 0 }}>
+                            <Typography 
+                              variant="body2" 
+                              fontWeight="medium"
+                              sx={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '300px'
+                              }}
+                            >
+                              {activity.name}
+                            </Typography>
+                            <Typography 
+                              variant="caption" 
+                              color="text.secondary"
+                              sx={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                display: 'block',
+                                maxWidth: '300px'
+                              }}
+                            >
+                              {activity.activityType} • {format(new Date(activity.startAt), 'MM-dd')} - {format(new Date(activity.endAt), 'MM-dd')}
+                            </Typography>
+                          </Box>
+                        </Tooltip>
+                      </MenuItem>
+                    ))
+                  )}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label={t('REASON')}
+                multiline
+                rows={3}
+                value={bulkAssignDialog.reason}
+                onChange={(e) => setBulkAssignDialog({
+                  ...bulkAssignDialog,
+                  reason: e.target.value
+                })}
+                placeholder={t('BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={bulkAssignDialog.forceAssignment}
+                    onChange={(e) => setBulkAssignDialog({
+                      ...bulkAssignDialog,
+                      forceAssignment: e.target.checked
+                    })}
+                  />
+                }
+                label={t('FORCE_ASSIGNMENT')}
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setBulkAssignDialog({ ...bulkAssignDialog, open: false })}
+            disabled={operationLoading}
+          >
+            {t('CANCEL')}
+          </Button>
+          <Button
+            onClick={handleBulkAssign}
+            variant="contained"
+            disabled={operationLoading || !bulkAssignDialog.activityId}
+          >
+            {operationLoading ? <CircularProgress size={20} /> : t('BULK_ASSIGN')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Bulk Operation Results Dialog */}
+      <Dialog
+        open={showResults && operationResult !== null}
+        onClose={() => {
+          setShowResults(false);
+          setOperationResult(null);
+        }}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>{t('BULK_OPERATION_RESULTS')}</DialogTitle>
+        <DialogContent>
+          {operationResult && (
+            <Box>
+              <Grid container spacing={2} sx={{ mb: 3 }}>
+                <Grid item xs={4}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
+                    <Typography variant="h6" color="success.main">
+                      {operationResult.successCount}
+                    </Typography>
+                    <Typography variant="body2">
+                      {t('SUCCESSFUL')}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={4}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <ErrorIcon sx={{ fontSize: 40, color: 'error.main', mb: 1 }} />
+                    <Typography variant="h6" color="error.main">
+                      {operationResult.failedCount}
+                    </Typography>
+                    <Typography variant="body2">
+                      {t('FAILED')}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={4}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <WarningIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
+                    <Typography variant="h6" color="warning.main">
+                      {operationResult.totalCount - operationResult.successCount - operationResult.failedCount}
+                    </Typography>
+                    <Typography variant="body2">
+                      {t('SKIPPED')}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+
+              {operationResult.details?.filter(d => !d.success).length > 0 && (
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="h6" gutterBottom color="error.main">
+                    {t('FAILED_ASSIGNMENTS')}
+                  </Typography>
+                  {operationResult.details?.filter(d => !d.success).map((result, index) => (
+                    <Alert key={index} severity="error" sx={{ mb: 1 }}>
+                      <Typography variant="body2">
+                        <strong>{result.userId}:</strong> {result.error || 'Unknown error'}
+                      </Typography>
+                    </Alert>
+                  ))}
+                </Box>
+              )}
+
+              {operationResult.successCount > 0 && (
+                <Box>
+                  <Typography variant="h6" gutterBottom color="success.main">
+                    {t('SUCCESSFUL_ASSIGNMENTS')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {operationResult.successCount} {t('USERS_SUCCESSFULLY_ASSIGNED')}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setShowResults(false);
+              setOperationResult(null);
+            }}
+            variant="contained"
+          >
+            {t('CLOSE')}
           </Button>
         </DialogActions>
       </Dialog>

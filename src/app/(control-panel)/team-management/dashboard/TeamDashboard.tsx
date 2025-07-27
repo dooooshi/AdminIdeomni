@@ -55,57 +55,66 @@ function TeamDashboard() {
   // User has no team
   if (error || !team) {
     return (
-      <div className="flex flex-col flex-1 relative overflow-hidden">
-        <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
-          <motion.div
-            className="flex flex-col gap-6"
-            variants={container}
-            initial="hidden"
-            animate="show"
-          >
-            {/* Header */}
-            <motion.div variants={item}>
-              <Typography variant="h3" className="font-semibold">
-                {t('teamManagement:TEAM_DASHBOARD')}
-              </Typography>
-              <Typography color="text.secondary" className="mt-2">
-                {t('teamManagement:MANAGE_TEAM_COLLABORATION')}
-              </Typography>
-            </motion.div>
+      <>
+        <div className="flex flex-col flex-1 relative overflow-hidden">
+          <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
+            <motion.div
+              className="flex flex-col gap-6"
+              variants={container}
+              initial="hidden"
+              animate="show"
+            >
+              {/* Header */}
+              <motion.div variants={item}>
+                <Typography variant="h3" className="font-semibold">
+                  {t('teamManagement:TEAM_DASHBOARD')}
+                </Typography>
+                <Typography color="text.secondary" className="mt-2">
+                  {t('teamManagement:MANAGE_TEAM_COLLABORATION')}
+                </Typography>
+              </motion.div>
 
-            {/* No Team Card */}
-            <motion.div variants={item}>
-              <Paper className="p-8 text-center">
-                <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
-                  heroicons-outline:user-group
-                </IdeomniSvgIcon>
-                <Typography variant="h5" className="mb-2">
-                  {t('teamManagement:NOT_IN_TEAM_YET')}
-                </Typography>
-                <Typography color="text.secondary" className="mb-6">
-                  {t('teamManagement:JOIN_OR_CREATE_TEAM')}
-                </Typography>
-                <div className="flex gap-3 justify-center">
-                  <Button
-                    variant="contained"
-                    onClick={() => router.push('/team-management/browse')}
-                    startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
-                  >
-                    {t('teamManagement:BROWSE_TEAMS_BUTTON')}
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={handleOpenCreateModal}
-                    startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
-                  >
-                    {t('teamManagement:CREATE_TEAM_BUTTON')}
-                  </Button>
-                </div>
-              </Paper>
+              {/* No Team Card */}
+              <motion.div variants={item}>
+                <Paper className="p-8 text-center">
+                  <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
+                    heroicons-outline:user-group
+                  </IdeomniSvgIcon>
+                  <Typography variant="h5" className="mb-2">
+                    {t('teamManagement:NOT_IN_TEAM_YET')}
+                  </Typography>
+                  <Typography color="text.secondary" className="mb-6">
+                    {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+                  </Typography>
+                  <div className="flex gap-3 justify-center">
+                    <Button
+                      variant="contained"
+                      onClick={() => router.push('/team-management/browse')}
+                      startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
+                    >
+                      {t('teamManagement:BROWSE_TEAMS_BUTTON')}
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={handleOpenCreateModal}
+                      startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
+                    >
+                      {t('teamManagement:CREATE_TEAM_BUTTON')}
+                    </Button>
+                  </div>
+                </Paper>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
-      </div>
+
+        {/* Create Team Modal */}
+        <CreateTeamModal
+          open={isCreateModalOpen}
+          onClose={handleCloseCreateModal}
+          onSuccess={handleTeamCreateSuccess}
+        />
+      </>
     );
   }
 
@@ -132,13 +141,6 @@ function TeamDashboard() {
               </Typography>
             </div>
             <div className="flex gap-2">
-              <Button
-                variant="contained"
-                onClick={handleOpenCreateModal}
-                startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
-              >
-                {t('teamManagement:CREATE_TEAM_BUTTON')}
-              </Button>
               {isLeader && (
                 <Button
                   variant="outlined"

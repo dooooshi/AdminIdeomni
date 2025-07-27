@@ -428,7 +428,15 @@ const activityManagement = {
   
   // Bulk Operations
   BULK_ASSIGNMENT: 'Bulk Assignment',
+  BULK_ASSIGN_USERS: 'Bulk Assign Users',
+  BULK_ASSIGN_DESCRIPTION: 'Assign multiple selected users to the same activity at once.',
+  BULK_ASSIGNMENT_REASON_PLACEHOLDER: 'Enter reason for bulk assignment (optional)',
   BULK_ASSIGNMENT_ERROR: 'Failed to perform bulk assignment',
+  BULK_OPERATION_RESULTS: 'Bulk Operation Results',
+  USERS_SUCCESSFULLY_ASSIGNED: 'users successfully assigned',
+  FAILED_ASSIGNMENTS: 'Failed Assignments',
+  SKIPPED_ASSIGNMENTS: 'Skipped Assignments',
+  SKIPPED: 'Skipped',
   REMOVE_USER_ERROR: 'Failed to remove user from activity',
   
   // Team Management Panel

@@ -80,14 +80,52 @@ const TeamApi = api
       joinTeam: build.mutation<void, string>({
         queryFn: async (teamId) => {
           try {
+            if (!teamId) {
+              return { 
+                error: { 
+                  status: 400, 
+                  data: 'Team ID is required' 
+                } 
+              };
+            }
+            
             await TeamService.joinTeam(teamId);
             return { data: undefined };
           } catch (error: any) {
-            console.error('Error in joinTeam:', error);
+            console.error('Error in joinTeam queryFn:', {
+              error,
+              teamId,
+              errorType: typeof error,
+              errorKeys: Object.keys(error || {}),
+              stack: error?.stack
+            });
+            
+            // Handle different error formats
+            let status = 500;
+            let message = 'Failed to join team';
+            
+            if (error?.response?.status) {
+              status = error.response.status;
+            } else if (error?.status) {
+              status = error.status;
+            } else if (error?.httpStatus) {
+              status = error.httpStatus;
+            }
+            
+            if (error?.response?.data?.message) {
+              message = error.response.data.message;
+            } else if (error?.message) {
+              message = error.message;
+            } else if (error?.data) {
+              message = error.data;
+            } else if (typeof error === 'string') {
+              message = error;
+            }
+            
             return { 
               error: { 
-                status: error?.httpStatus || error?.status || 500, 
-                data: error?.message || error?.data || 'Failed to join team'
+                status, 
+                data: message
               } 
             };
           }

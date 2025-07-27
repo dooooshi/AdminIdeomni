@@ -163,7 +163,26 @@ export class TeamService {
    * Join a team
    */
   static async joinTeam(teamId: string): Promise<void> {
-    await apiClient.post<ApiResponse<void>>(`/user/teams/${teamId}/join`);
+    try {
+      await apiClient.post<ApiResponse<void>>(`/user/teams/${teamId}/join`);
+    } catch (error: any) {
+      console.error('TeamService.joinTeam error:', {
+        error,
+        teamId,
+        errorMessage: error?.message,
+        errorResponse: error?.response,
+        errorStatus: error?.response?.status
+      });
+      
+      // Re-throw with consistent error format
+      throw {
+        httpStatus: error?.response?.status || 500,
+        status: error?.response?.status || 500,
+        message: error?.response?.data?.message || error?.message || 'Failed to join team',
+        data: error?.response?.data || error?.message || 'Failed to join team',
+        originalError: error
+      };
+    }
   }
 
   /**
