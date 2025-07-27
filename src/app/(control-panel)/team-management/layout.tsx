@@ -7,11 +7,12 @@ interface TeamManagementLayoutProps {
 
 /**
  * Team Management Layout
- * Protected for regular users (Manager, Worker, Student)
+ * Protected for Students only (userType: 3)
+ * Managers and Workers are restricted from accessing team management pages
  */
 function TeamManagementLayout({ children }: TeamManagementLayoutProps) {
   return (
-    <UserGuard userTypes={[1, 2, 3]}>
+    <UserGuard userTypes={[3]}>
       <div className="flex flex-col flex-1 relative overflow-hidden">
         {children}
       </div>

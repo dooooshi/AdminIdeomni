@@ -71,8 +71,8 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
       clearError();
       
       const credentials: AdminLoginRequest = {
-        identifier: data.identifier,
-        password: data.password,
+        identifier: data.identifier.trim(),
+        password: data.password.trim(),
       };
 
       await adminLogin(credentials);

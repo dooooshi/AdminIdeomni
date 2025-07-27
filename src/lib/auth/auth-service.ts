@@ -36,7 +36,11 @@ class AuthService {
 
   // Admin Authentication Methods
   async adminLogin(credentials: AdminLoginRequest): Promise<AdminLoginResponse> {
-    const response = await apiClient.postAuth<AdminLoginResponse>('/admin/login', credentials);
+    const trimmedCredentials = {
+      identifier: credentials.identifier.trim(),
+      password: credentials.password.trim(),
+    };
+    const response = await apiClient.postAuth<AdminLoginResponse>('/admin/login', trimmedCredentials);
 
     // Check if the response indicates success
     if (!response.success) {
@@ -135,7 +139,11 @@ class AuthService {
 
   // User Authentication Methods
   async userLogin(credentials: UserLoginRequest): Promise<UserLoginResponse> {
-    const response = await apiClient.postAuth<UserLoginResponse>('/user/login', credentials);
+    const trimmedCredentials = {
+      identifier: credentials.identifier.trim(),
+      password: credentials.password.trim(),
+    };
+    const response = await apiClient.postAuth<UserLoginResponse>('/user/login', trimmedCredentials);
 
     // Check if the response indicates success
     if (!response.success) {

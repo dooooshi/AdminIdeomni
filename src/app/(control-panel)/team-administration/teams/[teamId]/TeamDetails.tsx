@@ -16,6 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import managerTeamApiService from '../../ManagerTeamApi';
@@ -30,6 +31,7 @@ interface TeamDetailsProps {
  */
 function TeamDetails({ teamId }: TeamDetailsProps) {
   const router = useRouter();
+  const { t } = useTranslation();
   
   const [memberMenuAnchor, setMemberMenuAnchor] = useState<null | HTMLElement>(null);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
@@ -85,13 +87,13 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Typography variant="h6" className="mb-4">
-          Team not found
+          {t('teamAdministration:NO_TEAMS_FOUND')}
         </Typography>
         <Button
           onClick={() => router.push('/team-administration/teams')}
           startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
         >
-          Back to Teams
+          {t('teamAdministration:MANAGE_TEAMS')}
         </Button>
       </div>
     );
@@ -175,7 +177,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                   onClick={() => router.push('/team-administration/teams')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
                 >
-                  Back to Teams
+                  {t('teamAdministration:MANAGE_TEAMS')}
                 </Button>
               </div>
               <div className="flex items-center gap-3 mb-2">
@@ -183,13 +185,13 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                   {team.name}
                 </Typography>
                 <Chip
-                  label={team.isOpen ? 'Open' : 'Closed'}
+                  label={team.isOpen ? t('teamAdministration:OPEN') : t('teamAdministration:CLOSED')}
                   color={team.isOpen ? 'success' : 'default'}
                   variant="outlined"
                 />
                 {activeMembers.length >= team.maxMembers && (
                   <Chip
-                    label="Full"
+                    label={t('teamAdministration:FULL')}
                     color="error"
                     variant="outlined"
                   />
@@ -207,7 +209,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                 disabled={eligibleLeaders.length === 0}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:switch-horizontal</IdeomniSvgIcon>}
               >
-                Transfer Leadership
+                {t('teamAdministration:PROMOTE_TO_LEADER')}
               </Button>
               <Button
                 variant="outlined"
@@ -215,7 +217,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                 onClick={() => setShowDisbandDialog(true)}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:trash</IdeomniSvgIcon>}
               >
-                Force Disband
+                {t('teamAdministration:DISBAND_TEAM')}
               </Button>
             </div>
           </motion.div>
@@ -229,7 +231,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                     {activeMembers.length}
                   </Typography>
                   <Typography color="text.secondary">
-                    Active Members
+                    {t('teamAdministration:ACTIVE_TEAMS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -240,7 +242,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                     {team.maxMembers}
                   </Typography>
                   <Typography color="text.secondary">
-                    Max Capacity
+                    {t('teamAdministration:MAXIMUM_MEMBERS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -251,7 +253,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                     {Math.round((activeMembers.length / team.maxMembers) * 100)}%
                   </Typography>
                   <Typography color="text.secondary">
-                    Capacity Used
+                    {t('teamAdministration:CURRENT_MEMBERS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -262,7 +264,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                     {new Date(team.createdAt).toLocaleDateString()}
                   </Typography>
                   <Typography color="text.secondary">
-                    Created
+                    {t('teamAdministration:CREATED')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -273,7 +275,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                Team Members ({activeMembers.length})
+                {t('teamAdministration:TEAM_MEMBERS')} ({activeMembers.length})
               </Typography>
               
               <div className="space-y-3">
@@ -299,7 +301,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                           {member.user.id === team.leader.id && (
                             <Chip
                               size="small"
-                              label="Leader"
+                              label={t('teamAdministration:LEADER')}
                               color="primary"
                               variant="outlined"
                               icon={<IdeomniSvgIcon size={16}>heroicons-solid:star</IdeomniSvgIcon>}
@@ -310,14 +312,14 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                           {member.user.email}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Joined {new Date(member.joinedAt).toLocaleDateString()}
+                          {t('teamAdministration:MEMBER_SINCE')} {new Date(member.joinedAt).toLocaleDateString()}
                         </Typography>
                       </div>
                     </div>
                     
                     <div className="flex items-center gap-3">
                       <Typography variant="body2" color="text.secondary">
-                        User Type: {member.user.userType === 1 ? 'Manager' : member.user.userType === 2 ? 'User' : 'Student'}
+                        {t('teamAdministration:USER_TYPE')}: {member.user.userType === 1 ? t('teamAdministration:MANAGER') : member.user.userType === 2 ? t('teamAdministration:WORKER') : t('teamAdministration:STUDENT')}
                       </Typography>
                       
                       <Button
@@ -326,7 +328,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                         onClick={(e) => handleMemberAction(e, member)}
                         startIcon={<IdeomniSvgIcon>heroicons-outline:cog</IdeomniSvgIcon>}
                       >
-                        Actions
+                        {t('teamAdministration:ACTIONS')}
                       </Button>
                     </div>
                   </div>
@@ -350,7 +352,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             handleCloseMemberMenu();
           }}>
             <IdeomniSvgIcon className="mr-2">heroicons-outline:star</IdeomniSvgIcon>
-            Make Leader
+            {t('teamAdministration:PROMOTE_TO_LEADER')}
           </MenuItem>
         )}
         <MenuItem 
@@ -358,7 +360,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
           className="text-red-600"
         >
           <IdeomniSvgIcon className="mr-2">heroicons-outline:trash</IdeomniSvgIcon>
-          Remove Member
+          {t('teamAdministration:REMOVE_MEMBER')}
         </MenuItem>
       </Menu>
 
@@ -374,24 +376,24 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             <IdeomniSvgIcon className="text-red-500">
               heroicons-outline:exclamation-triangle
             </IdeomniSvgIcon>
-            Remove Team Member
+            {t('teamAdministration:REMOVE_MEMBER')}
           </div>
         </DialogTitle>
         <DialogContent>
           <Typography className="mb-4">
-            Are you sure you want to remove <strong>
+            {t('teamAdministration:MEMBER_REMOVE_ERROR')}: <strong>
               {selectedMember?.user.firstName && selectedMember?.user.lastName
                 ? `${selectedMember.user.firstName} ${selectedMember.user.lastName}`
                 : selectedMember?.user.username}
-            </strong> from the team?
+            </strong>?
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            This action cannot be undone. The member will be removed immediately.
+            {t('teamAdministration:CANNOT_UNDO')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowRemoveDialog(false)}>
-            Cancel
+            {t('teamAdministration:CANCEL')}
           </Button>
           <Button
             color="error"
@@ -400,7 +402,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             disabled={isRemoving}
             startIcon={<IdeomniSvgIcon>heroicons-outline:trash</IdeomniSvgIcon>}
           >
-            {isRemoving ? 'Removing...' : 'Remove Member'}
+            {isRemoving ? t('teamAdministration:MEMBER_REMOVE_ERROR') : t('teamAdministration:REMOVE_MEMBER')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -416,11 +418,11 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
         fullWidth
       >
         <DialogTitle>
-          Transfer Team Leadership
+          {t('teamAdministration:PROMOTE_TO_LEADER')}
         </DialogTitle>
         <DialogContent>
           <Typography className="mb-4">
-            Select a new leader for <strong>{team.name}</strong>:
+            {t('teamAdministration:PROMOTE_TO_LEADER')}: <strong>{team.name}</strong>
           </Typography>
           <Autocomplete
             options={eligibleLeaders.map(m => m.user)}
@@ -434,8 +436,8 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Select New Leader"
-                placeholder="Choose a team member..."
+                label={t('teamAdministration:LEADER')}
+                placeholder={t('teamAdministration:TEAM_MEMBERS')}
               />
             )}
             fullWidth
@@ -446,7 +448,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             setShowTransferDialog(false);
             setNewLeader(null);
           }}>
-            Cancel
+            {t('teamAdministration:CANCEL')}
           </Button>
           <Button
             variant="contained"
@@ -454,7 +456,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             disabled={!newLeader || isTransferring}
             startIcon={<IdeomniSvgIcon>heroicons-outline:switch-horizontal</IdeomniSvgIcon>}
           >
-            {isTransferring ? 'Transferring...' : 'Transfer Leadership'}
+            {isTransferring ? t('teamAdministration:LEADER_PROMOTED_SUCCESS') : t('teamAdministration:PROMOTE_TO_LEADER')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -471,21 +473,20 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             <IdeomniSvgIcon className="text-red-500">
               heroicons-outline:exclamation-triangle
             </IdeomniSvgIcon>
-            Force Disband Team
+            {t('teamAdministration:DISBAND_TEAM_CONFIRMATION')}
           </div>
         </DialogTitle>
         <DialogContent>
           <Typography className="mb-4">
-            Are you sure you want to force disband <strong>{team.name}</strong>?
+            {t('teamAdministration:DISBAND_WARNING')}: <strong>{team.name}</strong>?
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            This will permanently delete the team and remove all {activeMembers.length} members. 
-            This action cannot be undone.
+            {t('teamAdministration:DISBAND_WARNING')} {t('teamAdministration:CANNOT_UNDO')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowDisbandDialog(false)}>
-            Cancel
+            {t('teamAdministration:CANCEL')}
           </Button>
           <Button
             color="error"
@@ -494,7 +495,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
             disabled={isDisbanding}
             startIcon={<IdeomniSvgIcon>heroicons-outline:trash</IdeomniSvgIcon>}
           >
-            {isDisbanding ? 'Disbanding...' : 'Force Disband'}
+            {isDisbanding ? t('teamAdministration:DISBANDING') : t('teamAdministration:DISBAND_TEAM')}
           </Button>
         </DialogActions>
       </Dialog>

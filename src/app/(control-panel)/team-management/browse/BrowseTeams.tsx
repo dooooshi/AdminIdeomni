@@ -153,7 +153,7 @@ function BrowseTeams() {
                 </Typography>
                 <Button
                   variant="contained"
-                  onClick={() => router.push('/team-management/create')}
+                  onClick={() => router.push('/team-management/dashboard')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                 >
                   {t('teamManagement:CREATE_NEW_TEAM_BUTTON')}
@@ -281,7 +281,7 @@ function BrowseTeams() {
                 </Typography>
                 <Button
                   variant="contained"
-                  onClick={() => router.push('/team-management/create')}
+                  onClick={() => router.push('/team-management/dashboard')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                 >
                   {t('teamManagement:CREATE_NEW_TEAM_BUTTON')}

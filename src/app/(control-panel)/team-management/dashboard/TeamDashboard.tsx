@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentTeamQuery } from '../TeamApi';
+import CreateTeamModal from './CreateTeamModal';
 
 /**
  * Team Dashboard Component
@@ -19,7 +20,20 @@ import { useGetCurrentTeamQuery } from '../TeamApi';
 function TeamDashboard() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { data: team, isLoading, error } = useGetCurrentTeamQuery();
+  const { data: team, isLoading, error, refetch } = useGetCurrentTeamQuery();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const handleOpenCreateModal = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  const handleTeamCreateSuccess = () => {
+    refetch(); // Refresh team data after successful creation
+  };
 
   const container = {
     show: {
@@ -81,7 +95,7 @@ function TeamDashboard() {
                   </Button>
                   <Button
                     variant="outlined"
-                    onClick={() => router.push('/team-management/create')}
+                    onClick={handleOpenCreateModal}
                     startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                   >
                     {t('teamManagement:CREATE_TEAM_BUTTON')}
@@ -120,7 +134,7 @@ function TeamDashboard() {
             <div className="flex gap-2">
               <Button
                 variant="contained"
-                onClick={() => router.push('/team-management/create')}
+                onClick={handleOpenCreateModal}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
               >
                 {t('teamManagement:CREATE_TEAM_BUTTON')}
@@ -259,6 +273,13 @@ function TeamDashboard() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Create Team Modal */}
+      <CreateTeamModal
+        open={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+        onSuccess={handleTeamCreateSuccess}
+      />
     </div>
   );
 }

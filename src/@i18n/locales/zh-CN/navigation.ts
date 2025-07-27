@@ -45,6 +45,7 @@ const navigation = {
 	ADMIN_ACCOUNTS: '管理员账户',
 	USER_MANAGEMENT: '用户管理',
 	ACTIVITY_MANAGEMENT: '活动管理',
+	ADMIN_USER_ACTIVITY_MANAGEMENT: '管理员用户-活动管理',
 	FACILITY_MANAGEMENT: '设施管理',
 	// Team Management
 	TEAM_MANAGEMENT: '团队管理',

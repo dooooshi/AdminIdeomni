@@ -415,15 +415,6 @@ const userNavigationConfig: IdeomniNavItemType[] = [
 				url: '/team-management/browse',
 				translate: 'BROWSE_TEAMS',
 				auth: ['user']
-			},
-			{
-				id: 'team-management.create',
-				title: 'Create Team',
-				type: 'item',
-				icon: 'heroicons-outline:plus',
-				url: '/team-management/create',
-				translate: 'CREATE_TEAM',
-				auth: ['user']
 			}
 		]
 	}
@@ -458,11 +449,66 @@ export function getNavigationConfig(
  * Get user navigation configuration based on user type
  */
 export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNavItemType[] {
-	const baseNavigation = [...userNavigationConfig];
+	let navigation: IdeomniNavItemType[] = [];
+	
+	// Add Dashboard for all user types
+	navigation.push({
+		id: 'dashboards',
+		title: 'Dashboards',
+		subtitle: 'Project management',
+		type: 'group',
+		icon: 'heroicons-outline:home',
+		translate: 'DASHBOARDS',
+		auth: ['user'],
+		children: [
+			{
+				id: 'dashboards.project',
+				title: 'Project',
+				type: 'item',
+				icon: 'heroicons-outline:clipboard-document-check',
+				url: '/dashboards/project',
+				translate: 'PROJECT',
+				auth: ['user']
+			}
+		]
+	});
+
+	// Add Team Management (Collaborate with your team) only for Students (userType: 3)
+	if (regularUserType === 3) {
+		navigation.push({
+			id: 'team-management',
+			title: 'Team Management',
+			subtitle: 'Collaborate with your team',
+			type: 'group',
+			icon: 'heroicons-outline:user-group',
+			translate: 'TEAM_MANAGEMENT',
+			auth: ['user'],
+			children: [
+				{
+					id: 'team-management.dashboard',
+					title: 'Team Dashboard',
+					type: 'item',
+					icon: 'heroicons-outline:home',
+					url: '/team-management/dashboard',
+					translate: 'TEAM_DASHBOARD',
+					auth: ['user']
+				},
+				{
+					id: 'team-management.browse',
+					title: 'Browse Teams',
+					type: 'item',
+					icon: 'heroicons-outline:magnifying-glass',
+					url: '/team-management/browse',
+					translate: 'BROWSE_TEAMS',
+					auth: ['user']
+				}
+			]
+		});
+	}
 	
 	// Add Team Administration for Managers (userType: 1)
 	if (regularUserType === 1) {
-		baseNavigation.push({
+		navigation.push({
 			id: 'team-administration',
 			title: 'Team Administration',
 			subtitle: 'Manage all teams in your activity',
@@ -493,7 +539,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 		});
 	}
 	
-	return baseNavigation;
+	return navigation;
 }
 
 /**

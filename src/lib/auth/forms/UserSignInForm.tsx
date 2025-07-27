@@ -71,8 +71,8 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
       clearError();
       
       const credentials: UserLoginRequest = {
-        identifier: data.identifier,
-        password: data.password,
+        identifier: data.identifier.trim(),
+        password: data.password.trim(),
       };
 
       await userLogin(credentials);
