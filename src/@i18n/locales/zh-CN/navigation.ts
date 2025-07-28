@@ -34,8 +34,7 @@ const navigation = {
 	// Other items
 	NOTIFICATIONS: '通知',
 	ACTIVITIES: '活动',
-	// Test Map
-	TEST_MAP: '测试地图',
+
 	// Map Template Management
 	MAP_TEMPLATE_MANAGEMENT: '模板管理',
 	// Activity Tile State Management

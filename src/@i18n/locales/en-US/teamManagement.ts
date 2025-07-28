@@ -99,7 +99,185 @@ const teamManagement = {
   QUICK_ACTIONS: 'Quick Actions',
   BROWSE_OTHER_TEAMS: 'Browse Other Teams',
   SETTINGS: 'Settings',
-  TEAM_DASHBOARD_FALLBACK: 'Team Dashboard'
+  TEAM_DASHBOARD_FALLBACK: 'Team Dashboard',
+  
+  // Resource Transfers
+  RESOURCE_TRANSFERS: 'Resource Transfers',
+  TRANSFER_HUB: 'Transfer Hub',
+  TRANSFER_GOLD: 'Transfer Gold',
+  TRANSFER_CARBON: 'Transfer Carbon',
+  SEND_RESOURCES: 'Send Resources',
+  SEND_RESOURCES_SUBTITLE: 'Transfer gold and carbon to other teams in your activity',
+  TRANSFER_RESOURCES_TO_TEAMS: 'Transfer resources to other teams',
+  SELECT_TRANSFER_TYPE: 'Select what you want to transfer',
+  GOLD_TRANSFERS: 'Gold Transfers',
+  CARBON_TRANSFERS: 'Carbon Transfers',
+  RECENT_TRANSFERS: 'Recent Transfers',
+  QUICK_TRANSFER: 'Quick Transfer',
+  
+  // Transfer Forms
+  TRANSFER_GOLD_TO_TEAM: 'Transfer Gold to Team',
+  TRANSFER_CARBON_TO_TEAM: 'Transfer Carbon to Team',
+  TRANSFER_GOLD_SUBTITLE: 'Send gold from your team account to another team',
+  TRANSFER_CARBON_SUBTITLE: 'Send carbon from your team account to another team',
+  SELECT_TARGET_TEAM: 'Select Target Team',
+  SELECT_TEAM_PLACEHOLDER: 'Choose a team to transfer to...',
+  TRANSFER_AMOUNT: 'Transfer Amount',
+  AMOUNT_PLACEHOLDER: 'Enter amount to transfer',
+  AVAILABLE_BALANCE: 'Available Balance',
+  TRANSFER_DESCRIPTION: 'Description (Optional)',
+  TRANSFER_DESCRIPTION_PLACEHOLDER: 'Add a note about this transfer...',
+  SEND_TRANSFER: 'Send Transfer',
+  SENDING_TRANSFER: 'Sending Transfer...',
+  CANCEL_TRANSFER: 'Cancel',
+  CONFIRM_TRANSFER: 'Confirm Transfer',
+  TRANSFER_CONFIRMATION: 'Transfer Confirmation',
+  REVIEW_TRANSFER_DETAILS: 'Please review the transfer details below',
+  TARGET_TEAM: 'Target Team',
+  AMOUNT: 'Amount',
+  DESCRIPTION: 'Description',
+  CURRENT_BALANCE: 'Current Balance',
+  BALANCE_AFTER_TRANSFER: 'Balance After Transfer',
+  
+  // Transfer Validation
+  INVALID_AMOUNT: 'Please enter a valid amount',
+  AMOUNT_TOO_SMALL: 'Minimum transfer amount is 0.001',
+  AMOUNT_TOO_LARGE: 'Amount exceeds available balance',
+  MAX_DECIMAL_PLACES: 'Maximum 3 decimal places allowed',
+  TARGET_TEAM_REQUIRED: 'Please select a target team',
+  LARGE_TRANSFER_WARNING: 'This transfer is more than 50% of your current balance',
+  INSUFFICIENT_BALANCE_ERROR: 'Insufficient balance for this transfer',
+  SAME_TEAM_ERROR: 'Cannot transfer to the same team',
+  
+  // Transfer Success/Error Messages
+  TRANSFER_SUCCESSFUL: 'Transfer completed successfully',
+  TRANSFER_FAILED: 'Transfer failed',
+  GOLD_TRANSFER_SUCCESS: 'Gold transfer completed successfully',
+  CARBON_TRANSFER_SUCCESS: 'Carbon transfer completed successfully',
+  TRANSFER_ERROR_GENERIC: 'Failed to complete transfer. Please try again.',
+  
+  // Account History
+  ACCOUNT_HISTORY: 'Account History',
+  HISTORY_OVERVIEW: 'History Overview',
+  ALL_OPERATIONS: 'All Operations',
+  TRANSFER_HISTORY: 'Transfer History',
+  BALANCE_HISTORY: 'Balance History',
+  VIEW_ACCOUNT_HISTORY: 'View Account History',
+  TRACK_ALL_OPERATIONS: 'Track all your team\'s account operations and transfers',
+  
+  // History Dashboard
+  OPERATION_SUMMARY: 'Operation Summary',
+  RESOURCE_FLOW_ANALYSIS: 'Resource Flow Analysis',
+  TOP_TRANSFER_PARTNERS: 'Top Transfer Partners',
+  BALANCE_TRENDS: 'Balance Trends',
+  RECENT_ACTIVITY: 'Recent Activity',
+  TOTAL_OPERATIONS: 'Total Operations',
+  GOLD_FLOW: 'Gold Flow',
+  CARBON_FLOW: 'Carbon Flow',
+  NET_FLOW: 'Net Flow',
+  TOTAL_IN: 'Total In',
+  TOTAL_OUT: 'Total Out',
+  NO_OPERATIONS_YET: 'No operations yet',
+  START_BY_MAKING_TRANSFER: 'Start by making your first transfer',
+  
+  // Operation Types
+  ACCOUNT_CREATED: 'Account Created',
+  OUTGOING_TRANSFER: 'Outgoing Transfer',
+  INCOMING_TRANSFER: 'Incoming Transfer',
+  MANAGER_ADJUSTMENT: 'Manager Adjustment',
+  SYSTEM_GRANT: 'System Grant',
+  SYSTEM_DEDUCTION: 'System Deduction',
+  ACTIVITY_REWARD: 'Activity Reward',
+  FACILITY_INCOME: 'Facility Income',
+  FACILITY_EXPENSE: 'Facility Expense',
+  
+  // History Filters
+  FILTER_OPERATIONS: 'Filter Operations',
+  OPERATION_TYPE: 'Operation Type',
+  RESOURCE_TYPE: 'Resource Type',
+  TRANSFER_DIRECTION: 'Transfer Direction', 
+  DATE_RANGE: 'Date Range',
+  FROM_DATE: 'From Date',
+  TO_DATE: 'To Date',
+  ALL_TYPES: 'All Types',
+  ALL_RESOURCES: 'All Resources',
+  ALL_DIRECTIONS: 'All Directions',
+  INCOMING: 'Incoming',
+  OUTGOING: 'Outgoing',
+  GOLD: 'Gold',
+  CARBON: 'Carbon',
+  APPLY_FILTERS: 'Apply Filters',
+  CLEAR_FILTERS: 'Clear Filters',
+  SEARCH_OPERATIONS: 'Search operations...',
+  
+  // History Tables
+  DATE: 'Date',
+  TYPE: 'Type',
+  RESOURCE: 'Resource',
+  PARTNER_TEAM: 'Partner Team',
+  BALANCE_BEFORE: 'Balance Before',
+  BALANCE_AFTER: 'Balance After',
+  CHANGE: 'Change',
+  OPERATION_ID: 'Operation ID',
+  USER: 'User',
+  NO_OPERATIONS_FOUND: 'No operations found',
+  NO_TRANSFERS_FOUND: 'No transfers found',
+  NO_BALANCE_CHANGES_FOUND: 'No balance changes found',
+  LOAD_MORE: 'Load More',
+  LOADING: 'Loading...',
+  
+  // Pagination
+  PAGE: 'Page',
+  OF: 'of',
+  SHOWING: 'Showing',
+  TO: 'to',
+  ENTRIES: 'entries',
+  
+  // Chart Labels
+  GOLD_BALANCE: 'Gold Balance',
+  CARBON_BALANCE: 'Carbon Balance',
+  OPERATIONS_BY_TYPE: 'Operations by Type',
+  RESOURCE_FLOW_CHART: 'Resource Flow',
+  BALANCE_TREND_CHART: 'Balance Trend',
+  
+  // Quick Actions on Dashboard
+  TRANSFER_RESOURCES: 'Transfer Resources',
+  VIEW_HISTORY: 'View History',
+  SEND_GOLD: 'Send Gold',
+  SEND_CARBON: 'Send Carbon',
+  
+  // Team Selection
+  SEARCH_TEAMS: 'Search teams...',
+  NO_TEAMS_AVAILABLE_FOR_TRANSFER: 'No teams available for transfer',
+  TEAM_NOT_FOUND: 'Team not found',
+  LOADING_TEAMS: 'Loading teams...',
+  
+  // Decimal Formatting
+  GOLD_SYMBOL: '🪙',
+  CARBON_SYMBOL: '🌿',
+  
+  // Time Formatting
+  JUST_NOW: 'Just now',
+  MINUTES_AGO: 'minutes ago',
+  HOURS_AGO: 'hours ago',
+  DAYS_AGO: 'days ago',
+  WEEKS_AGO: 'weeks ago',
+  MONTHS_AGO: 'months ago',
+  
+  // Export Features
+  EXPORT_HISTORY: 'Export History',
+  EXPORT_TO_CSV: 'Export to CSV',
+  EXPORT_TO_PDF: 'Export to PDF',
+  GENERATING_EXPORT: 'Generating export...',
+  EXPORT_COMPLETE: 'Export complete',
+  EXPORT_FAILED: 'Export failed',
+  
+  // Additional Terms
+  LAST_30_DAYS: 'Last 30 Days',
+  TRANSFERS: 'transfers',
+  DIRECTION: 'Direction',
+  FROM: 'from',
+  SUCCESS: 'Success'
 };
 
 export default teamManagement;

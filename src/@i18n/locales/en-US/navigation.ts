@@ -34,8 +34,7 @@ const navigation = {
 	// Other items
 	NOTIFICATIONS: 'Notifications',
 	ACTIVITIES: 'Activities',
-	// Test Map
-	TEST_MAP: 'Test Map',
+
 	// Map Template Management
 	MAP_TEMPLATE_MANAGEMENT: 'Template Management',
 	// Activity Tile State Management

@@ -99,7 +99,82 @@ const teamManagement = {
   QUICK_ACTIONS: '快速操作',
   BROWSE_OTHER_TEAMS: '浏览其他团队',
   SETTINGS: '设置',
-  TEAM_DASHBOARD_FALLBACK: '团队仪表盘'
+  TEAM_DASHBOARD_FALLBACK: '团队仪表盘',
+  
+  // Resource Transfers
+  RESOURCE_TRANSFERS: '资源转账',
+  TRANSFER_HUB: '转账中心',
+  TRANSFER_GOLD: '转账金币',
+  TRANSFER_CARBON: '转账碳积分',
+  SEND_RESOURCES: '发送资源',
+  SEND_RESOURCES_SUBTITLE: '向活动中的其他团队转账金币和碳积分',
+  TRANSFER_RESOURCES_TO_TEAMS: '向其他团队转账资源',
+  SELECT_TRANSFER_TYPE: '选择您要转账的类型',
+  GOLD_TRANSFERS: '金币转账',
+  CARBON_TRANSFERS: '碳积分转账',
+  RECENT_TRANSFERS: '最近转账',
+  QUICK_TRANSFER: '快速转账',
+  
+  // Transfer Forms
+  TRANSFER_GOLD_TO_TEAM: '向团队转账金币',
+  TRANSFER_CARBON_TO_TEAM: '向团队转账碳积分',
+  TRANSFER_GOLD_SUBTITLE: '从您的团队账户向另一个团队发送金币',
+  TRANSFER_CARBON_SUBTITLE: '从您的团队账户向另一个团队发送碳积分',
+  SELECT_TARGET_TEAM: '选择目标团队',
+  SELECT_TEAM_PLACEHOLDER: '选择要转账的团队...',
+  TRANSFER_AMOUNT: '转账金额',
+  AMOUNT_PLACEHOLDER: '输入转账金额',
+  AVAILABLE_BALANCE: '可用余额',
+  TRANSFER_DESCRIPTION: '描述（可选）',
+  TRANSFER_DESCRIPTION_PLACEHOLDER: '添加关于此转账的备注...',
+  SEND_TRANSFER: '发送转账',
+  SENDING_TRANSFER: '正在发送转账...',
+  CANCEL_TRANSFER: '取消',
+  CONFIRM_TRANSFER: '确认转账',
+  TRANSFER_CONFIRMATION: '转账确认',
+  REVIEW_TRANSFER_DETAILS: '请检查以下转账详情',
+  TARGET_TEAM: '目标团队',
+  AMOUNT: '金额',
+  DESCRIPTION: '描述',
+  CURRENT_BALANCE: '当前余额',
+  BALANCE_AFTER_TRANSFER: '转账后余额',
+  
+  // Transfer Validation
+  INVALID_AMOUNT: '请输入有效金额',
+  AMOUNT_TOO_SMALL: '最小转账金额为 0.001',
+  AMOUNT_TOO_LARGE: '金额超过可用余额',
+  MAX_DECIMAL_PLACES: '最多允许 3 位小数',
+  TARGET_TEAM_REQUIRED: '请选择目标团队',
+  LARGE_TRANSFER_WARNING: '此转账超过您当前余额的 50%',
+  INSUFFICIENT_BALANCE_ERROR: '此转账余额不足',
+  SAME_TEAM_ERROR: '不能转账给同一个团队',
+  
+  // Transfer Success/Error Messages
+  TRANSFER_SUCCESSFUL: '转账成功完成',
+  TRANSFER_FAILED: '转账失败',
+  GOLD_TRANSFER_SUCCESS: '金币转账成功完成',
+  CARBON_TRANSFER_SUCCESS: '碳积分转账成功完成',
+  TRANSFER_ERROR_GENERIC: '转账失败，请重试。',
+  
+  // Account History
+  ACCOUNT_HISTORY: '账户历史',
+  HISTORY_OVERVIEW: '历史概览',
+  ALL_OPERATIONS: '所有操作',
+  TRANSFER_HISTORY: '转账历史',
+  BALANCE_HISTORY: '余额历史',
+  VIEW_ACCOUNT_HISTORY: '查看账户历史',
+  TRACK_ALL_OPERATIONS: '跟踪您团队的所有账户操作和转账',
+  
+  // Operation Types - Keep consistent with English for easier mapping
+  ACCOUNT_CREATED: '账户创建',
+  OUTGOING_TRANSFER: '转出',
+  INCOMING_TRANSFER: '转入',
+  MANAGER_ADJUSTMENT: '管理员调整',
+  SYSTEM_GRANT: '系统授予',
+  SYSTEM_DEDUCTION: '系统扣除',
+  ACTIVITY_REWARD: '活动奖励',
+  FACILITY_INCOME: '设施收入',
+  FACILITY_EXPENSE: '设施支出'
 };
 
 export default teamManagement;

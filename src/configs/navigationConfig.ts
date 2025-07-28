@@ -94,15 +94,6 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				url: '/activity-tile-state-management',
 				translate: 'ACTIVITY_TILE_STATE_MANAGEMENT',
 				auth: ['admin']
-			},
-			{
-				id: 'map.test-map',
-				title: 'Test Map',
-				type: 'item',
-				icon: 'heroicons-outline:beaker',
-				url: '/map',
-				translate: 'TEST_MAP',
-				auth: ['admin']
 			}
 		]
 	},
@@ -314,15 +305,6 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 				url: '/activity-tile-state-management',
 				translate: 'ACTIVITY_TILE_STATE_MANAGEMENT',
 				auth: ['admin']
-			},
-			{
-				id: 'map.test-map',
-				title: 'Test Map',
-				type: 'item',
-				icon: 'heroicons-outline:beaker',
-				url: '/map',
-				translate: 'TEST_MAP',
-				auth: ['admin']
 			}
 		]
 	},
@@ -501,6 +483,89 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/team-management/browse',
 					translate: 'BROWSE_TEAMS',
 					auth: ['user']
+				},
+				{
+					id: 'team-management.transfers',
+					title: 'Resource Transfers',
+					type: 'collapse',
+					icon: 'heroicons-outline:arrows-right-left',
+					translate: 'RESOURCE_TRANSFERS',
+					auth: ['user'],
+					children: [
+						{
+							id: 'team-management.transfers.hub',
+							title: 'Transfer Hub',
+							type: 'item',
+							icon: 'heroicons-outline:home',
+							url: '/team-management/transfers',
+							translate: 'TRANSFER_HUB',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.transfers.gold',
+							title: 'Transfer Gold',
+							type: 'item',
+							icon: 'heroicons-outline:currency-dollar',
+							url: '/team-management/transfers/gold',
+							translate: 'TRANSFER_GOLD',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.transfers.carbon',
+							title: 'Transfer Carbon',
+							type: 'item',
+							icon: 'heroicons-outline:leaf',
+							url: '/team-management/transfers/carbon',
+							translate: 'TRANSFER_CARBON',
+							auth: ['user']
+						}
+					]
+				},
+				{
+					id: 'team-management.history',
+					title: 'Account History',
+					type: 'collapse',
+					icon: 'heroicons-outline:clock',
+					translate: 'ACCOUNT_HISTORY',
+					auth: ['user'],
+					children: [
+						{
+							id: 'team-management.history.dashboard',
+							title: 'History Overview',
+							type: 'item',
+							icon: 'heroicons-outline:chart-bar',
+							url: '/team-management/history',
+							translate: 'HISTORY_OVERVIEW',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.history.operations',
+							title: 'All Operations',
+							type: 'item',
+							icon: 'heroicons-outline:list-bullet',
+							url: '/team-management/history/operations',
+							translate: 'ALL_OPERATIONS',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.history.transfers',
+							title: 'Transfer History',
+							type: 'item',
+							icon: 'heroicons-outline:arrow-path',
+							url: '/team-management/history/transfers',
+							translate: 'TRANSFER_HISTORY',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.history.balances',
+							title: 'Balance History',
+							type: 'item',
+							icon: 'heroicons-outline:scale',
+							url: '/team-management/history/balances',
+							translate: 'BALANCE_HISTORY',
+							auth: ['user']
+						}
+					]
 				}
 			]
 		});

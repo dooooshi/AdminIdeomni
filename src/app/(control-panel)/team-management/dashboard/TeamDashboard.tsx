@@ -273,11 +273,40 @@ function TeamDashboard() {
               <Typography variant="h6" className="mb-4">
                 {t('teamManagement:QUICK_ACTIONS')}
               </Typography>
-              <div className="flex gap-3 flex-wrap">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push('/team-management/transfers')}
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement:TRANSFER_RESOURCES')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push('/team-management/history')}
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:clock</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement:VIEW_HISTORY')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push('/team-management/transfers/gold')}
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:currency-dollar</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement:SEND_GOLD')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push('/team-management/transfers/carbon')}
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:leaf</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement:SEND_CARBON')}
+                </Button>
                 <Button
                   variant="outlined"
                   onClick={() => router.push('/team-management/browse')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
                 >
                   {t('teamManagement:BROWSE_OTHER_TEAMS')}
                 </Button>
