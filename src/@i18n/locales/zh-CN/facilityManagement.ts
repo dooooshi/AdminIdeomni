@@ -458,6 +458,7 @@ const facilityManagement = {
   BASIC_INFORMATION: '基本信息',
   CAPACITY_CONFIGURATION: '容量配置',
   COST_CONFIGURATION: '成本配置',
+  CAPACITY_AND_COSTS: '容量与成本',
   BUILD_COST: '建设成本',
   MAINTENANCE_COST: '维护成本',
   OPERATION_COST: '运营成本',
@@ -509,6 +510,7 @@ const facilityManagement = {
   ERROR_DELETING_CONFIGURATION: '删除配置时出错',
   ERROR_RESTORING_CONFIGURATION: '恢复配置时出错',
   ERROR_INITIALIZING_CONFIGURATIONS: '初始化默认配置时出错',
+  ERROR_INVALID_RESPONSE: '服务器响应无效，请重试。',
   
   // Table headers
   CAPACITY_RANGE: '容量范围',
@@ -522,48 +524,7 @@ const facilityManagement = {
   MAINTENANCE_COST_TOOLTIP: '维持此设施运行状态所需的月度成本',
   OPERATION_COST_TOOLTIP: '以满负荷运行此设施所需的日常成本',
   
-  // Placeholder text
-  FACILITY_NAME_PLACEHOLDER: '输入设施名称...',
-  FACILITY_DESCRIPTION_PLACEHOLDER: '输入设施描述...',
-  SEARCH_PLACEHOLDER: '按名称、类型或描述搜索...',
-  
-  // Units and Formatting
-  UNITS: '单位',
-  PER_MONTH: '每月',
-  PER_DAY: '每天',
-  CURRENCY_SYMBOL: '¥',
-  
-  // Filter options
-  ALL_TYPES: '所有类型',
-  ALL_CATEGORIES: '所有类别',
-  ALL_STATUSES: '所有状态',
-  SHOW_ACTIVE_ONLY: '仅显示活跃',
-  SHOW_INACTIVE_ONLY: '仅显示非活跃',
-  SHOW_DELETED: '显示已删除',
-  
-  // Sorting options
-  SORT_BY_NAME: '按名称排序',
-  SORT_BY_TYPE: '按类型排序',
-  SORT_BY_CATEGORY: '按类别排序',
-  SORT_BY_CAPACITY: '按容量排序',
-  SORT_BY_COST: '按成本排序',
-  SORT_BY_CREATED: '按创建日期排序',
-  SORT_BY_UPDATED: '按更新日期排序',
-  SORT_ASCENDING: '升序',
-  SORT_DESCENDING: '降序',
-  
-  // Bulk actions
-  BULK_ACTIONS: '批量操作',
-  SELECT_ALL: '全选',
-  SELECT_NONE: '取消全选',
-  BULK_DELETE: '删除所选',
-  BULK_ACTIVATE: '激活所选',
-  BULK_DEACTIVATE: '停用所选',
-  BULK_EXPORT: '导出所选',
-  
-  // Import/Export
-  IMPORT_FACILITIES: '导入设施',
-  EXPORT_FACILITIES: '导出设施',
+  // Advanced features
   IMPORT_SUCCESS: '成功导入 {{count}} 个设施',
   EXPORT_SUCCESS: '成功导出 {{count}} 个设施',
   

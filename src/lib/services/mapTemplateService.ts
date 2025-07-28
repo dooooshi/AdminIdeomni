@@ -16,8 +16,11 @@ import {
   GetTilesQueryParams,
   GetActivityTileStatesQueryParams,
   ApiResponse,
-  PaginatedResponse
+  PaginatedResponse,
+  EnhancedMapTemplate,
+  TileFacilityConfigStatistics
 } from '@/components/map/types';
+import TileFacilityBuildConfigService from './tileFacilityBuildConfigService';
 
 /**
  * Map Template Service
@@ -74,15 +77,30 @@ export class MapTemplateService {
     options?: {
       includeTiles?: boolean;
       includeStatistics?: boolean;
+      includeFacilityConfigs?: boolean;
     }
-  ): Promise<MapTemplate> {
+  ): Promise<EnhancedMapTemplate> {
     const response = await apiClient.get<any>(
       `${this.BASE_PATH}/${id}`,
       { params: options }
     );
     
-    // Handle nested response structure: { data: { data: {...} } }
-    return this.extractResponseData<MapTemplate>(response);
+    const template = this.extractResponseData<MapTemplate>(response);
+    
+    // Enhance template with facility configuration statistics if requested
+    if (options?.includeFacilityConfigs) {
+      try {
+        const facilityConfigStats = await TileFacilityBuildConfigService.getConfigStatistics(id);
+        return {
+          ...template,
+          facilityConfigStatistics: facilityConfigStats
+        } as EnhancedMapTemplate;
+      } catch (error) {
+        console.warn('Failed to load facility config statistics:', error);
+      }
+    }
+    
+    return template as EnhancedMapTemplate;
   }
 
   /**
@@ -126,14 +144,38 @@ export class MapTemplateService {
   }
 
   /**
-   * Clone an existing map template (Admin only)
+   * Clone an existing map template with facility configurations (Admin only)
    */
-  static async cloneMapTemplate(id: number, newName: string): Promise<MapTemplate> {
+  static async cloneMapTemplate(
+    id: number, 
+    newName: string, 
+    options?: {
+      description?: string;
+      includeFacilityConfigs?: boolean;
+      initializeDefaultConfigs?: boolean;
+    }
+  ): Promise<MapTemplate> {
     const response = await apiClient.post<any>(
       `${this.BASE_PATH}/${id}/clone`,
-      { name: newName }
+      { 
+        name: newName,
+        description: options?.description,
+        includeFacilityConfigs: options?.includeFacilityConfigs ?? true
+      }
     );
-    return this.extractResponseData<MapTemplate>(response);
+    
+    const clonedTemplate = this.extractResponseData<MapTemplate>(response);
+    
+    // Initialize default facility configurations if requested and not included in clone
+    if (options?.initializeDefaultConfigs && !options?.includeFacilityConfigs) {
+      try {
+        await TileFacilityBuildConfigService.initializeDefaultConfigs(clonedTemplate.id);
+      } catch (error) {
+        console.warn('Failed to initialize default configurations for cloned template:', error);
+      }
+    }
+    
+    return clonedTemplate;
   }
 
   /**
@@ -147,13 +189,28 @@ export class MapTemplateService {
   }
 
   /**
-   * Get template statistics for analytics (Admin only)
+   * Get comprehensive template statistics including facility configurations (Admin only)
    */
-  static async getTemplateStatistics(id: number): Promise<any> {
-    const response = await apiClient.get<ApiResponse<any>>(
-      `${this.BASE_PATH}/${id}/statistics`
-    );
-    return response.data.data;
+  static async getTemplateStatistics(id: number): Promise<{
+    template: MapTemplate;
+    tileStatistics?: any;
+    facilityStatistics?: TileFacilityConfigStatistics;
+  }> {
+    try {
+      const [templateResponse, facilityStatsResponse] = await Promise.all([
+        apiClient.get<ApiResponse<any>>(`${this.BASE_PATH}/${id}/statistics`),
+        TileFacilityBuildConfigService.getConfigStatistics(id).catch(() => null)
+      ]);
+      
+      return {
+        template: templateResponse.data.data.template,
+        tileStatistics: templateResponse.data.data.tileStatistics,
+        facilityStatistics: facilityStatsResponse || undefined
+      };
+    } catch (error) {
+      console.error('Failed to get template statistics:', error);
+      throw error;
+    }
   }
 
   // ==================== TILE CONFIGURATION MANAGEMENT ====================
@@ -496,6 +553,165 @@ export class MapTemplateService {
     return ((currentPopulation - initialPopulation) / initialPopulation) * 100;
   }
 
+  // ==================== TEMPLATE WORKFLOW HELPERS ====================
+
+  /**
+   * Create a complete template with tiles and facility configurations
+   */
+  static async createCompleteTemplate(templateData: {
+    name: string;
+    description?: string;
+    generateParams?: Omit<GenerateMapTemplateDto, 'templateName' | 'description'>;
+    initializeFacilityConfigs?: boolean;
+  }): Promise<{
+    template: MapTemplate;
+    facilityConfigCount?: number;
+  }> {
+    try {
+      let template: MapTemplate;
+      
+      if (templateData.generateParams) {
+        // Generate template with tiles
+        template = await this.generateMapTemplate({
+          templateName: templateData.name,
+          description: templateData.description,
+          ...templateData.generateParams
+        });
+      } else {
+        // Create basic template
+        template = await this.createMapTemplate({
+          name: templateData.name,
+          description: templateData.description,
+          width: 15,
+          height: 7
+        });
+      }
+      
+      // Initialize facility configurations if requested
+      let facilityConfigCount: number | undefined;
+      if (templateData.initializeFacilityConfigs !== false) {
+        try {
+          const result = await TileFacilityBuildConfigService.initializeDefaultConfigs(template.id);
+          facilityConfigCount = result.count;
+        } catch (error) {
+          console.warn('Failed to initialize facility configurations:', error);
+        }
+      }
+      
+      return {
+        template,
+        facilityConfigCount
+      };
+    } catch (error) {
+      console.error('Failed to create complete template:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Apply preset difficulty settings to a template's facility configurations
+   */
+  static async applyDifficultyPreset(
+    templateId: number,
+    difficulty: 'easy' | 'normal' | 'hard',
+    landTypes?: ('MARINE' | 'COASTAL' | 'PLAIN')[]
+  ): Promise<{
+    landType: string;
+    updated: number;
+    failed: number;
+  }[]> {
+    const difficultyMultipliers = {
+      easy: {
+        requiredGoldMultiplier: 0.75,
+        requiredCarbonMultiplier: 0.75,
+        upgradeGoldCostMultiplier: 0.8,
+        upgradeCarbonCostMultiplier: 0.8
+      },
+      normal: {
+        requiredGoldMultiplier: 1.0,
+        requiredCarbonMultiplier: 1.0,
+        upgradeGoldCostMultiplier: 1.0,
+        upgradeCarbonCostMultiplier: 1.0
+      },
+      hard: {
+        requiredGoldMultiplier: 1.5,
+        requiredCarbonMultiplier: 1.75,
+        upgradeGoldCostMultiplier: 2.0,
+        upgradeCarbonCostMultiplier: 1.8
+      }
+    };
+
+    const targetLandTypes = landTypes || ['MARINE', 'COASTAL', 'PLAIN'];
+    const results = [];
+
+    for (const landType of targetLandTypes) {
+      try {
+        const result = await TileFacilityBuildConfigService.bulkUpdateByLandType(
+          templateId,
+          landType as any,
+          difficultyMultipliers[difficulty]
+        );
+        results.push({
+          landType,
+          updated: result.updated,
+          failed: result.failed
+        });
+      } catch (error) {
+        console.error(`Failed to apply difficulty preset to ${landType}:`, error);
+        results.push({
+          landType,
+          updated: 0,
+          failed: 1
+        });
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Get template comparison data for A/B testing
+   */
+  static async compareTemplates(templateIds: number[]): Promise<{
+    templateId: number;
+    template: MapTemplate;
+    tileCount: number;
+    facilityStats?: TileFacilityConfigStatistics;
+    averageCosts?: {
+      buildCost: number;
+      upgradeCost: number;
+    };
+  }[]> {
+    const comparisons = await Promise.all(
+      templateIds.map(async (templateId) => {
+        try {
+          const [template, facilityStats] = await Promise.all([
+            this.getMapTemplate(templateId, { includeTiles: true }),
+            TileFacilityBuildConfigService.getConfigStatistics(templateId).catch(() => null)
+          ]);
+
+          const averageCosts = facilityStats ? {
+            buildCost: facilityStats.averageCosts.requiredGold,
+            upgradeCost: facilityStats.averageCosts.upgradeGoldCost
+          } : undefined;
+
+          return {
+            templateId,
+            template,
+            tileCount: template.tiles?.length || 0,
+            facilityStats: facilityStats || undefined,
+            averageCosts
+          };
+        } catch (error) {
+          console.error(`Failed to load template ${templateId} for comparison:`, error);
+          return null;
+        }
+      })
+    );
+
+    return comparisons.filter((c): c is NonNullable<typeof c> => c !== null);
+  }
+
   /**
    * Validate tile configuration values
    */
@@ -587,4 +803,10 @@ export class MapTemplateService {
   }
 }
 
-export default MapTemplateService; 
+export default MapTemplateService;
+
+// Export enhanced types for better integration
+export type {
+  EnhancedMapTemplate,
+  TileFacilityConfigStatistics
+} from '@/components/map/types'; 

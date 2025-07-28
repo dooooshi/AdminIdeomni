@@ -81,17 +81,22 @@ export interface MapTemplate {
 	id: number;
 	name: string;
 	description?: string;
-	width: number;
-	height: number;
+	version?: string;
+	width?: number;
+	height?: number;
 	isActive: boolean;
 	isDefault?: boolean;
 	createdAt: string;
 	updatedAt: string;
+	deletedAt?: string | null;
 	createdBy?: {
 		id: string;
 		username: string;
 		email: string;
 	};
+	// Additional properties from enhanced template
+	tiles?: MapTile[];
+	tileCount?: number;
 }
 
 export interface CreateMapTemplateDto {
@@ -230,4 +235,192 @@ export interface PaginatedResponse<T> {
 		hasNext: boolean;
 		hasPrev: boolean;
 	};
+}
+
+// ==================== TILE FACILITY BUILD CONFIGURATION TYPES ====================
+
+// Land Types
+export enum LandType {
+	MARINE = 'MARINE',
+	COASTAL = 'COASTAL',
+	PLAIN = 'PLAIN'
+}
+
+// Facility Types
+export enum FacilityType {
+	// Resource Extraction
+	MINE = 'MINE',
+	QUARRY = 'QUARRY',
+	FOREST = 'FOREST',
+	FARM = 'FARM',
+	RANCH = 'RANCH',
+	FISHERY = 'FISHERY',
+	// Manufacturing
+	FACTORY = 'FACTORY',
+	WAREHOUSE = 'WAREHOUSE',
+	// Commercial
+	MALL = 'MALL',
+	MEDIA_BUILDING = 'MEDIA_BUILDING',
+	CINEMA = 'CINEMA',
+	// Infrastructure
+	WATER_PLANT = 'WATER_PLANT',
+	POWER_PLANT = 'POWER_PLANT',
+	BASE_STATION = 'BASE_STATION',
+	// Services
+	FIRE_STATION = 'FIRE_STATION',
+	SCHOOL = 'SCHOOL',
+	HOSPITAL = 'HOSPITAL',
+	PARK = 'PARK'
+}
+
+// Tile Facility Build Configuration
+export interface TileFacilityBuildConfig {
+	id: string;
+	templateId: number;
+	landType: LandType;
+	facilityType: FacilityType;
+	requiredGold: number;
+	requiredCarbon: number;
+	requiredAreas: number;
+	maxLevel: number;
+	upgradeGoldCost: number;
+	upgradeCarbonCost: number;
+	upgradeMultiplier: number;
+	isAllowed: boolean;
+	maxInstances: number;
+	upgradeData?: Record<string, any>;
+	buildData?: Record<string, any>;
+	isActive: boolean;
+	createdAt: string;
+	updatedAt: string;
+	deletedAt?: string | null;
+}
+
+// Request DTOs
+export interface CreateTileFacilityBuildConfigDto {
+	landType: LandType;
+	facilityType: FacilityType;
+	requiredGold: number;
+	requiredCarbon: number;
+	requiredAreas: number;
+	maxLevel: number;
+	upgradeGoldCost: number;
+	upgradeCarbonCost: number;
+	upgradeMultiplier: number;
+	isAllowed: boolean;
+	maxInstances: number;
+	upgradeData?: Record<string, any>;
+	buildData?: Record<string, any>;
+}
+
+export interface UpdateTileFacilityBuildConfigDto {
+	requiredGold?: number;
+	requiredCarbon?: number;
+	requiredAreas?: number;
+	maxLevel?: number;
+	upgradeGoldCost?: number;
+	upgradeCarbonCost?: number;
+	upgradeMultiplier?: number;
+	isAllowed?: boolean;
+	maxInstances?: number;
+	upgradeData?: Record<string, any>;
+	buildData?: Record<string, any>;
+}
+
+// Bulk Update DTOs
+export interface BulkUpdateByLandTypeDto {
+	// Multipliers
+	requiredGoldMultiplier?: number;
+	requiredCarbonMultiplier?: number;
+	upgradeGoldCostMultiplier?: number;
+	upgradeCarbonCostMultiplier?: number;
+	// Fixed values (overrides multipliers)
+	fixedRequiredGold?: number;
+	fixedRequiredCarbon?: number;
+	fixedMaxLevel?: number;
+	// Status updates
+	isAllowed?: boolean;
+}
+
+export interface BulkUpdateResult {
+	updated: number;
+	failed: number;
+	details: Array<{
+		configId: string;
+		success: boolean;
+		error?: string;
+	}>;
+	message?: string;
+}
+
+// Query Parameters
+export interface GetTileFacilityConfigsQueryParams {
+	landType?: LandType;
+	facilityType?: FacilityType;
+	isAllowed?: boolean;
+	isActive?: boolean;
+	isUpgradable?: boolean;
+	sortBy?: string;
+	sortOrder?: 'asc' | 'desc';
+	page?: number;
+	pageSize?: number;
+}
+
+// Upgrade Cost Calculation
+export interface UpgradeCostCalculation {
+	facilityType: FacilityType;
+	landType: LandType;
+	currentLevel: number;
+	targetLevel: number;
+	upgradeCosts: Array<{
+		level: number;
+		goldCost: number;
+		carbonCost: number;
+	}>;
+	totalCost: {
+		gold: number;
+		carbon: number;
+	};
+}
+
+// Statistics
+export interface TileFacilityConfigStatistics {
+	totalConfigs: number;
+	allowedConfigs: number;
+	disallowedConfigs: number;
+	configsByLandType: Record<LandType, number>;
+	upgradableConfigs: number;
+	averageCosts: {
+		requiredGold: number;
+		requiredCarbon: number;
+		upgradeGoldCost: number;
+		upgradeCarbonCost: number;
+	};
+	costRanges: {
+		goldRange: { min: number; max: number };
+		carbonRange: { min: number; max: number };
+	};
+	maxLevelDistribution: Record<string, number>;
+	facilityTypeBreakdown: Record<FacilityType, {
+		total: number;
+		allowed: number;
+		averageGoldCost: number;
+	}>;
+}
+
+// Map Template with Enhanced Data
+export interface EnhancedMapTemplate extends MapTemplate {
+	tiles?: MapTile[];
+	tileCount?: number;
+	landTypeDistribution?: Record<LandType, number>;
+	economicStatistics?: {
+		totalInitialValue: number;
+		totalInitialPopulation: number;
+		averagePrice: number;
+		averagePopulation: number;
+		averageTransportationCost: number;
+		priceByLandType: Record<LandType, number>;
+		populationByLandType: Record<LandType, number>;
+	};
+	facilityConfigStatistics?: TileFacilityConfigStatistics;
 } 

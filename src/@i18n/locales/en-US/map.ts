@@ -295,6 +295,13 @@ const map = {
 	NO_TEMPLATES_FOUND: 'No Templates Found',
 	NO_TEMPLATES_DESCRIPTION: 'Get started by creating your first map template',
 	CREATE_FIRST_TEMPLATE: 'Create First Template',
+
+	// Pagination
+	SHOWING: 'Showing',
+	OF: 'of',
+	RESULTS: 'results',
+	NO_RESULTS: 'No results',
+	ROWS_PER_PAGE: 'Rows per page',
 };
 
 export default map; 

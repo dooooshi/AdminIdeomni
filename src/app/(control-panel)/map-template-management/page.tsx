@@ -8,6 +8,7 @@ import {
   Tab,
   Card,
   CardContent,
+  CardHeader,
   Typography,
   Breadcrumbs,
   Link,
@@ -21,6 +22,8 @@ import {
   Tooltip,
   Fab,
   Zoom,
+  Grid,
+  Chip,
 } from '@mui/material';
 import {
   Map as MapIcon,
@@ -30,6 +33,11 @@ import {
   Settings as SettingsIcon,
   Analytics as AnalyticsIcon,
   List as ListIcon,
+  Build as BuildIcon,
+  TrendingUp as TrendingUpIcon,
+  Assessment as AssessmentIcon,
+  Calculate as CalculateIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
@@ -40,12 +48,20 @@ import {
   MapTile, 
   UpdateTileDto, 
   GenerateMapTemplateDto,
-  CreateMapTemplateDto 
+  CreateMapTemplateDto,
+  EnhancedMapTemplate 
 } from '@/components/map/types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 import MapConfigurationInterface from '@/components/map/ui/MapConfigurationInterface';
 import TemplateGenerationForm from '@/components/map/ui/TemplateGenerationForm';
 import TileConfigurationPanel from '@/components/map/ui/TileConfigurationPanel';
+
+// Import new facility management components
+import TileFacilityConfigList from '@/components/map-template/TileFacilityConfigList';
+import BulkOperationsPanel from '@/components/map-template/BulkOperationsPanel';
+import FacilityUpgradeCalculator from '@/components/map-template/FacilityUpgradeCalculator';
+import AnalyticsStatistics from '@/components/map-template/AnalyticsStatistics';
+import TemplateSetupWizard from '@/components/map-template/TemplateSetupWizard';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,77 +98,23 @@ function a11yProps(index: number) {
 
 // Template List Component
 interface TemplateListProps {
+  templates: EnhancedMapTemplate[];
+  isLoading: boolean;
   onSelectTemplate: (template: MapTemplate) => void;
   onCreateTemplate: () => void;
   onGenerateTemplate: () => void;
+  onRefresh: () => void;
 }
 
 const TemplateList: React.FC<TemplateListProps> = ({
+  templates,
+  isLoading,
   onSelectTemplate,
   onCreateTemplate,
   onGenerateTemplate,
+  onRefresh,
 }) => {
   const { t } = useTranslation('map');
-  const [templates, setTemplates] = useState<MapTemplate[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    loadTemplates();
-  }, []);
-
-  const loadTemplates = async () => {
-    try {
-      setIsLoading(true);
-      const response = await MapTemplateService.getMapTemplates();
-      console.log('Template response:', response); // Debug logging
-      
-      // The service now handles the nested structure and returns { data: [...], meta: {...} }
-      let templatesData: MapTemplate[] = [];
-      
-      if (Array.isArray(response)) {
-        // Direct array response
-        templatesData = response;
-      } else if (response?.data && Array.isArray(response.data)) {
-        // Structured response: { data: [...], meta: {...} }
-        templatesData = response.data;
-      } else {
-        console.warn('Unexpected response structure:', response);
-        templatesData = [];
-      }
-      
-      setTemplates(templatesData);
-      console.log('Extracted templates:', templatesData); // Debug logging
-    } catch (error) {
-      console.error('Failed to load templates:', error);
-      
-      // Fallback to mock data for development
-      const mockTemplates: MapTemplate[] = [
-        {
-          id: 1,
-          name: 'Default Economic Template',
-          description: 'Balanced economic zones for general business simulations',
-          version: '1.0',
-          isActive: true,
-          isDefault: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: 2,
-          name: 'Coastal Development Template',
-          description: 'Template optimized for coastal business scenarios',
-          version: '1.0',
-          isActive: true,
-          isDefault: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ];
-      setTemplates(mockTemplates);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -167,6 +129,11 @@ const TemplateList: React.FC<TemplateListProps> = ({
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h6">{t('MAP_TEMPLATES')}</Typography>
         <Box>
+          <Tooltip title={t('REFRESH')}>
+            <IconButton onClick={onRefresh} sx={{ mr: 1 }}>
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
           <Button
             variant="outlined"
             startIcon={<AddIcon />}
@@ -276,10 +243,13 @@ const MapTemplateManagementPage: React.FC = () => {
   const { t } = useTranslation('map');
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
-  const [selectedTemplate, setSelectedTemplate] = useState<MapTemplate | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<EnhancedMapTemplate | null>(null);
   const [selectedTemplateTiles, setSelectedTemplateTiles] = useState<MapTile[]>([]);
   const [generationDialogOpen, setGenerationDialogOpen] = useState(false);
+  const [setupWizardOpen, setSetupWizardOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [templatesLoading, setTemplatesLoading] = useState(true);
+  const [templates, setTemplates] = useState<EnhancedMapTemplate[]>([]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -288,10 +258,11 @@ const MapTemplateManagementPage: React.FC = () => {
   const handleSelectTemplate = useCallback(async (template: MapTemplate) => {
     try {
       setIsLoading(true);
-      // Load template with tiles and statistics
+      // Load template with tiles, statistics, and facility configurations
       const fullTemplate = await MapTemplateService.getMapTemplate(template.id, {
         includeTiles: true,
         includeStatistics: true,
+        includeFacilityConfigs: true,
       });
       
       setSelectedTemplate(fullTemplate);
@@ -300,11 +271,64 @@ const MapTemplateManagementPage: React.FC = () => {
     } catch (error) {
       console.error('Failed to load template details:', error);
       // Keep the basic template data even if detailed loading fails
-      setSelectedTemplate(template);
+      setSelectedTemplate(template as EnhancedMapTemplate);
       setSelectedTemplateTiles([]);
       setTabValue(1); // Still switch to configuration tab
     } finally {
       setIsLoading(false);
+    }
+  }, []);
+
+  const handleTemplateCreated = useCallback(async (template: MapTemplate) => {
+    try {
+      // Refresh templates list
+      const response = await MapTemplateService.getMapTemplates();
+      const templatesData = Array.isArray(response) ? response : response?.data || [];
+      setTemplates(templatesData);
+      
+      // Select the new template
+      await handleSelectTemplate(template);
+    } catch (error) {
+      console.error('Failed to refresh templates after creation:', error);
+    }
+  }, [handleSelectTemplate]);
+
+  const loadTemplates = useCallback(async () => {
+    try {
+      setTemplatesLoading(true);
+      const response = await MapTemplateService.getMapTemplates();
+      const templatesData = Array.isArray(response) ? response : response?.data || [];
+      setTemplates(templatesData);
+    } catch (error) {
+      console.error('Failed to load templates:', error);
+      // Fallback to mock data for development
+      const mockTemplates: EnhancedMapTemplate[] = [
+        {
+          id: 1,
+          name: 'Default Economic Template',
+          description: 'Balanced economic zones for general business simulations',
+          version: '1.0',
+          isActive: true,
+          isDefault: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          tileCount: 105,
+        },
+        {
+          id: 2,
+          name: 'Coastal Development Template',
+          description: 'Template optimized for coastal business scenarios',
+          version: '1.0',
+          isActive: true,
+          isDefault: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          tileCount: 84,
+        },
+      ];
+      setTemplates(mockTemplates);
+    } finally {
+      setTemplatesLoading(false);
     }
   }, []);
 
@@ -376,12 +400,22 @@ const MapTemplateManagementPage: React.FC = () => {
   }, [handleSelectTemplate]);
 
   const handleCreateTemplate = useCallback(() => {
-    setGenerationDialogOpen(true);
+    setSetupWizardOpen(true);
   }, []);
 
   const handleGenerateTemplateAction = useCallback(() => {
     setGenerationDialogOpen(true);
   }, []);
+
+  const handleSetupWizardComplete = useCallback(async (template: MapTemplate) => {
+    await handleTemplateCreated(template);
+    setSetupWizardOpen(false);
+  }, [handleTemplateCreated]);
+
+  // Load templates on component mount
+  useEffect(() => {
+    loadTemplates();
+  }, [loadTemplates]);
 
   return (
     <IdeomniPageSimple
@@ -415,7 +449,8 @@ const MapTemplateManagementPage: React.FC = () => {
               value={tabValue} 
               onChange={handleTabChange} 
               aria-label="map template management tabs"
-              variant="fullWidth"
+              variant="scrollable"
+              scrollButtons="auto"
             >
               <Tab 
                 label={t('TEMPLATE_LIST')} 
@@ -424,17 +459,39 @@ const MapTemplateManagementPage: React.FC = () => {
                 {...a11yProps(0)} 
               />
               <Tab 
-                label={selectedTemplate ? t('CONFIGURE_TEMPLATE') : t('SELECT_TEMPLATE')} 
+                label={selectedTemplate ? t('TILE_CONFIGURATION') : t('SELECT_TEMPLATE')} 
                 icon={<SettingsIcon />} 
                 iconPosition="start"
                 {...a11yProps(1)}
                 disabled={!selectedTemplate}
               />
               <Tab 
-                label={t('ANALYTICS')} 
-                icon={<AnalyticsIcon />} 
+                label={t('FACILITY_CONFIG')} 
+                icon={<BuildIcon />} 
                 iconPosition="start"
-                {...a11yProps(2)} 
+                {...a11yProps(2)}
+                disabled={!selectedTemplate}
+              />
+              <Tab 
+                label={t('BULK_OPERATIONS')} 
+                icon={<TrendingUpIcon />} 
+                iconPosition="start"
+                {...a11yProps(3)}
+                disabled={!selectedTemplate}
+              />
+              <Tab 
+                label={t('FACILITY_UPGRADE_CALCULATOR')} 
+                icon={<CalculateIcon />} 
+                iconPosition="start"
+                {...a11yProps(4)}
+                disabled={!selectedTemplate}
+              />
+              <Tab 
+                label={t('ANALYTICS')} 
+                icon={<AssessmentIcon />} 
+                iconPosition="start"
+                {...a11yProps(5)} 
+                disabled={!selectedTemplate}
               />
             </Tabs>
           </Box>
@@ -444,13 +501,16 @@ const MapTemplateManagementPage: React.FC = () => {
             {/* Template List Tab */}
             <TabPanel value={tabValue} index={0}>
               <TemplateList
+                templates={templates}
+                isLoading={templatesLoading}
                 onSelectTemplate={handleSelectTemplate}
                 onCreateTemplate={handleCreateTemplate}
                 onGenerateTemplate={handleGenerateTemplateAction}
+                onRefresh={loadTemplates}
               />
             </TabPanel>
 
-            {/* Configuration Tab */}
+            {/* Tile Configuration Tab */}
             <TabPanel value={tabValue} index={1}>
               {selectedTemplate && selectedTemplateTiles.length > 0 ? (
                 <MapConfigurationInterface
@@ -472,16 +532,73 @@ const MapTemplateManagementPage: React.FC = () => {
               )}
             </TabPanel>
 
-            {/* Analytics Tab */}
+            {/* Facility Configuration Tab */}
             <TabPanel value={tabValue} index={2}>
-              <Box p={3}>
-                <Typography variant="h6" gutterBottom>
-                  {t('TEMPLATE_ANALYTICS')}
-                </Typography>
-                <Alert severity="info">
-                  {t('ANALYTICS_COMING_SOON')}
-                </Alert>
-              </Box>
+              {selectedTemplate ? (
+                <Box sx={{ p: 3 }}>
+                  <TileFacilityConfigList templateId={selectedTemplate.id} />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info">
+                    {t('SELECT_TEMPLATE_FOR_FACILITY_CONFIG')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Bulk Operations Tab */}
+            <TabPanel value={tabValue} index={3}>
+              {selectedTemplate ? (
+                <Box sx={{ p: 3 }}>
+                  <BulkOperationsPanel templateId={selectedTemplate.id} />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info">
+                    {t('SELECT_TEMPLATE_FOR_BULK_OPERATIONS')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Facility Upgrade Calculator Tab */}
+            <TabPanel value={tabValue} index={4}>
+              {selectedTemplate ? (
+                <Box sx={{ p: 3 }}>
+                  <FacilityUpgradeCalculator templateId={selectedTemplate.id} />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info">
+                    {t('SELECT_TEMPLATE_FOR_ANALYTICS')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Analytics Tab */}
+            <TabPanel value={tabValue} index={5}>
+              {selectedTemplate && templates.length > 0 ? (
+                <Box sx={{ p: 3 }}>
+                  <AnalyticsStatistics 
+                    templates={templates}
+                    selectedTemplateId={selectedTemplate.id}
+                    onTemplateSelect={async (templateId) => {
+                      const template = templates.find(t => t.id === templateId);
+                      if (template) {
+                        await handleSelectTemplate(template);
+                      }
+                    }}
+                  />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info">
+                    {t('SELECT_TEMPLATE_FOR_ANALYTICS')}
+                  </Alert>
+                </Box>
+              )}
             </TabPanel>
           </Box>
 
@@ -500,6 +617,13 @@ const MapTemplateManagementPage: React.FC = () => {
               <AutoFixHighIcon />
             </Fab>
           </Zoom>
+
+          {/* Template Setup Wizard */}
+          <TemplateSetupWizard
+            open={setupWizardOpen}
+            onClose={() => setSetupWizardOpen(false)}
+            onComplete={handleSetupWizardComplete}
+          />
 
           {/* Template Generation Dialog */}
           <Dialog

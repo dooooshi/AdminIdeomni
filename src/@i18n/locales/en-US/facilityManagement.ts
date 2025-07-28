@@ -505,6 +505,7 @@ const facilityManagement = {
   ERROR_DELETING_CONFIGURATION: 'Error deleting configuration',
   ERROR_RESTORING_CONFIGURATION: 'Error restoring configuration',
   ERROR_INITIALIZING_CONFIGURATIONS: 'Error initializing default configurations',
+  ERROR_INVALID_RESPONSE: 'Invalid response from server. Please try again.',
   
   // Table headers
   CAPACITY_RANGE: 'Capacity Range',
@@ -517,49 +518,7 @@ const facilityManagement = {
   BUILD_COST_TOOLTIP: 'One-time cost required to construct this facility',
   MAINTENANCE_COST_TOOLTIP: 'Monthly cost required to maintain this facility in operational condition',
   OPERATION_COST_TOOLTIP: 'Daily cost required to operate this facility at full capacity',
-  
-  // Placeholder text
-  FACILITY_NAME_PLACEHOLDER: 'Enter facility name...',
-  FACILITY_DESCRIPTION_PLACEHOLDER: 'Enter facility description...',
-  SEARCH_PLACEHOLDER: 'Search by name, type, or description...',
-  
-  // Units and Formatting
-  UNITS: 'units',
-  PER_MONTH: 'per month',
-  PER_DAY: 'per day',
-  CURRENCY_SYMBOL: '$',
-  
-  // Filter options
-  ALL_TYPES: 'All Types',
-  ALL_CATEGORIES: 'All Categories',
-  ALL_STATUSES: 'All Statuses',
-  SHOW_ACTIVE_ONLY: 'Show Active Only',
-  SHOW_INACTIVE_ONLY: 'Show Inactive Only',
-  SHOW_DELETED: 'Show Deleted',
-  
-  // Sorting options
-  SORT_BY_NAME: 'Sort by Name',
-  SORT_BY_TYPE: 'Sort by Type',
-  SORT_BY_CATEGORY: 'Sort by Category',
-  SORT_BY_CAPACITY: 'Sort by Capacity',
-  SORT_BY_COST: 'Sort by Cost',
-  SORT_BY_CREATED: 'Sort by Created Date',
-  SORT_BY_UPDATED: 'Sort by Updated Date',
-  SORT_ASCENDING: 'Ascending',
-  SORT_DESCENDING: 'Descending',
-  
-  // Bulk actions
-  BULK_ACTIONS: 'Bulk Actions',
-  SELECT_ALL: 'Select All',
-  SELECT_NONE: 'Select None',
-  BULK_DELETE: 'Delete Selected',
-  BULK_ACTIVATE: 'Activate Selected',
-  BULK_DEACTIVATE: 'Deactivate Selected',
-  BULK_EXPORT: 'Export Selected',
-  
-  // Import/Export
-  IMPORT_FACILITIES: 'Import Facilities',
-  EXPORT_FACILITIES: 'Export Facilities',
+  // Advanced features continued
   IMPORT_SUCCESS: 'Successfully imported {{count}} facilities',
   EXPORT_SUCCESS: 'Successfully exported {{count}} facilities',
   
@@ -637,6 +596,35 @@ const facilityManagement = {
   SAVING_FACILITY: 'Saving facility...',
   DELETING_FACILITY: 'Deleting facility...',
   RESTORING_FACILITY: 'Restoring facility...',
+
+  // Wizard steps and descriptions
+  CAPACITY_SETTINGS: 'Capacity Settings',
+  COST_SETTINGS: 'Cost Settings',
+  CAPACITY_AND_COSTS: 'Capacity & Costs',
+  SELECT_FACILITY_TYPE_DESCRIPTION: 'Choose the category and type of facility you want to configure. This determines the basic properties and constraints.',
+  SET_CAPACITY_DESCRIPTION: 'Define the operational capacity for this facility type. This represents the maximum units it can handle.',
+  SET_COST_DESCRIPTION: 'Set the financial parameters for building and operating this facility.',
+  
+  // Advanced options
+  ADVANCED_OPTIONS: 'Advanced Options',
+  ADVANCED_OPTIONS_TOOLTIP: 'Configure detailed min/max ranges and constraints for advanced users',
+  ADVANCED_OPTIONS_DESCRIPTION: 'Define minimum and maximum ranges to provide flexibility when creating facilities of this type.',
+  COST_RANGES: 'Cost Ranges',
+  BUILD_COST_RANGE: 'Build Cost Range',
+  MAINTENANCE_COST_RANGE: 'Maintenance Cost Range',
+  OPERATION_COST_RANGE: 'Operation Cost Range',
+  
+  // Navigation
+  BACK: 'Back',
+  NEXT: 'Next',
+  MIN: 'Min',
+  MAX: 'Max',
+
+  // Additional validation messages  
+  DEFAULT_CAPACITY_REQUIRED: 'Default capacity is required',
+  DEFAULT_BUILD_COST_REQUIRED: 'Default build cost is required',
+  DEFAULT_MAINTENANCE_COST_REQUIRED: 'Default maintenance cost is required',
+  DEFAULT_OPERATION_COST_REQUIRED: 'Default operation cost is required',
 };
 
 export default facilityManagement; 

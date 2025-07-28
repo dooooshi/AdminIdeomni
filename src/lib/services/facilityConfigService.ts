@@ -115,6 +115,7 @@ export interface ApiResponse<T> {
 
 export class FacilityConfigService {
   private static readonly BASE_PATH = '/facility-configs';
+  private static readonly MOCK_BASE_PATH = '/api/mock/facility-configs';
 
   // Helper method to extract data from API response
   private static extractResponseData<T>(response: any): T {
@@ -151,10 +152,114 @@ export class FacilityConfigService {
     if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
 
     const queryString = searchParams.toString();
-    const url = queryString ? `${this.BASE_PATH}/search?${queryString}` : `${this.BASE_PATH}/search`;
     
-    const response = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(url);
-    return this.extractResponseData<FacilityConfigSearchResponse>(response);
+    // Try the main API first, then fall back to mock API
+    let url = queryString ? `${this.BASE_PATH}/search?${queryString}` : `${this.BASE_PATH}/search`;
+    
+    console.log('🌐 API Request:', {
+      url,
+      params,
+      queryString
+    });
+    
+    try {
+      const response = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(url);
+      const data = this.extractResponseData<FacilityConfigSearchResponse>(response);
+      
+      console.log('🌐 API Response:', {
+        source: 'main API',
+        rawResponse: response.data,
+        extractedData: data,
+        status: response.status
+      });
+      
+      return this.validateAndReturnResponse(data);
+    } catch (error) {
+      console.warn('⚠️ Main API failed, trying mock API:', error);
+      
+      // Fall back to mock API
+      const mockUrl = queryString ? `${this.MOCK_BASE_PATH}/search?${queryString}` : `${this.MOCK_BASE_PATH}/search`;
+      
+      try {
+        const mockResponse = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(mockUrl);
+        const mockData = this.extractResponseData<FacilityConfigSearchResponse>(mockResponse);
+        
+        console.log('🔄 Mock API Response:', {
+          source: 'mock API',
+          rawResponse: mockResponse.data,
+          extractedData: mockData,
+          status: mockResponse.status
+        });
+        
+        return this.validateAndReturnResponse(mockData);
+      } catch (mockError) {
+        console.error('❌ Both main and mock API failed:', { mainError: error, mockError });
+        throw mockError;
+      }
+    }
+  }
+
+  /**
+   * Validate and return API response data
+   */
+  private static validateAndReturnResponse(data: FacilityConfigSearchResponse): FacilityConfigSearchResponse {
+    // Validate response structure
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid response format: Expected object');
+    }
+    
+    if (!Array.isArray(data.data)) {
+      throw new Error('Invalid response format: data.data must be an array');
+    }
+    
+    if (typeof data.total !== 'number' || data.total < 0) {
+      throw new Error('Invalid response format: total must be a non-negative number');
+    }
+    
+    if (typeof data.page !== 'number' || data.page < 1) {
+      throw new Error('Invalid response format: page must be a positive number');
+    }
+    
+    if (typeof data.pageSize !== 'number' || data.pageSize < 1) {
+      throw new Error('Invalid response format: pageSize must be a positive number');
+    }
+    
+    if (typeof data.totalPages !== 'number' || data.totalPages < 0) {
+      throw new Error('Invalid response format: totalPages must be a non-negative number');
+    }
+    
+    // Calculate expected values for validation
+    const expectedTotalPages = Math.ceil(data.total / data.pageSize);
+    if (data.totalPages !== expectedTotalPages) {
+      console.warn('⚠️ totalPages mismatch:', {
+        reported: data.totalPages,
+        calculated: expectedTotalPages,
+        total: data.total,
+        pageSize: data.pageSize
+      });
+    }
+    
+    const expectedHasNext = data.page < data.totalPages;
+    const expectedHasPrevious = data.page > 1;
+    
+    if (data.hasNext !== expectedHasNext) {
+      console.warn('⚠️ hasNext mismatch:', {
+        reported: data.hasNext,
+        expected: expectedHasNext,
+        currentPage: data.page,
+        totalPages: data.totalPages
+      });
+    }
+    
+    if (data.hasPrevious !== expectedHasPrevious) {
+      console.warn('⚠️ hasPrevious mismatch:', {
+        reported: data.hasPrevious,
+        expected: expectedHasPrevious,
+        currentPage: data.page
+      });
+    }
+    
+    return data;
   }
 
   /**
@@ -199,8 +304,21 @@ export class FacilityConfigService {
    * Get facility configuration statistics
    */
   static async getFacilityConfigStatistics(): Promise<FacilityConfigStatistics> {
-    const response = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.BASE_PATH}/stats`);
-    return this.extractResponseData<FacilityConfigStatistics>(response);
+    try {
+      const response = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.BASE_PATH}/stats`);
+      return this.extractResponseData<FacilityConfigStatistics>(response);
+    } catch (error) {
+      console.warn('⚠️ Main API stats failed, trying mock API:', error);
+      
+      // Fall back to mock API
+      try {
+        const mockResponse = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.MOCK_BASE_PATH}/stats`);
+        return this.extractResponseData<FacilityConfigStatistics>(mockResponse);
+      } catch (mockError) {
+        console.error('❌ Both main and mock API stats failed:', { mainError: error, mockError });
+        throw mockError;
+      }
+    }
   }
 
   /**

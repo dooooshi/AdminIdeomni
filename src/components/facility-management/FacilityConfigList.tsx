@@ -132,16 +132,65 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
         ...params,
       };
 
+      console.log('🔍 Loading configurations with params:', {
+        requestParams: searchParams,
+        currentPage: page,
+        pageSize,
+        filters
+      });
+
       const [configResponse, statsResponse] = await Promise.all([
         FacilityConfigService.searchFacilityConfigs(searchParams),
         FacilityConfigService.getFacilityConfigStatistics(),
       ]);
 
-      setConfigData(configResponse);
-      setStatistics(statsResponse);
+      console.log('📊 API Response received:', {
+        configResponse: {
+          total: configResponse?.total,
+          page: configResponse?.page,
+          pageSize: configResponse?.pageSize,
+          totalPages: configResponse?.totalPages,
+          hasNext: configResponse?.hasNext,
+          hasPrevious: configResponse?.hasPrevious,
+          dataLength: configResponse?.data?.length
+        },
+        expectedPage: page + 1,
+        currentUIPage: page
+      });
+
+      // Validate pagination response
+      if (configResponse && typeof configResponse.total === 'number' && configResponse.total >= 0) {
+        // Check if current page is beyond available pages
+        if (configResponse.totalPages > 0 && (page + 1) > configResponse.totalPages) {
+          console.warn('⚠️ Current page exceeds total pages, resetting to last page', {
+            currentPage: page + 1,
+            totalPages: configResponse.totalPages
+          });
+          setPage(Math.max(0, configResponse.totalPages - 1));
+          return; // Return early to prevent setting invalid data
+        }
+
+        setConfigData(configResponse);
+        setStatistics(statsResponse);
+        
+        console.log('✅ Data set successfully:', {
+          totalItems: configResponse.total,
+          currentPage: configResponse.page,
+          itemsOnPage: configResponse.data?.length
+        });
+      } else {
+        console.error('❌ Invalid API response structure:', configResponse);
+        setError(t('ERROR_INVALID_RESPONSE'));
+      }
     } catch (err) {
-      console.error('Error loading facility configurations:', err);
+      console.error('❌ Error loading facility configurations:', err);
       setError(t('ERROR_LOADING_CONFIGURATIONS'));
+      
+      // Reset pagination on error if we're not on the first page
+      if (page > 0) {
+        console.log('🔄 Resetting to first page due to error');
+        setPage(0);
+      }
     } finally {
       setLoading(false);
     }
@@ -149,15 +198,41 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
 
   // Load data on component mount and when filters change
   useEffect(() => {
+    console.log('🔄 Triggering loadConfigurations due to dependency change:', {
+      page,
+      pageSize,
+      filters,
+      timestamp: new Date().toISOString()
+    });
     loadConfigurations();
   }, [loadConfigurations]);
+
+  // Separate effect to handle page validation after data loads
+  useEffect(() => {
+    if (configData && configData.totalPages > 0) {
+      const maxPage = configData.totalPages - 1;
+      if (page > maxPage) {
+        console.log('🔧 Auto-correcting page due to data change:', {
+          currentPage: page,
+          maxPage,
+          totalPages: configData.totalPages
+        });
+        setPage(maxPage);
+      }
+    }
+  }, [configData, page]);
 
   // Debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue !== filters.search) {
+        console.log('🔍 Search change (debounced):', {
+          from: filters.search,
+          to: searchValue,
+          resetPage: true
+        });
         setFilters(prev => ({ ...prev, search: searchValue }));
-        setPage(0);
+        setPage(0); // Reset to first page when search changes
       }
     }, 500);
 
@@ -170,26 +245,66 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
   };
 
   const handleFilterChange = (field: keyof FacilityConfigListFilter, value: string) => {
+    console.log('🔍 Filter change:', {
+      field,
+      from: filters[field],
+      to: value,
+      resetPage: true
+    });
+    
     setFilters(prev => ({ ...prev, [field]: value }));
-    setPage(0);
+    setPage(0); // Always reset to first page when filters change
   };
 
   const handleSort = (field: string) => {
     const isAsc = filters.sortBy === field && filters.sortOrder === 'asc';
+    const newSortOrder = isAsc ? 'desc' : 'asc';
+    
+    console.log('🔀 Sort change:', {
+      field,
+      from: `${filters.sortBy} ${filters.sortOrder}`,
+      to: `${field} ${newSortOrder}`,
+      resetPage: true
+    });
+    
     setFilters(prev => ({
       ...prev,
       sortBy: field,
-      sortOrder: isAsc ? 'desc' : 'asc',
+      sortOrder: newSortOrder,
     }));
+    setPage(0); // Reset to first page when sorting changes
   };
 
   const handlePageChange = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    console.log('📄 Page change requested:', {
+      from: page,
+      to: newPage,
+      totalPages: configData?.totalPages,
+      hasNext: configData?.hasNext,
+      hasPrevious: configData?.hasPrevious
+    });
+    
+    if (configData && newPage >= 0 && newPage < (configData.totalPages || 1)) {
+      setPage(newPage);
+    } else {
+      console.warn('⚠️ Invalid page change attempt:', {
+        requestedPage: newPage,
+        validRange: `0 to ${(configData?.totalPages || 1) - 1}`
+      });
+    }
   };
 
   const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPageSize(parseInt(event.target.value, 10));
-    setPage(0);
+    const newPageSize = parseInt(event.target.value, 10);
+    console.log('📏 Page size change requested:', {
+      from: pageSize,
+      to: newPageSize,
+      currentPage: page,
+      totalItems: configData?.total
+    });
+    
+    setPageSize(newPageSize);
+    setPage(0); // Reset to first page when page size changes
   };
 
   const handleDeleteClick = (config: FacilityConfig) => {
@@ -666,19 +781,38 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
 
         {/* Pagination */}
         {configData && (
-          <TablePagination
-            rowsPerPageOptions={[10, 20, 50, 100]}
-            component="div"
-            count={configData.total}
-            rowsPerPage={pageSize}
-            page={page}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handlePageSizeChange}
-            labelRowsPerPage={t('ROWS_PER_PAGE')}
-            labelDisplayedRows={({ from, to, count }) =>
-              t('PAGINATION_LABEL', { from, to, count })
-            }
-          />
+          <Box sx={{ position: 'relative' }}>
+            <TablePagination
+              rowsPerPageOptions={[10, 20, 50, 100]}
+              component="div"
+              count={configData.total || 0}
+              rowsPerPage={pageSize}
+              page={Math.min(page, Math.max(0, (configData.totalPages || 1) - 1))}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handlePageSizeChange}
+              labelRowsPerPage={t('ROWS_PER_PAGE')}
+              labelDisplayedRows={({ from, to, count }) =>
+                t('PAGINATION_LABEL', { from, to, count })
+              }
+              sx={{
+                opacity: loading ? 0.6 : 1,
+                pointerEvents: loading ? 'none' : 'auto'
+              }}
+            />
+            {loading && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1
+                }}
+              >
+                <CircularProgress size={20} />
+              </Box>
+            )}
+          </Box>
         )}
       </Paper>
 
