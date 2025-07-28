@@ -18,6 +18,15 @@ const common = {
 	FILTER: 'Filter',
 	SORT: 'Sort',
 	REFRESH: 'Refresh',
+	refresh: 'Refresh',
+	RETRY: 'Retry',
+	retry: 'Retry',
+	SAVING: 'Saving',
+	saving: 'Saving',
+	actions: 'Actions',
+	itemsPerPage: 'Items per page',
+	of: 'of',
+	moreThan: 'more than',
 	RELOAD: 'Reload',
 	
 	// Status

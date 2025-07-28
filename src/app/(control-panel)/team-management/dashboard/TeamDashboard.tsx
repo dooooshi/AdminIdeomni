@@ -13,12 +13,14 @@ import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentTeamQuery } from '../TeamApi';
 import CreateTeamModal from './CreateTeamModal';
+import TeamAccountCard from './TeamAccountCard';
+import TeamAccountService from '@/lib/services/teamAccountService';
 
 /**
  * Team Dashboard Component
  */
 function TeamDashboard() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const { data: team, isLoading, error, refetch } = useGetCurrentTeamQuery();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -153,50 +155,59 @@ function TeamDashboard() {
             </div>
           </motion.div>
 
-          {/* Team Info Card */}
+          {/* Dashboard Grid - Team Info and Account */}
           <motion.div variants={item}>
-            <Paper className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <Typography variant="h6">{t('teamManagement:TEAM_INFORMATION')}</Typography>
-                <div className="flex items-center gap-2">
-                  <IdeomniSvgIcon size={20} className="text-green-500">
-                    heroicons-solid:check-circle
-                  </IdeomniSvgIcon>
-                  <Typography color="text.secondary" variant="body2">
-                    {team.isOpen ? t('teamManagement:OPEN_TO_NEW_MEMBERS') : t('teamManagement:CLOSED_TEAM')}
-                  </Typography>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Team Info Card */}
+              <Paper className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <Typography variant="h6">{t('teamManagement:TEAM_INFORMATION')}</Typography>
+                  <div className="flex items-center gap-2">
+                    <IdeomniSvgIcon size={20} className="text-green-500">
+                      heroicons-solid:check-circle
+                    </IdeomniSvgIcon>
+                    <Typography color="text.secondary" variant="body2">
+                      {team.isOpen ? t('teamManagement:OPEN_TO_NEW_MEMBERS') : t('teamManagement:CLOSED_TEAM')}
+                    </Typography>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:TEAM_LEADER')}
-                  </Typography>
-                  <Typography variant="body1" className="font-medium">
-                    {team.leader.firstName && team.leader.lastName
-                      ? `${team.leader.firstName} ${team.leader.lastName}`
-                      : team.leader.username}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:MEMBERS')}
-                  </Typography>
-                  <Typography variant="body1" className="font-medium">
-                    {team.members.filter(m => m.status === 'ACTIVE').length} / {team.maxMembers}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:CREATED')}
-                  </Typography>
-                  <Typography variant="body1" className="font-medium">
-                    {new Date(team.createdAt).toLocaleDateString()}
-                  </Typography>
-                </Box>
-              </div>
-            </Paper>
+                
+                <div className="grid grid-cols-1 gap-4">
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('teamManagement:TEAM_LEADER')}
+                    </Typography>
+                    <Typography variant="body1" className="font-medium">
+                      {team.leader.firstName && team.leader.lastName
+                        ? `${team.leader.firstName} ${team.leader.lastName}`
+                        : team.leader.username}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('teamManagement:MEMBERS')}
+                    </Typography>
+                    <Typography variant="body1" className="font-medium">
+                      {team.members.filter(m => m.status === 'ACTIVE').length} / {team.maxMembers}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('teamManagement:CREATED')}
+                    </Typography>
+                    <Typography variant="body1" className="font-medium">
+                      {TeamAccountService.formatDate(team.createdAt, i18n.language)}
+                    </Typography>
+                  </Box>
+                </div>
+              </Paper>
+
+              {/* Team Account Card */}
+              <TeamAccountCard 
+                compact={false}
+                showTeamInfo={false}
+              />
+            </div>
           </motion.div>
 
           {/* Team Members */}
@@ -248,7 +259,7 @@ function TeamDashboard() {
                         )}
                       </div>
                       <Typography variant="body2" color="text.secondary">
-                        {t('teamManagement:JOINED')} {new Date(member.joinedAt).toLocaleDateString()}
+                        {t('teamManagement:JOINED')} {TeamAccountService.formatDate(member.joinedAt, i18n.language)}
                       </Typography>
                     </div>
                   ))}

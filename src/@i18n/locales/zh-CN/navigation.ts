@@ -56,6 +56,7 @@ const navigation = {
 	TEAM_ADMINISTRATION: '团队管理后台',
 	TEAM_ADMIN_OVERVIEW: '管理概览',
 	MANAGE_TEAMS: '管理团队',
+	TEAM_ACCOUNTS: '团队账户',
 };
 
 export default navigation; 

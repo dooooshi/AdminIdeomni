@@ -8,6 +8,7 @@ import userManagement from './userManagement';
 import facilityManagement from './facilityManagement';
 import teamManagement from './teamManagement';
 import teamAdministration from './teamAdministration';
+import teamAccounts from './teamAccounts';
 
 const zhCN = {
 	...common,
@@ -19,7 +20,8 @@ const zhCN = {
 	userManagement,
 	facilityManagement,
 	teamManagement,
-	teamAdministration
+	teamAdministration,
+	teamAccounts
 };
 
 export default zhCN; 

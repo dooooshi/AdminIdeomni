@@ -3,6 +3,7 @@ const teamAdministration = {
   TEAM_ADMINISTRATION: '团队管理后台',
   TEAM_ADMIN_OVERVIEW: '管理概览',
   MANAGE_TEAMS: '管理团队',
+  MANAGE_TEAM_ACCOUNTS_DESCRIPTION: '管理团队账户、余额和您活动中所有团队的资源分配',
   
   // Team Stats Cards
   TOTAL_TEAMS: '总团队数',

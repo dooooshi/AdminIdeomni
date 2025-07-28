@@ -18,6 +18,15 @@ const common = {
 	FILTER: '筛选',
 	SORT: '排序',
 	REFRESH: '刷新',
+	refresh: '刷新',
+	RETRY: '重试',
+	retry: '重试',
+	SAVING: '保存中',
+	saving: '保存中',
+	actions: '操作',
+	itemsPerPage: '每页条目',
+	of: '共',
+	moreThan: '超过',
 	RELOAD: '重新加载',
 	
 	// Status

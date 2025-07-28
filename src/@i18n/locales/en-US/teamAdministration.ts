@@ -3,6 +3,7 @@ const teamAdministration = {
   TEAM_ADMINISTRATION: 'Team Administration',
   TEAM_ADMIN_OVERVIEW: 'Team Admin Overview',
   MANAGE_TEAMS: 'Manage Teams',
+  MANAGE_TEAM_ACCOUNTS_DESCRIPTION: 'Manage team accounts, balances, and resource allocation across all teams in your activity',
   
   // Team Stats Cards
   TOTAL_TEAMS: 'Total Teams',

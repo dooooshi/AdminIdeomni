@@ -56,6 +56,7 @@ const navigation = {
 	TEAM_ADMINISTRATION: 'Team Administration',
 	TEAM_ADMIN_OVERVIEW: 'Administration Overview',
 	MANAGE_TEAMS: 'Manage Teams',
+	TEAM_ACCOUNTS: 'Team Accounts',
 };
 
 export default navigation; 

@@ -534,6 +534,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/team-administration/teams',
 					translate: 'MANAGE_TEAMS',
 					auth: ['user']
+				},
+				{
+					id: 'team-administration.accounts',
+					title: 'Team Accounts',
+					type: 'item',
+					icon: 'heroicons-outline:currency-dollar',
+					url: '/team-administration/accounts',
+					translate: 'TEAM_ACCOUNTS',
+					auth: ['user']
 				}
 			]
 		});
