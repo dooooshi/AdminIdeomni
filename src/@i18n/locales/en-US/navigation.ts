@@ -56,6 +56,17 @@ const navigation = {
 	TEAM_ADMIN_OVERVIEW: 'Administration Overview',
 	MANAGE_TEAMS: 'Manage Teams',
 	TEAM_ACCOUNTS: 'Team Accounts',
+	// Resource Transfers
+	RESOURCE_TRANSFERS: 'Resource Transfers',
+	TRANSFER_HUB: 'Transfer Hub',
+	TRANSFER_GOLD: 'Transfer Gold',
+	TRANSFER_CARBON: 'Transfer Carbon',
+	// Account History
+	ACCOUNT_HISTORY: 'Account History',
+	HISTORY_OVERVIEW: 'History Overview',
+	ALL_OPERATIONS: 'All Operations',
+	TRANSFER_HISTORY: 'Transfer History',
+	BALANCE_HISTORY: 'Balance History',
 };
 
 export default navigation; 

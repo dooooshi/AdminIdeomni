@@ -56,6 +56,17 @@ const navigation = {
 	TEAM_ADMIN_OVERVIEW: '管理概览',
 	MANAGE_TEAMS: '管理团队',
 	TEAM_ACCOUNTS: '团队账户',
+	// Resource Transfers
+	RESOURCE_TRANSFERS: '资源转账',
+	TRANSFER_HUB: '转账中心',
+	TRANSFER_GOLD: '转账金币',
+	TRANSFER_CARBON: '转账碳积分',
+	// Account History
+	ACCOUNT_HISTORY: '账户历史',
+	HISTORY_OVERVIEW: '历史概览',
+	ALL_OPERATIONS: '所有操作',
+	TRANSFER_HISTORY: '转账历史',
+	BALANCE_HISTORY: '余额历史',
 };
 
 export default navigation; 

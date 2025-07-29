@@ -174,7 +174,110 @@ const teamManagement = {
   SYSTEM_DEDUCTION: '系统扣除',
   ACTIVITY_REWARD: '活动奖励',
   FACILITY_INCOME: '设施收入',
-  FACILITY_EXPENSE: '设施支出'
+  FACILITY_EXPENSE: '设施支出',
+  
+  // History Dashboard
+  OPERATION_SUMMARY: '操作摘要',
+  RESOURCE_FLOW_ANALYSIS: '资源流分析',
+  TOP_TRANSFER_PARTNERS: '主要转账伙伴',
+  BALANCE_TRENDS: '余额趋势',
+  RECENT_ACTIVITY: '最近活动',
+  TOTAL_OPERATIONS: '总操作数',
+  GOLD_FLOW: '金币流',
+  CARBON_FLOW: '碳积分流',
+  NET_FLOW: '净流量',
+  TOTAL_IN: '总收入',
+  TOTAL_OUT: '总支出',
+  NO_OPERATIONS_YET: '暂无操作',
+  START_BY_MAKING_TRANSFER: '从进行第一次转账开始',
+  
+  // History Filters
+  FILTER_OPERATIONS: '筛选操作',
+  OPERATION_TYPE: '操作类型',
+  RESOURCE_TYPE: '资源类型',
+  TRANSFER_DIRECTION: '转账方向',
+  DATE_RANGE: '日期范围',
+  FROM_DATE: '开始日期',
+  TO_DATE: '结束日期',
+  ALL_TYPES: '所有类型',
+  ALL_RESOURCES: '所有资源',
+  ALL_DIRECTIONS: '所有方向',
+  INCOMING: '转入',
+  OUTGOING: '转出',
+  GOLD: '金币',
+  CARBON: '碳积分',
+  APPLY_FILTERS: '应用筛选',
+  CLEAR_FILTERS: '清除筛选',
+  SEARCH_OPERATIONS: '搜索操作...',
+  
+  // History Tables
+  DATE: '日期',
+  TYPE: '类型',
+  RESOURCE: '资源',
+  PARTNER_TEAM: '合作团队',
+  BALANCE_BEFORE: '之前余额',
+  BALANCE_AFTER: '之后余额',
+  CHANGE: '变更',
+  OPERATION_ID: '操作ID',
+  USER: '用户',
+  NO_OPERATIONS_FOUND: '未找到操作',
+  NO_TRANSFERS_FOUND: '未找到转账',
+  NO_BALANCE_CHANGES_FOUND: '未找到余额变更',
+  LOAD_MORE: '加载更多',
+  LOADING: '加载中...',
+  
+  // Pagination
+  PAGE: '页',
+  OF: '共',
+  SHOWING: '显示',
+  TO: '到',
+  ENTRIES: '条记录',
+  
+  // Chart Labels
+  GOLD_BALANCE: '金币余额',
+  CARBON_BALANCE: '碳积分余额',
+  OPERATIONS_BY_TYPE: '按类型的操作',
+  RESOURCE_FLOW_CHART: '资源流图',
+  BALANCE_TREND_CHART: '余额趋势图',
+  
+  // Quick Actions on Dashboard
+  TRANSFER_RESOURCES: '转账资源',
+  VIEW_HISTORY: '查看历史',
+  SEND_GOLD: '发送金币',
+  SEND_CARBON: '发送碳积分',
+  
+  // Team Selection
+  SEARCH_TEAMS: '搜索团队...',
+  NO_TEAMS_AVAILABLE_FOR_TRANSFER: '没有可转账的团队',
+  TEAM_NOT_FOUND: '未找到团队',
+  LOADING_TEAMS: '加载团队中...',
+  
+  // Decimal Formatting
+  GOLD_SYMBOL: '🪙',
+  CARBON_SYMBOL: '🌿',
+  
+  // Time Formatting
+  JUST_NOW: '刚刚',
+  MINUTES_AGO: '分钟前',
+  HOURS_AGO: '小时前',
+  DAYS_AGO: '天前',
+  WEEKS_AGO: '周前',
+  MONTHS_AGO: '月前',
+  
+  // Export Features
+  EXPORT_HISTORY: '导出历史',
+  EXPORT_TO_CSV: '导出为CSV',
+  EXPORT_TO_PDF: '导出为PDF',
+  GENERATING_EXPORT: '正在生成导出...',
+  EXPORT_COMPLETE: '导出完成',
+  EXPORT_FAILED: '导出失败',
+  
+  // Additional Terms
+  LAST_30_DAYS: '最近30天',
+  TRANSFERS: '转账',
+  DIRECTION: '方向',
+  FROM: '从',
+  SUCCESS: '成功'
 };
 
 export default teamManagement;
