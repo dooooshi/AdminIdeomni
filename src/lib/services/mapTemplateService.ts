@@ -18,7 +18,9 @@ import {
   ApiResponse,
   PaginatedResponse,
   EnhancedMapTemplate,
-  TileFacilityConfigStatistics
+  TileFacilityConfigStatistics,
+  BulkUpdateTilesByLandTypeDto,
+  MapTileBulkUpdateResponseDto
 } from '@/components/map/types';
 import TileFacilityBuildConfigService from './tileFacilityBuildConfigService';
 
@@ -314,30 +316,18 @@ export class MapTemplateService {
 
   /**
    * Update all tiles of a specific land type using multipliers or fixed values (Admin only)
+   * NEW: Support for dual pricing system (gold + carbon)
    */
   static async updateTilesByLandType(
     templateId: number, 
     landType: 'MARINE' | 'COASTAL' | 'PLAIN',
-    updateData: {
-      // Multipliers
-      priceMultiplier?: number;
-      populationMultiplier?: number;
-      transportationCostMultiplier?: number;
-      // Fixed values (overrides multipliers)
-      fixedPrice?: number;
-      fixedPopulation?: number;
-      fixedTransportationCost?: number;
-    }
-  ): Promise<{
-    updated: number;
-    failed: number;
-    details: Array<{ tileId: number; success: boolean; error?: string }>;
-  }> {
-    const response = await apiClient.put<ApiResponse<any>>(
+    updateData: BulkUpdateTilesByLandTypeDto
+  ): Promise<MapTileBulkUpdateResponseDto> {
+    const response = await apiClient.put<ApiResponse<MapTileBulkUpdateResponseDto>>(
       `${this.BASE_PATH}/${templateId}/tiles/land-type/${landType}/bulk-update`,
       updateData
     );
-    return this.extractResponseData<any>(response);
+    return this.extractResponseData<MapTileBulkUpdateResponseDto>(response);
   }
 
   /**
@@ -454,23 +444,30 @@ export class MapTemplateService {
 
   /**
    * Get default land type configuration values
+   * NEW: Updated for dual pricing system - all tiles start with zero pricing
    */
   static getDefaultConfiguration(landType: 'MARINE' | 'COASTAL' | 'PLAIN') {
     const defaults = {
       MARINE: {
-        initialPrice: 50.00,
+        // NEW: Dual pricing system
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
         initialPopulation: 0,
-        transportationCostUnit: 8.00
+        transportationCostUnit: 8.00,
       },
       COASTAL: {
-        initialPrice: 100.00,
+        // NEW: Dual pricing system
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
         initialPopulation: 500,
-        transportationCostUnit: 5.00
+        transportationCostUnit: 5.00,
       },
       PLAIN: {
-        initialPrice: 150.00,
+        // NEW: Dual pricing system
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
         initialPopulation: 1000,
-        transportationCostUnit: 3.00
+        transportationCostUnit: 3.00,
       }
     };
     return defaults[landType];
@@ -573,7 +570,7 @@ export class MapTemplateService {
       if (templateData.generateParams) {
         // Generate template with tiles
         template = await this.generateMapTemplate({
-          templateName: templateData.name,
+          name: templateData.name,
           description: templateData.description,
           ...templateData.generateParams
         });
@@ -714,17 +711,28 @@ export class MapTemplateService {
 
   /**
    * Validate tile configuration values
+   * NEW: Updated for dual pricing system
    */
   static validateTileConfiguration(config: UpdateTileDto): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
 
-    if (config.initialPrice !== undefined) {
-      if (config.initialPrice < 0) {
-        errors.initialPrice = 'Price cannot be negative';
-      } else if (config.initialPrice > 10000) {
-        errors.initialPrice = 'Price cannot exceed $10,000';
+    // NEW: Dual pricing validation
+    if (config.initialGoldPrice !== undefined) {
+      if (config.initialGoldPrice < 0) {
+        errors.initialGoldPrice = 'Gold price cannot be negative';
+      } else if (config.initialGoldPrice > 10000) {
+        errors.initialGoldPrice = 'Gold price cannot exceed $10,000';
       }
     }
+
+    if (config.initialCarbonPrice !== undefined) {
+      if (config.initialCarbonPrice < 0) {
+        errors.initialCarbonPrice = 'Carbon price cannot be negative';
+      } else if (config.initialCarbonPrice > 10000) {
+        errors.initialCarbonPrice = 'Carbon price cannot exceed $10,000';
+      }
+    }
+
 
     if (config.initialPopulation !== undefined) {
       if (config.initialPopulation < 0) {
@@ -749,36 +757,41 @@ export class MapTemplateService {
   }
 
   /**
-   * Validate land type batch update parameters
+   * Validate bulk tile update parameters for dual pricing system
+   * NEW: Updated to support gold/carbon pricing
    */
-  static validateLandTypeBatchUpdate(updateData: {
-    priceMultiplier?: number;
-    populationMultiplier?: number;
-    transportationCostMultiplier?: number;
-    fixedPrice?: number;
-    fixedPopulation?: number;
-    fixedTransportationCost?: number;
-  }): { isValid: boolean; errors: Record<string, string> } {
+  static validateBulkTileUpdateByLandType(updateData: BulkUpdateTilesByLandTypeDto): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
 
     // Validate multipliers
-    if (updateData.priceMultiplier !== undefined && (updateData.priceMultiplier < 0 || updateData.priceMultiplier > 10)) {
-      errors.priceMultiplier = 'Price multiplier must be between 0 and 10';
+    if (updateData.goldPriceMultiplier !== undefined && (updateData.goldPriceMultiplier < 0.1 || updateData.goldPriceMultiplier > 10)) {
+      errors.goldPriceMultiplier = 'Gold price multiplier must be between 0.1 and 10';
+    }
+
+    if (updateData.carbonPriceMultiplier !== undefined && (updateData.carbonPriceMultiplier < 0.1 || updateData.carbonPriceMultiplier > 10)) {
+      errors.carbonPriceMultiplier = 'Carbon price multiplier must be between 0.1 and 10';
     }
 
     if (updateData.populationMultiplier !== undefined && (updateData.populationMultiplier < 0 || updateData.populationMultiplier > 10)) {
       errors.populationMultiplier = 'Population multiplier must be between 0 and 10';
     }
 
-    if (updateData.transportationCostMultiplier !== undefined && (updateData.transportationCostMultiplier < 0 || updateData.transportationCostMultiplier > 10)) {
-      errors.transportationCostMultiplier = 'Transportation cost multiplier must be between 0 and 10';
+    if (updateData.transportationCostMultiplier !== undefined && (updateData.transportationCostMultiplier < 0.1 || updateData.transportationCostMultiplier > 10)) {
+      errors.transportationCostMultiplier = 'Transportation cost multiplier must be between 0.1 and 10';
     }
 
-    // Validate fixed values using the same validation as individual tiles
-    if (updateData.fixedPrice !== undefined) {
-      const priceValidation = this.validateTileConfiguration({ initialPrice: updateData.fixedPrice });
-      if (!priceValidation.isValid && priceValidation.errors.initialPrice) {
-        errors.fixedPrice = priceValidation.errors.initialPrice;
+    // Validate fixed values
+    if (updateData.fixedGoldPrice !== undefined) {
+      const goldValidation = this.validateTileConfiguration({ initialGoldPrice: updateData.fixedGoldPrice });
+      if (!goldValidation.isValid && goldValidation.errors.initialGoldPrice) {
+        errors.fixedGoldPrice = goldValidation.errors.initialGoldPrice;
+      }
+    }
+
+    if (updateData.fixedCarbonPrice !== undefined) {
+      const carbonValidation = this.validateTileConfiguration({ initialCarbonPrice: updateData.fixedCarbonPrice });
+      if (!carbonValidation.isValid && carbonValidation.errors.initialCarbonPrice) {
+        errors.fixedCarbonPrice = carbonValidation.errors.initialCarbonPrice;
       }
     }
 

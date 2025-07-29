@@ -97,7 +97,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
   // Reset form when tile selection changes
   useEffect(() => {
     if (selectedTileState) {
-      setCurrentPrice(selectedTileState.newPrice || selectedTileState.tile.initialPrice);
+      setCurrentPrice(selectedTileState.newPrice || selectedTileState.tile.initialGoldPrice || 0);
       setCurrentPopulation(selectedTileState.newPopulation || selectedTileState.tile.initialPopulation);
       setChangeReason('');
       setValidationErrors([]);
@@ -169,7 +169,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
   // Reset to template defaults
   const handleResetToDefaults = () => {
     if (selectedTileState) {
-      setCurrentPrice(selectedTileState.tile.initialPrice);
+      setCurrentPrice((selectedTileState.tile.initialGoldPrice || 0));
       setCurrentPopulation(selectedTileState.tile.initialPopulation);
       setChangeReason('Reset to template defaults');
     }
@@ -181,11 +181,11 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
 
     const currentValue = AdminTileStateService.calculateTileValue(currentPrice, currentPopulation);
     const originalValue = AdminTileStateService.calculateTileValue(
-      selectedTileState.tile.initialPrice,
+      (selectedTileState.tile.initialGoldPrice || 0),
       selectedTileState.tile.initialPopulation
     );
     
-    const priceChange = currentPrice - selectedTileState.tile.initialPrice;
+    const priceChange = currentPrice - (selectedTileState.tile.initialGoldPrice || 0);
     const populationChange = currentPopulation - selectedTileState.tile.initialPopulation;
     const valueChange = currentValue - originalValue;
     
@@ -195,7 +195,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
       priceChange,
       populationChange,
       valueChange,
-      priceChangePercent: (priceChange / selectedTileState.tile.initialPrice) * 100,
+      priceChangePercent: (priceChange / (selectedTileState.tile.initialGoldPrice || 0)) * 100,
       populationChangePercent: selectedTileState.tile.initialPopulation > 0 
         ? (populationChange / selectedTileState.tile.initialPopulation) * 100 
         : 0,

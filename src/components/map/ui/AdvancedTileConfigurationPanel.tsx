@@ -106,7 +106,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
     const landTypeTiles = tiles.filter(tile => tile.landType === landType);
     return {
       count: landTypeTiles.length,
-      avgPrice: landTypeTiles.reduce((sum, tile) => sum + (tile.initialPrice || 0), 0) / landTypeTiles.length || 0,
+      avgPrice: landTypeTiles.reduce((sum, tile) => sum + ((tile.initialGoldPrice || 0) + (tile.initialCarbonPrice || 0)), 0) / landTypeTiles.length || 0,
       avgPopulation: landTypeTiles.reduce((sum, tile) => sum + (tile.initialPopulation || 0), 0) / landTypeTiles.length || 0,
       avgTransportCost: landTypeTiles.reduce((sum, tile) => sum + (tile.transportationCostUnit || 0), 0) / landTypeTiles.length || 0,
     };

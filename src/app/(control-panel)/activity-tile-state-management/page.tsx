@@ -147,13 +147,13 @@ const ActivityTileStateManagementPage: React.FC = () => {
         const getDefaultsByLandType = (landType: string) => {
           switch (landType) {
             case 'MARINE':
-              return { initialPrice: 75, initialPopulation: 100, transportationCostUnit: 8.0 };
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 8.0 };
             case 'COASTAL':
-              return { initialPrice: 150, initialPopulation: 1200, transportationCostUnit: 5.0 };
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.0 };
             case 'PLAIN':
-              return { initialPrice: 200, initialPopulation: 1800, transportationCostUnit: 2.5 };
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 2.5 };
             default:
-              return { initialPrice: 100, initialPopulation: 500, transportationCostUnit: 5.0 };
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.0 };
           }
         };
         
@@ -167,6 +167,9 @@ const ActivityTileStateManagementPage: React.FC = () => {
           newPrice: rawTileState.newPrice,
           previousPopulation: rawTileState.previousPopulation,
           newPopulation: rawTileState.newPopulation,
+          currentGoldPrice: rawTileState.currentGoldPrice || 500,
+          currentCarbonPrice: rawTileState.currentCarbonPrice || 50,
+          currentPopulation: rawTileState.currentPopulation || 500,
           updatedBy: rawTileState.updatedBy,
           changeReason: rawTileState.changeReason,
           changedAt: rawTileState.changedAt,
@@ -198,8 +201,8 @@ const ActivityTileStateManagementPage: React.FC = () => {
         const q = Math.floor((index % 15) - 7);
         const r = Math.floor((index / 15) - 3);
         
-        const basePrice = landType === 'MARINE' ? 75 : landType === 'COASTAL' ? 150 : 200;
-        const basePopulation = landType === 'MARINE' ? 100 : landType === 'COASTAL' ? 1200 : 1800;
+        const basePrice = 500; // Use consistent pricing across all land types
+        const basePopulation = 500; // Use consistent population across all land types
         
         const initialPrice = basePrice + (Math.random() * 50 - 25);
         const initialPopulation = basePopulation + Math.floor(Math.random() * 400 - 200);
@@ -214,6 +217,9 @@ const ActivityTileStateManagementPage: React.FC = () => {
           newPrice: currentPrice,
           previousPopulation: initialPopulation,
           newPopulation: Math.floor(currentPopulation),
+          currentGoldPrice: 500,
+          currentCarbonPrice: 50,
+          currentPopulation: 500,
           updatedBy: Math.random() > 0.7 ? 'admin123' : '',
           changeReason: Math.random() > 0.7 ? 'Market adjustment for simulation' : '',
           changedAt: Math.random() > 0.7 ? new Date().toISOString() : '',
@@ -290,8 +296,9 @@ const ActivityTileStateManagementPage: React.FC = () => {
       axialQ: state.tile.axialQ,
       axialR: state.tile.axialR,
       landType: state.tile.landType,
-      currentPrice: state.newPrice || state.tile.initialPrice,
-      currentPopulation: state.newPopulation || state.tile.initialPopulation,
+      currentGoldPrice: state.currentGoldPrice || 500,
+      currentCarbonPrice: state.currentCarbonPrice || 50,
+      currentPopulation: state.currentPopulation || 500,
       transportationCostUnit: state.tile.transportationCostUnit,
       isModified: Boolean(state.changedAt),
     }));

@@ -86,11 +86,14 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
   // Initialize form data when tile changes
   useEffect(() => {
     if (selectedTile) {
+      const defaults = MapTemplateService.getDefaultConfiguration(selectedTile.landType);
       const initialData: UpdateTileDto = {
         landType: selectedTile.landType,
-        initialPrice: selectedTile.initialPrice || MapTemplateService.getDefaultConfiguration(selectedTile.landType).initialPrice,
-        initialPopulation: selectedTile.initialPopulation || MapTemplateService.getDefaultConfiguration(selectedTile.landType).initialPopulation,
-        transportationCostUnit: selectedTile.transportationCostUnit || MapTemplateService.getDefaultConfiguration(selectedTile.landType).transportationCostUnit,
+        // NEW: Dual pricing system
+        initialGoldPrice: selectedTile.initialGoldPrice ?? defaults.initialGoldPrice,
+        initialCarbonPrice: selectedTile.initialCarbonPrice ?? defaults.initialCarbonPrice,
+        initialPopulation: selectedTile.initialPopulation ?? defaults.initialPopulation,
+        transportationCostUnit: selectedTile.transportationCostUnit ?? defaults.transportationCostUnit,
       };
       setFormData(initialData);
       setOriginalData(initialData);
@@ -121,10 +124,15 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
     const errors: Record<string, string> = {};
     Object.entries(validation.errors).forEach(([field, message]) => {
       switch (field) {
-        case 'initialPrice':
-          errors.initialPrice = message.includes('negative') 
-            ? t('VALIDATION_PRICE_NEGATIVE') 
-            : t('VALIDATION_PRICE_TOO_HIGH');
+        case 'initialGoldPrice':
+          errors.initialGoldPrice = message.includes('negative') 
+            ? t('VALIDATION_GOLD_PRICE_NEGATIVE') 
+            : t('VALIDATION_GOLD_PRICE_TOO_HIGH');
+          break;
+        case 'initialCarbonPrice':
+          errors.initialCarbonPrice = message.includes('negative') 
+            ? t('VALIDATION_CARBON_PRICE_NEGATIVE') 
+            : t('VALIDATION_CARBON_PRICE_TOO_HIGH');
           break;
         case 'initialPopulation':
           errors.initialPopulation = message.includes('negative') 
@@ -184,7 +192,9 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
       const updated = {
         ...prev,
         landType: newLandType,
-        initialPrice: defaults.initialPrice,
+        // NEW: Dual pricing system
+        initialGoldPrice: defaults.initialGoldPrice,
+        initialCarbonPrice: defaults.initialCarbonPrice,
         initialPopulation: defaults.initialPopulation,
         transportationCostUnit: defaults.transportationCostUnit,
       };
@@ -332,26 +342,50 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
           </Typography>
 
           <Grid container spacing={2}>
-            {/* Initial Price */}
-            <Grid item xs={12}>
+            {/* NEW: Dual Pricing System */}
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label={t('INITIAL_PRICE')}
+                label={t('INITIAL_GOLD_PRICE')}
                 type="number"
-                value={formData.initialPrice || ''}
-                onChange={(e) => handleFieldChange('initialPrice', parseFloat(e.target.value))}
+                value={formData.initialGoldPrice || ''}
+                onChange={(e) => handleFieldChange('initialGoldPrice', e.target.value === '' ? undefined : parseFloat(e.target.value))}
                 disabled={readOnly}
-                error={!!validationErrors.initialPrice}
-                helperText={validationErrors.initialPrice}
+                error={!!validationErrors.initialGoldPrice}
+                helperText={validationErrors.initialGoldPrice}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AttachMoneyIcon />
+                      <AttachMoneyIcon sx={{ color: '#FFD700' }} />
                     </InputAdornment>
                   ),
                 }}
               />
             </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label={t('INITIAL_CARBON_PRICE')}
+                type="number"
+                value={formData.initialCarbonPrice || ''}
+                onChange={(e) => handleFieldChange('initialCarbonPrice', e.target.value === '' ? undefined : parseFloat(e.target.value))}
+                disabled={readOnly}
+                error={!!validationErrors.initialCarbonPrice}
+                helperText={validationErrors.initialCarbonPrice}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AttachMoneyIcon sx={{ color: '#4CAF50' }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">CO₂</InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+
 
             {/* Initial Population */}
             <Grid item xs={12}>
@@ -360,7 +394,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                 label={t('INITIAL_POPULATION')}
                 type="number"
                 value={formData.initialPopulation || ''}
-                onChange={(e) => handleFieldChange('initialPopulation', parseInt(e.target.value))}
+                onChange={(e) => handleFieldChange('initialPopulation', e.target.value === '' ? undefined : parseInt(e.target.value))}
                 disabled={readOnly}
                 error={!!validationErrors.initialPopulation}
                 helperText={validationErrors.initialPopulation}
@@ -381,7 +415,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                 label={t('TRANSPORTATION_COST_UNIT')}
                 type="number"
                 value={formData.transportationCostUnit || ''}
-                onChange={(e) => handleFieldChange('transportationCostUnit', parseFloat(e.target.value))}
+                onChange={(e) => handleFieldChange('transportationCostUnit', e.target.value === '' ? undefined : parseFloat(e.target.value))}
                 disabled={readOnly}
                 error={!!validationErrors.transportationCostUnit}
                 helperText={validationErrors.transportationCostUnit}

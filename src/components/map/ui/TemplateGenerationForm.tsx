@@ -133,9 +133,9 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
       setFormData(prev => ({
         ...prev,
         customPricing: {
-          MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialPrice,
-          COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialPrice,
-          PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialPrice,
+          MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialGoldPrice,
+          COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialGoldPrice,
+          PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialGoldPrice,
         },
         customPopulation: {
           MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialPopulation,

@@ -4,10 +4,16 @@ export interface MapTile {
 	axialR: number;
 	landType: 'MARINE' | 'PLAIN' | 'COASTAL';
 	isActive?: boolean;
-	// Economic data for activity mode
-	currentPrice?: number;
-	currentPopulation?: number;
+	// Template configuration data
+	initialGoldPrice?: number;
+	initialCarbonPrice?: number;
+	initialPopulation?: number;
 	transportationCostUnit?: number;
+	// Economic data for activity mode (backward compatibility)
+	currentPrice?: number; // Deprecated: use currentGoldPrice
+	currentGoldPrice?: number;
+	currentCarbonPrice?: number;
+	currentPopulation?: number;
 	isModified?: boolean; // For highlighting modified tiles
 }
 
@@ -128,18 +134,30 @@ export interface CreateTileDto {
 	axialR: number;
 	landType: 'MARINE' | 'PLAIN' | 'COASTAL';
 	templateId: number;
+	initialGoldPrice?: number;
+	initialCarbonPrice?: number;
+	initialPopulation?: number;
+	transportationCostUnit?: number;
 }
 
 export interface UpdateTileDto {
 	landType?: 'MARINE' | 'PLAIN' | 'COASTAL';
 	isActive?: boolean;
+	initialGoldPrice?: number;
+	initialCarbonPrice?: number;
+	initialPopulation?: number;
+	transportationCostUnit?: number;
 }
 
 export interface ActivityTileState {
 	id: number;
 	activityId: string;
 	tileId: number;
-	currentPrice: number;
+	// NEW: Dual pricing system
+	currentGoldPrice?: number;
+	currentCarbonPrice?: number;
+	// Backward compatibility
+	currentPrice?: number; // Deprecated: use currentGoldPrice
 	currentPopulation: number;
 	transportationCostUnit: number;
 	lastModifiedAt: string;
@@ -154,14 +172,22 @@ export interface ActivityTileState {
 export interface CreateActivityTileStateDto {
 	activityId: string;
 	tileId: number;
-	currentPrice: number;
+	// NEW: Dual pricing system
+	currentGoldPrice?: number;
+	currentCarbonPrice?: number;
+	// Backward compatibility
+	currentPrice?: number; // Deprecated: use currentGoldPrice
 	currentPopulation: number;
 	transportationCostUnit: number;
 	changeReason?: string;
 }
 
 export interface UpdateActivityTileStateDto {
-	currentPrice?: number;
+	// NEW: Dual pricing system
+	currentGoldPrice?: number;
+	currentCarbonPrice?: number;
+	// Backward compatibility
+	currentPrice?: number; // Deprecated: use currentGoldPrice
 	currentPopulation?: number;
 	transportationCostUnit?: number;
 	changeReason?: string;
@@ -171,23 +197,56 @@ export interface BulkUpdateActivityTileStatesDto {
 	activityId: string;
 	updates: Array<{
 		tileId: number;
-		currentPrice?: number;
+		// NEW: Dual pricing system
+		currentGoldPrice?: number;
+		currentCarbonPrice?: number;
+		// Backward compatibility
+		currentPrice?: number; // Deprecated: use currentGoldPrice
 		currentPopulation?: number;
 		transportationCostUnit?: number;
 	}>;
 	changeReason?: string;
 }
 
+// NEW: Bulk tile management by land type
+export interface BulkUpdateTilesByLandTypeDto {
+	// Multiplier-based updates (proportional changes)
+	goldPriceMultiplier?: number;
+	carbonPriceMultiplier?: number;
+	populationMultiplier?: number;
+	transportationCostMultiplier?: number;
+	
+	// Fixed value updates (absolute values - overrides multipliers)
+	fixedGoldPrice?: number;
+	fixedCarbonPrice?: number;
+	fixedPopulation?: number;
+	fixedTransportationCost?: number;
+}
+
+export interface MapTileBulkUpdateResponseDto {
+	updated: number;
+	failed: number;
+	details: Array<{
+		tileId: number;
+		success: boolean;
+		error?: string;
+	}>;
+	message: string;
+}
+
 export interface ActivityTileStatistics {
 	totalTiles: number;
 	modifiedTiles: number;
-	averagePrice: number;
+	// Updated for dual pricing
+	averageGoldPrice: number;
+	averageCarbonPrice: number;
+	averagePrice: number; // Combined average for backward compatibility
 	averagePopulation: number;
 	totalValue: number;
 	landTypeBreakdown: {
-		MARINE: { count: number; totalValue: number };
-		COASTAL: { count: number; totalValue: number };
-		PLAIN: { count: number; totalValue: number };
+		MARINE: { count: number; totalValue: number; averageGoldPrice: number; averageCarbonPrice: number };
+		COASTAL: { count: number; totalValue: number; averageGoldPrice: number; averageCarbonPrice: number };
+		PLAIN: { count: number; totalValue: number; averageGoldPrice: number; averageCarbonPrice: number };
 	};
 }
 
@@ -212,6 +271,15 @@ export interface GetActivityTileStatesQueryParams {
 	tileId?: number;
 	landType?: 'MARINE' | 'PLAIN' | 'COASTAL';
 	isModified?: boolean;
+	// NEW: Dual pricing search filters
+	minCurrentGoldPrice?: number;
+	maxCurrentGoldPrice?: number;
+	minCurrentCarbonPrice?: number;
+	maxCurrentCarbonPrice?: number;
+	minCurrentPopulation?: number;
+	maxCurrentPopulation?: number;
+	// NEW: Updated sort options
+	sortBy?: 'lastUpdated' | 'currentGoldPrice' | 'currentCarbonPrice' | 'currentPopulation' | 'tileId';
 	page?: number;
 	pageSize?: number;
 }

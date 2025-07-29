@@ -62,6 +62,8 @@ import BulkOperationsPanel from '@/components/map-template/BulkOperationsPanel';
 import FacilityUpgradeCalculator from '@/components/map-template/FacilityUpgradeCalculator';
 import AnalyticsStatistics from '@/components/map-template/AnalyticsStatistics';
 import TemplateSetupWizard from '@/components/map-template/TemplateSetupWizard';
+// NEW: Import bulk tile management component
+import BulkTileManagementPanel from '@/components/map-template/BulkTileManagementPanel';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -480,17 +482,24 @@ const MapTemplateManagementPage: React.FC = () => {
                 disabled={!selectedTemplate}
               />
               <Tab 
+                label={t('BULK_TILE_MANAGEMENT')} 
+                icon={<AutoFixHighIcon />} 
+                iconPosition="start"
+                {...a11yProps(4)}
+                disabled={!selectedTemplate}
+              />
+              <Tab 
                 label={t('FACILITY_UPGRADE_CALCULATOR')} 
                 icon={<CalculateIcon />} 
                 iconPosition="start"
-                {...a11yProps(4)}
+                {...a11yProps(5)}
                 disabled={!selectedTemplate}
               />
               <Tab 
                 label={t('ANALYTICS')} 
                 icon={<AssessmentIcon />} 
                 iconPosition="start"
-                {...a11yProps(5)} 
+                {...a11yProps(6)} 
                 disabled={!selectedTemplate}
               />
             </Tabs>
@@ -562,8 +571,36 @@ const MapTemplateManagementPage: React.FC = () => {
               )}
             </TabPanel>
 
-            {/* Facility Upgrade Calculator Tab */}
+            {/* NEW: Bulk Tile Management Tab */}
             <TabPanel value={tabValue} index={4}>
+              {selectedTemplate ? (
+                <Box sx={{ p: 3 }}>
+                  <BulkTileManagementPanel 
+                    templateId={selectedTemplate.id}
+                    onOperationComplete={() => {
+                      // Refresh template data after bulk operations
+                      handleTemplateRefresh();
+                    }}
+                    templateStatistics={{
+                      totalTiles: selectedTemplateTiles.length,
+                      tilesByLandType: selectedTemplateTiles.reduce((acc, tile) => {
+                        acc[tile.landType] = (acc[tile.landType] || 0) + 1;
+                        return acc;
+                      }, {} as Record<any, number>)
+                    }}
+                  />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info">
+                    {t('SELECT_TEMPLATE_FOR_BULK_TILE_MANAGEMENT')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Facility Upgrade Calculator Tab */}
+            <TabPanel value={tabValue} index={5}>
               {selectedTemplate ? (
                 <Box sx={{ p: 3 }}>
                   <FacilityUpgradeCalculator templateId={selectedTemplate.id} />
@@ -578,7 +615,7 @@ const MapTemplateManagementPage: React.FC = () => {
             </TabPanel>
 
             {/* Analytics Tab */}
-            <TabPanel value={tabValue} index={5}>
+            <TabPanel value={tabValue} index={6}>
               {selectedTemplate && templates.length > 0 ? (
                 <Box sx={{ p: 3 }}>
                   <AnalyticsStatistics 
