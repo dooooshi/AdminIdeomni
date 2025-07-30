@@ -117,9 +117,6 @@ const ActivityTileStateManagementPage: React.FC = () => {
       
     } catch (error) {
       console.error('Failed to load activities:', error);
-      
-            // Mock data fallback for development  
-      console.log('Using fallback mock data for activities');
       setActivities([]);
       setTotalActivities(0);
     } finally {
@@ -191,52 +188,7 @@ const ActivityTileStateManagementPage: React.FC = () => {
       setTileStates(processedTileStates);
     } catch (error) {
       console.error('Failed to load tile states:', error);
-      
-      // Generate mock tile states for development
-      const mockTileStates: DetailedTileState[] = Array.from({ length: 105 }, (_, index) => {
-        const tileId = index + 1;
-        const landTypes = ['MARINE', 'COASTAL', 'PLAIN'] as const;
-        const landType = landTypes[Math.floor(Math.random() * landTypes.length)];
-        
-        const q = Math.floor((index % 15) - 7);
-        const r = Math.floor((index / 15) - 3);
-        
-        const basePrice = 500; // Use consistent pricing across all land types
-        const basePopulation = 500; // Use consistent population across all land types
-        
-        const initialPrice = basePrice + (Math.random() * 50 - 25);
-        const initialPopulation = basePopulation + Math.floor(Math.random() * 400 - 200);
-        const currentPrice = initialPrice * (0.8 + Math.random() * 0.4);
-        const currentPopulation = initialPopulation * (0.8 + Math.random() * 0.4);
-        
-        return {
-          id: tileId,
-          activityId: activity.id,
-          tileId,
-          previousPrice: initialPrice,
-          newPrice: currentPrice,
-          previousPopulation: initialPopulation,
-          newPopulation: Math.floor(currentPopulation),
-          currentGoldPrice: 500,
-          currentCarbonPrice: 50,
-          currentPopulation: 500,
-          updatedBy: Math.random() > 0.7 ? 'admin123' : '',
-          changeReason: Math.random() > 0.7 ? 'Market adjustment for simulation' : '',
-          changedAt: Math.random() > 0.7 ? new Date().toISOString() : '',
-          tile: {
-            id: tileId,
-            axialQ: q,
-            axialR: r,
-            landType,
-            templateId: activity.mapTemplateId || 1,
-            initialPrice,
-            initialPopulation,
-            transportationCostUnit: Math.random() * 5 + 1,
-          },
-        };
-      });
-      
-      setTileStates(mockTileStates);
+      setTileStates([]);
     } finally {
       setIsLoadingTileStates(false);
     }
@@ -501,53 +453,57 @@ const ActivityTileStateManagementPage: React.FC = () => {
               </Box>
             </DialogTitle>
             
-            <DialogContent sx={{ height: '100%', display: 'flex', gap: 2 }}>
+            <DialogContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
               {/* Map Area */}
-              <Box flex={showTileStatePanel || showAnalyticsPanel ? 2 : 1}>
-                {selectedActivity ? (
-                  <Box sx={{ height: '100%', border: 1, borderColor: 'divider', borderRadius: 1 }}>
-                    {isLoadingTileStates && <LinearProgress />}
-                                         <Box sx={{ height: '100%' }}>
-                       <Box p={2}>
-                         <Typography variant="h6" gutterBottom>
-                           {selectedActivity.name}
-                         </Typography>
-                         <Stack direction="row" spacing={2}>
-                           <Chip 
-                             label={`${tiles.length} ${t('TOTAL_TILES')}`} 
-                             icon={<MapIcon />} 
-                             size="small" 
-                           />
-                           <Chip 
-                             label={`${tiles.filter(t => t.isModified).length} ${t('MODIFIED_TILES')}`} 
-                             icon={<AnalyticsIcon />} 
-                             size="small" 
-                           />
-                         </Stack>
+              <Box sx={{ 
+                flex: showAnalyticsPanel ? 1 : 2,
+                display: 'flex', 
+                gap: 2 
+              }}>
+                <Box flex={showTileStatePanel ? 2 : 1}>
+                  {selectedActivity ? (
+                    <Box sx={{ height: '100%', border: 1, borderColor: 'divider', borderRadius: 1 }}>
+                      {isLoadingTileStates && <LinearProgress />}
+                      <Box sx={{ height: '100%' }}>
+                         <Box p={2}>
+                           <Typography variant="h6" gutterBottom>
+                             {selectedActivity.name}
+                           </Typography>
+                           <Stack direction="row" spacing={2}>
+                             <Chip 
+                               label={`${tiles.length} ${t('TOTAL_TILES')}`} 
+                               icon={<MapIcon />} 
+                               size="small" 
+                             />
+                             <Chip 
+                               label={`${tiles.filter(t => t.isModified).length} ${t('MODIFIED_TILES')}`} 
+                               icon={<AnalyticsIcon />} 
+                               size="small" 
+                             />
+                           </Stack>
+                         </Box>
+                         
+                         <HexagonalMap
+                           tiles={tiles}
+                           selectedTileId={selectedTileId}
+                           onTileSelect={handleTileSelect}
+                           showEconomicData={true}
+                           activityMode={true}
+                           width={600}
+                           height={400}
+                         />
                        </Box>
-                       
-                       <HexagonalMap
-                         tiles={tiles}
-                         selectedTileId={selectedTileId}
-                         onTileSelect={handleTileSelect}
-                         showEconomicData={true}
-                         activityMode={true}
-                         width={600}
-                         height={400}
-                       />
-                     </Box>
-                  </Box>
-                ) : (
-                  <Alert severity="info">
-                    {t('SELECT_ACTIVITY_TO_VIEW_MAP')}
-                  </Alert>
-                )}
-              </Box>
+                    </Box>
+                  ) : (
+                    <Alert severity="info">
+                      {t('SELECT_ACTIVITY_TO_VIEW_MAP')}
+                    </Alert>
+                  )}
+                </Box>
 
-              {/* Side Panel */}
-              {(showTileStatePanel || showAnalyticsPanel) && (
-                <Box sx={{ width: 400, height: '100%' }}>
-                  {showTileStatePanel && (
+                {/* Tile State Side Panel */}
+                {showTileStatePanel && (
+                  <Box sx={{ width: 400, height: '100%' }}>
                     <ActivityTileStatePanel
                       activity={selectedActivity}
                       selectedTileId={selectedTileId}
@@ -555,14 +511,22 @@ const ActivityTileStateManagementPage: React.FC = () => {
                       onTileStateUpdate={handleTileStateUpdate}
                       isVisible={true}
                     />
-                  )}
-                  
-                  {showAnalyticsPanel && (
-                    <ActivityAnalyticsPanel
-                      activity={selectedActivity}
-                      isVisible={true}
-                    />
-                  )}
+                  </Box>
+                )}
+              </Box>
+
+              {/* Analytics Panel - Full Width Below Map */}
+              {showAnalyticsPanel && (
+                <Box sx={{ 
+                  flex: 1,
+                  minHeight: 400,
+                  maxHeight: 500,
+                  overflow: 'auto'
+                }}>
+                  <ActivityAnalyticsPanel
+                    activity={selectedActivity}
+                    isVisible={true}
+                  />
                 </Box>
               )}
             </DialogContent>

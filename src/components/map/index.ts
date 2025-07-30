@@ -28,6 +28,5 @@ export { useMapZoom } from './hooks/useMapZoom';
 // Utilities
 export * from './utils/hexUtils';
 
-// Types and data
-export * from './types';
-export { sampleMapData } from './types/mapData'; 
+// Types
+export * from './types'; 

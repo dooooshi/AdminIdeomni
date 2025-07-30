@@ -1,9 +1,47 @@
 import apiClient from '@/lib/http/api-client';
+import { StandardApiResponse } from '@/lib/http/axios-config';
 
 /**
  * Admin Tile State Management Service
  * Handles administrative operations for activity tile states
  */
+
+// Backend API response interfaces matching actual API structure
+export interface BackendAnalyticsResponse {
+  activitySummary: {
+    activityId: string;
+    activityName: string;
+    totalTiles: number;
+    averagePrice: number;
+    averagePopulation: number;
+    totalValue: number;
+  };
+  landTypeBreakdown: {
+    [key: string]: {
+      count: number;
+      averagePrice: number;
+      averagePopulation: number;
+      totalValue: number;
+      priceRange: { min: number; max: number };
+      populationRange: { min: number; max: number };
+    };
+  };
+  topTiles: Array<{
+    tileId: number;
+    currentGoldPrice: number;
+    currentCarbonPrice: number;
+    currentPopulation: number;
+    totalValue: number;
+    landType: string;
+    coordinates: { q: number; r: number };
+  }>;
+  recentChanges: {
+    last24Hours: number;
+    lastWeek: number;
+    lastMonth: number;
+    mostActiveAdmin: string;
+  };
+}
 
 // Types for admin tile state operations
 export interface TileStateConfig {
@@ -42,40 +80,6 @@ export interface TileStateSearchParams {
   pageSize?: number;
 }
 
-export interface TileStateAnalytics {
-  activitySummary: {
-    activityId: string;
-    activityName: string;
-    totalTiles: number;
-    averagePrice: number;
-    averagePopulation: number;
-    totalValue: number;
-  };
-  landTypeBreakdown: {
-    [key in 'MARINE' | 'COASTAL' | 'PLAIN']: {
-      count: number;
-      averagePrice: number;
-      averagePopulation: number;
-      totalValue: number;
-      priceRange: { min: number; max: number };
-      populationRange: { min: number; max: number };
-    };
-  };
-  topTiles: Array<{
-    tileId: number;
-    currentPrice: number;
-    currentPopulation: number;
-    totalValue: number;
-    landType: string;
-    coordinates: { q: number; r: number };
-  }>;
-  recentChanges: {
-    last24Hours: number;
-    lastWeek: number;
-    lastMonth: number;
-    mostActiveAdmin: string;
-  };
-}
 
 export interface TileStateTemplate {
   id?: number;
@@ -265,6 +269,7 @@ export class AdminTileStateService {
 
   /**
    * Get comprehensive analytics for an activity's tile states
+   * Returns data in the backend API format
    */
   static async getActivityAnalytics(
     activityId: string,
@@ -274,12 +279,109 @@ export class AdminTileStateService {
       landType?: 'MARINE' | 'COASTAL' | 'PLAIN';
       groupBy?: 'hour' | 'day' | 'week' | 'month';
     }
-  ): Promise<TileStateAnalytics> {
-    const response = await apiClient.get<any>(
-      `${this.BASE_PATH}/${activityId}/analytics`,
-      { params }
-    );
-    return this.extractResponseData<TileStateAnalytics>(response);
+  ): Promise<BackendAnalyticsResponse> {
+    try {
+      const response = await apiClient.get<StandardApiResponse<BackendAnalyticsResponse>>(
+        `${this.BASE_PATH}/${activityId}/analytics`,
+        { params }
+      );
+      
+      // Handle the standard API response format
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        throw new Error(response.data.message || 'Failed to fetch analytics');
+      }
+    } catch (error: any) {
+      console.error('Error fetching activity analytics:', error);
+      throw new Error(error.message || 'Failed to load analytics data');
+    }
+  }
+
+  /**
+   * Get analytics with retry logic and better error handling
+   */
+  static async getActivityAnalyticsWithRetry(
+    activityId: string,
+    params?: {
+      startDate?: string;
+      endDate?: string;
+      landType?: 'MARINE' | 'COASTAL' | 'PLAIN';
+      groupBy?: 'hour' | 'day' | 'week' | 'month';
+    },
+    maxRetries: number = 3
+  ): Promise<BackendAnalyticsResponse> {
+    let lastError: Error;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await this.getActivityAnalytics(activityId, params);
+      } catch (error: any) {
+        lastError = error;
+        
+        if (attempt === maxRetries) {
+          break;
+        }
+        
+        // Wait before retry (exponential backoff)
+        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        
+        console.warn(`Analytics request attempt ${attempt} failed, retrying in ${delay}ms...`);
+      }
+    }
+    
+    throw lastError!;
+  }
+
+  /**
+   * Get analytics data with caching support
+   */
+  private static analyticsCache = new Map<string, { data: BackendAnalyticsResponse; timestamp: number }>();
+  private static readonly CACHE_DURATION = 30 * 1000; // 30 seconds
+
+  static async getActivityAnalyticsCached(
+    activityId: string,
+    params?: {
+      startDate?: string;
+      endDate?: string;
+      landType?: 'MARINE' | 'COASTAL' | 'PLAIN';
+      groupBy?: 'hour' | 'day' | 'week' | 'month';
+    }
+  ): Promise<BackendAnalyticsResponse> {
+    const cacheKey = `${activityId}-${JSON.stringify(params || {})}`;
+    const cached = this.analyticsCache.get(cacheKey);
+    
+    // Check if cache is still valid
+    if (cached && (Date.now() - cached.timestamp) < this.CACHE_DURATION) {
+      return cached.data;
+    }
+    
+    try {
+      const data = await this.getActivityAnalyticsWithRetry(activityId, params);
+      
+      // Cache the result
+      this.analyticsCache.set(cacheKey, {
+        data,
+        timestamp: Date.now()
+      });
+      
+      return data;
+    } catch (error) {
+      // If we have stale cached data, return it as fallback
+      if (cached) {
+        console.warn('Using stale cached analytics data due to API error');
+        return cached.data;
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Clear analytics cache
+   */
+  static clearAnalyticsCache(): void {
+    this.analyticsCache.clear();
   }
 
   // ==================== TEMPLATE MANAGEMENT ====================
@@ -451,43 +553,6 @@ export class AdminTileStateService {
     return price * (1 + population / 10000);
   }
 
-  /**
-   * Get default template configurations
-   */
-  static getDefaultTemplates(): Omit<TileStateTemplate, 'id'>[] {
-    return [
-      {
-        templateName: 'Economic Boom',
-        description: 'Simulate economic growth across all land types',
-        configurationByLandType: {
-          MARINE: { priceMultiplier: 1.2, populationMultiplier: 1.0 },
-          COASTAL: { priceMultiplier: 1.5, populationMultiplier: 1.3 },
-          PLAIN: { priceMultiplier: 1.8, populationMultiplier: 1.6 }
-        },
-        isActive: true
-      },
-      {
-        templateName: 'Market Recession',
-        description: 'Simulate economic downturn and reduced activity',
-        configurationByLandType: {
-          MARINE: { priceMultiplier: 0.8, populationMultiplier: 0.9 },
-          COASTAL: { priceMultiplier: 0.7, populationMultiplier: 0.8 },
-          PLAIN: { priceMultiplier: 0.6, populationMultiplier: 0.7 }
-        },
-        isActive: true
-      },
-      {
-        templateName: 'Coastal Development',
-        description: 'Focus development on coastal areas',
-        configurationByLandType: {
-          MARINE: { priceMultiplier: 1.0, populationMultiplier: 1.0 },
-          COASTAL: { priceMultiplier: 2.0, populationMultiplier: 1.8 },
-          PLAIN: { priceMultiplier: 1.1, populationMultiplier: 1.2 }
-        },
-        isActive: true
-      }
-    ];
-  }
 }
 
 export default AdminTileStateService; 

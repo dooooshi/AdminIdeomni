@@ -22,18 +22,9 @@ import {
   LinearProgress,
   Alert,
   Chip,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
   IconButton,
   Tooltip,
   Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   FormControl,
   InputLabel,
   Select,
@@ -47,19 +38,15 @@ import {
   People as PeopleIcon,
   Landscape as LandscapeIcon,
   Assessment as AssessmentIcon,
-  Star as StarIcon,
-  History as HistoryIcon,
   Refresh as RefreshIcon,
   Info as InfoIcon,
   FilterList as FilterIcon,
-  Timer as TimerIcon,
-  Place as PlaceIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 
 import AdminTileStateService, { 
-  TileStateAnalytics, 
+  BackendAnalyticsResponse,
   Activity 
 } from '@/lib/services/adminTileStateService';
 
@@ -75,7 +62,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
   className,
 }) => {
   const { t } = useTranslation(['map', 'activity']);
-  const [analytics, setAnalytics] = useState<TileStateAnalytics | null>(null);
+  const [analytics, setAnalytics] = useState<BackendAnalyticsResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshInterval, setRefreshInterval] = useState<number>(30); // seconds
@@ -89,86 +76,20 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
       setIsLoading(true);
       setError(null);
       
-      const analyticsData = await AdminTileStateService.getActivityAnalytics(activity.id, {
-        landType: landTypeFilter !== 'all' ? landTypeFilter : undefined,
-      });
+      // Use the enhanced service with caching and retry logic
+      const analyticsData = await AdminTileStateService.getActivityAnalyticsCached(
+        activity.id,
+        {
+          landType: landTypeFilter !== 'all' ? landTypeFilter : undefined,
+        }
+      );
       
       setAnalytics(analyticsData);
       console.log('Loaded analytics:', analyticsData);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load analytics:', error);
-      setError('Failed to load analytics data');
-      
-      // Mock analytics data for development
-      const mockAnalytics: TileStateAnalytics = {
-        activitySummary: {
-          activityId: activity.id,
-          activityName: activity.name,
-          totalTiles: 105,
-          averagePrice: 125.50,
-          averagePopulation: 850,
-          totalValue: 13177.50
-        },
-        landTypeBreakdown: {
-          MARINE: {
-            count: 60,
-            averagePrice: 75.00,
-            averagePopulation: 100,
-            totalValue: 4500.00,
-            priceRange: { min: 50.00, max: 100.00 },
-            populationRange: { min: 0, max: 200 }
-          },
-          COASTAL: {
-            count: 30,
-            averagePrice: 150.00,
-            averagePopulation: 1200,
-            totalValue: 4500.00,
-            priceRange: { min: 100.00, max: 200.00 },
-            populationRange: { min: 800, max: 1600 }
-          },
-          PLAIN: {
-            count: 15,
-            averagePrice: 200.00,
-            averagePopulation: 1800,
-            totalValue: 3000.00,
-            priceRange: { min: 150.00, max: 250.00 },
-            populationRange: { min: 1200, max: 2400 }
-          }
-        },
-        topTiles: [
-          {
-            tileId: 15,
-            currentPrice: 250.00,
-            currentPopulation: 2400,
-            totalValue: 490.00,
-            landType: 'PLAIN',
-            coordinates: { q: 0, r: 0 }
-          },
-          {
-            tileId: 23,
-            currentPrice: 200.00,
-            currentPopulation: 1600,
-            totalValue: 320.00,
-            landType: 'COASTAL',
-            coordinates: { q: 1, r: -1 }
-          },
-          {
-            tileId: 7,
-            currentPrice: 180.00,
-            currentPopulation: 1400,
-            totalValue: 252.00,
-            landType: 'COASTAL',
-            coordinates: { q: -1, r: 1 }
-          }
-        ],
-        recentChanges: {
-          last24Hours: 15,
-          lastWeek: 45,
-          lastMonth: 120,
-          mostActiveAdmin: 'admin123'
-        }
-      };
-      setAnalytics(mockAnalytics);
+      setError(error.message || 'Failed to load analytics data');
+      setAnalytics(null);
     } finally {
       setIsLoading(false);
     }
@@ -187,6 +108,20 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
     if (activity) {
       loadAnalytics();
     }
+  }, [loadAnalytics]);
+
+  // Cleanup effect to clear cache when component unmounts
+  useEffect(() => {
+    return () => {
+      // Only clear cache if this is the last instance of the component
+      AdminTileStateService.clearAnalyticsCache();
+    };
+  }, []);
+
+  // Manual refresh handler that clears cache
+  const handleManualRefresh = useCallback(async () => {
+    AdminTileStateService.clearAnalyticsCache();
+    await loadAnalytics();
   }, [loadAnalytics]);
 
   // Get land type color
@@ -243,7 +178,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
               </FormControl>
               
               <Tooltip title={t('REFRESH_ANALYTICS')}>
-                <IconButton onClick={loadAnalytics} disabled={isLoading}>
+                <IconButton onClick={handleManualRefresh} disabled={isLoading}>
                   <RefreshIcon />
                 </IconButton>
               </Tooltip>
@@ -266,7 +201,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
             {/* Error */}
             {error && (
               <Alert severity="error" action={
-                <IconButton onClick={loadAnalytics} size="small">
+                <IconButton onClick={handleManualRefresh} size="small">
                   <RefreshIcon />
                 </IconButton>
               }>
@@ -284,48 +219,48 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                   
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'primary.50' }}>
                         <LandscapeIcon color="primary" sx={{ fontSize: 32, mb: 1 }} />
-                        <Typography variant="h4" color="primary">
-                          {analytics.activitySummary.totalTiles}
+                        <Typography variant="h4" color="primary" fontWeight="bold">
+                          {analytics.activitySummary.totalTiles || 0}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" fontWeight="medium">
                           {t('TOTAL_TILES')}
                         </Typography>
                       </Paper>
                     </Grid>
                     
                     <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'success.50' }}>
                         <AttachMoneyIcon color="success" sx={{ fontSize: 32, mb: 1 }} />
-                        <Typography variant="h4" color="success.main">
-                          ${analytics.activitySummary.averagePrice.toFixed(0)}
+                        <Typography variant="h4" color="success.main" fontWeight="bold">
+                          ${analytics.activitySummary.averagePrice?.toFixed(0) || '0'}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('AVERAGE_PRICE')}
+                        <Typography variant="body2" color="text.secondary" fontWeight="medium">
+                          {t('AVERAGE_GOLD_PRICE')}
                         </Typography>
                       </Paper>
                     </Grid>
                     
                     <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'info.50' }}>
                         <PeopleIcon color="info" sx={{ fontSize: 32, mb: 1 }} />
-                        <Typography variant="h4" color="info.main">
-                          {analytics.activitySummary.averagePopulation.toLocaleString()}
+                        <Typography variant="h4" color="info.main" fontWeight="bold">
+                          {analytics.activitySummary.averagePopulation?.toLocaleString() || '0'}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" fontWeight="medium">
                           {t('AVERAGE_POPULATION')}
                         </Typography>
                       </Paper>
                     </Grid>
                     
                     <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'warning.50' }}>
                         <AssessmentIcon color="warning" sx={{ fontSize: 32, mb: 1 }} />
-                        <Typography variant="h4" color="warning.main">
-                          ${analytics.activitySummary.totalValue.toLocaleString()}
+                        <Typography variant="h4" color="warning.main" fontWeight="bold">
+                          ${analytics.activitySummary.totalValue?.toLocaleString() || '0'}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" fontWeight="medium">
                           {t('TOTAL_VALUE')}
                         </Typography>
                       </Paper>
@@ -365,7 +300,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                                   {t('AVERAGE_PRICE')}:
                                 </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                  ${data.averagePrice.toFixed(2)}
+                                  ${data.averagePrice?.toFixed(2) || '0.00'}
                                 </Typography>
                               </Box>
                               
@@ -374,7 +309,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                                   {t('AVERAGE_POPULATION')}:
                                 </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                  {data.averagePopulation.toLocaleString()}
+                                  {data.averagePopulation?.toLocaleString() || '0'}
                                 </Typography>
                               </Box>
                               
@@ -383,7 +318,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                                   {t('TOTAL_VALUE')}:
                                 </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                  ${data.totalValue.toLocaleString()}
+                                  ${data.totalValue?.toLocaleString() || '0'}
                                 </Typography>
                               </Box>
                               
@@ -391,11 +326,11 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                               
                               <Box>
                                 <Typography variant="caption" color="text.secondary">
-                                  {t('PRICE_RANGE')}: ${data.priceRange.min} - ${data.priceRange.max}
+                                  {t('PRICE_RANGE')}: ${data.priceRange?.min || 0} - ${data.priceRange?.max || 0}
                                 </Typography>
                                 <br />
                                 <Typography variant="caption" color="text.secondary">
-                                  {t('POPULATION_RANGE')}: {data.populationRange.min.toLocaleString()} - {data.populationRange.max.toLocaleString()}
+                                  {t('POPULATION_RANGE')}: {data.populationRange?.min?.toLocaleString() || '0'} - {data.populationRange?.max?.toLocaleString() || '0'}
                                 </Typography>
                               </Box>
                             </Stack>
@@ -406,132 +341,6 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                   </Grid>
                 </Box>
 
-                {/* Top Performing Tiles */}
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    {t('TOP_PERFORMING_TILES')}
-                  </Typography>
-                  
-                  <Card variant="outlined">
-                    <Table size="small">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>{t('RANK')}</TableCell>
-                          <TableCell>{t('TILE_ID')}</TableCell>
-                          <TableCell>{t('COORDINATES')}</TableCell>
-                          <TableCell>{t('LAND_TYPE')}</TableCell>
-                          <TableCell align="right">{t('PRICE')}</TableCell>
-                          <TableCell align="right">{t('POPULATION')}</TableCell>
-                          <TableCell align="right">{t('VALUE')}</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {analytics.topTiles.map((tile, index) => (
-                          <TableRow key={tile.tileId}>
-                            <TableCell>
-                              <Box display="flex" alignItems="center" gap={1}>
-                                {index < 3 && <StarIcon color="warning" fontSize="small" />}
-                                #{index + 1}
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="body2" fontWeight="bold">
-                                {tile.tileId}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="body2">
-                                ({tile.coordinates.q}, {tile.coordinates.r})
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Chip
-                                size="small"
-                                label={t(tile.landType)}
-                                sx={{
-                                  backgroundColor: getLandTypeColor(tile.landType),
-                                  color: 'white'
-                                }}
-                              />
-                            </TableCell>
-                            <TableCell align="right">
-                              <Typography variant="body2">
-                                ${tile.currentPrice.toFixed(2)}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="right">
-                              <Typography variant="body2">
-                                {tile.currentPopulation.toLocaleString()}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="right">
-                              <Typography variant="body2" fontWeight="bold" color="success.main">
-                                ${tile.totalValue.toFixed(2)}
-                              </Typography>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </Card>
-                </Box>
-
-                {/* Recent Activity */}
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    {t('RECENT_ACTIVITY')}
-                  </Typography>
-                  
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
-                        <TimerIcon color="primary" sx={{ fontSize: 24, mb: 1 }} />
-                        <Typography variant="h5">
-                          {analytics.recentChanges.last24Hours}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('CHANGES_LAST_24H')}
-                        </Typography>
-                      </Paper>
-                    </Grid>
-                    
-                    <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
-                        <HistoryIcon color="secondary" sx={{ fontSize: 24, mb: 1 }} />
-                        <Typography variant="h5">
-                          {analytics.recentChanges.lastWeek}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('CHANGES_LAST_WEEK')}
-                        </Typography>
-                      </Paper>
-                    </Grid>
-                    
-                    <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
-                        <AssessmentIcon color="info" sx={{ fontSize: 24, mb: 1 }} />
-                        <Typography variant="h5">
-                          {analytics.recentChanges.lastMonth}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('CHANGES_LAST_MONTH')}
-                        </Typography>
-                      </Paper>
-                    </Grid>
-                    
-                    <Grid item xs={12} sm={6} md={3}>
-                      <Paper sx={{ p: 2, textAlign: 'center' }}>
-                        <PeopleIcon color="warning" sx={{ fontSize: 24, mb: 1 }} />
-                        <Typography variant="h6" noWrap>
-                          {analytics.recentChanges.mostActiveAdmin}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('MOST_ACTIVE_ADMIN')}
-                        </Typography>
-                      </Paper>
-                    </Grid>
-                  </Grid>
-                </Box>
 
                 {/* Auto-refresh info */}
                 <Alert severity="info" icon={<InfoIcon />}>
