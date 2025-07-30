@@ -67,6 +67,13 @@ const navigation = {
 	ALL_OPERATIONS: '所有操作',
 	TRANSFER_HISTORY: '转账历史',
 	BALANCE_HISTORY: '余额历史',
+	// Land Management
+	LAND_MANAGEMENT: '土地管理',
+	MANAGER_MAP_VIEW: '管理员地图视图',
+	MANAGER_OVERVIEW: '管理员概览',
+	MANAGER_ANALYTICS: '管理员分析',
+	STUDENT_MAP_VIEW: '土地地图',
+	STUDENT_PORTFOLIO: '土地投资组合',
 };
 
 export default navigation; 

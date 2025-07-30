@@ -377,7 +377,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                           {t('TOTAL_POPULATION')}
                         </Typography>
                         <Typography variant="body1" fontWeight="bold">
-                          {statistics.totalPopulation?.toLocaleString()}
+                          {statistics.totalPopulation?.toLocaleString() || '0'}
                         </Typography>
                       </Box>
                     </Box>

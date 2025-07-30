@@ -354,6 +354,16 @@ const map = {
 	FAILED_OPERATIONS: 'Failed Operations',
 	SELECT_TEMPLATE_FOR_BULK_TILE_MANAGEMENT: 'Select a template to enable bulk tile management',
 	NO_CHANGES_SPECIFIED: 'No changes specified. Please configure at least one parameter.',
+	
+	// Purchase and Land Management Tooltip Keys
+	PURCHASE_STATUS: 'Purchase Status',
+	AVAILABLE_FOR_PURCHASE: 'Available for Purchase',
+	OWNED_BY_TEAM: 'Owned by Team',
+	UNAVAILABLE: 'Unavailable',
+	AVAILABLE_AREA: 'Available Area',
+	AREA_UNITS: 'units',
+	COST_PER_UNIT: 'Cost per Unit',
+	CLICK_TO_PURCHASE_HINT: 'Click to select and purchase this tile',
 };
 
 export default map; 

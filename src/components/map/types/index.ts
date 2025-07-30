@@ -15,13 +15,19 @@ export interface MapTile {
 	currentCarbonPrice?: number;
 	currentPopulation?: number;
 	isModified?: boolean; // For highlighting modified tiles
+	// Purchase and ownership data (for student land management)
+	isOwned?: boolean; // Whether the current team owns this tile
+	canPurchase?: boolean; // Whether this tile is available for purchase
+	availableArea?: number; // Available area for purchase
+	totalCost?: number; // Total cost for purchasing (gold + carbon)
 }
 
 export interface HexagonalMapProps {
 	tiles: MapTile[];
 	width?: number;
 	height?: number;
-	onTileClick?: (tile: MapTile) => void;
+	onTileClick?: (tileId: number) => void;
+	onTileRightClick?: (tileId: number, event: React.MouseEvent) => void;
 	onTileSelect?: (tileId: number) => void;
 	selectedTileId?: number | null;
 	zoomLevel?: number;
@@ -72,7 +78,10 @@ export interface HexTileProps {
 	hexPath: string;
 	position: Point;
 	isHovered: boolean;
+	isSelected?: boolean;
+	configurationMode?: boolean;
 	onTileClick?: (tile: MapTile) => void;
+	onTileRightClick?: (tile: MapTile, event: React.MouseEvent) => void;
 	onMouseEnter: () => void;
 	onMouseLeave: () => void;
 }

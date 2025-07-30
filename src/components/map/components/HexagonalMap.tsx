@@ -86,6 +86,7 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 	width = 800,
 	height = 500,
 	onTileClick,
+	onTileRightClick,
 	onTileUpdate,
 	zoomLevel = 1,
 	onZoomChange,
@@ -172,7 +173,8 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 							isHovered={isHovered}
 							isSelected={isSelected}
 							configurationMode={configurationMode}
-							onTileClick={onTileClick}
+							onTileClick={onTileClick ? (tile) => onTileClick(tile.id) : undefined}
+							onTileRightClick={onTileRightClick ? (tile, event) => onTileRightClick(tile.id, event) : undefined}
 							onMouseEnter={() => setHoveredTile(tile.id)}
 							onMouseLeave={() => setHoveredTile(null)}
 						/>

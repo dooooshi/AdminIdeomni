@@ -80,6 +80,8 @@ const map = {
 	QUICK_STATISTICS: '快速统计',
 	SELECTED_TILE_STATE: '选中地块状态',
 	CURRENT_PRICE: '当前价格',
+	CURRENT_GOLD_PRICE: '当前金币价格',
+	CURRENT_CARBON_PRICE: '当前碳价格',
 	CURRENT_POPULATION: '当前人口',
 	LAST_UPDATED: '最后更新',
 	SIMULATION_CONTROLS: '模拟控制',
@@ -548,6 +550,16 @@ const map = {
 	RESULTS: '条结果',
 	NO_RESULTS: '未找到结果',
 	SHOWING_RESULTS: '显示 {{from}}-{{to}} 共 {{total}} 条结果',
+	
+	// Purchase and Land Management Tooltip Keys
+	PURCHASE_STATUS: '购买状态',
+	AVAILABLE_FOR_PURCHASE: '可购买',
+	OWNED_BY_TEAM: '团队拥有',
+	UNAVAILABLE: '不可用',
+	AVAILABLE_AREA: '可用面积',
+	AREA_UNITS: '单位',
+	COST_PER_UNIT: '单位成本',
+	CLICK_TO_PURCHASE_HINT: '点击选择并购买此地块',
 };
 
 export default map; 

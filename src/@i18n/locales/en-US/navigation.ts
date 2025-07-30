@@ -67,6 +67,13 @@ const navigation = {
 	ALL_OPERATIONS: 'All Operations',
 	TRANSFER_HISTORY: 'Transfer History',
 	BALANCE_HISTORY: 'Balance History',
+	// Land Management
+	LAND_MANAGEMENT: 'Land Management',
+	MANAGER_MAP_VIEW: 'Manager Map View',
+	MANAGER_OVERVIEW: 'Manager Overview',
+	MANAGER_ANALYTICS: 'Manager Analytics',
+	STUDENT_MAP_VIEW: 'Land Map',
+	STUDENT_PORTFOLIO: 'Land Portfolio',
 };
 
 export default navigation; 

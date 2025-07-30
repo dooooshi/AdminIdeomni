@@ -253,7 +253,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                       Avg Price: ${stats.avgPrice.toFixed(2)}
                     </Typography>
                     <Typography variant="caption" display="block">
-                      Avg Population: {Math.round(stats.avgPopulation).toLocaleString()}
+                      Avg Population: {Math.round(stats.avgPopulation || 0).toLocaleString()}
                     </Typography>
                     <Typography variant="caption" display="block">
                       Avg Transport: ${stats.avgTransportCost.toFixed(2)}

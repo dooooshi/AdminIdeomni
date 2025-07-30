@@ -15,6 +15,7 @@ const HexTile: React.FC<HexTileProps> = ({
 	isSelected = false,
 	configurationMode = false,
 	onTileClick,
+	onTileRightClick,
 	onMouseEnter,
 	onMouseLeave
 }) => {
@@ -73,6 +74,120 @@ const HexTile: React.FC<HexTileProps> = ({
 		}
 		
 		return alpha(theme.palette.divider, isDark ? 0.08 : 0.15);
+	};
+
+	// Enhanced stroke styling for purchase states
+	const getPurchaseStrokeColor = (isHovered: boolean = false, isSelected: boolean = false) => {
+		const isDark = theme.palette.mode === 'dark';
+		
+		if (isSelected) {
+			return theme.palette.primary.main;
+		}
+		
+		// Purchase state indicators
+		if (tile.canPurchase) {
+			return isHovered 
+				? theme.palette.success.main 
+				: alpha(theme.palette.success.main, 0.7);
+		}
+		
+		if (tile.isOwned) {
+			return isHovered 
+				? theme.palette.primary.main 
+				: alpha(theme.palette.primary.main, 0.6);
+		}
+		
+		// Default for unavailable tiles
+		if (isHovered) {
+			return alpha(theme.palette.divider, isDark ? 0.6 : 0.4);
+		}
+		
+		return alpha(theme.palette.divider, isDark ? 0.08 : 0.15);
+	};
+
+	// Enhanced fill color that considers purchase states
+	const getPurchaseFillColor = (landType: string, isHovered: boolean = false) => {
+		const baseColor = getLandTypeColor(landType, false);
+		const isDark = theme.palette.mode === 'dark';
+		
+		// Enhance brightness for purchasable tiles
+		if (tile.canPurchase) {
+			const enhancedOpacity = isHovered ? (isDark ? 0.9 : 1.0) : (isDark ? 0.6 : 0.75);
+			return alpha(baseColor, enhancedOpacity);
+		}
+		
+		// Dim owned tiles slightly
+		if (tile.isOwned) {
+			const ownedOpacity = isHovered ? (isDark ? 0.7 : 0.8) : (isDark ? 0.4 : 0.6);
+			return alpha(baseColor, ownedOpacity);
+		}
+		
+		// Significantly dim unavailable tiles
+		const unavailableOpacity = isHovered ? (isDark ? 0.3 : 0.4) : (isDark ? 0.15 : 0.25);
+		return alpha(baseColor, unavailableOpacity);
+	};
+
+	// Purchase indicator icon overlay
+	const renderPurchaseIndicator = () => {
+		if (!tile.canPurchase && !tile.isOwned) return null;
+		
+		const iconSize = 12;
+		const iconX = position.x + 15;
+		const iconY = position.y - 8;
+		
+		if (tile.canPurchase) {
+			// Shopping cart icon for purchasable tiles
+			return (
+				<g transform={`translate(${iconX}, ${iconY})`}>
+					<circle
+						cx={0}
+						cy={0}
+						r={8}
+						fill={alpha(theme.palette.success.main, 0.9)}
+						stroke={theme.palette.common.white}
+						strokeWidth={1}
+					/>
+					<text
+						x={0}
+						y={1}
+						textAnchor="middle"
+						fontSize={8}
+						fill={theme.palette.common.white}
+						fontWeight="bold"
+					>
+						$
+					</text>
+				</g>
+			);
+		}
+		
+		if (tile.isOwned) {
+			// Checkmark for owned tiles  
+			return (
+				<g transform={`translate(${iconX}, ${iconY})`}>
+					<circle
+						cx={0}
+						cy={0}
+						r={8}
+						fill={alpha(theme.palette.primary.main, 0.9)}
+						stroke={theme.palette.common.white}
+						strokeWidth={1}
+					/>
+					<text
+						x={0}
+						y={1}
+						textAnchor="middle"
+						fontSize={8}
+						fill={theme.palette.common.white}
+						fontWeight="bold"
+					>
+						✓
+					</text>
+				</g>
+			);
+		}
+		
+		return null;
 	};
 
 	return (
@@ -161,7 +276,7 @@ const HexTile: React.FC<HexTileProps> = ({
 							</Typography>
 						</Box>
 						{/* Economic Data Display */}
-						{tile.currentPrice !== undefined && (
+						{tile.currentGoldPrice !== undefined && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<Typography 
 									variant="caption" 
@@ -171,7 +286,33 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 500
 									}}
 								>
-									{t('CURRENT_PRICE')}:
+									{t('CURRENT_GOLD_PRICE')}:
+								</Typography>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'warning.main',
+										fontSize: '0.75rem',
+										fontWeight: 600,
+										fontFamily: 'monospace'
+									}}
+								>
+									${tile.currentGoldPrice.toFixed(2)}
+								</Typography>
+							</Box>
+						)}
+
+						{tile.currentCarbonPrice !== undefined && (
+							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<Typography 
+									variant="caption" 
+									sx={{ 
+										color: 'text.secondary',
+										fontSize: '0.75rem',
+										fontWeight: 500
+									}}
+								>
+									{t('CURRENT_CARBON_PRICE')}:
 								</Typography>
 								<Typography 
 									variant="caption" 
@@ -182,12 +323,12 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontFamily: 'monospace'
 									}}
 								>
-									${tile.currentPrice.toFixed(2)}
+									${tile.currentCarbonPrice.toFixed(2)}
 								</Typography>
 							</Box>
 						)}
 
-						{tile.currentPopulation !== undefined && (
+						{tile.currentPopulation !== undefined && tile.currentPopulation !== null && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<Typography 
 									variant="caption" 
@@ -238,28 +379,120 @@ const HexTile: React.FC<HexTileProps> = ({
 							</Box>
 						)}
 
-						<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-							<Typography 
-								variant="caption" 
-								sx={{ 
-									color: 'text.secondary',
-									fontSize: '0.75rem',
-									fontWeight: 500
-								}}
-							>
-								{t('STATUS')}:
-							</Typography>
-							<Typography 
-								variant="caption" 
-								sx={{ 
-									color: tile.isActive ? 'success.main' : 'error.main',
-									fontSize: '0.75rem',
-									fontWeight: 600
-								}}
-							>
-								{tile.isActive ? t('ACTIVE') : t('INACTIVE')}
-							</Typography>
-						</Box>
+						{/* Purchase Information Section */}
+						{(tile.canPurchase || tile.isOwned || tile.availableArea !== undefined) && (
+							<>
+								<Box sx={{ 
+									height: '1px', 
+									bgcolor: 'divider', 
+									mx: -0.5, 
+									my: 1 
+								}} />
+								
+								{/* Purchase Status */}
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+									<Typography 
+										variant="caption" 
+										sx={{ 
+											color: 'text.secondary',
+											fontSize: '0.75rem',
+											fontWeight: 500
+										}}
+									>
+										{t('PURCHASE_STATUS')}:
+									</Typography>
+									<Typography 
+										variant="caption" 
+										sx={{ 
+											color: tile.canPurchase ? 'success.main' : tile.isOwned ? 'primary.main' : 'error.main',
+											fontSize: '0.75rem',
+											fontWeight: 600
+										}}
+									>
+										{tile.canPurchase ? t('AVAILABLE_FOR_PURCHASE') : tile.isOwned ? t('OWNED_BY_TEAM') : t('UNAVAILABLE')}
+									</Typography>
+								</Box>
+
+								{/* Available Area */}
+								{tile.availableArea !== undefined && (
+									<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+										<Typography 
+											variant="caption" 
+											sx={{ 
+												color: 'text.secondary',
+												fontSize: '0.75rem',
+												fontWeight: 500
+											}}
+										>
+											{t('AVAILABLE_AREA')}:
+										</Typography>
+										<Typography 
+											variant="caption" 
+											sx={{ 
+												color: 'text.primary',
+												fontSize: '0.75rem',
+												fontWeight: 600,
+												fontFamily: 'monospace'
+											}}
+										>
+											{tile.availableArea.toFixed(1)} {t('AREA_UNITS')}
+										</Typography>
+									</Box>
+								)}
+
+								{/* Total Cost */}
+								{tile.canPurchase && tile.totalCost !== undefined && (
+									<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+										<Typography 
+											variant="caption" 
+											sx={{ 
+												color: 'text.secondary',
+												fontSize: '0.75rem',
+												fontWeight: 500
+											}}
+										>
+											{t('COST_PER_UNIT')}:
+										</Typography>
+										<Typography 
+											variant="caption" 
+											sx={{ 
+												color: 'warning.main',
+												fontSize: '0.75rem',
+												fontWeight: 600,
+												fontFamily: 'monospace'
+											}}
+										>
+											${tile.totalCost.toFixed(2)}
+										</Typography>
+									</Box>
+								)}
+
+								{/* Quick Action Hint */}
+								{tile.canPurchase && (
+									<Box sx={{ 
+										mt: 1, 
+										p: 1, 
+										bgcolor: alpha(theme.palette.success.main, 0.1),
+										borderRadius: 1,
+										border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
+									}}>
+										<Typography 
+											variant="caption" 
+											sx={{ 
+												color: 'success.main',
+												fontSize: '0.7rem',
+												fontWeight: 500,
+												display: 'block',
+												textAlign: 'center'
+											}}
+										>
+											💡 {t('CLICK_TO_PURCHASE_HINT')}
+										</Typography>
+									</Box>
+								)}
+							</>
+						)}
+
 					</Box>
 				</Box>
 			}
@@ -283,22 +516,29 @@ const HexTile: React.FC<HexTileProps> = ({
 				}
 			}}
 		>
-			<path
-				d={hexPath}
-				fill={getLandTypeColor(tile.landType, isHovered)}
-				stroke={getStrokeColor(isHovered, isSelected, tile.isActive)}
-				strokeWidth={isSelected ? 3 : isHovered ? 1.5 : 0.5}
-				style={{
-					cursor: onTileClick ? 'pointer' : 'default',
-					transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-					transformOrigin: `${position.x}px ${position.y}px`,
-					transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
-					filter: !tile.isActive ? 'grayscale(0.3)' : 'none',
-				}}
-				onMouseEnter={onMouseEnter}
-				onMouseLeave={onMouseLeave}
-				onClick={() => onTileClick?.(tile)}
-			/>
+			<g>
+				<path
+					d={hexPath}
+					fill={getPurchaseFillColor(tile.landType, isHovered)}
+					stroke={getPurchaseStrokeColor(isHovered, isSelected)}
+					strokeWidth={isSelected ? 3 : isHovered ? 2 : (tile.canPurchase ? 1.5 : 0.5)}
+					style={{
+						cursor: onTileClick ? 'pointer' : 'default',
+						transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+						transformOrigin: `${position.x}px ${position.y}px`,
+						transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
+						filter: !tile.isActive ? 'grayscale(0.3)' : 'none',
+					}}
+					onMouseEnter={onMouseEnter}
+					onMouseLeave={onMouseLeave}
+					onClick={() => onTileClick?.(tile)}
+					onContextMenu={(e) => {
+						e.preventDefault();
+						onTileRightClick?.(tile, e);
+					}}
+				/>
+				{renderPurchaseIndicator()}
+			</g>
 		</Tooltip>
 	);
 };

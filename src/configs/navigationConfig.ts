@@ -97,6 +97,44 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 			}
 		]
 	},
+	{
+		id: 'land-management',
+		title: 'Land Management',
+		subtitle: 'Manager land oversight and analytics',
+		type: 'group',
+		icon: 'heroicons-outline:building-office',
+		translate: 'LAND_MANAGEMENT',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'land-management.manager-map',
+				title: 'Manager Map View',
+				type: 'item',
+				icon: 'heroicons-outline:map',
+				url: '/land-management/manager/map',
+				translate: 'MANAGER_MAP_VIEW',
+				auth: ['admin']
+			},
+			{
+				id: 'land-management.manager-overview',
+				title: 'Manager Overview',
+				type: 'item',
+				icon: 'heroicons-outline:chart-bar',
+				url: '/land-management/manager/overview',
+				translate: 'MANAGER_OVERVIEW',
+				auth: ['admin']
+			},
+			{
+				id: 'land-management.manager-analytics',
+				title: 'Manager Analytics',
+				type: 'item',
+				icon: 'heroicons-outline:chart-pie',
+				url: '/land-management/manager/analytics',
+				translate: 'MANAGER_ANALYTICS',
+				auth: ['admin']
+			}
+		]
+	},
 	
 	{
 		id: 'dashboards',
@@ -570,6 +608,39 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			]
 		});
 	}
+
+	// Add Land Management for Students (userType: 3)
+	if (regularUserType === 3) {
+		navigation.push({
+			id: 'land-management',
+			title: 'Land Management',
+			subtitle: 'Purchase and manage team land',
+			type: 'group',
+			icon: 'heroicons-outline:building-office',
+			translate: 'LAND_MANAGEMENT',
+			auth: ['user'],
+			children: [
+				{
+					id: 'land-management.student-map',
+					title: 'Land Map',
+					type: 'item',
+					icon: 'heroicons-outline:map',
+					url: '/land-management/student/map',
+					translate: 'STUDENT_MAP_VIEW',
+					auth: ['user']
+				},
+				{
+					id: 'land-management.student-portfolio',
+					title: 'Land Portfolio',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar',
+					url: '/land-management/student/portfolio',
+					translate: 'STUDENT_PORTFOLIO',
+					auth: ['user']
+				}
+			]
+		});
+	}
 	
 	// Add Team Administration for Managers (userType: 1)
 	if (regularUserType === 1) {
@@ -607,6 +678,46 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:currency-dollar',
 					url: '/team-administration/accounts',
 					translate: 'TEAM_ACCOUNTS',
+					auth: ['user']
+				}
+			]
+		});
+
+		// Add Land Management for Managers (userType: 1)
+		navigation.push({
+			id: 'land-management',
+			title: 'Land Management',
+			subtitle: 'Oversee all land activities',
+			type: 'group',
+			icon: 'heroicons-outline:building-office',
+			translate: 'LAND_MANAGEMENT',
+			auth: ['user'],
+			children: [
+				{
+					id: 'land-management.manager-map',
+					title: 'Manager Map View',
+					type: 'item',
+					icon: 'heroicons-outline:map',
+					url: '/land-management/manager/map',
+					translate: 'MANAGER_MAP_VIEW',
+					auth: ['user']
+				},
+				{
+					id: 'land-management.manager-overview',
+					title: 'Manager Overview',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar',
+					url: '/land-management/manager/overview',
+					translate: 'MANAGER_OVERVIEW',
+					auth: ['user']
+				},
+				{
+					id: 'land-management.manager-analytics',
+					title: 'Manager Analytics',
+					type: 'item',
+					icon: 'heroicons-outline:chart-pie',
+					url: '/land-management/manager/analytics',
+					translate: 'MANAGER_ANALYTICS',
 					auth: ['user']
 				}
 			]
