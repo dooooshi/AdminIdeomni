@@ -28,7 +28,11 @@ import {
   FormControlLabel,
   Switch,
   Slider,
-  Badge
+  Badge,
+  Tabs,
+  Tab,
+  Collapse,
+  Fab
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
@@ -42,7 +46,15 @@ import {
   FilterList as FilterIcon,
   SelectAll as BulkSelectIcon,
   Clear as ClearIcon,
-  GroupWork as BulkPurchaseIcon
+  GroupWork as BulkPurchaseIcon,
+  Psychology as WizardIcon,
+  Star as RecommendIcon,
+  ExpandMore as ExpandIcon,
+  ExpandLess as CollapseIcon,
+  AutoAwesome as AIIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Help as HelpIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -50,6 +62,15 @@ import HexagonalMap from '@/components/map/components/HexagonalMap';
 import { HexagonalMapRef } from '@/components/map/types';
 import LandService from '@/lib/services/landService';
 import TileContextMenu from '@/components/land/TileContextMenu';
+import EnhancedPurchasePanel from '@/components/land/EnhancedPurchasePanel';
+import TilePreviewCard from '@/components/land/TilePreviewCard';
+import QuickActionToolbar from '@/components/land/QuickActionToolbar';
+import PurchaseCostCalculator from '@/components/land/PurchaseCostCalculator';
+import PurchaseWizard from '@/components/land/PurchaseWizard';
+import InteractiveTutorial from '@/components/land/InteractiveTutorial';
+import SmartRecommendations from '@/components/land/SmartRecommendations';
+import TouchGestureHandler from '@/components/land/TouchGestureHandler';
+import MobileBottomNavigation from '@/components/land/MobileBottomNavigation';
 import {
   AvailableTile,
   TileDetailsWithOwnership,
@@ -161,6 +182,23 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   
   // Purchase dialog state
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
+  const [enhancedPurchasePanelOpen, setEnhancedPurchasePanelOpen] = useState(false);
+  
+  // Hover preview state
+  const [hoveredTile, setHoveredTile] = useState<AvailableTile | null>(null);
+  const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
+  const [showTilePreview, setShowTilePreview] = useState(false);
+  
+  // Toolbar state
+  const [showQuickToolbar, setShowQuickToolbar] = useState(false);
+  const [toolbarTile, setToolbarTile] = useState<AvailableTile | null>(null);
+  
+  // Phase 2 UI state
+  const [showPurchaseWizard, setShowPurchaseWizard] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(true);
+  const [tutorialCompleted, setTutorialCompleted] = useState(
+    localStorage.getItem('land-tutorial-completed') === 'true'
+  );
   const [purchaseArea, setPurchaseArea] = useState(1);
   const [maxGoldCost, setMaxGoldCost] = useState<number | undefined>();
   const [maxCarbonCost, setMaxCarbonCost] = useState<number | undefined>();
@@ -190,11 +228,23 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     cost: number;
     landType: string;
   } | null>(null);
+  
+  // Side panel state
+  const [activeTab, setActiveTab] = useState(0);
+  const [showSidePanel, setShowSidePanel] = useState(true);
 
   // Context menu state
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [contextMenuTile, setContextMenuTile] = useState<AvailableTile | null>(null);
+  
+  // Side panel state
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+  const [sidePanelTab, setSidePanelTab] = useState(0);
+  
+  // Mobile state
+  const [mobileBottomTab, setMobileBottomTab] = useState(0);
+  const [showFiltersDialog, setShowFiltersDialog] = useState(false);
 
   // Show stale data indicator
   useEffect(() => {
@@ -463,10 +513,17 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   const handlePurchaseClick = () => {
     if (!selectedTile || !LandService.canPurchaseLand(selectedTile, purchaseArea)) return;
     
-    setPurchaseDialogOpen(true);
-    // NEW: Default to 1 unit (integer only), no area limitations
+    // Use enhanced purchase panel instead of modal
+    setEnhancedPurchasePanelOpen(true);
     setPurchaseArea(1);
     setDescription(`Purchase ${purchaseArea} area on ${LandService.formatLandType(selectedTile.landType)} tile ${selectedTile.tileId}`);
+  };
+
+  const handleEnhancedPurchaseClick = (tile: AvailableTile) => {
+    setSelectedTile(tile);
+    setEnhancedPurchasePanelOpen(true);
+    setPurchaseArea(1);
+    setDescription(`Purchase land on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
   };
 
   const handlePurchaseConfirm = async () => {
@@ -652,6 +709,24 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     mapRef.current?.resetZoom();
   };
 
+  // Hover handlers
+  const handleTileHover = useCallback((tileId: number, event: React.MouseEvent) => {
+    const tile = filteredTiles.find(t => t.tileId === tileId) || tiles?.find(t => t.tileId === tileId);
+    if (!tile) return;
+
+    setHoveredTile(tile);
+    setHoverPosition({ x: event.clientX, y: event.clientY });
+    setShowTilePreview(true);
+  }, [filteredTiles, tiles]);
+
+  const handleTileHoverEnd = useCallback(() => {
+    setShowTilePreview(false);
+    setTimeout(() => {
+      setHoveredTile(null);
+      setHoverPosition(null);
+    }, 200);
+  }, []);
+
   // Context menu handlers
   const handleTileRightClick = useCallback((tileId: number, event: React.MouseEvent) => {
     let tile = filteredTiles.find(t => t.tileId === tileId);
@@ -677,8 +752,105 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     setSelectedTile(tile);
     setPurchaseArea(1);
     setDescription(`Quick purchase of 1 unit on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
-    setPurchaseDialogOpen(true);
+    setEnhancedPurchasePanelOpen(true);
   }, []);
+
+  // Toolbar handlers
+  const handleShowToolbar = (tile: AvailableTile) => {
+    setToolbarTile(tile);
+    setShowQuickToolbar(true);
+  };
+
+  const handleCloseToolbar = () => {
+    setShowQuickToolbar(false);
+    setToolbarTile(null);
+  };
+  
+  // Phase 2 handlers
+  const handleWizardRecommendation = (tiles: AvailableTile[], area: number) => {
+    if (tiles.length > 0) {
+      setSelectedTile(tiles[0]);
+      setEnhancedPurchasePanelOpen(true);
+      setPurchaseArea(area);
+    }
+  };
+  
+  const handleSmartRecommendation = (tile: AvailableTile) => {
+    setSelectedTile(tile);
+    setEnhancedPurchasePanelOpen(true);
+    setPurchaseArea(1);
+  };
+  
+  const handleTutorialComplete = () => {
+    setTutorialCompleted(true);
+    localStorage.setItem('land-tutorial-completed', 'true');
+    showSuccess('Tutorial Complete! 🎉', 'You\'re now ready to start purchasing land!');
+  };
+  
+  // Handle side panel toggle
+  const handleSidePanelToggle = () => {
+    setSidePanelOpen(!sidePanelOpen);
+  };
+
+  // Handle recommendation tile select
+  const handleRecommendationTileSelect = (tile: AvailableTile) => {
+    setSelectedTile(tile);
+    setEnhancedPurchasePanelOpen(true);
+    setSidePanelOpen(false);
+  };
+  
+  // Touch gesture handlers
+  const handlePinchZoom = useCallback((scale: number, center: { x: number; y: number }) => {
+    if (scale > 1.1) {
+      handleZoomIn();
+    } else if (scale < 0.9) {
+      handleZoomOut();
+    }
+  }, []);
+  
+  const handleSwipeGesture = useCallback((direction: 'left' | 'right' | 'up' | 'down', velocity: number) => {
+    if (velocity > 0.5) {
+      if (direction === 'left' && !sidePanelOpen) {
+        setSidePanelOpen(true);
+      } else if (direction === 'right' && sidePanelOpen) {
+        setSidePanelOpen(false);
+      } else if (direction === 'up') {
+        // Show filters or other actions
+        setShowFiltersDialog(true);
+      }
+    }
+  }, [sidePanelOpen]);
+  
+  const handleTouchTap = useCallback((x: number, y: number) => {
+    // Convert screen coordinates to map coordinates and handle tile selection
+    // This would need integration with the HexagonalMap component
+    console.log('Touch tap at:', x, y);
+  }, []);
+  
+  const handleTouchLongPress = useCallback((x: number, y: number) => {
+    // Show context menu or tile preview on long press
+    console.log('Long press at:', x, y);
+  }, []);
+  
+  // Mobile navigation handlers
+  const handleMobileTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setMobileBottomTab(newValue);
+    
+    switch (newValue) {
+      case 0: // Map
+        // Focus on map
+        break;
+      case 1: // Filters
+        setShowFiltersDialog(true);
+        break;
+      case 2: // Bulk Mode
+        handleBulkPurchaseToggle();
+        break;
+      case 3: // AI Assistant
+        setSidePanelOpen(true);
+        break;
+    }
+  };
 
   const handlePurchaseMax = useCallback(async (tile: AvailableTile) => {
     if (!tile.canPurchase) return;
@@ -825,16 +997,26 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             <Typography variant="body2">
               Total Cost per unit: {LandService.formatCurrency((selectedTile.currentGoldPrice || 0) + (selectedTile.currentCarbonPrice || 0))}
             </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<ShoppingCartIcon />}
-              onClick={handlePurchaseClick}
-              disabled={!selectedTile.canPurchase} // NEW: No area limits, only check if purchasable
-              size="small"
-            >
-              Purchase Land
-            </Button>
+            <Stack direction="row" spacing={1}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<ShoppingCartIcon />}
+                onClick={handlePurchaseClick}
+                disabled={!selectedTile.canPurchase}
+                size="small"
+              >
+                Purchase
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => handleShowToolbar(selectedTile)}
+                size="small"
+              >
+                Actions
+              </Button>
+            </Stack>
           </Box>
         </Stack>
       </TileInfoPanel>
@@ -1141,31 +1323,79 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+    <Box sx={{ 
+      p: { xs: 2, sm: 3 },
+      pb: { xs: 10, sm: 3 }, // Extra bottom padding for mobile to avoid FAB overlap
+    }}>
+      <Typography 
+        variant={{ xs: 'h5', sm: 'h4' }} 
+        component="h1" 
+        gutterBottom
+        sx={{ fontSize: { xs: '1.5rem', sm: '2.125rem' } }}
+      >
         Land Management - Student Map View
       </Typography>
       
-      <Typography variant="body1" color="text.secondary" paragraph>
-        Interactive map for exploring and purchasing available land. Click on tiles to view details and make purchases.
+      <Typography 
+        variant="body1" 
+        color="text.secondary" 
+        paragraph
+        sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+      >
+        Interactive map for exploring and purchasing available land. {bulkPurchaseMode ? 'Tap' : 'Click'} on tiles to view details and make purchases.
         {bulkPurchaseMode && (
           <Box component="span" sx={{ 
-            ml: 2, 
-            px: 2, 
+            ml: { xs: 1, sm: 2 }, 
+            px: { xs: 1.5, sm: 2 }, 
             py: 0.5, 
             bgcolor: 'primary.main', 
             color: 'primary.contrastText',
             borderRadius: 1,
-            fontSize: '0.875rem',
-            fontWeight: 'bold'
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            fontWeight: 'bold',
+            display: { xs: 'block', sm: 'inline' },
+            mt: { xs: 1, sm: 0 }
           }}>
             🔄 BULK MODE ACTIVE ({selectedTiles.size} selected)
           </Box>
         )}
       </Typography>
 
+      {/* Mobile Stats Container */}
+      <Box sx={{ display: { xs: 'block', sm: 'none' }, mb: 2 }}>
+        <StatsContainer>
+          <Card sx={{ bgcolor: 'rgba(255,255,255,0.95)' }}>
+            <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+              <Typography variant="subtitle2" color="primary" gutterBottom>
+                Your Team Status
+              </Typography>
+              <Stack spacing={1}>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body2">Team:</Typography>
+                  <Typography variant="body2" fontWeight="bold">
+                    {teamSummary?.teamName || 'No Team'}
+                  </Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body2">Purchases:</Typography>
+                  <Typography variant="body2" fontWeight="bold">
+                    {teamSummary?.totalPurchases || 0}
+                  </Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between">
+                  <Typography variant="body2">Gold Spent:</Typography>
+                  <Typography variant="body2" fontWeight="bold">
+                    {LandService.formatCurrency(teamSummary?.totalGoldSpent || 0, 'gold')}
+                  </Typography>
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+        </StatsContainer>
+      </Box>
+      
       {/* Team Summary Cards */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
+      <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, sm: 3 } }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
@@ -1388,31 +1618,111 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           </Card>
         </StatsContainer>
 
-        {/* Hexagonal Map */}
-        <HexagonalMap
-          ref={mapRef}
-          tiles={mapTiles}
-          width={800}
-          height={600}
-          onTileClick={handleTileClick}
-          onTileRightClick={handleTileRightClick}
-          zoomLevel={zoomLevel}
-          onZoomChange={setZoomLevel}
-          selectedTileId={selectedTile?.tileId}
-          configurationMode={false}
-          showConfiguration={false}
-        />
+        {/* Hexagonal Map with Touch Gestures */}
+        <TouchGestureHandler
+          onPinchZoom={handlePinchZoom}
+          onSwipe={handleSwipeGesture}
+          onTap={handleTouchTap}
+          onLongPress={handleTouchLongPress}
+          disabled={enhancedPurchasePanelOpen || showPurchaseWizard}
+        >
+          <HexagonalMap
+            ref={mapRef}
+            tiles={mapTiles}
+            width={800}
+            height={600}
+            onTileClick={handleTileClick}
+            onTileRightClick={handleTileRightClick}
+            onTileHover={handleTileHover}
+            onTileHoverEnd={handleTileHoverEnd}
+            zoomLevel={zoomLevel}
+            onZoomChange={setZoomLevel}
+            selectedTileId={selectedTile?.tileId}
+            configurationMode={false}
+            showConfiguration={false}
+          />
+        </TouchGestureHandler>
 
         {/* Tile Information Panel */}
         {renderTileInfoPanel()}
       </MapContainer>
 
-      {/* Purchase Dialog */}
+      {/* Enhanced Purchase Panel */}
+      <EnhancedPurchasePanel
+        open={enhancedPurchasePanelOpen}
+        onClose={() => setEnhancedPurchasePanelOpen(false)}
+        tile={selectedTile}
+        onPurchaseComplete={async (purchase) => {
+          // Trigger success animation
+          setPurchaseAnimationData({
+            tileId: purchase.tileId,
+            area: purchase.purchasedArea,
+            cost: purchase.goldCost + purchase.carbonCost,
+            landType: selectedTile?.landType || 'PLAIN'
+          });
+          setShowSuccessAnimation(true);
+          
+          // Show success notification
+          setTimeout(() => {
+            showSuccess(
+              'Land Purchase Successful! 🎉',
+              `Purchased ${LandService.formatArea(purchase.purchasedArea)} on tile ${purchase.tileId}. Total cost: ${LandService.formatCurrency(purchase.goldCost + purchase.carbonCost)}`
+            );
+          }, 1500);
+          
+          // Refresh data
+          await loadMapData();
+        }}
+      />
+
+      {/* Legacy Purchase Dialog - Keep for fallback */}
       {renderPurchaseDialog()}
       
       {/* Bulk Purchase Dialog */}
       {renderBulkPurchaseDialog()}
       
+      {/* Tile Preview Card */}
+      {showTilePreview && hoveredTile && hoverPosition && (
+        <TilePreviewCard
+          tile={hoveredTile}
+          position={hoverPosition}
+          onQuickPurchase={handleQuickPurchase}
+          onViewDetails={(tile) => {
+            setSelectedTile(tile);
+            handleShowToolbar(tile);
+          }}
+          onCalculateCost={(tile) => {
+            setSelectedTile(tile);
+            setEnhancedPurchasePanelOpen(true);
+          }}
+        />
+      )}
+
+      {/* Quick Action Toolbar */}
+      {showQuickToolbar && toolbarTile && (
+        <QuickActionToolbar
+          tile={toolbarTile}
+          onClose={handleCloseToolbar}
+          onPurchase={handleEnhancedPurchaseClick}
+          onQuickPurchase={handleQuickPurchase}
+          onCalculateCost={(tile) => {
+            setSelectedTile(tile);
+            setEnhancedPurchasePanelOpen(true);
+          }}
+          onViewDetails={async (tile) => {
+            setSelectedTile(tile);
+            try {
+              const tileDetails = await LandService.getTileDetails(tile.tileId);
+              setSelectedTileDetails(tileDetails);
+            } catch (err: any) {
+              console.error('Failed to load tile details:', err);
+            }
+          }}
+          bulkMode={bulkPurchaseMode}
+          onToggleBulkMode={handleBulkPurchaseToggle}
+        />
+      )}
+
       {/* Purchase Success Animation */}
       <PurchaseSuccessAnimation
         isVisible={showSuccessAnimation}
@@ -1486,6 +1796,184 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           </Grid>
         </CardContent>
       </Card>
+      
+      {/* Side Panel */}
+      <Paper
+        elevation={16}
+        sx={{
+          position: 'fixed',
+          top: 0,
+          right: sidePanelOpen ? 0 : '-100%',
+          width: { xs: '100%', sm: '90%', md: '400px' },
+          height: '100vh',
+          zIndex: 1200,
+          transition: 'right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          display: 'flex',
+          flexDirection: 'column',
+          bgcolor: 'background.paper',
+          borderLeft: { xs: 'none', md: '1px solid' },
+          borderColor: 'divider',
+          // Mobile backdrop
+          ...(sidePanelOpen && {
+            '&::before': {
+              content: '""',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              zIndex: -1,
+              display: { xs: 'block', md: 'none' },
+            },
+          }),
+        }}
+      >
+        {/* Side Panel Header */}
+        <Box
+          sx={{
+            p: 2,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+            background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(156, 39, 176, 0.05) 100%)'
+          }}
+        >
+          <Box display="flex" alignItems="center" justifyContent="space-between">
+            <Typography variant="h6" fontWeight="bold">
+              AI Assistant
+            </Typography>
+            <IconButton onClick={handleSidePanelToggle} size="small">
+              <ChevronRightIcon />
+            </IconButton>
+          </Box>
+          
+          <Tabs
+            value={sidePanelTab}
+            onChange={(_, newValue) => setSidePanelTab(newValue)}
+            variant="fullWidth"
+            sx={{ mt: 1 }}
+          >
+            <Tab 
+              icon={<RecommendIcon />} 
+              label="Recommendations" 
+              iconPosition="start"
+              sx={{ minHeight: 40, fontSize: '0.875rem' }}
+            />
+            <Tab 
+              icon={<WizardIcon />} 
+              label="Wizard" 
+              iconPosition="start"
+              sx={{ minHeight: 40, fontSize: '0.875rem' }}
+            />
+          </Tabs>
+        </Box>
+
+        {/* Side Panel Content */}
+        <Box sx={{ flex: 1, overflow: 'hidden' }}>
+          {sidePanelTab === 0 && (
+            <Box sx={{ height: '100%', overflow: 'auto', p: 2 }}>
+              <SmartRecommendations
+                tiles={tiles}
+                teamSummary={teamSummary}
+                onTileRecommend={handleRecommendationTileSelect}
+                onRefreshData={handleRefresh}
+              />
+            </Box>
+          )}
+          
+          {sidePanelTab === 1 && (
+            <Box sx={{ height: '100%', overflow: 'auto', p: 2 }}>
+              <Box textAlign="center" py={4}>
+                <Typography variant="h6" gutterBottom>
+                  Purchase Wizard
+                </Typography>
+                <Typography variant="body2" color="text.secondary" paragraph>
+                  Get step-by-step guidance for your land investment decisions with AI-powered recommendations.
+                </Typography>
+                <Button
+                  variant="contained"
+                  size="large"
+                  startIcon={<WizardIcon />}
+                  onClick={() => {
+                    setShowPurchaseWizard(true);
+                    setSidePanelOpen(false);
+                  }}
+                  sx={{
+                    background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
+                    '&:hover': {
+                      background: 'linear-gradient(45deg, #1565c0, #7b1fa2)'
+                    }
+                  }}
+                >
+                  Start Wizard
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </Box>
+      </Paper>
+
+      {/* Side Panel Toggle Button */}
+      {!sidePanelOpen && (
+        <Tooltip title="Open AI Assistant" placement="left">
+          <Fab
+            color="primary"
+            size={{ xs: 'small', sm: 'medium' }}
+            onClick={handleSidePanelToggle}
+            sx={{
+              position: 'fixed',
+              top: { xs: 'auto', sm: '50%' },
+              bottom: { xs: 80, sm: 'auto' },
+              right: { xs: 16, sm: 16 },
+              transform: { xs: 'none', sm: 'translateY(-50%)' },
+              zIndex: 1100,
+              background: 'linear-gradient(45deg, #1976d2, #9c27b0)',
+              '&:hover': {
+                background: 'linear-gradient(45deg, #1565c0, #7b1fa2)'
+              },
+              // Mobile touch target
+              minHeight: { xs: 48, sm: 56 },
+              minWidth: { xs: 48, sm: 56 },
+            }}
+          >
+            <AIIcon />
+          </Fab>
+        </Tooltip>
+      )}
+
+      {/* Tutorial Trigger */}
+      <InteractiveTutorial
+        autoStart={false}
+        onComplete={handleTutorialComplete}
+        onSkip={handleTutorialComplete}
+      />
+
+      {/* Purchase Wizard */}
+      <PurchaseWizard
+        open={showPurchaseWizard}
+        onClose={() => setShowPurchaseWizard(false)}
+        tiles={tiles}
+        teamSummary={teamSummary}
+        selectedTile={selectedTile}
+        onPurchaseRecommendation={handleWizardRecommendation}
+      />
+      
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNavigation
+        selectedTab={mobileBottomTab}
+        onTabChange={handleMobileTabChange}
+        bulkMode={bulkPurchaseMode}
+        selectedTilesCount={selectedTiles.size}
+        onBulkModeToggle={handleBulkPurchaseToggle}
+        onAIAssistantOpen={() => setSidePanelOpen(true)}
+        onFiltersOpen={() => setShowFiltersDialog(true)}
+        onZoomIn={handleZoomIn}
+        onZoomOut={handleZoomOut}
+        onResetZoom={handleResetZoom}
+        onRefresh={handleRefresh}
+        onClearSelection={clearSelectedTiles}
+        onBulkPurchase={handleBulkPurchaseClick}
+      />
     </Box>
   );
 };

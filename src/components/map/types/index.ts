@@ -28,6 +28,8 @@ export interface HexagonalMapProps {
 	height?: number;
 	onTileClick?: (tileId: number) => void;
 	onTileRightClick?: (tileId: number, event: React.MouseEvent) => void;
+	onTileHover?: (tileId: number, event: React.MouseEvent) => void;
+	onTileHoverEnd?: () => void;
 	onTileSelect?: (tileId: number) => void;
 	selectedTileId?: number | null;
 	zoomLevel?: number;
@@ -82,6 +84,7 @@ export interface HexTileProps {
 	configurationMode?: boolean;
 	onTileClick?: (tile: MapTile) => void;
 	onTileRightClick?: (tile: MapTile, event: React.MouseEvent) => void;
+	onTileHover?: (tile: MapTile, event: React.MouseEvent) => void;
 	onMouseEnter: () => void;
 	onMouseLeave: () => void;
 }

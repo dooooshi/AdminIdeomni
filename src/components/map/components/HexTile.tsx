@@ -16,6 +16,7 @@ const HexTile: React.FC<HexTileProps> = ({
 	configurationMode = false,
 	onTileClick,
 	onTileRightClick,
+	onTileHover,
 	onMouseEnter,
 	onMouseLeave
 }) => {
@@ -531,6 +532,7 @@ const HexTile: React.FC<HexTileProps> = ({
 					}}
 					onMouseEnter={onMouseEnter}
 					onMouseLeave={onMouseLeave}
+					onMouseMove={(e) => onTileHover?.(tile, e)}
 					onClick={() => onTileClick?.(tile)}
 					onContextMenu={(e) => {
 						e.preventDefault();

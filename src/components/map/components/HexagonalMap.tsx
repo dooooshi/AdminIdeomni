@@ -87,12 +87,14 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 	height = 500,
 	onTileClick,
 	onTileRightClick,
-	onTileUpdate,
+	onTileHover,
+	onTileHoverEnd,
 	zoomLevel = 1,
 	onZoomChange,
 	configurationMode = false,
 	selectedTileId,
-	showConfiguration = false
+	showEconomicData = false,
+	activityMode = false
 }, ref) => {
 	const theme = useTheme();
 	const [hoveredTile, setHoveredTile] = useState<number | null>(null);
@@ -175,8 +177,12 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 							configurationMode={configurationMode}
 							onTileClick={onTileClick ? (tile) => onTileClick(tile.id) : undefined}
 							onTileRightClick={onTileRightClick ? (tile, event) => onTileRightClick(tile.id, event) : undefined}
+							onTileHover={onTileHover ? (tile, event) => onTileHover(tile.id, event) : undefined}
 							onMouseEnter={() => setHoveredTile(tile.id)}
-							onMouseLeave={() => setHoveredTile(null)}
+							onMouseLeave={() => {
+								setHoveredTile(null);
+								onTileHoverEnd?.();
+							}}
 						/>
 					);
 				})}
