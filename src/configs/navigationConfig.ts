@@ -96,46 +96,7 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['admin']
 			}
 		]
-	},
-	{
-		id: 'land-management',
-		title: 'Land Management',
-		subtitle: 'Manager land oversight and analytics',
-		type: 'group',
-		icon: 'heroicons-outline:building-office',
-		translate: 'LAND_MANAGEMENT',
-		auth: ['admin'],
-		children: [
-			{
-				id: 'land-management.manager-map',
-				title: 'Manager Map View',
-				type: 'item',
-				icon: 'heroicons-outline:map',
-				url: '/land-management/manager/map',
-				translate: 'MANAGER_MAP_VIEW',
-				auth: ['admin']
-			},
-			{
-				id: 'land-management.manager-overview',
-				title: 'Manager Overview',
-				type: 'item',
-				icon: 'heroicons-outline:chart-bar',
-				url: '/land-management/manager/overview',
-				translate: 'MANAGER_OVERVIEW',
-				auth: ['admin']
-			},
-			{
-				id: 'land-management.manager-analytics',
-				title: 'Manager Analytics',
-				type: 'item',
-				icon: 'heroicons-outline:chart-pie',
-				url: '/land-management/manager/analytics',
-				translate: 'MANAGER_ANALYTICS',
-				auth: ['admin']
-			}
-		]
-	},
-	
+	},	
 	{
 		id: 'dashboards',
 		title: 'Dashboards',
