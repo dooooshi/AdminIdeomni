@@ -227,7 +227,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
           <Box pt={1} borderTop={1} borderColor="divider">
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography variant="caption" color="text.secondary">
-                Built by {facility.builder.firstName} {facility.builder.lastName}
+                Built by {facility.builder?.firstName || 'Unknown'} {facility.builder?.lastName || ''}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {new Intl.DateTimeFormat('en-US', {

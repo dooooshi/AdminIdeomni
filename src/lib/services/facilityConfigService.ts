@@ -115,7 +115,6 @@ export interface ApiResponse<T> {
 
 export class FacilityConfigService {
   private static readonly BASE_PATH = '/facility-configs';
-  private static readonly MOCK_BASE_PATH = '/api/mock/facility-configs';
 
   // Helper method to extract data from API response
   private static extractResponseData<T>(response: any): T {
@@ -153,7 +152,6 @@ export class FacilityConfigService {
 
     const queryString = searchParams.toString();
     
-    // Try the main API first, then fall back to mock API
     let url = queryString ? `${this.BASE_PATH}/search?${queryString}` : `${this.BASE_PATH}/search`;
     
     console.log('🌐 API Request:', {
@@ -162,41 +160,16 @@ export class FacilityConfigService {
       queryString
     });
     
-    try {
-      const response = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(url);
-      const data = this.extractResponseData<FacilityConfigSearchResponse>(response);
-      
-      console.log('🌐 API Response:', {
-        source: 'main API',
-        rawResponse: response.data,
-        extractedData: data,
-        status: response.status
-      });
-      
-      return this.validateAndReturnResponse(data);
-    } catch (error) {
-      console.warn('⚠️ Main API failed, trying mock API:', error);
-      
-      // Fall back to mock API
-      const mockUrl = queryString ? `${this.MOCK_BASE_PATH}/search?${queryString}` : `${this.MOCK_BASE_PATH}/search`;
-      
-      try {
-        const mockResponse = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(mockUrl);
-        const mockData = this.extractResponseData<FacilityConfigSearchResponse>(mockResponse);
-        
-        console.log('🔄 Mock API Response:', {
-          source: 'mock API',
-          rawResponse: mockResponse.data,
-          extractedData: mockData,
-          status: mockResponse.status
-        });
-        
-        return this.validateAndReturnResponse(mockData);
-      } catch (mockError) {
-        console.error('❌ Both main and mock API failed:', { mainError: error, mockError });
-        throw mockError;
-      }
-    }
+    const response = await apiClient.get<ApiResponse<FacilityConfigSearchResponse>>(url);
+    const data = this.extractResponseData<FacilityConfigSearchResponse>(response);
+    
+    console.log('🌐 API Response:', {
+      rawResponse: response.data,
+      extractedData: data,
+      status: response.status
+    });
+    
+    return this.validateAndReturnResponse(data);
   }
 
   /**
@@ -304,21 +277,8 @@ export class FacilityConfigService {
    * Get facility configuration statistics
    */
   static async getFacilityConfigStatistics(): Promise<FacilityConfigStatistics> {
-    try {
-      const response = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.BASE_PATH}/stats`);
-      return this.extractResponseData<FacilityConfigStatistics>(response);
-    } catch (error) {
-      console.warn('⚠️ Main API stats failed, trying mock API:', error);
-      
-      // Fall back to mock API
-      try {
-        const mockResponse = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.MOCK_BASE_PATH}/stats`);
-        return this.extractResponseData<FacilityConfigStatistics>(mockResponse);
-      } catch (mockError) {
-        console.error('❌ Both main and mock API stats failed:', { mainError: error, mockError });
-        throw mockError;
-      }
-    }
+    const response = await apiClient.get<ApiResponse<FacilityConfigStatistics>>(`${this.BASE_PATH}/stats`);
+    return this.extractResponseData<FacilityConfigStatistics>(response);
   }
 
   /**

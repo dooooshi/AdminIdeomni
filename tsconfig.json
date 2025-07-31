@@ -20,9 +20,6 @@
       "@history*": [
         "./src/@history"
       ],
-      "@mock-utils/*": [
-        "./src/@mock-utils/*"
-      ],
       "@schema": [
         "./src/@schema"
       ],
@@ -65,7 +62,6 @@
   "exclude": [
     "src/app/(public)/documentation/material-ui-components/components/**/*",
     "src/app/(public)/documentation/material-ui-components/doc/**/*",
-    "src/app/api/mock/**/*",
     "node_modules"
   ],
   "include": [

@@ -446,7 +446,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
                 <TimelineIcon color="primary" />
                 <Box>
                   <Typography variant="h5">
-                    {analytics.totalPurchases[timeRange].toLocaleString()}
+                    {(analytics.totalPurchases?.[timeRange] || 0).toLocaleString()}
                   </Typography>
                   <Typography color="text.secondary" variant="body2">
                     Total Purchases
@@ -464,7 +464,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
                 <TrendingUpIcon color="primary" />
                 <Box>
                   <Typography variant="h5">
-                    {LandService.formatCurrency(analytics.totalRevenue[timeRange])}
+                    {LandService.formatCurrency(analytics.totalRevenue?.[timeRange] || 0)}
                   </Typography>
                   <Typography color="text.secondary" variant="body2">
                     Total Revenue

@@ -178,7 +178,7 @@ const UserManagementPage: React.FC = () => {
             <Link
               underline="hover"
               color="inherit"
-              href="/dashboards"
+              href="/"
               className="flex items-center"
             >
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />

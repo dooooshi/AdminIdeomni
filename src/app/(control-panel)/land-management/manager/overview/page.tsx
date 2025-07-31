@@ -402,10 +402,10 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
             </Avatar>
             <Box>
               <Typography variant="h6">
-                Tile {overview.mostActiveTile.tileId}
+                Tile {overview.mostActiveTile?.tileId || 'N/A'}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {t('landManagement:MOST_ACTIVE_TILE')} ({overview.mostActiveTile.purchaseCount} {t('landManagement:PURCHASES')})
+                {t('landManagement:MOST_ACTIVE_TILE')} ({overview.mostActiveTile?.purchaseCount || 0} {t('landManagement:PURCHASES')})
               </Typography>
             </Box>
           </MetricBox>

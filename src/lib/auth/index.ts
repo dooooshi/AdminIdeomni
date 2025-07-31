@@ -11,4 +11,7 @@ export { AuthProvider, useAuth, AuthContext } from './auth-context';
 export * from './hooks';
 
 // Export all authentication guards
-export * from './auth-guard'; 
+export * from './auth-guard';
+
+// Export redirect utilities
+export * from './redirects'; 

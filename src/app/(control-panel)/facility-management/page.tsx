@@ -158,7 +158,7 @@ const FacilityManagementPage: React.FC = () => {
       header={
         <Box sx={{ p: 3 }}>
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
-            <Link color="inherit" href="/dashboards" underline="hover">
+            <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
               Dashboard
             </Link>

@@ -16,8 +16,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
-import { useLogin } from '../hooks';
+import { useLogin, useAuth } from '../hooks';
 import { UserLoginRequest } from '../types';
+import { getDefaultDashboardPath } from '../redirects';
 import { showMessage } from '@ideomni/core/IdeomniMessage/IdeomniMessageSlice';
 import { useAppDispatch } from 'src/store/hooks';
 import { extractErrorMessage } from '../utils';
@@ -50,6 +51,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { userLogin, isLoading, error, clearError } = useLogin();
+  const { userType, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   // Create schema with translations
@@ -87,11 +89,12 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
       // Reset form
       reset();
       
-      // Call success callback or redirect
+      // Call success callback or redirect to role-based dashboard
       if (onSuccess) {
         onSuccess();
       } else {
-        router.push('/dashboards');
+        // Use role-based redirect - redirect to home which will handle role-based routing
+        router.push('/');
       }
     } catch (err: any) {
       console.error('User login error:', err);

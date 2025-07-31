@@ -1,8 +1,7 @@
-import { redirect } from 'next/navigation';
+import RoleBasedRedirect from '@/components/auth/RoleBasedRedirect';
 
 function MainPage() {
-	redirect(`/dashboards/project`);
-	return null;
+	return <RoleBasedRedirect />;
 }
 
 export default MainPage;

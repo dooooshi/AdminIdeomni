@@ -6,7 +6,6 @@ const aliases = (prefix = `src`) => ({
   '@i18n': `${prefix}/@i18n`,
   	'@ideomni': `${prefix}/@ideomni`,
   '@history': `${prefix}/@history`,
-  "@mock-utils": `${prefix}/@mock-utils`,
   '@schema': `${prefix}/@schema`,
   '@': `${prefix}`
 });

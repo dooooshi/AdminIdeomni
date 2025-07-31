@@ -11,7 +11,6 @@ import _ from 'lodash';
 import LightDarkModeToggle from 'src/components/LightDarkModeToggle';
 import useIdeomniLayoutSettings from '@ideomni/core/IdeomniLayout/useIdeomniLayoutSettings';
 import { useToolbarTheme } from '@ideomni/core/IdeomniSettings/hooks/IdeomniThemeHooks';
-import NotificationPanelToggleButton from '@/app/(control-panel)/apps/notifications/NotificationPanelToggleButton';
 import AdjustFontSize from '../../components/AdjustFontSize';
 import FullScreenToggle from '../../components/FullScreenToggle';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
@@ -84,7 +83,6 @@ function ToolbarLayout1(props: ToolbarLayout1Props) {
 							lightTheme={_.find(themeOptions, { id: 'Default' })}
 							darkTheme={_.find(themeOptions, { id: 'Default Dark' })}
 						/>
-						<NotificationPanelToggleButton />
 					</div>
 
 					{config.navbar.display && config.navbar.position === 'right' && (

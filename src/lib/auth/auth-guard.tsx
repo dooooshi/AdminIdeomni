@@ -197,7 +197,8 @@ export function GuestGuard({
   // Handle redirects in useEffect to avoid setState during render
   React.useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push('/dashboards');
+      // Redirect to home which will handle role-based routing
+      router.push('/');
     }
   }, [isLoading, isAuthenticated, router]);
 
