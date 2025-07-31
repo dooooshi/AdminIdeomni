@@ -276,17 +276,9 @@ const facilityManagement = {
   INACTIVE_CONFIGS: 'Inactive Configurations',
   CONFIGS_BY_CATEGORY: 'Configurations by Category',
   
-  // Actions and Buttons
-  SAVE: 'Save',
-  CANCEL: 'Cancel',
-  DELETE: 'Delete',
-  CONFIRM: 'Confirm',
+  // Actions and Buttons - Removed duplicates (already defined above)
   CREATE: 'Create',
   UPDATE: 'Update',
-  CLOSE: 'Close',
-  EDIT: 'Edit',
-  VIEW: 'View',
-  RESTORE: 'Restore',
   DUPLICATE: 'Duplicate',
   EXPORT: 'Export',
   IMPORT: 'Import',
@@ -336,15 +328,11 @@ const facilityManagement = {
   ROWS_PER_PAGE: 'Rows per page',
   PAGE_OF_PAGES: 'Page {{page}} of {{totalPages}}',
   SHOWING_RESULTS: 'Showing {{start}}-{{end}} of {{total}} results',
-  NO_RESULTS: 'No facilities found',
-  NO_CONFIGS: 'No configurations found',
   
-  // Data States
-  LOADING: 'Loading...',
+  // Data States - Removed duplicates (already defined above)
   LOADING_FACILITIES: 'Loading facilities...',
   LOADING_CONFIGS: 'Loading configurations...',
   LOADING_STATISTICS: 'Loading statistics...',
-  NO_DATA: 'No data available',
   NO_FACILITIES_FOUND: 'No facilities found',
   NO_CONFIGS_FOUND: 'No configurations found',
   EMPTY_STATE_MESSAGE: 'No facilities have been created yet.',
@@ -391,7 +379,6 @@ const facilityManagement = {
   
   // Currency and Number Formatting
   CURRENCY_SYMBOL: '$',
-  NOT_AVAILABLE: 'N/A',
   UNLIMITED: 'Unlimited',
   
   // Time and Dates
@@ -406,8 +393,6 @@ const facilityManagement = {
   // Misc
   OPTIONAL: 'Optional',
   REQUIRED: 'Required',
-  YES: 'Yes',
-  NO: 'No',
   ALL: 'All',
   NONE: 'None',
   DEFAULT: 'Default',
@@ -454,24 +439,9 @@ const facilityManagement = {
   BASIC_INFORMATION: 'Basic Information',
   CAPACITY_CONFIGURATION: 'Capacity Configuration',
   COST_CONFIGURATION: 'Cost Configuration',
-  BUILD_COST: 'Build Cost',
-  MAINTENANCE_COST: 'Maintenance Cost',
-  OPERATION_COST: 'Operation Cost',
   ACTIVE_CONFIGURATION: 'Active Configuration',
   
-  // Cost and capacity fields
-  MIN_CAPACITY: 'Min Capacity',
-  MAX_CAPACITY: 'Max Capacity',
-  DEFAULT_CAPACITY: 'Default Capacity',
-  MIN_BUILD_COST: 'Min Build Cost',
-  MAX_BUILD_COST: 'Max Build Cost',
-  DEFAULT_BUILD_COST: 'Default Build Cost',
-  MIN_MAINTENANCE_COST: 'Min Maintenance Cost',
-  MAX_MAINTENANCE_COST: 'Max Maintenance Cost',
-  DEFAULT_MAINTENANCE_COST: 'Default Maintenance Cost',
-  MIN_OPERATION_COST: 'Min Operation Cost',
-  MAX_OPERATION_COST: 'Max Operation Cost',
-  DEFAULT_OPERATION_COST: 'Default Operation Cost',
+  // Cost and capacity fields - Removed duplicates (already defined above)
   
   // Validation messages
   MIN_CAPACITY_REQUIRED: 'Minimum capacity is required',
@@ -578,21 +548,14 @@ const facilityManagement = {
   PHONE_NUMBER: 'Phone Number',
   EMAIL_ADDRESS: 'Email Address',
   
-  // Success messages
-  FACILITY_CREATED_SUCCESS: 'Facility created successfully',
-  FACILITY_UPDATED_SUCCESS: 'Facility updated successfully',
-  FACILITY_DELETED_SUCCESS: 'Facility deleted successfully',
-  FACILITY_RESTORED_SUCCESS: 'Facility restored successfully',
-  CONFIGURATION_CREATED_SUCCESS: 'Configuration created successfully',
-  CONFIGURATION_UPDATED_SUCCESS: 'Configuration updated successfully',
+  // Success messages - Removed duplicates (already defined above)
   
   // Confirmation dialogs
   UNSAVED_CHANGES_WARNING: 'You have unsaved changes. Are you sure you want to leave?',
   DELETE_CONFIRMATION_TITLE: 'Confirm Deletion',
   RESTORE_CONFIRMATION_TITLE: 'Confirm Restoration',
   
-  // Loading states
-  LOADING_FACILITIES: 'Loading facilities...',
+  // Loading states - Removed duplicates (already defined above)
   SAVING_FACILITY: 'Saving facility...',
   DELETING_FACILITY: 'Deleting facility...',
   RESTORING_FACILITY: 'Restoring facility...',
@@ -625,6 +588,115 @@ const facilityManagement = {
   DEFAULT_BUILD_COST_REQUIRED: 'Default build cost is required',
   DEFAULT_MAINTENANCE_COST_REQUIRED: 'Default maintenance cost is required',
   DEFAULT_OPERATION_COST_REQUIRED: 'Default operation cost is required',
+
+  // Student Facility System - Additional strings
+  MY_FACILITIES: 'My Facilities',
+  BUILD_FACILITY: 'Build Facility',
+  UPGRADE_FACILITY: 'Upgrade Facility',
+  VIEW_DETAILS: 'View Details',
+  FACILITY_NEEDS_ATTENTION: 'This facility needs attention',
+  TILE: 'Tile',
+  LEVEL: 'Level',
+  TOTAL_INVESTMENT: 'Total Investment',
+  BUILT_BY: 'Built by',
+  BUILT: 'Built',
+  DASHBOARD: 'Dashboard',
+  ATTENTION_NEEDED: 'Attention Needed',
+  ANALYTICS: 'Analytics',
+  ALL_STATUSES: 'All Statuses',
+  ALL_TYPES: 'All Types',
+  ALL_CATEGORIES: 'All Categories',
+  UNDER_CONSTRUCTION: 'Under Construction',
+  MAINTENANCE: 'Maintenance',
+  DAMAGED: 'Damaged',
+  NO_FACILITIES_MATCH_FILTERS: 'No facilities match your filters',
+  TRY_DIFFERENT_FILTERS: 'Try adjusting your search terms or filters',
+  NO_FACILITIES_BUILT: 'No facilities built yet',
+  BUILD_YOUR_FIRST_FACILITY: 'Start building facilities to develop your land',
+  ALL_FACILITIES_HEALTHY: 'All Facilities Are Healthy! 🎉',
+  NO_FACILITIES_NEED_ATTENTION: 'All your facilities are running smoothly.',
+  ANALYTICS_COMING_SOON: 'Analytics Coming Soon',
+  ADVANCED_ANALYTICS_DESCRIPTION: 'Detailed facility performance analytics and insights will be available here.',
+  FACILITY_TYPES_BREAKDOWN: 'Facility Types Breakdown',
+  FACILITY_STATUS_BREAKDOWN: 'Facility Status Breakdown',
+  INVESTMENT_BREAKDOWN: 'Investment Breakdown',
+  BUILD_COSTS: 'Build Costs',
+  UPGRADE_COSTS: 'Upgrade Costs',
+  AVERAGE_PER_FACILITY: 'Average per facility',
+  TEAM_ID: 'Team ID',
+  LAST_BUILT: 'Last built',
+  AVERAGE_LEVEL: 'Average Level',
+  NEED_ATTENTION: 'Need Attention',
+  NOT_COMPATIBLE: 'Not Compatible',
+  SEARCH_FACILITY_TYPES: 'Search facility types...',
+  NO_SEARCH_RESULTS: 'No facilities match your search',
+  NO_COMPATIBLE_FACILITIES: 'No compatible facilities for this land type',
+
+  // Build Facility Modal strings
+  SELECT_FACILITY_TYPE: 'Select Facility Type',
+  CONFIGURE_BUILD: 'Configure Build',
+  CONFIRM_BUILD: 'Confirm Build',
+  CHOOSE_FACILITY_TYPE: 'Choose Facility Type',
+  SELECT_FACILITY_DESCRIPTION: 'Select the type of facility you want to build on this tile.',
+  BUILD_VALIDATION_PASSED: 'Build Validation Passed ✓',
+  BUILD_VALIDATION_FAILED: 'Build Validation Failed ✗',
+  REQUIRED_GOLD: 'Required Gold',
+  REQUIRED_CARBON: 'Required Carbon',
+  CONFIGURE_BUILD_OPTIONS: 'Configure Build Options',
+  GOLD_COST: 'Gold Cost',
+  CARBON_COST: 'Carbon Cost',
+  DESCRIPTION_OPTIONAL: 'Description (Optional)',
+  FACILITY_DESCRIPTION_PLACEHOLDER: 'Enter a description for this facility...',
+  ENABLE_PRICE_PROTECTION: 'Enable Price Protection',
+  PRICE_PROTECTION_DESCRIPTION: 'Set maximum costs to protect against price fluctuations.',
+  MAX_GOLD_COST: 'Max Gold Cost',
+  MAX_CARBON_COST: 'Max Carbon Cost',
+  CONFIRM_FACILITY_BUILD: 'Confirm Facility Build',
+  BUILD_SUMMARY: 'Build Summary',
+  LOCATION: 'Location',
+  CURRENT_BALANCE: 'Current Balance',
+  INSUFFICIENT_GOLD: 'Insufficient gold for this build',
+  INSUFFICIENT_CARBON: 'Insufficient carbon for this build',
+  BUILDING: 'Building...',
+  OWNED_AREA: 'Owned Area',
+
+  // Enhanced UI strings for beautified layout
+  MANAGE_YOUR_FACILITIES_DESCRIPTION: 'Build, upgrade, and manage facilities across your owned territories',
+  FILTER_AND_SEARCH: 'Filter & Search',
+  SEARCH_PLACEHOLDER: 'Search by name, type, tile ID...',
+  ACTIVE_FILTERS: 'Active filters',
+  YOUR_FACILITIES: 'Your Facilities',
+  TOTAL_VALUE: 'Total Value',
+  BUILD_YOUR_FIRST_FACILITY_DESCRIPTION: 'Build your first facility to start developing your territory and generating resources.',
+  CLEAR_FILTERS: 'Clear Filters',
+  URGENT_ATTENTION_REQUIRED: 'Urgent Attention Required',
+  FACILITIES_NEED_MAINTENANCE_DESC: 'The following facilities require immediate maintenance or repair to continue operating efficiently.',
+  NO_FACILITIES_NEED_ATTENTION_DESC: 'Keep up the great work! Your maintenance team is doing an excellent job.',
+  EXCELLENT_MAINTENANCE: 'Excellent Maintenance',
+  PERFORMANCE_METRICS: 'Performance Metrics',
+  GROWTH_TRACKING: 'Growth Tracking',
+  ROI_ANALYSIS: 'ROI Analysis',
+  STAY_TUNED_FOR_UPDATES: 'Stay tuned for exciting new analytics features coming soon!',
+  
+  // Additional keys for BuildFacilityModal
+  TOTAL_COST: 'Total Cost',
+  
+  // Status translations for dynamic usage - Removed duplicate (already defined above)
+  
+  // Facility Category Names for i18n
+  CATEGORY_RAW_MATERIAL_PRODUCTION: 'Raw Material Production',
+  CATEGORY_FUNCTIONAL: 'Functional Facilities', 
+  CATEGORY_INFRASTRUCTURE: 'Infrastructure',
+  CATEGORY_OTHER: 'Other Facilities',
+  
+  // Tile Selection Step
+  SELECT_TILE: 'Select Tile',
+  SELECT_TILE_TO_BUILD: 'Select Tile to Build On',
+  SELECT_TILE_DESCRIPTION: 'Choose an owned tile where you want to build your facility.',
+  LOADING_TILES: 'Loading available tiles...',
+  NO_OWNED_TILES: 'You don\'t own any tiles yet. Purchase some land first to build facilities.',
+  FAILED_TO_LOAD_TILES: 'Failed to load available tiles',
+  AVAILABLE_AREA: 'Available Area',
 };
 
 export default facilityManagement; 

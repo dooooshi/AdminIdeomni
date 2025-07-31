@@ -75,6 +75,8 @@ const navigation = {
 	STUDENT_MAP_VIEW: '土地地图',
 	STUDENT_PORTFOLIO: '土地投资组合',
 	TEAM_LAND_MANAGEMENT: '团队土地管理',
+	STUDENT_FACILITY_MANAGEMENT: '设施管理',
+	STUDENT_FACILITIES: '设施',
 };
 
 export default navigation; 

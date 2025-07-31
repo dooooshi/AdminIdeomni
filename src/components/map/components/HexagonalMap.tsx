@@ -24,7 +24,7 @@
  * - All other standard map props (tiles, onTileClick, etc.)
  */
 
-import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { 
@@ -110,7 +110,7 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 		zoomIn,
 		zoomOut,
 		resetZoom,
-		handleWheel,
+		setWheelListenerRef,
 		handleMouseDown,
 		handleMouseMove,
 		handleMouseUp
@@ -135,15 +135,14 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 		resetZoom
 	}), [zoomIn, zoomOut, resetZoom]);
 
-	// Handle wheel events with container reference
-	const handleWheelEvent = (event: React.WheelEvent) => {
-		handleWheel(event, containerRef);
-	};
+	// Set up wheel listener ref
+	useEffect(() => {
+		setWheelListenerRef(containerRef);
+	}, [setWheelListenerRef]);
 
 	return (
 		<MapContainer 
 			ref={containerRef} 
-			onWheel={handleWheelEvent} 
 			onMouseDown={handleMouseDown} 
 			onMouseMove={handleMouseMove} 
 			onMouseUp={handleMouseUp}

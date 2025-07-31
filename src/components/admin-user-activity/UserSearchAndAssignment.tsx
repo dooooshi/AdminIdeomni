@@ -413,7 +413,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           
           <Grid container spacing={2} alignItems="center">
             {/* Search Query */}
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label={t('SEARCH_USERS')}
@@ -427,7 +427,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             </Grid>
 
             {/* User Type Filter */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
                 <InputLabel>{t('USER_TYPE')}</InputLabel>
                 <Select
@@ -445,7 +445,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             </Grid>
 
             {/* Activity Status Filter */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
                 <InputLabel>{t('ACTIVITY_STATUS')}</InputLabel>
                 <Select
@@ -462,7 +462,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             </Grid>
 
             {/* Enrollment Status Filter */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
                 <InputLabel>{t('STATUS')}</InputLabel>
                 <Select
@@ -482,7 +482,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             </Grid>
 
             {/* Include Inactive Toggle */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12} sm={6} md={2}>
               <FormControlLabel
                 control={
                   <Switch
@@ -495,7 +495,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             </Grid>
 
             {/* Actions */}
-            <Grid sx={{ mt: 2 } size={{ xs: 12, md: 12 }}>
+            <Grid item xs={12} md={12} sx={{ mt: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
                 <Button
                   variant="outlined"
@@ -800,7 +800,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           )}
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('SELECT_ACTIVITY')}</InputLabel>
                 <Select
@@ -867,7 +867,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('REASON')}
@@ -881,7 +881,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                 placeholder={t('ASSIGNMENT_REASON_PLACEHOLDER')}
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -940,7 +940,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           )}
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('SELECT_NEW_ACTIVITY')}</InputLabel>
                 <Select
@@ -1009,7 +1009,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('REASON')}
@@ -1061,7 +1061,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           </Box>
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('SELECT_ACTIVITY')}</InputLabel>
                 <Select
@@ -1128,7 +1128,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('REASON')}
@@ -1142,7 +1142,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                 placeholder={t('BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -1190,7 +1190,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           {operationResult && (
             <Box>
               <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid size={{ xs: 4 }}>
+                <Grid item xs={4}>
                   <Box sx={{ textAlign: 'center' }}>
                     <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
                     <Typography variant="h6" color="success.main">
@@ -1201,7 +1201,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid size={{ xs: 4 }}>
+                <Grid item xs={4}>
                   <Box sx={{ textAlign: 'center' }}>
                     <ErrorIcon sx={{ fontSize: 40, color: 'error.main', mb: 1 }} />
                     <Typography variant="h6" color="error.main">
@@ -1212,7 +1212,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid size={{ xs: 4 }}>
+                <Grid item xs={4}>
                   <Box sx={{ textAlign: 'center' }}>
                     <WarningIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
                     <Typography variant="h6" color="warning.main">

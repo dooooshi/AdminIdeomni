@@ -164,6 +164,26 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   // Mobile state
   const [mobileBottomTab, setMobileBottomTab] = useState(0);
 
+  // Define zoom and refresh handlers before they're used
+  const handleRefresh = useCallback(() => {
+    loadMapData();
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    mapRef.current?.zoomIn();
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    mapRef.current?.zoomOut();
+  }, []);
+
+  const handleResetZoom = useCallback(() => {
+    mapRef.current?.resetZoom();
+  }, []);
+
+  const handleToggleAnimations = useCallback(() => {
+    setAnimationsEnabled(prev => !prev);
+  }, []);
 
   // Keyboard shortcuts for map navigation
   useEffect(() => {
@@ -326,6 +346,16 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     }
   };
 
+  // Show all available tiles without filtering
+  const filteredTiles = useMemo(() => {
+    // Handle null/undefined tiles array
+    if (!tiles || !Array.isArray(tiles)) {
+      return [];
+    }
+    
+    return tiles;
+  }, [tiles]);
+
   const handleTileClick = useCallback(async (tileId: number) => {
     // Check if data is still loading
     if (!tiles || !Array.isArray(tiles) || tiles.length === 0) {
@@ -402,25 +432,6 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   };
 
 
-  const handleRefresh = () => {
-    loadMapData();
-  };
-
-  const handleZoomIn = () => {
-    mapRef.current?.zoomIn();
-  };
-
-  const handleZoomOut = () => {
-    mapRef.current?.zoomOut();
-  };
-
-  const handleResetZoom = () => {
-    mapRef.current?.resetZoom();
-  };
-
-  const handleToggleAnimations = () => {
-    setAnimationsEnabled(prev => !prev);
-  };
 
 
 
@@ -467,17 +478,6 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         break;
     }
   };
-
-
-  // Show all available tiles without filtering
-  const filteredTiles = useMemo(() => {
-    // Handle null/undefined tiles array
-    if (!tiles || !Array.isArray(tiles)) {
-      return [];
-    }
-    
-    return tiles;
-  }, [tiles]);
 
   // Memoized map tiles for performance optimization
   const mapTiles = useMemo(() => {

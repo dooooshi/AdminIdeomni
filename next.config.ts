@@ -11,7 +11,8 @@ const nextConfig: NextConfig = {
 		// your project has type errors.
 		ignoreBuildErrors: true
 	},
-	webpack: (config) => {
+	// Optimize webpack for better HMR performance
+	webpack: (config, { dev, isServer }) => {
 		if (config.module && config.module.rules) {
 			config.module.rules.push({
 				test: /\.(json|js|ts|tsx|jsx)$/,
@@ -19,8 +20,21 @@ const nextConfig: NextConfig = {
 				use: 'raw-loader'
 			});
 		}
+
+		// Improve HMR performance in development
+		if (dev && !isServer) {
+			config.watchOptions = {
+				poll: 1000,
+				aggregateTimeout: 300,
+			};
+		}
+
 		return config;
-	}
+	},
+	// Enable experimental features for better performance
+	experimental: {
+		optimizePackageImports: ['@mui/material', '@mui/icons-material'],
+	},
 };
 
 export default nextConfig;

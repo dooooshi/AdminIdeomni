@@ -2,6 +2,7 @@
 export { default as HexagonalMap } from './components/HexagonalMap';
 export { default as HexagonalMapAdmin } from './components/HexagonalMapAdmin';
 export { default as HexTile } from './components/HexTile';
+export { default as HexTileWithFacilities } from './components/HexTileWithFacilities';
 export { default as HexTileAdmin } from './components/HexTileAdmin';
 export { default as MapBackground } from './components/MapBackground';
 

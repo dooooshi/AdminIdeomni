@@ -75,6 +75,8 @@ const navigation = {
 	STUDENT_MAP_VIEW: 'Land Map',
 	STUDENT_PORTFOLIO: 'Land Portfolio',
 	TEAM_LAND_MANAGEMENT: 'Team Land Management',
+	STUDENT_FACILITY_MANAGEMENT: 'Facility Management',
+	STUDENT_FACILITIES: 'Facilities',
 };
 
 export default navigation; 

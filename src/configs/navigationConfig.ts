@@ -493,6 +493,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 		]
 	});
 
+
 	// Add Team Management (Collaborate with your team) only for Students (userType: 3)
 	if (regularUserType === 3) {
 		navigation.push({
@@ -636,6 +637,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:chart-bar',
 					url: '/land-management/student/portfolio',
 					translate: 'TEAM_LAND_MANAGEMENT',
+					auth: ['user']
+				},
+				{
+					id: 'land-management.student-facilities',
+					title: 'Facilities',
+					type: 'item',
+					icon: 'heroicons-outline:building-office-2',
+					url: '/land-management/student/facilities',
+					translate: 'STUDENT_FACILITIES',
 					auth: ['user']
 				}
 			]

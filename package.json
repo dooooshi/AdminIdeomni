@@ -133,7 +133,8 @@
     "typescript-plugin-css-modules": "5.1.0"
   },
   "scripts": {
-    "dev": "next dev -p 2000",
+    "dev": "next dev -p 2000 --turbo",
+    "dev:clean": "rm -rf .next && rm -f tsconfig.tsbuildinfo && next dev -p 2000 --turbo",
     "build": "next build",
     "start": "next start",
     "build-docs": "npx tsx  \"./src/app/(public)/documentation/material-ui-components/utils/build.ts\"",
