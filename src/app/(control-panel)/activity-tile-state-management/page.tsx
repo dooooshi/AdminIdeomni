@@ -53,7 +53,7 @@ import { useTranslation } from 'react-i18next';
 
 import IdeomniPageCarded from '@ideomni/core/IdeomniPageCarded';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { HexagonalMap, MapContainer, MapHeader } from '@/components/map';
+import { HexagonalMapAdmin, MapContainer, MapHeader } from '@/components/map';
 import ActivityAnalyticsPanel from '@/components/map/ui/ActivityAnalyticsPanel';
 import ActivityTileStatePanel from '@/components/map/ui/ActivityTileStatePanel';
 
@@ -483,10 +483,10 @@ const ActivityTileStateManagementPage: React.FC = () => {
                            </Stack>
                          </Box>
                          
-                         <HexagonalMap
+                         <HexagonalMapAdmin
                            tiles={tiles}
                            selectedTileId={selectedTileId}
-                           onTileSelect={handleTileSelect}
+                           onTileClick={handleTileSelect}
                            showEconomicData={true}
                            activityMode={true}
                            width={600}

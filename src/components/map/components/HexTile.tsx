@@ -280,7 +280,7 @@ const HexTile: React.FC<HexTileProps> = ({
 							</Typography>
 						</Box>
 						{/* Economic Data Display */}
-						{tile.currentGoldPrice !== undefined && (
+						{tile.currentGoldPrice !== undefined && tile.currentGoldPrice !== null && typeof tile.currentGoldPrice === 'number' && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<Typography 
 									variant="caption" 
@@ -301,12 +301,12 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontFamily: 'monospace'
 									}}
 								>
-									${tile.currentGoldPrice.toFixed(2)}
+									${Number(tile.currentGoldPrice).toFixed(2)}
 								</Typography>
 							</Box>
 						)}
 
-						{tile.currentCarbonPrice !== undefined && (
+						{tile.currentCarbonPrice !== undefined && tile.currentCarbonPrice !== null && typeof tile.currentCarbonPrice === 'number' && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<Typography 
 									variant="caption" 
@@ -327,12 +327,12 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontFamily: 'monospace'
 									}}
 								>
-									${tile.currentCarbonPrice.toFixed(2)}
+									${Number(tile.currentCarbonPrice).toFixed(2)}
 								</Typography>
 							</Box>
 						)}
 
-						{tile.currentPopulation !== undefined && tile.currentPopulation !== null && (
+						{tile.currentPopulation !== undefined && tile.currentPopulation !== null && typeof tile.currentPopulation === 'number' && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 								<Typography 
 									variant="caption" 
@@ -353,7 +353,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontFamily: 'monospace'
 									}}
 								>
-									{tile.currentPopulation.toLocaleString()}
+									{Number(tile.currentPopulation).toLocaleString()}
 								</Typography>
 							</Box>
 						)}
@@ -418,7 +418,7 @@ const HexTile: React.FC<HexTileProps> = ({
 								</Box>
 
 								{/* Available Area */}
-								{tile.availableArea !== undefined && (
+								{tile.availableArea !== undefined && tile.availableArea !== null && typeof tile.availableArea === 'number' && (
 									<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 										<Typography 
 											variant="caption" 
@@ -439,13 +439,13 @@ const HexTile: React.FC<HexTileProps> = ({
 												fontFamily: 'monospace'
 											}}
 										>
-											{tile.availableArea.toFixed(1)} {t('AREA_UNITS')}
+											{Number(tile.availableArea).toFixed(1)} {t('AREA_UNITS')}
 										</Typography>
 									</Box>
 								)}
 
 								{/* Total Cost */}
-								{tile.canPurchase && tile.totalCost !== undefined && (
+								{tile.canPurchase && tile.totalCost !== undefined && tile.totalCost !== null && typeof tile.totalCost === 'number' && (
 									<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 										<Typography 
 											variant="caption" 
@@ -466,7 +466,7 @@ const HexTile: React.FC<HexTileProps> = ({
 												fontFamily: 'monospace'
 											}}
 										>
-											${tile.totalCost.toFixed(2)}
+											${Number(tile.totalCost).toFixed(2)}
 										</Typography>
 									</Box>
 								)}

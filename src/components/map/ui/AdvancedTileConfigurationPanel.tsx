@@ -23,8 +23,6 @@ import {
   Button,
   Alert,
   Grid,
-  Switch,
-  FormControlLabel,
   InputAdornment,
   Stack,
   Chip,
@@ -33,7 +31,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Slider,
   LinearProgress,
 } from '@mui/material';
 import {
@@ -43,7 +40,6 @@ import {
   Warning as WarningIcon,
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
-  Percent as PercentIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
@@ -60,9 +56,6 @@ interface AdvancedTileConfigurationPanelProps {
 
 interface LandTypeBatchUpdate {
   landType: 'MARINE' | 'COASTAL' | 'PLAIN';
-  priceMultiplier?: number;
-  populationMultiplier?: number;
-  transportationCostMultiplier?: number;
   fixedPrice?: number;
   fixedPopulation?: number;
   fixedTransportationCost?: number;
@@ -82,7 +75,6 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
   const [batchUpdateDialogOpen, setBatchUpdateDialogOpen] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
   const [selectedLandType, setSelectedLandType] = useState<'MARINE' | 'COASTAL' | 'PLAIN'>('COASTAL');
-  const [useMultipliers, setUseMultipliers] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [lastOperationResult, setLastOperationResult] = useState<{
     success: boolean;
@@ -93,9 +85,6 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
   // Batch update form data
   const [batchData, setBatchData] = useState<LandTypeBatchUpdate>({
     landType: 'COASTAL',
-    priceMultiplier: 1.0,
-    populationMultiplier: 1.0,
-    transportationCostMultiplier: 1.0,
     fixedPrice: 100,
     fixedPopulation: 500,
     fixedTransportationCost: 5.0,
@@ -118,11 +107,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
 
     setProcessing(true);
     try {
-      const updateData = useMultipliers ? {
-        priceMultiplier: batchData.priceMultiplier,
-        populationMultiplier: batchData.populationMultiplier,
-        transportationCostMultiplier: batchData.transportationCostMultiplier,
-      } : {
+      const updateData = {
         fixedPrice: batchData.fixedPrice,
         fixedPopulation: batchData.fixedPopulation,
         fixedTransportationCost: batchData.fixedTransportationCost,
@@ -151,7 +136,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
     } finally {
       setProcessing(false);
     }
-  }, [template, processing, useMultipliers, batchData, onTemplateUpdate]);
+  }, [template, processing, batchData, onTemplateUpdate]);
 
   // Handle template reset to defaults
   const handleResetToDefaults = useCallback(async () => {
@@ -342,133 +327,60 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
               </Select>
             </FormControl>
 
-            {/* Update Mode Toggle */}
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={useMultipliers}
-                  onChange={(e) => setUseMultipliers(e.target.checked)}
-                  disabled={processing}
-                />
-              }
-              label={useMultipliers ? "Use Multipliers" : "Use Fixed Values"}
-            />
 
-            {useMultipliers ? (
-              /* Multiplier Controls */
-              <Box>
-                <Typography variant="subtitle2" gutterBottom>
-                  Multipliers (1.0 = no change)
-                </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" gutterBottom>
-                      Price Multiplier: {batchData.priceMultiplier}x
-                    </Typography>
-                    <Slider
-                      value={batchData.priceMultiplier || 1.0}
-                      onChange={(_, value) => setBatchData(prev => ({ 
-                        ...prev, 
-                        priceMultiplier: value as number 
-                      }))}
-                      min={0.1}
-                      max={5.0}
-                      step={0.1}
-                      disabled={processing}
-                      valueLabelDisplay="auto"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" gutterBottom>
-                      Population Multiplier: {batchData.populationMultiplier}x
-                    </Typography>
-                    <Slider
-                      value={batchData.populationMultiplier || 1.0}
-                      onChange={(_, value) => setBatchData(prev => ({ 
-                        ...prev, 
-                        populationMultiplier: value as number 
-                      }))}
-                      min={0.0}
-                      max={3.0}
-                      step={0.1}
-                      disabled={processing}
-                      valueLabelDisplay="auto"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography variant="body2" gutterBottom>
-                      Transport Cost Multiplier: {batchData.transportationCostMultiplier}x
-                    </Typography>
-                    <Slider
-                      value={batchData.transportationCostMultiplier || 1.0}
-                      onChange={(_, value) => setBatchData(prev => ({ 
-                        ...prev, 
-                        transportationCostMultiplier: value as number 
-                      }))}
-                      min={0.1}
-                      max={2.0}
-                      step={0.1}
-                      disabled={processing}
-                      valueLabelDisplay="auto"
-                    />
-                  </Grid>
+            {/* Fixed Value Controls */}
+            <Box>
+              <Typography variant="subtitle2" gutterBottom>
+                Fixed Values (will replace current values)
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    fullWidth
+                    label="Fixed Price"
+                    type="number"
+                    value={batchData.fixedPrice || ''}
+                    onChange={(e) => setBatchData(prev => ({ 
+                      ...prev, 
+                      fixedPrice: parseFloat(e.target.value) 
+                    }))}
+                    disabled={processing}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
+                  />
                 </Grid>
-              </Box>
-            ) : (
-              /* Fixed Value Controls */
-              <Box>
-                <Typography variant="subtitle2" gutterBottom>
-                  Fixed Values (will replace current values)
-                </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      fullWidth
-                      label="Fixed Price"
-                      type="number"
-                      value={batchData.fixedPrice || ''}
-                      onChange={(e) => setBatchData(prev => ({ 
-                        ...prev, 
-                        fixedPrice: parseFloat(e.target.value) 
-                      }))}
-                      disabled={processing}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      fullWidth
-                      label="Fixed Population"
-                      type="number"
-                      value={batchData.fixedPopulation || ''}
-                      onChange={(e) => setBatchData(prev => ({ 
-                        ...prev, 
-                        fixedPopulation: parseInt(e.target.value) 
-                      }))}
-                      disabled={processing}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      fullWidth
-                      label="Fixed Transport Cost"
-                      type="number"
-                      value={batchData.fixedTransportationCost || ''}
-                      onChange={(e) => setBatchData(prev => ({ 
-                        ...prev, 
-                        fixedTransportationCost: parseFloat(e.target.value) 
-                      }))}
-                      disabled={processing}
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                      }}
-                    />
-                  </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    fullWidth
+                    label="Fixed Population"
+                    type="number"
+                    value={batchData.fixedPopulation || ''}
+                    onChange={(e) => setBatchData(prev => ({ 
+                      ...prev, 
+                      fixedPopulation: parseInt(e.target.value) 
+                    }))}
+                    disabled={processing}
+                  />
                 </Grid>
-              </Box>
-            )}
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    fullWidth
+                    label="Fixed Transport Cost"
+                    type="number"
+                    value={batchData.fixedTransportationCost || ''}
+                    onChange={(e) => setBatchData(prev => ({ 
+                      ...prev, 
+                      fixedTransportationCost: parseFloat(e.target.value) 
+                    }))}
+                    disabled={processing}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
 
             {/* Preview Impact */}
             <Alert severity="info">

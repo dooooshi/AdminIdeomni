@@ -46,9 +46,8 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { MapTemplate, MapTile, UpdateTileDto, MapConfigurationPanelProps } from '../types';
-import HexagonalMap from '../components/HexagonalMap';
+import HexagonalMapAdmin from '../components/HexagonalMapAdmin';
 import TileConfigurationPanel from './TileConfigurationPanel';
-import AdvancedTileConfigurationPanel from './AdvancedTileConfigurationPanel';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 
 interface MapConfigurationInterfaceProps {
@@ -81,7 +80,6 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   const [selectedTileId, setSelectedTileId] = useState<number | null>(null);
   const [configurationMode, setConfigurationMode] = useState(true);
   const [showConfigPanel, setShowConfigPanel] = useState(true);
-  const [showAdvancedPanel, setShowAdvancedPanel] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [notification, setNotification] = useState<{
@@ -93,10 +91,10 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   // Get selected tile
   const selectedTile = selectedTileId ? tiles.find(tile => tile.id === selectedTileId) || null : null;
 
-  // Handle tile selection
-  const handleTileClick = useCallback((tile: MapTile) => {
+  // Handle tile selection  
+  const handleTileClick = useCallback((tileId: number) => {
     if (configurationMode) {
-      setSelectedTileId(tile.id);
+      setSelectedTileId(tileId);
     }
   }, [configurationMode]);
 
@@ -275,12 +273,11 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
             </Alert>
           )}
 
-          <HexagonalMap
+          <HexagonalMapAdmin
             tiles={tiles}
             onTileClick={handleTileClick}
             configurationMode={configurationMode}
             selectedTileId={selectedTileId}
-            showConfiguration={true}
           />
         </Box>
 
@@ -303,50 +300,25 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
         >
           {/* Toggle between basic and advanced panels */}
           <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            {/* Panel Toggle Buttons */}
+            {/* Panel Header */}
             <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
-              <Stack direction="row" spacing={1}>
-                <Button
-                  size="small"
-                  variant={!showAdvancedPanel ? 'contained' : 'outlined'}
-                  onClick={() => setShowAdvancedPanel(false)}
-                  fullWidth
-                >
-                  Basic Config
-                </Button>
-                <Button
-                  size="small"
-                  variant={showAdvancedPanel ? 'contained' : 'outlined'}
-                  onClick={() => setShowAdvancedPanel(true)}
-                  fullWidth
-                >
-                  Advanced Tools
-                </Button>
-              </Stack>
+              <Typography variant="h6" sx={{ textAlign: 'center' }}>
+                Basic Config
+              </Typography>
             </Box>
 
             {/* Panel Content */}
             <Box sx={{ flex: 1, overflow: 'auto' }}>
-              {showAdvancedPanel ? (
-                <AdvancedTileConfigurationPanel
-                  template={template}
-                  tiles={tiles}
-                  onTemplateUpdate={onTemplateRefresh || (() => {})}
-                  isLoading={isLoading}
-                  readOnly={readOnly}
-                />
-              ) : (
-                <TileConfigurationPanel
-                  selectedTile={selectedTile}
-                  tiles={tiles}
-                  templateId={template.id}
-                  onTileUpdate={handleTileUpdate}
-                  onBatchUpdate={onTileBatchUpdate ? handleBatchUpdate : undefined}
-                  onTemplateRefresh={onTemplateRefresh}
-                  isLoading={isLoading}
-                  readOnly={readOnly}
-                />
-              )}
+              <TileConfigurationPanel
+                selectedTile={selectedTile}
+                tiles={tiles}
+                templateId={template.id}
+                onTileUpdate={handleTileUpdate}
+                onBatchUpdate={onTileBatchUpdate ? handleBatchUpdate : undefined}
+                onTemplateRefresh={onTemplateRefresh}
+                isLoading={isLoading}
+                readOnly={readOnly}
+              />
             </Box>
           </Box>
         </Drawer>
