@@ -560,6 +560,58 @@ const map = {
 	AREA_UNITS: '单位',
 	COST_PER_UNIT: '单位成本',
 	CLICK_TO_PURCHASE_HINT: '点击选择并购买此地块',
+
+	// Facility Configuration Management
+	FACILITY_CONFIGURATIONS: '设施配置',
+	CONFIGURATIONS: '配置',
+	TOGGLE_FILTERS: '切换过滤器',
+	ADD_CONFIG: '添加配置',
+	SEARCH: '搜索',
+	ALL: '全部',
+	FACILITY_TYPE: '设施类型',
+	ALLOWED: '允许',
+	NOT_ALLOWED: '不允许',
+	ACTIVE_ONLY: '仅活跃',
+	GOLD_COST: '金币成本',
+	CARBON_COST: '碳成本',
+	MAX_LEVEL: '最大等级',
+	EDIT: '编辑',
+	VIEW_DETAILS: '查看详情',
+	RESTORE: '恢复',
+	CONFIRM_DELETE: '确认删除',
+	DELETE_CONFIG_WARNING: '此操作将永久删除设施配置。此操作无法撤销。',
+	DELETE_CONFIG_CONFIRM: '确定要删除 {{landType}} 土地上的 {{facilityType}} 配置吗？',
+	NO_CONFIGURATIONS_FOUND: '未找到配置',
+
+	// Facility Type Translation Keys
+	FACILITY_TYPE_RESIDENTIAL: '住宅',
+	FACILITY_TYPE_COMMERCIAL: '商业',
+	FACILITY_TYPE_INDUSTRIAL: '工业',
+	FACILITY_TYPE_AGRICULTURAL: '农业',
+	FACILITY_TYPE_RECREATIONAL: '娱乐',
+	FACILITY_TYPE_TRANSPORTATION: '交通',
+	FACILITY_TYPE_UTILITY: '公用设施',
+	FACILITY_TYPE_GOVERNMENT: '政府',
+	FACILITY_TYPE_EDUCATION: '教育',
+	FACILITY_TYPE_HEALTHCARE: '医疗',
+
+	// Bulk Operations - Additional Keys
+	INITIALIZE_DEFAULTS_INFO: '为所有土地类型初始化默认设施配置。如果配置不存在，将创建标准配置。',
+	INITIALIZE_DEFAULT_CONFIGS: '初始化默认配置',
+	ADVANCED_OPERATIONS_COMING_SOON: '高级操作功能即将推出',
+	PREVIEW_CHANGES_INFO: '预览 {{landType}} 土地类型的更改',
+	BULK_UPDATE_WARNING: '此操作将一次性修改多个设施配置。此操作无法撤销。',
+
+	// Template Setup Wizard - Additional Keys
+	SETTINGS: '设置',
+	UPGRADE_MULTIPLIER: '升级倍数',
+
+	// Facility Config Tab
+	FACILITY_CONFIG: '设施配置',
+	SELECT_TEMPLATE_FOR_FACILITY_CONFIG: '选择模板以配置设施设置',
+
+	// Bulk Tile Management
+	SELECT_TEMPLATE_FOR_BULK_OPERATIONS: '选择模板以启用批量操作',
 };
 
 export default map; 

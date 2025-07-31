@@ -343,7 +343,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
           <Grid container spacing={2}>
             {/* NEW: Dual Pricing System */}
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label={t('INITIAL_GOLD_PRICE')}
@@ -363,7 +363,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
               />
             </Grid>
 
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label={t('INITIAL_CARBON_PRICE')}
@@ -388,7 +388,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
 
             {/* Initial Population */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('INITIAL_POPULATION')}
@@ -409,7 +409,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             </Grid>
 
             {/* Transportation Cost */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('TRANSPORTATION_COST_UNIT')}

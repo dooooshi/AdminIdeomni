@@ -214,7 +214,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     name="name"
@@ -229,7 +229,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <FormControl
                     fullWidth
                     error={formik.touched.category && Boolean(formik.errors.category)}
@@ -270,7 +270,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <FormControl
                     fullWidth
                     error={formik.touched.facilityType && Boolean(formik.errors.facilityType)}
@@ -309,7 +309,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     multiline
@@ -325,7 +325,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -353,7 +353,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -372,7 +372,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -391,7 +391,7 @@ const FacilityForm: React.FC<FacilityFormProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     type="number"

@@ -15,7 +15,7 @@ interface UseMapZoomReturn {
 	zoomIn: () => void;
 	zoomOut: () => void;
 	resetZoom: () => void;
-	handleWheel: (event: React.WheelEvent, containerRef: React.RefObject<HTMLDivElement>) => void;
+	setWheelListenerRef: (ref: React.RefObject<HTMLDivElement>) => void;
 	handleMouseDown: (event: React.MouseEvent) => void;
 	handleMouseMove: (event: React.MouseEvent) => void;
 	handleMouseUp: () => void;
@@ -39,6 +39,7 @@ export const useMapZoom = ({
 	const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 	
 	const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const wheelListenerRef = useRef<React.RefObject<HTMLDivElement> | null>(null);
 
 	// Helper function to trigger smooth animation
 	const triggerAnimation = useCallback(() => {
@@ -98,14 +99,17 @@ export const useMapZoom = ({
 		onZoomChange?.(1);
 	}, [onZoomChange, triggerAnimation]);
 
+	// Set ref for wheel event listener
+	const setWheelListenerRef = useCallback((ref: React.RefObject<HTMLDivElement>) => {
+		wheelListenerRef.current = ref;
+	}, []);
+
 	// Handle mouse wheel zoom with smooth centering
-	const handleWheel = useCallback((
-		event: React.WheelEvent,
-		containerRef: React.RefObject<HTMLDivElement>
-	) => {
+	const handleWheel = useCallback((event: WheelEvent) => {
 		event.preventDefault();
 		
-		const rect = containerRef.current?.getBoundingClientRect();
+		const containerRef = wheelListenerRef.current;
+		const rect = containerRef?.current?.getBoundingClientRect();
 		if (!rect) return;
 
 		// Calculate mouse position relative to container
@@ -162,6 +166,15 @@ export const useMapZoom = ({
 		setIsDragging(false);
 	}, []);
 
+	// Set up non-passive wheel event listener
+	useEffect(() => {
+		const container = wheelListenerRef.current?.current;
+		if (!container) return;
+
+		container.addEventListener('wheel', handleWheel, { passive: false });
+		return () => container.removeEventListener('wheel', handleWheel);
+	}, [handleWheel]);
+
 	// Keyboard shortcuts for zoom
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
@@ -212,7 +225,7 @@ export const useMapZoom = ({
 		zoomIn,
 		zoomOut,
 		resetZoom,
-		handleWheel,
+		setWheelListenerRef,
 		handleMouseDown,
 		handleMouseMove,
 		handleMouseUp

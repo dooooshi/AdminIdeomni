@@ -286,7 +286,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                 {t('BASIC_INFORMATION')}
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <FormControl
                     fullWidth
                     error={Boolean(formik.touched.category && formik.errors.category)}
@@ -311,7 +311,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                   </FormControl>
                 </Grid>
                 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <FormControl
                     fullWidth
                     error={Boolean(formik.touched.facilityType && formik.errors.facilityType)}
@@ -337,7 +337,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                   </FormControl>
                 </Grid>
                 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <FormControlLabel
                     control={
                       <Switch
@@ -361,7 +361,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                 {t('CAPACITY_AND_COSTS')}
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -380,7 +380,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                   />
                 </Grid>
                 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -399,7 +399,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                   />
                 </Grid>
                 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -418,7 +418,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                   />
                 </Grid>
                 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="number"

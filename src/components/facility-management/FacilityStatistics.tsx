@@ -167,7 +167,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
 
       {/* Overview Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -185,7 +185,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -206,7 +206,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -227,7 +227,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -252,7 +252,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       {/* Category and Type Breakdown */}
       <Grid container spacing={3}>
         {/* Facilities by Category */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -323,7 +323,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
         </Grid>
 
         {/* Facilities by Type */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -398,7 +398,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             Summary
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
                 Most Popular Category
               </Typography>
@@ -410,7 +410,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 }
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
                 Most Popular Type
               </Typography>
@@ -422,7 +422,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 }
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
                 Active Rate
               </Typography>
@@ -430,7 +430,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 {calculatePercentage(statistics.activeFacilities, statistics.totalFacilities)}%
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
                 Total Categories
               </Typography>

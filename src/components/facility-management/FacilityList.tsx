@@ -260,7 +260,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       {/* Statistics Cards */}
       {facilityData && (
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
@@ -272,7 +272,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
@@ -284,7 +284,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
@@ -296,7 +296,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
@@ -315,7 +315,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -327,7 +327,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={2.5}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('FILTER_BY_CATEGORY')}</InputLabel>
                 <Select
@@ -345,7 +345,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2.5}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('FILTER_BY_TYPE')}</InputLabel>
                 <Select
@@ -363,7 +363,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('FILTER_BY_STATUS')}</InputLabel>
                 <Select
@@ -378,7 +378,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <Stack direction="row" spacing={1}>
                 <Button
                   variant="contained"

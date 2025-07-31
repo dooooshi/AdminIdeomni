@@ -289,7 +289,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         {showFilters && (
           <Paper sx={{ p: 2, mb: 2 }}>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <TextField
                   fullWidth
                   size="small"
@@ -306,7 +306,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 180 }}>
                   <InputLabel>{t('LAND_TYPE')}</InputLabel>
                   <Select
@@ -331,7 +331,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
                   <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
                   <Select
@@ -356,7 +356,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 150 }}>
                   <InputLabel>{t('STATUS')}</InputLabel>
                   <Select
@@ -378,7 +378,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={2}>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -390,7 +390,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6} md={1}>
+              <Grid size={{ xs: 12, sm: 6, md: 1 }}>
                 <Button onClick={resetFilters} size="small">
                   {t('RESET')}
                 </Button>
@@ -557,9 +557,13 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         }}>
           <Typography variant="body2" color="text.secondary">
             {totalCount > 0 ? (
-              `Showing ${page * pageSize + 1}-${Math.min((page + 1) * pageSize, totalCount)} of ${totalCount} results`
+              t('SHOWING_RESULTS', {
+                from: page * pageSize + 1,
+                to: Math.min((page + 1) * pageSize, totalCount),
+                total: totalCount
+              })
             ) : (
-              'No results'
+              t('NO_RESULTS')
             )}
           </Typography>
           <TablePagination

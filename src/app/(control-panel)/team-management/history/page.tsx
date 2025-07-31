@@ -163,7 +163,7 @@ function HistoryOverviewPage() {
               </Typography>
               <Grid component="div" container spacing={3}>
                 {/* Total Operations */}
-                <Grid component="div" item xs={12} sm={6} lg={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -184,7 +184,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Gold Flow */}
-                <Grid component="div" item xs={12} sm={6} lg={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -214,7 +214,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Carbon Flow */}
-                <Grid component="div" item xs={12} sm={6} lg={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -244,7 +244,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Operation Types */}
-                <Grid component="div" item xs={12} sm={6} lg={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography variant="body2" color="text.secondary" className="mb-2">
@@ -278,7 +278,7 @@ function HistoryOverviewPage() {
           <motion.div variants={item}>
             <Grid container spacing={6}>
               {/* Recent Operations */}
-              <Grid component="div" item xs={12} lg={8}>
+              <Grid component="div" size={{ xs: 12, lg: 8 }}>
                 <Paper className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <Typography variant="h6">
@@ -350,7 +350,7 @@ function HistoryOverviewPage() {
               </Grid>
 
               {/* Quick Links */}
-              <Grid component="div" item xs={12} lg={4}>
+              <Grid component="div" size={{ xs: 12, lg: 4 }}>
                 <Paper className="p-6">
                   <Typography variant="h6" className="mb-4">
                     {t('teamManagement:QUICK_ACTIONS')}

@@ -263,7 +263,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       {/* Main Statistics Cards */}
       <Grid container spacing={3} mb={4}>
         {statCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
             <StatCard {...card} />
           </Grid>
         ))}
@@ -277,7 +277,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
           </Typography>
           
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Box 
                 sx={{ 
                   p: 2, 
@@ -295,7 +295,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
               </Box>
             </Grid>
             
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Box 
                 sx={{ 
                   p: 2, 
@@ -313,7 +313,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
               </Box>
             </Grid>
             
-            <Grid item xs={12} sm={4}>
+            <Grid size={{ xs: 12, sm: 4 }}>
               <Box 
                 sx={{ 
                   p: 2, 

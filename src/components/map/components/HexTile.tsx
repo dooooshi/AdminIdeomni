@@ -413,7 +413,7 @@ const HexTile: React.FC<HexTileProps> = ({
 											fontWeight: 600
 										}}
 									>
-										{tile.canPurchase ? t('AVAILABLE_FOR_PURCHASE') : tile.isOwned ? t('OWNED_BY_TEAM') : t('UNAVAILABLE')}
+										{tile.isOwned ? t('OWNED_BY_TEAM') : tile.canPurchase ? t('AVAILABLE_FOR_PURCHASE') : t('UNAVAILABLE')}
 									</Typography>
 								</Box>
 

@@ -49,6 +49,7 @@ const common = {
 	STATUS: 'Status',
 	ACTIVE: 'Active',
 	INACTIVE: 'Inactive',
+	ALL: 'All',
 	
 	// Welcome message
 	'Welcome to React': 'Welcome to React and react-i18next'

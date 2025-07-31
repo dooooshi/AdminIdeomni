@@ -128,7 +128,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
           {/* Team Stats */}
           <motion.div variants={item}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-6 text-center">
                   <IdeomniSvgIcon size={48} className="text-blue-500 mx-auto mb-2">
                     heroicons-outline:users
@@ -142,7 +142,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-6 text-center">
                   <IdeomniSvgIcon size={48} className="text-green-500 mx-auto mb-2">
                     heroicons-outline:user-group
@@ -156,7 +156,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-6 text-center">
                   <IdeomniSvgIcon size={48} className="text-purple-500 mx-auto mb-2">
                     heroicons-outline:chart-bar
@@ -170,7 +170,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-6 text-center">
                   <IdeomniSvgIcon size={48} className="text-orange-500 mx-auto mb-2">
                     heroicons-outline:calendar

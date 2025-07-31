@@ -191,7 +191,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
           {/* Filters */}
           <Stack spacing={2} mb={3}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   placeholder={t('SEARCH_ACTIVITIES')}
@@ -207,7 +207,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                   size="small"
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>{t('STATUS')}</InputLabel>
                   <Select
@@ -223,7 +223,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>{t('TYPE')}</InputLabel>
                   <Select
@@ -308,7 +308,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                         </Box>
 
                         <Grid container spacing={2} alignItems="center">
-                          <Grid item>
+                          <Grid>
                             <Box display="flex" alignItems="center" gap={1}>
                               <TimelineIcon fontSize="small" color="action" />
                               <Typography variant="caption">
@@ -317,7 +317,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                             </Box>
                           </Grid>
                           
-                          <Grid item>
+                          <Grid>
                             <Box display="flex" alignItems="center" gap={1}>
                               <ScheduleIcon fontSize="small" color="action" />
                               <Typography variant="caption">
@@ -327,7 +327,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                           </Grid>
                           
                           {activity.mapTemplateId && (
-                            <Grid item>
+                            <Grid>
                               <Box display="flex" alignItems="center" gap={1}>
                                 <MapIcon fontSize="small" color="action" />
                                 <Typography variant="caption">

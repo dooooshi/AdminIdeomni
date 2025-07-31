@@ -345,7 +345,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
       case 0: // Basic Information
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('TEMPLATE_NAME')}
@@ -356,7 +356,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 required
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline
@@ -367,7 +367,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 placeholder={t('TEMPLATE_DESCRIPTION_PLACEHOLDER')}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth sx={{ minWidth: 250 }}>
                 <InputLabel>{t('TEMPLATE_TYPE')}</InputLabel>
                 <Select
@@ -403,7 +403,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
       case 1: // Map Configuration
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -415,7 +415,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 inputProps={{ min: 5, max: 25 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -430,7 +430,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
 
             {wizardData.templateType === 'generate' && (
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
                     <Typography variant="h6" gutterBottom>
                       {t('LAND_DISTRIBUTION')}
@@ -452,7 +452,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                                    wizardData.plainPercentage;
 
                   return (
-                    <Grid item xs={12} key={landType}>
+                    <Grid key={landType} size={{ xs: 12 }}>
                       <Box sx={{ px: 2 }}>
                         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                           <Typography variant="body2">
@@ -484,7 +484,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   );
                 })}
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                       <Typography variant="subtitle2">{t('ADVANCED_GENERATION_OPTIONS')}</Typography>
@@ -511,7 +511,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
       case 2: // Facility Configuration
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -528,7 +528,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
 
             {wizardData.initializeFacilityConfigs && (
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth sx={{ minWidth: 200 }}>
                     <InputLabel>{t('DIFFICULTY_PRESET')}</InputLabel>
                     <Select
@@ -582,13 +582,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 </Grid>
 
                 {wizardData.difficultyPreset === 'custom' && (
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Paper sx={{ p: 2 }}>
                       <Typography variant="subtitle2" gutterBottom>
                         {t('CUSTOM_DIFFICULTY_SETTINGS')}
                       </Typography>
                       <Grid container spacing={2}>
-                        <Grid item xs={12} sm={4}>
+                        <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
                             {t('GOLD_MULTIPLIER')}: {wizardData.customDifficultySettings?.goldMultiplier || 1.0}
                           </Typography>
@@ -614,7 +614,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                             valueLabelDisplay="auto"
                           />
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+                        <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
                             {t('CARBON_MULTIPLIER')}: {wizardData.customDifficultySettings?.carbonMultiplier || 1.0}
                           </Typography>
@@ -640,7 +640,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                             valueLabelDisplay="auto"
                           />
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+                        <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
                             {t('UPGRADE_MULTIPLIER')}: {wizardData.customDifficultySettings?.upgradeMultiplier || 1.0}
                           </Typography>
@@ -678,7 +678,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
       case 3: // Advanced Settings
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -694,7 +694,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
             </Grid>
 
             {wizardData.customEconomicSettings && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Paper sx={{ p: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('ECONOMIC_SETTINGS_BY_LAND_TYPE')}
@@ -708,7 +708,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                       </AccordionSummary>
                       <AccordionDetails>
                         <Grid container spacing={2}>
-                          <Grid item xs={12} sm={4}>
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
                               fullWidth
                               type="number"
@@ -726,7 +726,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                               helperText={validationErrors[`${landType}_price`]}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={4}>
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
                               fullWidth
                               type="number"
@@ -744,7 +744,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                               helperText={validationErrors[`${landType}_population`]}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={4}>
+                          <Grid size={{ xs: 12, sm: 4 }}>
                             <TextField
                               fullWidth
                               type="number"
@@ -777,13 +777,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
           <Grid container spacing={3}>
             {!createdTemplate ? (
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
                     {t('REVIEW_TEMPLATE_SETTINGS')}
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('BASIC_INFORMATION')}
@@ -802,7 +802,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   </Paper>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('MAP_CONFIGURATION')}
@@ -834,7 +834,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   </Paper>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('FACILITY_CONFIGURATION')}
@@ -851,7 +851,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 </Grid>
 
                 {validationErrors.creation && (
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Alert severity="error">
                       {validationErrors.creation}
                     </Alert>
@@ -861,7 +861,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
             ) : (
               // Template created successfully
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Alert severity="success" icon={<CheckCircleIcon />}>
                     <Typography variant="h6">
                       {t('TEMPLATE_CREATED_SUCCESSFULLY')}
@@ -872,7 +872,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   </Alert>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('TEMPLATE_DETAILS')}
@@ -890,7 +890,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 </Grid>
 
                 {facilityStats && (
-                  <Grid item xs={12} md={6}>
+                  <Grid size={{ xs: 12, md: 6 }}>
                     <Paper sx={{ p: 2 }}>
                       <Typography variant="subtitle2" gutterBottom>
                         {t('FACILITY_STATISTICS')}

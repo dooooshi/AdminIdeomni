@@ -46,7 +46,7 @@ function TeamStatsCards({ stats, className = '' }: TeamStatsCardsProps) {
     >
       <Grid container spacing={3}>
         {stats.map((stat, index) => (
-          <Grid key={index} item xs={12} sm={6} md={3}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
             <Paper 
               component={motion.div}
               variants={item}

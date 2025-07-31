@@ -74,6 +74,7 @@ const navigation = {
 	MANAGER_ANALYTICS: 'Manager Analytics',
 	STUDENT_MAP_VIEW: 'Land Map',
 	STUDENT_PORTFOLIO: 'Land Portfolio',
+	TEAM_LAND_MANAGEMENT: 'Team Land Management',
 };
 
 export default navigation; 

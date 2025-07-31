@@ -631,11 +631,11 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				},
 				{
 					id: 'land-management.student-portfolio',
-					title: 'Land Portfolio',
+					title: 'Team Land Management',
 					type: 'item',
 					icon: 'heroicons-outline:chart-bar',
 					url: '/land-management/student/portfolio',
-					translate: 'STUDENT_PORTFOLIO',
+					translate: 'TEAM_LAND_MANAGEMENT',
 					auth: ['user']
 				}
 			]

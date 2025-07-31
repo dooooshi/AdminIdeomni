@@ -262,9 +262,9 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
         <TabPanel value={tabValue} index={0}>
           <Grid container spacing={3}>
             {/* Input Controls */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
                     <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
                     <Select
@@ -288,7 +288,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <FormControl fullWidth size="small" sx={{ minWidth: 160 }}>
                     <InputLabel>{t('LAND_TYPE')}</InputLabel>
                     <Select
@@ -312,7 +312,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <Box sx={{ px: 2 }}>
                     <Typography variant="body2" gutterBottom>
                       {t('TARGET_LEVEL')}: {targetLevel}
@@ -333,13 +333,13 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
 
             {/* Configuration Info */}
             {currentConfig && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('FACILITY_CONFIGURATION')}
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={6} sm={3}>
+                    <Grid size={{ xs: 6, sm: 3 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('BUILD_COST')}
                       </Typography>
@@ -347,7 +347,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                         {TileFacilityBuildConfigService.formatCurrency(currentConfig.requiredGold)} / {currentConfig.requiredCarbon} CO₂
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={3}>
+                    <Grid size={{ xs: 6, sm: 3 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('BASE_UPGRADE_COST')}
                       </Typography>
@@ -355,7 +355,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                         {TileFacilityBuildConfigService.formatCurrency(currentConfig.upgradeGoldCost)} / {currentConfig.upgradeCarbonCost} CO₂
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={3}>
+                    <Grid size={{ xs: 6, sm: 3 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('UPGRADE_MULTIPLIER')}
                       </Typography>
@@ -363,7 +363,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                         {currentConfig.upgradeMultiplier}x
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} sm={3}>
+                    <Grid size={{ xs: 6, sm: 3 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('MAX_LEVEL')}
                       </Typography>
@@ -378,17 +378,17 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
 
             {/* Loading */}
             {isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <LinearProgress />
               </Grid>
             )}
 
             {/* Calculation Results */}
             {currentCalculation && !isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Grid container spacing={2}>
                   {/* Summary Cards */}
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Paper sx={{ p: 2, textAlign: 'center' }}>
                       <Typography variant="h5" color="primary">
                         {TileFacilityBuildConfigService.formatCurrency(currentCalculation?.totalCost?.gold || 0)}
@@ -399,7 +399,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Paper sx={{ p: 2, textAlign: 'center' }}>
                       <Typography variant="h5" color="secondary">
                         {TileFacilityBuildConfigService.formatNumber(currentCalculation?.totalCost?.carbon || 0)}
@@ -410,7 +410,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Paper sx={{ p: 2, textAlign: 'center' }}>
                       <Typography variant="h5" color="success.main">
                         {currentCalculation?.upgradeCosts?.length || 0}
@@ -421,7 +421,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                     </Paper>
                   </Grid>
 
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <Paper sx={{ p: 2, textAlign: 'center' }}>
                       <Typography variant="h5" color="info.main">
                         {formatEfficiency(calculateCostEfficiency(currentCalculation))}
@@ -433,7 +433,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                   </Grid>
 
                   {/* Detailed Breakdown */}
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Accordion>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="h6">{t('DETAILED_BREAKDOWN')}</Typography>
@@ -506,7 +506,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
 
             {/* No Results */}
             {!currentCalculation && !isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="info">
                   {t('NO_CALCULATION_DATA')}
                 </Alert>
@@ -519,9 +519,9 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
         <TabPanel value={tabValue} index={1}>
           <Grid container spacing={3}>
             {/* Controls */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                   <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
                     <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
                     <Select
@@ -545,7 +545,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <Box sx={{ px: 2 }}>
                     <Typography variant="body2" gutterBottom>
                       {t('TARGET_LEVEL')}: {targetLevel}
@@ -562,7 +562,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <ToggleButtonGroup
                     value={viewMode}
                     exclusive
@@ -582,14 +582,14 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
 
             {/* Loading */}
             {isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <LinearProgress />
               </Grid>
             )}
 
             {/* Comparison Results */}
             {comparisons.length > 0 && !isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
@@ -681,7 +681,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
 
             {/* No Comparison Data */}
             {comparisons.length === 0 && !isLoading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="info">
                   {t('NO_COMPARISON_DATA')}
                 </Alert>

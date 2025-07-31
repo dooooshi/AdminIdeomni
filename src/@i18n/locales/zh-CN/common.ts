@@ -49,6 +49,7 @@ const common = {
 	STATUS: '状态',
 	ACTIVE: '活跃',
 	INACTIVE: '非活跃',
+	ALL: '全部',
 	
 	// Welcome message
 	'Welcome to React': '欢迎使用 React 和 react-i18next'

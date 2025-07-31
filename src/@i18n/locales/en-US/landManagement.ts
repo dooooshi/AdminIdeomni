@@ -47,6 +47,7 @@ const landManagement = {
   STUDENT_MAP_VIEW: 'Land Map',
   STUDENT_PORTFOLIO: 'Land Portfolio',
   TEAM_LAND_PORTFOLIO: 'Team Land Portfolio',
+  TEAM_LAND_MANAGEMENT: 'Team Land Management',
   
   // Map Interface
   MAP_VIEW: 'Map View',
@@ -56,19 +57,30 @@ const landManagement = {
   ZOOM_OUT: 'Zoom Out',
   RESET_ZOOM: 'Reset Zoom',
   REFRESH_DATA: 'Refresh Data',
+  ENABLE_ANIMATIONS: 'Enable Land Animations',
+  DISABLE_ANIMATIONS: 'Disable Land Animations',
   
   // Purchase Interface
   PURCHASE_LAND: 'Purchase Land',
   PURCHASE_DIALOG_TITLE: 'Purchase Land - Tile {tileId}',
+  TILE_INFORMATION: 'Tile Information',
+  YOUR_HOLDINGS: 'Your Holdings',
   AREA_TO_PURCHASE: 'Area to Purchase',
+  PURCHASE_AMOUNT: 'Purchase Amount',
+  AMOUNT_UNITS: 'Amount (units)',
+  AMOUNT_HELPER_TEXT: 'Enter amount between 1 and 1,000 units',
   PURCHASE_SUMMARY: 'Purchase Summary',
+  INVESTMENT_ANALYSIS: 'Investment Analysis',
   PRICE_PROTECTION: 'Price Protection',
   ENABLE_PRICE_PROTECTION: 'Enable Price Protection',
   MAX_GOLD_COST: 'Max Gold Cost',
   MAX_CARBON_COST: 'Max Carbon Cost',
   PURCHASE_DESCRIPTION: 'Purchase Description (Optional)',
+  NOTES_OPTIONAL: 'Notes (optional)',
+  NOTES_PLACEHOLDER: 'Add notes about this purchase...',
   CONFIRM_PURCHASE: 'Confirm Purchase',
   PURCHASING: 'Purchasing...',
+  PURCHASE_UNITS: 'Purchase {amount} Units',
   PURCHASE_COMPLETE: 'Purchase Complete',
   PURCHASE_FAILED: 'Purchase Failed',
   CAN_PURCHASE: 'Can Purchase',
@@ -179,7 +191,7 @@ const landManagement = {
   
   // Descriptions
   MANAGER_MAP_DESCRIPTION: 'Interactive map showing land ownership across all teams in your activity. Click on tiles to view detailed ownership information.',
-  STUDENT_MAP_DESCRIPTION: 'Interactive map for exploring and purchasing available land. Click on tiles to view details and make purchases.',
+  STUDENT_MAP_DESCRIPTION: 'Discover premium land opportunities and make strategic investments. Click on tiles to explore details, compare prices, and secure your land.',
   PORTFOLIO_DESCRIPTION: 'Manage and monitor your team\'s land ownership and purchase history',
   OVERVIEW_DESCRIPTION: 'Comprehensive overview of land activities in {activityName}',
   ANALYTICS_DESCRIPTION: 'Comprehensive analytics and insights for land management activities',

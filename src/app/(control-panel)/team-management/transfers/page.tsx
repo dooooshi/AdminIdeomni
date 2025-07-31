@@ -138,7 +138,7 @@ function TransferHubPage() {
             </Typography>
             <Grid component="div" container spacing={3}>
               {/* Gold Transfer Card */}
-              <Grid component="div" item xs={12} md={6}>
+              <Grid component="div" size={{ xs: 12, md: 6 }}>
                 <Card className="h-full">
                   <CardContent className="flex-1">
                     <div className="flex items-center gap-3 mb-4">
@@ -171,7 +171,7 @@ function TransferHubPage() {
               </Grid>
 
               {/* Carbon Transfer Card */}
-              <Grid component="div" item xs={12} md={6}>
+              <Grid component="div" size={{ xs: 12, md: 6 }}>
                 <Card className="h-full">
                   <CardContent className="flex-1">
                     <div className="flex items-center gap-3 mb-4">

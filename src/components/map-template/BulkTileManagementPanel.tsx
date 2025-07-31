@@ -296,7 +296,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
 
         <Grid container spacing={3}>
           {/* Land Type Selection */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
               <InputLabel>{t('TARGET_LAND_TYPE')}</InputLabel>
               <Select
@@ -314,7 +314,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </Grid>
 
           {/* Preset Scenarios */}
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
               <InputLabel>{t('PRESET_SCENARIO')}</InputLabel>
               <Select
@@ -332,7 +332,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </Grid>
 
           {/* Update Method Selection */}
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormControlLabel
               control={
                 <Switch
@@ -347,13 +347,13 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           {/* Multiplier Updates */}
           {useMultipliers && (
             <>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" gutterBottom>
                   {t('PRICING_MULTIPLIERS')}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" gutterBottom>
                   {t('GOLD_PRICE_MULTIPLIER')}: {goldMultiplier.toFixed(2)}x
                 </Typography>
@@ -373,7 +373,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" gutterBottom>
                   {t('CARBON_PRICE_MULTIPLIER')}: {carbonMultiplier.toFixed(2)}x
                 </Typography>
@@ -393,7 +393,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" gutterBottom>
                   {t('POPULATION_MULTIPLIER')}: {populationMultiplier.toFixed(2)}x
                 </Typography>
@@ -413,7 +413,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Typography variant="body2" gutterBottom>
                   {t('TRANSPORT_COST_MULTIPLIER')}: {transportMultiplier.toFixed(2)}x
                 </Typography>
@@ -438,13 +438,13 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           {/* Fixed Value Updates */}
           {!useMultipliers && (
             <>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" gutterBottom>
                   {t('FIXED_VALUES')}
                 </Typography>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   fullWidth
                   type="number"
@@ -457,7 +457,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   fullWidth
                   type="number"
@@ -470,7 +470,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   fullWidth
                   type="number"
@@ -483,7 +483,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   fullWidth
                   type="number"
@@ -499,7 +499,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           )}
 
           {/* Actions */}
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Box display="flex" gap={2} justifyContent="flex-end">
               <Button onClick={resetForm}>
                 {t('RESET')}

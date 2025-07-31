@@ -331,7 +331,7 @@ const UserList: React.FC<UserListProps> = ({
         <CardContent>
           <Grid container spacing={2} alignItems="center">
             {/* Search */}
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 placeholder={t('SEARCH_PLACEHOLDER')}
@@ -345,7 +345,7 @@ const UserList: React.FC<UserListProps> = ({
             </Grid>
 
             {/* Quick Filters */}
-            <Grid item xs={12} sm={6} md={2.5}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('USER_TYPE')}</InputLabel>
                 <Select
@@ -362,7 +362,7 @@ const UserList: React.FC<UserListProps> = ({
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={1.5}>
+            <Grid size={{ xs: 12, sm: 6, md: 1 }}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('STATUS')}</InputLabel>
                 <Select
@@ -379,7 +379,7 @@ const UserList: React.FC<UserListProps> = ({
             </Grid>
 
             {/* Filter Actions */}
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Stack direction="row" spacing={1}>
                 <Button
                   startIcon={showAdvancedFilters ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -403,7 +403,7 @@ const UserList: React.FC<UserListProps> = ({
           <Collapse in={showAdvancedFilters}>
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControlLabel
                   control={
                     <Switch

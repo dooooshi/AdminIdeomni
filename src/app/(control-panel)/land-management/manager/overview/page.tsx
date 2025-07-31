@@ -42,6 +42,7 @@ import {
   LandPurchaseAnalytics,
   RecentPurchase
 } from '@/types/land';
+import { useTranslation } from 'react-i18next';
 
 const StatsCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -67,6 +68,7 @@ interface ManagerLandOverviewPageProps {}
 
 const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
   const theme = useTheme();
+  const { t } = useTranslation(['landManagement', 'navigation', 'common']);
   
   // State management
   const [overview, setOverview] = useState<ActivityLandOverview | null>(null);
@@ -220,11 +222,11 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
     return (
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Leading Territory Holders
+                {t('landManagement:TOP_TEAM_BY_AREA')}
               </Typography>
               <Stack spacing={2}>
                 {topByArea.map((team, index) => (
@@ -248,11 +250,11 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Highest Capital Deployment
+                {t('landManagement:TOTAL_SPENT')}
               </Typography>
               <Stack spacing={2}>
                 {topBySpending.map((team, index) => (
@@ -291,7 +293,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
     return (
       <Alert severity="error" action={
         <Button color="inherit" size="small" onClick={handleRefresh}>
-          Retry
+          {t('landManagement:RETRY')}
         </Button>
       }>
         {error}
@@ -302,7 +304,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
   if (!overview || !analytics) {
     return (
       <Alert severity="info">
-        No land management data available for this activity.
+        {t('landManagement:NO_ANALYTICS_DATA')}
       </Alert>
     );
   }
@@ -312,10 +314,10 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
-            Territory Management Dashboard
+            {t('landManagement:ACTIVITY_LAND_OVERVIEW')}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Executive oversight of strategic land operations in {overview.activityName}
+            {t('landManagement:OVERVIEW_DESCRIPTION', { activityName: overview.activityName })}
           </Typography>
         </Box>
         <Tooltip title="Refresh Data">
@@ -327,50 +329,41 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
       {/* Key Metrics Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          {renderStatCard(
-            'Investment Transactions',
-            overview.totalLandPurchases.toLocaleString(),
-            <TimelineIcon />,
-            theme.palette.primary.main,
-            'Total acquisition events'
-          )}
-        </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {renderStatCard(
-            'Territory Acquired',
+            t('landManagement:TOTAL_OWNED_AREA'),
             LandService.formatArea(overview.totalAreaPurchased),
             <LandscapeIcon />,
             theme.palette.success.main,
-            'Total area under management'
+            t('landManagement:TOTAL_AREA')
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {renderStatCard(
-            'Capital Generated',
+            t('landManagement:TOTAL_REVENUE'),
             LandService.formatCurrency(overview.totalRevenue),
             <MoneyIcon />,
             theme.palette.warning.main,
-            'Combined resource value'
+            t('landManagement:REVENUE')
           )}
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {renderStatCard(
-            'Strategic Units',
+            t('landManagement:TEAMS_WITH_LAND'),
             overview.teamsWithLand,
             <GroupIcon />,
             theme.palette.info.main,
-            'Teams with active holdings'
+            t('landManagement:TEAMS_WITH_LAND')
           )}
         </Grid>
       </Grid>
 
       {/* Additional Metrics */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'primary.main' }}>
               <LandscapeIcon />
@@ -380,13 +373,13 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 {overview.tilesWithOwnership}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Active Properties
+                {t('landManagement:TILES_WITH_OWNERSHIP')}
               </Typography>
             </Box>
           </MetricBox>
         </Grid>
         
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'success.main' }}>
               <MoneyIcon />
@@ -396,13 +389,13 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 {LandService.formatArea(overview.averageAreaPerTeam)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Avg. Holdings per Unit
+                {t('landManagement:AVERAGE_AREA_PER_TEAM')}
               </Typography>
             </Box>
           </MetricBox>
         </Grid>
         
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'warning.main' }}>
               <TrophyIcon />
@@ -412,7 +405,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 Tile {overview.mostActiveTile.tileId}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Highest Activity Property ({overview.mostActiveTile.purchaseCount} transactions)
+                {t('landManagement:MOST_ACTIVE_TILE')} ({overview.mostActiveTile.purchaseCount} {t('landManagement:PURCHASES')})
               </Typography>
             </Box>
           </MetricBox>
@@ -421,11 +414,11 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
       {/* Recent Activity and Top Teams */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} lg={6}>
+        <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Recent Strategic Acquisitions
+                {t('landManagement:PURCHASE_HISTORY')}
               </Typography>
               <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
                 {renderRecentPurchases()}
@@ -434,11 +427,11 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </Card>
         </Grid>
         
-        <Grid item xs={12} lg={6}>
+        <Grid size={{ xs: 12, lg: 6 }}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Strategic Leader
+                {t('landManagement:LEADING_TEAM')}
               </Typography>
               <Box sx={{ p: 2, textAlign: 'center' }}>
                 <Avatar 
@@ -460,7 +453,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                   {LandService.formatArea(overview.topTeamByArea.totalArea)} total territory controlled
                 </Typography>
                 <Chip 
-                  label="Market Leader" 
+                  label={t('landManagement:TOP_PERFORMER')} 
                   color="primary" 
                   variant="outlined"
                 />

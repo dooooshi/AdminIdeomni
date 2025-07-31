@@ -245,7 +245,7 @@ const UserForm: React.FC<UserFormProps> = ({
       label: t('USER_FORM_BASIC_INFO'),
       content: (
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               name="username"
@@ -272,7 +272,7 @@ const UserForm: React.FC<UserFormProps> = ({
             )}
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               name="email"
@@ -294,7 +294,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               name="firstName"
@@ -309,7 +309,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <TextField
               fullWidth
               name="lastName"
@@ -330,7 +330,7 @@ const UserForm: React.FC<UserFormProps> = ({
       label: t('PASSWORD_LABEL'),
       content: (
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               name="password"
@@ -367,7 +367,7 @@ const UserForm: React.FC<UserFormProps> = ({
           </Grid>
 
           {!isEditMode && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 name="confirmPassword"
@@ -407,7 +407,7 @@ const UserForm: React.FC<UserFormProps> = ({
       label: t('USER_FORM_PERMISSIONS'),
       content: (
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormControl fullWidth>
               <InputLabel>{t('USER_TYPE_LABEL')}</InputLabel>
               <Select
@@ -443,7 +443,7 @@ const UserForm: React.FC<UserFormProps> = ({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Autocomplete
               multiple
               options={availableRoles}
@@ -471,7 +471,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormControlLabel
               control={
                 <Switch
@@ -485,7 +485,7 @@ const UserForm: React.FC<UserFormProps> = ({
           </Grid>
 
           {!isEditMode && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch

@@ -325,7 +325,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
         {/* Statistics */}
         {activities?.statistics && (
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="primary">
@@ -337,7 +337,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="success.main">
@@ -349,7 +349,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="info.main">
@@ -361,7 +361,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="warning.main">
@@ -391,7 +391,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
               {t('FILTERS')}
             </Typography>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <FormControl fullWidth>
                   <InputLabel>{t('STATUS')}</InputLabel>
                   <Select
@@ -409,7 +409,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -420,7 +420,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   label={t('INCLUDE_UPCOMING')}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -431,7 +431,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   label={t('INCLUDE_PAST')}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Button
                   variant="outlined"
                   startIcon={<RefreshIcon />}

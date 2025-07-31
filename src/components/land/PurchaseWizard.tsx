@@ -354,7 +354,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
             
             {budgetAnalysis && (
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Card variant="outlined">
                     <CardContent sx={{ textAlign: 'center' }}>
                       <Typography variant="h4" color="primary">
@@ -366,7 +366,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Card variant="outlined">
                     <CardContent sx={{ textAlign: 'center' }}>
                       <Typography variant="h4" color="success.main">
@@ -550,7 +550,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                         </Box>
                         
                         <Grid container spacing={2} mb={2}>
-                          <Grid item xs={4}>
+                          <Grid size={{ xs: 4 }}>
                             <Typography variant="body2" color="text.secondary">
                               Total Cost
                             </Typography>
@@ -558,7 +558,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                               {LandService.formatCurrency(rec.totalCost)}
                             </Typography>
                           </Grid>
-                          <Grid item xs={4}>
+                          <Grid size={{ xs: 4 }}>
                             <Typography variant="body2" color="text.secondary">
                               Expected ROI
                             </Typography>
@@ -566,7 +566,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                               {rec.expectedROI}%
                             </Typography>
                           </Grid>
-                          <Grid item xs={4}>
+                          <Grid size={{ xs: 4 }}>
                             <Typography variant="body2" color="text.secondary">
                               Tiles
                             </Typography>

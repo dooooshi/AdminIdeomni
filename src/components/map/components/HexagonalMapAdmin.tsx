@@ -20,7 +20,7 @@
  * - Administrative Dashboard
  */
 
-import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react';
+import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import { 
@@ -105,7 +105,7 @@ const HexagonalMapAdmin = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 		zoomIn,
 		zoomOut,
 		resetZoom,
-		handleWheel,
+		setWheelListenerRef,
 		handleMouseDown,
 		handleMouseMove,
 		handleMouseUp
@@ -114,6 +114,11 @@ const HexagonalMapAdmin = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 		zoomConfig: ZOOM_CONFIG,
 		onZoomChange
 	});
+
+	// Set up wheel listener ref
+	useEffect(() => {
+		setWheelListenerRef(containerRef);
+	}, [setWheelListenerRef]);
 
 	// Calculate map bounds
 	const bounds = useMemo(() => {
@@ -130,15 +135,9 @@ const HexagonalMapAdmin = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 		resetZoom
 	}), [zoomIn, zoomOut, resetZoom]);
 
-	// Handle wheel events with container reference
-	const handleWheelEvent = (event: React.WheelEvent) => {
-		handleWheel(event, containerRef);
-	};
-
 	return (
 		<MapContainer 
 			ref={containerRef} 
-			onWheel={handleWheelEvent} 
 			onMouseDown={handleMouseDown} 
 			onMouseMove={handleMouseMove} 
 			onMouseUp={handleMouseUp}

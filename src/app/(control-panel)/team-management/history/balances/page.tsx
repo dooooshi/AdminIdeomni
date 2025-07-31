@@ -218,7 +218,7 @@ function BalanceHistoryPage() {
                 Balance Change Summary
               </Typography>
               <Grid component="div" container spacing={3}>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -237,7 +237,7 @@ function BalanceHistoryPage() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -256,7 +256,7 @@ function BalanceHistoryPage() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <div className="flex items-center justify-between">
@@ -275,7 +275,7 @@ function BalanceHistoryPage() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography variant="body2" color="text.secondary" className="mb-2">

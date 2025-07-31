@@ -155,7 +155,7 @@ function AllOperationsPage() {
                 {t('teamManagement:FILTER_OPERATIONS')}
               </Typography>
               <Grid component="div" container spacing={3}>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement:OPERATION_TYPE')}</InputLabel>
                     <Select
@@ -172,7 +172,7 @@ function AllOperationsPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement:RESOURCE_TYPE')}</InputLabel>
                     <Select
@@ -186,7 +186,7 @@ function AllOperationsPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="date"
@@ -196,7 +196,7 @@ function AllOperationsPage() {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="date"

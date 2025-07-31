@@ -420,7 +420,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                                   InsightCard;
               
               return (
-                <Grid item xs={12} md={6} key={index}>
+                <Grid key={index} size={{ xs: 12, md: 6 }}>
                   <CardComponent>
                     <CardContent>
                       <Box display="flex" alignItems="flex-start" gap={2}>
@@ -475,7 +475,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
           
           <Grid container spacing={2}>
             {recommendations.map((rec) => (
-              <Grid item xs={12} md={6} key={rec.id}>
+              <Grid key={rec.id} size={{ xs: 12, md: 6 }}>
                 <RecommendationCard>
                   <CardContent>
                     {/* Header */}
@@ -511,7 +511,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
 
                     {/* Metrics */}
                     <Grid container spacing={2} mb={2}>
-                      <Grid item xs={4}>
+                      <Grid size={{ xs: 4 }}>
                         <Typography variant="caption" color="text.secondary">
                           Expected ROI
                         </Typography>
@@ -519,7 +519,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                           {rec.expectedROI}%
                         </Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid size={{ xs: 4 }}>
                         <Typography variant="caption" color="text.secondary">
                           Cost
                         </Typography>
@@ -527,7 +527,7 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                           {LandService.formatCurrency(rec.estimatedCost)}
                         </Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid size={{ xs: 4 }}>
                         <Typography variant="caption" color="text.secondary">
                           Risk Level
                         </Typography>

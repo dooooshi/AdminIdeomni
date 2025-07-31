@@ -208,7 +208,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => {
               const stats = getLandTypeStats(landType);
               return (
-                <Grid item xs={12} md={4} key={landType}>
+                <Grid key={landType} size={{ xs: 12, md: 4 }}>
                   <Box
                     sx={{
                       p: 2,
@@ -334,7 +334,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 Fixed Values (will replace current values)
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     label="Fixed Price"
@@ -350,7 +350,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                     }}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     label="Fixed Population"
@@ -363,7 +363,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                     disabled={processing}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
                     label="Fixed Transport Cost"

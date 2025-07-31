@@ -56,6 +56,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import LandService from '@/lib/services/landService';
+import { useTranslation } from 'react-i18next';
 import {
   LandPurchaseAnalytics,
   ActivityLandOverview,
@@ -92,6 +93,7 @@ interface ManagerLandAnalyticsPageProps {}
 
 const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => {
   const theme = useTheme();
+  const { t } = useTranslation(['landManagement', 'navigation', 'common']);
   
   // State management
   const [analytics, setAnalytics] = useState<LandPurchaseAnalytics | null>(null);
@@ -437,7 +439,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={2}>
@@ -455,7 +457,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={2}>
@@ -473,7 +475,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={2}>
@@ -491,7 +493,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={2}>
@@ -525,7 +527,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
 
         <TabPanel value={activeTab} index={0}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {renderPurchaseTrendsChart()}
             </Grid>
           </Grid>
@@ -533,10 +535,10 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
 
         <TabPanel value={activeTab} index={1}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               {renderLandTypeDistribution()}
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               {renderRevenueByLandType()}
             </Grid>
           </Grid>
@@ -544,7 +546,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
 
         <TabPanel value={activeTab} index={2}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {renderTopPerformingTiles()}
             </Grid>
           </Grid>

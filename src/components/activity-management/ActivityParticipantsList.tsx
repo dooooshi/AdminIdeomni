@@ -387,7 +387,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         {/* Statistics Cards */}
         {participants?.statistics && (
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6} md={2.4}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="primary">
@@ -399,7 +399,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={2.4}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="info.main">
@@ -411,7 +411,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={2.4}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="success.main">
@@ -423,7 +423,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={2.4}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="warning.main">
@@ -435,7 +435,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} sm={6} md={2.4}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="error.main">
@@ -466,7 +466,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             {t('FILTERS')}
           </Typography>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 fullWidth
                 label={t('SEARCH_PARTICIPANTS')}
@@ -478,7 +478,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 placeholder={t('SEARCH_BY_NAME_EMAIL')}
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('STATUS')}</InputLabel>
                 <Select
@@ -496,7 +496,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} md={2}>
+            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('USER_TYPE')}</InputLabel>
                 <Select
@@ -512,7 +512,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -714,7 +714,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
           )}
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('NEW_STATUS')}</InputLabel>
                 <Select
@@ -733,7 +733,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('REASON')}
@@ -747,7 +747,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 placeholder={t('REASON_PLACEHOLDER')}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -792,7 +792,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('NEW_STATUS')}</InputLabel>
                 <Select
@@ -811,7 +811,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('REASON')}
@@ -825,7 +825,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                 placeholder={t('BULK_REASON_PLACEHOLDER')}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch

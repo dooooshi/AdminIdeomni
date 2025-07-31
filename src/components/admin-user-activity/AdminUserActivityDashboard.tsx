@@ -194,7 +194,7 @@ const AdminUserActivityDashboard: React.FC = () => {
         {/* Statistics Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           {getStatisticsCards().map((card, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Box sx={{ mb: 2, color: `${card.color}.main` }}>
@@ -223,7 +223,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                 {t('RECENT_ACTIVITY')}
               </Typography>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h5" color="primary">
                       {statistics.recentAssignments.today}
@@ -233,7 +233,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h5" color="info.main">
                       {statistics.recentAssignments.thisWeek}
@@ -243,7 +243,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h5" color="success.main">
                       {statistics.recentAssignments.thisMonth}

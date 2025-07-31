@@ -225,7 +225,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
           {/* Team Stats */}
           <motion.div variants={item}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-4 text-center">
                   <Typography variant="h4" className="font-bold text-blue-600">
                     {activeMembers.length}
@@ -236,7 +236,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-4 text-center">
                   <Typography variant="h4" className="font-bold text-green-600">
                     {team.maxMembers}
@@ -247,7 +247,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-4 text-center">
                   <Typography variant="h4" className="font-bold text-purple-600">
                     {Math.round((activeMembers.length / team.maxMembers) * 100)}%
@@ -258,7 +258,7 @@ function TeamDetails({ teamId }: TeamDetailsProps) {
                 </Paper>
               </Grid>
               
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <Paper className="p-4 text-center">
                   <Typography variant="h4" className="font-bold text-orange-600">
                     {new Date(team.createdAt).toLocaleDateString()}

@@ -356,7 +356,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                   {t('QUICK_STATISTICS')}
                 </Typography>
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  <Grid size={{ xs: 6 }}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <MoneyIcon fontSize="small" />
                       <Box>
@@ -369,7 +369,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid size={{ xs: 6 }}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <PeopleIcon fontSize="small" />
                       <Box>

@@ -318,7 +318,7 @@ const UserManagementPage: React.FC = () => {
               {viewingUser && (
                 <Box>
                   <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('USERNAME')}
                       </Typography>
@@ -327,7 +327,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('EMAIL')}
                       </Typography>
@@ -336,7 +336,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('FIRST_NAME')}
                       </Typography>
@@ -345,7 +345,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('LAST_NAME')}
                       </Typography>
@@ -354,7 +354,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('USER_TYPE')}
                       </Typography>
@@ -365,7 +365,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('STATUS')}
                       </Typography>
@@ -376,7 +376,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('ROLES')}
                       </Typography>
@@ -393,7 +393,7 @@ const UserManagementPage: React.FC = () => {
                       </Box>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('LAST_LOGIN')}
                       </Typography>
@@ -402,7 +402,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('CREATED_AT')}
                       </Typography>
@@ -413,13 +413,13 @@ const UserManagementPage: React.FC = () => {
 
                     {viewingUser.statistics && (
                       <>
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }}>
                           <Typography variant="subtitle1" sx={{ mt: 2, mb: 1, fontWeight: 600 }}>
                             {t('USER_ACTIVITIES')}
                           </Typography>
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('ACTIVITIES_PARTICIPATED')}
                           </Typography>
@@ -428,7 +428,7 @@ const UserManagementPage: React.FC = () => {
                           </Typography>
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('ACTIVITIES_COMPLETED')}
                           </Typography>
@@ -437,7 +437,7 @@ const UserManagementPage: React.FC = () => {
                           </Typography>
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('TOTAL_LOGIN_COUNT')}
                           </Typography>
@@ -496,7 +496,7 @@ const UserManagementPage: React.FC = () => {
                   </Alert>
 
                   <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -511,7 +511,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -526,7 +526,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={{ xs: 12 }}>
                       <FormControlLabel
                         control={
                           <Switch

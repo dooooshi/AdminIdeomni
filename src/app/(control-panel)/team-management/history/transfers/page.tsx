@@ -155,7 +155,7 @@ function TransferHistoryPage() {
                 {t('teamManagement:FILTER_OPERATIONS')}
               </Typography>
               <Grid component="div" container spacing={3}>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement:TRANSFER_DIRECTION')}</InputLabel>
                     <Select
@@ -169,7 +169,7 @@ function TransferHistoryPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement:RESOURCE_TYPE')}</InputLabel>
                     <Select
@@ -183,7 +183,7 @@ function TransferHistoryPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="date"
@@ -193,7 +193,7 @@ function TransferHistoryPage() {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid component="div" item xs={12} sm={6} md={3}>
+                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     type="date"
@@ -227,7 +227,7 @@ function TransferHistoryPage() {
           {transfersData && (
             <motion.div variants={item}>
               <Grid component="div" container spacing={3}>
-                <Grid component="div" item xs={12} sm={4}>
+                <Grid component="div" size={{ xs: 12, sm: 4 }}>
                   <Paper className="p-4">
                     <div className="flex items-center gap-3">
                       <IdeomniSvgIcon size={24} className="text-blue-500">
@@ -244,7 +244,7 @@ function TransferHistoryPage() {
                     </div>
                   </Paper>
                 </Grid>
-                <Grid component="div" item xs={12} sm={4}>
+                <Grid component="div" size={{ xs: 12, sm: 4 }}>
                   <Paper className="p-4">
                     <div className="flex items-center gap-3">
                       <IdeomniSvgIcon size={24} className="text-green-500">
@@ -261,7 +261,7 @@ function TransferHistoryPage() {
                     </div>
                   </Paper>
                 </Grid>
-                <Grid component="div" item xs={12} sm={4}>
+                <Grid component="div" size={{ xs: 12, sm: 4 }}>
                   <Paper className="p-4">
                     <div className="flex items-center gap-3">
                       <IdeomniSvgIcon size={24} className="text-red-500">

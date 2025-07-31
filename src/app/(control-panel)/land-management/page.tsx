@@ -204,7 +204,7 @@ const LandManagementPage: React.FC = () => {
       {/* Hero Section */}
       <HeroSection>
         <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={8}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Stack spacing={3}>
               <Box>
                 <Typography 
@@ -258,7 +258,7 @@ const LandManagementPage: React.FC = () => {
             </Stack>
           </Grid>
           
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Box 
               sx={{
                 display: 'flex',
@@ -330,7 +330,7 @@ const LandManagementPage: React.FC = () => {
         
         <Grid container spacing={4}>
           {managerOptions.map((option, index) => (
-            <Grid item xs={12} md={4} key={option.path}>
+            <Grid size={{ xs: 12, md: 4 }} key={option.path}>
               <FeatureCard onClick={() => router.push(option.path)}>
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ mb: 3 }}>
@@ -398,7 +398,7 @@ const LandManagementPage: React.FC = () => {
         
         <Grid container spacing={4}>
           {purchaseOptions.filter(option => option.featured).map((option, index) => (
-            <Grid item xs={12} md={6} key={option.path}>
+            <Grid size={{ xs: 12, md: 6 }} key={option.path}>
               <Paper
                 elevation={0}
                 sx={{
@@ -517,7 +517,7 @@ const LandManagementPage: React.FC = () => {
         
         <Grid container spacing={4}>
           {purchaseOptions.filter(option => !option.featured).map((option, index) => (
-            <Grid item xs={12} md={6} key={option.path}>
+            <Grid size={{ xs: 12, md: 6 }} key={option.path}>
               <FeatureCard onClick={() => router.push(option.path)}>
                 <CardContent sx={{ p: 4 }}>
                   <Stack spacing={3}>

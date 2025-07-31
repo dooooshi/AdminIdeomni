@@ -221,14 +221,14 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
           <Grid container spacing={3}>
             {/* Basic Information */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
                 {t('ADMIN_FORM_BASIC_INFO')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('USERNAME_LABEL')}
@@ -243,7 +243,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('EMAIL_LABEL')}
@@ -259,7 +259,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('FIRST_NAME_LABEL')}
@@ -273,7 +273,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('LAST_NAME_LABEL')}
@@ -289,7 +289,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Password */}
             {(!isEditMode || formik.values.password) && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   fullWidth
                   label={isEditMode ? t('PASSWORD_LABEL') + " " + t('PASSWORD_EDIT_HINT') : t('PASSWORD_LABEL')}
@@ -320,14 +320,14 @@ const AdminForm: React.FC<AdminFormProps> = ({
             )}
 
             {/* Admin Configuration */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium" sx={{ mt: 2 }}>
                 {t('ADMIN_TYPE_LABEL')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('ADMIN_TYPE_LABEL')}</InputLabel>
                 <Select
@@ -381,7 +381,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             </Grid>
 
             {isEditMode && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -409,7 +409,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Warnings */}
             {formik.values.adminType === 1 && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="warning">
                   <Typography variant="body2" fontWeight="medium" gutterBottom>
                     {t('SECURITY_WARNING')}

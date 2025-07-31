@@ -352,7 +352,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         <TabPanel value={tabValue} index={0}>
           <Grid container spacing={3}>
             {/* Land Type Selection */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth sx={{ minWidth: 200 }}>
                 <InputLabel>{t('TARGET_LAND_TYPE')}</InputLabel>
                 <Select
@@ -384,7 +384,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             </Grid>
 
             {/* Preset Scenarios */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth sx={{ minWidth: 200 }}>
                 <InputLabel>{t('PRESET_SCENARIO')}</InputLabel>
                 <Select
@@ -408,7 +408,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             </Grid>
 
             {/* Update Method Selection */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -423,13 +423,13 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             {/* Multiplier Updates */}
             {useMultipliers && (
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('COST_MULTIPLIERS')}
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
                     {t('GOLD_MULTIPLIER')}: {goldMultiplier.toFixed(2)}
                   </Typography>
@@ -449,7 +449,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
                     {t('CARBON_MULTIPLIER')}: {carbonMultiplier.toFixed(2)}
                   </Typography>
@@ -469,7 +469,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
                     {t('UPGRADE_GOLD_MULTIPLIER')}: {upgradeGoldMultiplier.toFixed(2)}
                   </Typography>
@@ -489,7 +489,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
                     {t('UPGRADE_CARBON_MULTIPLIER')}: {upgradeCarbonMultiplier.toFixed(2)}
                   </Typography>
@@ -514,13 +514,13 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             {/* Fixed Value Updates */}
             {!useMultipliers && (
               <>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('FIXED_VALUES')}
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -533,7 +533,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -546,7 +546,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={4}>
+                <Grid size={{ xs: 12, sm: 4 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -560,7 +560,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             )}
 
             {/* Status Updates */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -573,7 +573,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             </Grid>
 
             {updateAllowedStatus && (
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -587,7 +587,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             )}
 
             {/* Actions */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Box display="flex" gap={2} justifyContent="flex-end">
                 <Button onClick={resetForm}>
                   {t('RESET')}

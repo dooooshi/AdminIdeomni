@@ -74,6 +74,7 @@ const navigation = {
 	MANAGER_ANALYTICS: '管理员分析',
 	STUDENT_MAP_VIEW: '土地地图',
 	STUDENT_PORTFOLIO: '土地投资组合',
+	TEAM_LAND_MANAGEMENT: '团队土地管理',
 };
 
 export default navigation; 

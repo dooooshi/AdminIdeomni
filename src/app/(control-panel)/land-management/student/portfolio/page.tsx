@@ -61,6 +61,7 @@ import {
   PaginatedResponse
 } from '@/types/land';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const StatsCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -86,6 +87,7 @@ interface StudentPortfolioPageProps {}
 
 const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
   const theme = useTheme();
+  const { t } = useTranslation(['landManagement', 'navigation', 'common']);
   
   // State management
   const [teamSummary, setTeamSummary] = useState<TeamLandSummary | null>(null);
@@ -241,11 +243,11 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       </IconButton>
       
       <Typography variant="subtitle2" sx={{ minWidth: 'max-content' }}>
-        Filters:
+        {t('landManagement:FILTERS')}:
       </Typography>
 
       <TextField
-        label="Tile ID"
+        label={t('landManagement:TILE_ID')}
         size="small"
         type="number"
         value={filters.tileId || ''}
@@ -254,29 +256,29 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       />
 
       <FormControl size="small" sx={{ minWidth: 120 }}>
-        <InputLabel>Status</InputLabel>
+        <InputLabel>{t('landManagement:STATUS')}</InputLabel>
         <Select
           value={filters.status || ''}
           label="Status"
           onChange={(e) => handleFilterChange('status', e.target.value || undefined)}
         >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="ACTIVE">Active</MenuItem>
-          <MenuItem value="CANCELLED">Cancelled</MenuItem>
-          <MenuItem value="EXPIRED">Expired</MenuItem>
+          <MenuItem value="">{t('common:ALL')}</MenuItem>
+          <MenuItem value="ACTIVE">{t('landManagement:ACTIVE')}</MenuItem>
+          <MenuItem value="CANCELLED">{t('landManagement:CANCELLED')}</MenuItem>
+          <MenuItem value="EXPIRED">{t('landManagement:EXPIRED')}</MenuItem>
         </Select>
       </FormControl>
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MuiDatePicker
-          label="Start Date"
+          label={t('landManagement:START_DATE')}
           value={startDate}
           onChange={setStartDate}
           slotProps={{ textField: { size: 'small' } }}
         />
         
         <MuiDatePicker
-          label="End Date"
+          label={t('landManagement:END_DATE')}
           value={endDate}
           onChange={setEndDate}
           slotProps={{ textField: { size: 'small' } }}
@@ -289,7 +291,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         onClick={clearFilters}
         disabled={!hasActiveFilters()}
       >
-        Clear
+        {t('landManagement:CLEAR_FILTERS')}
       </Button>
 
       <Button
@@ -298,7 +300,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         onClick={loadPurchaseHistory}
         startIcon={<FilterIcon />}
       >
-        Apply
+        {t('landManagement:APPLY_FILTERS')}
       </Button>
     </FilterContainer>
   );
@@ -310,7 +312,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Paper elevation={2}>
         <Box p={2}>
           <Typography variant="h6" gutterBottom>
-            Investment Transaction History
+            {t('landManagement:PURCHASE_HISTORY')}
           </Typography>
         </Box>
         
@@ -318,14 +320,14 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Transaction Date</TableCell>
-                <TableCell>Property ID</TableCell>
-                <TableCell align="right">Area Acquired</TableCell>
-                <TableCell align="right">Gold Capital</TableCell>
-                <TableCell align="right">Carbon Capital</TableCell>
-                <TableCell align="right">Total Investment</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell>Investment Notes</TableCell>
+                <TableCell>{t('landManagement:PURCHASE_DATE')}</TableCell>
+                <TableCell>{t('landManagement:TILE_ID')}</TableCell>
+                <TableCell align="right">{t('landManagement:OWNED_AREA')}</TableCell>
+                <TableCell align="right">{t('landManagement:GOLD_COST')}</TableCell>
+                <TableCell align="right">{t('landManagement:CARBON_COST')}</TableCell>
+                <TableCell align="right">{t('landManagement:TOTAL_COST')}</TableCell>
+                <TableCell align="center">{t('landManagement:STATUS')}</TableCell>
+                <TableCell>{t('landManagement:DESCRIPTION')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -339,7 +341,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                 <TableRow>
                   <TableCell colSpan={8} align="center">
                     <Typography variant="body2" color="text.secondary">
-                      No investment transactions found
+                      {t('landManagement:NO_PURCHASES_FOUND')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -440,7 +442,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
     return (
       <Alert severity="error" action={
         <Button color="inherit" size="small" onClick={handleRefresh}>
-          Retry
+          {t('landManagement:RETRY')}
         </Button>
       }>
         {error}
@@ -451,7 +453,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
   if (!teamSummary) {
     return (
       <Alert severity="info">
-        No team portfolio data available. Join a team to start purchasing land.
+        {t('landManagement:NO_TEAM_DATA')}
       </Alert>
     );
   }
@@ -461,10 +463,10 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
-            Land Investment Portfolio
+            {t('navigation:TEAM_LAND_MANAGEMENT')}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Monitor and analyze your strategic land investments and asset performance
+            {t('landManagement:PORTFOLIO_DESCRIPTION')}
           </Typography>
         </Box>
         <Stack direction="row" spacing={1}>
@@ -483,45 +485,6 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
 
       {/* Team Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          {renderStatCard(
-            'Portfolio Size',
-            LandService.formatArea(teamSummary.totalOwnedArea),
-            <LandscapeIcon />,
-            theme.palette.primary.main,
-            'Total area under management'
-          )}
-        </Grid>
-        
-        <Grid item xs={12} sm={6} md={3}>
-          {renderStatCard(
-            'Total Capital Deployed',
-            LandService.formatCurrency(teamSummary.totalSpent),
-            <MoneyIcon />,
-            theme.palette.success.main,
-            'Combined resource investment'
-          )}
-        </Grid>
-        
-        <Grid item xs={12} sm={6} md={3}>
-          {renderStatCard(
-            'Strategic Properties',
-            teamSummary.tilesOwnedCount,
-            <LocationIcon />,
-            theme.palette.warning.main,
-            'Distinct property holdings'
-          )}
-        </Grid>
-        
-        <Grid item xs={12} sm={6} md={3}>
-          {renderStatCard(
-            'Investment Transactions',
-            teamSummary.totalPurchases,
-            <TimelineIcon />,
-            theme.palette.info.main,
-            'Total acquisition events'
-          )}
-        </Grid>
       </Grid>
 
 

@@ -315,7 +315,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
             <Stack spacing={2}>
               {/* Main Cost Display */}
               <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid size={{ xs: 4 }}>
                   <ValueDisplay sx={{ bgcolor: 'warning.light', color: 'warning.contrastText' }}>
                     <MoneyIcon sx={{ fontSize: '2rem', mb: 1 }} />
                     <AnimatedNumber>
@@ -327,7 +327,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                   </ValueDisplay>
                 </Grid>
                 
-                <Grid item xs={4}>
+                <Grid size={{ xs: 4 }}>
                   <ValueDisplay sx={{ bgcolor: 'success.light', color: 'success.contrastText' }}>
                     <EcoIcon sx={{ fontSize: '2rem', mb: 1 }} />
                     <AnimatedNumber>
@@ -339,7 +339,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                   </ValueDisplay>
                 </Grid>
                 
-                <Grid item xs={4}>
+                <Grid size={{ xs: 4 }}>
                   <ValueDisplay sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}>
                     <TrendingUpIcon sx={{ fontSize: '2rem', mb: 1 }} />
                     <AnimatedNumber>
@@ -443,7 +443,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                   <Collapse in={showBreakdown}>
                     <Box mt={2} p={2} bgcolor="grey.50" borderRadius={1}>
                       <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="text.secondary">
                             Team Gold Balance
                           </Typography>
@@ -451,7 +451,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                             {LandService.formatCurrency(validation?.teamGoldBalance || 0, 'gold')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="text.secondary">
                             Team Carbon Balance
                           </Typography>
@@ -459,7 +459,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                             {LandService.formatCurrency(validation?.teamCarbonBalance || 0, 'carbon')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="text.secondary">
                             Gold Price per Unit
                           </Typography>
@@ -467,7 +467,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                             {LandService.formatCurrency(tile.currentGoldPrice || 0, 'gold')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="text.secondary">
                             Carbon Price per Unit
                           </Typography>

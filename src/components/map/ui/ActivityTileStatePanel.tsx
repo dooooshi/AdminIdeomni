@@ -269,7 +269,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
                   </Typography>
                   <Paper variant="outlined" sx={{ p: 2 }}>
                     <Grid container spacing={2}>
-                      <Grid item xs={6}>
+                      <Grid size={{ xs: 6 }}>
                         <Typography variant="caption" color="text.secondary">
                           {t('COORDINATES')}
                         </Typography>
@@ -277,7 +277,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
                           Q: {selectedTileState.tile.axialQ}, R: {selectedTileState.tile.axialR}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid size={{ xs: 6 }}>
                         <Typography variant="caption" color="text.secondary">
                           {t('LAND_TYPE')}
                         </Typography>
@@ -362,7 +362,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
                     <Collapse in={showComparison}>
                       <Paper variant="outlined" sx={{ p: 2 }}>
                         <Grid container spacing={2}>
-                          <Grid item xs={6}>
+                          <Grid size={{ xs: 6 }}>
                             <Typography variant="caption" color="text.secondary">
                               {t('PRICE_CHANGE')}
                             </Typography>
@@ -383,7 +383,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
                             </Box>
                           </Grid>
                           
-                          <Grid item xs={6}>
+                          <Grid size={{ xs: 6 }}>
                             <Typography variant="caption" color="text.secondary">
                               {t('POPULATION_CHANGE')}
                             </Typography>
@@ -404,7 +404,7 @@ const ActivityTileStatePanel: React.FC<ActivityTileStatePanelProps> = ({
                             </Box>
                           </Grid>
                           
-                          <Grid item xs={12}>
+                          <Grid size={{ xs: 12 }}>
                             <Typography variant="caption" color="text.secondary">
                               {t('TOTAL_VALUE_CHANGE')}
                             </Typography>
