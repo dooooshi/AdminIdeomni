@@ -36,6 +36,7 @@ import {
   Close as CloseIcon,
   CheckCircle as CheckIcon,
   Error as ErrorIcon,
+  Animation as AnimationIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -141,6 +142,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   const [selectedTile, setSelectedTile] = useState<AvailableTile | null>(null);  
   const [localError, setLocalError] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
   
   // Purchase dialog state
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
@@ -412,6 +414,10 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
 
   const handleResetZoom = () => {
     mapRef.current?.resetZoom();
+  };
+
+  const handleToggleAnimations = () => {
+    setAnimationsEnabled(prev => !prev);
   };
 
 
@@ -762,6 +768,19 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <ResetZoomIcon />
             </IconButton>
           </Tooltip>
+          <Tooltip title={animationsEnabled ? "Disable Land Animations" : "Enable Land Animations"}>
+            <IconButton 
+              onClick={handleToggleAnimations}
+              sx={{ 
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                '&:hover': { boxShadow: 2 },
+                color: animationsEnabled ? 'primary.main' : 'text.secondary'
+              }}
+            >
+              <AnimationIcon />
+            </IconButton>
+          </Tooltip>
           
         </ControlsContainer>
 
@@ -784,7 +803,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             onZoomChange={setZoomLevel}
             selectedTileId={selectedTile?.tileId}
             configurationMode={false}
-            showConfiguration={false}
+            enableLandAnimations={animationsEnabled}
           />
         </TouchGestureHandler>
 

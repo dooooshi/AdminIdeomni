@@ -23,7 +23,9 @@ import {
   ZoomOut as ZoomOutIcon,
   RestartAlt as ResetZoomIcon,
   Info as InfoIcon,
-  TrendingUp as TrendingUpIcon
+  TrendingUp as TrendingUpIcon,
+  Settings as SettingsIcon,
+  Animation as AnimationIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -89,6 +91,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
 
   // Load initial data
   useEffect(() => {
@@ -145,6 +148,10 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
 
   const handleResetZoom = () => {
     mapRef.current?.resetZoom();
+  };
+
+  const handleToggleAnimations = () => {
+    setAnimationsEnabled(prev => !prev);
   };
 
   // Convert manager tiles to map format
@@ -360,6 +367,19 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <ResetZoomIcon />
             </IconButton>
           </Tooltip>
+          <Tooltip title={animationsEnabled ? "Disable Land Animations" : "Enable Land Animations"}>
+            <IconButton 
+              onClick={handleToggleAnimations}
+              sx={{ 
+                bgcolor: 'background.paper',
+                boxShadow: 1,
+                '&:hover': { boxShadow: 2 },
+                color: animationsEnabled ? 'primary.main' : 'text.secondary'
+              }}
+            >
+              <AnimationIcon />
+            </IconButton>
+          </Tooltip>
         </ControlsContainer>
 
         {/* Activity Stats */}
@@ -404,7 +424,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           onZoomChange={setZoomLevel}
           selectedTileId={selectedTile?.tileId}
           configurationMode={false}
-          showConfiguration={false}
+          enableLandAnimations={animationsEnabled}
         />
 
         {/* Tile Information Panel */}

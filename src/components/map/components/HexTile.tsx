@@ -3,6 +3,7 @@ import { useTheme, alpha } from '@mui/material/styles';
 import { Box, Typography, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { HexTileProps } from '../types';
+import LandTypeAnimations from './LandTypeAnimations';
 
 /**
  * HexTile component - Renders an individual hexagonal tile with tooltip
@@ -18,7 +19,9 @@ const HexTile: React.FC<HexTileProps> = ({
 	onTileRightClick,
 	onTileHover,
 	onMouseEnter,
-	onMouseLeave
+	onMouseLeave,
+	allTiles = [],
+	hexSize = 28
 }) => {
 	const theme = useTheme();
 	const { t } = useTranslation('map');
@@ -539,6 +542,17 @@ const HexTile: React.FC<HexTileProps> = ({
 						onTileRightClick?.(tile, e);
 					}}
 				/>
+				
+				{/* Land type animations for business-sense connections */}
+				{allTiles.length > 0 && (
+					<LandTypeAnimations
+						tile={tile}
+						allTiles={allTiles}
+						position={position}
+						hexSize={hexSize}
+					/>
+				)}
+				
 				{renderPurchaseIndicator()}
 			</g>
 		</Tooltip>

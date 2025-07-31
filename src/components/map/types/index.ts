@@ -37,6 +37,8 @@ export interface HexagonalMapProps {
 	// Activity tile state management mode
 	showEconomicData?: boolean;
 	activityMode?: boolean;
+	// Land type animations
+	enableLandAnimations?: boolean;
 }
 
 export interface HexagonalMapRef {
@@ -87,6 +89,9 @@ export interface HexTileProps {
 	onTileHover?: (tile: MapTile, event: React.MouseEvent) => void;
 	onMouseEnter: () => void;
 	onMouseLeave: () => void;
+	// For land type animations
+	allTiles?: MapTile[];
+	hexSize?: number;
 }
 
 export interface MapBackgroundProps {

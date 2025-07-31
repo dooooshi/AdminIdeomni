@@ -78,4 +78,69 @@ export const getHexDimensions = (size: number) => {
  */
 export const clamp = (value: number, min: number, max: number): number => {
 	return Math.max(min, Math.min(max, value));
+};
+
+/**
+ * Get all 6 adjacent hexagon coordinates in axial coordinate system
+ * @param q - Axial Q coordinate
+ * @param r - Axial R coordinate
+ * @returns Array of adjacent coordinates
+ */
+export const getAdjacentCoordinates = (q: number, r: number): Array<{q: number, r: number}> => {
+	// The 6 directions in axial coordinates
+	const directions = [
+		{q: 1, r: 0},   // right
+		{q: 1, r: -1},  // top-right
+		{q: 0, r: -1},  // top-left
+		{q: -1, r: 0},  // left
+		{q: -1, r: 1},  // bottom-left
+		{q: 0, r: 1}    // bottom-right
+	];
+	
+	return directions.map(dir => ({
+		q: q + dir.q,
+		r: r + dir.r
+	}));
+};
+
+/**
+ * Find tiles of the same land type that are adjacent to the given tile
+ * @param tile - The reference tile
+ * @param allTiles - Array of all tiles to search through
+ * @returns Array of adjacent tiles with same land type
+ */
+export const findAdjacentSameLandType = (tile: MapTile, allTiles: MapTile[]): MapTile[] => {
+	const adjacentCoords = getAdjacentCoordinates(tile.axialQ, tile.axialR);
+	
+	return allTiles.filter(otherTile => 
+		otherTile.landType === tile.landType &&
+		otherTile.id !== tile.id &&
+		adjacentCoords.some(coord => 
+			coord.q === otherTile.axialQ && coord.r === otherTile.axialR
+		)
+	);
+};
+
+/**
+ * Calculate the direction angle between two adjacent hexagon tiles
+ * @param fromTile - Source tile
+ * @param toTile - Target tile
+ * @returns Angle in degrees (0-360)
+ */
+export const getDirectionAngle = (fromTile: MapTile, toTile: MapTile): number => {
+	const deltaQ = toTile.axialQ - fromTile.axialQ;
+	const deltaR = toTile.axialR - fromTile.axialR;
+	
+	// Map axial directions to angles (in degrees)
+	const directionAngles: {[key: string]: number} = {
+		'1,0': 0,     // right
+		'1,-1': 60,   // top-right
+		'0,-1': 120,  // top-left
+		'-1,0': 180,  // left
+		'-1,1': 240,  // bottom-left
+		'0,1': 300    // bottom-right
+	};
+	
+	const key = `${deltaQ},${deltaR}`;
+	return directionAngles[key] || 0;
 }; 

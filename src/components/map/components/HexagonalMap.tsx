@@ -94,7 +94,8 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 	configurationMode = false,
 	selectedTileId,
 	showEconomicData = false,
-	activityMode = false
+	activityMode = false,
+	enableLandAnimations = true
 }, ref) => {
 	const theme = useTheme();
 	const [hoveredTile, setHoveredTile] = useState<number | null>(null);
@@ -183,6 +184,8 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 								setHoveredTile(null);
 								onTileHoverEnd?.();
 							}}
+							allTiles={enableLandAnimations ? tiles : []}
+							hexSize={HEX_CONFIG.baseSize}
 						/>
 					);
 				})}
