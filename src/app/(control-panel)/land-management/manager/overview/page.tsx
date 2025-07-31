@@ -178,7 +178,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 primary={
                   <Box display="flex" alignItems="center" gap={1}>
                     <Typography variant="subtitle2">
-                      {purchase.teamName}
+                      {purchase?.teamName || 'Unknown Team'}
                     </Typography>
                     <Chip
                       label={LandService.formatLandType(purchase.landType)}
@@ -236,7 +236,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                     </Avatar>
                     <Box flex={1}>
                       <Typography variant="subtitle2">
-                        {team.teamName}
+                        {team?.teamName || 'Unknown Team'}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {LandService.formatArea(team.totalArea)} territory
@@ -264,7 +264,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                     </Avatar>
                     <Box flex={1}>
                       <Typography variant="subtitle2">
-                        {team.teamName}
+                        {team?.teamName || 'Unknown Team'}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {LandService.formatCurrency(team.totalSpent)} invested
@@ -447,10 +447,10 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                   <TrophyIcon fontSize="large" />
                 </Avatar>
                 <Typography variant="h5" gutterBottom>
-                  {overview.topTeamByArea.teamName}
+                  {overview.topTeamByArea?.teamName || 'Unknown Team'}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" gutterBottom>
-                  {LandService.formatArea(overview.topTeamByArea.totalArea)} total territory controlled
+                  {LandService.formatArea(overview.topTeamByArea?.totalArea || 0)} total territory controlled
                 </Typography>
                 <Chip 
                   label={t('landManagement:TOP_PERFORMER')} 

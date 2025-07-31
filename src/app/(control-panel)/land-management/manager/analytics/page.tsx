@@ -306,8 +306,8 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
   const renderTeamRankingsTable = () => {
     if (!analytics?.teamRankings) return null;
 
-    const combinedRankings = analytics.teamRankings.byArea.map(areaTeam => {
-      const spendingTeam = analytics.teamRankings.bySpending.find(
+    const combinedRankings = (analytics.teamRankings?.byArea || []).map(areaTeam => {
+      const spendingTeam = (analytics.teamRankings?.bySpending || []).find(
         s => s.teamId === areaTeam.teamId
       );
       return {
@@ -482,7 +482,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
                 <PieChartIcon color="primary" />
                 <Box>
                   <Typography variant="h5">
-                    {analytics.purchasesByLandType.length}
+                    {analytics.purchasesByLandType?.length || 0}
                   </Typography>
                   <Typography color="text.secondary" variant="body2">
                     Land Types
@@ -500,7 +500,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
                 <BarChartIcon color="primary" />
                 <Box>
                   <Typography variant="h5">
-                    {analytics.topPerformingTiles.length}
+                    {analytics.topPerformingTiles?.length || 0}
                   </Typography>
                   <Typography color="text.secondary" variant="body2">
                     Active Tiles

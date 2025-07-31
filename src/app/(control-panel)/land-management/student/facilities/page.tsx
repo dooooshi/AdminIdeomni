@@ -7,8 +7,6 @@ import {
   Grid,
   Card,
   CardContent,
-  Tabs,
-  Tab,
   Button,
   TextField,
   InputAdornment,
@@ -23,11 +21,10 @@ import {
   SearchOutlined,
   AddOutlined,
   RefreshOutlined,
-  DashboardOutlined,
   ListAltOutlined,
 } from '@mui/icons-material';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { FacilityCard, FacilityPortfolioSummary, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
+import { FacilityCard, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from 'react-i18next';
 import type { 
@@ -38,23 +35,11 @@ import type {
 } from '@/types/facilities';
 import { FacilityType } from '@/types/facilities';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
-  <div role="tabpanel" hidden={value !== index}>
-    {value === index && <Box pt={3}>{children}</Box>}
-  </div>
-);
 
 const StudentFacilitiesPage: React.FC = () => {
   const { t } = useTranslation(['facilityManagement', 'common']);
 
   // State management
-  const [activeTab, setActiveTab] = useState(0);
   const [facilities, setFacilities] = useState<TileFacilityInstance[]>([]);
   const [summary, setSummary] = useState<TeamFacilitySummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -135,9 +120,6 @@ const StudentFacilitiesPage: React.FC = () => {
     }
   };
 
-  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
 
   const handleRefresh = () => {
     setPage(1);
@@ -254,48 +236,7 @@ const StudentFacilitiesPage: React.FC = () => {
         </Stack>
       </Stack>
 
-      {/* Tabs */}
-      <Box borderBottom={1} borderColor="divider" mb={0}>
-        <Tabs 
-          value={activeTab} 
-          onChange={handleTabChange}
-          sx={{
-            '& .MuiTabs-indicator': {
-              height: 2,
-            },
-            '& .MuiTab-root': {
-              minHeight: 48,
-              fontWeight: 400,
-              textTransform: 'none',
-              fontSize: '0.95rem',
-              '&.Mui-selected': {
-                fontWeight: 500
-              }
-            }
-          }}
-        >
-          <Tab
-            icon={<DashboardOutlined sx={{ fontSize: 20 }} />}
-            label={t('facilityManagement:DASHBOARD')}
-            iconPosition="start"
-            sx={{ mr: 3 }}
-          />
-          <Tab
-            icon={<ListAltOutlined sx={{ fontSize: 20 }} />}
-            label={`${t('facilityManagement:FACILITIES')} (${facilities?.length || 0})`}
-            iconPosition="start"
-          />
-        </Tabs>
-      </Box>
-
-      {/* Tab Panels */}
-      <TabPanel value={activeTab} index={0}>
-        {/* Dashboard */}
-        <FacilityPortfolioSummary summary={summary} />
-      </TabPanel>
-
-      <TabPanel value={activeTab} index={1}>
-        {/* Facilities List */}
+      {/* Facilities List */}
         <Box>
           {/* Search and Filters */}
           <Card variant="outlined" sx={{ mb: 4 }}>
@@ -476,7 +417,6 @@ const StudentFacilitiesPage: React.FC = () => {
             </Card>
           )}
         </Box>
-      </TabPanel>
 
       {/* Build Facility Modal */}
       <BuildFacilityModal

@@ -36,8 +36,19 @@ export class StudentFacilityService {
     if (response.data?.data?.data) {
       return response.data.data.data;
     }
+    
     // Handle standard nested response: { data: {...} }
-    return response.data?.data || response.data;
+    if (response.data?.data) {
+      return response.data.data;
+    }
+    
+    // Handle simple response: { data: {...} }
+    if (response.data) {
+      return response.data;
+    }
+    
+    // Fallback - return entire response
+    return response;
   }
 
   // ==================== FACILITY BUILDING OPERATIONS ====================
@@ -133,7 +144,36 @@ export class StudentFacilityService {
       `${this.FACILITIES_BASE_PATH}/owned`,
       { params: queryParams }
     );
-    return this.extractResponseData(response);
+    
+    const extractedData = this.extractResponseData(response);
+    
+    // Ensure we always return a proper paginated response structure
+    if (!extractedData || typeof extractedData !== 'object') {
+      return {
+        data: [],
+        total: 0,
+        page: queryParams.page || 1,
+        pageSize: queryParams.pageSize || 20,
+        totalPages: 0,
+        hasNext: false,
+        hasPrevious: false,
+      } as T;
+    }
+    
+    // If extractedData is an array, wrap it in pagination structure
+    if (Array.isArray(extractedData)) {
+      return {
+        data: extractedData,
+        total: extractedData.length,
+        page: queryParams.page || 1,
+        pageSize: queryParams.pageSize || 20,
+        totalPages: Math.ceil(extractedData.length / (queryParams.pageSize || 20)),
+        hasNext: false,
+        hasPrevious: false,
+      } as T;
+    }
+    
+    return extractedData;
   }
 
   /**
