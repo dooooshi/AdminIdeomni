@@ -157,7 +157,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
     if (!overview?.recentPurchases || overview.recentPurchases.length === 0) {
       return (
         <Typography variant="body2" color="text.secondary" sx={{ p: 2 }}>
-          No recent purchases to display
+          No recent investment activity to display
         </Typography>
       );
     }
@@ -224,7 +224,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Top Teams by Land Area
+                Leading Territory Holders
               </Typography>
               <Stack spacing={2}>
                 {topByArea.map((team, index) => (
@@ -237,7 +237,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                         {team.teamName}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {LandService.formatArea(team.totalArea)} area
+                        {LandService.formatArea(team.totalArea)} territory
                       </Typography>
                     </Box>
                     <TrophyIcon color={index === 0 ? 'warning' : 'action'} />
@@ -252,7 +252,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Top Teams by Spending
+                Highest Capital Deployment
               </Typography>
               <Stack spacing={2}>
                 {topBySpending.map((team, index) => (
@@ -265,7 +265,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                         {team.teamName}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {LandService.formatCurrency(team.totalSpent)} spent
+                        {LandService.formatCurrency(team.totalSpent)} invested
                       </Typography>
                     </Box>
                     <MoneyIcon color={index === 0 ? 'warning' : 'action'} />
@@ -312,10 +312,10 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
-            Land Management Overview
+            Territory Management Dashboard
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Comprehensive overview of land activities in {overview.activityName}
+            Executive oversight of strategic land operations in {overview.activityName}
           </Typography>
         </Box>
         <Tooltip title="Refresh Data">
@@ -329,41 +329,41 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Land Purchases',
+            'Investment Transactions',
             overview.totalLandPurchases.toLocaleString(),
             <TimelineIcon />,
             theme.palette.primary.main,
-            'All-time purchases'
+            'Total acquisition events'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Area Purchased',
+            'Territory Acquired',
             LandService.formatArea(overview.totalAreaPurchased),
             <LandscapeIcon />,
             theme.palette.success.main,
-            'Square units owned'
+            'Total area under management'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Revenue',
+            'Capital Generated',
             LandService.formatCurrency(overview.totalRevenue),
             <MoneyIcon />,
             theme.palette.warning.main,
-            'Gold & Carbon combined'
+            'Combined resource value'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Active Teams',
+            'Strategic Units',
             overview.teamsWithLand,
             <GroupIcon />,
             theme.palette.info.main,
-            'Teams with land ownership'
+            'Teams with active holdings'
           )}
         </Grid>
       </Grid>
@@ -380,7 +380,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 {overview.tilesWithOwnership}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Tiles with Ownership
+                Active Properties
               </Typography>
             </Box>
           </MetricBox>
@@ -396,7 +396,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 {LandService.formatArea(overview.averageAreaPerTeam)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Average Area per Team
+                Avg. Holdings per Unit
               </Typography>
             </Box>
           </MetricBox>
@@ -412,7 +412,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 Tile {overview.mostActiveTile.tileId}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Most Active Tile ({overview.mostActiveTile.purchaseCount} purchases)
+                Highest Activity Property ({overview.mostActiveTile.purchaseCount} transactions)
               </Typography>
             </Box>
           </MetricBox>
@@ -425,7 +425,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Recent Land Purchases
+                Recent Strategic Acquisitions
               </Typography>
               <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
                 {renderRecentPurchases()}
@@ -438,7 +438,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Leading Team
+                Strategic Leader
               </Typography>
               <Box sx={{ p: 2, textAlign: 'center' }}>
                 <Avatar 
@@ -457,10 +457,10 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                   {overview.topTeamByArea.teamName}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" gutterBottom>
-                  {LandService.formatArea(overview.topTeamByArea.totalArea)} total area owned
+                  {LandService.formatArea(overview.topTeamByArea.totalArea)} total territory controlled
                 </Typography>
                 <Chip 
-                  label="Top Performer" 
+                  label="Market Leader" 
                   color="primary" 
                   variant="outlined"
                 />

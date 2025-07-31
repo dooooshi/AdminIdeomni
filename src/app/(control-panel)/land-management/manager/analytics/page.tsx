@@ -266,7 +266,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
           <XAxis dataKey="landType" />
           <YAxis />
           <ChartTooltip 
-            formatter={(value: any) => [LandService.formatCurrency(value), 'Revenue']}
+            formatter={(value: any) => [LandService.formatCurrency(value), 'Capital Generated']}
           />
           <Bar 
             dataKey="revenue" 
@@ -289,7 +289,7 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
           <XAxis type="number" />
           <YAxis dataKey="tile" type="category" width={80} />
           <ChartTooltip 
-            formatter={(value: any) => [LandService.formatCurrency(value), 'Revenue']}
+            formatter={(value: any) => [LandService.formatCurrency(value), 'Capital Generated']}
           />
           <Bar 
             dataKey="revenue" 

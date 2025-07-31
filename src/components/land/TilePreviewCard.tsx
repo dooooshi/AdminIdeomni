@@ -18,11 +18,11 @@ import {
 import {
   LocationOn as LocationIcon,
   AttachMoney as MoneyIcon,
-  EcoOutlined as EcoIcon,
+  Nature as EcoIcon,
   TrendingUp as TrendingUpIcon,
   ShoppingCart as ShoppingCartIcon,
   Speed as SpeedIcon,
-  Group as GroupIcon,
+  People as GroupIcon,
   Star as StarIcon
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';

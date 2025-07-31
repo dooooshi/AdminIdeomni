@@ -3,30 +3,22 @@
 import React, { useState, useEffect } from 'react';
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
   Button,
   TextField,
   Typography,
   Box,
-  Grid,
-  Card,
-  CardContent,
   Alert,
   Slider,
   FormControlLabel,
   Switch,
   Stack,
-  Chip,
   CircularProgress,
-  Divider
 } from '@mui/material';
 import {
   ShoppingCart as ShoppingCartIcon,
+  Close as CloseIcon,
   Security as SecurityIcon,
-  AttachMoney as MoneyIcon,
-  Eco as EcoIcon
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import LandService from '@/lib/services/landService';
@@ -39,19 +31,35 @@ import {
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialog-paper': {
-    minWidth: '500px',
-    maxWidth: '700px',
+    borderRadius: '8px',
+    padding: 0,
+    maxWidth: '420px',
+    width: '100%',
+    margin: '16px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+    border: `1px solid ${theme.palette.grey[100]}`,
   },
 }));
 
-const CostCard = styled(Card)(({ theme }) => ({
-  background: `linear-gradient(135deg, ${theme.palette.primary.light}10, ${theme.palette.primary.main}05)`,
-  border: `1px solid ${theme.palette.primary.main}20`,
+const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
+  padding: '24px',
+  '&:first-of-type': {
+    paddingTop: '24px',
+  },
 }));
 
-const ErrorCard = styled(Card)(({ theme }) => ({
-  background: `linear-gradient(135deg, ${theme.palette.error.light}10, ${theme.palette.error.main}05)`,
-  border: `1px solid ${theme.palette.error.main}20`,
+const CostSummary = styled(Box)(({ theme }) => ({
+  backgroundColor: 'transparent',
+  border: `1px solid ${theme.palette.grey[100]}`,
+  borderRadius: '6px',
+  padding: '16px',
+}));
+
+const ErrorSummary = styled(Box)(({ theme }) => ({
+  backgroundColor: 'rgba(239, 68, 68, 0.04)',
+  border: '1px solid rgba(239, 68, 68, 0.1)',
+  borderRadius: '6px',
+  padding: '12px',
 }));
 
 interface LandPurchaseModalProps {
@@ -180,142 +188,143 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   const totalCost = validation ? (validation.goldCost || 0) + (validation.carbonCost || 0) : 0;
 
   return (
-    <StyledDialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-      <DialogTitle>
-        <Box display="flex" alignItems="center" gap={2}>
-          <ShoppingCartIcon color="primary" />
+    <StyledDialog open={open} onClose={handleClose}>
+      <StyledDialogContent>
+        {/* Header */}
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Box>
-            <Typography variant="h6">
-              Purchase Land - Tile {tile.tileId}
+            <Typography variant="h6" fontWeight={400} sx={{ fontSize: '18px', mb: 0.5 }}>
+              Purchase Land
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {LandService.formatLandType(tile.landType)} · Unlimited area available
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+              {tile.tileId} · {LandService.formatLandType(tile.landType)}
             </Typography>
           </Box>
+          <Button
+            onClick={handleClose}
+            disabled={purchasing}
+            sx={{ 
+              minWidth: 'auto', 
+              p: 0.5,
+              color: 'text.secondary',
+              '&:hover': { backgroundColor: 'transparent', color: 'text.primary' }
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </Button>
         </Box>
-      </DialogTitle>
 
-      <DialogContent>
-        <Stack spacing={3} sx={{ mt: 1 }}>
+        <Stack spacing={3}>
           {/* Error Display */}
           {error && (
-            <Alert severity="error">
+            <Alert 
+              severity="error" 
+              sx={{ 
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: 'rgba(239, 68, 68, 0.04)',
+                color: 'rgb(127, 29, 29)',
+                fontSize: '14px',
+                '& .MuiAlert-icon': {
+                  color: 'rgb(239, 68, 68)',
+                }
+              }}
+            >
               {error}
             </Alert>
           )}
 
           {/* Area Selection */}
           <Box>
-            <Typography variant="subtitle2" gutterBottom>
-              Area to Purchase
+            <Typography variant="body2" color="text.secondary" mb={1.5} sx={{ fontSize: '13px' }}>
+              Area
             </Typography>
-            <Box sx={{ px: 2 }}>
-              <Slider
-                value={area}
-                onChange={handleAreaChange}
-                min={1}
-                max={100} // Reasonable UI limit, no business limit
-                step={1} // NEW: Integer steps only
-                marks={[
-                  { value: 1, label: '1' },
-                  { value: 10, label: '10' },
-                  { value: 50, label: '50' },
-                  { value: 100, label: '100' }
-                ]}
-                valueLabelDisplay="on"
-                valueLabelFormat={(value) => `${Math.round(value)} units`} // Integer display
-                disabled={purchasing}
-              />
-            </Box>
-            <Box display="flex" justifyContent="space-between" mt={1}>
-              <Typography variant="caption" color="text.secondary">
-                Selected: {Math.round(area)} units
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                Available: Unlimited
-              </Typography>
-            </Box>
+            <Typography variant="h6" fontWeight={300} mb={2} sx={{ fontSize: '24px' }}>
+              {area} {area === 1 ? 'unit' : 'units'}
+            </Typography>
+            <Slider
+              value={area}
+              onChange={handleAreaChange}
+              min={1}
+              max={100}
+              step={1}
+              disabled={purchasing}
+              sx={{
+                '& .MuiSlider-thumb': {
+                  width: 16,
+                  height: 16,
+                  border: '2px solid #fff',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                },
+                '& .MuiSlider-track': {
+                  height: 4,
+                  border: 'none',
+                },
+                '& .MuiSlider-rail': {
+                  height: 4,
+                  opacity: 0.2,
+                },
+              }}
+            />
           </Box>
 
           {/* Cost Display */}
           {validating ? (
-            <Box display="flex" justifyContent="center" py={2}>
-              <CircularProgress size={24} />
-              <Typography variant="body2" color="text.secondary" sx={{ ml: 2 }}>
-                Calculating costs...
+            <Box display="flex" alignItems="center" py={2}>
+              <CircularProgress size={16} sx={{ mr: 1.5, color: 'text.secondary' }} />
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+                Calculating...
               </Typography>
             </Box>
-          ) : validation ? (
-            <CostCard>
-              <CardContent>
-                <Typography variant="subtitle2" gutterBottom>
-                  Purchase Summary
-                </Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Box display="flex" alignItems="center" gap={1} mb={1}>
-                      <MoneyIcon fontSize="small" color="warning" />
-                      <Typography variant="body2">
-                        Gold: {LandService.formatCurrency(validation.goldCost || 0, 'gold')}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap={1}>
-                      <EcoIcon fontSize="small" color="success" />
-                      <Typography variant="body2">
-                        Carbon: {LandService.formatCurrency(validation.carbonCost || 0, 'carbon')}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6" color="primary.main">
-                      Total: {LandService.formatCurrency(totalCost)}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Cost per area: {LandService.formatCurrency(area > 0 ? totalCost / area : 0)}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                {/* Team Balance Display */}
-                <Divider sx={{ my: 2 }} />
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Typography variant="caption" color="text.secondary">
-                      Team Gold Balance
-                    </Typography>
-                    <Typography variant="body2" fontWeight="medium">
-                      {LandService.formatCurrency(validation.teamGoldBalance || 0, 'gold')}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="caption" color="text.secondary">
-                      Team Carbon Balance
-                    </Typography>
-                    <Typography variant="body2" fontWeight="medium">
-                      {LandService.formatCurrency(validation.teamCarbonBalance || 0, 'carbon')}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </CostCard>
-          ) : null}
+          ) : validation && (
+            <CostSummary>
+              <Stack spacing={1.5}>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+                    Gold
+                  </Typography>
+                  <Typography variant="body2" fontWeight={400}>
+                    {LandService.formatCurrency(validation.goldCost || 0, 'gold')}
+                  </Typography>
+                </Box>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+                    Carbon
+                  </Typography>
+                  <Typography variant="body2" fontWeight={400}>
+                    {LandService.formatCurrency(validation.carbonCost || 0, 'carbon')}
+                  </Typography>
+                </Box>
+                <Box 
+                  display="flex" 
+                  justifyContent="space-between" 
+                  alignItems="center" 
+                  pt={1.5} 
+                  borderTop="1px solid" 
+                  borderColor="grey.100"
+                >
+                  <Typography variant="body1" fontWeight={400}>
+                    Total
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {LandService.formatCurrency(totalCost)}
+                  </Typography>
+                </Box>
+              </Stack>
+            </CostSummary>
+          )}
 
           {/* Validation Errors */}
           {validation && validation.errors && validation.errors.length > 0 && (
-            <ErrorCard>
-              <CardContent>
-                <Typography variant="subtitle2" color="error.main" gutterBottom>
-                  Purchase Issues
-                </Typography>
-                <Stack spacing={1}>
-                  {validation.errors.map((error, index) => (
-                    <Typography key={index} variant="body2" color="error.main">
-                      • {error}
-                    </Typography>
-                  ))}
-                </Stack>
-              </CardContent>
-            </ErrorCard>
+            <ErrorSummary>
+              <Stack spacing={1}>
+                {validation.errors.map((error, index) => (
+                  <Typography key={index} variant="body2" color="rgb(127, 29, 29)" sx={{ fontSize: '13px' }}>
+                    {error}
+                  </Typography>
+                ))}
+              </Stack>
+            </ErrorSummary>
           )}
 
           {/* Price Protection */}
@@ -326,88 +335,143 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                   checked={enablePriceProtection}
                   onChange={(e) => setEnablePriceProtection(e.target.checked)}
                   disabled={purchasing}
+                  size="small"
                 />
               }
               label={
-                <Box display="flex" alignItems="center" gap={1}>
-                  <SecurityIcon fontSize="small" />
-                  <Typography variant="body2">
-                    Enable Price Protection
-                  </Typography>
-                </Box>
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+                  Price Protection
+                </Typography>
               }
             />
             
             {enablePriceProtection && (
-              <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Max Gold Cost"
-                    type="number"
-                    fullWidth
-                    size="small"
-                    value={maxGoldCost || ''}
-                    onChange={(e) => setMaxGoldCost(e.target.value ? Number(e.target.value) : undefined)}
-                    inputProps={{ min: 0, step: 0.01 }}
-                    disabled={purchasing}
-                    helperText={validation ? `Current: ${(validation.goldCost || 0).toFixed(2)}` : ''}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Max Carbon Cost"
-                    type="number"
-                    fullWidth
-                    size="small"
-                    value={maxCarbonCost || ''}
-                    onChange={(e) => setMaxCarbonCost(e.target.value ? Number(e.target.value) : undefined)}
-                    inputProps={{ min: 0, step: 0.01 }}
-                    disabled={purchasing}
-                    helperText={validation ? `Current: ${(validation.carbonCost || 0).toFixed(2)}` : ''}
-                  />
-                </Grid>
-              </Grid>
+              <Stack spacing={2} sx={{ mt: 2 }}>
+                <TextField
+                  label="Max Gold Cost"
+                  type="number"
+                  size="small"
+                  value={maxGoldCost || ''}
+                  onChange={(e) => setMaxGoldCost(e.target.value ? Number(e.target.value) : undefined)}
+                  inputProps={{ min: 0, step: 0.01 }}
+                  disabled={purchasing}
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': { 
+                      borderRadius: '6px',
+                      '& fieldset': {
+                        borderColor: 'rgba(0, 0, 0, 0.1)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(0, 0, 0, 0.2)',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '13px',
+                    }
+                  }}
+                />
+                <TextField
+                  label="Max Carbon Cost"
+                  type="number"
+                  size="small"
+                  value={maxCarbonCost || ''}
+                  onChange={(e) => setMaxCarbonCost(e.target.value ? Number(e.target.value) : undefined)}
+                  inputProps={{ min: 0, step: 0.01 }}
+                  disabled={purchasing}
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': { 
+                      borderRadius: '6px',
+                      '& fieldset': {
+                        borderColor: 'rgba(0, 0, 0, 0.1)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(0, 0, 0, 0.2)',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: '13px',
+                    }
+                  }}
+                />
+              </Stack>
             )}
           </Box>
 
           {/* Description */}
           <TextField
-            label="Purchase Description (Optional)"
+            label="Description"
             multiline
             rows={2}
-            fullWidth
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter a description for this purchase..."
+            placeholder="Optional description..."
             disabled={purchasing}
+            sx={{ 
+              '& .MuiOutlinedInput-root': { 
+                borderRadius: '6px',
+                '& fieldset': {
+                  borderColor: 'rgba(0, 0, 0, 0.1)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(0, 0, 0, 0.2)',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                fontSize: '13px',
+              }
+            }}
           />
 
-          {/* Purchase Status */}
-          {validation && (
-            <Box display="flex" justifyContent="center">
-              <Chip
-                label={validation.canPurchase ? 'Purchase Available' : 'Cannot Purchase'}
-                color={validation.canPurchase ? 'success' : 'error'}
-                variant="outlined"
-              />
-            </Box>
-          )}
+          {/* Actions */}
+          <Stack direction="row" spacing={2} pt={1}>
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              disabled={purchasing}
+              sx={{ 
+                flex: 1,
+                borderRadius: '6px',
+                border: '1px solid rgba(0, 0, 0, 0.1)',
+                color: 'text.secondary',
+                fontSize: '14px',
+                fontWeight: 400,
+                py: 1,
+                '&:hover': { 
+                  border: '1px solid rgba(0, 0, 0, 0.2)',
+                  backgroundColor: 'transparent'
+                }
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handlePurchase}
+              disabled={!canPurchase}
+              startIcon={purchasing ? <CircularProgress size={16} /> : null}
+              sx={{ 
+                flex: 1,
+                borderRadius: '6px',
+                boxShadow: 'none',
+                fontSize: '14px',
+                fontWeight: 400,
+                py: 1,
+                backgroundColor: 'rgb(37, 37, 37)',
+                '&:hover': { 
+                  boxShadow: 'none',
+                  backgroundColor: 'rgb(23, 23, 23)'
+                },
+                '&:disabled': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.06)',
+                  color: 'rgba(0, 0, 0, 0.26)'
+                }
+              }}
+            >
+              {purchasing ? 'Processing...' : 'Purchase'}
+            </Button>
+          </Stack>
         </Stack>
-      </DialogContent>
-
-      <DialogActions sx={{ p: 3, pt: 1 }}>
-        <Button onClick={handleClose} disabled={purchasing}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handlePurchase}
-          disabled={!canPurchase}
-          startIcon={purchasing ? <CircularProgress size={16} /> : <ShoppingCartIcon />}
-        >
-          {purchasing ? 'Purchasing...' : `Purchase for ${validation ? LandService.formatCurrency(totalCost) : '...'}`}
-        </Button>
-      </DialogActions>
+      </StyledDialogContent>
     </StyledDialog>
   );
 };

@@ -310,7 +310,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Paper elevation={2}>
         <Box p={2}>
           <Typography variant="h6" gutterBottom>
-            Purchase History
+            Investment Transaction History
           </Typography>
         </Box>
         
@@ -318,14 +318,14 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Tile</TableCell>
-                <TableCell align="right">Area</TableCell>
-                <TableCell align="right">Gold Cost</TableCell>
-                <TableCell align="right">Carbon Cost</TableCell>
-                <TableCell align="right">Total Cost</TableCell>
+                <TableCell>Transaction Date</TableCell>
+                <TableCell>Property ID</TableCell>
+                <TableCell align="right">Area Acquired</TableCell>
+                <TableCell align="right">Gold Capital</TableCell>
+                <TableCell align="right">Carbon Capital</TableCell>
+                <TableCell align="right">Total Investment</TableCell>
                 <TableCell align="center">Status</TableCell>
-                <TableCell>Description</TableCell>
+                <TableCell>Investment Notes</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -339,7 +339,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                 <TableRow>
                   <TableCell colSpan={8} align="center">
                     <Typography variant="body2" color="text.secondary">
-                      No purchase history found
+                      No investment transactions found
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -461,10 +461,10 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" component="h1" gutterBottom>
-            Team Land Portfolio
+            Land Investment Portfolio
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Manage and monitor your team's land ownership and purchase history
+            Monitor and analyze your strategic land investments and asset performance
           </Typography>
         </Box>
         <Stack direction="row" spacing={1}>
@@ -485,125 +485,45 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Owned Area',
+            'Portfolio Size',
             LandService.formatArea(teamSummary.totalOwnedArea),
             <LandscapeIcon />,
             theme.palette.primary.main,
-            'Square units owned'
+            'Total area under management'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Investment',
+            'Total Capital Deployed',
             LandService.formatCurrency(teamSummary.totalSpent),
             <MoneyIcon />,
             theme.palette.success.main,
-            'Gold & Carbon combined'
+            'Combined resource investment'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Tiles Owned',
+            'Strategic Properties',
             teamSummary.tilesOwnedCount,
             <LocationIcon />,
             theme.palette.warning.main,
-            'Unique tiles with ownership'
+            'Distinct property holdings'
           )}
         </Grid>
         
         <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
-            'Total Purchases',
+            'Investment Transactions',
             teamSummary.totalPurchases,
             <TimelineIcon />,
             theme.palette.info.main,
-            'All-time transactions'
+            'Total acquisition events'
           )}
         </Grid>
       </Grid>
 
-      {/* Portfolio Details */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Investment Breakdown
-              </Typography>
-              <Stack spacing={2}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">Gold Spent:</Typography>
-                  <Typography variant="h6" color="warning.main">
-                    {LandService.formatCurrency(teamSummary.totalGoldSpent, 'gold')}
-                  </Typography>
-                </Box>
-                <Divider />
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">Carbon Spent:</Typography>
-                  <Typography variant="h6" color="success.main">
-                    {LandService.formatCurrency(teamSummary.totalCarbonSpent, 'carbon')}
-                  </Typography>
-                </Box>
-                <Divider />
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2" fontWeight="bold">Average Cost per Area:</Typography>
-                  <Typography variant="h6" color="primary.main">
-                    {teamSummary.totalOwnedArea > 0 
-                      ? LandService.formatCurrency(teamSummary.totalSpent / teamSummary.totalOwnedArea)
-                      : '0'
-                    }
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Portfolio Timeline
-              </Typography>
-              <Stack spacing={2}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">First Purchase:</Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    {teamSummary.firstPurchaseDate 
-                      ? format(new Date(teamSummary.firstPurchaseDate), 'MMM dd, yyyy')
-                      : 'N/A'
-                    }
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">Latest Purchase:</Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    {teamSummary.lastPurchaseDate 
-                      ? format(new Date(teamSummary.lastPurchaseDate), 'MMM dd, yyyy')
-                      : 'N/A'
-                    }
-                  </Typography>
-                </Box>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="body2">Activity Period:</Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    {teamSummary.firstPurchaseDate && teamSummary.lastPurchaseDate
-                      ? `${Math.ceil(
-                          (new Date(teamSummary.lastPurchaseDate).getTime() - 
-                           new Date(teamSummary.firstPurchaseDate).getTime()) / 
-                          (1000 * 60 * 60 * 24)
-                        )} days`
-                      : 'N/A'
-                    }
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
 
       {/* Filters */}
       {renderFilters()}

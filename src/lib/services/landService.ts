@@ -158,10 +158,23 @@ export class LandService {
    */
   static async validatePurchase(tileId: number, area: number): Promise<PurchaseValidation> {
     try {
-      const response = await apiClient.get<ApiResponse<PurchaseValidation>>(
+      const response = await apiClient.get(
         `${this.STUDENT_BASE_PATH}/validate-purchase/${tileId}/${area}`
       );
-      return response.data.data;
+      
+      // Handle nested API response structure: { data: { data: { ... } } }
+      const apiData = response.data;
+      if (apiData && apiData.data && apiData.data.data) {
+        return apiData.data.data;
+      }
+      
+      // Fallback for direct data structure
+      if (apiData && apiData.data) {
+        return apiData.data;
+      }
+      
+      // Final fallback
+      return apiData;
     } catch (error: any) {
       console.error('LandService.validatePurchase error:', error);
       throw this.handleLandError(error);

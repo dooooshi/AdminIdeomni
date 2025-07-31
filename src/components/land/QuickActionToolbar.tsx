@@ -20,7 +20,7 @@ import {
   Close as CloseIcon,
   GroupWork as BulkIcon,
   AttachMoney as MoneyIcon,
-  EcoOutlined as EcoIcon,
+  Nature as EcoIcon,
   LocationOn as LocationIcon
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
