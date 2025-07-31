@@ -27,7 +27,7 @@ import {
   ListAltOutlined,
 } from '@mui/icons-material';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { FacilityCard, FacilityPortfolioSummary, BuildFacilityModal } from '@/components/facilities';
+import { FacilityCard, FacilityPortfolioSummary, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from 'react-i18next';
 import type { 
@@ -72,6 +72,8 @@ const StudentFacilitiesPage: React.FC = () => {
 
   // Modal states
   const [buildModalOpen, setBuildModalOpen] = useState(false);
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
+  const [selectedFacilityForUpgrade, setSelectedFacilityForUpgrade] = useState<TileFacilityInstance | null>(null);
 
   // Load initial data
   useEffect(() => {
@@ -97,13 +99,15 @@ const StudentFacilitiesPage: React.FC = () => {
       ]);
 
       setSummary(summaryData);
-      setFacilities(facilitiesData.data);
-      setTotalPages(facilitiesData.totalPages);
-      setHasMore(facilitiesData.hasNext);
+      setFacilities(facilitiesData?.data || []);
+      setTotalPages(facilitiesData?.totalPages || 1);
+      setHasMore(facilitiesData?.hasNext || false);
 
     } catch (err) {
       console.error('Failed to load facility data:', err);
       setError(t('facilityManagement:FACILITY_LOAD_ERROR'));
+      setFacilities([]);
+      setSummary(null);
     } finally {
       setLoading(false);
     }
@@ -120,13 +124,14 @@ const StudentFacilitiesPage: React.FC = () => {
       if (typeFilter !== 'ALL') params.facilityType = typeFilter as FacilityType;
 
       const response = await StudentFacilityService.getTeamFacilities(params);
-      setFacilities(response.data);
-      setTotalPages(response.totalPages);
-      setHasMore(response.hasNext);
+      setFacilities(response?.data || []);
+      setTotalPages(response?.totalPages || 1);
+      setHasMore(response?.hasNext || false);
 
     } catch (err) {
       console.error('Failed to load facilities:', err);
       setError(t('facilityManagement:FACILITY_LOAD_ERROR'));
+      setFacilities([]);
     }
   };
 
@@ -144,7 +149,8 @@ const StudentFacilitiesPage: React.FC = () => {
   };
 
   const handleUpgradeClick = (facility: TileFacilityInstance) => {
-    console.log('Upgrade facility:', facility.id);
+    setSelectedFacilityForUpgrade(facility);
+    setUpgradeModalOpen(true);
   };
 
   const handleBuildNewFacility = () => {
@@ -156,9 +162,23 @@ const StudentFacilitiesPage: React.FC = () => {
   };
 
   const handleFacilityBuilt = (newFacility: TileFacilityInstance) => {
-    setFacilities(prev => [...prev, newFacility]);
+    setFacilities(prev => [...(prev || []), newFacility]);
     loadFacilityData();
     setBuildModalOpen(false);
+  };
+
+  const handleCloseUpgradeModal = () => {
+    setUpgradeModalOpen(false);
+    setSelectedFacilityForUpgrade(null);
+  };
+
+  const handleFacilityUpgraded = (upgradedFacility: TileFacilityInstance) => {
+    setFacilities(prev => (prev || []).map(f => 
+      f.id === upgradedFacility.id ? upgradedFacility : f
+    ));
+    loadFacilityData(); // Refresh summary data
+    setUpgradeModalOpen(false);
+    setSelectedFacilityForUpgrade(null);
   };
 
   // Filter facilities based on search term
@@ -262,7 +282,7 @@ const StudentFacilitiesPage: React.FC = () => {
           />
           <Tab
             icon={<ListAltOutlined sx={{ fontSize: 20 }} />}
-            label={`${t('facilityManagement:FACILITIES')} (${facilities.length})`}
+            label={`${t('facilityManagement:FACILITIES')} (${facilities?.length || 0})`}
             iconPosition="start"
           />
         </Tabs>
@@ -384,15 +404,15 @@ const StudentFacilitiesPage: React.FC = () => {
           </Card>
 
           {/* Facilities Grid */}
-          {filteredFacilities.length > 0 ? (
+          {(filteredFacilities?.length || 0) > 0 ? (
             <Box>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h6" fontWeight={500}>
-                  {filteredFacilities.length} Facilities
+                  {filteredFacilities?.length || 0} Facilities
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Total Value: {StudentFacilityService.formatCurrency(
-                    filteredFacilities.reduce((sum, f) => {
+                    (filteredFacilities || []).reduce((sum, f) => {
                       const totalInvestment = StudentFacilityService.calculateTotalInvestment(f);
                       return sum + totalInvestment;
                     }, 0)
@@ -463,6 +483,18 @@ const StudentFacilitiesPage: React.FC = () => {
         open={buildModalOpen}
         onClose={handleCloseBuildModal}
         onSuccess={handleFacilityBuilt}
+      />
+
+      {/* Upgrade Facility Modal */}
+      <UpgradeFacilityModal
+        open={upgradeModalOpen}
+        onClose={handleCloseUpgradeModal}
+        onSuccess={handleFacilityUpgraded}
+        facility={selectedFacilityForUpgrade}
+        teamBalance={summary ? {
+          gold: 1000000, // Mock data - should come from team balance API
+          carbon: 50000, // Mock data - should come from team balance API
+        } : undefined}
       />
     </Box>
   );

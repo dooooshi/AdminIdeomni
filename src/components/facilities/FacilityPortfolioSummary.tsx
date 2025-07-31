@@ -171,26 +171,26 @@ const FacilityPortfolioSummary: React.FC<FacilityPortfolioSummaryProps> = ({
                             {icon}
                           </Avatar>
                         </ListItemIcon>
-                        <ListItemText
-                          primary={name}
-                          secondary={
-                            <Box>
-                              <Box display="flex" justifyContent="space-between" mb={0.5}>
-                                <Typography variant="caption">
-                                  {count} {count === 1 ? 'facility' : 'facilities'}
-                                </Typography>
-                                <Typography variant="caption">
-                                  {(percentage || 0).toFixed(1)}%
-                                </Typography>
-                              </Box>
-                              <LinearProgress
-                                variant="determinate"
-                                value={percentage || 0}
-                                sx={{ height: 4, borderRadius: 2 }}
-                              />
-                            </Box>
-                          }
-                        />
+                        <Box sx={{ flex: 1 }}>
+                          <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+                            <Typography variant="body2" fontWeight="medium">
+                              {name}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {(percentage || 0).toFixed(1)}%
+                            </Typography>
+                          </Box>
+                          <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                            <Typography variant="caption" color="text.secondary">
+                              {count} {count === 1 ? 'facility' : 'facilities'}
+                            </Typography>
+                          </Box>
+                          <LinearProgress
+                            variant="determinate"
+                            value={percentage || 0}
+                            sx={{ height: 4, borderRadius: 2 }}
+                          />
+                        </Box>
                       </ListItem>
                     );
                   })}

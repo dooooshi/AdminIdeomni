@@ -32,6 +32,11 @@ export class StudentFacilityService {
    * Helper method to extract data from API response wrapper
    */
   private static extractResponseData<T>(response: any): T {
+    // Handle nested response structure: { data: { success: true, data: {...} } }
+    if (response.data?.data?.data) {
+      return response.data.data.data;
+    }
+    // Handle standard nested response: { data: {...} }
     return response.data?.data || response.data;
   }
 
@@ -81,20 +86,8 @@ export class StudentFacilityService {
     console.log('🔍 Response.data:', response.data);
     console.log('🔍 Response.data.data:', response.data?.data);
     
-    let extracted = this.extractResponseData(response);
+    let extracted = this.extractResponseData<BuildValidationResponse>(response);
     console.log('🔍 Extracted data:', extracted);
-    
-    // Handle nested response structure more explicitly
-    if (response.data?.data?.data) {
-      extracted = response.data.data.data;
-      console.log('🔍 Using triple-nested data:', extracted);
-    } else if (response.data?.data) {
-      extracted = response.data.data;
-      console.log('🔍 Using double-nested data:', extracted);
-    } else if (response.data) {
-      extracted = response.data;
-      console.log('🔍 Using single-nested data:', extracted);
-    }
     
     // Ensure canBuild is properly typed as boolean
     if (extracted && typeof extracted.canBuild !== 'undefined') {
@@ -102,7 +95,20 @@ export class StudentFacilityService {
       console.log('🔍 Final canBuild value:', extracted.canBuild);
     }
     
-    return extracted;
+    // Return with default values if extraction failed
+    return extracted || {
+      canBuild: false,
+      goldCost: 0,
+      carbonCost: 0,
+      totalCost: 0,
+      teamGoldBalance: 0,
+      teamCarbonBalance: 0,
+      requiredAreas: 0,
+      availableLandArea: 0,
+      currentInstances: 0,
+      maxInstances: 0,
+      errors: ['Failed to validate build capability']
+    };
   }
 
   // ==================== FACILITY RETRIEVAL OPERATIONS ====================

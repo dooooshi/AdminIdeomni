@@ -3,6 +3,7 @@ export { default as FacilityCard } from './FacilityCard';
 export { default as FacilityTypeSelector } from './FacilityTypeSelector';
 export { default as FacilityPortfolioSummary } from './FacilityPortfolioSummary';
 export { default as BuildFacilityModal } from './BuildFacilityModal';
+export { default as UpgradeFacilityModal } from './UpgradeFacilityModal';
 
 // Component exports for easy importing
 export type { default as FacilityCardProps } from './FacilityCard';

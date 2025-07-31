@@ -195,7 +195,7 @@ export interface TeamFacilitySummary {
   lastBuiltAt?: string;
 }
 
-// Upgrade Cost Calculation
+// Upgrade Cost Calculation - Expected TypeScript interface
 export interface UpgradeCostCalculation {
   facilityType: FacilityType;
   landType: LandType;
@@ -230,6 +230,23 @@ export interface UpgradeCostCalculation {
       efficiencyIncrease: string;
       productionBoost: string;
     };
+  };
+}
+
+// Upgrade Cost Calculation - Actual API Response Structure
+export interface UpgradeCostApiResponse {
+  facilityType: FacilityType;
+  landType: LandType;
+  currentLevel: number;
+  targetLevel: number;
+  upgradeCosts: {
+    level: number;
+    goldCost: number;
+    carbonCost: number;
+  }[];
+  totalCost: {
+    gold: number;
+    carbon: number;
   };
 }
 
