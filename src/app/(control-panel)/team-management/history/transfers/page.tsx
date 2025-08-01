@@ -32,7 +32,7 @@ import TeamTransferService from '@/lib/services/teamTransferService';
 import { TeamResourceType, HistoryFilterState } from '@/types/teamTransfer';
 
 /**
- * Transfer History Page
+ * Transfer History Page - Minimalist Business Design
  * Dedicated page for viewing transfer operations with directional filtering
  */
 function TransferHistoryPage() {
@@ -60,17 +60,9 @@ function TransferHistoryPage() {
     endDate: filters.endDate || undefined
   });
 
-  const container = {
-    show: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.3 } }
   };
 
   const handleFilterChange = (field: keyof HistoryFilterState, value: any) => {
@@ -96,21 +88,24 @@ function TransferHistoryPage() {
 
   if (error || !teamAccount) {
     return (
-      <div className="flex flex-col flex-1 relative overflow-hidden">
-        <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
-          <Paper className="p-8 text-center">
-            <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
-              heroicons-outline:exclamation-triangle
-            </IdeomniSvgIcon>
-            <Typography variant="h5" className="mb-2">
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-center">
+              <IdeomniSvgIcon size={24} className="text-red-500 dark:text-red-400">
+                heroicons-outline:exclamation-triangle
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement:NOT_IN_TEAM_YET')}
             </Typography>
-            <Typography color="text.secondary" className="mb-6">
+            <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
               {t('teamManagement:JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
+              className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
               {t('teamManagement:TEAM_DASHBOARD')}
             </Button>
@@ -121,39 +116,39 @@ function TransferHistoryPage() {
   }
 
   return (
-    <div className="flex flex-col flex-1 relative overflow-hidden">
-      <div className="flex flex-col flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <motion.div
-          className="flex flex-col gap-6"
-          variants={container}
+          variants={fadeIn}
           initial="hidden"
           animate="show"
+          className="space-y-8"
         >
           {/* Header */}
-          <motion.div variants={item}>
-            <div className="flex items-center gap-3 mb-2">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
               <Button
                 variant="text"
                 onClick={() => router.push('/team-management/history')}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
                 {t('teamManagement:BACK')}
               </Button>
             </div>
-            <Typography variant="h3" className="font-semibold">
+            <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
               {t('teamManagement:TRANSFER_HISTORY')}
             </Typography>
-            <Typography color="text.secondary" className="mt-2">
+            <Typography variant="body1" color="text.secondary">
               View all resource transfers sent and received by your team
             </Typography>
-          </motion.div>
+          </div>
 
           {/* Filters */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:FILTER_OPERATIONS')}
-              </Typography>
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              {t('teamManagement:FILTER_OPERATIONS')}
+            </Typography>
               <Grid component="div" container spacing={3}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
@@ -204,87 +199,91 @@ function TransferHistoryPage() {
                   />
                 </Grid>
               </Grid>
-              <div className="flex gap-3 mt-4">
-                <Button
-                  variant="outlined"
-                  onClick={handleClearFilters}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:CLEAR_FILTERS')}
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => refetch()}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:APPLY_FILTERS')}
-                </Button>
-              </div>
-            </Paper>
-          </motion.div>
+            <div className="flex gap-4 mt-6">
+              <Button
+                variant="outlined"
+                onClick={handleClearFilters}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:CLEAR_FILTERS')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => refetch()}
+                className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:APPLY_FILTERS')}
+              </Button>
+            </div>
+          </Paper>
 
           {/* Transfer Summary Cards */}
           {transfersData && (
-            <motion.div variants={item}>
-              <Grid component="div" container spacing={3}>
-                <Grid component="div" size={{ xs: 12, sm: 4 }}>
-                  <Paper className="p-4">
-                    <div className="flex items-center gap-3">
-                      <IdeomniSvgIcon size={24} className="text-blue-500">
+            <Grid component="div" container spacing={6}>
+              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+                <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                        Total Transfers
+                      </Typography>
+                      <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
+                        {transfersData.total}
+                      </Typography>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                      <IdeomniSvgIcon size={20} className="text-blue-500">
                         heroicons-outline:arrow-path
                       </IdeomniSvgIcon>
-                      <div>
-                        <Typography variant="body2" color="text.secondary">
-                          Total Transfers
-                        </Typography>
-                        <Typography variant="h6" className="font-semibold">
-                          {transfersData.total}
-                        </Typography>
-                      </div>
                     </div>
-                  </Paper>
-                </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 4 }}>
-                  <Paper className="p-4">
-                    <div className="flex items-center gap-3">
-                      <IdeomniSvgIcon size={24} className="text-green-500">
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+                <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                        {t('teamManagement:INCOMING')}
+                      </Typography>
+                      <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
+                        {transfersData.data.filter(t => t.operationType === 'TRANSFER_IN').length}
+                      </Typography>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
+                      <IdeomniSvgIcon size={20} className="text-green-500">
                         heroicons-outline:arrow-down-left
                       </IdeomniSvgIcon>
-                      <div>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('teamManagement:INCOMING')}
-                        </Typography>
-                        <Typography variant="h6" className="font-semibold text-green-600">
-                          {transfersData.data.filter(t => t.operationType === 'TRANSFER_IN').length}
-                        </Typography>
-                      </div>
                     </div>
-                  </Paper>
-                </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 4 }}>
-                  <Paper className="p-4">
-                    <div className="flex items-center gap-3">
-                      <IdeomniSvgIcon size={24} className="text-red-500">
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+                <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                        {t('teamManagement:OUTGOING')}
+                      </Typography>
+                      <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
+                        {transfersData.data.filter(t => t.operationType === 'TRANSFER_OUT').length}
+                      </Typography>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+                      <IdeomniSvgIcon size={20} className="text-red-500">
                         heroicons-outline:arrow-up-right
                       </IdeomniSvgIcon>
-                      <div>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('teamManagement:OUTGOING')}
-                        </Typography>
-                        <Typography variant="h6" className="font-semibold text-red-600">
-                          {transfersData.data.filter(t => t.operationType === 'TRANSFER_OUT').length}
-                        </Typography>
-                      </div>
                     </div>
-                  </Paper>
-                </Grid>
+                  </div>
+                </Paper>
               </Grid>
-            </motion.div>
+            </Grid>
           )}
 
           {/* Transfers Table */}
-          <motion.div variants={item}>
-            <Paper>
+          <Paper className="border border-gray-100 dark:border-gray-800 shadow-none">
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -390,11 +389,13 @@ function TransferHistoryPage() {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center py-8">
-                          <IdeomniSvgIcon size={48} className="text-gray-400 mx-auto mb-4">
-                            heroicons-outline:arrow-path
-                          </IdeomniSvgIcon>
-                          <Typography variant="body1" color="text.secondary">
+                        <TableCell colSpan={7} className="text-center py-16">
+                          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                            <IdeomniSvgIcon size={24} className="text-gray-400 dark:text-gray-500">
+                              heroicons-outline:arrow-path
+                            </IdeomniSvgIcon>
+                          </div>
+                          <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
                             {t('teamManagement:NO_TRANSFERS_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
@@ -409,7 +410,7 @@ function TransferHistoryPage() {
 
               {/* Pagination */}
               {transfersData && transfersData.totalPages > 1 && (
-                <Box className="p-4 border-t">
+                <Box className="p-6 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     <Typography variant="body2" color="text.secondary">
                       {t('teamManagement:SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement:TO')} {Math.min(page * pageSize, transfersData.total)} {t('teamManagement:OF')} {transfersData.total} {t('teamManagement:ENTRIES')}
@@ -423,40 +424,40 @@ function TransferHistoryPage() {
                   </div>
                 </Box>
               )}
-            </Paper>
-          </motion.div>
+          </Paper>
 
           {/* Quick Actions */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:QUICK_ACTIONS')}
-              </Typography>
-              <div className="flex gap-3 flex-wrap">
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/history/operations')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:ALL_OPERATIONS')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/history/balances')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:BALANCE_HISTORY')}
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => router.push('/team-management/transfers')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:TRANSFER_RESOURCES')}
-                </Button>
-              </div>
-            </Paper>
-          </motion.div>
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              {t('teamManagement:QUICK_ACTIONS')}
+            </Typography>
+            <div className="flex gap-4 flex-wrap">
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/history/operations')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:ALL_OPERATIONS')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/history/balances')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:BALANCE_HISTORY')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/transfers')}
+                className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:TRANSFER_RESOURCES')}
+              </Button>
+            </div>
+          </Paper>
         </motion.div>
       </div>
     </div>

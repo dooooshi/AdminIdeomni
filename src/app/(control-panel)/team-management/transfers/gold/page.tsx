@@ -27,7 +27,7 @@ import TeamTransferService from '@/lib/services/teamTransferService';
 import { TransferGoldRequest, TeamResourceType, TransferFormState } from '@/types/teamTransfer';
 
 /**
- * Gold Transfer Page
+ * Gold Transfer Page - Minimalist Business Design
  * Form for transferring gold to other teams
  */
 function GoldTransferPage() {
@@ -49,17 +49,9 @@ function GoldTransferPage() {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
 
-  const container = {
-    show: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.3 } }
   };
 
   // Validate form in real-time
@@ -87,7 +79,6 @@ function GoldTransferPage() {
   }, [formState, teamAccount]);
 
   const handleAmountChange = (value: string) => {
-    // Allow only numbers and up to 3 decimal places
     const regex = /^\d*\.?\d{0,3}$/;
     if (regex.test(value) || value === '') {
       setFormState(prev => ({ ...prev, amount: value }));
@@ -116,8 +107,6 @@ function GoldTransferPage() {
       await transferGold(request).unwrap();
       
       setShowConfirmDialog(false);
-      
-      // Show success message and redirect
       router.push('/team-management/transfers?success=gold');
     } catch (error: any) {
       const errorMessage = TeamTransferService.parseTransferError(error);
@@ -132,21 +121,24 @@ function GoldTransferPage() {
 
   if (error || !teamAccount) {
     return (
-      <div className="flex flex-col flex-1 relative overflow-hidden">
-        <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
-          <Paper className="p-8 text-center">
-            <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
-              heroicons-outline:exclamation-triangle
-            </IdeomniSvgIcon>
-            <Typography variant="h5" className="mb-2">
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-center">
+              <IdeomniSvgIcon size={24} className="text-red-500 dark:text-red-400">
+                heroicons-outline:exclamation-triangle
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement:NOT_IN_TEAM_YET')}
             </Typography>
-            <Typography color="text.secondary" className="mb-6">
+            <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
               {t('teamManagement:JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
+              className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
               {t('teamManagement:TEAM_DASHBOARD')}
             </Button>
@@ -158,28 +150,32 @@ function GoldTransferPage() {
 
   if (teamAccount.gold <= 0) {
     return (
-      <div className="flex flex-col flex-1 relative overflow-hidden">
-        <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
-          <Paper className="p-8 text-center">
-            <IdeomniSvgIcon size={64} className="text-yellow-600 mx-auto mb-4">
-              heroicons-outline:currency-dollar
-            </IdeomniSvgIcon>
-            <Typography variant="h5" className="mb-2">
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-center justify-center">
+              <IdeomniSvgIcon size={24} className="text-yellow-600">
+                heroicons-outline:currency-dollar
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement:INSUFFICIENT_BALANCE_ERROR')}
             </Typography>
-            <Typography color="text.secondary" className="mb-6">
+            <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
               You don't have any gold to transfer. Your current balance is {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}.
             </Typography>
-            <div className="flex gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
-                variant="contained"
+                variant="outlined"
                 onClick={() => router.push('/team-management/transfers')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
               >
                 {t('teamManagement:TRANSFER_HUB')}
               </Button>
               <Button
                 variant="outlined"
                 onClick={() => router.push('/team-management/dashboard')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
               >
                 {t('teamManagement:TEAM_DASHBOARD')}
               </Button>
@@ -198,205 +194,206 @@ function GoldTransferPage() {
   } : null;
 
   return (
-    <div className="flex flex-col flex-1 relative overflow-hidden">
-      <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-3xl mx-auto px-6 py-8">
         <motion.div
-          className="flex flex-col gap-6"
-          variants={container}
+          variants={fadeIn}
           initial="hidden"
           animate="show"
+          className="space-y-8"
         >
           {/* Header */}
-          <motion.div variants={item}>
-            <div className="flex items-center gap-3 mb-2">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
               <Button
                 variant="text"
                 onClick={() => router.push('/team-management/transfers')}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
                 {t('teamManagement:BACK')}
               </Button>
             </div>
-            <Typography variant="h3" className="font-semibold">
+            <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
               {t('teamManagement:TRANSFER_GOLD_TO_TEAM')}
             </Typography>
-            <Typography color="text.secondary" className="mt-2">
+            <Typography variant="body1" color="text.secondary">
               {t('teamManagement:TRANSFER_GOLD_SUBTITLE')}
             </Typography>
-          </motion.div>
+          </div>
 
           {/* Current Balance */}
-          <motion.div variants={item}>
-            <Paper className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-              <div className="flex items-center gap-3">
-                <IdeomniSvgIcon size={24} className="text-yellow-600">
+          <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-center justify-center">
+                <IdeomniSvgIcon size={20} className="text-yellow-600">
                   heroicons-solid:currency-dollar
                 </IdeomniSvgIcon>
-                <div>
-                  <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:AVAILABLE_BALANCE')}
-                  </Typography>
-                  <Typography variant="h6" className="font-semibold text-yellow-600">
-                    {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
-                  </Typography>
-                </div>
               </div>
-            </Paper>
-          </motion.div>
+              <div>
+                <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                  {t('teamManagement:AVAILABLE_BALANCE')}
+                </Typography>
+                <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1">
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                </Typography>
+              </div>
+            </div>
+          </Paper>
 
           {/* Transfer Form */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <div className="space-y-6">
-                {/* Target Team Selection */}
-                <div>
-                  <Typography variant="body1" className="mb-2 font-medium">
-                    {t('teamManagement:SELECT_TARGET_TEAM')} <span className="text-red-500">*</span>
-                  </Typography>
-                  <Autocomplete
-                    options={Array.isArray(availableTeams) ? availableTeams : []}
-                    getOptionLabel={(team) => team?.name || 'Unknown Team'}
-                    loading={loadingTeams}
-                    value={Array.isArray(availableTeams) ? availableTeams.find(team => team?.id === formState.selectedTeamId) || null : null}
-                    onChange={(_, newValue) => {
-                      setFormState(prev => ({ 
-                        ...prev, 
-                        selectedTeamId: newValue?.id || null 
-                      }));
-                    }}
-                    noOptionsText={loadingTeams ? t('teamManagement:LOADING_TEAMS') : t('teamManagement:NO_TEAMS_AVAILABLE_FOR_TRANSFER')}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        placeholder={t('teamManagement:SELECT_TEAM_PLACEHOLDER')}
-                        fullWidth
-                        InputProps={{
-                          ...params.InputProps,
-                          endAdornment: (
-                            <>
-                              {loadingTeams && <LinearProgress />}
-                              {params.InputProps.endAdornment}
-                            </>
-                          ),
-                        }}
-                      />
-                    )}
-                    renderOption={(props, team) => {
-                      const { key, ...otherProps } = props;
-                      return (
-                        <Box component="li" key={key} {...otherProps}>
-                        <div className="flex items-center gap-3 w-full">
-                          <div className="w-8 h-8 rounded-full bg-primary-500 text-white flex items-center justify-center text-sm font-semibold">
-                            {team.name[0]}
-                          </div>
-                          <div className="flex-1">
-                            <Typography variant="body2" className="font-medium">
-                              {team.name}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {team?.memberCount || 0}/{team?.maxMembers || 0} {t('teamManagement:MEMBERS')} • {team?.leader?.firstName ? `${team.leader.firstName} ${team.leader.lastName}` : team?.leader?.username || 'Unknown'}
-                            </Typography>
-                          </div>
-                        </div>
-                        </Box>
-                      );
-                    }}
-                  />
-                </div>
-
-                {/* Amount Input */}
-                <div>
-                  <Typography variant="body1" className="mb-2 font-medium">
-                    {t('teamManagement:TRANSFER_AMOUNT')} <span className="text-red-500">*</span>
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder={t('teamManagement:AMOUNT_PLACEHOLDER')}
-                    value={formState.amount}
-                    onChange={(e) => handleAmountChange(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <IdeomniSvgIcon size={20} className="text-yellow-600 mr-2">
-                          heroicons-solid:currency-dollar
-                        </IdeomniSvgIcon>
-                      ),
-                    }}
-                    helperText={`${t('teamManagement:AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}`}
-                  />
-                </div>
-
-                {/* Description */}
-                <div>
-                  <Typography variant="body1" className="mb-2 font-medium">
-                    {t('teamManagement:TRANSFER_DESCRIPTION')}
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={3}
-                    placeholder={t('teamManagement:TRANSFER_DESCRIPTION_PLACEHOLDER')}
-                    value={formState.description}
-                    onChange={(e) => setFormState(prev => ({ 
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="space-y-6">
+              {/* Target Team Selection */}
+              <div>
+                <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
+                  {t('teamManagement:SELECT_TARGET_TEAM')} <span className="text-red-500">*</span>
+                </Typography>
+                <Autocomplete
+                  options={Array.isArray(availableTeams) ? availableTeams : []}
+                  getOptionLabel={(team) => team?.name || 'Unknown Team'}
+                  loading={loadingTeams}
+                  value={Array.isArray(availableTeams) ? availableTeams.find(team => team?.id === formState.selectedTeamId) || null : null}
+                  onChange={(_, newValue) => {
+                    setFormState(prev => ({ 
                       ...prev, 
-                      description: e.target.value 
-                    }))}
-                    inputProps={{ maxLength: 200 }}
-                    helperText={`${formState.description.length}/200 ${t('teamManagement:DESCRIPTION_CHAR_COUNT')}`}
-                  />
-                </div>
-
-                {/* Validation Messages */}
-                {validationErrors.length > 0 && (
-                  <Alert severity="error">
-                    <ul className="list-disc list-inside">
-                      {validationErrors.map((error, index) => (
-                        <li key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  </Alert>
-                )}
-
-                {validationWarnings.length > 0 && (
-                  <Alert severity="warning">
-                    <ul className="list-disc list-inside">
-                      {validationWarnings.map((warning, index) => (
-                        <li key={index}>{warning}</li>
-                      ))}
-                    </ul>
-                  </Alert>
-                )}
-
-                {formState.error && (
-                  <Alert severity="error">
-                    {formState.error}
-                  </Alert>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4">
-                  <Button
-                    variant="outlined"
-                    onClick={() => router.push('/team-management/transfers')}
-                  >
-                    {t('teamManagement:CANCEL_TRANSFER')}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    onClick={handleSubmit}
-                    disabled={
-                      !formState.selectedTeamId || 
-                      !formState.amount || 
-                      validationErrors.length > 0 ||
-                      isTransferring
-                    }
-                    startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
-                  >
-                    {t('teamManagement:SEND_TRANSFER')}
-                  </Button>
-                </div>
+                      selectedTeamId: newValue?.id || null 
+                    }));
+                  }}
+                  noOptionsText={loadingTeams ? t('teamManagement:LOADING_TEAMS') : t('teamManagement:NO_TEAMS_AVAILABLE_FOR_TRANSFER')}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder={t('teamManagement:SELECT_TEAM_PLACEHOLDER')}
+                      fullWidth
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {loadingTeams && <LinearProgress />}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                  renderOption={(props, team) => {
+                    const { key, ...otherProps } = props;
+                    return (
+                      <Box component="li" key={key} {...otherProps}>
+                      <div className="flex items-center gap-3 w-full py-2">
+                        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm font-medium">
+                          {team.name[0]}
+                        </div>
+                        <div className="flex-1">
+                          <Typography variant="body2" className="font-medium text-gray-900 dark:text-white">
+                            {team.name}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {team?.memberCount || 0}/{team?.maxMembers || 0} {t('teamManagement:MEMBERS')} • {team?.leader?.firstName ? `${team.leader.firstName} ${team.leader.lastName}` : team?.leader?.username || 'Unknown'}
+                          </Typography>
+                        </div>
+                      </div>
+                      </Box>
+                    );
+                  }}
+                />
               </div>
-            </Paper>
-          </motion.div>
+
+              {/* Amount Input */}
+              <div>
+                <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
+                  {t('teamManagement:TRANSFER_AMOUNT')} <span className="text-red-500">*</span>
+                </Typography>
+                <TextField
+                  fullWidth
+                  placeholder={t('teamManagement:AMOUNT_PLACEHOLDER')}
+                  value={formState.amount}
+                  onChange={(e) => handleAmountChange(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <IdeomniSvgIcon size={20} className="text-yellow-600 mr-2">
+                        heroicons-solid:currency-dollar
+                      </IdeomniSvgIcon>
+                    ),
+                  }}
+                  helperText={`${t('teamManagement:AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}`}
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
+                  {t('teamManagement:TRANSFER_DESCRIPTION')}
+                </Typography>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={3}
+                  placeholder={t('teamManagement:TRANSFER_DESCRIPTION_PLACEHOLDER')}
+                  value={formState.description}
+                  onChange={(e) => setFormState(prev => ({ 
+                    ...prev, 
+                    description: e.target.value 
+                  }))}
+                  inputProps={{ maxLength: 200 }}
+                  helperText={`${formState.description.length}/200 ${t('teamManagement:DESCRIPTION_CHAR_COUNT')}`}
+                />
+              </div>
+
+              {/* Validation Messages */}
+              {validationErrors.length > 0 && (
+                <Alert severity="error">
+                  <ul className="list-disc list-inside">
+                    {validationErrors.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                </Alert>
+              )}
+
+              {validationWarnings.length > 0 && (
+                <Alert severity="warning">
+                  <ul className="list-disc list-inside">
+                    {validationWarnings.map((warning, index) => (
+                      <li key={index}>{warning}</li>
+                    ))}
+                  </ul>
+                </Alert>
+              )}
+
+              {formState.error && (
+                <Alert severity="error">
+                  {formState.error}
+                </Alert>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 pt-6">
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push('/team-management/transfers')}
+                  className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                >
+                  {t('teamManagement:CANCEL_TRANSFER')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={handleSubmit}
+                  disabled={
+                    !formState.selectedTeamId || 
+                    !formState.amount || 
+                    validationErrors.length > 0 ||
+                    isTransferring
+                  }
+                  className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement:SEND_TRANSFER')}
+                </Button>
+              </div>
+            </div>
+          </Paper>
         </motion.div>
       </div>
 

@@ -29,7 +29,7 @@ import TeamTransferService from '@/lib/services/teamTransferService';
 import { TeamResourceType, BalanceTrendData } from '@/types/teamTransfer';
 
 /**
- * Balance History Page
+ * Balance History Page - Minimalist Business Design
  * View balance snapshots and changes over time
  */
 function BalanceHistoryPage() {
@@ -49,17 +49,9 @@ function BalanceHistoryPage() {
     endDate: endDate || undefined
   });
 
-  const container = {
-    show: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.3 } }
   };
 
   const handleClearFilters = () => {
@@ -83,21 +75,24 @@ function BalanceHistoryPage() {
 
   if (error || !teamAccount) {
     return (
-      <div className="flex flex-col flex-1 relative overflow-hidden">
-        <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
-          <Paper className="p-8 text-center">
-            <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
-              heroicons-outline:exclamation-triangle
-            </IdeomniSvgIcon>
-            <Typography variant="h5" className="mb-2">
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-center">
+              <IdeomniSvgIcon size={24} className="text-red-500 dark:text-red-400">
+                heroicons-outline:exclamation-triangle
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement:NOT_IN_TEAM_YET')}
             </Typography>
-            <Typography color="text.secondary" className="mb-6">
+            <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
               {t('teamManagement:JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
-              variant="contained"
+              variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
+              className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
               {t('teamManagement:TEAM_DASHBOARD')}
             </Button>
@@ -108,180 +103,175 @@ function BalanceHistoryPage() {
   }
 
   return (
-    <div className="flex flex-col flex-1 relative overflow-hidden">
-      <div className="flex flex-col flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <motion.div
-          className="flex flex-col gap-6"
-          variants={container}
+          variants={fadeIn}
           initial="hidden"
           animate="show"
+          className="space-y-8"
         >
           {/* Header */}
-          <motion.div variants={item}>
-            <div className="flex items-center gap-3 mb-2">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
               <Button
                 variant="text"
                 onClick={() => router.push('/team-management/history')}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
                 {t('teamManagement:BACK')}
               </Button>
             </div>
-            <Typography variant="h3" className="font-semibold">
+            <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
               {t('teamManagement:BALANCE_HISTORY')}
             </Typography>
-            <Typography color="text.secondary" className="mt-2">
+            <Typography variant="body1" color="text.secondary">
               Track how your team's balance has changed over time
             </Typography>
-          </motion.div>
+          </div>
 
           {/* Current Balance */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:CURRENT_BALANCE')}
-              </Typography>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Box className="flex items-center gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                  <IdeomniSvgIcon size={24} className="text-yellow-600">
-                    heroicons-solid:currency-dollar
-                  </IdeomniSvgIcon>
-                  <div>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:GOLD_BALANCE')}
-                    </Typography>
-                    <Typography variant="h6" className="font-semibold text-yellow-600">
-                      {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
-                    </Typography>
-                  </div>
-                </Box>
-                <Box className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <IdeomniSvgIcon size={24} className="text-green-600">
-                    heroicons-solid:leaf
-                  </IdeomniSvgIcon>
-                  <div>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:CARBON_BALANCE')}
-                    </Typography>
-                    <Typography variant="h6" className="font-semibold text-green-600">
-                      {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
-                    </Typography>
-                  </div>
-                </Box>
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              {t('teamManagement:CURRENT_BALANCE')}
+            </Typography>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
+                  {t('teamManagement:GOLD_BALANCE')}
+                </Typography>
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                </Typography>
               </div>
-            </Paper>
-          </motion.div>
+              <div>
+                <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
+                  {t('teamManagement:CARBON_BALANCE')}
+                </Typography>
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                  {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                </Typography>
+              </div>
+            </div>
+          </Paper>
 
           {/* Date Filters */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:DATE_RANGE')}
-              </Typography>
-              <div className="flex gap-4 items-end">
-                <TextField
-                  type="date"
-                  label={t('teamManagement:FROM_DATE')}
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  InputLabelProps={{ shrink: true }}
-                />
-                <TextField
-                  type="date"
-                  label={t('teamManagement:TO_DATE')}
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  InputLabelProps={{ shrink: true }}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={handleClearFilters}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:CLEAR_FILTERS')}
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => refetch()}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:APPLY_FILTERS')}
-                </Button>
-              </div>
-            </Paper>
-          </motion.div>
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              {t('teamManagement:DATE_RANGE')}
+            </Typography>
+            <div className="flex gap-4 items-end">
+              <TextField
+                type="date"
+                label={t('teamManagement:FROM_DATE')}
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                type="date"
+                label={t('teamManagement:TO_DATE')}
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                InputLabelProps={{ shrink: true }}
+              />
+              <Button
+                variant="outlined"
+                onClick={handleClearFilters}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:CLEAR_FILTERS')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => refetch()}
+                className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:APPLY_FILTERS')}
+              </Button>
+            </div>
+          </Paper>
 
           {/* Balance Summary Stats */}
           {balanceSummary && (
-            <motion.div variants={item}>
-              <Typography variant="h6" className="mb-4">
+            <div>
+              <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
                 Balance Change Summary
               </Typography>
-              <Grid component="div" container spacing={3}>
+              <Grid component="div" container spacing={6}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
-                  <Card>
-                    <CardContent>
+                  <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
+                    <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
                             Total Changes
                           </Typography>
-                          <Typography variant="h5" className="font-bold">
+                          <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.totalChanges}
                           </Typography>
                         </div>
-                        <IdeomniSvgIcon size={24} className="text-blue-500">
-                          heroicons-outline:scale
-                        </IdeomniSvgIcon>
+                        <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                          <IdeomniSvgIcon size={20} className="text-blue-500">
+                            heroicons-outline:scale
+                          </IdeomniSvgIcon>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                 </Grid>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
-                  <Card>
-                    <CardContent>
+                  <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
+                    <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
                             Gold Changes
                           </Typography>
-                          <Typography variant="h5" className="font-bold text-yellow-600">
+                          <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.goldChanges}
                           </Typography>
                         </div>
-                        <IdeomniSvgIcon size={24} className="text-yellow-500">
-                          heroicons-outline:currency-dollar
-                        </IdeomniSvgIcon>
+                        <div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
+                          <IdeomniSvgIcon size={20} className="text-yellow-500">
+                            heroicons-outline:currency-dollar
+                          </IdeomniSvgIcon>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                 </Grid>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
-                  <Card>
-                    <CardContent>
+                  <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
+                    <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
                             Carbon Changes
                           </Typography>
-                          <Typography variant="h5" className="font-bold text-green-600">
+                          <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.carbonChanges}
                           </Typography>
                         </div>
-                        <IdeomniSvgIcon size={24} className="text-green-500">
-                          heroicons-outline:leaf
-                        </IdeomniSvgIcon>
+                        <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
+                          <IdeomniSvgIcon size={20} className="text-green-500">
+                            heroicons-outline:leaf
+                          </IdeomniSvgIcon>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                 </Grid>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="body2" color="text.secondary" className="mb-2">
+                  <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
+                    <CardContent className="p-6">
+                      <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                         Largest Increases
                       </Typography>
-                      <Typography variant="body2" className="text-yellow-600">
+                      <Typography variant="body2" className="text-yellow-600 mb-1">
                         Gold: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
                       </Typography>
                       <Typography variant="body2" className="text-green-600">
@@ -291,12 +281,11 @@ function BalanceHistoryPage() {
                   </Card>
                 </Grid>
               </Grid>
-            </motion.div>
+            </div>
           )}
 
           {/* Balance History Table */}
-          <motion.div variants={item}>
-            <Paper>
+          <Paper className="border border-gray-100 dark:border-gray-800 shadow-none">
               <TableContainer>
                 <Table>
                   <TableHead>
@@ -376,11 +365,13 @@ function BalanceHistoryPage() {
                       ))
                     ) : (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8">
-                          <IdeomniSvgIcon size={48} className="text-gray-400 mx-auto mb-4">
-                            heroicons-outline:scale
-                          </IdeomniSvgIcon>
-                          <Typography variant="body1" color="text.secondary">
+                        <TableCell colSpan={6} className="text-center py-16">
+                          <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                            <IdeomniSvgIcon size={24} className="text-gray-400 dark:text-gray-500">
+                              heroicons-outline:scale
+                            </IdeomniSvgIcon>
+                          </div>
+                          <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
                             {t('teamManagement:NO_BALANCE_CHANGES_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
@@ -395,7 +386,7 @@ function BalanceHistoryPage() {
 
               {/* Pagination */}
               {balanceData && balanceData.totalPages > 1 && (
-                <Box className="p-4 border-t">
+                <Box className="p-6 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     <Typography variant="body2" color="text.secondary">
                       {t('teamManagement:SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement:TO')} {Math.min(page * pageSize, balanceData.total)} {t('teamManagement:OF')} {balanceData.total} {t('teamManagement:ENTRIES')}
@@ -409,40 +400,40 @@ function BalanceHistoryPage() {
                   </div>
                 </Box>
               )}
-            </Paper>
-          </motion.div>
+          </Paper>
 
           {/* Quick Actions */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:QUICK_ACTIONS')}
-              </Typography>
-              <div className="flex gap-3 flex-wrap">
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/history/operations')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:ALL_OPERATIONS')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/history/transfers')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:TRANSFER_HISTORY')}
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={() => router.push('/team-management/transfers')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:TRANSFER_RESOURCES')}
-                </Button>
-              </div>
-            </Paper>
-          </motion.div>
+          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              {t('teamManagement:QUICK_ACTIONS')}
+            </Typography>
+            <div className="flex gap-4 flex-wrap">
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/history/operations')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:ALL_OPERATIONS')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/history/transfers')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:TRANSFER_HISTORY')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/transfers')}
+                className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:TRANSFER_RESOURCES')}
+              </Button>
+            </div>
+          </Paper>
         </motion.div>
       </div>
     </div>
