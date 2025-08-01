@@ -89,25 +89,27 @@ function TeamAccountCard({
 
   if (error) {
     return (
-      <Card className={className}>
-        <CardContent className={compact ? "p-4" : "p-6"}>
-          <Alert 
-            severity="warning" 
-            action={
-              <IconButton
-                color="inherit"
-                size="small"
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-              >
-                <IdeomniSvgIcon className={isRefreshing ? 'animate-spin' : ''}>
-                  heroicons-outline:refresh
-                </IdeomniSvgIcon>
-              </IconButton>
-            }
-          >
-            {error ? t('teamAccounts:failedToLoadAccount') : t('teamAccounts:noAccountFound')}
-          </Alert>
+      <Card className={`${className} border border-gray-100 dark:border-gray-800 shadow-none`}>
+        <CardContent className={compact ? "p-6" : "p-8"}>
+          <div className="text-center py-8">
+            <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+              <IdeomniSvgIcon size={20} className="text-red-500 dark:text-red-400">
+                heroicons-outline:exclamation-triangle
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="body2" className="text-gray-600 dark:text-gray-400 mb-4">
+              {error ? t('teamAccounts:failedToLoadAccount') : t('teamAccounts:noAccountFound')}
+            </Typography>
+            <Button
+              variant="text"
+              size="small"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+            >
+              Try Again
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );
@@ -115,11 +117,18 @@ function TeamAccountCard({
 
   if (!teamAccount) {
     return (
-      <Card className={className}>
-        <CardContent className={compact ? "p-4" : "p-6"}>
-          <Alert severity="info">
-            {t('teamAccounts:noTeamAccount')}
-          </Alert>
+      <Card className={`${className} border border-gray-100 dark:border-slate-700 shadow-none bg-white dark:bg-slate-800`}>
+        <CardContent className={compact ? "p-6" : "p-8"}>
+          <div className="text-center py-8">
+            <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+              <IdeomniSvgIcon size={20} className="text-blue-500 dark:text-blue-400">
+                heroicons-outline:information-circle
+              </IdeomniSvgIcon>
+            </div>
+            <Typography variant="body2" className="text-gray-600 dark:text-gray-400">
+              {t('teamAccounts:noTeamAccount')}
+            </Typography>
+          </div>
         </CardContent>
       </Card>
     );
@@ -132,19 +141,19 @@ function TeamAccountCard({
       animate="show"
       className={className}
     >
-      <Card className="h-full">
-        <CardContent className={compact ? "p-4" : "p-6"}>
+      <Card className="h-full border border-gray-100 dark:border-gray-800 shadow-none">
+        <CardContent className={compact ? "p-6" : "p-8"}>
           {/* Header */}
-          <Box className="flex items-center justify-between mb-4">
-            <Typography variant={compact ? "h6" : "h5"} className="font-semibold">
-              {t('teamAccounts:teamResources')}
+          <Box className="flex items-center justify-between mb-8">
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
+              Team Resources
             </Typography>
             <Tooltip title={t('common:refresh')}>
               <IconButton
                 size="small"
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
               >
                 <IdeomniSvgIcon className={isRefreshing ? 'animate-spin' : ''}>
                   heroicons-outline:refresh
@@ -154,77 +163,85 @@ function TeamAccountCard({
           </Box>
 
           {/* Resources Display */}
-          <Box className="mb-4">
-            <ResourceDisplay
-              gold={teamAccount.gold}
-              carbon={teamAccount.carbon}
-              layout="horizontal"
-              variant="card"
-              size={compact ? "small" : "medium"}
-            />
+          <Box className="mb-8">
+            <div className="grid grid-cols-2 gap-8">
+              <div>
+                <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
+                  Gold Balance
+                </Typography>
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                  {teamAccount.gold.toLocaleString()}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="caption" className="text-gray-500 dark:text-slate-400 uppercase tracking-wider text-xs font-medium mb-2 block">
+                  Carbon Credits
+                </Typography>
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                  {teamAccount.carbon.toLocaleString()}
+                </Typography>
+              </div>
+            </div>
           </Box>
 
-          {/* Resource Status Indicators */}
+          {/* Resource Status */}
           {!compact && (
-            <Box className="flex gap-2 mb-4">
-              {teamAccount.gold === 0 && (
-                <Chip
-                  size="small"
-                  label={t('teamAccounts:noGold')}
-                  color="warning"
-                  variant="outlined"
-                />
-              )}
-              {teamAccount.carbon === 0 && (
-                <Chip
-                  size="small"
-                  label={t('teamAccounts:noCarbon')}
-                  color="warning"
-                  variant="outlined"
-                />
-              )}
-              {teamAccount.gold > 0 && teamAccount.carbon > 0 && (
-                <Chip
-                  size="small"
-                  label={t('teamAccounts:resourcesAvailable')}
-                  color="success"
-                  variant="outlined"
-                />
-              )}
+            <Box className="mb-6">
+              <div className="flex items-center gap-3">
+                <div className={`w-2 h-2 rounded-full ${
+                  teamAccount.gold > 0 && teamAccount.carbon > 0 
+                    ? 'bg-green-400' 
+                    : teamAccount.gold === 0 && teamAccount.carbon === 0
+                    ? 'bg-red-400'
+                    : 'bg-amber-400'
+                }`} />
+                <Typography variant="body2" color="text.secondary">
+                  {teamAccount.gold > 0 && teamAccount.carbon > 0 
+                    ? 'All resources available'
+                    : teamAccount.gold === 0 && teamAccount.carbon === 0
+                    ? 'No resources available'
+                    : 'Limited resources available'
+                  }
+                </Typography>
+              </div>
             </Box>
           )}
 
           {/* Team Information */}
           {showTeamInfo && !compact && teamAccount.team && (
-            <Box className="pt-4 border-t border-gray-200">
-              <Typography variant="caption" color="textSecondary" className="block mb-1">
-                {t('teamAccounts:teamName')}
-              </Typography>
-              <Typography variant="body2" className="font-medium mb-2">
-                {teamAccount.team.name}
-              </Typography>
-              
-              {teamAccount.team.leader && (
-                <>
-                  <Typography variant="caption" color="textSecondary" className="block mb-1">
-                    {t('teamAccounts:teamLeader')}
+            <Box className="pt-6 border-t border-gray-100 dark:border-gray-800">
+              <div className="space-y-4">
+                <div>
+                  <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                    Team Name
                   </Typography>
-                  <Typography variant="body2">
-                    {teamAccount.team.leader.firstName && teamAccount.team.leader.lastName
-                      ? `${teamAccount.team.leader.firstName} ${teamAccount.team.leader.lastName}`
-                      : teamAccount.team.leader.username
-                    }
+                  <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
+                    {teamAccount.team.name}
                   </Typography>
-                </>
-              )}
+                </div>
+                
+                {teamAccount.team.leader && (
+                  <div>
+                    <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                      Team Leader  
+                    </Typography>
+                    <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
+                      {teamAccount.team.leader.firstName && teamAccount.team.leader.lastName
+                        ? `${teamAccount.team.leader.firstName} ${teamAccount.team.leader.lastName}`
+                        : teamAccount.team.leader.username
+                      }
+                    </Typography>
+                  </div>
+                )}
+              </div>
             </Box>
           )}
 
           {/* Last Updated */}
           {!compact && (
-            <Box className="mt-4 pt-4 border-t border-gray-200">
-              <Typography variant="caption" color="textSecondary">
-                {t('teamAccounts:lastUpdated')}: {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
+            <Box className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+              <Typography variant="caption" className="text-gray-500 dark:text-gray-400">
+                Last updated {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
               </Typography>
             </Box>
           )}

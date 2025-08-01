@@ -17,7 +17,7 @@ import TeamAccountCard from './TeamAccountCard';
 import TeamAccountService from '@/lib/services/teamAccountService';
 
 /**
- * Team Dashboard Component
+ * Team Dashboard Component - Minimalist Business Design
  */
 function TeamDashboard() {
   const { t, i18n } = useTranslation();
@@ -34,20 +34,12 @@ function TeamDashboard() {
   };
 
   const handleTeamCreateSuccess = () => {
-    refetch(); // Refresh team data after successful creation
+    refetch();
   };
 
-  const container = {
-    show: {
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { duration: 0.3 } }
   };
 
   if (isLoading) {
@@ -58,59 +50,58 @@ function TeamDashboard() {
   if (error || !team) {
     return (
       <>
-        <div className="flex flex-col flex-1 relative overflow-hidden">
-          <div className="flex flex-col flex-1 max-w-2xl w-full mx-auto px-6 py-8">
+        <div className="min-h-screen bg-white dark:bg-zinc-900">
+          <div className="max-w-2xl mx-auto px-6 py-16">
             <motion.div
-              className="flex flex-col gap-6"
-              variants={container}
+              variants={fadeIn}
               initial="hidden"
               animate="show"
+              className="space-y-12"
             >
-              {/* Header */}
-              <motion.div variants={item}>
-                <Typography variant="h3" className="font-semibold">
+              <div className="text-center">
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-3">
                   {t('teamManagement:TEAM_DASHBOARD')}
                 </Typography>
-                <Typography color="text.secondary" className="mt-2">
+                <Typography variant="body1" color="text.secondary" className="max-w-md mx-auto">
                   {t('teamManagement:MANAGE_TEAM_COLLABORATION')}
                 </Typography>
-              </motion.div>
+              </div>
 
-              {/* No Team Card */}
-              <motion.div variants={item}>
-                <Paper className="p-8 text-center">
-                  <IdeomniSvgIcon size={64} className="text-gray-400 mx-auto mb-4">
+              <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none bg-gray-50/50 dark:bg-gray-800/50">
+                <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                  <IdeomniSvgIcon size={32} className="text-gray-400 dark:text-gray-500">
                     heroicons-outline:user-group
                   </IdeomniSvgIcon>
-                  <Typography variant="h5" className="mb-2">
-                    {t('teamManagement:NOT_IN_TEAM_YET')}
-                  </Typography>
-                  <Typography color="text.secondary" className="mb-6">
-                    {t('teamManagement:JOIN_OR_CREATE_TEAM')}
-                  </Typography>
-                  <div className="flex gap-3 justify-center">
-                    <Button
-                      variant="contained"
-                      onClick={() => router.push('/team-management/browse')}
-                      startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
-                    >
-                      {t('teamManagement:BROWSE_TEAMS_BUTTON')}
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleOpenCreateModal}
-                      startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
-                    >
-                      {t('teamManagement:CREATE_TEAM_BUTTON')}
-                    </Button>
-                  </div>
-                </Paper>
-              </motion.div>
+                </div>
+                <Typography variant="h5" className="font-medium mb-4 text-gray-900 dark:text-white">
+                  {t('teamManagement:NOT_IN_TEAM_YET')}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" className="mb-12 max-w-sm mx-auto leading-relaxed">
+                  {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+                </Typography>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={() => router.push('/team-management/browse')}
+                    className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 shadow-none font-medium px-8 py-3"
+                  >
+                    {t('teamManagement:BROWSE_TEAMS_BUTTON')}
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="large"
+                    onClick={handleOpenCreateModal}
+                    className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 font-medium px-8 py-3"
+                  >
+                    {t('teamManagement:CREATE_TEAM_BUTTON')}
+                  </Button>
+                </div>
+              </Paper>
             </motion.div>
           </div>
         </div>
 
-        {/* Create Team Modal */}
         <CreateTeamModal
           open={isCreateModalOpen}
           onClose={handleCloseCreateModal}
@@ -124,199 +115,196 @@ function TeamDashboard() {
   const isLeader = team.leader.id === team.members.find(m => m.status === 'ACTIVE')?.user.id;
 
   return (
-    <div className="flex flex-col flex-1 relative overflow-hidden">
-      <div className="flex flex-col flex-1 max-w-4xl w-full mx-auto px-6 py-8">
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         <motion.div
-          className="flex flex-col gap-6"
-          variants={container}
+          variants={fadeIn}
           initial="hidden"
           animate="show"
+          className="space-y-12"
         >
           {/* Header */}
-          <motion.div variants={item} className="flex items-center justify-between">
+          <div className="flex items-start justify-between">
             <div>
-              <Typography variant="h3" className="font-semibold">
+              <Typography variant="h3" className="font-light text-gray-900 dark:text-white mb-2">
                 {team.name}
               </Typography>
-              <Typography color="text.secondary" className="mt-1">
+              <Typography variant="body1" color="text.secondary">
                 {team.description || t('teamManagement:TEAM_DASHBOARD_FALLBACK')}
               </Typography>
             </div>
-            <div className="flex gap-2">
-              {isLeader && (
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/settings')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:cog</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:SETTINGS')}
-                </Button>
-              )}
-            </div>
-          </motion.div>
+            {isLeader && (
+              <Button
+                variant="text"
+                onClick={() => router.push('/team-management/settings')}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                endIcon={<IdeomniSvgIcon size={18}>heroicons-outline:cog</IdeomniSvgIcon>}
+              >
+                {t('teamManagement:SETTINGS')}
+              </Button>
+            )}
+          </div>
 
-          {/* Dashboard Grid - Team Info and Account */}
-          <motion.div variants={item}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Team Info Card */}
-              <Paper className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <Typography variant="h6">{t('teamManagement:TEAM_INFORMATION')}</Typography>
-                  <div className="flex items-center gap-2">
-                    <IdeomniSvgIcon size={20} className="text-green-500">
-                      heroicons-solid:check-circle
-                    </IdeomniSvgIcon>
-                    <Typography color="text.secondary" variant="body2">
-                      {team.isOpen ? t('teamManagement:OPEN_TO_NEW_MEMBERS') : t('teamManagement:CLOSED_TEAM')}
-                    </Typography>
-                  </div>
+          {/* Overview Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Team Information */}
+            <Paper className="lg:col-span-1 p-8 border border-gray-100 dark:border-gray-800 shadow-none">
+              <div className="flex items-center justify-between mb-8">
+                <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
+                  Overview
+                </Typography>
+                <div className={`w-3 h-3 rounded-full ${team.isOpen ? 'bg-green-400' : 'bg-amber-400'}`} />
+              </div>
+              
+              <div className="space-y-6">
+                <div>
+                  <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                    Leader
+                  </Typography>
+                  <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
+                    {team.leader.firstName && team.leader.lastName
+                      ? `${team.leader.firstName} ${team.leader.lastName}`
+                      : team.leader.username}
+                  </Typography>
                 </div>
-                
-                <div className="grid grid-cols-1 gap-4">
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:TEAM_LEADER')}
-                    </Typography>
-                    <Typography variant="body1" className="font-medium">
-                      {team.leader.firstName && team.leader.lastName
-                        ? `${team.leader.firstName} ${team.leader.lastName}`
-                        : team.leader.username}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:MEMBERS')}
-                    </Typography>
-                    <Typography variant="body1" className="font-medium">
-                      {team.members.filter(m => m.status === 'ACTIVE').length} / {team.maxMembers}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:CREATED')}
-                    </Typography>
-                    <Typography variant="body1" className="font-medium">
-                      {TeamAccountService.formatDate(team.createdAt, i18n.language)}
-                    </Typography>
-                  </Box>
+                <div>
+                  <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                    Members
+                  </Typography>
+                  <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
+                    {team.members.filter(m => m.status === 'ACTIVE').length} of {team.maxMembers}
+                  </Typography>
                 </div>
-              </Paper>
+                <div>
+                  <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
+                    Created
+                  </Typography>
+                  <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
+                    {TeamAccountService.formatDate(team.createdAt, i18n.language)}
+                  </Typography>
+                </div>
+              </div>
+            </Paper>
 
-              {/* Team Account Card */}
+            {/* Team Account Resources */}
+            <div className="lg:col-span-3">
               <TeamAccountCard 
                 compact={false}
                 showTeamInfo={false}
+                className="h-full"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Team Members */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <Typography variant="h6">{t('teamManagement:TEAM_MEMBERS')}</Typography>
+          <Paper className="border border-gray-100 dark:border-gray-800 shadow-none">
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-8">
+                <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
+                  Team Members
+                </Typography>
                 {isLeader && (
                   <Button
+                    variant="text"
                     size="small"
                     onClick={() => {/* TODO: Open invite dialog */}}
-                    startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    endIcon={<IdeomniSvgIcon size={16}>heroicons-outline:plus</IdeomniSvgIcon>}
                   >
-                    {t('teamManagement:INVITE_MEMBERS')}
+                    Invite Members
                   </Button>
                 )}
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {team.members
                   .filter(member => member.status === 'ACTIVE')
-                  .map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-semibold">
+                  .map((member, index) => (
+                    <div key={member.id} className={`flex items-center justify-between py-4 ${index !== team.members.filter(m => m.status === 'ACTIVE').length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''}`}>
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm font-medium">
                           {member.user.firstName && member.user.lastName
                             ? `${member.user.firstName[0]}${member.user.lastName[0]}`
                             : member.user.username[0].toUpperCase()}
                         </div>
                         <div>
-                          <Typography variant="body1" className="font-medium">
-                            {member.user.firstName && member.user.lastName
-                              ? `${member.user.firstName} ${member.user.lastName}`
-                              : member.user.username}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
+                          <div className="flex items-center gap-3">
+                            <Typography variant="body1" className="font-medium text-gray-900 dark:text-white">
+                              {member.user.firstName && member.user.lastName
+                                ? `${member.user.firstName} ${member.user.lastName}`
+                                : member.user.username}
+                            </Typography>
+                            {member.user.id === team.leader.id && (
+                              <div className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-xs font-medium text-blue-700 dark:text-blue-300">
+                                Leader
+                              </div>
+                            )}
+                          </div>
+                          <Typography variant="body2" color="text.secondary" className="mt-1">
                             {member.user.email}
                           </Typography>
                         </div>
-                        {member.user.id === team.leader.id && (
-                          <div className="flex items-center gap-1 px-2 py-1 bg-primary-100 dark:bg-primary-900 rounded-full">
-                            <IdeomniSvgIcon size={14} className="text-primary-600">
-                              heroicons-solid:star
-                            </IdeomniSvgIcon>
-                            <Typography variant="caption" className="text-primary-600 font-medium">
-                              {t('teamManagement:LEADER')}
-                            </Typography>
-                          </div>
-                        )}
                       </div>
                       <Typography variant="body2" color="text.secondary">
-                        {t('teamManagement:JOINED')} {TeamAccountService.formatDate(member.joinedAt, i18n.language)}
+                        Joined {TeamAccountService.formatDate(member.joinedAt, i18n.language)}
                       </Typography>
                     </div>
                   ))}
               </div>
-            </Paper>
-          </motion.div>
+            </div>
+          </Paper>
 
-          {/* Quick Actions */}
-          <motion.div variants={item}>
-            <Paper className="p-6">
-              <Typography variant="h6" className="mb-4">
-                {t('teamManagement:QUICK_ACTIONS')}
-              </Typography>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => router.push('/team-management/transfers')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:TRANSFER_RESOURCES')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/history')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:clock</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:VIEW_HISTORY')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/transfers/gold')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:currency-dollar</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:SEND_GOLD')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/transfers/carbon')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:leaf</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:SEND_CARBON')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => router.push('/team-management/browse')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
-                >
-                  {t('teamManagement:BROWSE_OTHER_TEAMS')}
-                </Button>
-              </div>
-            </Paper>
-          </motion.div>
+          {/* Actions */}
+          <div>
+            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
+              Actions
+            </Typography>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/transfers')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
+              >
+                <div className="text-left">
+                  <div className="font-medium">Transfer Resources</div>
+                  <div className="text-sm opacity-70 mt-1">Send resources to team members</div>
+                </div>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/history')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
+              >
+                <div className="text-left">
+                  <div className="font-medium">View History</div>
+                  <div className="text-sm opacity-70 mt-1">Review team transactions</div>
+                </div>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/transfers/gold')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
+              >
+                <div className="text-left">
+                  <div className="font-medium">Send Gold</div>
+                  <div className="text-sm opacity-70 mt-1">Transfer gold resources</div>
+                </div>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/transfers/carbon')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
+              >
+                <div className="text-left">
+                  <div className="font-medium">Send Carbon</div>
+                  <div className="text-sm opacity-70 mt-1">Transfer carbon credits</div>
+                </div>
+              </Button>
+            </div>
+          </div>
         </motion.div>
       </div>
 
-      {/* Create Team Modal */}
       <CreateTeamModal
         open={isCreateModalOpen}
         onClose={handleCloseCreateModal}
