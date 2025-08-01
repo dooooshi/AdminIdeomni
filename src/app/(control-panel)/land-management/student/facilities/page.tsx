@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Box,
   Typography,
   Grid,
   Card,
@@ -178,23 +177,26 @@ const StudentFacilitiesPage: React.FC = () => {
 
   if (loading && !summary) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <div className="min-h-screen bg-white dark:bg-zinc-900 flex items-center justify-center">
         <CircularProgress size={32} />
-      </Box>
+      </div>
     );
   }
 
   return (
-    <Box maxWidth="1200px" mx="auto" px={2}>
-      {/* Header */}
-      <Box mb={4}>
-        <PageBreadcrumb 
-          title={t('facilityManagement:FACILITY_MANAGEMENT')}
-          subtitle={t('facilityManagement:MANAGE_YOUR_FACILITIES_DESCRIPTION')}
-        />
-      </Box>
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
+            {t('facilityManagement:FACILITY_MANAGEMENT')}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {t('facilityManagement:MANAGE_YOUR_FACILITIES_DESCRIPTION')}
+          </Typography>
+        </div>
 
-      {/* Error Alert */}
+        {/* Error Alert */}
       {error && (
         <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
           {error}
@@ -237,7 +239,7 @@ const StudentFacilitiesPage: React.FC = () => {
       </Stack>
 
       {/* Facilities List */}
-        <Box>
+        <div>
           {/* Search and Filters */}
           <Card variant="outlined" sx={{ mb: 4 }}>
             <CardContent>
@@ -311,7 +313,7 @@ const StudentFacilitiesPage: React.FC = () => {
               
               {/* Active Filters */}
               {(searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL') && (
-                <Box mt={2}>
+                <div className="mt-2">
                   <Divider sx={{ mb: 2 }} />
                   <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
                     <Typography variant="caption" color="text.secondary">
@@ -339,14 +341,14 @@ const StudentFacilitiesPage: React.FC = () => {
                       />
                     )}
                   </Stack>
-                </Box>
+                </div>
               )}
             </CardContent>
           </Card>
 
           {/* Facilities Grid */}
           {(filteredFacilities?.length || 0) > 0 ? (
-            <Box>
+            <div>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h6" fontWeight={500}>
                   {filteredFacilities?.length || 0} Facilities
@@ -373,7 +375,7 @@ const StudentFacilitiesPage: React.FC = () => {
                   </Grid>
                 )) : null}
               </Grid>
-            </Box>
+            </div>
           ) : (
             <Card variant="outlined">
               <CardContent sx={{ textAlign: 'center', py: 8 }}>
@@ -416,27 +418,28 @@ const StudentFacilitiesPage: React.FC = () => {
               </CardContent>
             </Card>
           )}
-        </Box>
+        </div>
 
-      {/* Build Facility Modal */}
-      <BuildFacilityModal
-        open={buildModalOpen}
-        onClose={handleCloseBuildModal}
-        onSuccess={handleFacilityBuilt}
-      />
+        {/* Build Facility Modal */}
+        <BuildFacilityModal
+          open={buildModalOpen}
+          onClose={handleCloseBuildModal}
+          onSuccess={handleFacilityBuilt}
+        />
 
-      {/* Upgrade Facility Modal */}
-      <UpgradeFacilityModal
-        open={upgradeModalOpen}
-        onClose={handleCloseUpgradeModal}
-        onSuccess={handleFacilityUpgraded}
-        facility={selectedFacilityForUpgrade}
-        teamBalance={summary ? {
-          gold: 1000000, // Mock data - should come from team balance API
-          carbon: 50000, // Mock data - should come from team balance API
-        } : undefined}
-      />
-    </Box>
+        {/* Upgrade Facility Modal */}
+        <UpgradeFacilityModal
+          open={upgradeModalOpen}
+          onClose={handleCloseUpgradeModal}
+          onSuccess={handleFacilityUpgraded}
+          facility={selectedFacilityForUpgrade}
+          teamBalance={summary ? {
+            gold: 1000000, // Mock data - should come from team balance API
+            carbon: 50000, // Mock data - should come from team balance API
+          } : undefined}
+        />
+      </div>
+    </div>
   );
 };
 

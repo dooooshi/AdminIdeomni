@@ -67,16 +67,19 @@ const StatsCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  border: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100]}`,
+  boxShadow: 'none',
   transition: 'all 0.3s ease-in-out',
   '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: theme.shadows[4],
+    borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[600] : theme.palette.grey[300],
   },
 }));
 
 const FilterContainer = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(2),
+  padding: theme.spacing(3),
   marginBottom: theme.spacing(3),
+  border: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100]}`,
+  boxShadow: 'none',
   display: 'flex',
   gap: theme.spacing(2),
   alignItems: 'center',
@@ -290,14 +293,16 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         size="small"
         onClick={clearFilters}
         disabled={!hasActiveFilters()}
+        className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
       >
         {t('landManagement:CLEAR_FILTERS')}
       </Button>
 
       <Button
-        variant="contained"
+        variant="outlined"
         size="small"
         onClick={loadPurchaseHistory}
+        className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
         startIcon={<FilterIcon />}
       >
         {t('landManagement:APPLY_FILTERS')}
@@ -309,9 +314,9 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
     if (!purchaseHistory) return null;
 
     return (
-      <Paper elevation={2}>
-        <Box p={2}>
-          <Typography variant="h6" gutterBottom>
+      <Paper className="border border-gray-100 dark:border-gray-800 shadow-none">
+        <Box p={3}>
+          <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-2">
             {t('landManagement:PURCHASE_HISTORY')}
           </Typography>
         </Box>
@@ -339,9 +344,15 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                 </TableRow>
               ) : purchaseHistory.data.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center">
-                    <Typography variant="body2" color="text.secondary">
+                  <TableCell colSpan={8} align="center" className="py-16">
+                    <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                      <AssessmentIcon className="text-gray-400 dark:text-gray-500" />
+                    </div>
+                    <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
                       {t('landManagement:NO_PURCHASES_FOUND')}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Start investing in land to see your portfolio here
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -432,68 +443,78 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <div className="min-h-screen bg-white dark:bg-zinc-900 flex items-center justify-center">
         <CircularProgress />
-      </Box>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Alert severity="error" action={
-        <Button color="inherit" size="small" onClick={handleRefresh}>
-          {t('landManagement:RETRY')}
-        </Button>
-      }>
-        {error}
-      </Alert>
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Alert severity="error" action={
+            <Button color="inherit" size="small" onClick={handleRefresh}>
+              {t('landManagement:RETRY')}
+            </Button>
+          }>
+            {error}
+          </Alert>
+        </div>
+      </div>
     );
   }
 
   if (!teamSummary) {
     return (
-      <Alert severity="info">
-        {t('landManagement:NO_TEAM_DATA')}
-      </Alert>
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
+        <div className="max-w-2xl mx-auto px-6 py-16">
+          <Alert severity="info">
+            {t('landManagement:NO_TEAM_DATA')}
+          </Alert>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {t('navigation:TEAM_LAND_MANAGEMENT')}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            {t('landManagement:PORTFOLIO_DESCRIPTION')}
-          </Typography>
-        </Box>
-        <Stack direction="row" spacing={1}>
-          <Tooltip title="Export Data">
-            <IconButton size="large">
-              <DownloadIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Refresh Data">
-            <IconButton onClick={handleRefresh} size="large">
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      </Box>
+    <div className="min-h-screen bg-white dark:bg-zinc-900">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-8">
+          <div>
+            <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
+              {t('navigation:TEAM_LAND_MANAGEMENT')}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {t('landManagement:PORTFOLIO_DESCRIPTION')}
+            </Typography>
+          </div>
+          <Stack direction="row" spacing={2}>
+            <Tooltip title="Export Data">
+              <IconButton className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Refresh Data">
+              <IconButton onClick={handleRefresh} className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </div>
 
-      {/* Team Summary Cards */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-      </Grid>
+        {/* Team Summary Cards */}
+        <Grid container spacing={6} sx={{ mb: 6 }}>
+        </Grid>
 
+        {/* Filters */}
+        {renderFilters()}
 
-      {/* Filters */}
-      {renderFilters()}
-
-      {/* Purchase History Table */}
-      {renderPurchaseHistoryTable()}
-    </Box>
+        {/* Purchase History Table */}
+        {renderPurchaseHistoryTable()}
+      </div>
+    </div>
   );
 };
 
