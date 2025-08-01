@@ -75,12 +75,12 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
     requiredGold: 0,
     requiredCarbon: 0,
     requiredAreas: 1,
-    maxLevel: 1,
+    maxLevel: 4,
     upgradeGoldCost: 0,
     upgradeCarbonCost: 0,
     upgradeMultiplier: 1.0,
     isAllowed: true,
-    maxInstances: 1,
+    maxInstances: 100,
   });
 
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});

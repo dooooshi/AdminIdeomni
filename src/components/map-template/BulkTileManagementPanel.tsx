@@ -16,9 +16,6 @@ import {
   Button,
   Grid,
   Alert,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   InputAdornment,
   Chip,
   Dialog,
@@ -30,21 +27,14 @@ import {
   ListItemText,
   ListItemIcon,
   Paper,
-  Switch,
-  FormControlLabel,
-  Slider,
-  Tab,
-  Tabs,
   LinearProgress,
 } from '@mui/material';
 import {
-  ExpandMore as ExpandMoreIcon,
   PlayArrow as PlayArrowIcon,
   Preview as PreviewIcon,
   Warning as WarningIcon,
   CheckCircle as CheckCircleIcon,
   Error as ErrorIcon,
-  Refresh as RefreshIcon,
   TrendingUp as TrendingUpIcon,
   AttachMoney as AttachMoneyIcon,
   People as PeopleIcon,
@@ -68,27 +58,6 @@ interface BulkTileManagementPanelProps {
   };
 }
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`bulk-tile-tabpanel-${index}`}
-      aria-labelledby={`bulk-tile-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
-    </div>
-  );
-}
-
 const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   templateId,
   onOperationComplete,
@@ -97,18 +66,8 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   const { t } = useTranslation('map');
 
   // State
-  const [tabValue, setTabValue] = useState(0);
   const [selectedLandType, setSelectedLandType] = useState<LandType>(LandType.PLAIN);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Update mode (multiplier vs fixed)
-  const [useMultipliers, setUseMultipliers] = useState(true);
-
-  // Multiplier updates
-  const [goldMultiplier, setGoldMultiplier] = useState(1.0);
-  const [carbonMultiplier, setCarbonMultiplier] = useState(1.0);
-  const [populationMultiplier, setPopulationMultiplier] = useState(1.0);
-  const [transportMultiplier, setTransportMultiplier] = useState(1.0);
 
   // Fixed value updates
   const [fixedGoldPrice, setFixedGoldPrice] = useState<number | ''>('');
@@ -117,7 +76,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   const [fixedTransportCost, setFixedTransportCost] = useState<number | ''>('');
 
   // Preset scenarios
-  const [presetScenario, setPresetScenario] = useState<'market-boom' | 'resource-scarcity' | 'environmental-impact' | 'reset' | 'custom'>('custom');
+  const [presetScenario, setPresetScenario] = useState<'reset' | 'custom'>('custom');
 
   // Dialog states
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
@@ -125,35 +84,11 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   const [resultDialogOpen, setResultDialogOpen] = useState(false);
   const [bulkResult, setBulkResult] = useState<MapTileBulkUpdateResponseDto | null>(null);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
-
   const handlePresetScenarioChange = (scenario: typeof presetScenario) => {
     setPresetScenario(scenario);
-    setUseMultipliers(true); // Presets use multipliers
     
     switch (scenario) {
-      case 'market-boom':
-        setGoldMultiplier(1.25);
-        setCarbonMultiplier(1.25);
-        setPopulationMultiplier(1.10);
-        setTransportMultiplier(1.0);
-        break;
-      case 'resource-scarcity':
-        setGoldMultiplier(1.50);
-        setCarbonMultiplier(1.40);
-        setPopulationMultiplier(0.95);
-        setTransportMultiplier(1.20);
-        break;
-      case 'environmental-impact':
-        setGoldMultiplier(0.90);
-        setCarbonMultiplier(2.0);
-        setPopulationMultiplier(0.80);
-        setTransportMultiplier(1.30);
-        break;
       case 'reset':
-        setUseMultipliers(false);
         setFixedGoldPrice(0);
         setFixedCarbonPrice(0);
         setFixedPopulation(MapTemplateService.getDefaultConfiguration(selectedLandType).initialPopulation);
@@ -168,17 +103,10 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   const buildUpdateData = (): BulkUpdateTilesByLandTypeDto => {
     const updateData: BulkUpdateTilesByLandTypeDto = {};
 
-    if (useMultipliers) {
-      if (goldMultiplier !== 1.0) updateData.goldPriceMultiplier = goldMultiplier;
-      if (carbonMultiplier !== 1.0) updateData.carbonPriceMultiplier = carbonMultiplier;
-      if (populationMultiplier !== 1.0) updateData.populationMultiplier = populationMultiplier;
-      if (transportMultiplier !== 1.0) updateData.transportationCostMultiplier = transportMultiplier;
-    } else {
-      if (fixedGoldPrice !== '') updateData.fixedGoldPrice = Number(fixedGoldPrice);
-      if (fixedCarbonPrice !== '') updateData.fixedCarbonPrice = Number(fixedCarbonPrice);
-      if (fixedPopulation !== '') updateData.fixedPopulation = Number(fixedPopulation);
-      if (fixedTransportCost !== '') updateData.fixedTransportationCost = Number(fixedTransportCost);
-    }
+    if (fixedGoldPrice !== '') updateData.fixedGoldPrice = Number(fixedGoldPrice);
+    if (fixedCarbonPrice !== '') updateData.fixedCarbonPrice = Number(fixedCarbonPrice);
+    if (fixedPopulation !== '') updateData.fixedPopulation = Number(fixedPopulation);
+    if (fixedTransportCost !== '') updateData.fixedTransportationCost = Number(fixedTransportCost);
 
     return updateData;
   };
@@ -251,10 +179,6 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   };
 
   const resetForm = () => {
-    setGoldMultiplier(1.0);
-    setCarbonMultiplier(1.0);
-    setPopulationMultiplier(1.0);
-    setTransportMultiplier(1.0);
     setFixedGoldPrice('');
     setFixedCarbonPrice('');
     setFixedPopulation('');
@@ -322,181 +246,70 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 label={t('PRESET_SCENARIO')}
                 onChange={(e) => handlePresetScenarioChange(e.target.value as any)}
               >
-                <MenuItem value="market-boom">{t('MARKET_BOOM_SCENARIO')}</MenuItem>
-                <MenuItem value="resource-scarcity">{t('RESOURCE_SCARCITY_SCENARIO')}</MenuItem>
-                <MenuItem value="environmental-impact">{t('ENVIRONMENTAL_IMPACT_SCENARIO')}</MenuItem>
                 <MenuItem value="reset">{t('RESET_TO_DEFAULTS')}</MenuItem>
                 <MenuItem value="custom">{t('CUSTOM')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
 
-          {/* Update Method Selection */}
+          {/* Fixed Value Updates */}
           <Grid size={{ xs: 12 }}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={useMultipliers}
-                  onChange={(e) => setUseMultipliers(e.target.checked)}
-                />
-              }
-              label={t('USE_MULTIPLIERS_VS_FIXED_VALUES')}
+            <Typography variant="subtitle2" gutterBottom>
+              {t('FIXED_VALUES')}
+            </Typography>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              fullWidth
+              type="number"
+              label={t('FIXED_GOLD_PRICE')}
+              value={fixedGoldPrice}
+              onChange={(e) => setFixedGoldPrice(e.target.value === '' ? '' : Number(e.target.value))}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>,
+              }}
             />
           </Grid>
 
-          {/* Multiplier Updates */}
-          {useMultipliers && (
-            <>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" gutterBottom>
-                  {t('PRICING_MULTIPLIERS')}
-                </Typography>
-              </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              fullWidth
+              type="number"
+              label={t('FIXED_CARBON_PRICE')}
+              value={fixedCarbonPrice}
+              onChange={(e) => setFixedCarbonPrice(e.target.value === '' ? '' : Number(e.target.value))}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">CO₂</InputAdornment>,
+              }}
+            />
+          </Grid>
 
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" gutterBottom>
-                  {t('GOLD_PRICE_MULTIPLIER')}: {goldMultiplier.toFixed(2)}x
-                </Typography>
-                <Slider
-                  value={goldMultiplier}
-                  onChange={(e, value) => setGoldMultiplier(value as number)}
-                  min={0.1}
-                  max={3.0}
-                  step={0.05}
-                  marks={[
-                    { value: 0.5, label: '0.5x' },
-                    { value: 1.0, label: '1.0x' },
-                    { value: 1.5, label: '1.5x' },
-                    { value: 2.0, label: '2.0x' },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              fullWidth
+              type="number"
+              label={t('FIXED_POPULATION')}
+              value={fixedPopulation}
+              onChange={(e) => setFixedPopulation(e.target.value === '' ? '' : Number(e.target.value))}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><PeopleIcon /></InputAdornment>,
+              }}
+            />
+          </Grid>
 
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" gutterBottom>
-                  {t('CARBON_PRICE_MULTIPLIER')}: {carbonMultiplier.toFixed(2)}x
-                </Typography>
-                <Slider
-                  value={carbonMultiplier}
-                  onChange={(e, value) => setCarbonMultiplier(value as number)}
-                  min={0.1}
-                  max={3.0}
-                  step={0.05}
-                  marks={[
-                    { value: 0.5, label: '0.5x' },
-                    { value: 1.0, label: '1.0x' },
-                    { value: 1.5, label: '1.5x' },
-                    { value: 2.0, label: '2.0x' },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" gutterBottom>
-                  {t('POPULATION_MULTIPLIER')}: {populationMultiplier.toFixed(2)}x
-                </Typography>
-                <Slider
-                  value={populationMultiplier}
-                  onChange={(e, value) => setPopulationMultiplier(value as number)}
-                  min={0.1}
-                  max={3.0}
-                  step={0.05}
-                  marks={[
-                    { value: 0.5, label: '0.5x' },
-                    { value: 1.0, label: '1.0x' },
-                    { value: 1.5, label: '1.5x' },
-                    { value: 2.0, label: '2.0x' },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <Typography variant="body2" gutterBottom>
-                  {t('TRANSPORT_COST_MULTIPLIER')}: {transportMultiplier.toFixed(2)}x
-                </Typography>
-                <Slider
-                  value={transportMultiplier}
-                  onChange={(e, value) => setTransportMultiplier(value as number)}
-                  min={0.1}
-                  max={3.0}
-                  step={0.05}
-                  marks={[
-                    { value: 0.5, label: '0.5x' },
-                    { value: 1.0, label: '1.0x' },
-                    { value: 1.5, label: '1.5x' },
-                    { value: 2.0, label: '2.0x' },
-                  ]}
-                  valueLabelDisplay="auto"
-                />
-              </Grid>
-            </>
-          )}
-
-          {/* Fixed Value Updates */}
-          {!useMultipliers && (
-            <>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" gutterBottom>
-                  {t('FIXED_VALUES')}
-                </Typography>
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('FIXED_GOLD_PRICE')}
-                  value={fixedGoldPrice}
-                  onChange={(e) => setFixedGoldPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start"><AttachMoneyIcon /></InputAdornment>,
-                  }}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('FIXED_CARBON_PRICE')}
-                  value={fixedCarbonPrice}
-                  onChange={(e) => setFixedCarbonPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">CO₂</InputAdornment>,
-                  }}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('FIXED_POPULATION')}
-                  value={fixedPopulation}
-                  onChange={(e) => setFixedPopulation(e.target.value === '' ? '' : Number(e.target.value))}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start"><PeopleIcon /></InputAdornment>,
-                  }}
-                />
-              </Grid>
-
-              <Grid size={{ xs: 12, sm: 6 }}>
-                <TextField
-                  fullWidth
-                  type="number"
-                  label={t('FIXED_TRANSPORT_COST')}
-                  value={fixedTransportCost}
-                  onChange={(e) => setFixedTransportCost(e.target.value === '' ? '' : Number(e.target.value))}
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start"><LocalShippingIcon /></InputAdornment>,
-                  }}
-                />
-              </Grid>
-            </>
-          )}
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              fullWidth
+              type="number"
+              label={t('FIXED_TRANSPORT_COST')}
+              value={fixedTransportCost}
+              onChange={(e) => setFixedTransportCost(e.target.value === '' ? '' : Number(e.target.value))}
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><LocalShippingIcon /></InputAdornment>,
+              }}
+            />
+          </Grid>
 
           {/* Actions */}
           <Grid size={{ xs: 12 }}>

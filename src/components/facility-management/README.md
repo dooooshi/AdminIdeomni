@@ -45,7 +45,6 @@ This module implements a complete facility management solution based on the API 
 - **FACTORY** (工厂) - Manufacturing facilities for producing consumer goods
 - **MALL** (商场) - Retail complexes with multiple stores and entertainment
 - **WAREHOUSE** (仓库) - Large-scale storage and distribution centers
-- **MEDIA_BUILDING** (媒体大楼) - Media production and broadcasting facilities
 
 #### Infrastructure
 - **WATER_PLANT** (水厂) - Water purification and distribution facilities

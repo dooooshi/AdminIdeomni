@@ -108,7 +108,6 @@ const facilityManagement = {
   FACILITY_TYPE_FACTORY: '工厂',
   FACILITY_TYPE_MALL: '商场',
   FACILITY_TYPE_WAREHOUSE: '仓库',
-  FACILITY_TYPE_MEDIA_BUILDING: '媒体大楼',
   
   // Facility Types - Infrastructure
   FACILITY_TYPE_WATER_PLANT: '水厂',
@@ -134,7 +133,6 @@ const facilityManagement = {
   FACTORY: '工厂',
   MALL: '商场',
   WAREHOUSE: '仓库',
-  MEDIA_BUILDING: '媒体大楼',
   
   // Facility Types - Infrastructure
   WATER_PLANT: '水厂',
@@ -158,7 +156,6 @@ const facilityManagement = {
   FACILITY_TYPE_FACTORY_DESCRIPTION: '生产消费品、电子产品和工业产品的制造设施',
   FACILITY_TYPE_MALL_DESCRIPTION: '拥有多家商店、餐厅和娱乐场所的大型零售综合体',
   FACILITY_TYPE_WAREHOUSE_DESCRIPTION: '用于物流和供应链管理的大型存储和配送中心',
-  FACILITY_TYPE_MEDIA_BUILDING_DESCRIPTION: '电视、广播和数字内容的媒体制作和广播设施',
   FACILITY_TYPE_WATER_PLANT_DESCRIPTION: '提供清洁水分配的水处理和净化设施',
   FACILITY_TYPE_POWER_PLANT_DESCRIPTION: '使用可再生和可持续能源的清洁能源发电设施',
   FACILITY_TYPE_BASE_STATION_DESCRIPTION: '提供网络连接和通信的电信基础设施枢纽',
@@ -178,7 +175,6 @@ const facilityManagement = {
   FACTORY_DESCRIPTION: '生产消费品的制造设施',
   MALL_DESCRIPTION: '多店铺和娱乐的零售综合体',
   WAREHOUSE_DESCRIPTION: '大规模存储和配送中心',
-  MEDIA_BUILDING_DESCRIPTION: '媒体制作和广播设施',
   WATER_PLANT_DESCRIPTION: '水净化和分配设施',
   POWER_PLANT_DESCRIPTION: '清洁能源发电设施',
   BASE_STATION_DESCRIPTION: '电信基础设施中心',

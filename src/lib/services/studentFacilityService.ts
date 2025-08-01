@@ -328,7 +328,6 @@ export class StudentFacilityService {
       [FacilityType.FACTORY]: 'Factory',
       [FacilityType.MALL]: 'Shopping Mall',
       [FacilityType.WAREHOUSE]: 'Warehouse',
-      [FacilityType.MEDIA_BUILDING]: 'Media Building',
       [FacilityType.WATER_PLANT]: 'Water Plant',
       [FacilityType.POWER_PLANT]: 'Power Plant',
       [FacilityType.BASE_STATION]: 'Base Station',
@@ -404,7 +403,7 @@ export class StudentFacilityService {
       FacilityType.FARM, FacilityType.RANCH, FacilityType.FISHERY
     ];
     const functionalTypes = [
-      FacilityType.FACTORY, FacilityType.MALL, FacilityType.WAREHOUSE, FacilityType.MEDIA_BUILDING
+      FacilityType.FACTORY, FacilityType.MALL, FacilityType.WAREHOUSE
     ];
     const infrastructureTypes = [
       FacilityType.WATER_PLANT, FacilityType.POWER_PLANT, FacilityType.BASE_STATION, FacilityType.FIRE_STATION
@@ -438,7 +437,6 @@ export class StudentFacilityService {
       [FacilityType.FACTORY]: '🏭',
       [FacilityType.MALL]: '🏬',
       [FacilityType.WAREHOUSE]: '📦',
-      [FacilityType.MEDIA_BUILDING]: '📺',
       [FacilityType.WATER_PLANT]: '💧',
       [FacilityType.POWER_PLANT]: '⚡',
       [FacilityType.BASE_STATION]: '📡',

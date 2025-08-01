@@ -484,7 +484,7 @@ Generate and create default facility build configurations for all land type + fa
 {
   "success": true,
   "data": {
-    "count": 54
+    "count": 53
   },
   "message": "Default tile facility build configurations initialized successfully"
 }
@@ -532,15 +532,15 @@ Retrieve comprehensive statistics about facility configurations for a template.
 {
   "success": true,
   "data": {
-    "totalConfigs": 54,
-    "allowedConfigs": 48,
+    "totalConfigs": 53,
+    "allowedConfigs": 47,
     "disallowedConfigs": 6,
     "configsByLandType": {
       "MARINE": 6,
       "COASTAL": 17,
-      "PLAIN": 18
+      "PLAIN": 17
     },
-    "upgradableConfigs": 42,
+    "upgradableConfigs": 41,
     "averageCosts": {
       "requiredGold": 95750.50,
       "requiredCarbon": 1847.25,
@@ -716,7 +716,6 @@ curl -X PUT "http://localhost:2999/api/admin/map-templates/1/tile-facility-confi
 
 **Commercial:**
 - `MALL` - Shopping centers
-- `MEDIA_BUILDING` - Entertainment/media
 - `CINEMA` - Movie theaters
 
 **Infrastructure:**

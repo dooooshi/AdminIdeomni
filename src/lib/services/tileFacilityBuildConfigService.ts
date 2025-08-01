@@ -236,11 +236,11 @@ export class TileFacilityBuildConfigService {
         requiredGold: 120000,
         requiredCarbon: 1600,
         requiredAreas: 1,
-        maxLevel: 5,
+        maxLevel: 4,
         upgradeGoldCost: 48000,
         upgradeCarbonCost: 640,
         upgradeMultiplier: 1.4,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.QUARRY]: {
         requiredGold: 80000,
@@ -250,7 +250,7 @@ export class TileFacilityBuildConfigService {
         upgradeGoldCost: 32000,
         upgradeCarbonCost: 480,
         upgradeMultiplier: 1.3,
-        maxInstances: 2
+        maxInstances: 100
       },
       [FacilityType.FOREST]: {
         requiredGold: 60000,
@@ -260,17 +260,17 @@ export class TileFacilityBuildConfigService {
         upgradeGoldCost: 24000,
         upgradeCarbonCost: 320,
         upgradeMultiplier: 1.3,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.FARM]: {
         requiredGold: 50000,
         requiredCarbon: 600,
         requiredAreas: 2,
-        maxLevel: 5,
+        maxLevel: 4,
         upgradeGoldCost: 20000,
         upgradeCarbonCost: 240,
         upgradeMultiplier: 1.3,
-        maxInstances: 2
+        maxInstances: 100
       },
       [FacilityType.RANCH]: {
         requiredGold: 70000,
@@ -280,7 +280,7 @@ export class TileFacilityBuildConfigService {
         upgradeGoldCost: 28000,
         upgradeCarbonCost: 360,
         upgradeMultiplier: 1.4,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.FISHERY]: {
         requiredGold: 56000,
@@ -290,7 +290,7 @@ export class TileFacilityBuildConfigService {
         upgradeGoldCost: 22400,
         upgradeCarbonCost: 720,
         upgradeMultiplier: 1.4,
-        maxInstances: 2
+        maxInstances: 100
       },
 
       // Manufacturing
@@ -298,21 +298,21 @@ export class TileFacilityBuildConfigService {
         requiredGold: 150000,
         requiredCarbon: 3000,
         requiredAreas: 1,
-        maxLevel: 6,
+        maxLevel: 4,
         upgradeGoldCost: 60000,
         upgradeCarbonCost: 1200,
         upgradeMultiplier: 1.5,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.WAREHOUSE]: {
         requiredGold: 100000,
         requiredCarbon: 1500,
         requiredAreas: 1,
-        maxLevel: 5,
+        maxLevel: 4,
         upgradeGoldCost: 40000,
         upgradeCarbonCost: 600,
         upgradeMultiplier: 1.3,
-        maxInstances: 2
+        maxInstances: 100
       },
 
       // Commercial
@@ -320,21 +320,11 @@ export class TileFacilityBuildConfigService {
         requiredGold: 200000,
         requiredCarbon: 4000,
         requiredAreas: 2,
-        maxLevel: 6,
+        maxLevel: 4,
         upgradeGoldCost: 80000,
         upgradeCarbonCost: 1600,
         upgradeMultiplier: 1.4,
-        maxInstances: 1
-      },
-      [FacilityType.MEDIA_BUILDING]: {
-        requiredGold: 180000,
-        requiredCarbon: 3500,
-        requiredAreas: 1,
-        maxLevel: 5,
-        upgradeGoldCost: 72000,
-        upgradeCarbonCost: 1400,
-        upgradeMultiplier: 1.4,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.CINEMA]: {
         requiredGold: 120000,
@@ -344,7 +334,7 @@ export class TileFacilityBuildConfigService {
         upgradeGoldCost: 48000,
         upgradeCarbonCost: 1000,
         upgradeMultiplier: 1.3,
-        maxInstances: 2
+        maxInstances: 100
       },
 
       // Infrastructure
@@ -352,31 +342,31 @@ export class TileFacilityBuildConfigService {
         requiredGold: 250000,
         requiredCarbon: 5000,
         requiredAreas: 2,
-        maxLevel: 8,
+        maxLevel: 4,
         upgradeGoldCost: 100000,
         upgradeCarbonCost: 2000,
         upgradeMultiplier: 1.5,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.POWER_PLANT]: {
         requiredGold: 300000,
         requiredCarbon: 6000,
         requiredAreas: 3,
-        maxLevel: 8,
+        maxLevel: 4,
         upgradeGoldCost: 120000,
         upgradeCarbonCost: 2400,
         upgradeMultiplier: 1.6,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.BASE_STATION]: {
         requiredGold: 150000,
         requiredCarbon: 2000,
         requiredAreas: 1,
-        maxLevel: 6,
+        maxLevel: 4,
         upgradeGoldCost: 60000,
         upgradeCarbonCost: 800,
         upgradeMultiplier: 1.4,
-        maxInstances: 1
+        maxInstances: 100
       },
 
       // Services
@@ -384,41 +374,41 @@ export class TileFacilityBuildConfigService {
         requiredGold: 180000,
         requiredCarbon: 3000,
         requiredAreas: 1,
-        maxLevel: 5,
+        maxLevel: 4,
         upgradeGoldCost: 72000,
         upgradeCarbonCost: 1200,
         upgradeMultiplier: 1.3,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.SCHOOL]: {
         requiredGold: 200000,
         requiredCarbon: 3500,
         requiredAreas: 2,
-        maxLevel: 6,
+        maxLevel: 4,
         upgradeGoldCost: 80000,
         upgradeCarbonCost: 1400,
         upgradeMultiplier: 1.4,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.HOSPITAL]: {
         requiredGold: 350000,
         requiredCarbon: 7000,
         requiredAreas: 3,
-        maxLevel: 8,
+        maxLevel: 4,
         upgradeGoldCost: 140000,
         upgradeCarbonCost: 2800,
         upgradeMultiplier: 1.5,
-        maxInstances: 1
+        maxInstances: 100
       },
       [FacilityType.PARK]: {
         requiredGold: 80000,
         requiredCarbon: 1000,
         requiredAreas: 2,
-        maxLevel: 3,
+        maxLevel: 4,
         upgradeGoldCost: 32000,
         upgradeCarbonCost: 400,
         upgradeMultiplier: 1.2,
-        maxInstances: 3
+        maxInstances: 100
       }
     };
 
@@ -500,8 +490,8 @@ export class TileFacilityBuildConfigService {
     }
 
     if ('maxInstances' in config && config.maxInstances !== undefined) {
-      if (config.maxInstances < 1 || config.maxInstances > 10) {
-        errors.maxInstances = 'Max instances must be between 1 and 10';
+      if (config.maxInstances < 1 || config.maxInstances > 100) {
+        errors.maxInstances = 'Max instances must be between 1 and 100';
       }
     }
 
@@ -550,7 +540,6 @@ export class TileFacilityBuildConfigService {
 
       // Commercial - All land types
       [FacilityType.MALL]: [LandType.COASTAL, LandType.PLAIN],
-      [FacilityType.MEDIA_BUILDING]: [LandType.COASTAL, LandType.PLAIN],
       [FacilityType.CINEMA]: [LandType.COASTAL, LandType.PLAIN],
 
       // Infrastructure - All land types

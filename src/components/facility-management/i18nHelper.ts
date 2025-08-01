@@ -162,7 +162,6 @@ export const useFacilityTranslation = () => {
         FacilityType.FACTORY,
         FacilityType.MALL,
         FacilityType.WAREHOUSE,
-        FacilityType.MEDIA_BUILDING,
       ],
       [FacilityCategory.INFRASTRUCTURE]: [
         FacilityType.WATER_PLANT,

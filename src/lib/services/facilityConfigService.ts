@@ -379,8 +379,7 @@ export class FacilityConfigService {
       [FacilityCategory.FUNCTIONAL]: [
         FacilityType.FACTORY,
         FacilityType.MALL,
-        FacilityType.WAREHOUSE,
-        FacilityType.MEDIA_BUILDING
+        FacilityType.WAREHOUSE
       ],
       [FacilityCategory.INFRASTRUCTURE]: [
         FacilityType.WATER_PLANT,
@@ -461,12 +460,6 @@ export class FacilityConfigService {
         storageCapacity: 10000,
         energyConsumption: 400,
         requiredWorkers: 30,
-        environmentalImpact: 'low'
-      },
-      [FacilityType.MEDIA_BUILDING]: {
-        broadcastRange: 100000,
-        energyConsumption: 600,
-        requiredWorkers: 40,
         environmentalImpact: 'low'
       },
 

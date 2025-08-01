@@ -345,7 +345,6 @@ export enum FacilityType {
 	WAREHOUSE = 'WAREHOUSE',
 	// Commercial
 	MALL = 'MALL',
-	MEDIA_BUILDING = 'MEDIA_BUILDING',
 	CINEMA = 'CINEMA',
 	// Infrastructure
 	WATER_PLANT = 'WATER_PLANT',

@@ -12,11 +12,10 @@ export enum FacilityType {
   RANCH = 'RANCH',
   FISHERY = 'FISHERY',
   
-  // Functional Facilities (4 types)
+  // Functional Facilities (3 types)
   FACTORY = 'FACTORY',
   MALL = 'MALL',
   WAREHOUSE = 'WAREHOUSE',
-  MEDIA_BUILDING = 'MEDIA_BUILDING',
   
   // Infrastructure (4 types)
   WATER_PLANT = 'WATER_PLANT',
@@ -347,8 +346,7 @@ export type FacilityTypesByCategory = {
   [FacilityCategory.FUNCTIONAL]: [
     FacilityType.FACTORY,
     FacilityType.MALL,
-    FacilityType.WAREHOUSE,
-    FacilityType.MEDIA_BUILDING
+    FacilityType.WAREHOUSE
   ];
   [FacilityCategory.INFRASTRUCTURE]: [
     FacilityType.WATER_PLANT,

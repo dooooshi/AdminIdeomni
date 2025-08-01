@@ -299,12 +299,12 @@ Authorization: Bearer <token>
         }
       },
       "PLAIN": {
-        "count": 17,
+        "count": 16,
         "facilities": [
           "MINE", "QUARRY", "FOREST", "FARM", "RANCH", "FACTORY",
-          "MALL", "WAREHOUSE", "MEDIA_BUILDING", "WATER_PLANT",
-          "POWER_PLANT", "BASE_STATION", "FIRE_STATION", "SCHOOL",
-          "HOSPITAL", "PARK", "CINEMA"
+          "MALL", "WAREHOUSE", "WATER_PLANT", "POWER_PLANT", 
+          "BASE_STATION", "FIRE_STATION", "SCHOOL", "HOSPITAL", 
+          "PARK", "CINEMA"
         ],
         "categories": ["RAW_MATERIAL_PRODUCTION", "FUNCTIONAL", "INFRASTRUCTURE", "OTHER"],
         "costRange": {
@@ -324,8 +324,8 @@ Authorization: Bearer <token>
         }
       },
       "FUNCTIONAL": {
-        "count": 4,
-        "facilities": ["FACTORY", "MALL", "WAREHOUSE", "MEDIA_BUILDING"],
+        "count": 3,
+        "facilities": ["FACTORY", "MALL", "WAREHOUSE"],
         "averageCost": 215.0,
         "upgradeability": {
           "averageMaxLevel": 2.8,
@@ -448,9 +448,9 @@ interface LandTypeCompatibility {
   PLAIN: {
     allowedFacilities: [
       "MINE", "QUARRY", "FOREST", "FARM", "RANCH", 
-      "FACTORY", "MALL", "WAREHOUSE", "MEDIA_BUILDING",
-      "WATER_PLANT", "POWER_PLANT", "BASE_STATION",
-      "FIRE_STATION", "SCHOOL", "HOSPITAL", "PARK", "CINEMA"
+      "FACTORY", "MALL", "WAREHOUSE", "WATER_PLANT", 
+      "POWER_PLANT", "BASE_STATION", "FIRE_STATION", 
+      "SCHOOL", "HOSPITAL", "PARK", "CINEMA"
     ];
     characteristics: {
       versatile: true;
@@ -626,7 +626,6 @@ Business and commercial operations:
 | FACTORY | COASTAL, PLAIN | 340-305 | 3-4 | Manufacturing |
 | MALL | COASTAL, PLAIN | 260-235 | 2-3 | Retail operations |
 | WAREHOUSE | COASTAL, PLAIN | 230-205 | 2-3 | Storage & logistics |
-| MEDIA_BUILDING | PLAIN | 380 | 2 | Communications |
 
 ### Infrastructure Facilities
 Essential services and utilities:
@@ -665,7 +664,6 @@ Community and specialized services:
 #### High Investment Infrastructure
 - **POWER_PLANT** (500 cost): Critical infrastructure
 - **HOSPITAL** (420-450 cost): Essential services
-- **MEDIA_BUILDING** (380 cost): Communication hub
 
 ### Upgrade Strategy Recommendations
 

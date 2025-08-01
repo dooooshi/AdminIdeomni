@@ -14,7 +14,6 @@ export enum FacilityType {
   FACTORY = 'FACTORY',
   MALL = 'MALL',
   WAREHOUSE = 'WAREHOUSE',
-  MEDIA_BUILDING = 'MEDIA_BUILDING',
   
   // Infrastructure
   WATER_PLANT = 'WATER_PLANT',
@@ -266,7 +265,6 @@ export class FacilityService {
       [FacilityType.FACTORY]: 'Factory',
       [FacilityType.MALL]: 'Shopping Mall',
       [FacilityType.WAREHOUSE]: 'Warehouse',
-      [FacilityType.MEDIA_BUILDING]: 'Media Building',
       [FacilityType.WATER_PLANT]: 'Water Plant',
       [FacilityType.POWER_PLANT]: 'Power Plant',
       [FacilityType.BASE_STATION]: 'Base Station',
@@ -309,7 +307,6 @@ export class FacilityService {
         FacilityType.FACTORY,
         FacilityType.MALL,
         FacilityType.WAREHOUSE,
-        FacilityType.MEDIA_BUILDING,
       ],
       [FacilityCategory.INFRASTRUCTURE]: [
         FacilityType.WATER_PLANT,

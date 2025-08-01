@@ -162,11 +162,10 @@ enum FacilityType {
   RANCH             // Livestock and dairy products
   FISHERY           // Marine resource harvesting
   
-  // Functional Facilities (4 types)
+  // Functional Facilities (3 types)
   FACTORY           // Manufacturing and processing
   MALL              // Retail and commercial operations
   WAREHOUSE         // Storage and logistics
-  MEDIA_BUILDING    // Communications and media
   
   // Infrastructure (3 types)
   WATER_PLANT       // Water treatment and distribution
@@ -527,7 +526,6 @@ const FACILITY_LAND_COMPATIBILITY: Record<FacilityType, LandType[]> = {
   QUARRY: ['PLAIN'],
   FOREST: ['PLAIN'],
   RANCH: ['PLAIN'],
-  MEDIA_BUILDING: ['PLAIN'],
   POWER_PLANT: ['PLAIN'],
   FIRE_STATION: ['PLAIN'],
   SCHOOL: ['PLAIN'],

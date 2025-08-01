@@ -104,7 +104,6 @@ const facilityManagement = {
   FACILITY_TYPE_FACTORY: 'Factory',
   FACILITY_TYPE_MALL: 'Shopping Mall',
   FACILITY_TYPE_WAREHOUSE: 'Warehouse',
-  FACILITY_TYPE_MEDIA_BUILDING: 'Media Building',
   
   // Facility Types - Infrastructure
   FACILITY_TYPE_WATER_PLANT: 'Water Treatment Plant',
@@ -130,7 +129,6 @@ const facilityManagement = {
   FACTORY: 'Factory',
   MALL: 'Shopping Mall',
   WAREHOUSE: 'Warehouse',
-  MEDIA_BUILDING: 'Media Building',
   
   // Facility Types - Infrastructure
   WATER_PLANT: 'Water Plant',
@@ -154,7 +152,6 @@ const facilityManagement = {
   FACILITY_TYPE_FACTORY_DESCRIPTION: 'Manufacturing facilities producing consumer goods, electronics, and industrial products',
   FACILITY_TYPE_MALL_DESCRIPTION: 'Large retail complexes with multiple stores, restaurants, and entertainment venues',
   FACILITY_TYPE_WAREHOUSE_DESCRIPTION: 'Large-scale storage and distribution centers for logistics and supply chain management',
-  FACILITY_TYPE_MEDIA_BUILDING_DESCRIPTION: 'Media production and broadcasting facilities for television, radio, and digital content',
   FACILITY_TYPE_WATER_PLANT_DESCRIPTION: 'Water treatment and purification facilities providing clean water distribution',
   FACILITY_TYPE_POWER_PLANT_DESCRIPTION: 'Clean energy power generation facilities using renewable and sustainable sources',
   FACILITY_TYPE_BASE_STATION_DESCRIPTION: 'Telecommunications infrastructure hubs providing network connectivity and communications',
@@ -174,7 +171,6 @@ const facilityManagement = {
   FACTORY_DESCRIPTION: 'Manufacturing facilities for producing consumer goods',
   MALL_DESCRIPTION: 'Retail complexes with multiple stores and entertainment',
   WAREHOUSE_DESCRIPTION: 'Large-scale storage and distribution centers',
-  MEDIA_BUILDING_DESCRIPTION: 'Media production and broadcasting facilities',
   WATER_PLANT_DESCRIPTION: 'Water purification and distribution facilities',
   POWER_PLANT_DESCRIPTION: 'Clean energy power generation facilities',
   BASE_STATION_DESCRIPTION: 'Telecommunications infrastructure hubs',

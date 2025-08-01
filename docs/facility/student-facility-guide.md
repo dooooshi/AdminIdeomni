@@ -44,7 +44,7 @@ These facilities generate basic resources for your business operations.
 
 **💡 Student Tip**: Start with FARM or FOREST facilities - they're affordable and provide steady returns.
 
-#### 2. Functional Facilities (4 types)
+#### 2. Functional Facilities (3 types)
 These facilities process materials and drive business operations.
 
 | Facility | Best For | Land Types | Build Cost | Upgrade Potential |
@@ -52,7 +52,6 @@ These facilities process materials and drive business operations.
 | **FACTORY** | Manufacturing | COASTAL, PLAIN | High | Excellent (Level 3-4) |
 | **MALL** | Retail operations | COASTAL, PLAIN | Medium-High | Good (Level 2-3) |
 | **WAREHOUSE** | Storage & logistics | COASTAL, PLAIN | Medium | Good (Level 2-3) |
-| **MEDIA_BUILDING** | Communications | PLAIN | High | Limited (Level 2) |
 
 **💡 Student Tip**: Build WAREHOUSE early to support other facility operations.
 
@@ -241,7 +240,7 @@ curl -X PUT "http://localhost:2999/api/user/facilities/FACILITY_ID/upgrade" \
 **Optimization Phase:**
 - Specialize in high-return facilities
 - Maximize upgrade levels (3-4) on key facilities
-- Build specialized facilities (MEDIA_BUILDING, BASE_STATION)
+- Build specialized facilities (BASE_STATION)
 - Focus on ROI and efficiency metrics
 
 ### Resource Management Strategies
@@ -286,7 +285,7 @@ curl -X PUT "http://localhost:2999/api/user/facilities/FACILITY_ID/upgrade" \
 1. Check facility-land compatibility:
    - MARINE: FISHERY, WATER_PLANT, BASE_STATION
    - COASTAL: FISHERY, FARM, FACTORY, MALL, WAREHOUSE, HOSPITAL
-   - PLAIN: Most facilities (17 types)
+   - PLAIN: Most facilities (16 types)
 2. Choose compatible facility for land type
 3. Find tiles with compatible land type
 

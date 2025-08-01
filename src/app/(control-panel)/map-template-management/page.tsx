@@ -56,7 +56,6 @@ import TileConfigurationPanel from '@/components/map/ui/TileConfigurationPanel';
 
 // Import new facility management components
 import TileFacilityConfigList from '@/components/map-template/TileFacilityConfigList';
-import BulkOperationsPanel from '@/components/map-template/BulkOperationsPanel';
 import TemplateSetupWizard from '@/components/map-template/TemplateSetupWizard';
 // NEW: Import bulk tile management component
 import BulkTileManagementPanel from '@/components/map-template/BulkTileManagementPanel';
@@ -471,17 +470,10 @@ const MapTemplateManagementPage: React.FC = () => {
                 disabled={!selectedTemplate}
               />
               <Tab 
-                label={t('BULK_OPERATIONS')} 
-                icon={<TrendingUpIcon />} 
-                iconPosition="start"
-                {...a11yProps(3)}
-                disabled={!selectedTemplate}
-              />
-              <Tab 
                 label={t('BULK_TILE_MANAGEMENT')} 
                 icon={<AutoFixHighIcon />} 
                 iconPosition="start"
-                {...a11yProps(4)}
+                {...a11yProps(3)}
                 disabled={!selectedTemplate}
               />
             </Tabs>
@@ -538,23 +530,8 @@ const MapTemplateManagementPage: React.FC = () => {
               )}
             </TabPanel>
 
-            {/* Bulk Operations Tab */}
-            <TabPanel value={tabValue} index={3}>
-              {selectedTemplate ? (
-                <Box sx={{ p: 3 }}>
-                  <BulkOperationsPanel templateId={selectedTemplate.id} />
-                </Box>
-              ) : (
-                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
-                  <Alert severity="info">
-                    {t('SELECT_TEMPLATE_FOR_BULK_OPERATIONS')}
-                  </Alert>
-                </Box>
-              )}
-            </TabPanel>
-
             {/* NEW: Bulk Tile Management Tab */}
-            <TabPanel value={tabValue} index={4}>
+            <TabPanel value={tabValue} index={3}>
               {selectedTemplate ? (
                 <Box sx={{ p: 3 }}>
                   <BulkTileManagementPanel 

@@ -71,7 +71,6 @@ const LAND_TYPE_COMPATIBILITY: Record<FacilityType, LandType[]> = {
   [FacilityType.QUARRY]: ['PLAIN'],
   [FacilityType.FOREST]: ['PLAIN'],
   [FacilityType.RANCH]: ['PLAIN'],
-  [FacilityType.MEDIA_BUILDING]: ['PLAIN'],
   [FacilityType.POWER_PLANT]: ['PLAIN'],
   [FacilityType.FIRE_STATION]: ['PLAIN'],
   [FacilityType.SCHOOL]: ['PLAIN'],
