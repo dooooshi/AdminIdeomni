@@ -242,27 +242,29 @@ export function getNavigationConfig(
 export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNavItemType[] {
 	let navigation: IdeomniNavItemType[] = [];
 	
-	// Add Dashboard for all user types
-	navigation.push({
-		id: 'dashboards',
-		title: 'Dashboards',
-		subtitle: 'Project management',
-		type: 'group',
-		icon: 'heroicons-outline:home',
-		translate: 'DASHBOARDS',
-		auth: ['user'],
-		children: [
-			{
-				id: 'dashboards.project',
-				title: 'Project',
-				type: 'item',
-				icon: 'heroicons-outline:clipboard-document-check',
-				url: '/dashboards/project',
-				translate: 'PROJECT',
-				auth: ['user']
-			}
-		]
-	});
+	// Add Dashboard only for coordinators (userType: 2)
+	if (regularUserType === 2) {
+		navigation.push({
+			id: 'dashboards',
+			title: 'Dashboards',
+			subtitle: 'Project management',
+			type: 'group',
+			icon: 'heroicons-outline:home',
+			translate: 'DASHBOARDS',
+			auth: ['user'],
+			children: [
+				{
+					id: 'dashboards.project',
+					title: 'Project',
+					type: 'item',
+					icon: 'heroicons-outline:clipboard-document-check',
+					url: '/dashboards/project',
+					translate: 'PROJECT',
+					auth: ['user']
+				}
+			]
+		});
+	}
 
 
 	// Add Team Management (Collaborate with your team) only for Students (userType: 3)
