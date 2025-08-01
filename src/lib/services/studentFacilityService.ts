@@ -407,7 +407,7 @@ export class StudentFacilityService {
       FacilityType.FACTORY, FacilityType.MALL, FacilityType.WAREHOUSE, FacilityType.MEDIA_BUILDING
     ];
     const infrastructureTypes = [
-      FacilityType.WATER_PLANT, FacilityType.POWER_PLANT, FacilityType.BASE_STATION
+      FacilityType.WATER_PLANT, FacilityType.POWER_PLANT, FacilityType.BASE_STATION, FacilityType.FIRE_STATION
     ];
 
     if (rawMaterialTypes.includes(type)) return 'Raw Material Production';

@@ -18,13 +18,13 @@ export enum FacilityType {
   WAREHOUSE = 'WAREHOUSE',
   MEDIA_BUILDING = 'MEDIA_BUILDING',
   
-  // Infrastructure (3 types)
+  // Infrastructure (4 types)
   WATER_PLANT = 'WATER_PLANT',
   POWER_PLANT = 'POWER_PLANT',
   BASE_STATION = 'BASE_STATION',
-  
-  // Other/Community (5 types)
   FIRE_STATION = 'FIRE_STATION',
+  
+  // Other/Community (4 types)
   SCHOOL = 'SCHOOL',
   HOSPITAL = 'HOSPITAL',
   PARK = 'PARK',
@@ -353,10 +353,10 @@ export type FacilityTypesByCategory = {
   [FacilityCategory.INFRASTRUCTURE]: [
     FacilityType.WATER_PLANT,
     FacilityType.POWER_PLANT,
-    FacilityType.BASE_STATION
+    FacilityType.BASE_STATION,
+    FacilityType.FIRE_STATION
   ];
   [FacilityCategory.OTHER]: [
-    FacilityType.FIRE_STATION,
     FacilityType.SCHOOL,
     FacilityType.HOSPITAL,
     FacilityType.PARK,
