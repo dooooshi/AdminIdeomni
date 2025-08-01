@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { RESOURCE_ICONS } from '@/constants/resourceIcons';
 import {
   Dialog,
   DialogTitle,
@@ -354,10 +355,10 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                       {t('facilityManagement:GOLD_COST')}
                     </Typography>
                     <Typography variant="h6" color="warning.main">
-                      🪙 {StudentFacilityService.formatResource(
+                      {RESOURCE_ICONS.GOLD_EMOJI} {StudentFacilityService.formatResource(
                         getTotalGoldCost(upgradeCalculation),
                         'gold'
-                      ).replace('🪙 ', '')}
+                      ).replace(`${RESOURCE_ICONS.GOLD_EMOJI} `, '')}
                     </Typography>
                   </Grid>
                   <Grid item xs={4}>
@@ -365,7 +366,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                       {t('facilityManagement:CARBON_COST')}
                     </Typography>
                     <Typography variant="h6" color="error.main">
-                      🔥 {getTotalCarbonCost(upgradeCalculation)}
+                      {RESOURCE_ICONS.CARBON_EMOJI} {getTotalCarbonCost(upgradeCalculation)}
                     </Typography>
                   </Grid>
                   <Grid item xs={4}>
@@ -389,8 +390,8 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
               >
                 <Typography variant="body2">
                   {t('facilityManagement:CURRENT_BALANCE')}: {' '}
-                  🪙 {new Intl.NumberFormat().format(teamBalance.gold)} | {' '}
-                  🔥 {new Intl.NumberFormat().format(teamBalance.carbon)}
+                  {RESOURCE_ICONS.GOLD_EMOJI} {new Intl.NumberFormat().format(teamBalance.gold)} | {' '}
+                  {RESOURCE_ICONS.CARBON_EMOJI} {new Intl.NumberFormat().format(teamBalance.carbon)}
                 </Typography>
                 {!canAffordUpgrade() && (
                   <Typography variant="caption" color="error" display="block" mt={0.5}>

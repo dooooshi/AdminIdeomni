@@ -104,22 +104,22 @@ const teamManagement = {
   // Resource Transfers
   RESOURCE_TRANSFERS: '资源转账',
   TRANSFER_HUB: '转账中心',
-  TRANSFER_GOLD: '转账金币',
-  TRANSFER_CARBON: '转账碳积分',
+  TRANSFER_GOLD: '转账黄金',
+  TRANSFER_CARBON: '转账碳排放指数',
   SEND_RESOURCES: '发送资源',
-  SEND_RESOURCES_SUBTITLE: '向活动中的其他团队转账金币和碳积分',
+  SEND_RESOURCES_SUBTITLE: '向活动中的其他团队转账黄金和碳排放指数',
   TRANSFER_RESOURCES_TO_TEAMS: '向其他团队转账资源',
   SELECT_TRANSFER_TYPE: '选择您要转账的类型',
-  GOLD_TRANSFERS: '金币转账',
-  CARBON_TRANSFERS: '碳积分转账',
+  GOLD_TRANSFERS: '黄金转账',
+  CARBON_TRANSFERS: '碳排放指数转账',
   RECENT_TRANSFERS: '最近转账',
   QUICK_TRANSFER: '快速转账',
   
   // Transfer Forms
-  TRANSFER_GOLD_TO_TEAM: '向团队转账金币',
-  TRANSFER_CARBON_TO_TEAM: '向团队转账碳积分',
-  TRANSFER_GOLD_SUBTITLE: '从您的团队账户向另一个团队发送金币',
-  TRANSFER_CARBON_SUBTITLE: '从您的团队账户向另一个团队发送碳积分',
+  TRANSFER_GOLD_TO_TEAM: '向团队转账黄金',
+  TRANSFER_CARBON_TO_TEAM: '向团队转账碳排放指数',
+  TRANSFER_GOLD_SUBTITLE: '从您的团队账户向另一个团队发送黄金',
+  TRANSFER_CARBON_SUBTITLE: '从您的团队账户向另一个团队发送碳排放指数',
   SELECT_TARGET_TEAM: '选择目标团队',
   SELECT_TEAM_PLACEHOLDER: '选择要转账的团队...',
   TRANSFER_AMOUNT: '转账金额',
@@ -152,8 +152,8 @@ const teamManagement = {
   // Transfer Success/Error Messages
   TRANSFER_SUCCESSFUL: '转账成功完成',
   TRANSFER_FAILED: '转账失败',
-  GOLD_TRANSFER_SUCCESS: '金币转账成功完成',
-  CARBON_TRANSFER_SUCCESS: '碳积分转账成功完成',
+  GOLD_TRANSFER_SUCCESS: '黄金转账成功完成',
+  CARBON_TRANSFER_SUCCESS: '碳排放指数转账成功完成',
   TRANSFER_ERROR_GENERIC: '转账失败，请重试。',
   
   // Account History
@@ -183,8 +183,8 @@ const teamManagement = {
   BALANCE_TRENDS: '余额趋势',
   RECENT_ACTIVITY: '最近活动',
   TOTAL_OPERATIONS: '总操作数',
-  GOLD_FLOW: '金币流',
-  CARBON_FLOW: '碳积分流',
+  GOLD_FLOW: '黄金流',
+  CARBON_FLOW: '碳排放指数流',
   NET_FLOW: '净流量',
   TOTAL_IN: '总收入',
   TOTAL_OUT: '总支出',
@@ -204,8 +204,8 @@ const teamManagement = {
   ALL_DIRECTIONS: '所有方向',
   INCOMING: '转入',
   OUTGOING: '转出',
-  GOLD: '金币',
-  CARBON: '碳积分',
+  GOLD: '黄金',
+  CARBON: '碳排放指数',
   APPLY_FILTERS: '应用筛选',
   CLEAR_FILTERS: '清除筛选',
   SEARCH_OPERATIONS: '搜索操作...',
@@ -234,8 +234,8 @@ const teamManagement = {
   ENTRIES: '条记录',
   
   // Chart Labels
-  GOLD_BALANCE: '金币余额',
-  CARBON_BALANCE: '碳积分余额',
+  GOLD_BALANCE: '黄金余额',
+  CARBON_BALANCE: '碳排放指数余额',
   OPERATIONS_BY_TYPE: '按类型的操作',
   RESOURCE_FLOW_CHART: '资源流图',
   BALANCE_TREND_CHART: '余额趋势图',
@@ -243,8 +243,8 @@ const teamManagement = {
   // Quick Actions on Dashboard
   TRANSFER_RESOURCES: '转账资源',
   VIEW_HISTORY: '查看历史',
-  SEND_GOLD: '发送金币',
-  SEND_CARBON: '发送碳积分',
+  SEND_GOLD: '发送黄金',
+  SEND_CARBON: '发送碳排放指数',
   
   // Team Selection
   SEARCH_TEAMS: '搜索团队...',

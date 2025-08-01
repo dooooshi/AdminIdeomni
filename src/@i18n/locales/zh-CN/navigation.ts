@@ -59,8 +59,8 @@ const navigation = {
 	// Resource Transfers
 	RESOURCE_TRANSFERS: '资源转账',
 	TRANSFER_HUB: '转账中心',
-	TRANSFER_GOLD: '转账金币',
-	TRANSFER_CARBON: '转账碳积分',
+	TRANSFER_GOLD: '转账黄金',
+	TRANSFER_CARBON: '转账碳排放指数',
 	// Account History
 	ACCOUNT_HISTORY: '账户历史',
 	HISTORY_OVERVIEW: '历史概览',

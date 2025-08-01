@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { RESOURCE_ICONS } from '@/constants/resourceIcons';
 import {
   Box,
   Grid,
@@ -329,13 +330,13 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = ({
                       </Typography>
                       <Box display="flex" gap={1} flexWrap="wrap" mt={0.5}>
                         <Chip
-                          label={`🪙 ${facility.cost.gold}`}
+                          label={`${RESOURCE_ICONS.GOLD_EMOJI} ${facility.cost.gold}`}
                           size="small"
                           variant="outlined"
                           color="warning"
                         />
                         <Chip
-                          label={`🔥 ${facility.cost.carbon}`}
+                          label={`${RESOURCE_ICONS.CARBON_EMOJI} ${facility.cost.carbon}`}
                           size="small"
                           variant="outlined"
                           color="error"

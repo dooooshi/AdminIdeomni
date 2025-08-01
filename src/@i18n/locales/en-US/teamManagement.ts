@@ -105,21 +105,21 @@ const teamManagement = {
   RESOURCE_TRANSFERS: 'Resource Transfers',
   TRANSFER_HUB: 'Transfer Hub',
   TRANSFER_GOLD: 'Transfer Gold',
-  TRANSFER_CARBON: 'Transfer Carbon',
+  TRANSFER_CARBON: 'Transfer Carbon Emission Index',
   SEND_RESOURCES: 'Send Resources',
-  SEND_RESOURCES_SUBTITLE: 'Transfer gold and carbon to other teams in your activity',
+  SEND_RESOURCES_SUBTITLE: 'Transfer gold and carbon emission index to other teams in your activity',
   TRANSFER_RESOURCES_TO_TEAMS: 'Transfer resources to other teams',
   SELECT_TRANSFER_TYPE: 'Select what you want to transfer',
   GOLD_TRANSFERS: 'Gold Transfers',
-  CARBON_TRANSFERS: 'Carbon Transfers',
+  CARBON_TRANSFERS: 'Carbon Emission Index Transfers',
   RECENT_TRANSFERS: 'Recent Transfers',
   QUICK_TRANSFER: 'Quick Transfer',
   
   // Transfer Forms
   TRANSFER_GOLD_TO_TEAM: 'Transfer Gold to Team',
-  TRANSFER_CARBON_TO_TEAM: 'Transfer Carbon to Team',
+  TRANSFER_CARBON_TO_TEAM: 'Transfer Carbon Emission Index to Team',
   TRANSFER_GOLD_SUBTITLE: 'Send gold from your team account to another team',
-  TRANSFER_CARBON_SUBTITLE: 'Send carbon from your team account to another team',
+  TRANSFER_CARBON_SUBTITLE: 'Send carbon emission index from your team account to another team',
   SELECT_TARGET_TEAM: 'Select Target Team',
   SELECT_TEAM_PLACEHOLDER: 'Choose a team to transfer to...',
   TRANSFER_AMOUNT: 'Transfer Amount',
@@ -153,7 +153,7 @@ const teamManagement = {
   TRANSFER_SUCCESSFUL: 'Transfer completed successfully',
   TRANSFER_FAILED: 'Transfer failed',
   GOLD_TRANSFER_SUCCESS: 'Gold transfer completed successfully',
-  CARBON_TRANSFER_SUCCESS: 'Carbon transfer completed successfully',
+  CARBON_TRANSFER_SUCCESS: 'Carbon emission index transfer completed successfully',
   TRANSFER_ERROR_GENERIC: 'Failed to complete transfer. Please try again.',
   
   // Account History
@@ -173,7 +173,7 @@ const teamManagement = {
   RECENT_ACTIVITY: 'Recent Activity',
   TOTAL_OPERATIONS: 'Total Operations',
   GOLD_FLOW: 'Gold Flow',
-  CARBON_FLOW: 'Carbon Flow',
+  CARBON_FLOW: 'Carbon Emission Index Flow',
   NET_FLOW: 'Net Flow',
   TOTAL_IN: 'Total In',
   TOTAL_OUT: 'Total Out',
@@ -205,7 +205,7 @@ const teamManagement = {
   INCOMING: 'Incoming',
   OUTGOING: 'Outgoing',
   GOLD: 'Gold',
-  CARBON: 'Carbon',
+  CARBON: 'Carbon Emission Index',
   APPLY_FILTERS: 'Apply Filters',
   CLEAR_FILTERS: 'Clear Filters',
   SEARCH_OPERATIONS: 'Search operations...',
@@ -235,7 +235,7 @@ const teamManagement = {
   
   // Chart Labels
   GOLD_BALANCE: 'Gold Balance',
-  CARBON_BALANCE: 'Carbon Balance',
+  CARBON_BALANCE: 'Carbon Emission Index Balance',
   OPERATIONS_BY_TYPE: 'Operations by Type',
   RESOURCE_FLOW_CHART: 'Resource Flow',
   BALANCE_TREND_CHART: 'Balance Trend',
@@ -244,7 +244,7 @@ const teamManagement = {
   TRANSFER_RESOURCES: 'Transfer Resources',
   VIEW_HISTORY: 'View History',
   SEND_GOLD: 'Send Gold',
-  SEND_CARBON: 'Send Carbon',
+  SEND_CARBON: 'Send Carbon Emission Index',
   
   // Team Selection
   SEARCH_TEAMS: 'Search teams...',

@@ -11,15 +11,15 @@ const teamAccounts = {
   noStatisticsAvailable: '没有可用的统计数据',
   
   // Resources
-  gold: '金币',
-  carbon: '碳',
+  gold: '黄金',
+  carbon: '碳排放指数',
   resources: '资源',
   totalResources: '总资源',
   resourcesAvailable: '资源可用',
-  noGold: '无金币',
-  noCarbon: '无碳',
+  noGold: '无黄金',
+  noCarbon: '无碳排放指数',
   resourceBalance: '资源平衡',
-  goldToCarbonRatio: '金币:碳比例',
+  goldToCarbonRatio: '黄金:碳排放指数比例',
   
   // Team Information
   teamName: '团队名称',
@@ -29,10 +29,10 @@ const teamAccounts = {
   
   // Statistics
   totalTeams: '团队总数',
-  totalGold: '总金币',
-  totalCarbon: '总碳',
-  averageGold: '平均金币',
-  averageCarbon: '平均碳',
+  totalGold: '总黄金',
+  totalCarbon: '总碳排放指数',
+  averageGold: '平均黄金',
+  averageCarbon: '平均碳排放指数',
   teamsWithAccounts: '拥有账户的团队',
   acrossAllTeams: '所有团队',
   activeTeamAccounts: '活跃团队账户',
@@ -58,10 +58,10 @@ const teamAccounts = {
   absoluteModeDescription: '将余额设置为特定值',
   
   // Form Fields
-  goldChange: '金币变更',
-  carbonChange: '碳变更',
-  newGoldAmount: '新金币数量',
-  newCarbonAmount: '新碳数量',
+  goldChange: '黄金变更',
+  carbonChange: '碳排放指数变更',
+  newGoldAmount: '新黄金数量',
+  newCarbonAmount: '新碳排放指数数量',
   deltaHelp: '输入正数或负数',
   absoluteHelp: '输入要设置的确切数量',
   
@@ -77,10 +77,10 @@ const teamAccounts = {
   
   // Validation
   'validation.noChanges': '请至少输入一项余额变更',
-  'validation.invalidGold': '无效的金币数量',
-  'validation.invalidCarbon': '无效的碳数量',
-  'validation.negativeGold': '金币数量不能为负数',
-  'validation.negativeCarbon': '碳数量不能为负数',
+  'validation.invalidGold': '无效的黄金数量',
+  'validation.invalidCarbon': '无效的碳排放指数数量',
+  'validation.negativeGold': '黄金数量不能为负数',
+  'validation.negativeCarbon': '碳排放指数数量不能为负数',
   
   validationErrors: '验证错误'
 };

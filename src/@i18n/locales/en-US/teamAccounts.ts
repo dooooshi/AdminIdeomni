@@ -12,14 +12,14 @@ const teamAccounts = {
   
   // Resources
   gold: 'Gold',
-  carbon: 'Carbon',
+  carbon: 'Carbon Emission Index',
   resources: 'Resources',
   totalResources: 'Total Resources',
   resourcesAvailable: 'Resources Available',
   noGold: 'No Gold',
-  noCarbon: 'No Carbon',
+  noCarbon: 'No Carbon Emission Index',
   resourceBalance: 'Resource Balance',
-  goldToCarbonRatio: 'Gold:Carbon Ratio',
+  goldToCarbonRatio: 'Gold:Carbon Emission Index Ratio',
   
   // Team Information
   teamName: 'Team Name',
@@ -30,9 +30,9 @@ const teamAccounts = {
   // Statistics
   totalTeams: 'Total Teams',
   totalGold: 'Total Gold',
-  totalCarbon: 'Total Carbon',
+  totalCarbon: 'Total Carbon Emission Index',
   averageGold: 'Average Gold',
-  averageCarbon: 'Average Carbon',
+  averageCarbon: 'Average Carbon Emission Index',
   teamsWithAccounts: 'Teams with Accounts',
   acrossAllTeams: 'Across all teams',
   activeTeamAccounts: 'Active Team Accounts',
@@ -59,9 +59,9 @@ const teamAccounts = {
   
   // Form Fields
   goldChange: 'Gold Change',
-  carbonChange: 'Carbon Change',
+  carbonChange: 'Carbon Emission Index Change',
   newGoldAmount: 'New Gold Amount',
-  newCarbonAmount: 'New Carbon Amount',
+  newCarbonAmount: 'New Carbon Emission Index Amount',
   deltaHelp: 'Enter positive or negative amount',
   absoluteHelp: 'Enter the exact amount to set',
   
@@ -78,9 +78,9 @@ const teamAccounts = {
   // Validation
   'validation.noChanges': 'Please enter at least one balance change',
   'validation.invalidGold': 'Invalid gold amount',
-  'validation.invalidCarbon': 'Invalid carbon amount',
+  'validation.invalidCarbon': 'Invalid carbon emission index amount',
   'validation.negativeGold': 'Gold amount cannot be negative',
-  'validation.negativeCarbon': 'Carbon amount cannot be negative',
+  'validation.negativeCarbon': 'Carbon emission index amount cannot be negative',
   
   validationErrors: 'Validation Errors'
 };

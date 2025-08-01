@@ -1,4 +1,5 @@
 import apiClient from '@/lib/http/api-client';
+import { formatResourceWithIcon } from '@/constants/resourceIcons';
 import type {
   TileFacilityInstance,
   TileFacilityBuildConfig,
@@ -384,8 +385,7 @@ export class StudentFacilityService {
    * Format resource value (Gold/Carbon)
    */
   static formatResource(value: number, type: 'gold' | 'carbon'): string {
-    const symbol = type === 'gold' ? '🪙' : '🔥';
-    return `${symbol} ${new Intl.NumberFormat('en-US').format(value)}`;
+    return formatResourceWithIcon(value, type);
   }
 
   /**
