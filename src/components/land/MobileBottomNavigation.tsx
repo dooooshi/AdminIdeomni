@@ -25,6 +25,7 @@ import {
   ShoppingCart as PurchaseIcon
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 
 const MobileBottomNav = styled(BottomNavigation)(({ theme }) => ({
   position: 'fixed',
@@ -102,6 +103,7 @@ const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
   onClearSelection,
   onBulkPurchase
 }) => {
+  const { t } = useTranslation(['landManagement', 'common']);
   const theme = useTheme();
   const [speedDialOpen, setSpeedDialOpen] = React.useState(false);
 
@@ -189,7 +191,7 @@ const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
         />
         
         <BottomNavigationAction
-          label={bulkMode ? 'Exit Bulk' : 'Bulk Mode'}
+          label={bulkMode ? t('landManagement:EXIT_BULK') : t('landManagement:BULK_MODE')}
           icon={
             <Badge 
               badgeContent={bulkMode ? selectedTilesCount : 0} 

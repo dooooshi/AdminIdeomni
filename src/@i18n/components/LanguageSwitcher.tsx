@@ -5,7 +5,7 @@ import { useLanguage } from '../hooks/useLanguage';
 
 interface LanguageSwitcherProps {
   variant?: 'button' | 'menu' | 'chip';
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium';
 }
 
 /**

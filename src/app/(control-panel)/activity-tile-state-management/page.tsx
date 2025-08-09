@@ -49,7 +49,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 
 import IdeomniPageCarded from '@ideomni/core/IdeomniPageCarded';
 import PageBreadcrumb from '@/components/PageBreadcrumb';

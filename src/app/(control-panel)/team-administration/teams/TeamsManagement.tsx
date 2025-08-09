@@ -16,7 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import managerTeamApiService from '../ManagerTeamApi';
@@ -305,7 +305,7 @@ function TeamsManagement() {
                             )}
                           </div>
                           <Typography variant="body2" color="text.secondary" className="truncate">
-                            {team.description || 'No description'}
+                            {team.description || t('common:NO_DESCRIPTION')}
                           </Typography>
                         </div>
                       </div>

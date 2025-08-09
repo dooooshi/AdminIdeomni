@@ -237,6 +237,20 @@ const landManagement = {
   ALREADY_OWNED_BY_TEAM: '此地块已由您的团队拥有',
   NOT_AVAILABLE_FOR_PURCHASE: '此地块不可购买',
   BUY: '购买',
+  
+  // Tutorial and Interactive Elements
+  PURCHASE_LAND_BUTTON_CLICK: '点击"购买土地"按钮打开增强购买面板',
+  QUICK_PURCHASE_DESCRIPTION: '快速购买',
+  SMALL_EXPANSION_DESCRIPTION: '小规模扩张',
+  MEDIUM_INVESTMENT_DESCRIPTION: '中等投资',
+  LARGE_ACQUISITION_DESCRIPTION: '大型收购',
+  ADVANCED_BREAKDOWN: '高级分解',
+  
+  // Template Management
+  DEFAULT_ECONOMIC_TEMPLATE: '默认经济模板',
+  BALANCED_ECONOMIC_ZONES: '适用于一般商业模拟的平衡经济区',
+  COASTAL_DEVELOPMENT_TEMPLATE: '海岸开发模板',
+  COASTAL_BUSINESS_SCENARIOS: '针对海岸商业场景优化的模板',
 };
 
 export default landManagement;

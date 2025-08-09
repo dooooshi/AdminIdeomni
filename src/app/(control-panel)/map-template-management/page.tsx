@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Tabs,
@@ -302,8 +302,8 @@ const MapTemplateManagementPage: React.FC = () => {
       const mockTemplates: EnhancedMapTemplate[] = [
         {
           id: 1,
-          name: 'Default Economic Template',
-          description: 'Balanced economic zones for general business simulations',
+          name: t('map:DEFAULT_ECONOMIC_TEMPLATE'),
+          description: t('map:DEFAULT_ECONOMIC_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: true,
@@ -313,8 +313,8 @@ const MapTemplateManagementPage: React.FC = () => {
         },
         {
           id: 2,
-          name: 'Coastal Development Template',
-          description: 'Template optimized for coastal business scenarios',
+          name: t('map:COASTAL_DEVELOPMENT_TEMPLATE'),
+          description: t('map:COASTAL_DEVELOPMENT_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: false,

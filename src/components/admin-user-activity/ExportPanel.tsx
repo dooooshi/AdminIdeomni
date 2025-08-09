@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -275,10 +275,10 @@ const ExportPanel: React.FC = () => {
                       label={t('ACTIVITY_FILTER')}
                     >
                       <MenuItem value="">{t('ALL_ACTIVITIES')}</MenuItem>
-                      {/* TODO: Load from real activities API */}
-                      <MenuItem value="activity1">Business Strategy Simulation</MenuItem>
-                      <MenuItem value="activity2">Advanced Leadership Training</MenuItem>
-                      <MenuItem value="activity3">Team Building Workshop</MenuItem>
+                      {/* TODO: Load from real activities API - hardcoded for now */}
+                      <MenuItem value="activity1">{t('BUSINESS_STRATEGY_SIMULATION')}</MenuItem>
+                      <MenuItem value="activity2">{t('ADVANCED_LEADERSHIP_TRAINING')}</MenuItem>
+                      <MenuItem value="activity3">{t('TEAM_BUILDING_WORKSHOP')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
+import { LANGUAGE_CODES, SUPPORTED_LANGUAGES } from '../core/constants';
 
 /**
  * Hook for language management
@@ -13,7 +14,7 @@ export const useLanguage = () => {
   
   return {
     currentLanguage: i18n.language,
-    availableLanguages: ['en-US', 'zh-CN'],
+    availableLanguages: LANGUAGE_CODES,
     changeLanguage,
     isReady: i18n.isInitialized,
   };
@@ -25,12 +26,13 @@ export const useLanguage = () => {
 export const useLanguageDirection = () => {
   const { i18n } = useTranslation();
   
-  // Most languages are LTR, add RTL languages as needed
-  const rtlLanguages = ['ar', 'he', 'fa'];
-  const isRtl = rtlLanguages.includes(i18n.language);
+  // Check if current language is RTL based on constants
+  const currentLangInfo = SUPPORTED_LANGUAGES[i18n.language as keyof typeof SUPPORTED_LANGUAGES];
+  const direction = currentLangInfo?.direction || 'ltr';
+  const isRtl = direction === 'rtl';
   
   return {
-    direction: isRtl ? 'rtl' : 'ltr',
+    direction,
     isRtl,
     isLtr: !isRtl,
   };
@@ -52,7 +54,9 @@ export const useLanguageSwitcher = () => {
   
   const switchLanguage = useCallback(() => {
     const currentLang = i18n.language;
-    const newLang = currentLang === 'en-US' ? 'zh-CN' : 'en-US';
+    const currentIndex = LANGUAGE_CODES.indexOf(currentLang as any);
+    const nextIndex = (currentIndex + 1) % LANGUAGE_CODES.length;
+    const newLang = LANGUAGE_CODES[nextIndex];
     return i18n.changeLanguage(newLang);
   }, [i18n]);
   

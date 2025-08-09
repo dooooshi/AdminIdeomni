@@ -665,6 +665,16 @@ const activityManagement = {
   PROCESSING_REQUEST: 'Processing request...',
   OPERATION_IN_PROGRESS: 'Operation in progress...',
   PLEASE_WAIT: 'Please wait...',
+  
+  // Example Activity Names (for demo/placeholder purposes)
+  BUSINESS_STRATEGY_SIMULATION: 'Business Strategy Simulation',
+  ADVANCED_LEADERSHIP_TRAINING: 'Advanced Leadership Training',
+  TEAM_BUILDING_WORKSHOP: 'Team Building Workshop',
+  
+  // Missing ActivityList Filter Keys
+  ALL_TYPES: 'All Types',
+  ALL_STATUSES: 'All Statuses',
+  CLEAR_FILTERS: 'Clear Filters',
 };
 
 export default activityManagement; 

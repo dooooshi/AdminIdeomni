@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LanguageSwitcher from 'src/components/theme-layouts/components/LanguageSwitcher';
 import AdminSignInForm from 'src/lib/auth/forms/AdminSignInForm';
 import { keyframes } from '@mui/material/styles';
@@ -148,7 +148,7 @@ function AdminSignInPage() {
 					}}
 				>
 					<IdeomniSvgIcon size={16}>heroicons-outline:arrow-left</IdeomniSvgIcon>
-					<span>{t('auth:BACK_TO_USER_SIGNIN')}</span>
+					<span>{t('signIn')}</span>
 				</Link>
 			</Box>
 			
@@ -178,7 +178,7 @@ function AdminSignInPage() {
 						<Box className="flex justify-center mb-4">
 													<Chip 
 							icon={<IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>}
-							label={t('auth:ADMIN_ACCESS')}
+							label={t('adminAccess')}
 							variant="outlined"
 							sx={{
 								borderColor: 'error.main',
@@ -203,7 +203,7 @@ function AdminSignInPage() {
 								fontWeight: 300,
 							}}
 						>
-							{t('auth:ADMIN_SIGN_IN')}
+							{t('adminSignIn')}
 						</Typography>
 						
 						<Typography 
@@ -215,7 +215,7 @@ function AdminSignInPage() {
 								lineHeight: 1.6,
 							}}
 						>
-							{t('auth:ADMIN_SUBTITLE')}
+							{t('adminSubtitle')}
 						</Typography>
 					</Box>
 

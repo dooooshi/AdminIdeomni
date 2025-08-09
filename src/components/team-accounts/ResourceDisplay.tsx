@@ -4,7 +4,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import TeamAccountService from '@/lib/services/teamAccountService';
 

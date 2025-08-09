@@ -43,7 +43,7 @@ import {
   Timeline as TimelineIcon,
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import AdminTileStateService, { Activity } from '@/lib/services/adminTileStateService';
@@ -79,12 +79,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
       console.log('Loaded activities:', response.data);
     } catch (error) {
       console.error('Failed to load activities:', error);
-      
-      // Mock data fallback for development
-      const mockActivities: Activity[] = [
-
-      ];
-      setActivities(mockActivities);
+      setActivities([]);
     } finally {
       setIsLoading(false);
     }

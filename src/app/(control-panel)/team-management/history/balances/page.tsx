@@ -18,7 +18,7 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -295,7 +295,7 @@ function BalanceHistoryPage() {
                       <TableCell>{t('teamManagement:GOLD')} {t('teamManagement:CHANGE')}</TableCell>
                       <TableCell>{t('teamManagement:CARBON_BALANCE')}</TableCell>
                       <TableCell>{t('teamManagement:CARBON')} {t('teamManagement:CHANGE')}</TableCell>
-                      <TableCell>Related Operation</TableCell>
+                      <TableCell>{t('teamManagement:RELATED_OPERATION')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

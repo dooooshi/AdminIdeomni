@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -56,7 +56,6 @@ import {
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { format } from 'date-fns';
-import useI18n from '@i18n/useI18n';
 import UserActivityService, {
   ActivityParticipant,
   UserActivityStatus,
@@ -88,7 +87,6 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
   onUserHistoryView,
 }) => {
   const { t } = useTranslation('activityManagement');
-  const { languageId } = useI18n();
   const theme = useTheme();
 
   // State management

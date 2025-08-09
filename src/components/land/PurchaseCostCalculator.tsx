@@ -32,6 +32,7 @@ import {
   Analytics as AnalyticsIcon
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import { AvailableTile, PurchaseValidation } from '@/types/land';
 
@@ -137,6 +138,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
   onAreaChange,
   showAdvanced = false
 }) => {
+  const { t } = useTranslation(['landManagement', 'common']);
   const theme = useTheme();
   
   // State
@@ -148,10 +150,10 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
 
   // Quick preset areas
   const presetAreas = [
-    { label: '1', value: 1, icon: <SpeedIcon />, description: 'Quick purchase' },
-    { label: '5', value: 5, icon: <TrendingUpIcon />, description: 'Small expansion' },
-    { label: '10', value: 10, icon: <TimelineIcon />, description: 'Medium investment' },
-    { label: '25', value: 25, icon: <AnalyticsIcon />, description: 'Large acquisition' }
+    { label: '1', value: 1, icon: <SpeedIcon />, description: t('landManagement:QUICK_PURCHASE') },
+    { label: '5', value: 5, icon: <TrendingUpIcon />, description: t('landManagement:SMALL_EXPANSION') },
+    { label: '10', value: 10, icon: <TimelineIcon />, description: t('landManagement:MEDIUM_INVESTMENT') },
+    { label: '25', value: 25, icon: <AnalyticsIcon />, description: t('landManagement:LARGE_ACQUISITION') }
   ];
 
   // Validate purchase when area changes
@@ -436,7 +438,7 @@ const PurchaseCostCalculator: React.FC<PurchaseCostCalculatorProps> = ({
                       {showBreakdown ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </IconButton>
                     <Typography variant="body2" color="text.secondary">
-                      {showBreakdown ? 'Hide' : 'Show'} Advanced Breakdown
+                      {showBreakdown ? t('common:HIDE') : t('common:SHOW')} {t('landManagement:ADVANCED_BREAKDOWN')}
                     </Typography>
                   </Box>
                   

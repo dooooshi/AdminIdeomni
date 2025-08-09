@@ -44,9 +44,16 @@ export const useMultipleTranslations = (namespaces: string[]) => {
 };
 
 /**
- * Simple translate function for components that don't need the full hook
+ * Simple translate function for non-component usage
+ * Note: This should only be used outside of React components
  */
 export const translate = (key: string, ns?: string): string => {
-  const { t } = useReactI18nextTranslation(ns);
-  return t(key);
+  // Dynamic import to avoid circular dependencies
+  try {
+    const i18n = require('../i18n').default;
+    return i18n.t(key, { ns });
+  } catch (error) {
+    console.warn('Translation failed:', error);
+    return key; // Fallback to key if translation fails
+  }
 };

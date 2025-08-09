@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Tabs,
@@ -160,7 +160,7 @@ const FacilityManagementPage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Dashboard
+              {t('DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <BusinessIcon sx={{ mr: 0.5 }} fontSize="inherit" />
@@ -348,7 +348,7 @@ const FacilityManagementPage: React.FC = () => {
                         {t('MAINTENANCE_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        ${viewingFacility.maintenanceCost.toLocaleString()} / month
+                        ${viewingFacility.maintenanceCost.toLocaleString()} {t('PER_MONTH')}
                       </Typography>
                     </Grid>
                   )}
@@ -358,7 +358,7 @@ const FacilityManagementPage: React.FC = () => {
                         {t('OPERATION_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        ${viewingFacility.operationCost.toLocaleString()} / day
+                        ${viewingFacility.operationCost.toLocaleString()} {t('PER_DAY')}
                       </Typography>
                     </Grid>
                   )}

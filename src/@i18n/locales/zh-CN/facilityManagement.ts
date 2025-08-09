@@ -730,6 +730,17 @@ const facilityManagement = {
   NO_OWNED_TILES: '您还没有拥有任何地块。请先购买土地以建造设施。',
   FAILED_TO_LOAD_TILES: '加载可用地块失败',
   AVAILABLE_AREA: '可用面积',
+  
+  // Additional missing keys from facility-management analysis
+  DASHBOARD: '仪表板',
+  PER_MONTH: '/ 月',
+  PER_DAY: '/ 日',
+  OF_TOTAL: '总计的',
+  SUMMARY: '摘要',
+  MOST_POPULAR_CATEGORY: '最受欢迎的类别',
+  MOST_POPULAR_TYPE: '最受欢迎的类型',
+  ACTIVE_RATE: '活跃率',
+  TOTAL_CATEGORIES: '总类别数',
 };
 
 export default facilityManagement; 

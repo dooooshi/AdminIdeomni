@@ -56,7 +56,7 @@ import {
   ResponsiveContainer
 } from 'recharts';
 import LandService from '@/lib/services/landService';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   LandPurchaseAnalytics,
   ActivityLandOverview,

@@ -11,7 +11,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentUserTeamAccountQuery, useGetTransferHistoryQuery } from '../TeamAccountApi';
@@ -229,8 +229,8 @@ function TransferHubPage() {
                       <div>
                         <Typography variant="body2" className="font-medium text-gray-900 dark:text-white">
                           {transfer.operationType === 'TRANSFER_OUT' 
-                            ? `To ${transfer.targetTeam?.name || 'Unknown Team'}`
-                            : `From ${transfer.sourceTeam?.name || 'Unknown Team'}`
+                            ? `${t('teamManagement:TO')} ${transfer.targetTeam?.name || t('common:UNKNOWN_TEAM')}`
+                            : `${t('teamManagement:FROM')} ${transfer.sourceTeam?.name || t('common:UNKNOWN_TEAM')}`
                           }
                         </Typography>
                         <Typography variant="caption" color="text.secondary">

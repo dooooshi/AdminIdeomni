@@ -50,7 +50,7 @@ import {
   Money as MoneyIcon,
   People as PeopleIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { 

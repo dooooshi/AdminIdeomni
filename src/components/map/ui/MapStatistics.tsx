@@ -1,6 +1,6 @@
 import { Typography, Box, Paper } from '@mui/material';
 import { MapTile } from '../types';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 interface MapStatisticsProps {
 	tiles: MapTile[];

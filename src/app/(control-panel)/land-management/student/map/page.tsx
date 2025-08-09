@@ -52,7 +52,7 @@ import {
   LandPurchaseRequest,
   PurchaseValidation,
 } from '@/types/land';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const MapContainer = styled(Paper)(({ theme }) => ({
   height: '1000px',
@@ -144,7 +144,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   const [selectedTile, setSelectedTile] = useState<AvailableTile | null>(null);  
   const [localError, setLocalError] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
-  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState(false);
   
   // Purchase dialog state
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);

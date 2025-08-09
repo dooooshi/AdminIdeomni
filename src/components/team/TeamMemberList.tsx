@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { TeamMember, Team } from 'src/types/team';
 
 interface TeamMemberListProps {

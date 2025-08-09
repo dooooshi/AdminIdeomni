@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -289,7 +289,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                         secondary={
                           <Box sx={{ mt: 1 }}>
                             <Typography variant="body2" color="textSecondary">
-                              {calculatePercentage(count, statistics.totalFacilities)}% of total
+                              {calculatePercentage(count, statistics.totalFacilities)}% {t('OF_TOTAL')}
                             </Typography>
                             <Box
                               sx={{
@@ -395,12 +395,12 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       <Card sx={{ mt: 3 }}>
         <CardContent>
           <Typography variant="h6" component="h3" gutterBottom>
-            Summary
+            {t('SUMMARY')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                Most Popular Category
+                {t('MOST_POPULAR_CATEGORY')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.entries(statistics.facilitiesByCategory)
@@ -412,7 +412,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                Most Popular Type
+                {t('MOST_POPULAR_TYPE')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.entries(statistics.facilitiesByType)
@@ -424,7 +424,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                Active Rate
+                {t('ACTIVE_RATE')}
               </Typography>
               <Typography variant="body1" fontWeight="medium" color="success.main">
                 {calculatePercentage(statistics.activeFacilities, statistics.totalFacilities)}%
@@ -432,7 +432,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                Total Categories
+                {t('TOTAL_CATEGORIES')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.keys(statistics.facilitiesByCategory).length}

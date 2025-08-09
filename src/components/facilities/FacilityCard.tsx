@@ -18,7 +18,7 @@ import {
 } from '@mui/icons-material';
 import type { TileFacilityInstance } from '@/types/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 
 interface FacilityCardProps {
   facility: TileFacilityInstance;

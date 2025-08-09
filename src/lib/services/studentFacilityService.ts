@@ -158,7 +158,7 @@ export class StudentFacilityService {
         totalPages: 0,
         hasNext: false,
         hasPrevious: false,
-      } as T;
+      };
     }
     
     // If extractedData is an array, wrap it in pagination structure
@@ -171,10 +171,10 @@ export class StudentFacilityService {
         totalPages: Math.ceil(extractedData.length / (queryParams.pageSize || 20)),
         hasNext: false,
         hasPrevious: false,
-      } as T;
+      };
     }
     
-    return extractedData;
+    return extractedData as PaginatedResponse<TileFacilityInstance>;
   }
 
   /**

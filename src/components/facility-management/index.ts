@@ -7,9 +7,7 @@ export { default as FacilityStatistics } from './FacilityStatistics';
 export { default as FacilityConfigList } from './FacilityConfigList';
 export { default as FacilityConfigForm } from './FacilityConfigForm';
 
-// i18n Helper
-export { default as useFacilityTranslation } from './i18nHelper';
-export type { FacilityTranslationHelper } from './i18nHelper';
+// i18n Helper removed - use centralized @i18n module instead
 
 // Types
 export type {

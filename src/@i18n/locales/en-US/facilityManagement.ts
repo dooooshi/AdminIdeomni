@@ -83,10 +83,6 @@ const facilityManagement = {
   ACTIONS: 'Actions',
   
   // Facility Categories
-  RAW_MATERIAL_PRODUCTION: 'Raw Material Production',
-  FUNCTIONAL: 'Functional Facilities',
-  INFRASTRUCTURE: 'Infrastructure',
-  OTHER: 'Other Facilities',
   FACILITY_CATEGORY_RAW_MATERIAL_PRODUCTION: 'Raw Material Production',
   FACILITY_CATEGORY_FUNCTIONAL: 'Functional Facilities',
   FACILITY_CATEGORY_INFRASTRUCTURE: 'Infrastructure',
@@ -380,7 +376,6 @@ const facilityManagement = {
   // Time and Dates
   CREATED: 'Created',
   UPDATED: 'Updated',
-  DELETED: 'Deleted',
   NEVER: 'Never',
   TODAY: 'Today',
   YESTERDAY: 'Yesterday',
@@ -480,10 +475,6 @@ const facilityManagement = {
   // Tooltips and Help Text
   FACILITY_TYPE_TOOLTIP: 'Select the type of facility you want to create',
   CATEGORY_TOOLTIP: 'Facilities are grouped into categories based on their primary function',
-  CAPACITY_TOOLTIP: 'The maximum number of units this facility can handle or produce',
-  BUILD_COST_TOOLTIP: 'One-time cost required to construct this facility',
-  MAINTENANCE_COST_TOOLTIP: 'Monthly cost required to maintain this facility in operational condition',
-  OPERATION_COST_TOOLTIP: 'Daily cost required to operate this facility at full capacity',
   // Advanced features continued
   IMPORT_SUCCESS: 'Successfully imported {{count}} facilities',
   EXPORT_SUCCESS: 'Successfully exported {{count}} facilities',
@@ -569,9 +560,6 @@ const facilityManagement = {
   ADVANCED_OPTIONS_TOOLTIP: 'Configure detailed min/max ranges and constraints for advanced users',
   ADVANCED_OPTIONS_DESCRIPTION: 'Define minimum and maximum ranges to provide flexibility when creating facilities of this type.',
   COST_RANGES: 'Cost Ranges',
-  BUILD_COST_RANGE: 'Build Cost Range',
-  MAINTENANCE_COST_RANGE: 'Maintenance Cost Range',
-  OPERATION_COST_RANGE: 'Operation Cost Range',
   
   // Navigation
   BACK: 'Back',
@@ -615,9 +603,6 @@ const facilityManagement = {
   DASHBOARD: 'Dashboard',
   ATTENTION_NEEDED: 'Attention Needed',
   ANALYTICS: 'Analytics',
-  ALL_STATUSES: 'All Statuses',
-  ALL_TYPES: 'All Types',
-  ALL_CATEGORIES: 'All Categories',
   UNDER_CONSTRUCTION: 'Under Construction',
   MAINTENANCE: 'Maintenance',
   DAMAGED: 'Damaged',
@@ -665,7 +650,7 @@ const facilityManagement = {
   MAX_CARBON_COST: 'Max Carbon Cost',
   CONFIRM_FACILITY_BUILD: 'Confirm Facility Build',
   BUILD_SUMMARY: 'Build Summary',
-  LOCATION: 'Location',
+  BUILD_LOCATION: 'Location',
   CURRENT_BALANCE: 'Current Balance',
   INSUFFICIENT_GOLD: 'Insufficient gold for this build',
   INSUFFICIENT_CARBON: 'Insufficient carbon for this build',
@@ -675,12 +660,10 @@ const facilityManagement = {
   // Enhanced UI strings for beautified layout
   MANAGE_YOUR_FACILITIES_DESCRIPTION: 'Build, upgrade, and manage facilities across your owned territories',
   FILTER_AND_SEARCH: 'Filter & Search',
-  SEARCH_PLACEHOLDER: 'Search by name, type, tile ID...',
   ACTIVE_FILTERS: 'Active filters',
   YOUR_FACILITIES: 'Your Facilities',
   TOTAL_VALUE: 'Total Value',
   BUILD_YOUR_FIRST_FACILITY_DESCRIPTION: 'Build your first facility to start developing your territory and generating resources.',
-  CLEAR_FILTERS: 'Clear Filters',
   URGENT_ATTENTION_REQUIRED: 'Urgent Attention Required',
   FACILITIES_NEED_MAINTENANCE_DESC: 'The following facilities require immediate maintenance or repair to continue operating efficiently.',
   NO_FACILITIES_NEED_ATTENTION_DESC: 'Keep up the great work! Your maintenance team is doing an excellent job.',
@@ -695,12 +678,6 @@ const facilityManagement = {
   
   // Status translations for dynamic usage - Removed duplicate (already defined above)
   
-  // Facility Category Names for i18n
-  CATEGORY_RAW_MATERIAL_PRODUCTION: 'Raw Material Production',
-  CATEGORY_FUNCTIONAL: 'Functional Facilities', 
-  CATEGORY_INFRASTRUCTURE: 'Infrastructure',
-  CATEGORY_OTHER: 'Other Facilities',
-  
   // Tile Selection Step
   SELECT_TILE: 'Select Tile',
   SELECT_TILE_TO_BUILD: 'Select Tile to Build On',
@@ -709,6 +686,16 @@ const facilityManagement = {
   NO_OWNED_TILES: 'You don\'t own any tiles yet. Purchase some land first to build facilities.',
   FAILED_TO_LOAD_TILES: 'Failed to load available tiles',
   AVAILABLE_AREA: 'Available Area',
+  
+  // Additional missing keys from facility-management analysis
+  PER_MONTH: '/ month',
+  PER_DAY: '/ day',
+  OF_TOTAL: 'of total',
+  SUMMARY: 'Summary',
+  MOST_POPULAR_CATEGORY: 'Most Popular Category',
+  MOST_POPULAR_TYPE: 'Most Popular Type',
+  ACTIVE_RATE: 'Active Rate',
+  TOTAL_CATEGORIES: 'Total Categories',
 };
 
 export default facilityManagement; 

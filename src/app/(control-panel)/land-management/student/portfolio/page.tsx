@@ -61,7 +61,7 @@ import {
   PaginatedResponse
 } from '@/types/land';
 import { format } from 'date-fns';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const StatsCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -491,12 +491,12 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
             </Typography>
           </div>
           <Stack direction="row" spacing={2}>
-            <Tooltip title="Export Data">
+            <Tooltip title={t('common:EXPORT_DATA')}>
               <IconButton className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Refresh Data">
+            <Tooltip title={t('common:REFRESH_DATA')}>
               <IconButton onClick={handleRefresh} className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
                 <RefreshIcon />
               </IconButton>

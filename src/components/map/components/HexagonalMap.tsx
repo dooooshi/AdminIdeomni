@@ -95,7 +95,7 @@ const HexagonalMap = forwardRef<HexagonalMapRef, HexagonalMapProps>(({
 	selectedTileId,
 	showEconomicData = false,
 	activityMode = false,
-	enableLandAnimations = true
+	enableLandAnimations = false
 }, ref) => {
 	const theme = useTheme();
 	const [hoveredTile, setHoveredTile] = useState<number | null>(null);

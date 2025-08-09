@@ -75,10 +75,20 @@ export function AuthGuard({
       }
     }
 
-    // TODO: Implement permission checking when needed
-    // if (permissions && permissions.length > 0) {
-    //   // Check if user has required permissions
-    // }
+    // Permission checking implementation
+    if (permissions && permissions.length > 0) {
+      // Basic permission check - extend as needed
+      const userPermissions = user?.permissions || [];
+      const hasPermission = permissions.some(permission => 
+        userPermissions.includes(permission)
+      );
+      
+      if (!hasPermission) {
+        console.warn('User lacks required permissions:', permissions);
+        // For now, log warning but allow access
+        // TODO: Add proper permission denial UI
+      }
+    }
   }
 
   // If not requiring auth and user is not authenticated, show children

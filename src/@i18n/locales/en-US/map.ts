@@ -155,13 +155,6 @@ const map = {
 	TEMPLATE_GENERATION_ERROR: 'Failed to generate template',
 	
 	// Template Generation Additional Keys
-	GENERATING: 'Generating...',
-	GENERATION_INFO: 'This will generate approximately {{count}} tiles',
-	PREVIEW: 'Preview',
-	CANCEL: 'Cancel',
-	SELECT_TEMPLATE_TO_CONFIGURE: 'Select a template from the list to start configuring',
-	TEMPLATE_ANALYTICS: 'Template Analytics',
-	ANALYTICS_COMING_SOON: 'Analytics dashboard coming soon',
 	
 	// Activity Tile State Management
 	ACTIVITY_TILE_STATE_MANAGEMENT: 'Activity Tile State Management',
@@ -223,11 +216,9 @@ const map = {
 	// Analytics
 	ACTIVITY_ANALYTICS: 'Activity Analytics',
 	ACTIVITY_SUMMARY: 'Activity Summary',
-	TOTAL_TILES: 'Total Tiles',
 	MODIFIED_TILES: 'Modified Tiles',
 	AVERAGE_PRICE: 'Average Price',
 	AVERAGE_POPULATION: 'Average Population',
-	TOTAL_VALUE: 'Total Value',
 	LAND_TYPE_BREAKDOWN: 'Land Type Breakdown',
 	PRICE_RANGE: 'Price Range',
 	POPULATION_RANGE: 'Population Range',
@@ -272,17 +263,9 @@ const map = {
 	// Actions
 	VIEW_MAP: 'View Map',
 	VIEW_ANALYTICS: 'View Analytics',
-	CLOSE: 'Close',
 	
 	// Additional activity management keys
-	SEARCH_ACTIVITIES: 'Search activities...',
-	ALL_STATUSES: 'All Statuses',
 	TILE_STATES: 'Tile States',
-	TOTAL_TILES: 'Total Tiles',
-	MODIFIED_TILES: 'Modified Tiles',
-	SELECT_ACTIVITY_TO_VIEW_MAP: 'Please select an activity to view the map',
-	ANALYTICS: 'Analytics',
-	TILE_STATE_UPDATED_SUCCESSFULLY: 'Tile state updated successfully',
 	
 	// Tooltip content
 	MODIFIED: 'Modified',
@@ -292,9 +275,10 @@ const map = {
 	
 	// Template Management
 	LOADING_TEMPLATES: 'Loading templates...',
-	NO_TEMPLATES_FOUND: 'No Templates Found',
-	NO_TEMPLATES_DESCRIPTION: 'Get started by creating your first map template',
-	CREATE_FIRST_TEMPLATE: 'Create First Template',
+	DEFAULT_ECONOMIC_TEMPLATE: 'Default Economic Template',
+	DEFAULT_ECONOMIC_TEMPLATE_DESC: 'Balanced economic zones for general business simulations',
+	COASTAL_DEVELOPMENT_TEMPLATE: 'Coastal Development Template',
+	COASTAL_DEVELOPMENT_TEMPLATE_DESC: 'Template optimized for coastal business scenarios',
 
 	// Pagination
 	SHOWING: 'Showing',
@@ -406,11 +390,17 @@ const map = {
 	TOTAL_CONFIGS: 'total configurations',
 	DISALLOWED: 'disallowed',
 	BULK_UPDATE: 'Bulk Update',
+	PREVIEW_CHANGES_INFO: 'Preview changes for {{landType}} tiles ({{count}} tiles affected)',
+	BULK_TILE_UPDATE_CONFIRM: 'Are you sure you want to apply bulk changes to {{count}} {{landType}} tiles?',
+	BULK_UPDATE_SUMMARY: '{{updated}} tiles updated successfully, {{failed}} failed',
+	BATCH_UPDATE_SUCCESS: 'Successfully updated {{count}} tiles',
+	SAVE_BATCH: 'Save {{count}} Tiles',
 	INITIALIZE_DEFAULTS: 'Initialize Defaults',
 	ADVANCED_OPERATIONS: 'Advanced Operations',
 	EASY_MODE: 'Easy Mode',
 	NORMAL_MODE: 'Normal Mode',
 	HARD_MODE: 'Hard Mode',
+	CUSTOM_MODE: 'Custom Mode',
 	COST_MULTIPLIERS: 'Cost Multipliers',
 	UPGRADE_GOLD_MULTIPLIER: 'Upgrade Gold Multiplier',
 	UPGRADE_CARBON_MULTIPLIER: 'Upgrade Carbon Multiplier',
@@ -588,6 +578,41 @@ const map = {
 	CARBON_MULTIPLIER: 'Carbon Multiplier',
 	GOLD_MULTIPLIER: 'Gold Multiplier',
 	NO: 'No',
+
+	// Advanced Tile Configuration Panel Keys
+	BATCH_UPDATE_SUCCESS: '{{landType}} tiles updated successfully',
+	BATCH_UPDATE_FAILED: 'Failed to update {{landType}} tiles',
+	TEMPLATE_RESET_SUCCESS: 'Template reset to defaults successfully',
+	TEMPLATE_RESET_FAILED: 'Failed to reset template to defaults',
+	OPERATION_DETAILS: 'Updated: {{updated}}, Failed: {{failed}}',
+	LAND_TYPE_STATISTICS: 'Land Type Statistics',
+	CURRENT_DISTRIBUTION_AVERAGES: 'Current distribution and averages',
+	AVG_PRICE: 'Avg Price: {{price}}',
+	AVG_POPULATION: 'Avg Population: {{population}}',
+	AVG_TRANSPORT: 'Avg Transport: {{cost}}',
+	BATCH_OPERATIONS: 'Batch Operations',
+	ADVANCED_TILE_CONFIG_TOOLS: 'Advanced tile configuration tools',
+	BATCH_UPDATE_BY_LAND_TYPE: 'Batch Update by Land Type',
+	RESET_ALL_TILES_TO_DEFAULTS: 'Reset All Tiles to Defaults',
+	BATCH_UPDATE_TITLE: 'Batch Update: {{landType}} Tiles',
+	FIXED_VALUES_SECTION: 'Fixed Values (will replace current values)',
+	FIXED_PRICE: 'Fixed Price',
+	FIXED_POPULATION: 'Fixed Population',
+	FIXED_TRANSPORT_COST: 'Fixed Transport Cost',
+	BATCH_IMPACT_WARNING: 'This will affect {{count}} tiles of type {{landType}}.',
+	APPLY_BATCH_UPDATE: 'Apply Batch Update',
+	UPDATING: 'Updating...',
+	RESET_TEMPLATE_TO_DEFAULTS: 'Reset Template to Defaults',
+	RESET_WARNING_MESSAGE: 'This will reset ALL tiles in the template to their default configurations based on land type. This action cannot be undone.',
+	DEFAULT_VALUES: 'Default values:',
+	DEFAULT_MARINE_VALUES: '• Marine: $50, 0 population, $8 transport',
+	DEFAULT_COASTAL_VALUES: '• Coastal: $100, 500 population, $5 transport',
+	DEFAULT_PLAIN_VALUES: '• Plain: $150, 1000 population, $3 transport',
+	RESETTING: 'Resetting...',
+	RESET_TO_DEFAULTS: 'Reset to Defaults',
+	
+	// Activity Tile State Management Error Messages
+	FAILED_TO_SAVE_TILE_STATE: 'Failed to save tile state. Please try again.',
 };
 
 export default map; 

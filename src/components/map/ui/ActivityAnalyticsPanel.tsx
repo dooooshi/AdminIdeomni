@@ -42,7 +42,7 @@ import {
   Info as InfoIcon,
   FilterList as FilterIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import AdminTileStateService, { 

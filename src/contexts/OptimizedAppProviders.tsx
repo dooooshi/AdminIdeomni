@@ -10,7 +10,7 @@ import ErrorBoundary from '@ideomni/utils/ErrorBoundary';
 import AppContext from 'src/contexts/AppContext';
 
 import { IdeomniSettingsProvider } from '@ideomni/core/IdeomniSettings/IdeomniSettingsProvider';
-import { I18nProvider } from '@i18n/I18nProvider';
+import { I18nProvider } from '@/lib/i18n/components/I18nProvider';
 import store from '../store/store';
 import MainThemeProvider from './MainThemeProvider';
 

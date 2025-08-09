@@ -6,8 +6,7 @@ import IdeomniNavigation from '@ideomni/core/IdeomniNavigation';
 import { IdeomniNavigationProps } from '@ideomni/core/IdeomniNavigation/IdeomniNavigation';
 import useThemeMediaQuery from '@ideomni/hooks/useThemeMediaQuery';
 import clsx from 'clsx';
-import i18n from '@i18n';
-import useI18n from '@i18n/useI18n';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { useAuth } from 'src/lib/auth';
 import { AdminUser } from 'src/lib/auth/types';
 import IdeomniUtils from '@ideomni/utils';
@@ -26,7 +25,7 @@ type AdminNavbarProps = Partial<IdeomniNavigationProps>;
 function AdminNavbar(props: AdminNavbarProps) {
 	const { className = '', layout = 'vertical', dense, active } = props;
 	const { user, userType } = useAuth();
-	const { languageId } = useI18n();
+	const { i18n } = useTranslation();
 	const dispatch = useAppDispatch();
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
@@ -52,7 +51,7 @@ function AdminNavbar(props: AdminNavbarProps) {
 
 		const translatedValues = setAdditionalData(navConfig);
 		return translatedValues;
-	}, [userRole, languageId, user]);
+	}, [userRole, i18n.language, user]);
 
 	return useMemo(() => {
 		function handleItemClick() {

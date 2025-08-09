@@ -235,7 +235,7 @@ const landManagement = {
   // Context Menu Actions
   QUICK_PURCHASE: 'Quick Purchase',
   PURCHASE_MAX_AVAILABLE: 'Purchase Max Available',
-  VIEW_DETAILS: 'View Details',
+  TILE_DETAILS: 'View Details',
   CALCULATE_COST: 'Calculate Cost',
   VIEW_TILE_INFORMATION: 'View tile information and ownership',
   ESTIMATE_PURCHASE_COST: 'Estimate purchase cost for different areas',
@@ -243,6 +243,20 @@ const landManagement = {
   ALREADY_OWNED_BY_TEAM: 'This tile is already owned by your team',
   NOT_AVAILABLE_FOR_PURCHASE: 'This tile is not available for purchase',
   BUY: 'Buy',
+  
+  // Tutorial and Interactive Elements
+  PURCHASE_LAND_BUTTON_CLICK: 'Click the "Purchase Land" button to open the enhanced purchase panel',
+  QUICK_PURCHASE_DESCRIPTION: 'Quick purchase',
+  SMALL_EXPANSION_DESCRIPTION: 'Small expansion',
+  MEDIUM_INVESTMENT_DESCRIPTION: 'Medium investment',
+  LARGE_ACQUISITION_DESCRIPTION: 'Large acquisition',
+  ADVANCED_BREAKDOWN: 'Advanced Breakdown',
+  
+  // Template Management
+  DEFAULT_ECONOMIC_TEMPLATE: 'Default Economic Template',
+  BALANCED_ECONOMIC_ZONES: 'Balanced economic zones for general business simulations',
+  COASTAL_DEVELOPMENT_TEMPLATE: 'Coastal Development Template',
+  COASTAL_BUSINESS_SCENARIOS: 'Template optimized for coastal business scenarios',
 };
 
 export default landManagement;

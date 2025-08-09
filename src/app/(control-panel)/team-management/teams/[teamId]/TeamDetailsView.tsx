@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetTeamDetailsQuery, useJoinTeamMutation } from '../../TeamApi';
@@ -19,6 +20,7 @@ interface TeamDetailsViewProps {
  * Team Details View Component (User View)
  */
 function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
+  const { t } = useTranslation(['teamManagement', 'common']);
   const router = useRouter();
   
   const { data: team, isLoading, error } = useGetTeamDetailsQuery(teamId);
@@ -95,7 +97,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   {team.name}
                 </Typography>
                 <Chip
-                  label={team.isOpen ? 'Open' : 'Closed'}
+                  label={team.isOpen ? t('teamManagement:OPEN') : t('teamManagement:CLOSED')}
                   color={team.isOpen ? 'success' : 'default'}
                   variant="outlined"
                 />
@@ -108,7 +110,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 )}
               </div>
               <Typography color="text.secondary" variant="h6">
-                {team.description || 'No description provided'}
+                {team.description || t('common:NO_DESCRIPTION')}
               </Typography>
             </div>
             
@@ -120,7 +122,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 disabled={isJoining}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
               >
-                {isJoining ? 'Joining...' : 'Join Team'}
+                {isJoining ? t('teamManagement:JOINING') : t('teamManagement:JOIN_TEAM')}
               </Button>
             )}
           </motion.div>
@@ -137,7 +139,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {activeMembers.length}
                   </Typography>
                   <Typography color="text.secondary">
-                    Current Members
+                    {t('teamManagement:CURRENT_MEMBERS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -179,7 +181,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {new Date(team.createdAt).toLocaleDateString()}
                   </Typography>
                   <Typography color="text.secondary">
-                    Created
+                    {t('teamManagement:CREATED')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -190,7 +192,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                Team Leader
+                {t('teamManagement:TEAM_LEADER')}
               </Typography>
               
               <div className="flex items-center gap-4">
@@ -301,7 +303,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   disabled={isJoining}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                 >
-                  {isJoining ? 'Joining Team...' : 'Join This Team'}
+                  {isJoining ? t('teamManagement:JOINING_TEAM') : t('teamManagement:JOIN_THIS_TEAM')}
                 </Button>
               </Paper>
             </motion.div>
@@ -315,7 +317,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   {team.isOpen ? 'heroicons-outline:users' : 'heroicons-outline:lock-closed'}
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  {team.isOpen ? 'Team is Full' : 'Team is Closed'}
+                  {team.isOpen ? t('teamManagement:TEAM_IS_FULL') : t('teamManagement:TEAM_IS_CLOSED')}
                 </Typography>
                 <Typography color="text.secondary" className="mb-4">
                   {team.isOpen 

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LanguageSwitcher from 'src/components/theme-layouts/components/LanguageSwitcher';
 import { keyframes } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
@@ -150,7 +150,7 @@ function SignInPage() {
 					}}
 				>
 					<IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>
-					<span>{t('auth:ADMIN_QUESTION')}</span>
+					<span>{t('adminSignIn')}</span>
 				</Link>
 			</Box>
 			
@@ -185,7 +185,7 @@ function SignInPage() {
 								fontWeight: 300,
 							}}
 						>
-							{t('auth:WELCOME_BACK')}
+							{t('welcomeBack')}
 						</Typography>
 						
 						<Typography 
@@ -197,7 +197,7 @@ function SignInPage() {
 								lineHeight: 1.6,
 								}}
 							>
-							{t('auth:SIGN_IN_SUBTITLE')}
+							{t('signInSubtitle')}
 						</Typography>
 
 					</Box>

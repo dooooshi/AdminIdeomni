@@ -415,7 +415,7 @@ export class LocalizedErrorMessages {
     // This would typically integrate with your i18n system
     // For now, we'll provide a mapping for common error codes
     
-    const messages: Record<string, Record<ErrorCode, string>> = {
+    const messages: Record<string, Partial<Record<ErrorCode, string>>> = {
       'en-US': {
         [ErrorCode.USER_ALREADY_ASSIGNED]: 'This user is already assigned to an activity',
         [ErrorCode.ACTIVITY_CAPACITY_EXCEEDED]: 'The activity has reached its maximum capacity',

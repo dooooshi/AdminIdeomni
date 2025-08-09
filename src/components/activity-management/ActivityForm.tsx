@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Dialog,
   DialogTitle,
@@ -43,7 +42,7 @@ import * as Yup from 'yup';
 // Import locales for DateTimePicker
 import { enUS } from 'date-fns/locale/en-US';
 import { zhCN } from 'date-fns/locale/zh-CN';
-import useI18n from '@i18n/useI18n';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import ActivityService, { 
   Activity, 
   CreateActivityRequest, 
@@ -67,7 +66,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   activity,
 }) => {
   const { t } = useTranslation('activityManagement');
-  const { languageId } = useI18n();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mapTemplates, setMapTemplates] = useState<MapTemplate[]>([]);
@@ -76,7 +74,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const isEditMode = Boolean(activity);
 
   // Get the appropriate date-fns locale
-  const dateLocale = languageId === 'zh-CN' ? zhCN : enUS;
+  const dateLocale = 'zh-CN' ? zhCN : enUS;
 
   // Load map templates when component mounts
   useEffect(() => {

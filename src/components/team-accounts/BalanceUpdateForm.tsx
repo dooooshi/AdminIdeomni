@@ -12,7 +12,7 @@ import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { UpdateBalancesRequest, SetBalancesRequest } from '@/types/teamAccount';
 import TeamAccountService from '@/lib/services/teamAccountService';

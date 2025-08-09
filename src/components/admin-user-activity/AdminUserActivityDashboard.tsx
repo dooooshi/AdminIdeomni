@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -177,7 +177,10 @@ const AdminUserActivityDashboard: React.FC = () => {
             <Button
               variant="outlined"
               startIcon={<SettingsIcon />}
-              onClick={() => {/* TODO: Open settings */}}
+              onClick={() => {
+                // TODO: Implement settings dialog
+                console.log('Settings dialog not yet implemented');
+              }}
             >
               {t('SETTINGS')}
             </Button>

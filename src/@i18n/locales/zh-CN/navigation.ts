@@ -1,5 +1,6 @@
 const navigation = {
 	APPLICATIONS: '应用程序',
+	DASHBOARD: '仪表板',
 	DASHBOARDS: '仪表板',
 	CALENDAR: '日历',
 	ECOMMERCE: '电子商务',

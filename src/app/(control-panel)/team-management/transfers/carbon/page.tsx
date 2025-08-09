@@ -15,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -162,7 +162,7 @@ function CarbonTransferPage() {
               {t('teamManagement:INSUFFICIENT_BALANCE_ERROR')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              You don't have any carbon to transfer. Your current balance is {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}.
+              {t('teamManagement:NO_CARBON_TO_TRANSFER_MESSAGE', { balance: TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON) })}
             </Typography>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button

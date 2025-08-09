@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -25,8 +25,8 @@ import { extractErrorMessage } from '../utils';
 
 // Form validation schema
 const createSchema = (t: (key: string) => string) => z.object({
-  identifier: z.string().nonempty(t('auth:EMAIL_REQUIRED')),
-  password: z.string().min(6, t('auth:PASSWORD_TOO_SHORT')).nonempty(t('auth:PASSWORD_REQUIRED')),
+  identifier: z.string().nonempty(t('emailRequired')),
+  password: z.string().min(6, t('passwordTooShort')).nonempty(t('passwordRequired')),
 });
 
 // Base schema for type inference
@@ -81,7 +81,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
       
       // Show success notification
       dispatch(showMessage({
-        message: t('auth:ADMIN_SIGNIN_SUCCESS'),
+        message: t('signinSuccess'),
         variant: 'success',
         autoHideDuration: 4000,
       }));
@@ -134,7 +134,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('auth:EMAIL')}
+            label={t('email')}
             placeholder="admin@example.com"
             variant="outlined"
             fullWidth
@@ -161,7 +161,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('auth:PASSWORD')}
+            label={t('password')}
             placeholder="Enter your password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
@@ -212,14 +212,14 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
           )
         }
       >
-        {isLoading ? t('auth:SIGNING_IN') : t('auth:ADMIN_SIGN_IN')}
+        {isLoading ? t('signingIn') : t('adminSignIn')}
       </Button>
 
       {/* Security Notice */}
       <Box className="mt-4 text-center">
         <Box className="flex items-center justify-center space-x-2 text-sm text-gray-500">
           <IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>
-          <span>{t('auth:ADMIN_SECURITY_NOTICE')}</span>
+          <span>{t('adminSignIn')}</span>
         </Box>
       </Box>
     </Box>

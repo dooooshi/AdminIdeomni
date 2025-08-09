@@ -42,7 +42,7 @@ import {
   LandPurchaseAnalytics,
   RecentPurchase
 } from '@/types/land';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const StatsCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -178,7 +178,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                 primary={
                   <Box display="flex" alignItems="center" gap={1}>
                     <Typography variant="subtitle2">
-                      {purchase?.teamName || 'Unknown Team'}
+                      {purchase?.teamName || t('common:UNKNOWN_TEAM')}
                     </Typography>
                     <Chip
                       label={LandService.formatLandType(purchase.landType)}
@@ -236,7 +236,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                     </Avatar>
                     <Box flex={1}>
                       <Typography variant="subtitle2">
-                        {team?.teamName || 'Unknown Team'}
+                        {team?.teamName || t('common:UNKNOWN_TEAM')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {LandService.formatArea(team.totalArea)} territory
@@ -264,7 +264,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                     </Avatar>
                     <Box flex={1}>
                       <Typography variant="subtitle2">
-                        {team?.teamName || 'Unknown Team'}
+                        {team?.teamName || t('common:UNKNOWN_TEAM')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {LandService.formatCurrency(team.totalSpent)} invested
@@ -447,7 +447,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
                   <TrophyIcon fontSize="large" />
                 </Avatar>
                 <Typography variant="h5" gutterBottom>
-                  {overview.topTeamByArea?.teamName || 'Unknown Team'}
+                  {overview.topTeamByArea?.teamName || t('common:UNKNOWN_TEAM')}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" gutterBottom>
                   {LandService.formatArea(overview.topTeamByArea?.totalArea || 0)} total territory controlled

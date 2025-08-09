@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme, alpha } from '@mui/material/styles';
 import { Box, Typography, Tooltip } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import { HexTileProps } from '../types';
 import LandTypeAnimations from './LandTypeAnimations';
 
@@ -139,31 +139,6 @@ const HexTile: React.FC<HexTileProps> = ({
 		const iconX = position.x + 15;
 		const iconY = position.y - 8;
 		
-		if (tile.canPurchase) {
-			// Shopping cart icon for purchasable tiles
-			return (
-				<g transform={`translate(${iconX}, ${iconY})`}>
-					<circle
-						cx={0}
-						cy={0}
-						r={8}
-						fill={alpha(theme.palette.success.main, 0.9)}
-						stroke={theme.palette.common.white}
-						strokeWidth={1}
-					/>
-					<text
-						x={0}
-						y={1}
-						textAnchor="middle"
-						fontSize={8}
-						fill={theme.palette.common.white}
-						fontWeight="bold"
-					>
-						$
-					</text>
-				</g>
-			);
-		}
 		
 		if (tile.isOwned) {
 			// Checkmark for owned tiles  

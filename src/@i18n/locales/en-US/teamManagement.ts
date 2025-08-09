@@ -277,7 +277,37 @@ const teamManagement = {
   TRANSFERS: 'transfers',
   DIRECTION: 'Direction',
   FROM: 'from',
-  SUCCESS: 'Success'
+  SUCCESS: 'Success',
+  
+  // Dashboard Specific
+  SAVE_CHANGES: 'Save Changes',
+  SAVING_CHANGES: 'Saving Changes...',
+  SEND_RESOURCES_TO_MEMBERS: 'Send resources to team members',
+  REVIEW_TEAM_TRANSACTIONS: 'Review team transactions',
+  TRANSFER_GOLD_RESOURCES: 'Transfer gold resources',
+  TRANSFER_CARBON_CREDITS: 'Transfer carbon credits',
+  JOIN_THIS_TEAM: 'Join This Team',
+  JOINING_TEAM: 'Joining Team...',
+  TEAM_IS_FULL: 'Team is Full',
+  TEAM_IS_CLOSED: 'Team is Closed',
+  
+  // Balance and Transfer
+  NO_GOLD_TO_TRANSFER: 'You don\'t have any gold to transfer. Your current balance is',
+  TO_TEAM: 'To',
+  FROM_TEAM: 'From',
+  RELATED_OPERATION: 'Related Operation',
+  
+  // Team Ownership
+  TEAM_OWNERSHIP: 'Team Ownership',
+  
+  // Team Account Card
+  TEAM_RESOURCES: 'Team Resources', 
+  CARBON_CREDITS: 'Carbon Credits',
+  ALL_RESOURCES_AVAILABLE: 'All resources available',
+  NO_RESOURCES_AVAILABLE: 'No resources available',
+  LIMITED_RESOURCES_AVAILABLE: 'Limited resources available',
+  TEAM_NAME: 'Team Name',
+  LAST_UPDATED: 'Last updated'
 };
 
 export default teamManagement;

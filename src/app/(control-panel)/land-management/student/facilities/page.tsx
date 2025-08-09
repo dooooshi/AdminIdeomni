@@ -25,7 +25,7 @@ import {
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { FacilityCard, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type { 
   TileFacilityInstance, 
   TeamFacilitySummary, 

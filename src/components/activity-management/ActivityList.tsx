@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Table,
   TableBody,
@@ -46,7 +46,6 @@ import {
   Stop as StopIcon,
   Event as EventIcon,
   AccessTime as TimeIcon,
-  Group as GroupIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -56,7 +55,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { enUS } from 'date-fns/locale/en-US';
 import { zhCN } from 'date-fns/locale/zh-CN';
 import { format } from 'date-fns';
-import useI18n from '@i18n/useI18n';
 import ActivityService, { 
   Activity, 
   ActivitySearchParams, 
@@ -67,7 +65,6 @@ import ActivityService, {
 interface ActivityListProps {
   onCreateActivity: () => void;
   onEditActivity: (activity: Activity) => void;
-  onViewActivity?: (activity: Activity) => void;
 }
 
 interface ActivityListFilter {
@@ -84,10 +81,8 @@ interface ActivityListFilter {
 const ActivityList: React.FC<ActivityListProps> = ({
   onCreateActivity,
   onEditActivity,
-  onViewActivity,
 }) => {
   const { t } = useTranslation('activityManagement');
-  const { languageId } = useI18n();
   const theme = useTheme();
   const [activityData, setActivityData] = useState<ActivitySearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -104,7 +99,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
   const [pageSize, setPageSize] = useState(20);
   
   // Get the appropriate date-fns locale
-  const dateLocale = languageId === 'zh-CN' ? zhCN : enUS;
+  const dateLocale = 'zh-CN' ? zhCN : enUS;
   
   // Filters state
   const [filters, setFilters] = useState<ActivityListFilter>({
@@ -647,15 +642,6 @@ const ActivityList: React.FC<ActivityListProps> = ({
                       <Stack direction="row" spacing={1}>
                         {!activity.deletedAt ? (
                           <>
-                            <Tooltip title={t('VIEW_PARTICIPANTS')}>
-                              <IconButton
-                                size="small"
-                                onClick={() => onViewActivity?.(activity)}
-                                color="info"
-                              >
-                                <GroupIcon />
-                              </IconButton>
-                            </Tooltip>
                             <Tooltip title={t('EDIT_TOOLTIP')}>
                               <IconButton
                                 size="small"

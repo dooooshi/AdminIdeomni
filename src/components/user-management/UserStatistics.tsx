@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -134,7 +134,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color = 'primar
 };
 
 const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefresh }) => {
-  const { t } = useTranslation('userManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [statistics, setStatistics] = useState<UserStatisticsDto | null>(null);
   const [growthData, setGrowthData] = useState<UserGrowthAnalyticsDto | null>(null);

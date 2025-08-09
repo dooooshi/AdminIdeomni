@@ -91,7 +91,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
-  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState(false);
 
   // Load initial data
   useEffect(() => {
@@ -209,7 +209,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           {selectedTile.ownershipBreakdown.length > 0 && (
             <>
               <Divider />
-              <Typography variant="subtitle2">Team Ownership</Typography>
+              <Typography variant="subtitle2">{t('landManagement:TEAM_OWNERSHIP')}</Typography>
               <Stack spacing={1}>
                 {selectedTile.ownershipBreakdown.slice(0, 3).map((ownership) => (
                   <Box key={ownership.teamId} display="flex" justifyContent="space-between">
@@ -319,7 +319,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
       <MapContainer elevation={2}>
         {/* Map Controls */}
         <ControlsContainer>
-          <Tooltip title="Refresh Data">
+          <Tooltip title={t('common:REFRESH_DATA')}>
             <IconButton 
               onClick={handleRefresh}
               sx={{ 
@@ -331,7 +331,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <RefreshIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Zoom In">
+          <Tooltip title={t('common:ZOOM_IN')}>
             <IconButton 
               onClick={handleZoomIn}
               sx={{ 
@@ -343,7 +343,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <ZoomInIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Zoom Out">
+          <Tooltip title={t('common:ZOOM_OUT')}>
             <IconButton 
               onClick={handleZoomOut}
               sx={{ 
@@ -355,7 +355,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <ZoomOutIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Reset Zoom">
+          <Tooltip title={t('common:RESET_ZOOM')}>
             <IconButton 
               onClick={handleResetZoom}
               sx={{ 

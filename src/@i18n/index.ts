@@ -6,8 +6,9 @@ export * from './core/constants';
 // Type exports
 export * from './types';
 
-// Hook exports
-export { useI18n, useI18nLegacy } from './hooks/useI18n';
+// Hook exports (Primary i18n hooks)
+export { useI18n } from './hooks/useI18n';
+export type { LanguageType } from './hooks/useI18n';
 export { 
   useTranslation,
   useCommonTranslation,
@@ -41,6 +42,9 @@ export * from './utils/formatters';
 export * from './utils/validators';
 export * from './utils/helpers';
 
+// Development utilities (only available in development)
+export * from './utils/development';
+
 // Locale exports
 export { localeResources, enUS, zhCN } from './locales';
 
@@ -57,6 +61,19 @@ export {
   removeEventListener,
   getTranslation
 } from './core/instance';
+
+// Enhanced initialization and development features
+export {
+  initializeI18n,
+  getI18nStatus,
+  preloadLanguages,
+  preloadNamespaces,
+  hotReloadTranslations,
+  resetI18n,
+  exportTranslations
+} from './core/initialization';
+
+// Removed legacy exports - migration completed
 
 // Default export for backward compatibility
 export { default } from './core/instance';

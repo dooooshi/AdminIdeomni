@@ -21,7 +21,7 @@ import Chip from '@mui/material/Chip';
 import Alert from '@mui/material/Alert';
 import Skeleton from '@mui/material/Skeleton';
 import Paper from '@mui/material/Paper';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { useGetTeamAccountsQuery } from '../ManagerTeamAccountApi';
 import { TeamAccountListItem } from '@/types/teamAccount';

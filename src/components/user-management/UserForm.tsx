@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Dialog,
   DialogTitle,
@@ -76,7 +76,7 @@ const UserForm: React.FC<UserFormProps> = ({
   user,
   onSuccess,
 }) => {
-  const { t } = useTranslation('userManagement');
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -547,7 +547,7 @@ const UserForm: React.FC<UserFormProps> = ({
                 <Box sx={{ mb: 2 }}>
                   <Button
                     variant="contained"
-                    onClick={index === steps.length - 1 ? formik.handleSubmit : nextStep}
+                    onClick={index === steps.length - 1 ? () => formik.handleSubmit() : nextStep}
                     disabled={!canProceedToNextStep() || loading}
                     sx={{ mt: 1, mr: 1 }}
                     startIcon={loading && <CircularProgress size={16} />}

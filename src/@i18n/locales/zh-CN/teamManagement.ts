@@ -277,7 +277,37 @@ const teamManagement = {
   TRANSFERS: '转账',
   DIRECTION: '方向',
   FROM: '从',
-  SUCCESS: '成功'
+  SUCCESS: '成功',
+  
+  // Dashboard Specific
+  SAVE_CHANGES: '保存更改',
+  SAVING_CHANGES: '保存更改中...',
+  SEND_RESOURCES_TO_MEMBERS: '向团队成员发送资源',
+  REVIEW_TEAM_TRANSACTIONS: '查看团队交易记录',
+  TRANSFER_GOLD_RESOURCES: '转移黄金资源',
+  TRANSFER_CARBON_CREDITS: '转移碳信用额度',
+  JOIN_THIS_TEAM: '加入此团队',
+  JOINING_TEAM: '加入团队中...',
+  TEAM_IS_FULL: '团队已满',
+  TEAM_IS_CLOSED: '团队已关闭',
+  
+  // Balance and Transfer
+  NO_GOLD_TO_TRANSFER: '您没有黄金可转移。您当前的余额是',
+  TO_TEAM: '到',
+  FROM_TEAM: '从',
+  RELATED_OPERATION: '相关操作',
+  
+  // Team Ownership
+  TEAM_OWNERSHIP: '团队所有权',
+  
+  // Team Account Card
+  TEAM_RESOURCES: '团队资源',
+  CARBON_CREDITS: '碳排放指数',
+  ALL_RESOURCES_AVAILABLE: '所有资源可用',
+  NO_RESOURCES_AVAILABLE: '无可用资源',
+  LIMITED_RESOURCES_AVAILABLE: '有限资源可用',
+  TEAM_NAME: '团队名称',
+  LAST_UPDATED: '最后更新'
 };
 
 export default teamManagement;

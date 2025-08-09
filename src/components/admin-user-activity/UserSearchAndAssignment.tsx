@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -100,6 +100,16 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
 }) => {
   const { t } = useTranslation('activityManagement');
   const theme = useTheme();
+
+  // Helper function to get user type translation key
+  const getUserTypeTranslationKey = (userType: number): string => {
+    switch (userType) {
+      case 1: return 'MANAGER';
+      case 2: return 'WORKER'; 
+      case 3: return 'STUDENT';
+      default: return 'UNKNOWN';
+    }
+  };
 
   // State management
   const [users, setUsers] = useState<PaginationResult<UserWithActivityDto> | null>(null);
@@ -474,7 +484,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
                   {Object.values(UserActivityStatus).map((status) => (
                     <MenuItem key={status} value={status}>
-                      {AdminUserActivityService.getStatusDisplayName(status)}
+                      {t(status)}
                     </MenuItem>
                   ))}
                 </Select>
@@ -627,7 +637,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={AdminUserActivityService.getUserTypeDisplayName(userWithActivity.user.userType)}
+                      label={t(getUserTypeTranslationKey(userWithActivity.user.userType))}
                       color={AdminUserActivityService.getUserTypeColor(userWithActivity.user.userType)}
                       size="small"
                     />
@@ -671,7 +681,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     {userWithActivity.currentActivity ? (
                       <Chip
                         icon={getStatusIcon(userWithActivity.currentActivity.status)}
-                        label={AdminUserActivityService.getStatusDisplayName(userWithActivity.currentActivity.status)}
+                        label={t(userWithActivity.currentActivity.status)}
                         color={AdminUserActivityService.getStatusColor(userWithActivity.currentActivity.status)}
                         size="small"
                       />
@@ -815,7 +825,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      Loading activities...
+                      {t('LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities.map((activity) => (
@@ -955,7 +965,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      Loading activities...
+                      {t('LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities
@@ -1076,7 +1086,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      Loading activities...
+                      {t('LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities.map((activity) => (

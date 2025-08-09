@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -81,7 +81,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
       
       // Show success notification
       dispatch(showMessage({
-        message: t('auth:SIGNIN_SUCCESS'),
+        message: t('signinSuccess'),
         variant: 'success',
         autoHideDuration: 4000,
       }));
@@ -134,7 +134,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('auth:EMAIL')}
+            label={t('email')}
             placeholder="username or email"
             variant="outlined"
             fullWidth
@@ -161,7 +161,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('auth:PASSWORD')}
+            label={t('password')}
             placeholder="Enter your password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
@@ -212,7 +212,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
           )
         }
       >
-        {isLoading ? t('auth:SIGNING_IN') : t('auth:SIGN_IN')}
+        {isLoading ? t('signingIn') : t('signIn')}
       </Button>
     </Box>
   );

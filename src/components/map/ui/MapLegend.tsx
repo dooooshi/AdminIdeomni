@@ -3,7 +3,7 @@
 import React from 'react';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import { Box, Typography, Paper } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 interface LandType {
 	type: string;

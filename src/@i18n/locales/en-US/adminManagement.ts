@@ -27,8 +27,6 @@ const adminManagement = {
 	// Admin Types
 	SUPER_ADMIN: 'Super Admin',
 	LIMITED_ADMIN: 'Limited Admin',
-	ADMIN_TYPE_1: 'Super Admin',
-	ADMIN_TYPE_2: 'Limited Admin',
 	
 	// Status
 	ACTIVE: 'Active',
@@ -128,7 +126,7 @@ const adminManagement = {
 	
 	// Log columns
 	LOG_ID: 'Log ID',
-	ADMIN: 'Admin',
+	ADMIN_COLUMN: 'Admin',
 	ACTION: 'Action',
 	RESOURCE: 'Resource',
 	RESOURCE_ID: 'Resource ID',
@@ -154,14 +152,9 @@ const adminManagement = {
 	// Log actions
 	LOGIN: 'Login',
 	LOGOUT: 'Logout',
-	CREATE_USER: 'Create User',
 	UPDATE_USER: 'Update User',
 	DELETE_USER: 'Delete User',
-	CREATE_ADMIN: 'Create Admin',
-	UPDATE_ADMIN: 'Update Admin',
-	DELETE_ADMIN: 'Delete Admin',
 	CHANGE_PASSWORD: 'Change Password',
-	VIEW_LOGS: 'View Logs',
 	
 	// Log status
 	SUCCEEDED: 'Succeeded',
@@ -219,10 +212,8 @@ const adminManagement = {
 	// General
 	LOADING: 'Loading...',
 	ERROR: 'Error',
-	SUCCESS: 'Success',
 	WARNING: 'Warning',
 	INFO: 'Information',
-	UNKNOWN: 'Unknown',
 	NEVER: 'Never',
 	YES: 'Yes',
 	NO: 'No',

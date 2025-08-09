@@ -20,7 +20,7 @@ interface TranslationProviderProps {
 export const TranslationProvider: React.FC<TranslationProviderProps> = ({ children }) => {
   const contextValue: I18nContextType = {
     currentLanguage: i18n.language,
-    changeLanguage: (lang: string) => i18n.changeLanguage(lang),
+    changeLanguage: (lang: string) => i18n.changeLanguage(lang).then(() => {}),
     isReady: i18n.isInitialized,
   };
 

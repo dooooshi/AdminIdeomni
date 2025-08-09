@@ -17,7 +17,7 @@ import { Typography, Button, Box, Paper, IconButton, Tooltip } from '@mui/materi
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import HexagonalMap from '../components/HexagonalMap';
 import { MapTile } from '../types';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import { useState, useRef } from 'react';
 
 interface HexagonalMapRef {

@@ -1,10 +1,4 @@
-import i18n from '@i18n';
 import { IdeomniNavItemType } from '@ideomni/core/IdeomniNavigation/types/IdeomniNavItemType';
-import { enUS, zhCN } from '@i18n/locales';
-
-// Add navigation translations to i18n
-i18n.addResourceBundle('en-US', 'navigation', enUS.navigation);
-i18n.addResourceBundle('zh-CN', 'navigation', zhCN.navigation);
 
 
 /**

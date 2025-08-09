@@ -18,7 +18,7 @@ import {
   Speed as SpeedIcon,
   Close as CloseIcon
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { AvailableTile } from '@/types/land';
 
 interface TileContextMenuProps {

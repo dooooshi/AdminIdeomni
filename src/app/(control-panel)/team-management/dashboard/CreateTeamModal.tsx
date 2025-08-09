@@ -16,7 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { useCreateTeamMutation } from '../TeamApi';
 import { CreateTeamRequest } from 'src/types/team';

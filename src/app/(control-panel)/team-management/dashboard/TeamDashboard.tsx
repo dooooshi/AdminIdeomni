@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentTeamQuery } from '../TeamApi';
@@ -20,7 +20,7 @@ import TeamAccountService from '@/lib/services/teamAccountService';
  * Team Dashboard Component - Minimalist Business Design
  */
 function TeamDashboard() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['teamManagement', 'common']);
   const router = useRouter();
   const { data: team, isLoading, error, refetch } = useGetCurrentTeamQuery();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -151,7 +151,7 @@ function TeamDashboard() {
             <Paper className="lg:col-span-1 p-8 border border-gray-100 dark:border-gray-800 shadow-none">
               <div className="flex items-center justify-between mb-8">
                 <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                  Overview
+                  {t('common:OVERVIEW')}
                 </Typography>
                 <div className={`w-3 h-3 rounded-full ${team.isOpen ? 'bg-green-400' : 'bg-amber-400'}`} />
               </div>
@@ -159,7 +159,7 @@ function TeamDashboard() {
               <div className="space-y-6">
                 <div>
                   <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    Leader
+                    {t('teamManagement:LEADER')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
                     {team.leader.firstName && team.leader.lastName
@@ -169,7 +169,7 @@ function TeamDashboard() {
                 </div>
                 <div>
                   <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    Members
+                    {t('teamManagement:MEMBERS')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
                     {team.members.filter(m => m.status === 'ACTIVE').length} of {team.maxMembers}
@@ -177,7 +177,7 @@ function TeamDashboard() {
                 </div>
                 <div>
                   <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    Created
+                    {t('teamManagement:CREATED')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
                     {TeamAccountService.formatDate(team.createdAt, i18n.language)}
@@ -201,7 +201,7 @@ function TeamDashboard() {
             <div className="p-8">
               <div className="flex items-center justify-between mb-8">
                 <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                  Team Members
+                  {t('teamManagement:TEAM_MEMBERS')}
                 </Typography>
                 {isLeader && (
                   <Button
@@ -211,7 +211,7 @@ function TeamDashboard() {
                     className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                     endIcon={<IdeomniSvgIcon size={16}>heroicons-outline:plus</IdeomniSvgIcon>}
                   >
-                    Invite Members
+                    {t('teamManagement:INVITE_MEMBERS')}
                   </Button>
                 )}
               </div>
@@ -236,7 +236,7 @@ function TeamDashboard() {
                             </Typography>
                             {member.user.id === team.leader.id && (
                               <div className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-xs font-medium text-blue-700 dark:text-blue-300">
-                                Leader
+                                {t('teamManagement:LEADER')}
                               </div>
                             )}
                           </div>
@@ -246,7 +246,7 @@ function TeamDashboard() {
                         </div>
                       </div>
                       <Typography variant="body2" color="text.secondary">
-                        Joined {TeamAccountService.formatDate(member.joinedAt, i18n.language)}
+                        {t('teamManagement:JOINED')} {TeamAccountService.formatDate(member.joinedAt, i18n.language)}
                       </Typography>
                     </div>
                   ))}
@@ -257,7 +257,7 @@ function TeamDashboard() {
           {/* Actions */}
           <div>
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              Actions
+              {t('teamManagement:ACTIONS')}
             </Typography>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Button
@@ -266,8 +266,8 @@ function TeamDashboard() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
               >
                 <div className="text-left">
-                  <div className="font-medium">Transfer Resources</div>
-                  <div className="text-sm opacity-70 mt-1">Send resources to team members</div>
+                  <div className="font-medium">{t('teamManagement:TRANSFER_RESOURCES')}</div>
+                  <div className="text-sm opacity-70 mt-1">{t('teamManagement:SEND_RESOURCES_TO_MEMBERS')}</div>
                 </div>
               </Button>
               <Button
@@ -276,8 +276,8 @@ function TeamDashboard() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
               >
                 <div className="text-left">
-                  <div className="font-medium">View History</div>
-                  <div className="text-sm opacity-70 mt-1">Review team transactions</div>
+                  <div className="font-medium">{t('teamManagement:VIEW_HISTORY')}</div>
+                  <div className="text-sm opacity-70 mt-1">{t('teamManagement:REVIEW_TEAM_TRANSACTIONS')}</div>
                 </div>
               </Button>
               <Button
@@ -286,8 +286,8 @@ function TeamDashboard() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
               >
                 <div className="text-left">
-                  <div className="font-medium">Send Gold</div>
-                  <div className="text-sm opacity-70 mt-1">Transfer gold resources</div>
+                  <div className="font-medium">{t('teamManagement:SEND_GOLD')}</div>
+                  <div className="text-sm opacity-70 mt-1">{t('teamManagement:TRANSFER_GOLD_RESOURCES')}</div>
                 </div>
               </Button>
               <Button
@@ -296,8 +296,8 @@ function TeamDashboard() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
               >
                 <div className="text-left">
-                  <div className="font-medium">Send Carbon</div>
-                  <div className="text-sm opacity-70 mt-1">Transfer carbon credits</div>
+                  <div className="font-medium">{t('teamManagement:SEND_CARBON')}</div>
+                  <div className="text-sm opacity-70 mt-1">{t('teamManagement:TRANSFER_CARBON_CREDITS')}</div>
                 </div>
               </Button>
             </div>

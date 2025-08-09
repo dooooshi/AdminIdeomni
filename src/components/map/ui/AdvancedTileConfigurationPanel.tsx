@@ -42,7 +42,7 @@ import {
   TrendingDown as TrendingDownIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import { MapTemplate, MapTile } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 
@@ -121,7 +121,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
 
       setLastOperationResult({
         success: true,
-        message: `${batchData.landType} tiles updated successfully`,
+        message: t('BATCH_UPDATE_SUCCESS', { landType: batchData.landType }),
         details: result,
       });
 
@@ -131,7 +131,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       console.error('Failed to update tiles by land type:', error);
       setLastOperationResult({
         success: false,
-        message: `Failed to update ${batchData.landType} tiles`,
+        message: t('BATCH_UPDATE_FAILED', { landType: batchData.landType }),
       });
     } finally {
       setProcessing(false);
@@ -148,7 +148,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
 
       setLastOperationResult({
         success: true,
-        message: 'Template reset to defaults successfully',
+        message: t('TEMPLATE_RESET_SUCCESS'),
         details: result,
       });
 
@@ -158,7 +158,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       console.error('Failed to reset template:', error);
       setLastOperationResult({
         success: false,
-        message: 'Failed to reset template to defaults',
+        message: t('TEMPLATE_RESET_FAILED'),
       });
     } finally {
       setProcessing(false);
@@ -191,7 +191,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
           </Typography>
           {lastOperationResult.details && (
             <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-              Updated: {lastOperationResult.details.updated}, Failed: {lastOperationResult.details.failed}
+              {t('OPERATION_DETAILS', { updated: lastOperationResult.details.updated, failed: lastOperationResult.details.failed })}
             </Typography>
           )}
         </Alert>
@@ -200,8 +200,8 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       {/* Land Type Statistics */}
       <Card sx={{ mb: 2 }}>
         <CardHeader
-          title="Land Type Statistics"
-          subheader="Current distribution and averages"
+          title={t('LAND_TYPE_STATISTICS')}
+          subheader={t('CURRENT_DISTRIBUTION_AVERAGES')}
         />
         <CardContent>
           <Grid container spacing={2}>
@@ -235,13 +235,13 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                       <Chip label={stats.count} size="small" />
                     </Box>
                     <Typography variant="caption" display="block">
-                      Avg Price: ${stats.avgPrice.toFixed(2)}
+                      {t('AVG_PRICE', { price: `$${stats.avgPrice.toFixed(2)}` })}
                     </Typography>
                     <Typography variant="caption" display="block">
-                      Avg Population: {Math.round(stats.avgPopulation || 0).toLocaleString()}
+                      {t('AVG_POPULATION', { population: Math.round(stats.avgPopulation || 0).toLocaleString() })}
                     </Typography>
                     <Typography variant="caption" display="block">
-                      Avg Transport: ${stats.avgTransportCost.toFixed(2)}
+                      {t('AVG_TRANSPORT', { cost: `$${stats.avgTransportCost.toFixed(2)}` })}
                     </Typography>
                   </Box>
                 </Grid>
@@ -254,8 +254,8 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       {/* Batch Operations */}
       <Card>
         <CardHeader
-          title="Batch Operations"
-          subheader="Advanced tile configuration tools"
+          title={t('BATCH_OPERATIONS')}
+          subheader={t('ADVANCED_TILE_CONFIG_TOOLS')}
         />
         <CardContent>
           <Stack spacing={2}>
@@ -266,7 +266,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
               disabled={readOnly || processing}
               fullWidth
             >
-              Batch Update by Land Type
+              {t('BATCH_UPDATE_BY_LAND_TYPE')}
             </Button>
 
             <Button
@@ -277,7 +277,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
               color="warning"
               fullWidth
             >
-              Reset All Tiles to Defaults
+              {t('RESET_ALL_TILES_TO_DEFAULTS')}
             </Button>
           </Stack>
         </CardContent>
@@ -291,7 +291,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
         fullWidth
       >
         <DialogTitle>
-          Batch Update: {t(`TERRAIN_${batchData.landType}`)} Tiles
+          {t('BATCH_UPDATE_TITLE', { landType: t(`TERRAIN_${batchData.landType}`) })}
         </DialogTitle>
         <DialogContent>
           {processing && <LinearProgress sx={{ mb: 2 }} />}
@@ -299,14 +299,14 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
           <Stack spacing={3} sx={{ pt: 1 }}>
             {/* Land Type Selection */}
             <FormControl fullWidth>
-              <InputLabel>Land Type</InputLabel>
+              <InputLabel>{t('LAND_TYPE')}</InputLabel>
               <Select
                 value={batchData.landType}
                 onChange={(e) => setBatchData(prev => ({ 
                   ...prev, 
                   landType: e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN' 
                 }))}
-                label="Land Type"
+                label={t('LAND_TYPE')}
                 disabled={processing}
               >
                 {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => (
@@ -331,13 +331,13 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             {/* Fixed Value Controls */}
             <Box>
               <Typography variant="subtitle2" gutterBottom>
-                Fixed Values (will replace current values)
+                {t('FIXED_VALUES_SECTION')}
               </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label="Fixed Price"
+                    label={t('FIXED_PRICE')}
                     type="number"
                     value={batchData.fixedPrice || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -353,7 +353,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label="Fixed Population"
+                    label={t('FIXED_POPULATION')}
                     type="number"
                     value={batchData.fixedPopulation || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -366,7 +366,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label="Fixed Transport Cost"
+                    label={t('FIXED_TRANSPORT_COST')}
                     type="number"
                     value={batchData.fixedTransportationCost || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -385,7 +385,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             {/* Preview Impact */}
             <Alert severity="info">
               <Typography variant="body2">
-                This will affect {getLandTypeStats(batchData.landType).count} tiles of type {t(`TERRAIN_${batchData.landType}`)}.
+                {t('BATCH_IMPACT_WARNING', { count: getLandTypeStats(batchData.landType).count, landType: t(`TERRAIN_${batchData.landType}`) })}
               </Typography>
             </Alert>
           </Stack>
@@ -395,14 +395,14 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={() => setBatchUpdateDialogOpen(false)}
             disabled={processing}
           >
-            Cancel
+            {t('CANCEL')}
           </Button>
           <Button 
             variant="contained" 
             onClick={handleLandTypeBatchUpdate}
             disabled={processing}
           >
-            {processing ? 'Updating...' : 'Apply Batch Update'}
+            {processing ? t('UPDATING') : t('APPLY_BATCH_UPDATE')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -417,7 +417,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
         <DialogTitle>
           <Box display="flex" alignItems="center" gap={1}>
             <WarningIcon color="warning" />
-            Reset Template to Defaults
+            {t('RESET_TEMPLATE_TO_DEFAULTS')}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -425,23 +425,22 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
           
           <Alert severity="warning" sx={{ mb: 2 }}>
             <Typography variant="body2">
-              This will reset ALL tiles in the template to their default configurations based on land type. 
-              This action cannot be undone.
+              {t('RESET_WARNING_MESSAGE')}
             </Typography>
           </Alert>
 
           <Typography variant="body2" color="text.secondary">
-            Default values:
+            {t('DEFAULT_VALUES')}
           </Typography>
           <Box sx={{ mt: 1, pl: 2 }}>
             <Typography variant="caption" display="block">
-              • Marine: $50, 0 population, $8 transport
+              {t('DEFAULT_MARINE_VALUES')}
             </Typography>
             <Typography variant="caption" display="block">
-              • Coastal: $100, 500 population, $5 transport
+              {t('DEFAULT_COASTAL_VALUES')}
             </Typography>
             <Typography variant="caption" display="block">
-              • Plain: $150, 1000 population, $3 transport
+              {t('DEFAULT_PLAIN_VALUES')}
             </Typography>
           </Box>
         </DialogContent>
@@ -450,7 +449,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={() => setResetDialogOpen(false)}
             disabled={processing}
           >
-            Cancel
+            {t('CANCEL')}
           </Button>
           <Button 
             variant="contained"
@@ -458,7 +457,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={handleResetToDefaults}
             disabled={processing}
           >
-            {processing ? 'Resetting...' : 'Reset to Defaults'}
+            {processing ? t('RESETTING') : t('RESET_TO_DEFAULTS')}
           </Button>
         </DialogActions>
       </Dialog>

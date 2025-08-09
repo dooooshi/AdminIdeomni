@@ -274,7 +274,7 @@ export class AdminService {
 
   // Legacy log methods for backward compatibility
   static async getAdminLogsLegacy(adminId: string, params?: LogsQueryParams): Promise<AdminOperationLog[]> {
-    const response = await apiClient.get<AdminOperationLog[]>(`/admin/${adminId}/logs`, {
+    const response = await apiClient.get<AdminOperationLog[] | { data: AdminOperationLog[] }>(`/admin/${adminId}/logs`, {
       params
     });
     const data = response.data;
@@ -285,7 +285,7 @@ export class AdminService {
     }
     
     // Handle wrapped response format
-    if (data && typeof data === 'object' && Array.isArray(data.data)) {
+    if (data && typeof data === 'object' && 'data' in data && Array.isArray(data.data)) {
       return data.data;
     }
     
@@ -295,7 +295,7 @@ export class AdminService {
   }
 
   static async getOwnLogs(params?: LogsQueryParams): Promise<AdminOperationLog[]> {
-    const response = await apiClient.get<AdminOperationLog[]>('/admin/logs/mine', {
+    const response = await apiClient.get<AdminOperationLog[] | { data: AdminOperationLog[] }>('/admin/logs/mine', {
       params
     });
     const data = response.data;
@@ -306,7 +306,7 @@ export class AdminService {
     }
     
     // Handle wrapped response format
-    if (data && typeof data === 'object' && Array.isArray(data.data)) {
+    if (data && typeof data === 'object' && 'data' in data && Array.isArray(data.data)) {
       return data.data;
     }
     
@@ -316,7 +316,7 @@ export class AdminService {
   }
 
   static async getSystemLogs(params?: SystemLogsQueryParams): Promise<AdminOperationLog[]> {
-    const response = await apiClient.get<AdminOperationLog[]>('/admin/logs/system', {
+    const response = await apiClient.get<AdminOperationLog[] | { data: AdminOperationLog[] }>('/admin/logs/system', {
       params
     });
     const data = response.data;
@@ -327,7 +327,7 @@ export class AdminService {
     }
     
     // Handle wrapped response format
-    if (data && typeof data === 'object' && Array.isArray(data.data)) {
+    if (data && typeof data === 'object' && 'data' in data && Array.isArray(data.data)) {
       return data.data;
     }
     

@@ -209,7 +209,7 @@ export class BaseValidator {
    */
   static validateUserType(userType: number): ValidationError | null {
     const validTypes = Object.values(USER_TYPES);
-    if (!validTypes.includes(userType)) {
+    if (!validTypes.includes(userType as any)) {
       return new ValidationError(
         ErrorCode.INVALID_USER_TYPE,
         'Invalid user type',
@@ -610,7 +610,7 @@ export class AdminUserActivityValidationService {
   }
 
   static isValidUserType(value: number): boolean {
-    return Object.values(USER_TYPES).includes(value);
+    return Object.values(USER_TYPES).includes(value as any);
   }
 
   static isValidUserActivityStatus(value: string): boolean {

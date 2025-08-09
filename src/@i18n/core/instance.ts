@@ -7,7 +7,7 @@ export default i18n;
 export const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
 export const loadNamespace = (ns: string | string[]) => i18n.loadNamespaces(ns);
 export const hasTranslation = (key: string, options?: any) => i18n.exists(key, options);
-export const getLoadedNamespaces = () => i18n.reportNamespaces.getUsedNamespaces();
+export const getLoadedNamespaces = () => i18n.reportNamespaces?.getUsedNamespaces() || [];
 export const getCurrentLanguageInfo = () => ({
   language: i18n.language,
   languages: i18n.languages,

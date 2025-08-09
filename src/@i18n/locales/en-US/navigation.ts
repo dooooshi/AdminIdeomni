@@ -1,5 +1,6 @@
 const navigation = {
 	APPLICATIONS: 'Applications',
+	DASHBOARD: 'Dashboard',
 	DASHBOARDS: 'Dashboards',
 	CALENDAR: 'Calendar',
 	ECOMMERCE: 'E-Commerce',

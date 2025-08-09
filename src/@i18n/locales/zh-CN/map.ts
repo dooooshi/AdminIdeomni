@@ -60,6 +60,10 @@ const map = {
 	NO_TEMPLATES_DESCRIPTION: '创建您的第一个地图模板以开始商业模拟',
 	CREATE_FIRST_TEMPLATE: '创建第一个模板',
 	LOADING_TEMPLATES: '正在加载模板...',
+	DEFAULT_ECONOMIC_TEMPLATE: '默认经济模板',
+	DEFAULT_ECONOMIC_TEMPLATE_DESC: '适用于一般商业模拟的平衡经济区',
+	COASTAL_DEVELOPMENT_TEMPLATE: '海岸开发模板',
+	COASTAL_DEVELOPMENT_TEMPLATE_DESC: '针对海岸商业场景优化的模板',
 	DEFAULT: '默认',
 	DEFAULT_TEMPLATE: '默认模板',
 	CUSTOM_TEMPLATE: '自定义模板',
@@ -208,6 +212,11 @@ const map = {
 	BULK_EDIT_MODE_DESCRIPTION: '批量编辑模式允许您对多个选定的瓦片应用相同的变更',
 	SELECTED_TILES_COUNT: '已选择{{count}}个瓦片',
 	BULK_UPDATE: '批量更新',
+	PREVIEW_CHANGES_INFO: '预览{{landType}}地块的变更（将影响{{count}}个地块）',
+	BULK_TILE_UPDATE_CONFIRM: '您确定要对{{count}}个{{landType}}地块应用批量变更吗？',
+	BULK_UPDATE_SUMMARY: '{{updated}}个地块更新成功，{{failed}}个失败',
+	BATCH_UPDATE_SUCCESS: '成功更新了{{count}}个地块',
+	SAVE_BATCH: '保存{{count}}个地块',
 	MANAGING_ACTIVITY: '管理活动',
 	TILE_STATE_UPDATED_SUCCESSFULLY: '瓦片状态更新成功',
 	BULK_UPDATE_COMPLETED: '批量更新完成：{{success}}个更新成功，{{failed}}个失败',
@@ -462,6 +471,7 @@ const map = {
 	NORMAL_MODE_DESCRIPTION: '平衡的游戏体验',
 	HARD_MODE: '困难模式',
 	HARD_MODE_DESCRIPTION: '增加成本和具有挑战性的要求',
+	CUSTOM_MODE: '自定义模式',
 	CUSTOM_DIFFICULTY: '自定义难度',
 	CUSTOM_DIFFICULTY_DESCRIPTION: '配置自己的难度倍数',
 	CUSTOM_DIFFICULTY_SETTINGS: '自定义难度设置',
@@ -719,8 +729,82 @@ const map = {
 	GOLD_MULTIPLIER: '金币倍数',
 	NO: '否',
 	
+	// Missing Dual Pricing System Keys
+	INITIAL_GOLD_PRICE: '初始金币价格',
+	INITIAL_CARBON_PRICE: '初始碳价格',
+	CURRENT_GOLD_PRICE: '当前金币价格',
+	CURRENT_CARBON_PRICE: '当前碳价格',
+	VALIDATION_GOLD_PRICE_NEGATIVE: '金币价格不能为负数',
+	VALIDATION_GOLD_PRICE_TOO_HIGH: '金币价格不能超过$10,000',
+	VALIDATION_CARBON_PRICE_NEGATIVE: '碳价格不能为负数',
+	VALIDATION_CARBON_PRICE_TOO_HIGH: '碳价格不能超过$10,000',
+
 	// Missing Bulk Tile Management Keys
+	BULK_TILE_MANAGEMENT: '批量地块管理',
 	BULK_TILE_MANAGEMENT_SUBTITLE: '按土地类型批量更改地块，支持双重定价系统',
+	SELECT_TEMPLATE_FOR_BULK_TILE_MANAGEMENT: '选择模板以启用批量地块管理',
+
+	// Advanced Tile Configuration Panel Keys
+	BATCH_UPDATE_SUCCESS: '{{landType}}地块更新成功',
+	BATCH_UPDATE_FAILED: '更新{{landType}}地块失败',
+	TEMPLATE_RESET_SUCCESS: '模板已成功重置为默认值',
+	TEMPLATE_RESET_FAILED: '重置模板为默认值失败',
+	OPERATION_DETAILS: '已更新：{{updated}}，失败：{{failed}}',
+	LAND_TYPE_STATISTICS: '土地类型统计',
+	CURRENT_DISTRIBUTION_AVERAGES: '当前分布和平均值',
+	AVG_PRICE: '平均价格：{{price}}',
+	AVG_POPULATION: '平均人口：{{population}}',
+	AVG_TRANSPORT: '平均运输：{{cost}}',
+	BATCH_OPERATIONS: '批量操作',
+	ADVANCED_TILE_CONFIG_TOOLS: '高级地块配置工具',
+	BATCH_UPDATE_BY_LAND_TYPE: '按土地类型批量更新',
+	RESET_ALL_TILES_TO_DEFAULTS: '重置所有地块为默认值',
+	BATCH_UPDATE_TITLE: '批量更新：{{landType}}地块',
+	FIXED_VALUES_SECTION: '固定值（将替换当前值）',
+	FIXED_PRICE: '固定价格',
+	FIXED_POPULATION: '固定人口',
+	FIXED_TRANSPORT_COST: '固定运输成本',
+	BATCH_IMPACT_WARNING: '这将影响{{count}}个{{landType}}类型的地块。',
+	APPLY_BATCH_UPDATE: '应用批量更新',
+	UPDATING: '更新中...',
+	RESET_TEMPLATE_TO_DEFAULTS: '重置模板为默认值',
+	RESET_WARNING_MESSAGE: '这将重置模板中的所有地块为基于土地类型的默认配置。此操作无法撤销。',
+	DEFAULT_VALUES: '默认值：',
+	DEFAULT_MARINE_VALUES: '• 海洋：$50，0人口，$8运输',
+	DEFAULT_COASTAL_VALUES: '• 海岸：$100，500人口，$5运输',
+	DEFAULT_PLAIN_VALUES: '• 平原：$150，1000人口，$3运输',
+	RESETTING: '重置中...',
+	RESET_TO_DEFAULTS: '重置为默认值',
+	
+	// Missing Template Setup Wizard Keys
+	ADVANCED_SETTINGS: '高级设置',
+	
+	// Missing Statistical Keys
+	AVERAGE_POPULATION: '平均人口',
+	MODIFIED: '已修改',
+	TILE_STATES: '地块状态',
+	
+	// Missing Bulk Operations Keys
+	BULK_TILE_UPDATE_WARNING: '此操作将一次性修改多个地块。此操作无法撤销。',
+	CUSTOM: '自定义',
+	MARKET_BOOM_SCENARIO: '市场繁荣（价格上涨25%）',
+	RESOURCE_SCARCITY_SCENARIO: '资源稀缺（金币上涨50%，碳上涨40%）',
+	ENVIRONMENTAL_IMPACT_SCENARIO: '环境影响（碳价格翻倍，金币下降10%）',
+	TEMPLATE_STATS: '模板统计',
+	
+	// Missing Pricing System Keys
+	PRICING_MULTIPLIERS: '定价倍数',
+	GOLD_PRICE_MULTIPLIER: '金币价格倍数',
+	CARBON_PRICE_MULTIPLIER: '碳价格倍数',
+	POPULATION_MULTIPLIER: '人口倍数',
+	TRANSPORT_COST_MULTIPLIER: '运输成本倍数',
+	FIXED_GOLD_PRICE: '固定金币价格',
+	FIXED_CARBON_PRICE: '固定碳价格',
+	FIXED_POPULATION: '固定人口',
+	FIXED_TRANSPORT_COST: '固定运输成本',
+	
+	// Activity Tile State Management Error Messages
+	FAILED_TO_SAVE_TILE_STATE: '保存瓦片状态失败。请重试。',
 };
 
 export default map; 

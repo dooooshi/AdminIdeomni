@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -52,6 +53,7 @@ type FormData = yup.InferType<typeof schema>;
  * Team Settings Component
  */
 function TeamSettings() {
+  const { t } = useTranslation(['teamManagement', 'common']);
   const router = useRouter();
   
   const { data: team, isLoading: teamLoading, error: teamError } = useGetCurrentTeamQuery();
@@ -317,7 +319,7 @@ function TeamSettings() {
                     startIcon={<IdeomniSvgIcon>heroicons-outline:check</IdeomniSvgIcon>}
                     fullWidth
                   >
-                    {isUpdating ? 'Saving Changes...' : 'Save Changes'}
+                    {isUpdating ? t('teamManagement:SAVING_CHANGES') : t('teamManagement:SAVE_CHANGES')}
                   </Button>
                 </div>
               </form>

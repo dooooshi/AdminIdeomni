@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniPageCarded from '@ideomni/core/IdeomniPageCarded';
 import withReducer from 'src/store/withReducer';
 import ManagerTeamAccountApi from '../ManagerTeamAccountApi';

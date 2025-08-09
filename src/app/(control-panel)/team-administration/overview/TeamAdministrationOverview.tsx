@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import managerTeamApiService from '../ManagerTeamApi';
@@ -218,7 +218,7 @@ function TeamAdministrationOverview() {
                             {team.name}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {team.description || 'No description'}
+                            {team.description || t('common:NO_DESCRIPTION')}
                           </Typography>
                         </div>
                       </div>

@@ -42,7 +42,7 @@ import {
   Map as MapIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { MapTemplate, MapTile, UpdateTileDto, MapConfigurationPanelProps } from '../types';
@@ -79,7 +79,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   // State management
   const [selectedTileId, setSelectedTileId] = useState<number | null>(null);
   const [configurationMode, setConfigurationMode] = useState(true);
-  const [showConfigPanel, setShowConfigPanel] = useState(true);
+  const [showConfigPanel, setShowConfigPanel] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [notification, setNotification] = useState<{
@@ -303,7 +303,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
             {/* Panel Header */}
             <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
               <Typography variant="h6" sx={{ textAlign: 'center' }}>
-                Basic Config
+                {t('BASIC_CONFIGURATION')}
               </Typography>
             </Box>
 

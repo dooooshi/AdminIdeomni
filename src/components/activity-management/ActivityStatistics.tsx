@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -184,19 +184,7 @@ const ActivityStatisticsComponent: React.FC = () => {
     } catch (err) {
       console.error('Failed to load activity statistics:', err);
       setError(err instanceof Error ? err.message : t('STATISTICS_LOAD_ERROR'));
-      
-      // Set fallback data for development
-      setStatistics({
-        total: 0,
-        active: 0,
-        upcoming: 0,
-        ongoing: 0,
-        byType: {
-          [ActivityType.BizSimulation2_0]: 0,
-          [ActivityType.BizSimulation2_2]: 0,
-          [ActivityType.BizSimulation3_1]: 0,
-        },
-      });
+      setStatistics(null);
     } finally {
       setLoading(false);
     }

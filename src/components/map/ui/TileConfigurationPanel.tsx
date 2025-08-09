@@ -45,7 +45,7 @@ import {
   Info as InfoIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MapTile, UpdateTileDto, TileConfigurationProps } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 

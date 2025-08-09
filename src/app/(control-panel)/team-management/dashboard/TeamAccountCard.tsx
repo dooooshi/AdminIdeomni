@@ -11,7 +11,8 @@ import Alert from '@mui/material/Alert';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { useTranslation } from 'react-i18next';
+import Button from '@mui/material/Button';
+import { useTranslation } from '@/@i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { useGetCurrentUserTeamAccountQuery } from '../TeamAccountApi';
 import TeamAccountService from '@/lib/services/teamAccountService';
@@ -107,7 +108,7 @@ function TeamAccountCard({
               disabled={isRefreshing}
               className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
-              Try Again
+              {t('common:TRY_AGAIN')}
             </Button>
           </div>
         </CardContent>
@@ -146,7 +147,7 @@ function TeamAccountCard({
           {/* Header */}
           <Box className="flex items-center justify-between mb-8">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-              Team Resources
+              {t('teamManagement:TEAM_RESOURCES')}
             </Typography>
             <Tooltip title={t('common:refresh')}>
               <IconButton
@@ -167,7 +168,7 @@ function TeamAccountCard({
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  Gold Balance
+                  {t('teamManagement:GOLD_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {teamAccount.gold.toLocaleString()}
@@ -175,7 +176,7 @@ function TeamAccountCard({
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-slate-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  Carbon Credits
+                  {t('teamManagement:CARBON_CREDITS')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {teamAccount.carbon.toLocaleString()}
@@ -197,10 +198,10 @@ function TeamAccountCard({
                 }`} />
                 <Typography variant="body2" color="text.secondary">
                   {teamAccount.gold > 0 && teamAccount.carbon > 0 
-                    ? 'All resources available'
+                    ? t('teamManagement:ALL_RESOURCES_AVAILABLE')
                     : teamAccount.gold === 0 && teamAccount.carbon === 0
-                    ? 'No resources available'
-                    : 'Limited resources available'
+                    ? t('teamManagement:NO_RESOURCES_AVAILABLE')
+                    : t('teamManagement:LIMITED_RESOURCES_AVAILABLE')
                   }
                 </Typography>
               </div>
@@ -213,7 +214,7 @@ function TeamAccountCard({
               <div className="space-y-4">
                 <div>
                   <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    Team Name
+                    {t('teamManagement:TEAM_NAME')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                     {teamAccount.team.name}
@@ -223,7 +224,7 @@ function TeamAccountCard({
                 {teamAccount.team.leader && (
                   <div>
                     <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                      Team Leader  
+                      {t('teamManagement:TEAM_LEADER')}
                     </Typography>
                     <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                       {teamAccount.team.leader.firstName && teamAccount.team.leader.lastName
@@ -241,7 +242,7 @@ function TeamAccountCard({
           {!compact && (
             <Box className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
               <Typography variant="caption" className="text-gray-500 dark:text-gray-400">
-                Last updated {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
+                {t('teamManagement:LAST_UPDATED')} {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
               </Typography>
             </Box>
           )}

@@ -655,6 +655,16 @@ const activityManagement = {
   VIEW_DETAILS: '查看详情',
   PARTICIPANTS_COUNT: '参与者数量',
   NO_EMAIL: '无邮箱',
+  
+  // Example Activity Names (for demo/placeholder purposes)
+  BUSINESS_STRATEGY_SIMULATION: '商业策略模拟',
+  ADVANCED_LEADERSHIP_TRAINING: '高级领导力培训',
+  TEAM_BUILDING_WORKSHOP: '团队建设工作坊',
+  
+  // Missing ActivityList Filter Keys
+  ALL_TYPES: '所有类型',
+  ALL_STATUSES: '所有状态',
+  CLEAR_FILTERS: '清除筛选',
 
 };
 

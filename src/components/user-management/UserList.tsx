@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Table,
   TableBody,
@@ -83,7 +83,7 @@ const UserList: React.FC<UserListProps> = ({
   onResetPassword,
   refreshTrigger,
 }) => {
-  const { t } = useTranslation('userManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [userData, setUserData] = useState<UserSearchResponseDto | null>(null);
   const [loading, setLoading] = useState(true);
