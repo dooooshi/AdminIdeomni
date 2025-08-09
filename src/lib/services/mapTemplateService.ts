@@ -570,9 +570,9 @@ export class MapTemplateService {
       if (templateData.generateParams) {
         // Generate template with tiles
         template = await this.generateMapTemplate({
+          ...templateData.generateParams,
           name: templateData.name,
-          description: templateData.description,
-          ...templateData.generateParams
+          description: templateData.description
         });
       } else {
         // Create basic template

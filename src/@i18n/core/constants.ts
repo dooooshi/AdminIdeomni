@@ -1,4 +1,9 @@
 /**
+ * Language direction type
+ */
+export type LanguageDirection = 'ltr' | 'rtl';
+
+/**
  * Supported languages
  */
 export const SUPPORTED_LANGUAGES = {
@@ -7,14 +12,14 @@ export const SUPPORTED_LANGUAGES = {
     name: 'English',
     nativeName: 'English',
     flag: '🇺🇸',
-    direction: 'ltr' as const,
+    direction: 'ltr' as LanguageDirection,
   },
   'zh-CN': {
     code: 'zh-CN',
     name: 'Chinese (Simplified)',
     nativeName: '简体中文',
     flag: '🇨🇳',
-    direction: 'ltr' as const,
+    direction: 'ltr' as LanguageDirection,
   },
 } as const;
 

@@ -3,7 +3,7 @@ import { DeepPartial } from 'react-hook-form';
 import { SlicesType } from 'src/store/withSlices';
 
 export const generateReducersFromSlices = <T = unknown>(slices: SlicesType): ReducersMapObject<T> => {
-	const reducerGroups: DeepPartial<ReducersMapObject> = {};
+	const reducerGroups: Record<string, any> = {};
 
 	// Group reducers based on common key derived from slice name.
 	slices?.forEach((slice) => {
@@ -14,13 +14,13 @@ export const generateReducersFromSlices = <T = unknown>(slices: SlicesType): Red
 				reducerGroups[primary] = {};
 			}
 
-			(reducerGroups[primary] as ReducersMapObject<T>)[secondary] = slice.reducer;
+			(reducerGroups[primary] as Record<string, any>)[secondary] = slice.reducer;
 		} else {
 			reducerGroups[primary] = slice.reducer;
 		}
 	});
 
-	const combinedReducers = {};
+	const combinedReducers: Record<string, any> = {};
 
 	// Combine the grouped reducers.
 	Object.entries(reducerGroups).forEach(([key, reducerGroup]) => {

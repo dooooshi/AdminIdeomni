@@ -211,7 +211,7 @@ const adminManagement = {
 	// General
 	LOADING: '加载中...',
 	ERROR: '错误',
-	SUCCESS: '成功',
+	SUCCESS_STATUS: '成功',
 	WARNING: '警告',
 	INFO: '信息',
 	NEVER: '从未',

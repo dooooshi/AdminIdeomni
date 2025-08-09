@@ -306,7 +306,7 @@ const teamManagement = {
   ALL_RESOURCES_AVAILABLE: 'All resources available',
   NO_RESOURCES_AVAILABLE: 'No resources available',
   LIMITED_RESOURCES_AVAILABLE: 'Limited resources available',
-  TEAM_NAME: 'Team Name',
+  TEAM_NAME_DISPLAY: 'Team Name',
   LAST_UPDATED: 'Last updated'
 };
 

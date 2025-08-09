@@ -56,7 +56,7 @@ function DemoFrame(props: DemoFrameProps) {
 				title={title}
 				{...other}
 			/>
-			{iframeLoaded !== false
+			{iframeLoaded !== false && typeof document !== 'undefined' && document.body
 				? ReactDOM.createPortal(<FramedDemo document={document}>{children}</FramedDemo>, document.body)
 				: null}
 		</>

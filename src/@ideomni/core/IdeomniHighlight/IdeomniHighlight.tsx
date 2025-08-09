@@ -27,7 +27,7 @@ function IdeomniHighlight(props: IdeomniHighlightProps) {
 
 	const innerRef = useRef<HTMLDivElement>(null);
 
-	useImperativeHandle(ref, () => innerRef.current, [innerRef]);
+	useImperativeHandle(ref, () => innerRef.current as HTMLDivElement, [innerRef]);
 	const [open, setOpen] = useState(false);
 
 	const [source, setSource] = useState(trimCode(children));

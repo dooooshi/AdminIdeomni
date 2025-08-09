@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -63,7 +63,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   onOperationComplete,
   templateStatistics,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTranslation();
 
   // State
   const [selectedLandType, setSelectedLandType] = useState<LandType>(LandType.PLAIN);

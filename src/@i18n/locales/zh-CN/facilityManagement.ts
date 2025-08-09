@@ -262,9 +262,9 @@ const facilityManagement = {
   
   // Configuration Fields
   DEFAULT_CAPACITY: '默认容量',
-  DEFAULT_BUILD_COST: '默认建设成本',
-  DEFAULT_MAINTENANCE_COST: '默认维护成本',
-  DEFAULT_OPERATION_COST: '默认运营成本',
+  DEFAULT_BUILD_COST_VALUE: '默认建设成本',
+  DEFAULT_MAINTENANCE_COST_VALUE: '默认维护成本',
+  DEFAULT_OPERATION_COST_VALUE: '默认运营成本',
   MIN_CAPACITY: '最小容量',
   MAX_CAPACITY: '最大容量',
   CONFIG_DATA: '配置数据',
@@ -277,16 +277,16 @@ const facilityManagement = {
   CONFIGS_BY_CATEGORY: '按类别统计配置',
   
   // Actions and Buttons
-  SAVE: '保存',
-  CANCEL: '取消',
-  DELETE: '删除',
-  CONFIRM: '确认',
-  CREATE: '创建',
-  UPDATE: '更新',
-  CLOSE: '关闭',
-  EDIT: '编辑',
-  VIEW: '查看',
-  RESTORE: '恢复',
+  SAVE_ACTION: '保存',
+  CANCEL_ACTION: '取消',
+  DELETE_ACTION: '删除',
+  CONFIRM_ACTION: '确认',
+  CREATE_ACTION: '创建',
+  UPDATE_ACTION: '更新',
+  CLOSE_ACTION: '关闭',
+  EDIT_ACTION: '编辑',
+  VIEW_ACTION: '查看',
+  RESTORE_ACTION: '恢复',
   DUPLICATE: '复制',
   EXPORT: '导出',
   IMPORT: '导入',
@@ -336,16 +336,16 @@ const facilityManagement = {
   ROWS_PER_PAGE: '每页行数',
   PAGE_OF_PAGES: '第{{page}}页，共{{totalPages}}页',
   SHOWING_RESULTS: '显示{{start}}-{{end}}，共{{total}}条结果',
-  NO_RESULTS: '未找到设施',
+  NO_FACILITIES_FOUND: '未找到设施',
   NO_CONFIGS: '未找到配置',
   
   // Data States
-  LOADING: '加载中...',
+  LOADING_DATA: '加载中...',
   LOADING_FACILITIES: '正在加载设施...',
   LOADING_CONFIGS: '正在加载配置...',
   LOADING_STATISTICS: '正在加载统计数据...',
-  NO_DATA: '暂无数据',
-  NO_FACILITIES_FOUND: '未找到设施',
+  NO_DATA_AVAILABLE: '暂无数据',
+  NO_FACILITIES_AVAILABLE: '未找到设施',
   NO_CONFIGS_FOUND: '未找到配置',
   EMPTY_STATE_MESSAGE: '尚未创建任何设施。',
   EMPTY_CONFIG_STATE_MESSAGE: '尚未创建任何配置。',
@@ -391,13 +391,13 @@ const facilityManagement = {
   
   // Currency and Number Formatting
   CURRENCY_SYMBOL: '¥',
-  NOT_AVAILABLE: '不可用',
+  NOT_AVAILABLE_FACILITY: '不可用',
   UNLIMITED: '无限制',
   
   // Time and Dates
   CREATED: '创建时间',
   UPDATED: '更新时间',
-  DELETED: '删除时间',
+  DELETED_TIME: '删除时间',
   NEVER: '从未',
   TODAY: '今天',
   YESTERDAY: '昨天',
@@ -406,8 +406,8 @@ const facilityManagement = {
   // Misc
   OPTIONAL: '可选',
   REQUIRED: '必填',
-  YES: '是',
-  NO: '否',
+  YES_OPTION: '是',
+  NO_OPTION: '否',
   ALL: '全部',
   NONE: '无',
   DEFAULT: '默认',
@@ -455,9 +455,9 @@ const facilityManagement = {
   CAPACITY_CONFIGURATION: '容量配置',
   COST_CONFIGURATION: '成本配置',
   CAPACITY_AND_COSTS: '容量与成本',
-  BUILD_COST: '建设成本',
-  MAINTENANCE_COST: '维护成本',
-  OPERATION_COST: '运营成本',
+  BUILD_COST_CONFIG: '建设成本',
+  MAINTENANCE_COST_CONFIG: '维护成本',
+  OPERATION_COST_CONFIG: '运营成本',
   ACTIVE_CONFIGURATION: '活跃配置',
   
   // Cost and capacity fields
@@ -515,10 +515,10 @@ const facilityManagement = {
   // Tooltips and Help Text
   FACILITY_TYPE_TOOLTIP: '选择您要创建的设施类型',
   CATEGORY_TOOLTIP: '设施根据其主要功能分组',
-  CAPACITY_TOOLTIP: '此设施可以处理或生产的最大单位数',
-  BUILD_COST_TOOLTIP: '建设此设施所需的一次性成本',
-  MAINTENANCE_COST_TOOLTIP: '维持此设施运行状态所需的月度成本',
-  OPERATION_COST_TOOLTIP: '以满负荷运行此设施所需的日常成本',
+  CAPACITY_TOOLTIP_DETAIL: '此设施可以处理或生产的最大单位数',
+  BUILD_COST_TOOLTIP_DETAIL: '建设此设施所需的一次性成本',
+  MAINTENANCE_COST_TOOLTIP_DETAIL: '维持此设施运行状态所需的月度成本',
+  OPERATION_COST_TOOLTIP_DETAIL: '以满负荷运行此设施所需的日常成本',
   
   // Advanced features
   IMPORT_SUCCESS: '成功导入 {{count}} 个设施',

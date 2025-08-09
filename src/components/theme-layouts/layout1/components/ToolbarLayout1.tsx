@@ -80,8 +80,8 @@ function ToolbarLayout1(props: ToolbarLayout1Props) {
 						<AdjustFontSize />
 						<FullScreenToggle />
 						<LightDarkModeToggle
-							lightTheme={_.find(themeOptions, { id: 'Default' })}
-							darkTheme={_.find(themeOptions, { id: 'Default Dark' })}
+							lightTheme={_.find(themeOptions, { id: 'Default' }) || themeOptions[0]}
+							darkTheme={_.find(themeOptions, { id: 'Default Dark' }) || themeOptions[0]}
 						/>
 					</div>
 

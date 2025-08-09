@@ -1,16 +1,17 @@
 import TeamDetails from './TeamDetails';
 
 interface TeamDetailsPageProps {
-  params: {
+  params: Promise<{
     teamId: string;
-  };
+  }>;
 }
 
 /**
  * Team Details Page
  */
-function TeamDetailsPage({ params }: TeamDetailsPageProps) {
-  return <TeamDetails teamId={params.teamId} />;
+async function TeamDetailsPage({ params }: TeamDetailsPageProps) {
+  const { teamId } = await params;
+  return <TeamDetails teamId={teamId} />;
 }
 
 export default TeamDetailsPage;

@@ -158,14 +158,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       dispatch({ type: 'SET_LOADING', payload: true });
       dispatch({ type: 'CLEAR_ERROR' });
 
-      let response;
+      let user: AdminUser | RegularUser;
       if (userType === 'admin') {
-        response = await authService.adminLogin(credentials as AdminLoginRequest);
+        const response = await authService.adminLogin(credentials as AdminLoginRequest);
+        user = response.admin;
       } else {
-        response = await authService.userLogin(credentials as UserLoginRequest);
+        const response = await authService.userLogin(credentials as UserLoginRequest);
+        user = response.user;
       }
-
-      const user = userType === 'admin' ? response.admin : response.user;
       
       dispatch({
         type: 'SET_AUTHENTICATED',

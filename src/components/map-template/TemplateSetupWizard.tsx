@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -111,7 +111,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
   onClose,
   onComplete,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTranslation();
 
   // State
   const [activeStep, setActiveStep] = useState(0);
@@ -238,7 +238,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
       if (wizardData.templateType === 'generate') {
         // Generate template with tiles
         const generateParams: GenerateMapTemplateDto = {
-          templateName: wizardData.templateName,
+          name: wizardData.templateName,
           description: wizardData.description,
           width: wizardData.width,
           height: wizardData.height,
@@ -248,24 +248,11 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
           randomSeed: wizardData.randomSeed,
         };
 
-        // Add custom economic settings if specified
-        if (wizardData.customEconomicSettings && wizardData.economicSettings) {
-          generateParams.customPricing = {
-            MARINE: wizardData.economicSettings.MARINE.initialPrice,
-            COASTAL: wizardData.economicSettings.COASTAL.initialPrice,
-            PLAIN: wizardData.economicSettings.PLAIN.initialPrice,
-          };
-          generateParams.customPopulation = {
-            MARINE: wizardData.economicSettings.MARINE.initialPopulation,
-            COASTAL: wizardData.economicSettings.COASTAL.initialPopulation,
-            PLAIN: wizardData.economicSettings.PLAIN.initialPopulation,
-          };
-          generateParams.customTransportation = {
-            MARINE: wizardData.economicSettings.MARINE.transportationCost,
-            COASTAL: wizardData.economicSettings.COASTAL.transportationCost,
-            PLAIN: wizardData.economicSettings.PLAIN.transportationCost,
-          };
-        }
+        // TODO: Custom economic settings are not yet supported by the backend API
+        // The GenerateMapTemplateDto interface needs to be extended to support custom pricing
+        // if (wizardData.customEconomicSettings && wizardData.economicSettings) {
+        //   // Custom economic settings will be handled in a future update
+        // }
 
         template = await MapTemplateService.generateMapTemplate(generateParams);
       } else {

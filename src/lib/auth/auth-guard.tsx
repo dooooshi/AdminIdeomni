@@ -77,10 +77,10 @@ export function AuthGuard({
 
     // Permission checking implementation
     if (permissions && permissions.length > 0) {
-      // Basic permission check - extend as needed
-      const userPermissions = user?.permissions || [];
-      const hasPermission = permissions.some(permission => 
-        userPermissions.includes(permission)
+      // TODO: Implement proper permission system
+      // For now, admin users have all permissions, regular users have limited permissions
+      const hasPermission = userType === 'admin' || permissions.every(permission => 
+        permission.startsWith('user:')
       );
       
       if (!hasPermission) {

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
-import { LANGUAGE_CODES, SUPPORTED_LANGUAGES } from '../core/constants';
+import { LANGUAGE_CODES, SUPPORTED_LANGUAGES, LanguageDirection } from '../core/constants';
 
 /**
  * Hook for language management
@@ -28,7 +28,7 @@ export const useLanguageDirection = () => {
   
   // Check if current language is RTL based on constants
   const currentLangInfo = SUPPORTED_LANGUAGES[i18n.language as keyof typeof SUPPORTED_LANGUAGES];
-  const direction = currentLangInfo?.direction || 'ltr';
+  const direction: LanguageDirection = currentLangInfo?.direction || 'ltr';
   const isRtl = direction === 'rtl';
   
   return {

@@ -177,7 +177,7 @@ const UserForm: React.FC<UserFormProps> = ({
             lastName: values.lastName || undefined,
             userType: values.userType,
             isActive: values.isActive,
-            roles: values.roles.length > 0 ? values.roles : undefined,
+            roles: values.roles && values.roles.length > 0 ? values.roles : undefined,
             sendWelcomeEmail: values.sendWelcomeEmail,
           };
 

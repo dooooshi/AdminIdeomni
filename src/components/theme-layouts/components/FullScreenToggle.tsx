@@ -107,10 +107,10 @@ function HeaderFullScreenToggle(props: HeaderFullScreenToggleProps) {
 		if (doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement) {
 			closeFullscreen();
 		} else if (
-			elem.requestFullscreen ||
-			elem.mozRequestFullScreen ||
-			elem.webkitRequestFullscreen ||
-			elem.msRequestFullscreen
+			typeof elem.requestFullscreen === 'function' ||
+			typeof elem.mozRequestFullScreen === 'function' ||
+			typeof elem.webkitRequestFullscreen === 'function' ||
+			typeof elem.msRequestFullscreen === 'function'
 		) {
 			openFullscreen();
 		}

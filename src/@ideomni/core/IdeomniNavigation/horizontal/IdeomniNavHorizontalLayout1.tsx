@@ -51,7 +51,7 @@ function IdeomniNavHorizontalLayout1(props: IdeomniNavigationProps) {
 				className
 			)}
 		>
-			{navigation.map((_item) => (
+			{navigation?.map((_item) => (
 				<IdeomniNavItem
 					key={_item.id}
 					type={`horizontal-${_item.type}`}

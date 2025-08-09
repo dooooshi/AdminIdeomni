@@ -1,4 +1,5 @@
 import type { TFunction } from 'i18next';
+import type { LanguageDirection } from '../core/constants';
 
 /**
  * Language information interface
@@ -16,10 +17,7 @@ export interface LanguageInfo {
  */
 export type TranslationFunction = TFunction;
 
-/**
- * Language direction type
- */
-export type LanguageDirection = 'ltr' | 'rtl';
+// LanguageDirection is now imported from constants
 
 /**
  * Supported language codes

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -94,7 +94,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
   initialFacilityType = FacilityType.FARM,
   maxHeight = 700,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);

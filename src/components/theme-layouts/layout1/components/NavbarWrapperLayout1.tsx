@@ -35,13 +35,13 @@ function NavbarWrapperLayout1() {
 		<>
 			<ThemeProvider theme={navbarTheme}>
 				<>
-					{config.navbar.style === 'style-1' && <NavbarStyle1 />}
-					{config.navbar.style === 'style-2' && <NavbarStyle2 />}
-					{config.navbar.style === 'style-3' && <NavbarStyle3 />}
-					{config.navbar.style === 'style-3-dense' && <NavbarStyle3 dense />}
+					{config?.navbar?.style === 'style-1' && <NavbarStyle1 />}
+					{config?.navbar?.style === 'style-2' && <NavbarStyle2 />}
+					{config?.navbar?.style === 'style-3' && <NavbarStyle3 />}
+					{config?.navbar?.style === 'style-3-dense' && <NavbarStyle3 dense />}
 				</>
 			</ThemeProvider>
-			{config.navbar.display && !config.toolbar.display && !navbar.open && <NavbarToggleFabLayout1 />}
+			{config?.navbar?.display && !config?.toolbar?.display && !navbar.open && <NavbarToggleFabLayout1 />}
 		</>
 	);
 }

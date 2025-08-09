@@ -35,7 +35,7 @@ function FramedDemo(props: FramedDemoProps) {
 		[document, theme.direction]
 	);
 
-	const getWindow = React.useCallback(() => document.defaultView, [document]);
+	const getWindow = React.useCallback(() => document.defaultView || window, [document]);
 
 	return (
 		<StyleSheetManager

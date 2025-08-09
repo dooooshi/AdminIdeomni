@@ -15,7 +15,7 @@ type NavbarPinToggleButtonProps = NavbarToggleButtonProps & {
 function NavbarPinToggleButton(props: NavbarPinToggleButtonProps) {
 	const { ...rest } = props;
 	const { config } = useIdeomniLayoutSettings();
-	const folded = config.navbar?.folded;
+	const folded = config?.navbar?.folded;
 
 	return (
 		<NavbarToggleButton

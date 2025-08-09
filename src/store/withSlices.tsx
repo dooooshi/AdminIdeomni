@@ -15,7 +15,7 @@ export const injectReducersGroupedByCommonKey = async (slices: SlicesType): Prom
 		Object.keys(reducers).forEach((key) => {
 			// Only inject if it has not been injected yet
 			if (!injectedReducers.has(key)) {
-				const reducer = reducers[key] as Reducer;
+				const reducer = (reducers as Record<string, any>)[key] as Reducer;
 
 				if (!key || !reducer) {
 					return;
