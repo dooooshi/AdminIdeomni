@@ -42,7 +42,7 @@ import {
   TrendingDown as TrendingDownIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MapTemplate, MapTile } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 

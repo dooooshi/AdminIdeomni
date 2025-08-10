@@ -26,7 +26,7 @@ import {
 } from '@mui/icons-material';
 import type { TeamFacilitySummary, FacilityType, FacilityInstanceStatus } from '@/types/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 interface FacilityPortfolioSummaryProps {
   summary: TeamFacilitySummary | null | undefined;

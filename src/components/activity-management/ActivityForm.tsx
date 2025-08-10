@@ -42,7 +42,7 @@ import * as Yup from 'yup';
 // Import locales for DateTimePicker
 import { enUS } from 'date-fns/locale/en-US';
 import { zhCN } from 'date-fns/locale/zh-CN';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import ActivityService, { 
   Activity, 
   CreateActivityRequest, 

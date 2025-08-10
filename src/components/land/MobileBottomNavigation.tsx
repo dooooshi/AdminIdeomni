@@ -25,7 +25,7 @@ import {
   ShoppingCart as PurchaseIcon
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const MobileBottomNav = styled(BottomNavigation)(({ theme }) => ({
   position: 'fixed',

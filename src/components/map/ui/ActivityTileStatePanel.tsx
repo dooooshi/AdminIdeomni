@@ -51,7 +51,7 @@ import {
   People as PeopleIcon,
   LocalShipping as LocalShippingIcon,
 } from '@mui/icons-material';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import AdminTileStateService, { 

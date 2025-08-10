@@ -17,7 +17,7 @@ export function testLanguageDetection() {
   // Safely get i18n instance
   let i18nLang = 'N/A';
   try {
-    const i18n = require('../../@i18n/i18n').default;
+    const i18n = require('../i18n').default;
     i18nLang = i18n.language || 'N/A';
   } catch (error) {
     i18nLang = 'Not available';
@@ -138,7 +138,7 @@ export async function testLanguageChange(newLanguage: string) {
   
   try {
     // Change language using i18n
-    const i18n = require('../../@i18n/i18n').default;
+    const i18n = require('../i18n').default;
     await i18n.changeLanguage(newLanguage);
   } catch (error) {
     console.error('Could not change language - i18n not available:', error);
@@ -193,7 +193,7 @@ export function logLanguageStatus() {
   // Safely get i18n instance
   let i18nLang = 'N/A';
   try {
-    const i18n = require('../../@i18n/i18n').default;
+    const i18n = require('../i18n').default;
     i18nLang = i18n.language || 'N/A';
   } catch (error) {
     i18nLang = 'Not available';

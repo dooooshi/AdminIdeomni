@@ -36,7 +36,7 @@ import {
 import { FacilityTypeSelector } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { LandService } from '@/lib/services/landService';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type {
   FacilityType,
   LandType,

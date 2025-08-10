@@ -42,7 +42,7 @@ import {
   Map as MapIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
 import { MapTemplate, MapTile, UpdateTileDto, MapConfigurationPanelProps } from '../types';

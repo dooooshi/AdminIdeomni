@@ -21,7 +21,7 @@ export const getCurrentLanguage = (): string => {
     
     // If no global instance, try to access it safely
     try {
-      const i18n = require('../../@i18n/i18n').default;
+      const i18n = require('../i18n').default;
       if (i18n && i18n.language) {
         // Store reference for future use
         (window as any).__i18nInstance = i18n;

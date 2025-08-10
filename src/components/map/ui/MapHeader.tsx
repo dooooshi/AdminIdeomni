@@ -1,7 +1,7 @@
 import { Typography, Button } from '@mui/material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import PageBreadcrumb from 'src/components/PageBreadcrumb';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 interface MapHeaderProps {
 	onRefresh?: () => void;

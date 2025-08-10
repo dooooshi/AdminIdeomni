@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTheme, alpha } from '@mui/material/styles';
 import { Box, Typography, Tooltip, Divider, Chip } from '@mui/material';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { HexTileProps } from '../types';
 import LandTypeAnimations from './LandTypeAnimations';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';

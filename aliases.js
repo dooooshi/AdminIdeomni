@@ -3,7 +3,6 @@
  */
 const aliases = (prefix = `src`) => ({
   '@auth': `${prefix}/@auth`,
-  '@i18n': `${prefix}/@i18n`,
   	'@ideomni': `${prefix}/@ideomni`,
   '@history': `${prefix}/@history`,
   '@schema': `${prefix}/@schema`,

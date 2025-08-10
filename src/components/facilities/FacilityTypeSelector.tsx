@@ -20,7 +20,7 @@ import { SearchOutlined } from '@mui/icons-material';
 import type { LandType, FacilityCategory } from '@/types/facilities';
 import { FacilityType } from '@/types/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 interface FacilityTypeSelectorProps {
   selectedType?: FacilityType;

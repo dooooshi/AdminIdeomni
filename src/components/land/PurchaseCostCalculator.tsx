@@ -32,7 +32,7 @@ import {
   Analytics as AnalyticsIcon
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import { AvailableTile, PurchaseValidation } from '@/types/land';
 

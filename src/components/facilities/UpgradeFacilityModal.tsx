@@ -42,7 +42,7 @@ import {
 } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
-import { useTranslation } from '@/@i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type {
   TileFacilityInstance,
   UpgradeFacilityRequest,
