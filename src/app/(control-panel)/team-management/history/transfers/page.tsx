@@ -227,7 +227,7 @@ function TransferHistoryPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                        Total Transfers
+                        {t('teamManagement:TOTAL_TRANSFERS')}
                       </Typography>
                       <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                         {transfersData.total}
@@ -289,7 +289,7 @@ function TransferHistoryPage() {
                   <TableHead>
                     <TableRow>
                       <TableCell>{t('teamManagement:DATE')}</TableCell>
-                      <TableCell>{t('teamManagement:DIRECTION', 'Direction')}</TableCell>
+                      <TableCell>{t('teamManagement:DIRECTION')}</TableCell>
                       <TableCell>{t('teamManagement:PARTNER_TEAM')}</TableCell>
                       <TableCell>{t('teamManagement:RESOURCE')}</TableCell>
                       <TableCell>{t('teamManagement:AMOUNT')}</TableCell>

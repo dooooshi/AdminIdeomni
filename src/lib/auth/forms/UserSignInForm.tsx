@@ -25,8 +25,8 @@ import { extractErrorMessage } from '../utils';
 
 // Form validation schema
 const createSchema = (t: (key: string) => string) => z.object({
-  identifier: z.string().nonempty(t('auth:EMAIL_REQUIRED')),
-  password: z.string().min(6, t('auth:PASSWORD_TOO_SHORT')).nonempty(t('auth:PASSWORD_REQUIRED')),
+  identifier: z.string().nonempty(t('auth.EMAIL_REQUIRED')),
+  password: z.string().min(6, t('auth.PASSWORD_TOO_SHORT')).nonempty(t('auth.PASSWORD_REQUIRED')),
 });
 
 // Base schema for type inference
@@ -81,7 +81,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
       
       // Show success notification
       dispatch(showMessage({
-        message: t('signinSuccess'),
+        message: t('auth.SIGNIN_SUCCESS'),
         variant: 'success',
         autoHideDuration: 4000,
       }));
@@ -134,7 +134,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('email')}
+            label={t('auth.EMAIL')}
             placeholder="username or email"
             variant="outlined"
             fullWidth
@@ -161,7 +161,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('password')}
+            label={t('auth.PASSWORD')}
             placeholder="Enter your password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
@@ -212,7 +212,7 @@ export default function UserSignInForm({ onSuccess }: UserSignInFormProps) {
           )
         }
       >
-        {isLoading ? t('signingIn') : t('signIn')}
+        {isLoading ? t('auth.SIGNING_IN') : t('auth.SIGN_IN')}
       </Button>
     </Box>
   );

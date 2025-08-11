@@ -131,7 +131,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary="Timestamp"
+                  primary={t('TIMESTAMP')}
                   secondary={format(error.timestamp, 'yyyy-MM-dd HH:mm:ss')}
                 />
               </ListItem>
@@ -147,7 +147,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary="User Message"
+                  primary={t('USER_MESSAGE')}
                   secondary={error.userMessage}
                 />
               </ListItem>
@@ -271,7 +271,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
               onClick={onRetry}
               startIcon={<RefreshIcon />}
             >
-              Retry
+              {t('RETRY')}
             </Button>
           ) : undefined
         }
@@ -358,33 +358,33 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
           <List dense>
             <ListItem>
               <ListItemText
-                primary="Error Type"
+                primary={t('ERROR_TYPE')}
                 secondary={processedError.type}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Error Code"
+                primary={t('ERROR_CODE')}
                 secondary={processedError.code}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Timestamp"
+                primary={t('TIMESTAMP')}
                 secondary={format(processedError.timestamp, 'MMM dd, yyyy HH:mm:ss')}
               />
             </ListItem>
             {context && (
               <ListItem>
                 <ListItemText
-                  primary="Context"
+                  primary={t('CONTEXT')}
                   secondary={context}
                 />
               </ListItem>
             )}
             <ListItem>
               <ListItemText
-                primary="Technical Message"
+                primary={t('TECHNICAL_MESSAGE')}
                 secondary={processedError.message}
               />
             </ListItem>
@@ -394,7 +394,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
             <>
               <Divider sx={{ my: 1 }} />
               <Typography variant="body2" color="text.secondary">
-                Additional details are available in the error report.
+                {t('ADDITIONAL_DETAILS_AVAILABLE')}
               </Typography>
             </>
           )}

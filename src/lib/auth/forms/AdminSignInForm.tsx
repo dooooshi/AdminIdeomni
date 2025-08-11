@@ -25,8 +25,8 @@ import { extractErrorMessage } from '../utils';
 
 // Form validation schema
 const createSchema = (t: (key: string) => string) => z.object({
-  identifier: z.string().nonempty(t('emailRequired')),
-  password: z.string().min(6, t('passwordTooShort')).nonempty(t('passwordRequired')),
+  identifier: z.string().nonempty(t('auth.EMAIL_REQUIRED')),
+  password: z.string().min(6, t('auth.PASSWORD_TOO_SHORT')).nonempty(t('auth.PASSWORD_REQUIRED')),
 });
 
 // Base schema for type inference
@@ -81,7 +81,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
       
       // Show success notification
       dispatch(showMessage({
-        message: t('signinSuccess'),
+        message: t('auth.SIGNIN_SUCCESS'),
         variant: 'success',
         autoHideDuration: 4000,
       }));
@@ -134,7 +134,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('email')}
+            label={t('auth.EMAIL')}
             placeholder="admin@example.com"
             variant="outlined"
             fullWidth
@@ -161,7 +161,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
         render={({ field }) => (
           <TextField
             {...field}
-            label={t('password')}
+            label={t('auth.PASSWORD')}
             placeholder="Enter your password"
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
@@ -212,14 +212,14 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
           )
         }
       >
-        {isLoading ? t('signingIn') : t('adminSignIn')}
+        {isLoading ? t('auth.SIGNING_IN') : t('auth.ADMIN_SIGN_IN')}
       </Button>
 
       {/* Security Notice */}
       <Box className="mt-4 text-center">
         <Box className="flex items-center justify-center space-x-2 text-sm text-gray-500">
           <IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>
-          <span>{t('adminSignIn')}</span>
+          <span>{t('auth.ADMIN_SIGN_IN')}</span>
         </Box>
       </Box>
     </Box>

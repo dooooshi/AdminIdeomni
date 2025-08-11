@@ -199,7 +199,7 @@ function BalanceHistoryPage() {
           {balanceSummary && (
             <div>
               <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-                Balance Change Summary
+                {t('teamManagement:BALANCE_CHANGE_SUMMARY')}
               </Typography>
               <Grid component="div" container spacing={6}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
@@ -208,7 +208,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            Total Changes
+                            {t('teamManagement:TOTAL_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.totalChanges}
@@ -229,7 +229,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            Gold Changes
+                            {t('teamManagement:GOLD_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.goldChanges}
@@ -250,7 +250,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            Carbon Changes
+                            {t('teamManagement:CARBON_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.carbonChanges}
@@ -269,13 +269,13 @@ function BalanceHistoryPage() {
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                        Largest Increases
+                        {t('teamManagement:LARGEST_INCREASES')}
                       </Typography>
                       <Typography variant="body2" className="text-yellow-600 mb-1">
-                        Gold: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
+                        {t('teamManagement:GOLD')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
                       </Typography>
                       <Typography variant="body2" className="text-green-600">
-                        Carbon: +{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease, TeamResourceType.CARBON)}
+                        {t('teamManagement:CARBON')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease, TeamResourceType.CARBON)}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -375,7 +375,7 @@ function BalanceHistoryPage() {
                             {t('teamManagement:NO_BALANCE_CHANGES_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Balance changes will appear here as you make transfers
+                            {t('teamManagement:BALANCE_CHANGES_MESSAGE')}
                           </Typography>
                         </TableCell>
                       </TableRow>

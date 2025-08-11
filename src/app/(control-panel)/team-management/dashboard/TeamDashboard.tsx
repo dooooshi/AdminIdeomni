@@ -172,7 +172,7 @@ function TeamDashboard() {
                     {t('teamManagement:MEMBERS')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
-                    {team.members.filter(m => m.status === 'ACTIVE').length} of {team.maxMembers}
+                    {team.members.filter(m => m.status === 'ACTIVE').length} {t('common:of')} {team.maxMembers}
                   </Typography>
                 </div>
                 <div>

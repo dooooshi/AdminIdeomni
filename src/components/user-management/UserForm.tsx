@@ -76,7 +76,7 @@ const UserForm: React.FC<UserFormProps> = ({
   user,
   onSuccess,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('userManagement');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -220,9 +220,9 @@ const UserForm: React.FC<UserFormProps> = ({
 
   const getUserTypeDescription = (userType: number) => {
     switch (userType) {
-      case 1: return 'Full management capabilities';
-      case 2: return 'Standard work functions';
-      case 3: return 'Learning and training access';
+      case 1: return t('MANAGER_DESCRIPTION');
+      case 2: return t('WORKER_DESCRIPTION');
+      case 3: return t('STUDENT_DESCRIPTION');
       default: return '';
     }
   };
@@ -267,7 +267,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
             {isEditMode && (
               <Typography variant="caption" color="text.secondary">
-                Username cannot be changed after creation
+                {t('USERNAME_EDIT_HINT')}
               </Typography>
             )}
           </Grid>

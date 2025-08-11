@@ -117,7 +117,7 @@ const AdminManagementPage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Dashboard
+              {t('DASHBOARD', { ns: 'navigation' })}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <SupervisorAccountIcon sx={{ mr: 0.5 }} fontSize="inherit" />
@@ -214,7 +214,7 @@ const AdminManagementPage: React.FC = () => {
             open={logsDialogOpen}
             onClose={handleCloseLogsDialog}
             admin={selectedAdminForLogs}
-            title={selectedAdminForLogs ? undefined : 'System Operation Logs'}
+            title={selectedAdminForLogs ? undefined : t('SYSTEM_OPERATION_LOGS')}
           />
         </Box>
       }

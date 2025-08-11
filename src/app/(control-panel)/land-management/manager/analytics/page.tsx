@@ -322,12 +322,12 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Rank</TableCell>
-              <TableCell>Team Name</TableCell>
-              <TableCell align="right">Total Area</TableCell>
-              <TableCell align="right">Total Spent</TableCell>
-              <TableCell align="right">Avg Cost/Area</TableCell>
-              <TableCell align="center">Performance</TableCell>
+              <TableCell>{t('landManagement:RANK')}</TableCell>
+              <TableCell>{t('landManagement:TEAM_NAME')}</TableCell>
+              <TableCell align="right">{t('landManagement:TOTAL_AREA')}</TableCell>
+              <TableCell align="right">{t('landManagement:TOTAL_SPENT')}</TableCell>
+              <TableCell align="right">{t('landManagement:AVG_COST_PER_AREA')}</TableCell>
+              <TableCell align="center">{t('landManagement:PERFORMANCE')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -413,15 +413,15 @@ const ManagerLandAnalyticsPage: React.FC<ManagerLandAnalyticsPageProps> = () => 
         </Box>
         <Stack direction="row" spacing={1}>
           <FormControl size="small" sx={{ minWidth: 120 }}>
-            <InputLabel>Time Range</InputLabel>
+            <InputLabel>{t('landManagement:TIME_RANGE')}</InputLabel>
             <Select
               value={timeRange}
               label="Time Range"
               onChange={(e) => setTimeRange(e.target.value as any)}
             >
-              <MenuItem value="week">This Week</MenuItem>
-              <MenuItem value="month">This Month</MenuItem>
-              <MenuItem value="total">All Time</MenuItem>
+              <MenuItem value="week">{t('landManagement:THIS_WEEK')}</MenuItem>
+              <MenuItem value="month">{t('landManagement:THIS_MONTH')}</MenuItem>
+              <MenuItem value="total">{t('landManagement:ALL_TIME')}</MenuItem>
             </Select>
           </FormControl>
           <Tooltip title="Export Data">

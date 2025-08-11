@@ -418,7 +418,7 @@ const MapTemplateManagementPage: React.FC = () => {
     <IdeomniPageSimple
       header={
         <Box sx={{ p: 3 }}>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+          <Breadcrumbs aria-label={t('BREADCRUMB', { ns: 'common' })} sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
               {t('DASHBOARD', { ns: 'navigation' })}
@@ -445,7 +445,7 @@ const MapTemplateManagementPage: React.FC = () => {
             <Tabs 
               value={tabValue} 
               onChange={handleTabChange} 
-              aria-label="map template management tabs"
+              aria-label={t('MAP_TEMPLATE_TABS', { ns: 'common' })}
               variant="scrollable"
               scrollButtons="auto"
             >
@@ -565,7 +565,7 @@ const MapTemplateManagementPage: React.FC = () => {
           <Zoom in={tabValue === 0}>
             <Fab
               color="primary"
-              aria-label="generate template"
+              aria-label={t('GENERATE_TEMPLATE', { ns: 'common' })}
               sx={{
                 position: 'fixed',
                 bottom: 16,

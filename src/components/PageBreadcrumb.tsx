@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import Link from '@ideomni/core/Link';
 import useNavigation from './theme-layouts/components/navigation/hooks/useNavigation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 type PageBreadcrumbProps = BreadcrumbsProps & {
 	className?: string;
@@ -36,6 +37,7 @@ function PageBreadcrumb(props: PageBreadcrumbProps) {
 	const { className, skipHome = false, ...rest } = props;
 	const pathname = usePathname();
 	const { navigation } = useNavigation();
+	const { t } = useTranslation();
 
 	const crumbs = pathname
 		.split('/')
@@ -49,7 +51,7 @@ function PageBreadcrumb(props: PageBreadcrumbProps) {
 				acc.push({ title, url });
 				return acc;
 			},
-			skipHome ? [] : [{ title: 'Home', url: '/' }]
+			skipHome ? [] : [{ title: t('common.home'), url: '/' }]
 		);
 
 	return (

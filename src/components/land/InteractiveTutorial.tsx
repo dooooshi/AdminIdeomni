@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Paper,
@@ -136,6 +137,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
   onComplete,
   onSkip
 }) => {
+  const { t } = useTranslation('landManagement');
   const theme = useTheme();
   
   // Tutorial state
@@ -153,11 +155,11 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
   const tutorialSteps: TutorialStep[] = [
     {
       id: 'welcome',
-      title: 'Welcome to Land Management! 🏞️',
-      content: 'Let me guide you through purchasing your first piece of land. This tutorial will show you everything you need to know!',
+      title: t('TUTORIAL_WELCOME_TITLE'),
+      content: t('TUTORIAL_WELCOME_CONTENT'),
       action: 'observe',
       icon: <TutorialIcon />,
-      tip: 'You can pause or skip this tutorial at any time.'
+      tip: t('TUTORIAL_WELCOME_TIP')
     },
     {
       id: 'explore-map',
@@ -427,16 +429,16 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                       {currentStepData.title}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      Step {currentStep + 1} of {tutorialSteps.length}
+                      {t('TUTORIAL_STEP', { current: currentStep + 1, total: tutorialSteps.length })}
                     </Typography>
                   </Box>
                   <Box display="flex" gap={0.5}>
-                    <Tooltip title={isPaused ? "Resume" : "Pause"}>
+                    <Tooltip title={isPaused ? t('RESUME') : t('PAUSE')}>
                       <IconButton size="small" onClick={pauseResumeTutorial}>
                         {isPaused ? <PlayIcon /> : <PauseIcon />}
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Skip Tutorial">
+                    <Tooltip title={t('SKIP_TUTORIAL')}>
                       <IconButton size="small" onClick={skipTutorial}>
                         <CloseIcon />
                       </IconButton>
@@ -460,7 +462,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                     }}
                   />
                   <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
-                    {Math.round(progress)}% Complete
+                    {t('TUTORIAL_PROGRESS', { progress: Math.round(progress) })}
                   </Typography>
                 </Box>
 
@@ -494,7 +496,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                 {currentStepData.action !== 'observe' && (
                   <Chip
                     icon={currentStepData.action === 'hover' ? <LookIcon /> : <TouchIcon />}
-                    label={currentStepData.action === 'hover' ? 'Hover to continue' : 'Click to continue'}
+                    label={currentStepData.action === 'hover' ? t('HOVER_TO_CONTINUE') : t('CLICK_TO_CONTINUE')}
                     color="primary"
                     variant="outlined"
                     size="small"
@@ -510,7 +512,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                     startIcon={<BackIcon />}
                     size="small"
                   >
-                    Back
+                    {t('BACK')}
                   </Button>
 
                   <Stack direction="row" spacing={1}>
@@ -539,7 +541,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                       startIcon={<CheckIcon />}
                       size="small"
                     >
-                      Complete
+                      {t('COMPLETE')}
                     </Button>
                   ) : (
                     <Button
@@ -549,7 +551,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                       size="small"
                       disabled={currentStepData.action !== 'observe' && currentStepData.action !== 'wait'}
                     >
-                      Next
+                      {t('NEXT')}
                     </Button>
                   )}
                 </Stack>
@@ -561,7 +563,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
 
       {/* Restart Tutorial Option */}
       {completed && (
-        <Tooltip title="Restart Tutorial">
+        <Tooltip title={t('RESTART_TUTORIAL')}>
           <Fab
             color="primary"
             size="small"

@@ -148,7 +148,7 @@ function AdminSignInPage() {
 					}}
 				>
 					<IdeomniSvgIcon size={16}>heroicons-outline:arrow-left</IdeomniSvgIcon>
-					<span>{t('signIn')}</span>
+					<span>{t('auth.SIGN_IN')}</span>
 				</Link>
 			</Box>
 			
@@ -178,7 +178,7 @@ function AdminSignInPage() {
 						<Box className="flex justify-center mb-4">
 													<Chip 
 							icon={<IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>}
-							label={t('adminAccess')}
+							label={t('auth.ADMIN_ACCESS')}
 							variant="outlined"
 							sx={{
 								borderColor: 'error.main',
@@ -203,7 +203,7 @@ function AdminSignInPage() {
 								fontWeight: 300,
 							}}
 						>
-							{t('adminSignIn')}
+							{t('auth.ADMIN_SIGN_IN')}
 						</Typography>
 						
 						<Typography 
@@ -215,7 +215,7 @@ function AdminSignInPage() {
 								lineHeight: 1.6,
 							}}
 						>
-							{t('adminSubtitle')}
+							{t('auth.ADMIN_SUBTITLE')}
 						</Typography>
 					</Box>
 

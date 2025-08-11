@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Card,
   CardContent,
@@ -60,6 +61,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
   onViewDetails,
   onViewTeam
 }) => {
+  const { t } = useTranslation('landManagement');
   const theme = useTheme();
 
   // Calculate ownership percentage
@@ -134,7 +136,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
                   {ownership.teamName}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  Tile {ownership.tileId}
+                  {t('TILE')} {ownership.tileId}
                 </Typography>
               </Box>
             </Box>
@@ -143,7 +145,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
                 {LandService.formatArea(ownership.ownedArea || 0)}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {ownershipPercentage}% owned
+                {t('PERCENT_OWNED', { percent: ownershipPercentage })}
               </Typography>
             </Box>
           </Box>
@@ -168,13 +170,13 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
               <Box display="flex" alignItems="center" gap={1}>
                 <LocationIcon fontSize="small" color="action" />
                 <Typography variant="body2" color="text.secondary">
-                  Tile {ownership.tileId}
+                  {t('TILE')} {ownership.tileId}
                 </Typography>
               </Box>
             </Box>
           </Box>
           {showActions && (
-            <Tooltip title="View Details">
+            <Tooltip title={t('VIEW_DETAILS')}>
               <IconButton onClick={onViewDetails} size="small">
                 <InfoIcon />
               </IconButton>
@@ -189,7 +191,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
         <Stack spacing={2}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="body2" color="text.secondary">
-              Area Owned
+              {t('AREA_OWNED')}
             </Typography>
             <Typography variant="h6" color="primary.main">
               {LandService.formatArea(ownership.ownedArea || 0)}
@@ -198,7 +200,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
 
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="body2" color="text.secondary">
-              Total Invested
+              {t('TOTAL_INVESTED')}
             </Typography>
             <Typography variant="body2" fontWeight="bold">
               {LandService.formatCurrency(ownership.totalPurchased || 0)}
@@ -207,7 +209,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
 
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="body2" color="text.secondary">
-              Purchases Made
+              {t('PURCHASES_MADE')}
             </Typography>
             <Typography variant="body2">
               {ownership.purchaseCount || 0}
@@ -218,23 +220,23 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
         {/* Investment Breakdown */}
         <Box sx={{ mt: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
           <Typography variant="caption" color="text.secondary" gutterBottom display="block">
-            Investment Breakdown
+            {t('INVESTMENT_BREAKDOWN')}
           </Typography>
           <Stack spacing={1}>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Gold Spent:</Typography>
+              <Typography variant="caption">{t('GOLD_SPENT')}:</Typography>
               <Typography variant="caption" fontWeight="bold" color="warning.main">
                 {LandService.formatCurrency(ownership.totalGoldSpent || 0, 'gold')}
               </Typography>
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Carbon Spent:</Typography>
+              <Typography variant="caption">{t('CARBON_SPENT')}:</Typography>
               <Typography variant="caption" fontWeight="bold" color="success.main">
                 {LandService.formatCurrency(ownership.totalCarbonSpent || 0, 'carbon')}
               </Typography>
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Avg Cost/Area:</Typography>
+              <Typography variant="caption">{t('AVG_COST_PER_AREA')}:</Typography>
               <Typography variant="caption" fontWeight="bold">
                 {LandService.formatCurrency(avgCostPerArea)}
               </Typography>
@@ -247,26 +249,26 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
           <Box display="flex" alignItems="center" gap={1} mb={1}>
             <CalendarIcon fontSize="small" color="action" />
             <Typography variant="caption" color="text.secondary">
-              Activity Timeline
+              {t('ACTIVITY_TIMELINE')}
             </Typography>
           </Box>
           <Stack spacing={0.5}>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">First Purchase:</Typography>
+              <Typography variant="caption">{t('FIRST_PURCHASE')}:</Typography>
               <Typography variant="caption">
                 {format(new Date(ownership.firstPurchaseDate), 'MMM dd, yyyy')}
               </Typography>
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Latest Purchase:</Typography>
+              <Typography variant="caption">{t('LATEST_PURCHASE')}:</Typography>
               <Typography variant="caption">
                 {format(new Date(ownership.lastPurchaseDate), 'MMM dd, yyyy')}
               </Typography>
             </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Active Days:</Typography>
+              <Typography variant="caption">{t('ACTIVE_DAYS')}:</Typography>
               <Typography variant="caption" fontWeight="bold" color="primary.main">
-                {daysSinceFirst} days
+                {t('DAYS_COUNT', { count: daysSinceFirst })}
               </Typography>
             </Box>
           </Stack>
@@ -276,14 +278,14 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
         <Box sx={{ mt: 2 }}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="caption" color="text.secondary">
-              Performance Level
+              {t('PERFORMANCE_LEVEL')}
             </Typography>
             <Chip
               size="small"
               label={
-                ownershipPercentage > 15 ? 'High Impact' :
-                ownershipPercentage > 5 ? 'Moderate Impact' :
-                'Low Impact'
+                ownershipPercentage > 15 ? t('HIGH_IMPACT') :
+                ownershipPercentage > 5 ? t('MODERATE_IMPACT') :
+                t('LOW_IMPACT')
               }
               color={
                 ownershipPercentage > 15 ? 'success' :
@@ -304,7 +306,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
               onClick={onViewTeam}
               startIcon={<GroupIcon />}
             >
-              View Team
+              {t('VIEW_TEAM')}
             </Button>
             <Button 
               variant="contained" 
@@ -312,7 +314,7 @@ const LandOwnershipCard: React.FC<LandOwnershipCardProps> = ({
               onClick={onViewDetails}
               startIcon={<InfoIcon />}
             >
-              Details
+              {t('DETAILS')}
             </Button>
           </Stack>
         )}

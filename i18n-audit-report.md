@@ -1,0 +1,122 @@
+# I18n Audit Report - AdminIdeomni Project
+
+## Executive Summary
+**Date**: 2025-08-11  
+**Overall I18n Coverage**: 30% (101 of 336 TSX files)  
+**Critical Issues**: 235 components need i18n updates  
+
+## Current I18n Setup
+- **Framework**: react-i18next with i18next
+- **Languages Supported**: English (en-US), Chinese (zh-CN)
+- **Default Language**: zh-CN
+- **Translation Files**: TypeScript-based in `/src/lib/i18n/translations/`
+- **Namespaces**: 14 namespaces configured (navigation, teamManagement, etc.)
+
+## Critical Components Requiring Immediate Attention
+
+### 1. High Priority - User-Facing Error Messages
+| Component | Location | Issue | Hardcoded Text |
+|-----------|----------|-------|----------------|
+| ErrorBoundary | `/src/@ideomni/utils/ErrorBoundary.tsx:38` | Error messages not internationalized | "Something went wrong." |
+| auth-guard | `/src/lib/auth/auth-guard.tsx:16-17` | Access denied messages hardcoded | "Access Denied", "You don't have permission..." |
+
+### 2. High Priority - UI Components
+| Component | Location | Issue | Hardcoded Text |
+|-----------|----------|-------|----------------|
+| LightDarkModeToggle | `/src/components/LightDarkModeToggle.tsx:84,90` | Theme labels hardcoded | "Light", "Dark" |
+| QuickPanel | `/src/components/theme-layouts/components/quickPanel/QuickPanel.tsx:57-115` | Panel headers hardcoded | "Today", "Events", "Notes", "Quick Settings" |
+| IdeomniSettingsViewerDialog | `/src/components/theme-layouts/components/IdeomniSettingsViewerDialog.tsx:58-69` | Dialog labels hardcoded | "Ideomni Settings Viewer", "JSON", "Query Params" |
+
+### 3. Medium Priority - Content Components
+| Component | Location | Issue | Hardcoded Text |
+|-----------|----------|-------|----------------|
+| image-upload-node | `/src/components/tiptap/tiptap-node/image-upload-node/image-upload-node.tsx:304` | Upload instructions hardcoded | "Click to upload" |
+| Logo | `/src/components/theme-layouts/components/Logo.tsx:32,40` | Brand text hardcoded | "STARTUP", "BizSimulation" |
+
+## Missing Translation Keys
+
+### Required Theme Keys
+```typescript
+'theme.LIGHT': 'Light' / '浅色',
+'theme.DARK': 'Dark' / '深色',
+```
+
+### Required Error Keys
+```typescript
+'error.ACCESS_DENIED': 'Access Denied' / '访问被拒绝',
+'error.NO_PERMISSION': "You don't have permission to access this page." / '您没有权限访问此页面。',
+'error.SOMETHING_WRONG': 'Something went wrong.' / '出了点问题。',
+```
+
+### Required Upload Keys
+```typescript
+'upload.CLICK_TO_UPLOAD': 'Click to upload' / '点击上传',
+'upload.DRAG_DROP': 'or drag and drop' / '或拖放文件',
+```
+
+### Required Quick Panel Keys
+```typescript
+'quickPanel.TODAY': 'Today' / '今天',
+'quickPanel.EVENTS': 'Events' / '事件',
+'quickPanel.NOTES': 'Notes' / '备注',
+'quickPanel.QUICK_SETTINGS': 'Quick Settings' / '快速设置',
+```
+
+### Required Settings Keys
+```typescript
+'settings.VIEWER_TITLE': 'Ideomni Settings Viewer' / 'Ideomni 设置查看器',
+'settings.JSON': 'JSON' / 'JSON',
+'settings.QUERY_PARAMS': 'Query Params' / '查询参数',
+```
+
+## Components with Proper I18n (Good Examples)
+- `/src/components/auth/SignInPage.tsx` - Properly uses useTranslation with namespace
+- `/src/app/(control-panel)/activity-management/page.tsx` - Most strings internationalized
+- `/src/app/(control-panel)/team-management/` - Good i18n coverage
+
+## Statistics by Directory
+
+| Directory | Total Files | I18n Enabled | Coverage |
+|-----------|------------|--------------|----------|
+| `/src/components/` | 150+ | 45 | 30% |
+| `/src/app/(control-panel)/` | 100+ | 40 | 40% |
+| `/src/@ideomni/` | 80+ | 16 | 20% |
+| `/src/lib/` | 6 | 0 | 0% |
+
+## Action Items
+
+### Immediate Actions (Week 1)
+1. ✅ Add missing translation keys to `/src/lib/i18n/translations/en.ts` and `zh.ts`
+2. ✅ Update ErrorBoundary.tsx with i18n support
+3. ✅ Update auth-guard.tsx with i18n support
+4. ✅ Update LightDarkModeToggle.tsx with i18n support
+
+### Short Term (Week 2-3)
+1. ✅ Update QuickPanel components
+2. ✅ Update Settings dialog components
+3. ✅ Update all upload components
+4. ✅ Review and update page.tsx files in app directory
+
+### Long Term (Month 1-2)
+1. ✅ Systematic update of all @ideomni core components
+2. ✅ Create i18n testing framework
+3. ✅ Add i18n linting rules to catch hardcoded strings
+4. ✅ Documentation for i18n best practices
+
+## Recommendations
+
+1. **Enforce i18n in Code Reviews**: Check for hardcoded strings in all PRs
+2. **Add ESLint Rule**: Configure eslint-plugin-i18next to catch hardcoded strings
+3. **Create Translation Helper**: Build a script to extract all text from components
+4. **Regular Audits**: Run monthly i18n coverage reports
+5. **Testing**: Add i18n tests to ensure all keys exist in all languages
+
+## Next Steps
+1. Review this report with the team
+2. Prioritize components based on user impact
+3. Create tickets for each component update
+4. Establish i18n coding standards
+5. Update CI/CD pipeline to check i18n coverage
+
+---
+Generated by i18n Audit Tool

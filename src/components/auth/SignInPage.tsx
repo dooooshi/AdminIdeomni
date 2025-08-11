@@ -150,7 +150,7 @@ function SignInPage() {
 					}}
 				>
 					<IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>
-					<span>{t('adminSignIn')}</span>
+					<span>{t('auth.ADMIN_SIGN_IN')}</span>
 				</Link>
 			</Box>
 			
@@ -185,7 +185,7 @@ function SignInPage() {
 								fontWeight: 300,
 							}}
 						>
-							{t('welcomeBack')}
+							{t('auth.WELCOME_BACK')}
 						</Typography>
 						
 						<Typography 
@@ -197,7 +197,7 @@ function SignInPage() {
 								lineHeight: 1.6,
 								}}
 							>
-							{t('signInSubtitle')}
+							{t('auth.SIGN_IN_SUBTITLE')}
 						</Typography>
 
 					</Box>

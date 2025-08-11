@@ -142,7 +142,7 @@ function HistoryOverviewPage() {
           {operationSummary && (
             <div>
               <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-                {t('teamManagement:OPERATION_SUMMARY')} ({t('teamManagement:LAST_30_DAYS', 'Last 30 Days')})
+                {t('teamManagement:OPERATION_SUMMARY')} ({t('teamManagement:LAST_30_DAYS')})
               </Typography>
               <Grid component="div" container spacing={6}>
                 {/* Total Operations */}
@@ -186,7 +186,7 @@ function HistoryOverviewPage() {
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
-                            Net: {operationSummary.totalGoldIn - operationSummary.totalGoldOut >= 0 ? '+' : ''}
+                            {t('teamManagement:NET')}: {operationSummary.totalGoldIn - operationSummary.totalGoldOut >= 0 ? '+' : ''}
                             {TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn - operationSummary.totalGoldOut, TeamResourceType.GOLD)}
                           </Typography>
                         </div>
@@ -218,7 +218,7 @@ function HistoryOverviewPage() {
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
-                            Net: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
+                            {t('teamManagement:NET')}: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
                             {TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut, TeamResourceType.CARBON)}
                           </Typography>
                         </div>
@@ -408,7 +408,7 @@ function HistoryOverviewPage() {
                               {partner.teamName}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
-                              {partner.transferCount} {t('teamManagement:TRANSFERS', 'transfers')}
+                              {partner.transferCount} {t('teamManagement:TRANSFERS')}
                             </Typography>
                           </div>
                           <div className="text-right">

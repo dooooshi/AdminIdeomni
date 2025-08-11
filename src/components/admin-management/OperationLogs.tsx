@@ -423,7 +423,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                     size="small"
                     disabled={loading}
                   >
-                    {loading ? <CircularProgress size={20} /> : 'Refresh'}
+                    {loading ? <CircularProgress size={20} /> : t('REFRESH_DATA')}
                   </Button>
                 </Stack>
 
@@ -450,18 +450,18 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
             <Stack direction="row" spacing={2} flexWrap="wrap">
               <Chip
                 icon={<ScheduleIcon />}
-                label={`${stats.total} Operations`}
+                label={`${stats.total} ${t('OPERATIONS')}`}
                 variant="outlined"
               />
               <Chip
                 icon={<InfoIcon />}
-                label={`${stats.actions} Action Types`}
+                label={`${stats.actions} ${t('ACTION_TYPES')}`}
                 color="info"
                 variant="outlined"
               />
               <Chip
                 icon={<PersonIcon />}
-                label={`${stats.resources} Resource Types`}
+                label={`${stats.resources} ${t('RESOURCE_TYPES')}`}
                 color="primary"
                 variant="outlined"
               />
@@ -495,7 +495,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                         direction={filters.sortBy === 'action' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('action')}
                       >
-                        Operation
+                        {t('OPERATION')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
@@ -504,18 +504,18 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                         direction={filters.sortBy === 'resource' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('resource')}
                       >
-                        Resource
+                        {t('RESOURCE')}
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell>Admin</TableCell>
-                    <TableCell>IP Address</TableCell>
+                    <TableCell>{t('ADMIN')}</TableCell>
+                    <TableCell>{t('IP_ADDRESS')}</TableCell>
                     <TableCell>
                       <TableSortLabel
                         active={filters.sortBy === 'createdAt'}
                         direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('createdAt')}
                       >
-                        Timestamp
+                        {t('TIMESTAMP')}
                       </TableSortLabel>
                     </TableCell>
                   </TableRow>
@@ -531,7 +531,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                     <TableRow>
                       <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                         <Typography variant="body1" color="text.secondary">
-                          No operation logs found
+                          {t('NO_OPERATION_LOGS_FOUND')}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -583,7 +583,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <ComputerIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
                               <Typography variant="body2">
-                                {log.ipAddress || 'Unknown'}
+                                {log.ipAddress || t('UNKNOWN')}
                               </Typography>
                             </Box>
                           </TableCell>
@@ -627,7 +627,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onClose}>{t('CLOSE')}</Button>
         </DialogActions>
       </Dialog>
     </LocalizationProvider>

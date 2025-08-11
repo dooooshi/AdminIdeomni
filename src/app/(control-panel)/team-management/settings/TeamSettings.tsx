@@ -28,32 +28,37 @@ import {
 } from '../TeamApi';
 import { UpdateTeamRequest } from 'src/types/team';
 
-// Validation schema
-const schema = yup.object({
-  name: yup
-    .string()
-    .required('Team name is required')
-    .min(1, 'Team name must be at least 1 character')
-    .max(50, 'Team name must be at most 50 characters'),
-  description: yup
-    .string()
-    .optional()
-    .max(200, 'Description must be at most 200 characters'),
-  maxMembers: yup
-    .number()
-    .required('Maximum members is required')
-    .min(2, 'Team must allow at least 2 members')
-    .max(20, 'Team cannot have more than 20 members'),
-  isOpen: yup.boolean().optional()
-});
-
-type FormData = yup.InferType<typeof schema>;
+type FormData = {
+  name: string;
+  description?: string;
+  maxMembers: number;
+  isOpen?: boolean;
+};
 
 /**
  * Team Settings Component
  */
 function TeamSettings() {
   const { t } = useTranslation(['teamManagement', 'common']);
+  
+  // Validation schema - must be inside component to access t function
+  const schema = yup.object({
+    name: yup
+      .string()
+      .required(t('TEAM_NAME_REQUIRED'))
+      .min(1, t('TEAM_NAME_MIN_LENGTH'))
+      .max(50, t('TEAM_NAME_MAX_LENGTH')),
+    description: yup
+      .string()
+      .optional()
+      .max(200, t('DESCRIPTION_MAX_LENGTH')),
+    maxMembers: yup
+      .number()
+      .required(t('MAX_MEMBERS_REQUIRED'))
+      .min(2, t('TEAM_MIN_MEMBERS'))
+      .max(20, t('TEAM_MAX_MEMBERS')),
+    isOpen: yup.boolean().optional()
+  });
   const router = useRouter();
   
   const { data: team, isLoading: teamLoading, error: teamError } = useGetCurrentTeamQuery();
@@ -111,13 +116,13 @@ function TeamSettings() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Alert severity="error">
-          Failed to load team settings. You may not be the team leader or the team may not exist.
+          {t('FAILED_TO_LOAD_TEAM_SETTINGS')}
         </Alert>
         <Button
           onClick={() => router.push('/team-management/dashboard')}
           className="mt-4"
         >
-          Back to Dashboard
+          {t('BACK_TO_DASHBOARD')}
         </Button>
       </div>
     );
@@ -130,13 +135,13 @@ function TeamSettings() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Alert severity="warning">
-          Only team leaders can access team settings.
+          {t('ONLY_TEAM_LEADERS_CAN_ACCESS')}
         </Alert>
         <Button
           onClick={() => router.push('/team-management/dashboard')}
           className="mt-4"
         >
-          Back to Dashboard
+          {t('BACK_TO_DASHBOARD')}
         </Button>
       </div>
     );
@@ -181,7 +186,7 @@ function TeamSettings() {
                 onClick={() => router.push('/team-management/dashboard')}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                Back to Dashboard
+                {t('BACK_TO_DASHBOARD')}
               </Button>
             </div>
             <Typography variant="h3" className="font-semibold">
@@ -196,7 +201,7 @@ function TeamSettings() {
           {updateError && (
             <motion.div variants={item}>
               <Alert severity="error">
-                Failed to update team settings. Please try again.
+                {t('FAILED_TO_UPDATE_TEAM_SETTINGS')}
               </Alert>
             </motion.div>
           )}
@@ -205,7 +210,7 @@ function TeamSettings() {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                General Settings
+                {t('GENERAL_SETTINGS')}
               </Typography>
               
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -217,8 +222,8 @@ function TeamSettings() {
                     <TextField
                       {...field}
                       fullWidth
-                      label="Team Name"
-                      placeholder="Enter team name"
+                      label={t('TEAM_NAME')}
+                      placeholder={t('ENTER_TEAM_NAME')}
                       error={!!errors.name}
                       helperText={errors.name?.message}
                       InputProps={{
@@ -242,8 +247,8 @@ function TeamSettings() {
                       fullWidth
                       multiline
                       rows={3}
-                      label="Description"
-                      placeholder="Describe your team's purpose and goals"
+                      label={t('DESCRIPTION')}
+                      placeholder={t('DESCRIBE_TEAM_PURPOSE')}
                       error={!!errors.description}
                       helperText={errors.description?.message || `${field.value?.length || 0}/200 characters`}
                       InputProps={{
@@ -260,7 +265,7 @@ function TeamSettings() {
                 {/* Max Members */}
                 <div>
                   <Typography variant="subtitle1" className="mb-2">
-                    Maximum Members
+                    {t('MAXIMUM_MEMBERS')}
                   </Typography>
                   <Controller
                     name="maxMembers"
@@ -281,7 +286,7 @@ function TeamSettings() {
                           ]}
                         />
                         <Typography variant="body2" color="text.secondary" className="mt-2">
-                          Team will allow up to {maxMembersValue} members (currently has {currentMembersCount})
+                          {t('TEAM_ALLOW_MEMBERS', { max: maxMembersValue, current: currentMembersCount })}
                         </Typography>
                       </div>
                     )}

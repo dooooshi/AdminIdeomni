@@ -29,6 +29,7 @@ import {
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import HexagonalMap from '@/components/map/components/HexagonalMap';
 import { HexagonalMapRef } from '@/components/map/types';
 import LandService from '@/lib/services/landService';
@@ -80,6 +81,7 @@ const TileInfoPanel = styled(Paper)(({ theme }) => ({
 interface ManagerLandMapPageProps {}
 
 const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
+  const { t } = useTranslation('landManagement');
   const theme = useTheme();
   const mapRef = useRef<HexagonalMapRef>(null);
   
@@ -387,23 +389,23 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           <Card sx={{ bgcolor: 'rgba(255,255,255,0.95)' }}>
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Typography variant="subtitle2" color="primary" gutterBottom>
-                Activity Overview
+                {t('ACTIVITY_OVERVIEW')}
               </Typography>
               <Stack spacing={1}>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">Total Purchases:</Typography>
+                  <Typography variant="body2">{t('TOTAL_PURCHASES')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {overview?.totalLandPurchases || 0}
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">Area Purchased:</Typography>
+                  <Typography variant="body2">{t('AREA_PURCHASED')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {LandService.formatArea(overview?.totalAreaPurchased || 0)}
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">Gold Spent:</Typography>
+                  <Typography variant="body2">{t('GOLD_SPENT')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {LandService.formatCurrency(overview?.totalGoldSpent || 0, 'gold')}
                   </Typography>
@@ -435,7 +437,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
       <Card sx={{ mt: 2 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Map Legend
+            {t('MAP_LEGEND')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -448,7 +450,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">Plain Land</Typography>
+                <Typography variant="body2">{t('PLAIN_LAND')}</Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -461,7 +463,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">Coastal Land</Typography>
+                <Typography variant="body2">{t('COASTAL_LAND')}</Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -474,7 +476,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">Marine Land</Typography>
+                <Typography variant="body2">{t('MARINE_LAND')}</Typography>
               </Box>
             </Grid>
           </Grid>
