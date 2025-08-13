@@ -13,7 +13,7 @@ export const useTranslation = (ns?: string | string[]) => {
 export const useMapTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`map.${key}`)
+    t: (key: string, options?: any) => t(`map.${key}`, options)
   };
 };
 
@@ -23,7 +23,7 @@ export const useMapTranslation = () => {
 export const useFacilityTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`facility.${key}`)
+    t: (key: string, options?: any) => t(`facility.${key}`, options)
   };
 };
 
@@ -33,7 +33,7 @@ export const useFacilityTranslation = () => {
 export const useActivityTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`activity.${key}`)
+    t: (key: string, options?: any) => t(`activity.${key}`, options)
   };
 };
 
@@ -43,7 +43,7 @@ export const useActivityTranslation = () => {
 export const useAuthTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`auth.${key}`)
+    t: (key: string, options?: any) => t(`auth.${key}`, options)
   };
 };
 
@@ -53,7 +53,7 @@ export const useAuthTranslation = () => {
 export const useNavigationTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`navigation.${key}`)
+    t: (key: string, options?: any) => t(`navigation.${key}`, options)
   };
 };
 
@@ -63,7 +63,7 @@ export const useNavigationTranslation = () => {
 export const useAdminTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`admin.${key}`)
+    t: (key: string, options?: any) => t(`admin.${key}`, options)
   };
 };
 
@@ -73,7 +73,7 @@ export const useAdminTranslation = () => {
 export const useUserTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`user.${key}`)
+    t: (key: string, options?: any) => t(`user.${key}`, options)
   };
 };
 
@@ -83,7 +83,7 @@ export const useUserTranslation = () => {
 export const useTeamTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`team.${key}`)
+    t: (key: string, options?: any) => t(`team.${key}`, options)
   };
 };
 
@@ -93,7 +93,7 @@ export const useTeamTranslation = () => {
 export const useLandTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`land.${key}`)
+    t: (key: string, options?: any) => t(`land.${key}`, options)
   };
 };
 
@@ -103,7 +103,7 @@ export const useLandTranslation = () => {
 export const useMapTemplateTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`mapTemplate.${key}`)
+    t: (key: string, options?: any) => t(`mapTemplate.${key}`, options)
   };
 };
 
@@ -113,7 +113,7 @@ export const useMapTemplateTranslation = () => {
 export const useInfrastructureTranslation = () => {
   const { t } = useReactI18nextTranslation();
   return {
-    t: (key: string) => t(`infrastructure.${key}`)
+    t: (key: string, options?: any) => t(`infrastructure.${key}`, options)
   };
 };
 

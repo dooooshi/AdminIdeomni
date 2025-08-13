@@ -4,6 +4,7 @@ import IdeomniShortcuts from '@ideomni/core/IdeomniShortcuts';
 import { useEffect, useState } from 'react';
 import { useAuth } from 'src/lib/auth';
 import useNavigation from './hooks/useNavigation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 type NavigationShortcutsProps = {
 	className?: string;
@@ -18,6 +19,7 @@ function NavigationShortcuts(props: NavigationShortcutsProps) {
 	const { flattenNavigation: navigation } = useNavigation();
 	const { user, isAuthenticated } = useAuth();
 	const [userShortcuts, setUserShortcuts] = useState<string[]>([]);
+	const { t } = useTranslation('common');
 	// const prevUserShortcuts = usePrevious(userShortcuts);
 
 	useEffect(() => {
@@ -42,6 +44,8 @@ function NavigationShortcuts(props: NavigationShortcutsProps) {
 			navigation={navigation}
 			shortcuts={userShortcuts}
 			onChange={handleShortcutsChange}
+			searchPlaceholder={t('SEARCH_FOR_APP_OR_PAGE')}
+			searchAriaLabel={t('SEARCH')}
 		/>
 	);
 }

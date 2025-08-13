@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import Popover, { PopoverProps } from '@mui/material/Popover';
 import { useAuth, useUserDisplayName, useLogout } from 'src/lib/auth';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 type UserMenuProps = {
 	className?: string;
@@ -25,6 +26,7 @@ function UserMenu(props: UserMenuProps) {
 	const { user, isAuthenticated, userType } = useAuth();
 	const displayName = useUserDisplayName();
 	const { logout } = useLogout();
+	const { t } = useTranslation('common');
 	const [userMenu, setUserMenu] = useState<HTMLElement | null>(null);
 	const userMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		setUserMenu(event.currentTarget);
@@ -75,7 +77,7 @@ function UserMenu(props: UserMenuProps) {
 					<Tooltip
 						title={
 							<>
-								{userType === 'admin' ? 'Administrator' : userType === 'user' ? 'User' : 'Guest'}
+								{userType === 'admin' ? t('ADMINISTRATOR') : userType === 'user' ? t('USER') : t('GUEST')}
 							</>
 						}
 					>
@@ -121,7 +123,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:lock-closed</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary="Sign In" />
+							<ListItemText primary={t('SIGN_IN')} />
 						</MenuItem>
 						<MenuItem
 							component={Link}
@@ -131,7 +133,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:user-plus</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary="Sign up" />
+							<ListItemText primary={t('SIGN_UP')} />
 						</MenuItem>
 					</>
 				) : (
@@ -156,7 +158,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:arrow-right-on-rectangle</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary="Sign out" />
+							<ListItemText primary={t('SIGN_OUT')} />
 						</MenuItem>
 					</>
 				)}

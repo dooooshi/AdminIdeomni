@@ -162,7 +162,7 @@ export default function AdminSignInForm({ onSuccess }: AdminSignInFormProps) {
           <TextField
             {...field}
             label={t('auth.PASSWORD')}
-            placeholder="Enter your password"
+            placeholder={t('auth.ENTER_PASSWORD_PLACEHOLDER')}
             type={showPassword ? 'text' : 'password'}
             variant="outlined"
             fullWidth

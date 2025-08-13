@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Typography, Button, Container } from '@mui/material';
 import Link from '@ideomni/core/Link';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 type ErrorProps = {
 	error: Error & { digest?: string };
@@ -11,6 +12,8 @@ type ErrorProps = {
 };
 
 export default function Error({ error, reset }: ErrorProps) {
+	const { t } = useTranslation('common');
+	
 	useEffect(() => {
 		console.error(error);
 	}, [error]);
@@ -29,13 +32,13 @@ export default function Error({ error, reset }: ErrorProps) {
 					className="text-xl lg:text-3xl mb-4"
 					color="error.main"
 				>
-					Oops! Something went wrong
+					{t('ERROR_SOMETHING_WENT_WRONG')}
 				</Typography>
 				<Typography
 					className="mb-8"
 					color="text.secondary"
 				>
-					{error.message || 'An unexpected error occurred'}
+					{error.message || t('ERROR_UNEXPECTED')}
 				</Typography>
 				<div className="flex gap-2">
 					<Button
@@ -45,7 +48,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						color="primary"
 						size="small"
 					>
-						Go to homepage
+						{t('GO_TO_HOMEPAGE')}
 					</Button>
 					<Button
 						onClick={() => reset()}
@@ -53,7 +56,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						color="secondary"
 						size="small"
 					>
-						Try again
+						{t('TRY_AGAIN')}
 					</Button>
 				</div>
 			</div>

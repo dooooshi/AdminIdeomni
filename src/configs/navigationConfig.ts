@@ -13,6 +13,7 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:shield-check',
 		translate: 'ADMIN_MANAGEMENT',
+		subtitleTranslate: 'ADMIN_MANAGEMENT_SUBTITLE',
 		auth: ['admin'],
 		children: [
 			{
@@ -69,6 +70,7 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:map',
 		translate: 'MAP',
+		subtitleTranslate: 'MAP_APPLICATIONS_SUBTITLE',
 		auth: ['admin'],
 		children: [
 			{
@@ -107,6 +109,7 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:shield-check',
 		translate: 'ADMIN_MANAGEMENT',
+		subtitleTranslate: 'BASIC_ADMIN_SUBTITLE',
 		auth: ['admin'],
 		children: [
 			{
@@ -127,6 +130,7 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:map',
 		translate: 'MAP',
+		subtitleTranslate: 'MAP_APPLICATIONS_SUBTITLE',
 		auth: ['admin'],
 		children: [
 			{
@@ -161,6 +165,7 @@ const userNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:home',
 		translate: 'DASHBOARDS',
+		subtitleTranslate: 'PROJECT_MANAGEMENT_SUBTITLE',
 		auth: ['user'],
 		children: [
 			{
@@ -181,6 +186,7 @@ const userNavigationConfig: IdeomniNavItemType[] = [
 		type: 'group',
 		icon: 'heroicons-outline:user-group',
 		translate: 'TEAM_MANAGEMENT',
+		subtitleTranslate: 'TEAM_COLLABORATION_SUBTITLE',
 		auth: ['user'],
 		children: [
 			{
@@ -245,6 +251,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			type: 'group',
 			icon: 'heroicons-outline:home',
 			translate: 'DASHBOARDS',
+			subtitleTranslate: 'PROJECT_MANAGEMENT_SUBTITLE',
 			auth: ['user'],
 			children: [
 				{
@@ -270,6 +277,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			type: 'group',
 			icon: 'heroicons-outline:user-group',
 			translate: 'TEAM_MANAGEMENT',
+			subtitleTranslate: 'TEAM_COLLABORATION_SUBTITLE',
 			auth: ['user'],
 			children: [
 				{
@@ -386,6 +394,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			type: 'group',
 			icon: 'heroicons-outline:building-office',
 			translate: 'LAND_MANAGEMENT',
+			subtitleTranslate: 'LAND_PURCHASE_SUBTITLE',
 			auth: ['user'],
 			children: [
 				{
@@ -427,6 +436,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			subtitle: 'Manage all teams in your activity',
 			type: 'group',
 			icon: 'heroicons-outline:cog-6-tooth',
+			subtitleTranslate: 'TEAM_ADMINISTRATION_SUBTITLE',
 			translate: 'TEAM_ADMINISTRATION',
 			auth: ['user'],
 			children: [
@@ -468,6 +478,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			type: 'group',
 			icon: 'heroicons-outline:building-office',
 			translate: 'LAND_MANAGEMENT',
+			subtitleTranslate: 'LAND_ACTIVITIES_SUBTITLE',
 			auth: ['user'],
 			children: [
 				{

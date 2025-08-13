@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { Theme } from '@mui/material/styles';
 import DataTableTopToolbar from './DataTableTopToolbar';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const tableIcons: Partial<MRT_Icons> = {
 	ArrowDownwardIcon: (props) => (
@@ -71,6 +72,7 @@ const tableIcons: Partial<MRT_Icons> = {
 
 function DataTable<TData>(props: MaterialReactTableProps<TData>) {
 	const { columns, data, ...rest } = props;
+	const { t } = useTranslation('common');
 
 	const defaults = useMemo(
 		() =>
@@ -119,7 +121,7 @@ function DataTable<TData>(props: MaterialReactTableProps<TData>) {
 					showRowsPerPage: false
 				},
 				muiSearchTextFieldProps: {
-					placeholder: 'Search',
+					placeholder: t('SEARCH_PLACEHOLDER'),
 					sx: { minWidth: '300px' },
 					variant: 'outlined',
 					size: 'small'

@@ -22,6 +22,8 @@ type IdeomniShortcutsProps = {
 	onChange: (T: string[]) => void;
 	shortcuts?: string[];
 	variant?: 'horizontal' | 'vertical';
+	searchPlaceholder?: string;
+	searchAriaLabel?: string;
 };
 
 /**
@@ -30,7 +32,15 @@ type IdeomniShortcutsProps = {
  * The component is memoized to prevent unnecessary re-renders.
  */
 function IdeomniShortcuts(props: IdeomniShortcutsProps) {
-	const { navigation = [], shortcuts = [], onChange, variant = 'horizontal', className = '' } = props;
+	const { 
+		navigation = [], 
+		shortcuts = [], 
+		onChange, 
+		variant = 'horizontal', 
+		className = '',
+		searchPlaceholder = 'Search for an app or page',
+		searchAriaLabel = 'Search'
+	} = props;
 
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const [addMenu, setAddMenu] = useState<HTMLElement | null>(null);
@@ -159,11 +169,11 @@ function IdeomniShortcuts(props: IdeomniShortcutsProps) {
 						inputRef={searchInputRef}
 						value={searchText}
 						onChange={search}
-						placeholder="Search for an app or page"
+						placeholder={searchPlaceholder}
 						fullWidth
 						slotProps={{
 							input: {
-								'aria-label': 'Search'
+								'aria-label': searchAriaLabel
 							}
 						}}
 						disableUnderline

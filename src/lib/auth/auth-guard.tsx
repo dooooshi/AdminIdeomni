@@ -5,19 +5,23 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from './auth-context';
 import { AuthGuardProps, AdminUser, RegularUser, Permission } from './types';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 // Default loading component
 const DefaultLoadingComponent = () => <IdeomniLoading />;
 
 // Default unauthorized component
-const DefaultUnauthorizedComponent = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="text-center">
-      <h2 className="text-2xl font-bold mb-4">Access Denied</h2>
-      <p className="text-gray-600">You don't have permission to access this page.</p>
+const DefaultUnauthorizedComponent = () => {
+  const { t } = useTranslation('common');
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold mb-4">{t('ACCESS_DENIED')}</h2>
+        <p className="text-gray-600">{t('ACCESS_DENIED_MESSAGE')}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Main AuthGuard component
 export function AuthGuard({
