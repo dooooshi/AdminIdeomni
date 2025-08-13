@@ -31,7 +31,9 @@ const createAllNamespaces = (translations: any) => {
     'auth',
     'activity',
     'map',
-    'common'
+    'common',
+    'mapTemplate',
+    'infrastructure'
   ];
   
   const result: any = {};

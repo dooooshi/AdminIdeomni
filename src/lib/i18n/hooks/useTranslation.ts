@@ -107,4 +107,14 @@ export const useMapTemplateTranslation = () => {
   };
 };
 
+/**
+ * Infrastructure configuration translation hook
+ */
+export const useInfrastructureTranslation = () => {
+  const { t } = useReactI18nextTranslation();
+  return {
+    t: (key: string) => t(`infrastructure.${key}`)
+  };
+};
+
 export default useTranslation;

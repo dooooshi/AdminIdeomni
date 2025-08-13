@@ -22,8 +22,8 @@ import {
   Tooltip,
   Fab,
   Zoom,
-  Grid,
   Chip,
+  Grid,
 } from '@mui/material';
 import {
   Map as MapIcon,
@@ -36,6 +36,7 @@ import {
   Build as BuildIcon,
   TrendingUp as TrendingUpIcon,
   Refresh as RefreshIcon,
+  Factory as FactoryIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
@@ -59,6 +60,13 @@ import TileFacilityConfigList from '@/components/map-template/TileFacilityConfig
 import TemplateSetupWizard from '@/components/map-template/TemplateSetupWizard';
 // NEW: Import bulk tile management component
 import BulkTileManagementPanel from '@/components/map-template/BulkTileManagementPanel';
+// Import infrastructure configuration components
+import { 
+  InfrastructureConfigForm, 
+  InfrastructureConfigList,
+  InfrastructureConfigStatistics,
+  InfrastructureConfigLayout
+} from '@/components/infrastructure';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -478,6 +486,13 @@ const MapTemplateManagementPage: React.FC = () => {
                 {...a11yProps(3)}
                 disabled={!selectedTemplate}
               />
+              <Tab 
+                label={t('INFRASTRUCTURE_CONFIG')} 
+                icon={<FactoryIcon />} 
+                iconPosition="start"
+                {...a11yProps(4)}
+                disabled={!selectedTemplate}
+              />
             </Tabs>
           </Box>
 
@@ -560,6 +575,18 @@ const MapTemplateManagementPage: React.FC = () => {
               )}
             </TabPanel>
 
+            {/* Infrastructure Configuration Tab */}
+            <TabPanel value={tabValue} index={4}>
+              {selectedTemplate ? (
+                <InfrastructureConfigLayout templateId={selectedTemplate.id} />
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info" variant="outlined">
+                    {t('SELECT_TEMPLATE_FOR_INFRASTRUCTURE_CONFIG')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
 
           </Box>
 
