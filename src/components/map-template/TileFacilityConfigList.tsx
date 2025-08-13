@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -83,7 +83,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
   showActions = true,
   maxHeight = 600,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTemplateTranslation();
 
   // State
   const [configs, setConfigs] = useState<TileFacilityBuildConfig[]>([]);

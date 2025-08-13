@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation, useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Tabs,
@@ -111,7 +111,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
   onGenerateTemplate,
   onRefresh,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTemplateTranslation();
 
   if (isLoading) {
     return (
@@ -237,7 +237,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 };
 
 const MapTemplateManagementPage: React.FC = () => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTemplateTranslation();
+  const { t: tNav } = useTranslation('navigation');
+  const { t: tCommon } = useTranslation('common');
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState<EnhancedMapTemplate | null>(null);
@@ -302,8 +304,8 @@ const MapTemplateManagementPage: React.FC = () => {
       const mockTemplates: EnhancedMapTemplate[] = [
         {
           id: 1,
-          name: t('map:DEFAULT_ECONOMIC_TEMPLATE'),
-          description: t('map:DEFAULT_ECONOMIC_TEMPLATE_DESC'),
+          name: t('DEFAULT_ECONOMIC_TEMPLATE'),
+          description: t('DEFAULT_ECONOMIC_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: true,
@@ -313,8 +315,8 @@ const MapTemplateManagementPage: React.FC = () => {
         },
         {
           id: 2,
-          name: t('map:COASTAL_DEVELOPMENT_TEMPLATE'),
-          description: t('map:COASTAL_DEVELOPMENT_TEMPLATE_DESC'),
+          name: t('COASTAL_DEVELOPMENT_TEMPLATE'),
+          description: t('COASTAL_DEVELOPMENT_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: false,
@@ -418,10 +420,10 @@ const MapTemplateManagementPage: React.FC = () => {
     <IdeomniPageSimple
       header={
         <Box sx={{ p: 3 }}>
-          <Breadcrumbs aria-label={t('BREADCRUMB', { ns: 'common' })} sx={{ mb: 2 }}>
+          <Breadcrumbs aria-label={tCommon('BREADCRUMB')} sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('DASHBOARD', { ns: 'navigation' })}
+              {tNav('DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <MapIcon sx={{ mr: 0.5 }} fontSize="inherit" />
@@ -445,7 +447,7 @@ const MapTemplateManagementPage: React.FC = () => {
             <Tabs 
               value={tabValue} 
               onChange={handleTabChange} 
-              aria-label={t('MAP_TEMPLATE_TABS', { ns: 'common' })}
+              aria-label={tCommon('MAP_TEMPLATE_TABS')}
               variant="scrollable"
               scrollButtons="auto"
             >
@@ -565,7 +567,7 @@ const MapTemplateManagementPage: React.FC = () => {
           <Zoom in={tabValue === 0}>
             <Fab
               color="primary"
-              aria-label={t('GENERATE_TEMPLATE', { ns: 'common' })}
+              aria-label={tCommon('GENERATE_TEMPLATE')}
               sx={{
                 position: 'fixed',
                 bottom: 16,

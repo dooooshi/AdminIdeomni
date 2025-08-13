@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -66,7 +66,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
   onRestore,
   isLoading = false,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useMapTemplateTranslation();
 
   // Form state
   const [formData, setFormData] = useState<CreateTileFacilityBuildConfigDto>({

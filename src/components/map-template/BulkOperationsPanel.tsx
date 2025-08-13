@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -90,7 +90,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
   templateId,
   onOperationComplete,
 }) => {
-  const { t } = useMapTranslation();
+  const { t } = useMapTemplateTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);
@@ -270,7 +270,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         updated: 0,
         failed: 1,
         details: [{ configId: 'unknown', success: false, error: 'Update failed' }],
-        message: 'Bulk update operation failed'
+        message: t('BULK_UPDATE_OPERATION_FAILED')
       });
       setResultDialogOpen(true);
     } finally {

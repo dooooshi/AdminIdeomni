@@ -97,4 +97,14 @@ export const useLandTranslation = () => {
   };
 };
 
+/**
+ * Map template management translation hook
+ */
+export const useMapTemplateTranslation = () => {
+  const { t } = useReactI18nextTranslation();
+  return {
+    t: (key: string) => t(`mapTemplate.${key}`)
+  };
+};
+
 export default useTranslation;

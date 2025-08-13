@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -98,7 +98,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
   onTemplateSelect,
   maxHeight = 800,
 }) => {
-  const { t } = useMapTranslation();
+  const { t } = useMapTemplateTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);
@@ -669,13 +669,13 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       <TableCell align="right" sx={{ fontFamily: 'monospace' }}>
                         {comparison.averageCosts ? 
                           TileFacilityBuildConfigService.formatCurrency(comparison.averageCosts.buildCost) : 
-                          'N/A'
+                          t('NOT_AVAILABLE')
                         }
                       </TableCell>
                       <TableCell align="right" sx={{ fontFamily: 'monospace' }}>
                         {comparison.averageCosts ? 
                           TileFacilityBuildConfigService.formatCurrency(comparison.averageCosts.upgradeCost) : 
-                          'N/A'
+                          t('NOT_AVAILABLE')
                         }
                       </TableCell>
                       <TableCell align="center">
@@ -717,7 +717,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'template-comparison.json';
+                link.download = t('TEMPLATE_COMPARISON_FILENAME');
                 link.click();
               }}
             >

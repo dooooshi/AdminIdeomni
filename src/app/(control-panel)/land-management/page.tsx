@@ -154,13 +154,6 @@ const LandManagementPage: React.FC = () => {
       icon: <DashboardIcon fontSize="large" />,
       path: '/land-management/manager/overview',
       color: 'secondary'
-    },
-    {
-      title: 'Manager Analytics',
-      description: 'Detailed analytics and insights for land management',
-      icon: <AnalyticsIcon fontSize="large" />,
-      path: '/land-management/manager/analytics',
-      color: 'success'
     }
   ];
 

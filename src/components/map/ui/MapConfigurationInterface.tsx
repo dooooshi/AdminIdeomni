@@ -95,6 +95,8 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   const handleTileClick = useCallback((tileId: number) => {
     if (configurationMode) {
       setSelectedTileId(tileId);
+      // Automatically show config panel when a tile is selected
+      setShowConfigPanel(true);
     }
   }, [configurationMode]);
 
@@ -258,14 +260,14 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
 
         {/* Map Container */}
         <Box sx={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-          {configurationMode && !selectedTile && (
+          {configurationMode && !selectedTile && !showConfigPanel && (
             <Alert 
               severity="info" 
               sx={{ 
                 position: 'absolute', 
                 top: 16, 
                 left: 16, 
-                right: showConfigPanel ? drawerWidth + 16 : 16,
+                right: 16,
                 zIndex: 1000 
               }}
             >

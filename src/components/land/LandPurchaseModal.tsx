@@ -21,7 +21,7 @@ import {
   Security as SecurityIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useLandTranslation, useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import {
   AvailableTile,
@@ -76,7 +76,8 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   tile,
   onPurchaseComplete
 }) => {
-  const { t } = useTranslation(['landManagement', 'common']);
+  const { t } = useLandTranslation();
+  const { t: tCommon } = useTranslation('common');
   
   // Form state
   const [area, setArea] = useState(1);
@@ -197,7 +198,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Box>
             <Typography variant="h6" fontWeight={400} sx={{ fontSize: '18px', mb: 0.5 }}>
-              {t('landManagement:PURCHASE_DIALOG_TITLE', { tileId: tile.tileId })}
+              {t('PURCHASE_DIALOG_TITLE', { tileId: tile.tileId })}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
               {tile.tileId} · {LandService.formatLandType(tile.landType)}
@@ -470,7 +471,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 }
               }}
             >
-              {purchasing ? t('common:PROCESSING') : t('landManagement:PURCHASE_UNITS', { amount })}
+              {purchasing ? tCommon('PROCESSING') : t('PURCHASE_UNITS', { amount })}
             </Button>
           </Stack>
         </Stack>

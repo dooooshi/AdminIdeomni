@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -111,7 +111,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
   onClose,
   onComplete,
 }) => {
-  const { t } = useMapTranslation();
+  const { t } = useMapTemplateTranslation();
 
   // State
   const [activeStep, setActiveStep] = useState(0);

@@ -487,15 +487,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/land-management/manager/overview',
 					translate: 'MANAGER_OVERVIEW',
 					auth: ['user']
-				},
-				{
-					id: 'land-management.manager-analytics',
-					title: 'Manager Analytics',
-					type: 'item',
-					icon: 'heroicons-outline:chart-pie',
-					url: '/land-management/manager/analytics',
-					translate: 'MANAGER_ANALYTICS',
-					auth: ['user']
 				}
 			]
 		});

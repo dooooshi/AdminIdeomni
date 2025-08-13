@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -94,7 +94,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
   initialFacilityType = FacilityType.FARM,
   maxHeight = 700,
 }) => {
-  const { t } = useMapTranslation();
+  const { t } = useMapTemplateTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);
@@ -203,7 +203,7 @@ const FacilityUpgradeCalculator: React.FC<FacilityUpgradeCalculatorProps> = ({
   };
 
   const formatEfficiency = (efficiency: number): string => {
-    return `${efficiency.toFixed(3)} levels/k gold`;
+    return `${efficiency.toFixed(3)} ${t('LEVELS_PER_K_GOLD')}`;
   };
 
   const getLandTypeColor = (landType: LandType): 'primary' | 'secondary' | 'success' => {
