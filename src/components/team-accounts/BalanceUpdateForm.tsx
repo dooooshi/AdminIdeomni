@@ -278,7 +278,7 @@ function BalanceUpdateForm({
               <Box className="grid grid-cols-2 gap-4">
                 <Box>
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts.gold')}
+                    {t('teamAccounts.GOLD')}
                   </Typography>
                   <Box className="flex items-center gap-2">
                     <Typography variant="body2" className="font-mono">
@@ -295,7 +295,7 @@ function BalanceUpdateForm({
                 </Box>
                 <Box>
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts.carbon')}
+                    {t('teamAccounts.CARBON')}
                   </Typography>
                   <Box className="flex items-center gap-2">
                     <Typography variant="body2" className="font-mono">
@@ -343,7 +343,7 @@ function BalanceUpdateForm({
               <IdeomniSvgIcon>heroicons-outline:check</IdeomniSvgIcon>
             )}
           >
-            {isLoading ? t('common.saving') : t('teamAccounts.updateBalances')}
+            {isLoading ? t('common.saving') : t('teamAccounts.UPDATE_BALANCES')}
           </Button>
         </Box>
       </form>

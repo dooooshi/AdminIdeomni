@@ -69,7 +69,7 @@ function ResourceDisplay({
   }) => {
     const color = TeamAccountService.getResourceColor(amount, type);
     const formattedAmount = TeamAccountService.formatResourceAmount(amount);
-    const label = t(`teamAccounts.${type}`);
+    const label = t(`teamAccounts.${type.toUpperCase()}`);
 
     if (variant === 'chip') {
       return (

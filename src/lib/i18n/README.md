@@ -30,7 +30,7 @@ import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 function MyComponent() {
   const { t } = useTranslation();
   
-  return <h1>{t('save')}</h1>; // "Save" or "保存"
+  return <h1>{t('SAVE')}</h1>; // "Save" or "保存"
 }
 ```
 
@@ -71,11 +71,11 @@ function App() {
 5. **Clean Dependencies**: Only react-i18next essentials
 
 ## Translation Keys
-All translations use flat keys for simplicity:
-- Actions: `save`, `cancel`, `delete`, `edit`, etc.
-- Status: `loading`, `success`, `error`, etc.
-- Auth: `signIn`, `email`, `password`, etc.
-- Navigation: `dashboards`, `map`, `adminManagement`, etc.
+All translations use flat keys in UPPER_SNAKE_CASE for consistency:
+- Actions: `SAVE`, `CANCEL`, `DELETE`, `EDIT`, etc.
+- Status: `LOADING`, `SUCCESS`, `ERROR`, etc.
+- Auth: `SIGN_IN`, `EMAIL`, `PASSWORD`, etc.
+- Navigation: `DASHBOARDS`, `MAP`, `ADMIN_MANAGEMENT`, etc.
 
 ## Comparison
 | Aspect | Old System | New System |  

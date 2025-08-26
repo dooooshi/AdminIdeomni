@@ -285,7 +285,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
               <Stack spacing={1.5}>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                    Gold
+                    {t('GOLD')}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {LandService.formatCurrency(validation.goldCost || 0, 'gold')}
@@ -293,7 +293,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 </Box>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                    Carbon
+                    {t('CARBON')}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {LandService.formatCurrency(validation.carbonCost || 0, 'carbon')}
@@ -352,7 +352,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
             {enablePriceProtection && (
               <Stack spacing={2} sx={{ mt: 2 }}>
                 <TextField
-                  label="Max Gold Cost"
+                  label={t('MAX_GOLD_COST')}
                   type="number"
                   size="small"
                   value={maxGoldCost || ''}
@@ -375,7 +375,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                   }}
                 />
                 <TextField
-                  label="Max Carbon Cost"
+                  label={t('MAX_CARBON_COST')}
                   type="number"
                   size="small"
                   value={maxCarbonCost || ''}
@@ -471,7 +471,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 }
               }}
             >
-              {purchasing ? tCommon('PROCESSING') : t('PURCHASE_UNITS', { amount })}
+              {purchasing ? tCommon('PROCESSING') : t('PURCHASE_UNITS', { amount: area })}
             </Button>
           </Stack>
         </Stack>
