@@ -1902,7 +1902,6 @@ export const zhTranslations = {
   'infrastructure.FAILED_TO_PROCESS_REQUEST': '处理请求失败',
   
   // Service Manager Component
-  'infrastructure.SERVICE_SUBSCRIPTIONS': '服务订阅',
   'infrastructure.ACTIVE_SUBSCRIPTIONS': '活动订阅',
   'infrastructure.ACTIVE_SERVICE_SUBSCRIPTIONS': '活动服务订阅',
   'infrastructure.NO_ACTIVE_SUBSCRIPTIONS': '没有活动订阅',
@@ -1911,12 +1910,9 @@ export const zhTranslations = {
   'infrastructure.CANCEL_SUBSCRIPTION': '取消订阅',
   'infrastructure.NO_LONGER_NEEDED': '不再需要',
   'infrastructure.MY_REQUESTS': '我的请求',
-  'infrastructure.INCOMING_REQUESTS': '传入请求',
   'infrastructure.NO_PENDING_SERVICE_REQUESTS': '没有待处理的服务请求',
   'infrastructure.NO_INCOMING_SERVICE_REQUESTS': '没有传入的服务请求',
   'infrastructure.SERVICE_TYPE': '服务类型',
-  'infrastructure.FACILITY': '设施',
-  'infrastructure.STATUS': '状态',
   'infrastructure.REQUESTED_ON': '请求时间',
   'infrastructure.REQUESTER': '请求者',
   'infrastructure.PROPOSED_FEE': '建议费用',
@@ -1945,7 +1941,6 @@ export const zhTranslations = {
   'infrastructure.TOTAL_SUBSCRIBERS': '总订阅者',
   'infrastructure.ANNUAL_REVENUE': '年收入',
   'infrastructure.AVG_FEE_PER_SUBSCRIBER': '每订阅者平均费用',
-  'infrastructure.PENDING_REQUESTS': '待处理请求',
   'infrastructure.CONFIGURE_SERVICE_PRICING': '配置服务定价',
   'infrastructure.BASE_ANNUAL_FEE': '基础年费',
   'infrastructure.DEFAULT_FEE_FOR_NEW_SUBSCRIPTIONS': '新订阅请求的默认费用',
@@ -1993,7 +1988,6 @@ export const zhTranslations = {
   'infrastructure.HIGHEST_CAPACITY': '最高容量',
   'infrastructure.NO_PROVIDERS_FOUND': '未找到提供商',
   'infrastructure.NO_PROVIDERS_AVAILABLE': '目前没有可用的基础设施提供商。',
-  'infrastructure.TILES': '格',
   'infrastructure.TILES_AWAY': '个瓷砖距离',
   'infrastructure.REQUEST_CONNECTION': '请求连接',
   'infrastructure.SUBSCRIBE': '订阅',
@@ -2012,7 +2006,6 @@ export const zhTranslations = {
   'infrastructure.YES': '是',
   'infrastructure.NO': '否',
   'infrastructure.REQUEST': '请求',
-  'infrastructure.ANNUAL_FEE': '年费',
   'infrastructure.PROPOSED_UNIT_PRICE': '建议单价',
   'infrastructure.PROPOSED_ANNUAL_FEE': '建议年费',
   'infrastructure.OP_COST': '运营点成本',
@@ -2058,8 +2051,6 @@ export const zhTranslations = {
   'infrastructure.PARTIAL': '部分运行',
   
   // Connection/Subscription Status
-  'infrastructure.ACTIVE': '激活',
-  'infrastructure.INACTIVE': '未激活',
   'infrastructure.PENDING': '待处理',
   'infrastructure.APPROVED': '已批准',
   'infrastructure.REJECTED': '已拒绝',

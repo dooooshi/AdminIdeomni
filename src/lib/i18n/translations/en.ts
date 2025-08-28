@@ -1837,7 +1837,6 @@ export const enTranslations = {
   'infrastructure.INFRASTRUCTURE_SUBTITLE': 'Manage water, power, base station, and fire station connections for your facilities',
   'infrastructure.INFRASTRUCTURE_DASHBOARD': 'Infrastructure Dashboard',
   'infrastructure.INFRASTRUCTURE_MANAGEMENT_SUBTITLE': 'Manage infrastructure connections',
-  'infrastructure.REFRESH': 'Refresh',
   'infrastructure.TOTAL_FACILITIES': 'Total Facilities',
   'infrastructure.FULLY_OPERATIONAL': 'Fully Operational',
   'infrastructure.PARTIALLY_OPERATIONAL': 'Partially Operational',
@@ -1853,18 +1852,13 @@ export const enTranslations = {
   'infrastructure.MANAGE_YOUR_INFRASTRUCTURE': 'Manage your infrastructure facilities',
   
   // Infrastructure types
-  'infrastructure.WATER': 'Water',
-  'infrastructure.POWER': 'Power',
   'infrastructure.BASE_STATION': 'Base Station',
   'infrastructure.FIRE_STATION': 'Fire Station',
   
   // Infrastructure Overview Component
   'infrastructure.FACILITIES_STATUS': 'Facilities Status',
   'infrastructure.NO_FACILITIES_REQUIRING_INFRASTRUCTURE': 'No facilities requiring infrastructure',
-  'infrastructure.FACILITY': 'Facility',
   'infrastructure.TYPE': 'Type',
-  'infrastructure.STATUS': 'Status',
-  'infrastructure.ACTIONS': 'Actions',
   'infrastructure.CONNECTED_TO': 'Connected to',
   'infrastructure.NOT_CONNECTED': 'Not connected',
   'infrastructure.COVERED_BY': 'Covered by',
@@ -1882,7 +1876,6 @@ export const enTranslations = {
   'infrastructure.UNIT_PRICE': 'Unit Price',
   'infrastructure.DISTANCE': 'Distance',
   'infrastructure.MISSING_INFRASTRUCTURE': 'Missing Infrastructure',
-  'infrastructure.CLOSE': 'Close',
   
   // Connection Manager Component
   'infrastructure.AS_CONSUMER': 'As Consumer',
@@ -1902,7 +1895,6 @@ export const enTranslations = {
   'infrastructure.CREATED_AT': 'Created At',
   'infrastructure.ACCEPT': 'Accept',
   'infrastructure.REJECT': 'Reject',
-  'infrastructure.CANCEL': 'Cancel',
   'infrastructure.DISCONNECT': 'Disconnect',
   'infrastructure.ACCEPT_CONNECTION_REQUEST': 'Accept Connection Request',
   'infrastructure.REJECT_CONNECTION_REQUEST': 'Reject Connection Request',
@@ -1915,10 +1907,8 @@ export const enTranslations = {
   'infrastructure.DISCONNECT_CONNECTION': 'Disconnect Connection',
   'infrastructure.DISCONNECT_WARNING': 'Are you sure you want to disconnect this connection?',
   'infrastructure.REASON': 'Reason',
-  'infrastructure.CLOSE': 'Close',
   
   // Service Manager Component
-  'infrastructure.SERVICE_SUBSCRIPTIONS': 'Service Subscriptions',
   'infrastructure.ACTIVE_SUBSCRIPTIONS': 'Active Subscriptions',
   'infrastructure.ACTIVE_SERVICE_SUBSCRIPTIONS': 'Active Service Subscriptions',
   'infrastructure.NO_ACTIVE_SUBSCRIPTIONS': 'No active service subscriptions',
@@ -1927,12 +1917,9 @@ export const enTranslations = {
   'infrastructure.CANCEL_SUBSCRIPTION': 'Cancel Subscription',
   'infrastructure.NO_LONGER_NEEDED': 'No longer needed',
   'infrastructure.MY_REQUESTS': 'My Requests',
-  'infrastructure.INCOMING_REQUESTS': 'Incoming Requests',
   'infrastructure.NO_PENDING_SERVICE_REQUESTS': 'No pending service requests',
   'infrastructure.NO_INCOMING_SERVICE_REQUESTS': 'No incoming service requests',
   'infrastructure.SERVICE_TYPE': 'Service Type',
-  'infrastructure.FACILITY': 'Facility',
-  'infrastructure.STATUS': 'Status',
   'infrastructure.REQUESTED_ON': 'Requested On',
   'infrastructure.REQUESTER': 'Requester',
   'infrastructure.PROPOSED_FEE': 'Proposed Fee',
@@ -1961,7 +1948,6 @@ export const enTranslations = {
   'infrastructure.TOTAL_SUBSCRIBERS': 'Total Subscribers',
   'infrastructure.ANNUAL_REVENUE': 'Annual Revenue',
   'infrastructure.AVG_FEE_PER_SUBSCRIBER': 'Avg Fee per Subscriber',
-  'infrastructure.PENDING_REQUESTS': 'Pending Requests',
   'infrastructure.CONFIGURE_SERVICE_PRICING': 'Configure Service Pricing',
   'infrastructure.BASE_ANNUAL_FEE': 'Base Annual Fee',
   'infrastructure.DEFAULT_FEE_FOR_NEW_SUBSCRIPTIONS': 'Default fee for new subscription requests',
@@ -1972,11 +1958,9 @@ export const enTranslations = {
   // Provider Dashboard Component
   'infrastructure.YOUR_INFRASTRUCTURE_OPERATIONS': 'Your Infrastructure Operations',
   'infrastructure.CAPACITY_UTILIZATION': 'Capacity Utilization',
-  'infrastructure.OPERATION_POINTS': 'Operation Points',
   'infrastructure.AVAILABLE_CAPACITY': 'Available Capacity',
   'infrastructure.MAX_ADDITIONAL': 'Max Additional Connections',
   'infrastructure.INFLUENCE_RANGE': 'Influence Range',
-  'infrastructure.TILES': 'tiles',
   
   // Discovery Panel Component
   'infrastructure.SEARCH_FOR_PROVIDERS': 'Search for Providers',
@@ -2003,7 +1987,6 @@ export const enTranslations = {
   // Operational Status
   'infrastructure.FULL': 'Full',
   'infrastructure.PARTIAL': 'Partial',
-  'infrastructure.NON_OPERATIONAL': 'Non-Operational',
   
   // Facility Types
   'infrastructure.MINE': 'Mine',
@@ -2023,8 +2006,6 @@ export const enTranslations = {
   'infrastructure.CINEMA': 'Cinema',
   
   // Connection/Subscription Status
-  'infrastructure.ACTIVE': 'Active',
-  'infrastructure.INACTIVE': 'Inactive',
   'infrastructure.PENDING': 'Pending',
   'infrastructure.APPROVED': 'Approved',
   'infrastructure.REJECTED': 'Rejected',

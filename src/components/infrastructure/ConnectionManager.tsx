@@ -256,9 +256,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       {loading && <CircularProgress />}
       {error && <Alert severity="error" onClose={() => setError(null)}>{error}</Alert>}
 
-      {/* Consumer Tab */}
-      {tabValue === 0 && (
-        <Box>
+      {/* Tab Content with fixed min-height to prevent layout shift */}
+      <Box sx={{ minHeight: '400px', position: 'relative' }}>
+        {/* Consumer Tab */}
+        <Box sx={{ display: tabValue === 0 ? 'block' : 'none' }}>
           {/* Active Connections */}
           <Typography variant="h6" gutterBottom>
             {t('ACTIVE_CONNECTIONS')}
@@ -404,11 +405,9 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             </TableContainer>
           )}
         </Box>
-      )}
 
-      {/* Provider Tab */}
-      {tabValue === 1 && (
-        <Box>
+        {/* Provider Tab */}
+        <Box sx={{ display: tabValue === 1 ? 'block' : 'none' }}>
           {/* Active Connections */}
           <Typography variant="h6" gutterBottom>
             {t('PROVIDED_CONNECTIONS')}
@@ -564,7 +563,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             </TableContainer>
           )}
         </Box>
-      )}
+      </Box>
 
       {/* Accept Dialog */}
       <Dialog open={acceptDialogOpen} onClose={() => setAcceptDialogOpen(false)}>

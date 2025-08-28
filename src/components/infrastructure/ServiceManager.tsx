@@ -298,9 +298,10 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
         )}
       </Tabs>
       
-      {/* Consumer View Tab */}
-      {activeTab === 0 && (
-        <Box sx={{ position: 'relative', minHeight: 200 }}>
+      {/* Tab Content with consistent height to prevent layout shift */}
+      <Box sx={{ minHeight: '500px', position: 'relative' }}>
+        {/* Consumer View Tab */}
+        <Box sx={{ display: activeTab === 0 ? 'block' : 'none', position: 'relative' }}>
           {loading && (
             <Box sx={{ 
               position: 'absolute', 
@@ -435,11 +436,10 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
             </TableContainer>
           )}
         </Box>
-      )}
-      
-      {/* Provider View Tab */}
-      {activeTab === 1 && hasProviderFacilities && (
-        <Box sx={{ position: 'relative', minHeight: 200 }}>
+        
+        {/* Provider View Tab */}
+        {hasProviderFacilities && (
+          <Box sx={{ display: activeTab === 1 ? 'block' : 'none', position: 'relative' }}>
           {loading && (
             <Box sx={{ 
               position: 'absolute', 
@@ -673,8 +673,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
               </Table>
             </TableContainer>
           )}
-        </Box>
-      )}
+          </Box>
+        )}
+      </Box>
       
       {/* Accept Dialog */}
       <Dialog open={acceptDialogOpen} onClose={() => setAcceptDialogOpen(false)}>
