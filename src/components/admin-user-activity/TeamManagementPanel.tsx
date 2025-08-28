@@ -87,7 +87,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
   onDataChange,
   statistics,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -159,7 +159,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
       setTeams(data);
     } catch (err) {
       console.error('Failed to load teams:', err);
-      setError(err instanceof Error ? err.message : t('TEAMS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.TEAMS_LOAD_ERROR'));
     } finally {
       setLoading(false);
     }
@@ -210,7 +210,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         reason: '',
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('TEAM_ASSIGNMENT_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.TEAM_ASSIGNMENT_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -237,7 +237,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         reason: '',
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('TEAM_DISBAND_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.TEAM_DISBAND_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -250,11 +250,11 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
 
   const getTeamStatusChip = (team: Team) => {
     if (team.memberCount >= team.maxMembers) {
-      return <Chip label={t('FULL')} color="error" size="small" />;
+      return <Chip label={t('activityManagement.FULL')} color="error" size="small" />;
     } else if (team.isOpen) {
-      return <Chip label={t('OPEN')} color="success" size="small" />;
+      return <Chip label={t('activityManagement.OPEN')} color="success" size="small" />;
     } else {
-      return <Chip label={t('CLOSED')} color="default" size="small" />;
+      return <Chip label={t('activityManagement.CLOSED')} color="default" size="small" />;
     }
   };
 
@@ -262,7 +262,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_TEAMS')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_TEAMS')}</Typography>
       </Box>
     );
   }
@@ -279,7 +279,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   {statistics.teamStatistics.totalTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('TOTAL_TEAMS')}
+                  {t('activityManagement.TOTAL_TEAMS')}
                 </Typography>
               </CardContent>
             </Card>
@@ -291,7 +291,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   {statistics.teamStatistics.usersInTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('USERS_IN_TEAMS')}
+                  {t('activityManagement.USERS_IN_TEAMS')}
                 </Typography>
               </CardContent>
             </Card>
@@ -303,7 +303,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   {statistics.teamStatistics.usersWithoutTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('USERS_WITHOUT_TEAMS')}
+                  {t('activityManagement.USERS_WITHOUT_TEAMS')}
                 </Typography>
               </CardContent>
             </Card>
@@ -315,7 +315,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   {statistics.teamStatistics.averageTeamSize.toFixed(1)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('AVERAGE_TEAM_SIZE')}
+                  {t('activityManagement.AVERAGE_TEAM_SIZE')}
                 </Typography>
               </CardContent>
             </Card>
@@ -328,7 +328,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         <CardContent>
           <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <SearchIcon />
-            {t('TEAM_SEARCH_FILTERS')}
+            {t('activityManagement.TEAM_SEARCH_FILTERS')}
           </Typography>
           
           <Grid container spacing={2} alignItems="center">
@@ -336,30 +336,30 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
-                label={t('SEARCH_TEAMS')}
+                label={t('activityManagement.SEARCH_TEAMS')}
                 value={filters.q}
                 onChange={(e) => handleFilterChange('q', e.target.value)}
                 InputProps={{
                   startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
-                placeholder={t('SEARCH_BY_TEAM_NAME')}
+                placeholder={t('activityManagement.SEARCH_BY_TEAM_NAME')}
               />
             </Grid>
 
             {/* Activity Filter */}
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('ACTIVITY')}</InputLabel>
+                <InputLabel>{t('activityManagement.ACTIVITY')}</InputLabel>
                 <Select
                   value={filters.activityId}
                   onChange={(e) => handleFilterChange('activityId', e.target.value)}
-                  label={t('ACTIVITY')}
+                  label={t('activityManagement.ACTIVITY')}
                 >
-                  <MenuItem value="">{t('ALL_ACTIVITIES')}</MenuItem>
+                  <MenuItem value="">{t('activityManagement.ALL_ACTIVITIES')}</MenuItem>
                   {/* TODO: Load from real activities API */}
-                  <MenuItem value="activity1">{t('BUSINESS_STRATEGY_SIMULATION')}</MenuItem>
-                  <MenuItem value="activity2">{t('ADVANCED_LEADERSHIP_TRAINING')}</MenuItem>
-                  <MenuItem value="activity3">{t('TEAM_BUILDING_WORKSHOP')}</MenuItem>
+                  <MenuItem value="activity1">{t('activityManagement.BUSINESS_STRATEGY_SIMULATION')}</MenuItem>
+                  <MenuItem value="activity2">{t('activityManagement.ADVANCED_LEADERSHIP_TRAINING')}</MenuItem>
+                  <MenuItem value="activity3">{t('activityManagement.TEAM_BUILDING_WORKSHOP')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -367,15 +367,15 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             {/* Sort By */}
             <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('SORT_BY')}</InputLabel>
+                <InputLabel>{t('activityManagement.SORT_BY')}</InputLabel>
                 <Select
                   value={filters.sortBy}
                   onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                  label={t('SORT_BY')}
+                  label={t('activityManagement.SORT_BY')}
                 >
-                  <MenuItem value="name">{t('TEAM_NAME')}</MenuItem>
-                  <MenuItem value="createdAt">{t('CREATED_DATE')}</MenuItem>
-                  <MenuItem value="memberCount">{t('MEMBER_COUNT')}</MenuItem>
+                  <MenuItem value="name">{t('activityManagement.TEAM_NAME')}</MenuItem>
+                  <MenuItem value="createdAt">{t('activityManagement.CREATED_DATE')}</MenuItem>
+                  <MenuItem value="memberCount">{t('activityManagement.MEMBER_COUNT')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -389,7 +389,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   onClick={loadTeams}
                   disabled={loading}
                 >
-                  {t('REFRESH')}
+                  {t('activityManagement.REFRESH')}
                 </Button>
                 
                 <Button
@@ -406,7 +406,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                     setPage(0);
                   }}
                 >
-                  {t('CLEAR')}
+                  {t('activityManagement.CLEAR')}
                 </Button>
               </Stack>
             </Grid>
@@ -426,13 +426,13 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{t('TEAM')}</TableCell>
-              <TableCell>{t('ACTIVITY')}</TableCell>
-              <TableCell>{t('LEADER')}</TableCell>
-              <TableCell>{t('MEMBERS')}</TableCell>
-              <TableCell>{t('STATUS')}</TableCell>
-              <TableCell>{t('CREATED')}</TableCell>
-              <TableCell>{t('ACTIONS')}</TableCell>
+              <TableCell>{t('activityManagement.TEAM')}</TableCell>
+              <TableCell>{t('activityManagement.ACTIVITY')}</TableCell>
+              <TableCell>{t('activityManagement.LEADER')}</TableCell>
+              <TableCell>{t('activityManagement.MEMBERS')}</TableCell>
+              <TableCell>{t('activityManagement.STATUS')}</TableCell>
+              <TableCell>{t('activityManagement.CREATED')}</TableCell>
+              <TableCell>{t('activityManagement.ACTIONS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -442,10 +442,10 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   <Stack spacing={2} alignItems="center">
                     <GroupIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
                     <Typography variant="h6" color="text.secondary">
-                      {t('NO_TEAMS_FOUND')}
+                      {t('activityManagement.NO_TEAMS_FOUND')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('NO_TEAMS_MESSAGE')}
+                      {t('activityManagement.NO_TEAMS_MESSAGE')}
                     </Typography>
                   </Stack>
                 </TableCell>
@@ -511,7 +511,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                           variant="text"
                           onClick={() => setTeamDetailsDialog({ open: true, team })}
                         >
-                          {t('VIEW_MEMBERS')}
+                          {t('activityManagement.VIEW_MEMBERS')}
                         </Button>
                       )}
                     </Box>
@@ -526,7 +526,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
-                      <Tooltip title={t('VIEW_TEAM_DETAILS')}>
+                      <Tooltip title={t('activityManagement.VIEW_TEAM_DETAILS')}>
                         <IconButton
                           size="small"
                           onClick={() => setTeamDetailsDialog({ open: true, team })}
@@ -534,7 +534,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                           <InfoIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('ASSIGN_USER_TO_TEAM')}>
+                      <Tooltip title={t('activityManagement.ASSIGN_USER_TO_TEAM')}>
                         <IconButton
                           size="small"
                           onClick={() => setAssignUserDialog({
@@ -548,7 +548,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                           <PersonAddIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('DISBAND_TEAM')}>
+                      <Tooltip title={t('activityManagement.DISBAND_TEAM')}>
                         <IconButton
                           size="small"
                           color="error"
@@ -593,7 +593,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         <DialogTitle>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <GroupIcon />
-            {teamDetailsDialog.team?.name} - {t('TEAM_DETAILS')}
+            {teamDetailsDialog.team?.name} - {t('activityManagement.TEAM_DETAILS')}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -603,7 +603,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
               <Grid container spacing={2} sx={{ mb: 3 }}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('TEAM_NAME')}:
+                    {t('activityManagement.TEAM_NAME')}:
                   </Typography>
                   <Typography variant="body1">
                     {teamDetailsDialog.team.name}
@@ -611,7 +611,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('ACTIVITY')}:
+                    {t('activityManagement.ACTIVITY')}:
                   </Typography>
                   <Typography variant="body1">
                     {teamDetailsDialog.team.activity.name}
@@ -619,10 +619,10 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('DESCRIPTION')}:
+                    {t('activityManagement.DESCRIPTION')}:
                   </Typography>
                   <Typography variant="body1">
-                    {teamDetailsDialog.team.description || t('NO_DESCRIPTION')}
+                    {teamDetailsDialog.team.description || t('activityManagement.NO_DESCRIPTION')}
                   </Typography>
                 </Grid>
               </Grid>
@@ -631,7 +631,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
 
               {/* Team Leader */}
               <Typography variant="h6" gutterBottom>
-                {t('TEAM_LEADER')}
+                {t('activityManagement.TEAM_LEADER')}
               </Typography>
               <Card variant="outlined" sx={{ mb: 3 }}>
                 <CardContent sx={{ py: 2 }}>
@@ -654,11 +654,11 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
 
               {/* Team Members */}
               <Typography variant="h6" gutterBottom>
-                {t('TEAM_MEMBERS')} ({teamDetailsDialog.team.memberCount})
+                {t('activityManagement.TEAM_MEMBERS')} ({teamDetailsDialog.team.memberCount})
               </Typography>
               {teamDetailsDialog.team.memberCount === 0 ? (
                 <Alert severity="info">
-                  {t('NO_TEAM_MEMBERS')}
+                  {t('activityManagement.NO_TEAM_MEMBERS')}
                 </Alert>
               ) : (
                 <Card variant="outlined">
@@ -666,8 +666,8 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                     {/* TODO: Load actual team members from API */}
                     <ListItem>
                       <ListItemText
-                        primary={t('TEAM_MEMBERS_LOADING')}
-                        secondary={t('IMPLEMENT_TEAM_MEMBERS_API')}
+                        primary={t('activityManagement.TEAM_MEMBERS_LOADING')}
+                        secondary={t('activityManagement.IMPLEMENT_TEAM_MEMBERS_API')}
                       />
                     </ListItem>
                   </List>
@@ -678,7 +678,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setTeamDetailsDialog({ open: false, team: null })}>
-            {t('CLOSE')}
+            {t('activityManagement.CLOSE')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -690,15 +690,15 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>{t('ASSIGN_USER_TO_TEAM')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.ASSIGN_USER_TO_TEAM')}</DialogTitle>
         <DialogContent>
           {assignUserDialog.team && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
-                <strong>{t('TEAM')}:</strong> {assignUserDialog.team.name}
+                <strong>{t('activityManagement.TEAM')}:</strong> {assignUserDialog.team.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {t('CURRENT_MEMBERS')}: {assignUserDialog.team.memberCount}/{assignUserDialog.team.maxMembers}
+                {t('activityManagement.CURRENT_MEMBERS')}: {assignUserDialog.team.memberCount}/{assignUserDialog.team.maxMembers}
               </Typography>
             </Box>
           )}
@@ -706,14 +706,14 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
           <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('SELECT_USER')}</InputLabel>
+                <InputLabel>{t('activityManagement.SELECT_USER')}</InputLabel>
                 <Select
                   value={assignUserDialog.selectedUser}
                   onChange={(e) => setAssignUserDialog({
                     ...assignUserDialog,
                     selectedUser: e.target.value
                   })}
-                  label={t('SELECT_USER')}
+                  label={t('activityManagement.SELECT_USER')}
                 >
                   {/* TODO: Load from unassigned users API */}
                   <MenuItem value="user1">John Doe (john@example.com)</MenuItem>
@@ -725,7 +725,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={assignUserDialog.reason}
@@ -733,7 +733,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                   ...assignUserDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('TEAM_ASSIGNMENT_REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.TEAM_ASSIGNMENT_REASON_PLACEHOLDER')}
               />
             </Grid>
           </Grid>
@@ -743,14 +743,14 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             onClick={() => setAssignUserDialog({ ...assignUserDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleAssignUser}
             variant="contained"
             disabled={operationLoading || !assignUserDialog.selectedUser}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('ASSIGN')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.ASSIGN')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -765,30 +765,30 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
         <DialogTitle>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'error.main' }}>
             <WarningIcon />
-            {t('DISBAND_TEAM')}
+            {t('activityManagement.DISBAND_TEAM')}
           </Box>
         </DialogTitle>
         <DialogContent>
           {disbandDialog.team && (
             <Box sx={{ mb: 3 }}>
               <Alert severity="warning" sx={{ mb: 2 }}>
-                {t('DISBAND_TEAM_WARNING')}
+                {t('activityManagement.DISBAND_TEAM_WARNING')}
               </Alert>
               <Typography variant="body1" gutterBottom>
-                <strong>{t('TEAM')}:</strong> {disbandDialog.team.name}
+                <strong>{t('activityManagement.TEAM')}:</strong> {disbandDialog.team.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <strong>{t('MEMBERS')}:</strong> {disbandDialog.team.memberCount}
+                <strong>{t('activityManagement.MEMBERS')}:</strong> {disbandDialog.team.memberCount}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <strong>{t('ACTIVITY')}:</strong> {disbandDialog.team.activity.name}
+                <strong>{t('activityManagement.ACTIVITY')}:</strong> {disbandDialog.team.activity.name}
               </Typography>
             </Box>
           )}
           <Divider sx={{ mb: 3 }} />
           <TextField
             fullWidth
-            label={t('REASON')}
+            label={t('activityManagement.REASON')}
             multiline
             rows={3}
             value={disbandDialog.reason}
@@ -796,7 +796,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
               ...disbandDialog,
               reason: e.target.value
             })}
-            placeholder={t('DISBAND_REASON_PLACEHOLDER')}
+            placeholder={t('activityManagement.DISBAND_REASON_PLACEHOLDER')}
             required
           />
         </DialogContent>
@@ -805,7 +805,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             onClick={() => setDisbandDialog({ ...disbandDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleDisbandTeam}
@@ -813,7 +813,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             color="error"
             disabled={operationLoading || !disbandDialog.reason.trim()}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('DISBAND')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.DISBAND')}
           </Button>
         </DialogActions>
       </Dialog>

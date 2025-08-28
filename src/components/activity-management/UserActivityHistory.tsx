@@ -78,7 +78,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
   onClose,
   userId,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -111,7 +111,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
       setUser(userData);
     } catch (err) {
       console.error('Failed to load user data:', err);
-      setError(t('FAILED_TO_LOAD_USER'));
+      setError(t('activityManagement.FAILED_TO_LOAD_USER'));
     } finally {
       setUserLoading(false);
     }
@@ -137,7 +137,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
       setActivities(data);
     } catch (err) {
       console.error('Failed to load activity history:', err);
-      setError(err instanceof Error ? err.message : t('HISTORY_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.HISTORY_LOAD_ERROR'));
       // Set empty data structure to prevent errors
       setActivities({
         data: [],
@@ -217,19 +217,19 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
 
     if (isFuture(startTime)) {
       return {
-        label: t('UPCOMING'),
+        label: t('activityManagement.UPCOMING'),
         color: 'info' as const,
         icon: <CalendarTodayIcon fontSize="small" />
       };
     } else if (isPast(endTime)) {
       return {
-        label: t('COMPLETED_TIME'),
+        label: t('activityManagement.COMPLETED_TIME'),
         color: 'default' as const,
         icon: <AccessTimeIcon fontSize="small" />
       };
     } else {
       return {
-        label: t('ONGOING'),
+        label: t('activityManagement.ONGOING'),
         color: 'success' as const,
         icon: <AccessTimeIcon fontSize="small" />
       };
@@ -243,12 +243,12 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
     
     if (diffInHours < 1) {
       const minutes = Math.round(diffInHours * 60);
-      return `${minutes} ${t('MINUTES')}`;
+      return `${minutes} ${t('activityManagement.MINUTES')}`;
     } else if (diffInHours < 24) {
-      return `${diffInHours.toFixed(1)} ${t('HOURS')}`;
+      return `${diffInHours.toFixed(1)} ${t('activityManagement.HOURS')}`;
     } else {
       const days = Math.round(diffInHours / 24);
-      return `${days} ${t('DAYS')}`;
+      return `${days} ${t('activityManagement.DAYS')}`;
     }
   };
 
@@ -275,7 +275,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
       <DialogTitle>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <HistoryIcon />
-          {t('USER_ACTIVITY_HISTORY')}
+          {t('activityManagement.USER_ACTIVITY_HISTORY')}
         </Box>
       </DialogTitle>
       <DialogContent>
@@ -283,7 +283,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
         {userLoading ? (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
             <CircularProgress size={20} />
-            <Typography>{t('LOADING_USER_INFO')}</Typography>
+            <Typography>{t('activityManagement.LOADING_USER_INFO')}</Typography>
           </Box>
         ) : user ? (
           <Card sx={{ mb: 3 }}>
@@ -307,7 +307,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     />
                     {!user.isActive && (
                       <Chip
-                        label={t('INACTIVE')}
+                        label={t('activityManagement.INACTIVE')}
                         color="error"
                         size="small"
                         sx={{ ml: 1 }}
@@ -330,7 +330,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     {activities.statistics.totalParticipants}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('TOTAL_ACTIVITIES')}
+                    {t('activityManagement.TOTAL_ACTIVITIES')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -342,7 +342,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     {activities.statistics.completed}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('COMPLETED')}
+                    {t('activityManagement.COMPLETED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -354,7 +354,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     {activities.statistics.enrolled}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('ENROLLED')}
+                    {t('activityManagement.ENROLLED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -366,7 +366,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                     {activities.statistics.cancelled + activities.statistics.noShow}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('CANCELLED_NO_SHOW')}
+                    {t('activityManagement.CANCELLED_NO_SHOW')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -386,19 +386,19 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
           <CardContent>
             <Typography variant="h6" gutterBottom>
               <FilterListIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              {t('FILTERS')}
+              {t('activityManagement.FILTERS')}
             </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                 <FormControl fullWidth>
-                  <InputLabel>{t('STATUS')}</InputLabel>
+                  <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
                   <Select
                     value={filters.status}
                     onChange={(e) => handleFilterChange('status', e.target.value)}
-                    label={t('STATUS')}
+                    label={t('activityManagement.STATUS')}
                     sx={{ minWidth: 140 }}
                   >
-                    <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
+                    <MenuItem value="">{t('activityManagement.ALL_STATUSES')}</MenuItem>
                     {Object.values(UserActivityStatus).map((status) => (
                       <MenuItem key={status} value={status}>
                         {UserActivityService.getStatusDisplayName(status)}
@@ -415,7 +415,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                       onChange={(e) => handleFilterChange('includeUpcoming', e.target.checked)}
                     />
                   }
-                  label={t('INCLUDE_UPCOMING')}
+                  label={t('activityManagement.INCLUDE_UPCOMING')}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -426,7 +426,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                       onChange={(e) => handleFilterChange('includePast', e.target.checked)}
                     />
                   }
-                  label={t('INCLUDE_PAST')}
+                  label={t('activityManagement.INCLUDE_PAST')}
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -437,7 +437,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   disabled={loading}
                   fullWidth
                 >
-                  {t('REFRESH')}
+                  {t('activityManagement.REFRESH')}
                 </Button>
               </Grid>
             </Grid>
@@ -448,7 +448,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
         {loading && !activities ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 300 }}>
             <CircularProgress />
-            <Typography sx={{ ml: 2 }}>{t('LOADING_ACTIVITY_HISTORY')}</Typography>
+            <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_ACTIVITY_HISTORY')}</Typography>
           </Box>
         ) : (
           <>
@@ -456,14 +456,14 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('ACTIVITY')}</TableCell>
-                    <TableCell>{t('TYPE')}</TableCell>
-                    <TableCell>{t('STATUS')}</TableCell>
-                    <TableCell>{t('TIME_STATUS')}</TableCell>
-                    <TableCell>{t('DURATION')}</TableCell>
-                    <TableCell>{t('START_DATE')}</TableCell>
-                    <TableCell>{t('END_DATE')}</TableCell>
-                    <TableCell>{t('ENROLLED_AT')}</TableCell>
+                    <TableCell>{t('activityManagement.ACTIVITY')}</TableCell>
+                    <TableCell>{t('activityManagement.TYPE')}</TableCell>
+                    <TableCell>{t('activityManagement.STATUS')}</TableCell>
+                    <TableCell>{t('activityManagement.TIME_STATUS')}</TableCell>
+                    <TableCell>{t('activityManagement.DURATION')}</TableCell>
+                    <TableCell>{t('activityManagement.START_DATE')}</TableCell>
+                    <TableCell>{t('activityManagement.END_DATE')}</TableCell>
+                    <TableCell>{t('activityManagement.ENROLLED_AT')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -473,10 +473,10 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                         <Stack spacing={2} alignItems="center">
                           <EventIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
                           <Typography variant="h6" color="text.secondary">
-                            {t('NO_ACTIVITY_HISTORY')}
+                            {t('activityManagement.NO_ACTIVITY_HISTORY')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {t('NO_ACTIVITY_HISTORY_MESSAGE')}
+                            {t('activityManagement.NO_ACTIVITY_HISTORY_MESSAGE')}
                           </Typography>
                         </Stack>
                       </TableCell>
@@ -559,7 +559,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} variant="contained">
-          {t('CLOSE')}
+          {t('activityManagement.CLOSE')}
         </Button>
       </DialogActions>
     </Dialog>

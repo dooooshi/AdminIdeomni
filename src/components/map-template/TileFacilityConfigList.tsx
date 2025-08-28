@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -83,7 +83,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
   showActions = true,
   maxHeight = 600,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // State
   const [configs, setConfigs] = useState<TileFacilityBuildConfig[]>([]);
@@ -251,10 +251,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={2}>
             <Typography variant="h6">
-              {t('FACILITY_CONFIGURATIONS')}
+              {t('mapTemplate.FACILITY_CONFIGURATIONS')}
             </Typography>
             <Chip 
-              label={`${totalCount} ${t('CONFIGURATIONS')}`} 
+              label={`${totalCount} ${t('mapTemplate.CONFIGURATIONS')}`} 
               size="small" 
               variant="outlined" 
             />
@@ -262,7 +262,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         }
         action={
           <Box display="flex" gap={1}>
-            <Tooltip title={t('TOGGLE_FILTERS')}>
+            <Tooltip title={t('mapTemplate.TOGGLE_FILTERS')}>
               <IconButton 
                 onClick={() => setShowFilters(!showFilters)}
                 color={showFilters ? 'primary' : 'default'}
@@ -277,7 +277,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 onClick={handleCreateConfig}
                 size="small"
               >
-                {t('ADD_CONFIG')}
+                {t('mapTemplate.ADD_CONFIG')}
               </Button>
             )}
           </Box>
@@ -293,7 +293,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 <TextField
                   fullWidth
                   size="small"
-                  label={t('SEARCH')}
+                  label={t('mapTemplate.SEARCH')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   InputProps={{
@@ -308,10 +308,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
 
               <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 180 }}>
-                  <InputLabel>{t('LAND_TYPE')}</InputLabel>
+                  <InputLabel>{t('mapTemplate.LAND_TYPE')}</InputLabel>
                   <Select
                     value={landTypeFilter}
-                    label={t('LAND_TYPE')}
+                    label={t('mapTemplate.LAND_TYPE')}
                     onChange={(e) => setLandTypeFilter(e.target.value as LandType | '')}
                     MenuProps={{
                       PaperProps: {
@@ -321,10 +321,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                       },
                     }}
                   >
-                    <MenuItem value="" sx={{ minWidth: 180 }}>{t('ALL')}</MenuItem>
+                    <MenuItem value="" sx={{ minWidth: 180 }}>{t('mapTemplate.ALL')}</MenuItem>
                     {Object.values(LandType).map((type) => (
                       <MenuItem key={type} value={type} sx={{ minWidth: 180 }}>
-                        {t(`LAND_TYPE_${type}`)}
+                        {t(`mapTemplate.LAND_TYPE_${type}`)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -333,10 +333,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
 
               <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
-                  <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
+                  <InputLabel>{t('mapTemplate.FACILITY_TYPE')}</InputLabel>
                   <Select
                     value={facilityTypeFilter}
-                    label={t('FACILITY_TYPE')}
+                    label={t('mapTemplate.FACILITY_TYPE')}
                     onChange={(e) => setFacilityTypeFilter(e.target.value as FacilityType | '')}
                     MenuProps={{
                       PaperProps: {
@@ -346,10 +346,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                       },
                     }}
                   >
-                    <MenuItem value="" sx={{ minWidth: 260 }}>{t('ALL')}</MenuItem>
+                    <MenuItem value="" sx={{ minWidth: 260 }}>{t('mapTemplate.ALL')}</MenuItem>
                     {Object.values(FacilityType).map((type) => (
                       <MenuItem key={type} value={type} sx={{ minWidth: 260 }}>
-                        {t(`FACILITY_TYPE_${type}`)}
+                        {t(`mapTemplate.FACILITY_TYPE_${type}`)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -358,10 +358,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
 
               <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 150 }}>
-                  <InputLabel>{t('STATUS')}</InputLabel>
+                  <InputLabel>{t('mapTemplate.STATUS')}</InputLabel>
                   <Select
                     value={allowedFilter}
-                    label={t('STATUS')}
+                    label={t('mapTemplate.STATUS')}
                     onChange={(e) => setAllowedFilter(e.target.value as boolean | '')}
                     MenuProps={{
                       PaperProps: {
@@ -371,9 +371,9 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                       },
                     }}
                   >
-                    <MenuItem value="" sx={{ minWidth: 150 }}>{t('ALL')}</MenuItem>
-                    <MenuItem value={true} sx={{ minWidth: 150 }}>{t('ALLOWED')}</MenuItem>
-                    <MenuItem value={false} sx={{ minWidth: 150 }}>{t('NOT_ALLOWED')}</MenuItem>
+                    <MenuItem value="" sx={{ minWidth: 150 }}>{t('mapTemplate.ALL')}</MenuItem>
+                    <MenuItem value={true} sx={{ minWidth: 150 }}>{t('mapTemplate.ALLOWED')}</MenuItem>
+                    <MenuItem value={false} sx={{ minWidth: 150 }}>{t('mapTemplate.NOT_ALLOWED')}</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -386,13 +386,13 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                       onChange={(e) => setActiveFilter(e.target.checked ? true : '')}
                     />
                   }
-                  label={t('ACTIVE_ONLY')}
+                  label={t('mapTemplate.ACTIVE_ONLY')}
                 />
               </Grid>
 
               <Grid size={{ xs: 12, sm: 6, md: 1 }}>
                 <Button onClick={resetFilters} size="small">
-                  {t('RESET')}
+                  {t('mapTemplate.RESET')}
                 </Button>
               </Grid>
             </Grid>
@@ -413,7 +413,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'landType' ? sortOrder : 'asc'}
                     onClick={() => handleSort('landType')}
                   >
-                    {t('LAND_TYPE')}
+                    {t('mapTemplate.LAND_TYPE')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
@@ -422,7 +422,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'facilityType' ? sortOrder : 'asc'}
                     onClick={() => handleSort('facilityType')}
                   >
-                    {t('FACILITY_TYPE')}
+                    {t('mapTemplate.FACILITY_TYPE')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="right">
@@ -431,7 +431,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'requiredGold' ? sortOrder : 'asc'}
                     onClick={() => handleSort('requiredGold')}
                   >
-                    {t('GOLD_COST')}
+                    {t('mapTemplate.GOLD_COST')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="right">
@@ -440,7 +440,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'requiredCarbon' ? sortOrder : 'asc'}
                     onClick={() => handleSort('requiredCarbon')}
                   >
-                    {t('CARBON_COST')}
+                    {t('mapTemplate.CARBON_COST')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="center">
@@ -449,7 +449,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'maxLevel' ? sortOrder : 'asc'}
                     onClick={() => handleSort('maxLevel')}
                   >
-                    {t('MAX_LEVEL')}
+                    {t('mapTemplate.MAX_LEVEL')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell align="center">
@@ -458,10 +458,10 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     direction={sortField === 'isAllowed' ? sortOrder : 'asc'}
                     onClick={() => handleSort('isAllowed')}
                   >
-                    {t('STATUS')}
+                    {t('mapTemplate.STATUS')}
                   </TableSortLabel>
                 </TableCell>
-                {showActions && <TableCell align="center">{t('ACTIONS')}</TableCell>}
+                {showActions && <TableCell align="center">{t('mapTemplate.ACTIONS')}</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -477,7 +477,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 >
                   <TableCell>
                     <Chip
-                      label={t(`LAND_TYPE_${config.landType}`)}
+                      label={t(`mapTemplate.LAND_TYPE_${config.landType}`)}
                       color={getLandTypeColor(config.landType)}
                       variant="outlined"
                       size="small"
@@ -487,7 +487,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     <Box display="flex" alignItems="center" gap={1}>
                       {getFacilityTypeIcon(config.facilityType)}
                       <Typography variant="body2">
-                        {t(`FACILITY_TYPE_${config.facilityType}`)}
+                        {t(`mapTemplate.FACILITY_TYPE_${config.facilityType}`)}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -535,7 +535,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 <TableRow>
                   <TableCell colSpan={showActions ? 7 : 6} align="center" sx={{ py: 4 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('NO_CONFIGURATIONS_FOUND')}
+                      {t('mapTemplate.NO_CONFIGURATIONS_FOUND')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -557,13 +557,13 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         }}>
           <Typography variant="body2" color="text.secondary">
             {totalCount > 0 ? (
-              t('SHOWING_RESULTS', {
+              t('mapTemplate.SHOWING_RESULTS', {
                 from: page * pageSize + 1,
                 to: Math.min((page + 1) * pageSize, totalCount),
                 total: totalCount
               })
             ) : (
-              t('NO_RESULTS')
+              t('mapTemplate.NO_RESULTS')
             )}
           </Typography>
           <TablePagination
@@ -574,7 +574,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
             rowsPerPage={pageSize}
             onRowsPerPageChange={handlePageSizeChange}
             rowsPerPageOptions={[5, 10, 25, 50]}
-            labelRowsPerPage={t('ROWS_PER_PAGE')}
+            labelRowsPerPage={t('mapTemplate.ROWS_PER_PAGE')}
             showFirstButton
             showLastButton
             sx={{ 
@@ -601,14 +601,14 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
             <ListItemIcon>
               <EditIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>{t('EDIT')}</ListItemText>
+            <ListItemText>{t('mapTemplate.EDIT')}</ListItemText>
           </MenuItem>
           
           <MenuItem onClick={() => menuConfig && onConfigSelect?.(menuConfig)}>
             <ListItemIcon>
               <VisibilityIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>{t('VIEW_DETAILS')}</ListItemText>
+            <ListItemText>{t('mapTemplate.VIEW_DETAILS')}</ListItemText>
           </MenuItem>
 
           {menuConfig?.deletedAt ? (
@@ -616,14 +616,14 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
               <ListItemIcon>
                 <RestoreIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText>{t('RESTORE')}</ListItemText>
+              <ListItemText>{t('mapTemplate.RESTORE')}</ListItemText>
             </MenuItem>
           ) : (
             <MenuItem onClick={() => menuConfig && handleDeleteConfig(menuConfig)}>
               <ListItemIcon>
                 <DeleteIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText>{t('DELETE')}</ListItemText>
+              <ListItemText>{t('mapTemplate.DELETE')}</ListItemText>
             </MenuItem>
           )}
         </Menu>
@@ -652,30 +652,30 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
 
         {/* Delete Confirmation Dialog */}
         <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-          <DialogTitle>{t('CONFIRM_DELETE')}</DialogTitle>
+          <DialogTitle>{t('mapTemplate.CONFIRM_DELETE')}</DialogTitle>
           <DialogContent>
             <Alert severity="warning" sx={{ mb: 2 }}>
-              {t('DELETE_CONFIG_WARNING')}
+              {t('mapTemplate.DELETE_CONFIG_WARNING')}
             </Alert>
             {configToDelete && (
               <Typography>
-                {t('DELETE_CONFIG_CONFIRM', {
-                  facilityType: t(`FACILITY_TYPE_${configToDelete.facilityType}`),
-                  landType: t(`LAND_TYPE_${configToDelete.landType}`)
+                {t('mapTemplate.DELETE_CONFIG_CONFIRM', {
+                  facilityType: t(`mapTemplate.FACILITY_TYPE_${configToDelete.facilityType}`),
+                  landType: t(`mapTemplate.LAND_TYPE_${configToDelete.landType}`)
                 })}
               </Typography>
             )}
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setDeleteDialogOpen(false)}>
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <LoadingButton
               onClick={handleConfigDelete}
               color="error"
               variant="contained"
             >
-              {t('DELETE')}
+              {t('mapTemplate.DELETE')}
             </LoadingButton>
           </DialogActions>
         </Dialog>

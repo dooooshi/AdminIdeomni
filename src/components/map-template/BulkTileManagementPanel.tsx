@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -63,7 +63,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   onOperationComplete,
   templateStatistics,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // State
   const [selectedLandType, setSelectedLandType] = useState<LandType>(LandType.PLAIN);
@@ -117,7 +117,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
     
     const errors: string[] = [];
     if (Object.keys(updateData).length === 0) {
-      errors.push(t('NO_CHANGES_SPECIFIED'));
+      errors.push(t('mapTemplate.NO_CHANGES_SPECIFIED'));
     }
     
     Object.entries(validation.errors).forEach(([field, error]) => {
@@ -182,7 +182,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
     setFixedGoldPrice('');
     setFixedCarbonPrice('');
     setFixedPopulation('');
-    setFixedTransportCost('');
+    setFixedTransportCost('mapTemplate.');
     setPresetScenario('custom');
   };
 
@@ -192,10 +192,10 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={1}>
             <TrendingUpIcon />
-            <Typography variant="h6">{t('BULK_TILE_MANAGEMENT')}</Typography>
+            <Typography variant="h6">{t('mapTemplate.BULK_TILE_MANAGEMENT')}</Typography>
           </Box>
         }
-        subheader={t('BULK_TILE_MANAGEMENT_SUBTITLE')}
+        subheader={t('mapTemplate.BULK_TILE_MANAGEMENT_SUBTITLE')}
       />
 
       <CardContent>
@@ -204,7 +204,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           <Alert severity="info" sx={{ mb: 3 }}>
             <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
               <Typography variant="body2" component="span">
-                {t('TEMPLATE_STATS')}: {templateStatistics.totalTiles} {t('TOTAL_TILES')}
+                {t('mapTemplate.TEMPLATE_STATS')}: {templateStatistics.totalTiles} {t('mapTemplate.TOTAL_TILES')}
               </Typography>
               {Object.entries(templateStatistics.tilesByLandType).map(([landType, count]) => (
                 <Chip 
@@ -222,10 +222,10 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           {/* Land Type Selection */}
           <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('TARGET_LAND_TYPE')}</InputLabel>
+              <InputLabel>{t('mapTemplate.TARGET_LAND_TYPE')}</InputLabel>
               <Select
                 value={selectedLandType}
-                label={t('TARGET_LAND_TYPE')}
+                label={t('mapTemplate.TARGET_LAND_TYPE')}
                 onChange={(e) => setSelectedLandType(e.target.value as LandType)}
               >
                 {Object.values(LandType).map((type) => (
@@ -240,14 +240,14 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           {/* Preset Scenarios */}
           <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('PRESET_SCENARIO')}</InputLabel>
+              <InputLabel>{t('mapTemplate.PRESET_SCENARIO')}</InputLabel>
               <Select
                 value={presetScenario}
-                label={t('PRESET_SCENARIO')}
+                label={t('mapTemplate.PRESET_SCENARIO')}
                 onChange={(e) => handlePresetScenarioChange(e.target.value as any)}
               >
-                <MenuItem value="reset">{t('RESET_TO_DEFAULTS')}</MenuItem>
-                <MenuItem value="custom">{t('CUSTOM')}</MenuItem>
+                <MenuItem value="reset">{t('mapTemplate.RESET_TO_DEFAULTS')}</MenuItem>
+                <MenuItem value="custom">{t('mapTemplate.CUSTOM')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -255,7 +255,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           {/* Fixed Value Updates */}
           <Grid size={{ xs: 12 }}>
             <Typography variant="subtitle2" gutterBottom>
-              {t('FIXED_VALUES')}
+              {t('mapTemplate.FIXED_VALUES')}
             </Typography>
           </Grid>
 
@@ -263,7 +263,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             <TextField
               fullWidth
               type="number"
-              label={t('FIXED_GOLD_PRICE')}
+              label={t('mapTemplate.FIXED_GOLD_PRICE')}
               value={fixedGoldPrice}
               onChange={(e) => setFixedGoldPrice(e.target.value === '' ? '' : Number(e.target.value))}
               InputProps={{
@@ -276,7 +276,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             <TextField
               fullWidth
               type="number"
-              label={t('FIXED_CARBON_PRICE')}
+              label={t('mapTemplate.FIXED_CARBON_PRICE')}
               value={fixedCarbonPrice}
               onChange={(e) => setFixedCarbonPrice(e.target.value === '' ? '' : Number(e.target.value))}
               InputProps={{
@@ -289,7 +289,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             <TextField
               fullWidth
               type="number"
-              label={t('FIXED_POPULATION')}
+              label={t('mapTemplate.FIXED_POPULATION')}
               value={fixedPopulation}
               onChange={(e) => setFixedPopulation(e.target.value === '' ? '' : Number(e.target.value))}
               InputProps={{
@@ -302,7 +302,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             <TextField
               fullWidth
               type="number"
-              label={t('FIXED_TRANSPORT_COST')}
+              label={t('mapTemplate.FIXED_TRANSPORT_COST')}
               value={fixedTransportCost}
               onChange={(e) => setFixedTransportCost(e.target.value === '' ? '' : Number(e.target.value))}
               InputProps={{
@@ -315,14 +315,14 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           <Grid size={{ xs: 12 }}>
             <Box display="flex" gap={2} justifyContent="flex-end">
               <Button onClick={resetForm}>
-                {t('RESET')}
+                {t('mapTemplate.RESET')}
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<PreviewIcon />}
                 onClick={handlePreview}
               >
-                {t('PREVIEW')}
+                {t('mapTemplate.PREVIEW')}
               </Button>
               <LoadingButton
                 variant="contained"
@@ -330,7 +330,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 onClick={handleConfirmUpdate}
                 loading={isLoading}
               >
-                {t('APPLY_CHANGES')}
+                {t('mapTemplate.APPLY_CHANGES')}
               </LoadingButton>
             </Box>
           </Grid>
@@ -338,10 +338,10 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
 
         {/* Preview Dialog */}
         <Dialog open={previewDialogOpen} onClose={() => setPreviewDialogOpen(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>{t('PREVIEW_CHANGES')}</DialogTitle>
+          <DialogTitle>{t('mapTemplate.PREVIEW_CHANGES')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" gutterBottom>
-              {t('PREVIEW_CHANGES_INFO', { 
+              {t('mapTemplate.PREVIEW_CHANGES_INFO', { 
                 landType: t(`LAND_TYPE_${selectedLandType}`),
                 count: templateStatistics?.tilesByLandType[selectedLandType] || 0
               })}
@@ -349,7 +349,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
 
             <Paper sx={{ p: 2, mt: 2, maxHeight: 300, overflow: 'auto' }}>
               <Typography variant="subtitle2" gutterBottom>
-                {t('CHANGES_TO_APPLY')}:
+                {t('mapTemplate.CHANGES_TO_APPLY')}:
               </Typography>
               <pre style={{ fontSize: '0.875rem', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
                 {JSON.stringify(buildUpdateData(), null, 2)}
@@ -358,10 +358,10 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setPreviewDialogOpen(false)}>
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <Button variant="contained" onClick={handleConfirmUpdate}>
-              {t('PROCEED')}
+              {t('mapTemplate.PROCEED')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -371,15 +371,15 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           <DialogTitle>
             <Box display="flex" alignItems="center" gap={1}>
               <WarningIcon color="warning" />
-              {t('CONFIRM_BULK_UPDATE')}
+              {t('mapTemplate.CONFIRM_BULK_UPDATE')}
             </Box>
           </DialogTitle>
           <DialogContent>
             <Alert severity="warning" sx={{ mb: 2 }}>
-              {t('BULK_TILE_UPDATE_WARNING')}
+              {t('mapTemplate.BULK_TILE_UPDATE_WARNING')}
             </Alert>
             <Typography>
-              {t('BULK_TILE_UPDATE_CONFIRM', { 
+              {t('mapTemplate.BULK_TILE_UPDATE_CONFIRM', { 
                 landType: t(`LAND_TYPE_${selectedLandType}`),
                 count: templateStatistics?.tilesByLandType[selectedLandType] || 0
               })}
@@ -387,7 +387,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setConfirmDialogOpen(false)}>
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <LoadingButton
               onClick={handleExecuteUpdate}
@@ -395,7 +395,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
               variant="contained"
               loading={isLoading}
             >
-              {t('CONFIRM_UPDATE')}
+              {t('mapTemplate.CONFIRM_UPDATE')}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -409,7 +409,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
               ) : (
                 <ErrorIcon color="error" />
               )}
-              {t('BULK_UPDATE_RESULT')}
+              {t('mapTemplate.BULK_UPDATE_RESULT')}
             </Box>
           </DialogTitle>
           <DialogContent>
@@ -419,7 +419,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                   severity={bulkResult.failed === 0 ? 'success' : 'warning'} 
                   sx={{ mb: 2 }}
                 >
-                  {t('BULK_UPDATE_SUMMARY', {
+                  {t('mapTemplate.BULK_UPDATE_SUMMARY', {
                     updated: bulkResult.updated,
                     failed: bulkResult.failed
                   })}
@@ -432,7 +432,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
                 {bulkResult.failed > 0 && (
                   <Box>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('FAILED_OPERATIONS')}:
+                      {t('mapTemplate.FAILED_OPERATIONS')}:
                     </Typography>
                     <List dense>
                       {bulkResult.details
@@ -456,7 +456,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setResultDialogOpen(false)} variant="contained">
-              {t('CLOSE')}
+              {t('mapTemplate.CLOSE')}
             </Button>
           </DialogActions>
         </Dialog>

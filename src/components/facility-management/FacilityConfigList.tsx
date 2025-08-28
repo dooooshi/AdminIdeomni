@@ -86,7 +86,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
   onEditConfig,
   onViewConfig,
 }) => {
-  const { t } = useTranslation('facilityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   
   // State management
@@ -180,11 +180,11 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
         });
       } else {
         console.error('❌ Invalid API response structure:', configResponse);
-        setError(t('ERROR_INVALID_RESPONSE'));
+        setError(t('facilityManagement.ERROR_INVALID_RESPONSE'));
       }
     } catch (err) {
       console.error('❌ Error loading facility configurations:', err);
-      setError(t('ERROR_LOADING_CONFIGURATIONS'));
+      setError(t('facilityManagement.ERROR_LOADING_CONFIGURATIONS'));
       
       // Reset pagination on error if we're not on the first page
       if (page > 0) {
@@ -322,7 +322,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       await loadConfigurations();
     } catch (err) {
       console.error('Error deleting facility configuration:', err);
-      setError(t('ERROR_DELETING_CONFIGURATION'));
+      setError(t('facilityManagement.ERROR_DELETING_CONFIGURATION'));
     }
   };
 
@@ -341,7 +341,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       await loadConfigurations();
     } catch (err) {
       console.error('Error restoring facility configuration:', err);
-      setError(t('ERROR_RESTORING_CONFIGURATION'));
+      setError(t('facilityManagement.ERROR_RESTORING_CONFIGURATION'));
     }
   };
 
@@ -351,7 +351,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       await loadConfigurations();
     } catch (err) {
       console.error('Error toggling facility configuration status:', err);
-      setError(t('ERROR_UPDATING_CONFIGURATION'));
+      setError(t('facilityManagement.ERROR_UPDATING_CONFIGURATION'));
     }
   };
 
@@ -372,7 +372,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       }, 100);
     } catch (err) {
       console.error('Error initializing default configurations:', err);
-      setError(t('ERROR_INITIALIZING_CONFIGURATIONS'));
+      setError(t('facilityManagement.ERROR_INITIALIZING_CONFIGURATIONS'));
     } finally {
       setInitializing(false);
     }
@@ -427,7 +427,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       {statistics && (
         <Accordion defaultExpanded sx={{ mb: 2 }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">{t('CONFIGURATION_STATISTICS')}</Typography>
+            <Typography variant="h6">{t('facilityManagement.CONFIGURATION_STATISTICS')}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={2}>
@@ -435,7 +435,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      {t('TOTAL_CONFIGURATIONS')}
+                      {t('facilityManagement.TOTAL_CONFIGURATIONS')}
                     </Typography>
                     <Typography variant="h4">
                       {statistics.totalConfigs}
@@ -447,7 +447,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      {t('ACTIVE_CONFIGURATIONS')}
+                      {t('facilityManagement.ACTIVE_CONFIGURATIONS')}
                     </Typography>
                     <Typography variant="h4" color="success.main">
                       {statistics.activeConfigs}
@@ -459,7 +459,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      {t('INACTIVE_CONFIGURATIONS')}
+                      {t('facilityManagement.INACTIVE_CONFIGURATIONS')}
                     </Typography>
                     <Typography variant="h4" color="error.main">
                       {statistics.inactiveConfigs}
@@ -471,7 +471,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      {t('DELETED_CONFIGURATIONS')}
+                      {t('facilityManagement.DELETED_CONFIGURATIONS')}
                     </Typography>
                     <Typography variant="h4" color="warning.main">
                       {statistics.deletedConfigs}
@@ -502,7 +502,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
             <TextField
               fullWidth
               variant="outlined"
-              placeholder={t('SEARCH_CONFIGURATIONS_PLACEHOLDER')}
+              placeholder={t('facilityManagement.SEARCH_CONFIGURATIONS_PLACEHOLDER')}
               value={searchValue}
               onChange={handleSearchChange}
               InputProps={{
@@ -512,14 +512,14 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
+              <InputLabel>{t('facilityManagement.FACILITY_TYPE')}</InputLabel>
               <Select
                 value={filters.facilityType}
-                label={t('FACILITY_TYPE')}
+                label={t('facilityManagement.FACILITY_TYPE')}
                 onChange={(e) => handleFilterChange('facilityType', e.target.value)}
                 sx={{ minWidth: 160 }}
               >
-                <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
+                <MenuItem value="">{t('facilityManagement.ALL_TYPES')}</MenuItem>
                 {facilityTypes?.map((type) => (
                   <MenuItem key={type} value={type}>
                     {t(`FACILITY_TYPE_${type}`)}
@@ -530,14 +530,14 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('CATEGORY')}</InputLabel>
+              <InputLabel>{t('facilityManagement.CATEGORY')}</InputLabel>
               <Select
                 value={filters.category}
-                label={t('CATEGORY')}
+                label={t('facilityManagement.CATEGORY')}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
                 sx={{ minWidth: 180 }}
               >
-                <MenuItem value="">{t('ALL_CATEGORIES')}</MenuItem>
+                <MenuItem value="">{t('facilityManagement.ALL_CATEGORIES')}</MenuItem>
                 {facilityCategories?.map((category) => (
                   <MenuItem key={category} value={category}>
                     {t(`FACILITY_CATEGORY_${category}`)}
@@ -548,16 +548,16 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 1 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('STATUS')}</InputLabel>
+              <InputLabel>{t('facilityManagement.STATUS')}</InputLabel>
               <Select
                 value={filters.status}
-                label={t('STATUS')}
+                label={t('facilityManagement.STATUS')}
                 onChange={(e) => handleFilterChange('status', e.target.value)}
                 sx={{ minWidth: 140 }}
               >
-                <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
-                <MenuItem value="active">{t('ACTIVE')}</MenuItem>
-                <MenuItem value="inactive">{t('INACTIVE')}</MenuItem>
+                <MenuItem value="">{t('facilityManagement.ALL_STATUSES')}</MenuItem>
+                <MenuItem value="active">{t('facilityManagement.ACTIVE')}</MenuItem>
+                <MenuItem value="inactive">{t('facilityManagement.INACTIVE')}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -569,9 +569,9 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                 onClick={onCreateConfig}
                 size="small"
               >
-                {t('CREATE_CONFIGURATION')}
+                {t('facilityManagement.CREATE_CONFIGURATION')}
               </Button>
-              <Tooltip title={t('INITIALIZE_DEFAULT_CONFIGURATIONS')}>
+              <Tooltip title={t('facilityManagement.INITIALIZE_DEFAULT_CONFIGURATIONS')}>
                 <IconButton
                   onClick={handleInitializeDefaults}
                   color="primary"
@@ -580,7 +580,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   <InitializeIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title={t('REFRESH')}>
+              <Tooltip title={t('facilityManagement.REFRESH')}>
                 <IconButton
                   onClick={() => loadConfigurations()}
                   disabled={loading}
@@ -604,33 +604,33 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'facilityType'}
                     direction={filters.sortBy === 'facilityType' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityType')}
+                    onClick={() => handleSort('facilityManagement.facilityType')}
                   >
-                    {t('FACILITY_TYPE')}
+                    {t('facilityManagement.FACILITY_TYPE')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'category'}
                     direction={filters.sortBy === 'category' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('category')}
+                    onClick={() => handleSort('facilityManagement.category')}
                   >
-                    {t('CATEGORY')}
+                    {t('facilityManagement.CATEGORY')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('CAPACITY_RANGE')}</TableCell>
-                <TableCell>{t('BUILD_COST_RANGE')}</TableCell>
-                <TableCell>{t('STATUS')}</TableCell>
+                <TableCell>{t('facilityManagement.CAPACITY_RANGE')}</TableCell>
+                <TableCell>{t('facilityManagement.BUILD_COST_RANGE')}</TableCell>
+                <TableCell>{t('facilityManagement.STATUS')}</TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'createdAt'}
                     direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('createdAt')}
+                    onClick={() => handleSort('facilityManagement.createdAt')}
                   >
-                    {t('CREATED_DATE')}
+                    {t('facilityManagement.CREATED_DATE')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('ACTIONS')}</TableCell>
+                <TableCell>{t('facilityManagement.ACTIONS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -667,7 +667,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                     </Typography>
                     {config.defaultCapacity && (
                       <Typography variant="caption" color="textSecondary">
-                        {t('DEFAULT')}: {FacilityConfigService.formatCapacity(config.defaultCapacity)}
+                        {t('facilityManagement.DEFAULT')}: {FacilityConfigService.formatCapacity(config.defaultCapacity)}
                       </Typography>
                     )}
                   </TableCell>
@@ -677,19 +677,19 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                     </Typography>
                     {config.defaultBuildCost && (
                       <Typography variant="caption" color="textSecondary">
-                        {t('DEFAULT')}: {FacilityConfigService.formatCurrency(config.defaultBuildCost)}
+                        {t('facilityManagement.DEFAULT')}: {FacilityConfigService.formatCurrency(config.defaultBuildCost)}
                       </Typography>
                     )}
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={config.isActive ? t('ACTIVE') : t('INACTIVE')}
+                      label={config.isActive ? t('facilityManagement.ACTIVE') : t('facilityManagement.INACTIVE')}
                       color={config.isActive ? 'success' : 'default'}
                       size="small"
                     />
                     {config.isDeleted && (
                       <Chip
-                        label={t('DELETED')}
+                        label={t('facilityManagement.DELETED')}
                         color="error"
                         size="small"
                         sx={{ ml: 1 }}
@@ -703,7 +703,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={0.5}>
-                      <Tooltip title={t('VIEW_DETAILS')}>
+                      <Tooltip title={t('facilityManagement.VIEW_DETAILS')}>
                         <IconButton
                           size="small"
                           onClick={() => onViewConfig?.(config)}
@@ -711,7 +711,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                           <ViewIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('EDIT')}>
+                      <Tooltip title={t('facilityManagement.EDIT')}>
                         <IconButton
                           size="small"
                           onClick={() => onEditConfig?.(config)}
@@ -720,7 +720,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={config.isActive ? t('DEACTIVATE') : t('ACTIVATE')}>
+                      <Tooltip title={config.isActive ? t('facilityManagement.DEACTIVATE') : t('facilityManagement.ACTIVATE')}>
                         <IconButton
                           size="small"
                           onClick={() => handleToggleStatus(config)}
@@ -730,7 +730,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                         </IconButton>
                       </Tooltip>
                       {config.isDeleted ? (
-                        <Tooltip title={t('RESTORE')}>
+                        <Tooltip title={t('facilityManagement.RESTORE')}>
                           <IconButton
                             size="small"
                             onClick={() => handleRestoreClick(config)}
@@ -740,7 +740,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                           </IconButton>
                         </Tooltip>
                       ) : (
-                        <Tooltip title={t('DELETE')}>
+                        <Tooltip title={t('facilityManagement.DELETE')}>
                           <IconButton
                             size="small"
                             onClick={() => handleDeleteClick(config)}
@@ -759,7 +759,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   <TableCell colSpan={7} align="center">
                     <Box py={4}>
                       <Typography variant="h6" color="textSecondary">
-                        {loading ? t('LOADING_CONFIGURATIONS') : t('NO_CONFIGURATIONS_FOUND')}
+                        {loading ? t('facilityManagement.LOADING_CONFIGURATIONS') : t('facilityManagement.NO_CONFIGURATIONS_FOUND')}
                       </Typography>
                       {!loading && (
                         <Button
@@ -768,7 +768,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                           onClick={onCreateConfig}
                           sx={{ mt: 2 }}
                         >
-                          {t('CREATE_FIRST_CONFIGURATION')}
+                          {t('facilityManagement.CREATE_FIRST_CONFIGURATION')}
                         </Button>
                       )}
                     </Box>
@@ -790,7 +790,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               page={Math.min(page, Math.max(0, (configData.totalPages || 1) - 1))}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handlePageSizeChange}
-              labelRowsPerPage={t('ROWS_PER_PAGE')}
+              labelRowsPerPage={t('facilityManagement.ROWS_PER_PAGE')}
               labelDisplayedRows={({ from, to, count }) =>
                 t('PAGINATION_LABEL', { from, to, count })
               }
@@ -818,7 +818,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-        <DialogTitle>{t('CONFIRM_DELETE_CONFIGURATION')}</DialogTitle>
+        <DialogTitle>{t('facilityManagement.CONFIRM_DELETE_CONFIGURATION')}</DialogTitle>
         <DialogContent>
           <Typography>
             {t('DELETE_CONFIGURATION_CONFIRMATION_MESSAGE', {
@@ -828,17 +828,17 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           <Button onClick={handleDeleteConfirm} color="error" variant="contained">
-            {t('DELETE')}
+            {t('facilityManagement.DELETE')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Restore Confirmation Dialog */}
       <Dialog open={restoreDialogOpen} onClose={() => setRestoreDialogOpen(false)}>
-        <DialogTitle>{t('CONFIRM_RESTORE_CONFIGURATION')}</DialogTitle>
+        <DialogTitle>{t('facilityManagement.CONFIRM_RESTORE_CONFIGURATION')}</DialogTitle>
         <DialogContent>
           <Typography>
             {t('RESTORE_CONFIGURATION_CONFIRMATION_MESSAGE', {
@@ -848,25 +848,25 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setRestoreDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           <Button onClick={handleRestoreConfirm} color="warning" variant="contained">
-            {t('RESTORE')}
+            {t('facilityManagement.RESTORE')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Initialize Default Configurations Dialog */}
       <Dialog open={initializeDialogOpen} onClose={() => setInitializeDialogOpen(false)}>
-        <DialogTitle>{t('INITIALIZE_DEFAULT_CONFIGURATIONS')}</DialogTitle>
+        <DialogTitle>{t('facilityManagement.INITIALIZE_DEFAULT_CONFIGURATIONS')}</DialogTitle>
         <DialogContent>
           <Typography>
-            {t('INITIALIZE_DEFAULT_CONFIGURATIONS_MESSAGE')}
+            {t('facilityManagement.INITIALIZE_DEFAULT_CONFIGURATIONS_MESSAGE')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setInitializeDialogOpen(false)} disabled={initializing}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           <Button 
             onClick={handleInitializeConfirm} 
@@ -875,7 +875,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
             disabled={initializing}
             startIcon={initializing ? <CircularProgress size={20} /> : <CheckCircleIcon />}
           >
-            {initializing ? t('INITIALIZING') : t('INITIALIZE')}
+            {initializing ? t('facilityManagement.INITIALIZING') : t('facilityManagement.INITIALIZE')}
           </Button>
         </DialogActions>
       </Dialog>

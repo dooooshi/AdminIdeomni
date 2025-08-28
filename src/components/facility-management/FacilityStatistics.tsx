@@ -47,7 +47,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
   refreshTrigger,
   onRefresh,
 }) => {
-  const { t } = useTranslation('facilityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [statistics, setStatistics] = useState<FacilityStatsType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,7 +60,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       const data = await FacilityService.getFacilityStatistics();
       setStatistics(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('STATISTICS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('facilityManagement.STATISTICS_LOAD_ERROR'));
       setStatistics(null);
     } finally {
       setLoading(false);
@@ -129,7 +129,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
         <CircularProgress />
         <Typography variant="body2" sx={{ ml: 2 }}>
-          {t('LOADING_STATISTICS')}
+          {t('facilityManagement.LOADING_STATISTICS')}
         </Typography>
       </Box>
     );
@@ -146,7 +146,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
   if (!statistics) {
     return (
       <Alert severity="info" sx={{ mb: 2 }}>
-        {t('NO_DATA')}
+        {t('facilityManagement.NO_DATA')}
       </Alert>
     );
   }
@@ -156,9 +156,9 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       {/* Header with Refresh */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" component="h2">
-          {t('FACILITY_STATISTICS')}
+          {t('facilityManagement.FACILITY_STATISTICS')}
         </Typography>
-        <Tooltip title={t('REFRESH_DATA')}>
+        <Tooltip title={t('facilityManagement.REFRESH_DATA')}>
           <IconButton onClick={handleRefresh} disabled={loading}>
             <RefreshIcon />
           </IconButton>
@@ -173,7 +173,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography color="textSecondary" gutterBottom variant="body2">
-                    {t('TOTAL_FACILITIES')}
+                    {t('facilityManagement.TOTAL_FACILITIES')}
                   </Typography>
                   <Typography variant="h4" component="div">
                     {statistics.totalFacilities}
@@ -191,7 +191,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography color="textSecondary" gutterBottom variant="body2">
-                    {t('ACTIVE_FACILITIES')}
+                    {t('facilityManagement.ACTIVE_FACILITIES')}
                   </Typography>
                   <Typography variant="h4" component="div" color="success.main">
                     {statistics.activeFacilities}
@@ -212,7 +212,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography color="textSecondary" gutterBottom variant="body2">
-                    {t('INACTIVE_FACILITIES')}
+                    {t('facilityManagement.INACTIVE_FACILITIES')}
                   </Typography>
                   <Typography variant="h4" component="div" color="warning.main">
                     {statistics.inactiveFacilities}
@@ -233,13 +233,13 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography color="textSecondary" gutterBottom variant="body2">
-                    {t('FACILITIES_BY_CATEGORY')}
+                    {t('facilityManagement.FACILITIES_BY_CATEGORY')}
                   </Typography>
                   <Typography variant="h4" component="div">
                     {Object.keys(statistics.facilitiesByCategory).length}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    {t('CATEGORY_BREAKDOWN')}
+                    {t('facilityManagement.CATEGORY_BREAKDOWN')}
                   </Typography>
                 </Box>
                 <PieChartIcon color="secondary" sx={{ fontSize: 40 }} />
@@ -258,7 +258,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" gap={1} mb={2}>
                 <PieChartIcon color="primary" />
                 <Typography variant="h6" component="h3">
-                  {t('FACILITIES_BY_CATEGORY')}
+                  {t('facilityManagement.FACILITIES_BY_CATEGORY')}
                 </Typography>
               </Box>
               
@@ -289,7 +289,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                         secondary={
                           <Box sx={{ mt: 1 }}>
                             <Typography variant="body2" color="textSecondary">
-                              {calculatePercentage(count, statistics.totalFacilities)}% {t('OF_TOTAL')}
+                              {calculatePercentage(count, statistics.totalFacilities)}% {t('facilityManagement.OF_TOTAL')}
                             </Typography>
                             <Box
                               sx={{
@@ -329,7 +329,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
               <Box display="flex" alignItems="center" gap={1} mb={2}>
                 <BarChartIcon color="secondary" />
                 <Typography variant="h6" component="h3">
-                  {t('FACILITIES_BY_TYPE')}
+                  {t('facilityManagement.FACILITIES_BY_TYPE')}
                 </Typography>
               </Box>
               
@@ -395,12 +395,12 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       <Card sx={{ mt: 3 }}>
         <CardContent>
           <Typography variant="h6" component="h3" gutterBottom>
-            {t('SUMMARY')}
+            {t('facilityManagement.SUMMARY')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                {t('MOST_POPULAR_CATEGORY')}
+                {t('facilityManagement.MOST_POPULAR_CATEGORY')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.entries(statistics.facilitiesByCategory)
@@ -412,7 +412,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                {t('MOST_POPULAR_TYPE')}
+                {t('facilityManagement.MOST_POPULAR_TYPE')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.entries(statistics.facilitiesByType)
@@ -424,7 +424,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                {t('ACTIVE_RATE')}
+                {t('facilityManagement.ACTIVE_RATE')}
               </Typography>
               <Typography variant="body1" fontWeight="medium" color="success.main">
                 {calculatePercentage(statistics.activeFacilities, statistics.totalFacilities)}%
@@ -432,7 +432,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Typography variant="body2" color="textSecondary">
-                {t('TOTAL_CATEGORIES')}
+                {t('facilityManagement.TOTAL_CATEGORIES')}
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {Object.keys(statistics.facilitiesByCategory).length}

@@ -51,7 +51,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
   facilities,
   onRefresh,
 }) => {
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
   const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
   const [facilityDetails, setFacilityDetails] = useState<FacilityInfrastructureStatus | null>(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -99,7 +99,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
       const details = await infrastructureService.getFacilityStatus(facilityId);
       setFacilityDetails(details);
     } catch (err: any) {
-      setError(err.message || t('ERROR_LOADING_DETAILS'));
+      setError(err.message || t('infrastructure.ERROR_LOADING_DETAILS'));
     } finally {
       setLoadingDetails(false);
     }
@@ -128,34 +128,34 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
     <Box>
       {/* Facilities Table */}
       <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
-        {t('FACILITIES_STATUS')}
+        {t('infrastructure.FACILITIES_STATUS')}
       </Typography>
 
       {facilitiesNeedingInfrastructure.length === 0 ? (
         <Alert severity="info">
-          {t('NO_FACILITIES_REQUIRING_INFRASTRUCTURE')}
+          {t('infrastructure.NO_FACILITIES_REQUIRING_INFRASTRUCTURE')}
         </Alert>
       ) : (
         <TableContainer component={Paper} sx={{ mb: 4 }}>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>{t('FACILITY')}</TableCell>
-                <TableCell>{t('TYPE')}</TableCell>
+                <TableCell>{t('infrastructure.FACILITY')}</TableCell>
+                <TableCell>{t('infrastructure.TYPE')}</TableCell>
                 <TableCell align="center">
-                  <WaterIcon fontSize="small" /> {t('WATER')}
+                  <WaterIcon fontSize="small" /> {t('infrastructure.WATER')}
                 </TableCell>
                 <TableCell align="center">
-                  <PowerIcon fontSize="small" /> {t('POWER')}
+                  <PowerIcon fontSize="small" /> {t('infrastructure.POWER')}
                 </TableCell>
                 <TableCell align="center">
-                  <BaseStationIcon fontSize="small" /> {t('BASE_STATION')}
+                  <BaseStationIcon fontSize="small" /> {t('infrastructure.BASE_STATION')}
                 </TableCell>
                 <TableCell align="center">
-                  <FireStationIcon fontSize="small" /> {t('FIRE_STATION')}
+                  <FireStationIcon fontSize="small" /> {t('infrastructure.FIRE_STATION')}
                 </TableCell>
-                <TableCell>{t('STATUS')}</TableCell>
-                <TableCell>{t('ACTIONS')}</TableCell>
+                <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -171,14 +171,14 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2">
-                      {t(facility.facilityType)}
+                      {t(`infrastructure.${facility.facilityType}`)}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Tooltip title={
                       facility.infrastructureStatus?.water?.connected 
-                        ? `${t('CONNECTED_TO')} ${facility.infrastructureStatus.water.providerTeam}`
-                        : t('NOT_CONNECTED')
+                        ? `${t('infrastructure.CONNECTED_TO')} ${facility.infrastructureStatus.water.providerTeam}`
+                        : t('infrastructure.NOT_CONNECTED')
                     }>
                       <span>
                         {getStatusIcon(facility.infrastructureStatus?.water?.connected)}
@@ -188,8 +188,8 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   <TableCell align="center">
                     <Tooltip title={
                       facility.infrastructureStatus?.power?.connected 
-                        ? `${t('CONNECTED_TO')} ${facility.infrastructureStatus.power.providerTeam}`
-                        : t('NOT_CONNECTED')
+                        ? `${t('infrastructure.CONNECTED_TO')} ${facility.infrastructureStatus.power.providerTeam}`
+                        : t('infrastructure.NOT_CONNECTED')
                     }>
                       <span>
                         {getStatusIcon(facility.infrastructureStatus?.power?.connected)}
@@ -199,8 +199,8 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   <TableCell align="center">
                     <Tooltip title={
                       facility.infrastructureStatus?.baseStation?.covered 
-                        ? `${t('COVERED_BY')} ${facility.infrastructureStatus.baseStation.providerTeam}`
-                        : t('NOT_COVERED')
+                        ? `${t('infrastructure.COVERED_BY')} ${facility.infrastructureStatus.baseStation.providerTeam}`
+                        : t('infrastructure.NOT_COVERED')
                     }>
                       <span>
                         {getStatusIcon(facility.infrastructureStatus?.baseStation?.covered)}
@@ -210,8 +210,8 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   <TableCell align="center">
                     <Tooltip title={
                       facility.infrastructureStatus?.fireStation?.covered 
-                        ? `${t('COVERED_BY')} ${facility.infrastructureStatus.fireStation.providerTeam}`
-                        : t('NOT_COVERED')
+                        ? `${t('infrastructure.COVERED_BY')} ${facility.infrastructureStatus.fireStation.providerTeam}`
+                        : t('infrastructure.NOT_COVERED')
                     }>
                       <span>
                         {getStatusIcon(facility.infrastructureStatus?.fireStation?.covered)}
@@ -220,7 +220,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={t(facility.operationalStatus)}
+                      label={t(`infrastructure.${facility.operationalStatus}`)}
                       color={getOperationalStatusColor(facility.operationalStatus)}
                       size="small"
                       icon={getOperationalStatusIcon(facility.operationalStatus)}
@@ -231,7 +231,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                       size="small"
                       onClick={() => handleViewDetails(facility.facilityId)}
                     >
-                      {t('VIEW_DETAILS')}
+                      {t('infrastructure.VIEW_DETAILS')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -245,7 +245,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
       {infrastructureFacilities.length > 0 && (
         <>
           <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
-            {t('YOUR_INFRASTRUCTURE_FACILITIES')}
+            {t('infrastructure.YOUR_INFRASTRUCTURE_FACILITIES')}
           </Typography>
           <Grid container spacing={2}>
             {infrastructureFacilities.map((facility) => (
@@ -258,14 +258,14 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                       {facility.facilityType === 'BASE_STATION' && <BaseStationIcon color="primary" />}
                       {facility.facilityType === 'FIRE_STATION' && <FireStationIcon color="primary" />}
                       <Typography variant="subtitle2" sx={{ ml: 1 }}>
-                        {t(facility.facilityType)}
+                        {t(`infrastructure.${facility.facilityType}`)}
                       </Typography>
                     </Box>
                     <Typography variant="body2" color="text.secondary">
-                      {t('LEVEL')}: {facility.level}
+                      {t('infrastructure.LEVEL')}: {facility.level}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('LOCATION')}: ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
+                      {t('infrastructure.LOCATION')}: ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
                     </Typography>
                   </CardContent>
                 </Card>
@@ -279,7 +279,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
       {selectedFacility && facilityDetails && (
         <Paper sx={{ mt: 3, p: 3 }}>
           <Typography variant="h6" gutterBottom>
-            {t('FACILITY_DETAILS')}
+            {t('infrastructure.FACILITY_DETAILS')}
           </Typography>
           {loadingDetails ? (
             <CircularProgress />
@@ -289,59 +289,59 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
             <Grid container spacing={2}>
               <Grid size={12}>
                 <Typography variant="body2" color="text.secondary">
-                  {t('FACILITY_ID')}: {facilityDetails.facilityId}
+                  {t('infrastructure.FACILITY_ID')}: {facilityDetails.facilityId}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('TYPE')}: {t(facilityDetails.facilityType)}
+                  {t('infrastructure.TYPE')}: {t(`infrastructure.${facilityDetails.facilityType}`)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('OPERATIONAL_PERCENTAGE')}: {facilityDetails.operationalPercentage}%
+                  {t('infrastructure.OPERATIONAL_PERCENTAGE')}: {facilityDetails.operationalPercentage}%
                 </Typography>
               </Grid>
               
               {/* Infrastructure Details */}
               <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('WATER_CONNECTION')}
+                  {t('infrastructure.WATER_CONNECTION')}
                 </Typography>
                 {facilityDetails.infrastructureStatus.water.connected ? (
                   <Box>
                     <Typography variant="body2">
-                      {t('PROVIDER')}: {facilityDetails.infrastructureStatus.water.provider?.teamName}
+                      {t('infrastructure.PROVIDER')}: {facilityDetails.infrastructureStatus.water.provider?.teamName}
                     </Typography>
                     <Typography variant="body2">
-                      {t('UNIT_PRICE')}: ${facilityDetails.infrastructureStatus.water.provider?.unitPrice}
+                      {t('infrastructure.UNIT_PRICE')}: ${facilityDetails.infrastructureStatus.water.provider?.unitPrice}
                     </Typography>
                     <Typography variant="body2">
-                      {t('DISTANCE')}: {facilityDetails.infrastructureStatus.water.connectionDetails?.distance}
+                      {t('infrastructure.DISTANCE')}: {facilityDetails.infrastructureStatus.water.connectionDetails?.distance}
                     </Typography>
                   </Box>
                 ) : (
                   <Alert severity="warning" sx={{ mt: 1 }}>
-                    {t('NOT_CONNECTED')}
+                    {t('infrastructure.NOT_CONNECTED')}
                   </Alert>
                 )}
               </Grid>
 
               <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('POWER_CONNECTION')}
+                  {t('infrastructure.POWER_CONNECTION')}
                 </Typography>
                 {facilityDetails.infrastructureStatus.power.connected ? (
                   <Box>
                     <Typography variant="body2">
-                      {t('PROVIDER')}: {facilityDetails.infrastructureStatus.power.provider?.teamName}
+                      {t('infrastructure.PROVIDER')}: {facilityDetails.infrastructureStatus.power.provider?.teamName}
                     </Typography>
                     <Typography variant="body2">
-                      {t('UNIT_PRICE')}: ${facilityDetails.infrastructureStatus.power.provider?.unitPrice}
+                      {t('infrastructure.UNIT_PRICE')}: ${facilityDetails.infrastructureStatus.power.provider?.unitPrice}
                     </Typography>
                     <Typography variant="body2">
-                      {t('DISTANCE')}: {facilityDetails.infrastructureStatus.power.connectionDetails?.distance}
+                      {t('infrastructure.DISTANCE')}: {facilityDetails.infrastructureStatus.power.connectionDetails?.distance}
                     </Typography>
                   </Box>
                 ) : (
                   <Alert severity="warning" sx={{ mt: 1 }}>
-                    {t('NOT_CONNECTED')}
+                    {t('infrastructure.NOT_CONNECTED')}
                   </Alert>
                 )}
               </Grid>
@@ -349,14 +349,14 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
               <Grid size={12}>
                 {facilityDetails.missingInfrastructure.length > 0 && (
                   <Alert severity="error">
-                    {t('MISSING_INFRASTRUCTURE')}: {facilityDetails.missingInfrastructure.map(i => t(i)).join(', ')}
+                    {t('infrastructure.MISSING_INFRASTRUCTURE')}: {facilityDetails.missingInfrastructure.map(i => t(`infrastructure.${i}`)).join(', ')}
                   </Alert>
                 )}
               </Grid>
             </Grid>
           )}
           <Button sx={{ mt: 2 }} onClick={() => setSelectedFacility(null)}>
-            {t('CLOSE')}
+            {t('infrastructure.CLOSE')}
           </Button>
         </Paper>
       )}

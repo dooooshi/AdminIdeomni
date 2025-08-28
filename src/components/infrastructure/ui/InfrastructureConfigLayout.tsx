@@ -10,7 +10,7 @@ interface InfrastructureConfigLayoutProps {
 
 const InfrastructureConfigLayout: React.FC<InfrastructureConfigLayoutProps> = ({ templateId }) => {
   const theme = useTheme();
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -34,7 +34,7 @@ const InfrastructureConfigLayout: React.FC<InfrastructureConfigLayoutProps> = ({
         <CardHeader
           title={
             <Typography variant="h6" fontWeight={600}>
-              {templateId ? t('INFRASTRUCTURE_CONFIG') : t('ALL_INFRASTRUCTURE_CONFIGS')}
+              {templateId ? t('infrastructure.INFRASTRUCTURE_CONFIG') : t('infrastructure.ALL_INFRASTRUCTURE_CONFIGS')}
             </Typography>
           }
           sx={{ borderBottom: '1px solid', borderColor: 'divider', py: 2 }}

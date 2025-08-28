@@ -70,7 +70,7 @@ function a11yProps(index: number) {
 }
 
 const AdminUserActivityDashboard: React.FC = () => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -93,7 +93,7 @@ const AdminUserActivityDashboard: React.FC = () => {
       setStatistics(data);
     } catch (err) {
       console.error('Failed to load statistics:', err);
-      setError(err instanceof Error ? err.message : t('STATISTICS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.STATISTICS_LOAD_ERROR'));
     } finally {
       setStatisticsLoading(false);
     }
@@ -115,30 +115,30 @@ const AdminUserActivityDashboard: React.FC = () => {
 
     return [
       {
-        title: t('TOTAL_USERS'),
+        title: t('activityManagement.TOTAL_USERS'),
         value: statistics.totalUsers,
-        subtitle: t('REGISTERED_USERS'),
+        subtitle: t('activityManagement.REGISTERED_USERS'),
         color: 'primary',
         icon: <PeopleIcon />,
       },
       {
-        title: t('USERS_WITH_ACTIVITY'),
+        title: t('activityManagement.USERS_WITH_ACTIVITY'),
         value: statistics.usersWithActivity,
-        subtitle: `${((statistics.usersWithActivity / statistics.totalUsers) * 100).toFixed(1)}% ${t('ASSIGNED')}`,
+        subtitle: `${((statistics.usersWithActivity / statistics.totalUsers) * 100).toFixed(1)}% ${t('activityManagement.ASSIGNED')}`,
         color: 'success',
         icon: <AssignmentIcon />,
       },
       {
-        title: t('USERS_WITHOUT_ACTIVITY'),
+        title: t('activityManagement.USERS_WITHOUT_ACTIVITY'),
         value: statistics.usersWithoutActivity,
-        subtitle: `${((statistics.usersWithoutActivity / statistics.totalUsers) * 100).toFixed(1)}% ${t('UNASSIGNED')}`,
+        subtitle: `${((statistics.usersWithoutActivity / statistics.totalUsers) * 100).toFixed(1)}% ${t('activityManagement.UNASSIGNED')}`,
         color: 'warning',
         icon: <PeopleIcon />,
       },
       {
-        title: t('TOTAL_TEAMS'),
+        title: t('activityManagement.TOTAL_TEAMS'),
         value: statistics.teamStatistics.totalTeams,
-        subtitle: `${statistics.teamStatistics.averageTeamSize.toFixed(1)} ${t('AVERAGE_SIZE')}`,
+        subtitle: `${statistics.teamStatistics.averageTeamSize.toFixed(1)} ${t('activityManagement.AVERAGE_SIZE')}`,
         color: 'info',
         icon: <GroupIcon />,
       },
@@ -149,7 +149,7 @@ const AdminUserActivityDashboard: React.FC = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress size={40} />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_DASHBOARD')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_DASHBOARD')}</Typography>
       </Box>
     );
   }
@@ -162,14 +162,14 @@ const AdminUserActivityDashboard: React.FC = () => {
           <Box>
             <Typography variant="h4" component="h1" gutterBottom>
               <DashboardIcon sx={{ mr: 2, verticalAlign: 'middle' }} />
-              {t('ADMIN_USER_ACTIVITY_DASHBOARD')}
+              {t('activityManagement.ADMIN_USER_ACTIVITY_DASHBOARD')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('COMPREHENSIVE_ADMIN_MANAGEMENT_DESCRIPTION')}
+              {t('activityManagement.COMPREHENSIVE_ADMIN_MANAGEMENT_DESCRIPTION')}
             </Typography>
           </Box>
           <Stack direction="row" spacing={2}>
-            <Tooltip title={t('REFRESH_DASHBOARD')}>
+            <Tooltip title={t('activityManagement.REFRESH_DASHBOARD')}>
               <IconButton onClick={handleRefresh} disabled={refreshing}>
                 <RefreshIcon />
               </IconButton>
@@ -182,7 +182,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                 console.log('Settings dialog not yet implemented');
               }}
             >
-              {t('SETTINGS')}
+              {t('activityManagement.SETTINGS')}
             </Button>
           </Stack>
         </Box>
@@ -223,7 +223,7 @@ const AdminUserActivityDashboard: React.FC = () => {
           <Card sx={{ mb: 3 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                {t('RECENT_ACTIVITY')}
+                {t('activityManagement.RECENT_ACTIVITY')}
               </Typography>
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, sm: 4 }}>
@@ -232,7 +232,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                       {statistics.recentAssignments.today}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('ASSIGNMENTS_TODAY')}
+                      {t('activityManagement.ASSIGNMENTS_TODAY')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -242,7 +242,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                       {statistics.recentAssignments.thisWeek}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('ASSIGNMENTS_THIS_WEEK')}
+                      {t('activityManagement.ASSIGNMENTS_THIS_WEEK')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -252,7 +252,7 @@ const AdminUserActivityDashboard: React.FC = () => {
                       {statistics.recentAssignments.thisMonth}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('ASSIGNMENTS_THIS_MONTH')}
+                      {t('activityManagement.ASSIGNMENTS_THIS_MONTH')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -273,25 +273,25 @@ const AdminUserActivityDashboard: React.FC = () => {
             scrollButtons="auto"
           >
             <Tab 
-              label={t('USER_SEARCH_ASSIGNMENT')} 
+              label={t('activityManagement.USER_SEARCH_ASSIGNMENT')} 
               icon={<PeopleIcon />} 
               iconPosition="start"
               {...a11yProps(0)} 
             />
             <Tab 
-              label={t('TEAM_MANAGEMENT')} 
+              label={t('activityManagement.TEAM_MANAGEMENT')} 
               icon={<GroupIcon />} 
               iconPosition="start"
               {...a11yProps(1)} 
             />
             <Tab 
-              label={t('STATISTICS_ANALYTICS')} 
+              label={t('activityManagement.STATISTICS_ANALYTICS')} 
               icon={<AnalyticsIcon />} 
               iconPosition="start"
               {...a11yProps(2)} 
             />
             <Tab 
-              label={t('EXPORT_REPORTS')} 
+              label={t('activityManagement.EXPORT_REPORTS')} 
               icon={<DownloadIcon />} 
               iconPosition="start"
               {...a11yProps(3)} 

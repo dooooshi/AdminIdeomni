@@ -24,17 +24,17 @@ const HexTile: React.FC<HexTileProps> = ({
 	hexSize = 28
 }) => {
 	const theme = useTheme();
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 
 	// Helper function to get translated terrain name
 	const getTerrainName = (landType: string): string => {
 		switch (landType) {
 			case 'MARINE':
-				return t('TERRAIN_MARINE');
+				return t('map.TERRAIN_MARINE');
 			case 'PLAIN':
-				return t('TERRAIN_PLAIN');
+				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
-				return t('TERRAIN_COASTAL');
+				return t('map.TERRAIN_COASTAL');
 			default:
 				return landType.toLowerCase();
 		}
@@ -183,7 +183,7 @@ const HexTile: React.FC<HexTileProps> = ({
 							fontSize: '0.875rem'
 						}}
 					>
-						{t('SELECTED_TILE_INFO')}
+						{t('map.SELECTED_TILE_INFO')}
 					</Typography>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
 						<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -195,7 +195,7 @@ const HexTile: React.FC<HexTileProps> = ({
 									fontWeight: 500
 								}}
 							>
-								{t('TILE_ID')}:
+								{t('map.TILE_ID')}:
 							</Typography>
 							<Typography 
 								variant="caption" 
@@ -217,7 +217,7 @@ const HexTile: React.FC<HexTileProps> = ({
 									fontWeight: 500
 								}}
 							>
-								{t('POSITION')}:
+								{t('map.POSITION')}:
 							</Typography>
 							<Typography 
 								variant="caption" 
@@ -240,7 +240,7 @@ const HexTile: React.FC<HexTileProps> = ({
 									fontWeight: 500
 								}}
 							>
-								{t('TERRAIN')}:
+								{t('map.TERRAIN')}:
 							</Typography>
 							<Typography 
 								variant="caption" 
@@ -265,7 +265,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 500
 									}}
 								>
-									{t('CURRENT_GOLD_PRICE')}:
+									{t('map.CURRENT_GOLD_PRICE')}:
 								</Typography>
 								<Typography 
 									variant="caption" 
@@ -291,7 +291,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 500
 									}}
 								>
-									{t('CURRENT_CARBON_PRICE')}:
+									{t('map.CURRENT_CARBON_PRICE')}:
 								</Typography>
 								<Typography 
 									variant="caption" 
@@ -317,7 +317,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 500
 									}}
 								>
-									{t('CURRENT_POPULATION')}:
+									{t('map.CURRENT_POPULATION')}:
 								</Typography>
 								<Typography 
 									variant="caption" 
@@ -343,7 +343,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 500
 									}}
 								>
-									{t('STATUS')}:
+									{t('map.STATUS')}:
 								</Typography>
 								<Typography 
 									variant="caption" 
@@ -353,7 +353,7 @@ const HexTile: React.FC<HexTileProps> = ({
 										fontWeight: 600
 									}}
 								>
-									{t('MODIFIED')}
+									{t('map.MODIFIED')}
 								</Typography>
 							</Box>
 						)}
@@ -378,7 +378,7 @@ const HexTile: React.FC<HexTileProps> = ({
 											fontWeight: 500
 										}}
 									>
-										{t('PURCHASE_STATUS')}:
+										{t('map.PURCHASE_STATUS')}:
 									</Typography>
 									<Typography 
 										variant="caption" 
@@ -388,7 +388,7 @@ const HexTile: React.FC<HexTileProps> = ({
 											fontWeight: 600
 										}}
 									>
-										{tile.isOwned ? t('OWNED_BY_TEAM') : tile.canPurchase ? t('AVAILABLE_FOR_PURCHASE') : t('UNAVAILABLE')}
+										{tile.isOwned ? t('map.OWNED_BY_TEAM') : tile.canPurchase ? t('map.AVAILABLE_FOR_PURCHASE') : t('map.UNAVAILABLE')}
 									</Typography>
 								</Box>
 
@@ -403,7 +403,7 @@ const HexTile: React.FC<HexTileProps> = ({
 												fontWeight: 500
 											}}
 										>
-											{t('AVAILABLE_AREA')}:
+											{t('map.AVAILABLE_AREA')}:
 										</Typography>
 										<Typography 
 											variant="caption" 
@@ -414,7 +414,7 @@ const HexTile: React.FC<HexTileProps> = ({
 												fontFamily: 'monospace'
 											}}
 										>
-											{Number(tile.availableArea).toFixed(1)} {t('AREA_UNITS')}
+											{Number(tile.availableArea).toFixed(1)} {t('map.AREA_UNITS')}
 										</Typography>
 									</Box>
 								)}
@@ -430,7 +430,7 @@ const HexTile: React.FC<HexTileProps> = ({
 												fontWeight: 500
 											}}
 										>
-											{t('COST_PER_UNIT')}:
+											{t('map.COST_PER_UNIT')}:
 										</Typography>
 										<Typography 
 											variant="caption" 
@@ -465,7 +465,7 @@ const HexTile: React.FC<HexTileProps> = ({
 												textAlign: 'center'
 											}}
 										>
-											💡 {t('CLICK_TO_PURCHASE_HINT')}
+											💡 {t('map.CLICK_TO_PURCHASE_HINT')}
 										</Typography>
 									</Box>
 								)}

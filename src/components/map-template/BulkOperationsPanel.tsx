@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -90,7 +90,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
   templateId,
   onOperationComplete,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);
@@ -199,25 +199,25 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
     const updateData = buildUpdateData();
 
     if (Object.keys(updateData).length === 0) {
-      errors.push(t('NO_CHANGES_SPECIFIED'));
+      errors.push(t('mapTemplate.NO_CHANGES_SPECIFIED'));
     }
 
     if (useMultipliers) {
       if (goldMultiplier < 0.1 || goldMultiplier > 10) {
-        errors.push(t('GOLD_MULTIPLIER_INVALID'));
+        errors.push(t('mapTemplate.GOLD_MULTIPLIER_INVALID'));
       }
       if (carbonMultiplier < 0.1 || carbonMultiplier > 10) {
-        errors.push(t('CARBON_MULTIPLIER_INVALID'));
+        errors.push(t('mapTemplate.CARBON_MULTIPLIER_INVALID'));
       }
     } else {
       if (fixedGold !== '' && (Number(fixedGold) < 0 || Number(fixedGold) > 1000000)) {
-        errors.push(t('FIXED_GOLD_INVALID'));
+        errors.push(t('mapTemplate.FIXED_GOLD_INVALID'));
       }
       if (fixedCarbon !== '' && (Number(fixedCarbon) < 0 || Number(fixedCarbon) > 20000)) {
-        errors.push(t('FIXED_CARBON_INVALID'));
+        errors.push(t('mapTemplate.FIXED_CARBON_INVALID'));
       }
       if (fixedMaxLevel !== '' && (Number(fixedMaxLevel) < 1 || Number(fixedMaxLevel) > 10)) {
-        errors.push(t('FIXED_MAX_LEVEL_INVALID'));
+        errors.push(t('mapTemplate.FIXED_MAX_LEVEL_INVALID'));
       }
     }
 
@@ -270,7 +270,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         updated: 0,
         failed: 1,
         details: [{ configId: 'unknown', success: false, error: 'Update failed' }],
-        message: t('BULK_UPDATE_OPERATION_FAILED')
+        message: t('mapTemplate.BULK_UPDATE_OPERATION_FAILED')
       });
       setResultDialogOpen(true);
     } finally {
@@ -312,7 +312,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={1}>
             <BuildIcon />
-            <Typography variant="h6">{t('BULK_OPERATIONS')}</Typography>
+            <Typography variant="h6">{t('mapTemplate.BULK_OPERATIONS')}</Typography>
           </Box>
         }
         action={
@@ -322,7 +322,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             onClick={loadStatistics}
             size="small"
           >
-            {t('REFRESH_STATS')}
+            {t('mapTemplate.REFRESH_STATS')}
           </Button>
         }
       />
@@ -332,9 +332,9 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         {statistics && (
           <Alert severity="info" sx={{ mb: 3 }}>
             <Typography variant="body2">
-              {t('CURRENT_STATS')}: {statistics.totalConfigs} {t('TOTAL_CONFIGS')}, {' '}
-              {statistics.allowedConfigs} {t('ALLOWED')}, {' '}
-              {statistics.disallowedConfigs} {t('DISALLOWED')}
+              {t('mapTemplate.CURRENT_STATS')}: {statistics.totalConfigs} {t('mapTemplate.TOTAL_CONFIGS')}, {' '}
+              {statistics.allowedConfigs} {t('mapTemplate.ALLOWED')}, {' '}
+              {statistics.disallowedConfigs} {t('mapTemplate.DISALLOWED')}
             </Typography>
           </Alert>
         )}
@@ -342,9 +342,9 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         {/* Tabs */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label={t('BULK_UPDATE')} icon={<TrendingUpIcon />} iconPosition="start" />
-            <Tab label={t('INITIALIZE_DEFAULTS')} icon={<BuildIcon />} iconPosition="start" />
-            <Tab label={t('ADVANCED_OPERATIONS')} icon={<AssessmentIcon />} iconPosition="start" />
+            <Tab label={t('mapTemplate.BULK_UPDATE')} icon={<TrendingUpIcon />} iconPosition="start" />
+            <Tab label={t('mapTemplate.INITIALIZE_DEFAULTS')} icon={<BuildIcon />} iconPosition="start" />
+            <Tab label={t('mapTemplate.ADVANCED_OPERATIONS')} icon={<AssessmentIcon />} iconPosition="start" />
           </Tabs>
         </Box>
 
@@ -354,10 +354,10 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             {/* Land Type Selection */}
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth sx={{ minWidth: 200 }}>
-                <InputLabel>{t('TARGET_LAND_TYPE')}</InputLabel>
+                <InputLabel>{t('mapTemplate.TARGET_LAND_TYPE')}</InputLabel>
                 <Select
                   value={selectedLandType}
-                  label={t('TARGET_LAND_TYPE')}
+                  label={t('mapTemplate.TARGET_LAND_TYPE')}
                   onChange={(e) => setSelectedLandType(e.target.value as LandType)}
                   MenuProps={{
                     PaperProps: {
@@ -370,7 +370,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   {Object.values(LandType).map((type) => (
                     <MenuItem key={type} value={type} sx={{ minWidth: 200 }}>
                       <Box display="flex" alignItems="center" gap={1}>
-                        {t(`LAND_TYPE_${type}`)}
+                        {t(`mapTemplate.LAND_TYPE_${type}`)}
                         <Chip 
                           label={statistics?.configsByLandType[type] || 0} 
                           size="small" 
@@ -386,10 +386,10 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             {/* Preset Scenarios */}
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth sx={{ minWidth: 200 }}>
-                <InputLabel>{t('PRESET_SCENARIO')}</InputLabel>
+                <InputLabel>{t('mapTemplate.PRESET_SCENARIO')}</InputLabel>
                 <Select
                   value={presetScenario}
-                  label={t('PRESET_SCENARIO')}
+                  label={t('mapTemplate.PRESET_SCENARIO')}
                   onChange={(e) => handlePresetScenarioChange(e.target.value as any)}
                   MenuProps={{
                     PaperProps: {
@@ -399,10 +399,10 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                     },
                   }}
                 >
-                  <MenuItem value="easy" sx={{ minWidth: 180 }}>{t('EASY_MODE')}</MenuItem>
-                  <MenuItem value="normal" sx={{ minWidth: 180 }}>{t('NORMAL_MODE')}</MenuItem>
-                  <MenuItem value="hard" sx={{ minWidth: 180 }}>{t('HARD_MODE')}</MenuItem>
-                  <MenuItem value="custom" sx={{ minWidth: 180 }}>{t('CUSTOM')}</MenuItem>
+                  <MenuItem value="easy" sx={{ minWidth: 180 }}>{t('mapTemplate.EASY_MODE')}</MenuItem>
+                  <MenuItem value="normal" sx={{ minWidth: 180 }}>{t('mapTemplate.NORMAL_MODE')}</MenuItem>
+                  <MenuItem value="hard" sx={{ minWidth: 180 }}>{t('mapTemplate.HARD_MODE')}</MenuItem>
+                  <MenuItem value="custom" sx={{ minWidth: 180 }}>{t('mapTemplate.CUSTOM')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -416,7 +416,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                     onChange={(e) => setUseMultipliers(e.target.checked)}
                   />
                 }
-                label={t('USE_MULTIPLIERS_VS_FIXED_VALUES')}
+                label={t('mapTemplate.USE_MULTIPLIERS_VS_FIXED_VALUES')}
               />
             </Grid>
 
@@ -425,13 +425,13 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
               <>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('COST_MULTIPLIERS')}
+                    {t('mapTemplate.COST_MULTIPLIERS')}
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
-                    {t('GOLD_MULTIPLIER')}: {goldMultiplier.toFixed(2)}
+                    {t('mapTemplate.GOLD_MULTIPLIER')}: {goldMultiplier.toFixed(2)}
                   </Typography>
                   <Slider
                     value={goldMultiplier}
@@ -451,7 +451,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
 
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
-                    {t('CARBON_MULTIPLIER')}: {carbonMultiplier.toFixed(2)}
+                    {t('mapTemplate.CARBON_MULTIPLIER')}: {carbonMultiplier.toFixed(2)}
                   </Typography>
                   <Slider
                     value={carbonMultiplier}
@@ -471,7 +471,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
 
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
-                    {t('UPGRADE_GOLD_MULTIPLIER')}: {upgradeGoldMultiplier.toFixed(2)}
+                    {t('mapTemplate.UPGRADE_GOLD_MULTIPLIER')}: {upgradeGoldMultiplier.toFixed(2)}
                   </Typography>
                   <Slider
                     value={upgradeGoldMultiplier}
@@ -491,7 +491,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
 
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="body2" gutterBottom>
-                    {t('UPGRADE_CARBON_MULTIPLIER')}: {upgradeCarbonMultiplier.toFixed(2)}
+                    {t('mapTemplate.UPGRADE_CARBON_MULTIPLIER')}: {upgradeCarbonMultiplier.toFixed(2)}
                   </Typography>
                   <Slider
                     value={upgradeCarbonMultiplier}
@@ -516,7 +516,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
               <>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('FIXED_VALUES')}
+                    {t('mapTemplate.FIXED_VALUES')}
                   </Typography>
                 </Grid>
 
@@ -524,7 +524,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   <TextField
                     fullWidth
                     type="number"
-                    label={t('FIXED_GOLD_COST')}
+                    label={t('mapTemplate.FIXED_GOLD_COST')}
                     value={fixedGold}
                     onChange={(e) => setFixedGold(e.target.value === '' ? '' : Number(e.target.value))}
                     InputProps={{
@@ -537,7 +537,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   <TextField
                     fullWidth
                     type="number"
-                    label={t('FIXED_CARBON_COST')}
+                    label={t('mapTemplate.FIXED_CARBON_COST')}
                     value={fixedCarbon}
                     onChange={(e) => setFixedCarbon(e.target.value === '' ? '' : Number(e.target.value))}
                     InputProps={{
@@ -550,7 +550,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   <TextField
                     fullWidth
                     type="number"
-                    label={t('FIXED_MAX_LEVEL')}
+                    label={t('mapTemplate.FIXED_MAX_LEVEL')}
                     value={fixedMaxLevel}
                     onChange={(e) => setFixedMaxLevel(e.target.value === '' ? '' : Number(e.target.value))}
                     inputProps={{ min: 1, max: 10 }}
@@ -568,7 +568,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                     onChange={(e) => setUpdateAllowedStatus(e.target.checked)}
                   />
                 }
-                label={t('UPDATE_ALLOWED_STATUS')}
+                label={t('mapTemplate.UPDATE_ALLOWED_STATUS')}
               />
             </Grid>
 
@@ -581,7 +581,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                       onChange={(e) => setAllowedStatus(e.target.checked)}
                     />
                   }
-                  label={t('SET_AS_ALLOWED')}
+                  label={t('mapTemplate.SET_AS_ALLOWED')}
                 />
               </Grid>
             )}
@@ -590,14 +590,14 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
             <Grid size={{ xs: 12 }}>
               <Box display="flex" gap={2} justifyContent="flex-end">
                 <Button onClick={resetForm}>
-                  {t('RESET')}
+                  {t('mapTemplate.RESET')}
                 </Button>
                 <Button
                   variant="outlined"
                   startIcon={<PreviewIcon />}
                   onClick={handlePreview}
                 >
-                  {t('PREVIEW')}
+                  {t('mapTemplate.PREVIEW')}
                 </Button>
                 <LoadingButton
                   variant="contained"
@@ -605,7 +605,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   onClick={handleConfirmUpdate}
                   loading={isLoading}
                 >
-                  {t('APPLY_CHANGES')}
+                  {t('mapTemplate.APPLY_CHANGES')}
                 </LoadingButton>
               </Box>
             </Grid>
@@ -617,7 +617,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
           <Box>
             <Alert severity="info" sx={{ mb: 3 }}>
               <Typography variant="body2">
-                {t('INITIALIZE_DEFAULTS_INFO')}
+                {t('mapTemplate.INITIALIZE_DEFAULTS_INFO')}
               </Typography>
             </Alert>
 
@@ -629,7 +629,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                 loading={isLoading}
                 size="large"
               >
-                {t('INITIALIZE_DEFAULT_CONFIGS')}
+                {t('mapTemplate.INITIALIZE_DEFAULT_CONFIGS')}
               </LoadingButton>
             </Box>
           </Box>
@@ -639,22 +639,22 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
         <TabPanel value={tabValue} index={2}>
           <Alert severity="warning">
             <Typography variant="body2">
-              {t('ADVANCED_OPERATIONS_COMING_SOON')}
+              {t('mapTemplate.ADVANCED_OPERATIONS_COMING_SOON')}
             </Typography>
           </Alert>
         </TabPanel>
 
         {/* Preview Dialog */}
         <Dialog open={previewDialogOpen} onClose={() => setPreviewDialogOpen(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>{t('PREVIEW_CHANGES')}</DialogTitle>
+          <DialogTitle>{t('mapTemplate.PREVIEW_CHANGES')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" gutterBottom>
-              {t('PREVIEW_CHANGES_INFO', { landType: t(`LAND_TYPE_${selectedLandType}`) })}
+              {t('mapTemplate.PREVIEW_CHANGES_INFO', { landType: t(`mapTemplate.LAND_TYPE_${selectedLandType}`) })}
             </Typography>
 
             <Paper sx={{ p: 2, mt: 2 }}>
               <Typography variant="subtitle2" gutterBottom>
-                {t('CHANGES_TO_APPLY')}:
+                {t('mapTemplate.CHANGES_TO_APPLY')}:
               </Typography>
               {/* Display preview of changes */}
               <pre style={{ fontSize: '0.875rem', whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
@@ -664,10 +664,10 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setPreviewDialogOpen(false)}>
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <Button variant="contained" onClick={handleConfirmUpdate}>
-              {t('PROCEED')}
+              {t('mapTemplate.PROCEED')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -677,23 +677,23 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
           <DialogTitle>
             <Box display="flex" alignItems="center" gap={1}>
               <WarningIcon color="warning" />
-              {t('CONFIRM_BULK_UPDATE')}
+              {t('mapTemplate.CONFIRM_BULK_UPDATE')}
             </Box>
           </DialogTitle>
           <DialogContent>
             <Alert severity="warning" sx={{ mb: 2 }}>
-              {t('BULK_UPDATE_WARNING')}
+              {t('mapTemplate.BULK_UPDATE_WARNING')}
             </Alert>
             <Typography>
-              {t('BULK_UPDATE_CONFIRM', { 
-                landType: t(`LAND_TYPE_${selectedLandType}`),
+              {t('mapTemplate.BULK_UPDATE_CONFIRM', { 
+                landType: t(`mapTemplate.LAND_TYPE_${selectedLandType}`),
                 count: statistics?.configsByLandType[selectedLandType] || 0
               })}
             </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setConfirmDialogOpen(false)}>
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <LoadingButton
               onClick={handleExecuteUpdate}
@@ -701,7 +701,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
               variant="contained"
               loading={isLoading}
             >
-              {t('CONFIRM_UPDATE')}
+              {t('mapTemplate.CONFIRM_UPDATE')}
             </LoadingButton>
           </DialogActions>
         </Dialog>
@@ -715,7 +715,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
               ) : (
                 <ErrorIcon color="error" />
               )}
-              {t('BULK_UPDATE_RESULT')}
+              {t('mapTemplate.BULK_UPDATE_RESULT')}
             </Box>
           </DialogTitle>
           <DialogContent>
@@ -725,7 +725,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                   severity={bulkResult.failed === 0 ? 'success' : 'warning'} 
                   sx={{ mb: 2 }}
                 >
-                  {t('BULK_UPDATE_SUMMARY', {
+                  {t('mapTemplate.BULK_UPDATE_SUMMARY', {
                     updated: bulkResult.updated,
                     failed: bulkResult.failed
                   })}
@@ -734,7 +734,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
                 {bulkResult.failed > 0 && (
                   <Box>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('FAILED_OPERATIONS')}:
+                      {t('mapTemplate.FAILED_OPERATIONS')}:
                     </Typography>
                     <List dense>
                       {bulkResult.details
@@ -758,7 +758,7 @@ const BulkOperationsPanel: React.FC<BulkOperationsPanelProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setResultDialogOpen(false)} variant="contained">
-              {t('CLOSE')}
+              {t('mapTemplate.CLOSE')}
             </Button>
           </DialogActions>
         </Dialog>

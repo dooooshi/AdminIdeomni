@@ -157,7 +157,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
   onPurchaseRecommendation
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   
   // Wizard state
   const [activeStep, setActiveStep] = useState(0);
@@ -481,7 +481,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
             
             <Box>
               <Typography variant="subtitle2" gutterBottom>
-                {t('PREFERRED_LAND_TYPE_OPTIONAL')}
+                {t('common.PREFERRED_LAND_TYPE_OPTIONAL')}
               </Typography>
               <Stack direction="row" spacing={1}>
                 {['PLAIN', 'COASTAL', 'MARINE'].map(landType => (

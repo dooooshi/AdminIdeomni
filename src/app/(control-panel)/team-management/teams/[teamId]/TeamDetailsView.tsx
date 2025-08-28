@@ -20,7 +20,7 @@ interface TeamDetailsViewProps {
  * Team Details View Component (User View)
  */
 function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
-  const { t } = useTranslation(['teamManagement', 'common']);
+  const { t } = useTranslation();
   const router = useRouter();
   
   const { data: team, isLoading, error } = useGetTeamDetailsQuery(teamId);
@@ -47,13 +47,13 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Typography variant="h6" className="mb-4">
-          Team not found
+          {t('teamManagement.TEAM_NOT_FOUND')}
         </Typography>
         <Button
           onClick={() => router.push('/team-management/browse')}
           startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
         >
-          Back to Browse
+          {t('teamManagement.BACK_TO_BROWSE')}
         </Button>
       </div>
     );
@@ -89,7 +89,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   onClick={() => router.push('/team-management/browse')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
                 >
-                  Back to Browse
+                  {t('teamManagement.BACK_TO_BROWSE')}
                 </Button>
               </div>
               <div className="flex items-center gap-3 mb-2">
@@ -97,20 +97,20 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   {team.name}
                 </Typography>
                 <Chip
-                  label={team.isOpen ? t('teamManagement:OPEN') : t('teamManagement:CLOSED')}
+                  label={team.isOpen ? t('teamManagement.OPEN') : t('teamManagement.CLOSED')}
                   color={team.isOpen ? 'success' : 'default'}
                   variant="outlined"
                 />
                 {activeMembers.length >= team.maxMembers && (
                   <Chip
-                    label="Full"
+                    label={t('teamManagement.FULL')}
                     color="error"
                     variant="outlined"
                   />
                 )}
               </div>
               <Typography color="text.secondary" variant="h6">
-                {team.description || t('common:NO_DESCRIPTION')}
+                {team.description || t('common.NO_DESCRIPTION')}
               </Typography>
             </div>
             
@@ -122,7 +122,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                 disabled={isJoining}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
               >
-                {isJoining ? t('teamManagement:JOINING') : t('teamManagement:JOIN_TEAM')}
+                {isJoining ? t('teamManagement.JOINING') : t('teamManagement.JOIN_TEAM')}
               </Button>
             )}
           </motion.div>
@@ -139,7 +139,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {activeMembers.length}
                   </Typography>
                   <Typography color="text.secondary">
-                    {t('teamManagement:CURRENT_MEMBERS')}
+                    {t('teamManagement.CURRENT_MEMBERS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -153,7 +153,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {team.maxMembers}
                   </Typography>
                   <Typography color="text.secondary">
-                    Max Capacity
+                    {t('teamManagement.MAX_CAPACITY')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -167,7 +167,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {team.maxMembers - activeMembers.length}
                   </Typography>
                   <Typography color="text.secondary">
-                    Available Spots
+                    {t('teamManagement.AVAILABLE_SPOTS')}
                   </Typography>
                 </Paper>
               </Grid>
@@ -181,18 +181,18 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                     {new Date(team.createdAt).toLocaleDateString()}
                   </Typography>
                   <Typography color="text.secondary">
-                    {t('teamManagement:CREATED')}
+                    {t('teamManagement.CREATED')}
                   </Typography>
                 </Paper>
               </Grid>
             </Grid>
           </motion.div>
 
-          {/* Team Leader */}
+          {/* {t('teamManagement.TEAM_LEADER_LABEL')} */}
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                {t('teamManagement:TEAM_LEADER')}
+                {t('teamManagement.TEAM_LEADER')}
               </Typography>
               
               <div className="flex items-center gap-4">
@@ -216,7 +216,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                       heroicons-solid:star
                     </IdeomniSvgIcon>
                     <Typography variant="caption" className="text-primary-600 font-medium">
-                      Team Leader
+                      {t('teamManagement.TEAM_LEADER_LABEL')}
                     </Typography>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                Team Members ({activeMembers.length}/{team.maxMembers})
+                {t('teamManagement.TEAM_MEMBERS_COUNT', { current: activeMembers.length, max: team.maxMembers })}
               </Typography>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -257,7 +257,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                         )}
                       </div>
                       <Typography variant="body2" color="text.secondary" className="truncate">
-                        Joined {new Date(member.joinedAt).toLocaleDateString()}
+                        {t('teamManagement.JOINED_DATE', { date: new Date(member.joinedAt).toLocaleDateString() })}
                       </Typography>
                     </div>
                   </div>
@@ -275,7 +275,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                       </IdeomniSvgIcon>
                     </div>
                     <Typography variant="body2" color="text.secondary">
-                      Available spot
+                      {t('teamManagement.AVAILABLE_SPOT')}
                     </Typography>
                   </div>
                 ))}
@@ -291,10 +291,10 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   heroicons-outline:user-plus
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  Ready to join this team?
+                  {t('teamManagement.READY_TO_JOIN')}
                 </Typography>
                 <Typography color="text.secondary" className="mb-4">
-                  Click the button above to become a member of {team.name}
+                  {t('teamManagement.CLICK_TO_JOIN_MESSAGE', { teamName: team.name })}
                 </Typography>
                 <Button
                   variant="contained"
@@ -303,7 +303,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   disabled={isJoining}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                 >
-                  {isJoining ? t('teamManagement:JOINING_TEAM') : t('teamManagement:JOIN_THIS_TEAM')}
+                  {isJoining ? t('teamManagement.JOINING_TEAM') : t('teamManagement.JOIN_THIS_TEAM')}
                 </Button>
               </Paper>
             </motion.div>
@@ -317,12 +317,12 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   {team.isOpen ? 'heroicons-outline:users' : 'heroicons-outline:lock-closed'}
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  {team.isOpen ? t('teamManagement:TEAM_IS_FULL') : t('teamManagement:TEAM_IS_CLOSED')}
+                  {team.isOpen ? t('teamManagement.TEAM_IS_FULL') : t('teamManagement.TEAM_IS_CLOSED')}
                 </Typography>
                 <Typography color="text.secondary" className="mb-4">
                   {team.isOpen 
-                    ? 'This team has reached its maximum capacity.'
-                    : 'This team is not accepting new members at this time.'
+                    ? t('teamManagement.TEAM_FULL_MESSAGE')
+                    : t('teamManagement.TEAM_CLOSED_MESSAGE')
                   }
                 </Typography>
                 <Button
@@ -330,7 +330,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
                   onClick={() => router.push('/team-management/browse')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
                 >
-                  Browse Other Teams
+                  {t('teamManagement.BROWSE_OTHER_TEAMS')}
                 </Button>
               </Paper>
             </motion.div>

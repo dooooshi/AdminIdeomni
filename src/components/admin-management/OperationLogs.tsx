@@ -82,7 +82,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
   admin,
   title,
 }) => {
-  const { t } = useTranslation('adminManagement');
+  const { t } = useTranslation();
   const [logsData, setLogsData] = useState<OperationLogsSearchResponseDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -158,7 +158,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         resources: Array.from(resources).sort(),
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('LOADING_LOGS'));
+      setError(err instanceof Error ? err.message : t('adminManagement.LOADING_LOGS'));
       setLogsData(null);
     } finally {
       setLoading(false);
@@ -247,7 +247,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
 
   const formatAction = (action: string) => {
     return action
-      .split('_')
+      .split('adminManagement._')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   };
@@ -272,25 +272,25 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
     return (
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle2" gutterBottom>
-          {t('LOG_DETAILS')}
+          {t('adminManagement.LOG_DETAILS')}
         </Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 2 }}>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('ADMIN')}</Typography>
+            <Typography variant="caption" color="text.secondary">{t('adminManagement.ADMIN')}</Typography>
             <Typography variant="body2">{log.admin.username}</Typography>
           </Box>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('RESOURCE_ID')}</Typography>
-            <Typography variant="body2">{log.resourceId || t('NOT_AVAILABLE')}</Typography>
+            <Typography variant="caption" color="text.secondary">{t('adminManagement.RESOURCE_ID')}</Typography>
+            <Typography variant="body2">{log.resourceId || t('adminManagement.NOT_AVAILABLE')}</Typography>
           </Box>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('IP_ADDRESS')}</Typography>
-            <Typography variant="body2">{log.ipAddress || t('UNKNOWN')}</Typography>
+            <Typography variant="caption" color="text.secondary">{t('adminManagement.IP_ADDRESS')}</Typography>
+            <Typography variant="body2">{log.ipAddress || t('adminManagement.UNKNOWN')}</Typography>
           </Box>
           <Box>
-            <Typography variant="caption" color="text.secondary">{t('USER_AGENT')}</Typography>
+            <Typography variant="caption" color="text.secondary">{t('adminManagement.USER_AGENT')}</Typography>
             <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-              {log.userAgent || t('UNKNOWN')}
+              {log.userAgent || t('adminManagement.UNKNOWN')}
             </Typography>
           </Box>
         </Box>
@@ -299,7 +299,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         {log.details && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle2" gutterBottom>
-              {t('OPERATION_DETAILS')}
+              {t('adminManagement.OPERATION_DETAILS')}
             </Typography>
             <Box sx={{ bgcolor: 'grey.50', p: 2, borderRadius: 1 }}>
               <pre style={{ margin: 0, fontSize: '0.875rem', whiteSpace: 'pre-wrap' }}>
@@ -354,7 +354,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         <DialogTitle>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="h6">
-              {title || (admin ? `${t('ADMIN_LOGS_TITLE')} - ${admin.username}` : t('SYSTEM_LOGS_TITLE'))}
+              {title || (admin ? `${t('adminManagement.ADMIN_LOGS_TITLE')} - ${admin.username}` : t('adminManagement.SYSTEM_LOGS_TITLE'))}
             </Typography>
             <IconButton onClick={onClose}>
               <CloseIcon />
@@ -362,7 +362,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
           </Box>
           {admin && (
             <Typography variant="body2" color="text.secondary">
-              {admin.email} ({admin.role || (admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN'))})
+              {admin.email} ({admin.role || (admin.adminType === 1 ? t('adminManagement.SUPER_ADMIN') : t('adminManagement.LIMITED_ADMIN'))})
             </Typography>
           )}
         </DialogTitle>
@@ -374,7 +374,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
               <Stack spacing={2}>
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
                   <TextField
-                    placeholder={t('SEARCH_LOGS_PLACEHOLDER')}
+                    placeholder={t('adminManagement.SEARCH_LOGS_PLACEHOLDER')}
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     size="small"
@@ -385,13 +385,13 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                   />
                   
                   <FormControl size="small" sx={{ minWidth: 150 }}>
-                    <InputLabel>{t('ACTION')}</InputLabel>
+                    <InputLabel>{t('adminManagement.ACTION')}</InputLabel>
                     <Select
                       value={filters.action}
-                      label={t('ACTION')}
+                      label={t('adminManagement.ACTION')}
                       onChange={(e) => handleFilterChange('action', e.target.value)}
                     >
-                      <MenuItem value="">{t('ALL_ACTIONS')}</MenuItem>
+                      <MenuItem value="">{t('adminManagement.ALL_ACTIONS')}</MenuItem>
                       {filterOptions.actions.map(action => (
                         <MenuItem key={action} value={action}>
                           {formatAction(action)}
@@ -401,13 +401,13 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                   </FormControl>
 
                   <FormControl size="small" sx={{ minWidth: 120 }}>
-                    <InputLabel>{t('RESOURCE')}</InputLabel>
+                    <InputLabel>{t('adminManagement.RESOURCE')}</InputLabel>
                     <Select
                       value={filters.resource}
-                      label={t('RESOURCE')}
+                      label={t('adminManagement.RESOURCE')}
                       onChange={(e) => handleFilterChange('resource', e.target.value)}
                     >
-                      <MenuItem value="">{t('ALL_RESOURCES')}</MenuItem>
+                      <MenuItem value="">{t('adminManagement.ALL_RESOURCES')}</MenuItem>
                       {filterOptions.resources.map(resource => (
                         <MenuItem key={resource} value={resource}>
                           {resource}
@@ -423,19 +423,19 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                     size="small"
                     disabled={loading}
                   >
-                    {loading ? <CircularProgress size={20} /> : t('REFRESH_DATA')}
+                    {loading ? <CircularProgress size={20} /> : t('adminManagement.REFRESH_DATA')}
                   </Button>
                 </Stack>
 
                 <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                   <DatePicker
-                    label={t('START_DATE')}
+                    label={t('adminManagement.START_DATE')}
                     value={filters.startDate}
                     onChange={(date) => handleFilterChange('startDate', date)}
                     slotProps={{ textField: { size: 'small' } }}
                   />
                   <DatePicker
-                    label={t('END_DATE')}
+                    label={t('adminManagement.END_DATE')}
                     value={filters.endDate}
                     onChange={(date) => handleFilterChange('endDate', date)}
                     slotProps={{ textField: { size: 'small' } }}
@@ -450,18 +450,18 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
             <Stack direction="row" spacing={2} flexWrap="wrap">
               <Chip
                 icon={<ScheduleIcon />}
-                label={`${stats.total} ${t('OPERATIONS')}`}
+                label={`${stats.total} ${t('adminManagement.OPERATIONS')}`}
                 variant="outlined"
               />
               <Chip
                 icon={<InfoIcon />}
-                label={`${stats.actions} ${t('ACTION_TYPES')}`}
+                label={`${stats.actions} ${t('adminManagement.ACTION_TYPES')}`}
                 color="info"
                 variant="outlined"
               />
               <Chip
                 icon={<PersonIcon />}
-                label={`${stats.resources} ${t('RESOURCE_TYPES')}`}
+                label={`${stats.resources} ${t('adminManagement.RESOURCE_TYPES')}`}
                 color="primary"
                 variant="outlined"
               />
@@ -495,7 +495,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                         direction={filters.sortBy === 'action' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('action')}
                       >
-                        {t('OPERATION')}
+                        {t('adminManagement.OPERATION')}
                       </TableSortLabel>
                     </TableCell>
                     <TableCell>
@@ -504,18 +504,18 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                         direction={filters.sortBy === 'resource' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('resource')}
                       >
-                        {t('RESOURCE')}
+                        {t('adminManagement.RESOURCE')}
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell>{t('ADMIN')}</TableCell>
-                    <TableCell>{t('IP_ADDRESS')}</TableCell>
+                    <TableCell>{t('adminManagement.ADMIN')}</TableCell>
+                    <TableCell>{t('adminManagement.IP_ADDRESS')}</TableCell>
                     <TableCell>
                       <TableSortLabel
                         active={filters.sortBy === 'createdAt'}
                         direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
                         onClick={() => handleSortChange('createdAt')}
                       >
-                        {t('TIMESTAMP')}
+                        {t('adminManagement.TIMESTAMP')}
                       </TableSortLabel>
                     </TableCell>
                   </TableRow>
@@ -531,7 +531,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                     <TableRow>
                       <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                         <Typography variant="body1" color="text.secondary">
-                          {t('NO_OPERATION_LOGS_FOUND')}
+                          {t('adminManagement.NO_OPERATION_LOGS_FOUND')}
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -583,7 +583,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <ComputerIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
                               <Typography variant="body2">
-                                {log.ipAddress || t('UNKNOWN')}
+                                {log.ipAddress || t('adminManagement.UNKNOWN')}
                               </Typography>
                             </Box>
                           </TableCell>
@@ -627,7 +627,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={onClose}>{t('CLOSE')}</Button>
+          <Button onClick={onClose}>{t('adminManagement.CLOSE')}</Button>
         </DialogActions>
       </Dialog>
     </LocalizationProvider>

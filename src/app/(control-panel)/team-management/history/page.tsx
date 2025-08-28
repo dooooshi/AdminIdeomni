@@ -28,7 +28,7 @@ import { TeamOperationType, TeamResourceType } from '@/types/teamTransfer';
  * Dashboard showing summary of team account operations and transfers
  */
 function HistoryOverviewPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { data: teamAccount, isLoading, error } = useGetCurrentUserTeamAccountQuery();
   
@@ -72,17 +72,17 @@ function HistoryOverviewPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -106,22 +106,22 @@ function HistoryOverviewPage() {
           {/* Header */}
           <div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:HISTORY_OVERVIEW')}
+              {t('teamManagement.HISTORY_OVERVIEW')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('teamManagement:TRACK_ALL_OPERATIONS')}
+              {t('teamManagement.TRACK_ALL_OPERATIONS')}
             </Typography>
           </div>
 
           {/* Current Balance Summary */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:CURRENT_BALANCE')}
+              {t('teamManagement.CURRENT_BALANCE')}
             </Typography>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:GOLD_BALANCE')}
+                  {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
@@ -129,7 +129,7 @@ function HistoryOverviewPage() {
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:CARBON_BALANCE')}
+                  {t('teamManagement.CARBON_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
@@ -142,7 +142,7 @@ function HistoryOverviewPage() {
           {operationSummary && (
             <div>
               <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-                {t('teamManagement:OPERATION_SUMMARY')} ({t('teamManagement:LAST_30_DAYS')})
+                {t('teamManagement.OPERATION_SUMMARY')} ({t('teamManagement.LAST_30_DAYS')})
               </Typography>
               <Grid component="div" container spacing={6}>
                 {/* Total Operations */}
@@ -152,7 +152,7 @@ function HistoryOverviewPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:TOTAL_OPERATIONS')}
+                            {t('teamManagement.TOTAL_OPERATIONS')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {operationSummary.totalOperations}
@@ -175,7 +175,7 @@ function HistoryOverviewPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:GOLD_FLOW')}
+                            {t('teamManagement.GOLD_FLOW')}
                           </Typography>
                           <div className="flex items-center gap-3 mt-2">
                             <Typography variant="body2" className="text-green-600">
@@ -186,7 +186,7 @@ function HistoryOverviewPage() {
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
-                            {t('teamManagement:NET')}: {operationSummary.totalGoldIn - operationSummary.totalGoldOut >= 0 ? '+' : ''}
+                            {t('teamManagement.NET')}: {operationSummary.totalGoldIn - operationSummary.totalGoldOut >= 0 ? '+' : ''}
                             {TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn - operationSummary.totalGoldOut, TeamResourceType.GOLD)}
                           </Typography>
                         </div>
@@ -207,7 +207,7 @@ function HistoryOverviewPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:CARBON_FLOW')}
+                            {t('teamManagement.CARBON_FLOW')}
                           </Typography>
                           <div className="flex items-center gap-3 mt-2">
                             <Typography variant="body2" className="text-green-600">
@@ -218,7 +218,7 @@ function HistoryOverviewPage() {
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
-                            {t('teamManagement:NET')}: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
+                            {t('teamManagement.NET')}: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
                             {TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut, TeamResourceType.CARBON)}
                           </Typography>
                         </div>
@@ -237,7 +237,7 @@ function HistoryOverviewPage() {
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-4 block">
-                        {t('teamManagement:OPERATIONS_BY_TYPE')}
+                        {t('teamManagement.OPERATIONS_BY_TYPE')}
                       </Typography>
                       <div className="space-y-2">
                         {Object.entries(operationSummary.operationsByType)
@@ -268,7 +268,7 @@ function HistoryOverviewPage() {
               <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
                 <div className="flex items-center justify-between mb-6">
                   <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                    {t('teamManagement:RECENT_ACTIVITY')}
+                    {t('teamManagement.RECENT_ACTIVITY')}
                   </Typography>
                   <Button
                     variant="text"
@@ -277,7 +277,7 @@ function HistoryOverviewPage() {
                     className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                     endIcon={<IdeomniSvgIcon>heroicons-outline:arrow-right</IdeomniSvgIcon>}
                   >
-                    {t('teamManagement:ALL_OPERATIONS')}
+                    {t('teamManagement.ALL_OPERATIONS')}
                   </Button>
                 </div>
                 
@@ -337,10 +337,10 @@ function HistoryOverviewPage() {
                       </IdeomniSvgIcon>
                     </div>
                     <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
-                      {t('teamManagement:NO_OPERATIONS_YET')}
+                      {t('teamManagement.NO_OPERATIONS_YET')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:START_BY_MAKING_TRANSFER')}
+                      {t('teamManagement.START_BY_MAKING_TRANSFER')}
                     </Typography>
                   </div>
                 )}
@@ -352,7 +352,7 @@ function HistoryOverviewPage() {
               <div className="space-y-6">
                 <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                   <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-4">
-                    {t('teamManagement:QUICK_ACTIONS')}
+                    {t('teamManagement.QUICK_ACTIONS')}
                   </Typography>
                   <div className="space-y-3">
                     <Button
@@ -362,7 +362,7 @@ function HistoryOverviewPage() {
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:ALL_OPERATIONS')}
+                      {t('teamManagement.ALL_OPERATIONS')}
                     </Button>
                     <Button
                       fullWidth
@@ -371,7 +371,7 @@ function HistoryOverviewPage() {
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:TRANSFER_HISTORY')}
+                      {t('teamManagement.TRANSFER_HISTORY')}
                     </Button>
                     <Button
                       fullWidth
@@ -380,7 +380,7 @@ function HistoryOverviewPage() {
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:BALANCE_HISTORY')}
+                      {t('teamManagement.BALANCE_HISTORY')}
                     </Button>
                     <Button
                       fullWidth
@@ -389,7 +389,7 @@ function HistoryOverviewPage() {
                       className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 justify-start"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:TRANSFER_RESOURCES')}
+                      {t('teamManagement.TRANSFER_RESOURCES')}
                     </Button>
                   </div>
                 </Paper>
@@ -398,7 +398,7 @@ function HistoryOverviewPage() {
                 {resourceFlowAnalysis?.topTransferPartners && resourceFlowAnalysis.topTransferPartners.length > 0 && (
                   <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                     <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-4">
-                      {t('teamManagement:TOP_TRANSFER_PARTNERS')}
+                      {t('teamManagement.TOP_TRANSFER_PARTNERS')}
                     </Typography>
                     <div className="space-y-3">
                       {resourceFlowAnalysis.topTransferPartners.slice(0, 3).map((partner) => (
@@ -408,7 +408,7 @@ function HistoryOverviewPage() {
                               {partner.teamName}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
-                              {partner.transferCount} {t('teamManagement:TRANSFERS')}
+                              {partner.transferCount} {t('teamManagement.TRANSFERS')}
                             </Typography>
                           </div>
                           <div className="text-right">

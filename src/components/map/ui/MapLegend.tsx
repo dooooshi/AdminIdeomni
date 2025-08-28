@@ -71,23 +71,23 @@ const ColorSwatch = styled(Box, {
 
 const MapLegend: React.FC = () => {
 	const theme = useTheme();
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 	
 	const landTypes: LandType[] = [
 		{
 			type: 'MARINE',
-			label: t('MARINE'),
-			description: t('MARINE_DESCRIPTION')
+			label: t('map.MARINE'),
+			description: t('map.MARINE_DESCRIPTION')
 		},
 		{
 			type: 'PLAIN',
-			label: t('PLAIN'),
-			description: t('PLAIN_DESCRIPTION')
+			label: t('map.PLAIN'),
+			description: t('map.PLAIN_DESCRIPTION')
 		},
 		{
 			type: 'COASTAL',
-			label: t('COASTAL'),
-			description: t('COASTAL_DESCRIPTION')
+			label: t('map.COASTAL'),
+			description: t('map.COASTAL_DESCRIPTION')
 		}
 	];
 
@@ -103,7 +103,7 @@ const MapLegend: React.FC = () => {
 					mb: 0.5
 				}}
 			>
-				{t('TERRAIN_TYPES')}
+				{t('map.TERRAIN_TYPES')}
 			</Typography>
 			{landTypes.map((landType) => (
 				<LegendItem key={landType.type}>

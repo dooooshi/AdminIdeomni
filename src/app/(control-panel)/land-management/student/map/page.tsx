@@ -52,7 +52,7 @@ import {
   LandPurchaseRequest,
   PurchaseValidation,
 } from '@/types/land';
-import { useTranslation, useLandTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const MapContainer = styled(Paper)(({ theme }) => ({
   height: '1000px',
@@ -88,9 +88,9 @@ interface StudentLandMapPageProps {}
 
 const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   const theme = useTheme();
-  const { t } = useLandTranslation();
-  const { t: tNav } = useTranslation('navigation');
-  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation();
+  const { t: tNav } = useTranslation();
+  const { t: tCommon } = useTranslation();
   const mapRef = useRef<HexagonalMapRef>(null);
   
   // Cached data hooks
@@ -526,7 +526,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
       fullWidth
     >
       <DialogTitle>
-        {t('PURCHASE_DIALOG_TITLE', { tileId: selectedTile?.tileId })}
+        {t('land.PURCHASE_DIALOG_TITLE', { tileId: selectedTile?.tileId })}
       </DialogTitle>
       
       <DialogContent>
@@ -536,12 +536,12 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  {t('TILE_INFORMATION')}
+                  {t('land.TILE_INFORMATION')}
                 </Typography>
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('LAND_TYPE')}
+                      {t('land.LAND_TYPE')}
                     </Typography>
                     <Typography variant="body1">
                       {LandService.formatLandType(selectedTile.landType)}
@@ -549,7 +549,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                   </Grid>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('YOUR_HOLDINGS')}
+                      {t('land.YOUR_HOLDINGS')}
                     </Typography>
                     <Typography variant="body1">
                       {LandService.formatArea(selectedTile.teamOwnedArea || 0)}
@@ -563,10 +563,10 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  {t('PURCHASE_AMOUNT')}
+                  {t('land.PURCHASE_AMOUNT')}
                 </Typography>
                 <TextField
-                  label={t('AMOUNT_UNITS')}
+                  label={t('land.AMOUNT_UNITS')}
                   type="number"
                   fullWidth
                   value={Math.round(purchaseArea)}
@@ -578,7 +578,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                   }}
                   inputProps={{ min: 1, max: 1000, step: 1 }}
                   variant="outlined"
-                  helperText={t('AMOUNT_HELPER_TEXT')}
+                  helperText={t('land.AMOUNT_HELPER_TEXT')}
                 />
               </CardContent>
             </Card>
@@ -588,12 +588,12 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <Card>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
-                    {t('INVESTMENT_ANALYSIS')}
+                    {t('land.INVESTMENT_ANALYSIS')}
                   </Typography>
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 4 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {t('GOLD_COST')}
+                        {t('land.GOLD_COST')}
                       </Typography>
                       <Typography variant="body1">
                         {LandService.formatCurrency(purchaseValidation.goldCost || 0, 'gold')}
@@ -601,7 +601,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                     </Grid>
                     <Grid size={{ xs: 4 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {t('CARBON_COST')}
+                        {t('land.CARBON_COST')}
                       </Typography>
                       <Typography variant="body1">
                         {LandService.formatCurrency(purchaseValidation.carbonCost || 0, 'carbon')}
@@ -609,7 +609,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                     </Grid>
                     <Grid size={{ xs: 4 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {t('TOTAL_INVESTMENT')}
+                        {t('land.TOTAL_INVESTMENT')}
                       </Typography>
                       <Typography variant="h6" color="primary.main">
                         {LandService.formatCurrency(purchaseValidation.totalCost || 0)}
@@ -632,13 +632,13 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
 
             {/* Notes */}
             <TextField
-              label={t('NOTES_OPTIONAL')}
+              label={t('land.NOTES_OPTIONAL')}
               multiline
               rows={2}
               fullWidth
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder={t('NOTES_PLACEHOLDER')}
+              placeholder={t('land.NOTES_PLACEHOLDER')}
               variant="outlined"
             />
           </Stack>
@@ -650,7 +650,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           onClick={() => setPurchaseDialogOpen(false)}
           variant="outlined"
         >
-          {tCommon('CANCEL')}
+          {tCommon('common.CANCEL')}
         </Button>
         <Button
           variant="contained"
@@ -658,7 +658,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           disabled={!purchaseValidation?.canPurchase || purchasing}
           startIcon={purchasing ? <CircularProgress size={20} color="inherit" /> : <ShoppingCartIcon />}
         >
-          {purchasing ? t('PURCHASING') : t('PURCHASE_UNITS', { amount: Math.round(purchaseArea) })}
+          {purchasing ? t('land.PURCHASING') : t('land.PURCHASE_UNITS', { amount: Math.round(purchaseArea) })}
         </Button>
       </DialogActions>
     </Dialog>
@@ -677,7 +677,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     return (
       <Alert severity="error" action={
         <Button color="inherit" size="small" onClick={() => loadMapData()}>
-          {tCommon('RETRY')}
+          {tCommon('common.RETRY')}
         </Button>
       }>
         {LandService.getErrorMessage(displayError)}
@@ -704,7 +704,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             WebkitTextFillColor: 'transparent',
           }}
         >
-          🌍 {t('STUDENT_MAP_VIEW')}
+          🌍 {t('land.STUDENT_MAP_VIEW')}
         </Typography>
         
         <Typography 
@@ -713,7 +713,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           paragraph
           sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
         >
-          {t('STUDENT_MAP_DESCRIPTION')}
+          {t('land.STUDENT_MAP_DESCRIPTION')}
         </Typography>
       </Box>
 
@@ -724,7 +724,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
       <MapContainer elevation={2}>
         {/* Map Controls */}
         <ControlsContainer>
-          <Tooltip title={t('REFRESH_DATA')}>
+          <Tooltip title={t('land.REFRESH_DATA')}>
             <IconButton 
               onClick={handleRefresh}
               sx={{ 
@@ -736,7 +736,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <RefreshIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('ZOOM_IN')}>
+          <Tooltip title={t('land.ZOOM_IN')}>
             <IconButton 
               onClick={handleZoomIn}
               sx={{ 
@@ -748,7 +748,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <ZoomInIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('ZOOM_OUT')}>
+          <Tooltip title={t('land.ZOOM_OUT')}>
             <IconButton 
               onClick={handleZoomOut}
               sx={{ 
@@ -760,7 +760,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <ZoomOutIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('RESET_ZOOM')}>
+          <Tooltip title={t('land.RESET_ZOOM')}>
             <IconButton 
               onClick={handleResetZoom}
               sx={{ 
@@ -772,7 +772,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <ResetZoomIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={animationsEnabled ? t('DISABLE_ANIMATIONS') : t('ENABLE_ANIMATIONS')}>
+          <Tooltip title={animationsEnabled ? t('land.DISABLE_ANIMATIONS') : t('land.ENABLE_ANIMATIONS')}>
             <IconButton 
               onClick={handleToggleAnimations}
               sx={{ 

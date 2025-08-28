@@ -1,18 +1,5 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from './useTranslation';
 
-/**
- * Error translation hook
- */
-export const useErrorTranslation = () => {
-  const { t } = useTranslation();
-  return {
-    t: (key: string, options?: any) => t(`errors.${key}`, options)
-  };
-};
-
-/**
- * Error code mapping for land service errors
- */
 export const landErrorCodes: Record<string, string> = {
   'INSUFFICIENT_RESOURCES': 'INSUFFICIENT_RESOURCES',
   'TILE_NOT_AVAILABLE': 'TILE_NOT_AVAILABLE',
@@ -28,20 +15,11 @@ export const landErrorCodes: Record<string, string> = {
   'UNKNOWN_ERROR': 'UNKNOWN_ERROR',
 };
 
-/**
- * Translate error code to user-friendly message
- * @param errorCode The error code to translate
- * @param t Translation function
- * @returns Translated error message
- */
 export const translateErrorCode = (errorCode: string, t: (key: string) => string): string => {
   const translationKey = landErrorCodes[errorCode] || 'UNKNOWN_ERROR';
-  return t(translationKey);
+  return t(`errors.${translationKey}`);
 };
 
-/**
- * Validation error codes
- */
 export const validationErrorCodes: Record<string, string> = {
   'Area must be greater than 0': 'AREA_MUST_BE_POSITIVE',
   'Area must be a whole number (no decimals allowed)': 'AREA_MUST_BE_INTEGER',
@@ -50,13 +28,7 @@ export const validationErrorCodes: Record<string, string> = {
   'Maximum carbon cost cannot be negative': 'MAX_CARBON_COST_NEGATIVE',
 };
 
-/**
- * Translate validation error message
- * @param message The validation message to translate
- * @param t Translation function
- * @returns Translated validation message
- */
 export const translateValidationError = (message: string, t: (key: string) => string): string => {
   const translationKey = validationErrorCodes[message];
-  return translationKey ? t(translationKey) : message;
+  return translationKey ? t(`errors.${translationKey}`) : message;
 };

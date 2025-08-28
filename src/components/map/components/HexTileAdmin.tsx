@@ -33,17 +33,17 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 	onMouseLeave
 }) => {
 	const theme = useTheme();
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 
 	// Helper function to get translated terrain name
 	const getTerrainName = (landType: string): string => {
 		switch (landType) {
 			case 'MARINE':
-				return t('TERRAIN_MARINE');
+				return t('map.TERRAIN_MARINE');
 			case 'PLAIN':
-				return t('TERRAIN_PLAIN');
+				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
-				return t('TERRAIN_COASTAL');
+				return t('map.TERRAIN_COASTAL');
 			default:
 				return landType.toLowerCase();
 		}
@@ -137,7 +137,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 					fontSize: '0.875rem'
 				}}
 			>
-				🔧 {t('ADMIN_TILE_CONFIG')}
+				🔧 {t('map.ADMIN_TILE_CONFIG')}
 			</Typography>
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -149,7 +149,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 							fontWeight: 500
 						}}
 					>
-						{t('TILE_ID')}:
+						{t('map.TILE_ID')}:
 					</Typography>
 					<Typography 
 						variant="caption" 
@@ -172,7 +172,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 							fontWeight: 500
 						}}
 					>
-						{t('COORDINATES')}:
+						{t('map.COORDINATES')}:
 					</Typography>
 					<Typography 
 						variant="caption" 
@@ -196,7 +196,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 							fontWeight: 500
 						}}
 					>
-						{t('TERRAIN')}:
+						{t('map.TERRAIN')}:
 					</Typography>
 					<Typography 
 						variant="caption" 
@@ -222,7 +222,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 								fontWeight: 500
 							}}
 						>
-							{t('INITIAL_GOLD_PRICE')}:
+							{t('map.INITIAL_GOLD_PRICE')}:
 						</Typography>
 						<Typography 
 							variant="caption" 
@@ -248,7 +248,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 								fontWeight: 500
 							}}
 						>
-							{t('INITIAL_CARBON_PRICE')}:
+							{t('map.INITIAL_CARBON_PRICE')}:
 						</Typography>
 						<Typography 
 							variant="caption" 
@@ -274,7 +274,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 								fontWeight: 500
 							}}
 						>
-							{t('INITIAL_POPULATION')}:
+							{t('map.INITIAL_POPULATION')}:
 						</Typography>
 						<Typography 
 							variant="caption" 
@@ -316,7 +316,7 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 									textAlign: 'center'
 								}}
 							>
-								🖱️ {t('CLICK_TO_CONFIGURE')}
+								🖱️ {t('map.CLICK_TO_CONFIGURE')}
 							</Typography>
 						</Box>
 					</>

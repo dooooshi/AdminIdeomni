@@ -37,7 +37,7 @@ const HexTileWithFacilities: React.FC<HexTileWithFacilitiesProps> = ({
 	onBuildFacilityClick
 }) => {
 	const theme = useTheme();
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 
 	const tileFacilities = facilities.filter(f => f.tileId === tile.id);
 	const hasActiveFacilities = tileFacilities.some(f => f.status === 'ACTIVE');
@@ -47,11 +47,11 @@ const HexTileWithFacilities: React.FC<HexTileWithFacilitiesProps> = ({
 	const getTerrainName = (landType: string): string => {
 		switch (landType) {
 			case 'MARINE':
-				return t('TERRAIN_MARINE');
+				return t('map.TERRAIN_MARINE');
 			case 'PLAIN':
-				return t('TERRAIN_PLAIN');
+				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
-				return t('TERRAIN_COASTAL');
+				return t('map.TERRAIN_COASTAL');
 			default:
 				return landType.toLowerCase();
 		}
@@ -338,13 +338,13 @@ const HexTileWithFacilities: React.FC<HexTileWithFacilitiesProps> = ({
 					fontSize: '0.875rem'
 				}}
 			>
-				{t('SELECTED_TILE_INFO')}
+				{t('map.SELECTED_TILE_INFO')}
 			</Typography>
 			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
 				{/* Basic tile information */}
 				<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 					<Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem', fontWeight: 500 }}>
-						{t('TILE_ID')}:
+						{t('map.TILE_ID')}:
 					</Typography>
 					<Typography variant="caption" sx={{ color: 'text.primary', fontSize: '0.75rem', fontWeight: 600 }}>
 						{tile.id}
@@ -352,7 +352,7 @@ const HexTileWithFacilities: React.FC<HexTileWithFacilitiesProps> = ({
 				</Box>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 					<Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem', fontWeight: 500 }}>
-						{t('POSITION')}:
+						{t('map.POSITION')}:
 					</Typography>
 					<Typography variant="caption" sx={{ color: 'text.primary', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
 						({tile.axialQ}, {tile.axialR})
@@ -360,7 +360,7 @@ const HexTileWithFacilities: React.FC<HexTileWithFacilitiesProps> = ({
 				</Box>
 				<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 					<Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.75rem', fontWeight: 500 }}>
-						{t('TERRAIN')}:
+						{t('map.TERRAIN')}:
 					</Typography>
 					<Typography variant="caption" sx={{ color: 'text.primary', fontSize: '0.75rem', fontWeight: 600, textTransform: 'capitalize' }}>
 						{getTerrainName(tile.landType)}

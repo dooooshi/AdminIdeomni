@@ -65,7 +65,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   onSuccess,
   activity,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mapTemplates, setMapTemplates] = useState<MapTemplate[]>([]);
@@ -101,28 +101,28 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   // Validation schema
   const validationSchema = Yup.object({
     name: Yup.string()
-      .required(t('ACTIVITY_NAME_REQUIRED'))
-      .min(3, t('ACTIVITY_NAME_MIN_LENGTH'))
-      .max(200, t('ACTIVITY_NAME_MAX_LENGTH')),
+      .required(t('activityManagement.ACTIVITY_NAME_REQUIRED'))
+      .min(3, t('activityManagement.ACTIVITY_NAME_MIN_LENGTH'))
+      .max(200, t('activityManagement.ACTIVITY_NAME_MAX_LENGTH')),
     description: Yup.string()
-      .max(1000, t('DESCRIPTION_MAX_LENGTH')),
+      .max(1000, t('activityManagement.DESCRIPTION_MAX_LENGTH')),
     activityType: Yup.string()
-      .oneOf(Object.values(ActivityType), t('ACTIVITY_TYPE_INVALID'))
-      .required(t('ACTIVITY_TYPE_REQUIRED')),
+      .oneOf(Object.values(ActivityType), t('activityManagement.ACTIVITY_TYPE_INVALID'))
+      .required(t('activityManagement.ACTIVITY_TYPE_REQUIRED')),
     startAt: Yup.date()
-      .required(t('START_DATE_REQUIRED'))
-      .test('future-date', t('FUTURE_START_DATE'), function(value) {
+      .required(t('activityManagement.START_DATE_REQUIRED'))
+      .test('future-date', t('activityManagement.FUTURE_START_DATE'), function(value) {
         // Allow past dates when editing existing activities
         if (isEditMode) return true;
         // For new activities, require future date
         return value ? value >= new Date() : false;
       }),
     endAt: Yup.date()
-      .required(t('END_DATE_REQUIRED'))
-      .min(Yup.ref('startAt'), t('END_DATE_AFTER_START')),
+      .required(t('activityManagement.END_DATE_REQUIRED'))
+      .min(Yup.ref('startAt'), t('activityManagement.END_DATE_AFTER_START')),
     mapTemplateId: Yup.number()
-      .required(t('MAP_TEMPLATE_REQUIRED'))
-      .min(1, t('MAP_TEMPLATE_INVALID')),
+      .required(t('activityManagement.MAP_TEMPLATE_REQUIRED'))
+      .min(1, t('activityManagement.MAP_TEMPLATE_INVALID')),
     isActive: Yup.boolean(),
   });
 
@@ -170,7 +170,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         onSuccess();
         onClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : t('ACTIVITY_SAVE_ERROR'));
+        setError(err instanceof Error ? err.message : t('activityManagement.ACTIVITY_SAVE_ERROR'));
       } finally {
         setLoading(false);
       }
@@ -198,11 +198,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const getActivityTypeDisplayName = (type: ActivityType): string => {
     switch (type) {
       case ActivityType.BizSimulation2_0:
-        return t('BIZSIMULATION2_0');
+        return t('activityManagement.BIZSIMULATION2_0');
       case ActivityType.BizSimulation2_2:
-        return t('BIZSIMULATION2_2');
+        return t('activityManagement.BIZSIMULATION2_2');
       case ActivityType.BizSimulation3_1:
-        return t('BIZSIMULATION3_1');
+        return t('activityManagement.BIZSIMULATION3_1');
       default:
         return type;
     }
@@ -248,7 +248,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                 <EventIcon color="primary" />
                 <Box>
                   <Typography variant="h6">
-                    {isEditMode ? t('ACTIVITY_FORM_EDIT_TITLE') : t('ACTIVITY_FORM_CREATE_TITLE')}
+                    {isEditMode ? t('activityManagement.ACTIVITY_FORM_EDIT_TITLE') : t('activityManagement.ACTIVITY_FORM_CREATE_TITLE')}
                   </Typography>
                   {isEditMode && (
                     <Chip 
@@ -282,15 +282,15 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <InfoIcon color="primary" fontSize="small" />
                       <Typography variant="subtitle1" fontWeight={600}>
-                        {t('ACTIVITY_BASIC_INFO')}
+                        {t('activityManagement.ACTIVITY_BASIC_INFO')}
                       </Typography>
                     </Stack>
                     
                     <TextField
                       fullWidth
                       name="name"
-                      label={t('ACTIVITY_NAME_LABEL')}
-                      placeholder={t('ACTIVITY_NAME_PLACEHOLDER')}
+                      label={t('activityManagement.ACTIVITY_NAME_LABEL')}
+                      placeholder={t('activityManagement.ACTIVITY_NAME_PLACEHOLDER')}
                       value={formik.values.name}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -299,23 +299,23 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     />
 
                     <FormControl fullWidth>
-                      <InputLabel>{t('ACTIVITY_TYPE_LABEL')}</InputLabel>
+                      <InputLabel>{t('activityManagement.ACTIVITY_TYPE_LABEL')}</InputLabel>
                       <Select
                         name="activityType"
                         value={formik.values.activityType}
-                        label={t('ACTIVITY_TYPE_LABEL')}
+                        label={t('activityManagement.ACTIVITY_TYPE_LABEL')}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         error={formik.touched.activityType && Boolean(formik.errors.activityType)}
                       >
                         <MenuItem value={ActivityType.BizSimulation2_0}>
-                          {t('BIZSIMULATION2_0')}
+                          {t('activityManagement.BIZSIMULATION2_0')}
                         </MenuItem>
                         <MenuItem value={ActivityType.BizSimulation2_2}>
-                          {t('BIZSIMULATION2_2')}
+                          {t('activityManagement.BIZSIMULATION2_2')}
                         </MenuItem>
                         <MenuItem value={ActivityType.BizSimulation3_1}>
-                          {t('BIZSIMULATION3_1')}
+                          {t('activityManagement.BIZSIMULATION3_1')}
                         </MenuItem>
                       </Select>
                       {formik.touched.activityType && formik.errors.activityType && (
@@ -330,8 +330,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                       multiline
                       rows={3}
                       name="description"
-                      label={t('DESCRIPTION_LABEL')}
-                      placeholder={t('DESCRIPTION_PLACEHOLDER')}
+                      label={t('activityManagement.DESCRIPTION_LABEL')}
+                      placeholder={t('activityManagement.DESCRIPTION_PLACEHOLDER')}
                       value={formik.values.description}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -349,16 +349,16 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <MapIcon color="primary" fontSize="small" />
                       <Typography variant="subtitle1" fontWeight={600}>
-                        {t('MAP_TEMPLATE_CONFIGURATION')}
+                        {t('activityManagement.MAP_TEMPLATE_CONFIGURATION')}
                       </Typography>
                     </Stack>
 
                     <FormControl fullWidth>
-                      <InputLabel>{t('MAP_TEMPLATE_LABEL')}</InputLabel>
+                      <InputLabel>{t('activityManagement.MAP_TEMPLATE_LABEL')}</InputLabel>
                       <Select
                         name="mapTemplateId"
                         value={formik.values.mapTemplateId}
-                        label={t('MAP_TEMPLATE_LABEL')}
+                        label={t('activityManagement.MAP_TEMPLATE_LABEL')}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         error={formik.touched.mapTemplateId && Boolean(formik.errors.mapTemplateId)}
@@ -368,12 +368,12 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                           <MenuItem value="">
                             <Stack direction="row" alignItems="center" spacing={1}>
                               <CircularProgress size={16} />
-                              <Typography>{t('LOADING_TEMPLATES')}</Typography>
+                              <Typography>{t('activityManagement.LOADING_TEMPLATES')}</Typography>
                             </Stack>
                           </MenuItem>
                         ) : mapTemplates.length === 0 ? (
                           <MenuItem value="" disabled>
-                            {t('NO_MAP_TEMPLATES_FOUND')}
+                            {t('activityManagement.NO_MAP_TEMPLATES_FOUND')}
                           </MenuItem>
                         ) : (
                           mapTemplates.map((template) => (
@@ -383,7 +383,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                                   {template.name}
                                 </Typography>
                                 <Typography variant="caption" color="text.secondary">
-                                  {template.width}×{template.height} • {template.description || t('NO_DESCRIPTION')}
+                                  {template.width}×{template.height} • {template.description || t('activityManagement.NO_DESCRIPTION')}
                                 </Typography>
                               </Stack>
                             </MenuItem>
@@ -397,7 +397,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                       )}
                       {isEditMode && (
                         <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
-                          {t('MAP_TEMPLATE_EDIT_DISABLED')}
+                          {t('activityManagement.MAP_TEMPLATE_EDIT_DISABLED')}
                         </Typography>
                       )}
                     </FormControl>
@@ -412,13 +412,13 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <ScheduleIcon color="primary" fontSize="small" />
                       <Typography variant="subtitle1" fontWeight={600}>
-                        {t('ACTIVITY_SCHEDULE')}
+                        {t('activityManagement.ACTIVITY_SCHEDULE')}
                       </Typography>
                     </Stack>
 
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                       <DateTimePicker
-                        label={t('START_DATE_LABEL')}
+                        label={t('activityManagement.START_DATE_LABEL')}
                         value={formik.values.startAt}
                         onChange={(date) => formik.setFieldValue('startAt', date)}
                         onClose={() => formik.setFieldTouched('startAt', true)}
@@ -432,7 +432,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                       />
 
                       <DateTimePicker
-                        label={t('END_DATE_LABEL')}
+                        label={t('activityManagement.END_DATE_LABEL')}
                         value={formik.values.endAt}
                         onChange={(date) => formik.setFieldValue('endAt', date)}
                         onClose={() => formik.setFieldTouched('endAt', true)}
@@ -451,7 +451,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
                     {duration && (
                       <Alert severity="info" icon={<AccessTimeIcon />}>
                         <Typography variant="body2">
-                          <strong>{t('DURATION')}:</strong> {duration}
+                          <strong>{t('activityManagement.DURATION')}:</strong> {duration}
                         </Typography>
                       </Alert>
                     )}
@@ -468,7 +468,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               variant="outlined"
               disabled={loading}
             >
-              {t('CANCEL')}
+              {t('activityManagement.CANCEL')}
             </Button>
             <Button 
               type="submit" 
@@ -476,7 +476,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               disabled={loading || !formik.isValid}
               startIcon={loading ? <CircularProgress size={18} /> : <SaveIcon />}
             >
-              {loading ? t('SAVING') : (isEditMode ? t('UPDATE_ACTIVITY') : t('CREATE_ACTIVITY'))}
+              {loading ? t('activityManagement.SAVING') : (isEditMode ? t('activityManagement.UPDATE_ACTIVITY') : t('activityManagement.CREATE_ACTIVITY'))}
             </Button>
           </DialogActions>
         </form>

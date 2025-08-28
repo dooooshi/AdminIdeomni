@@ -26,7 +26,7 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import LandService from '@/lib/services/landService';
 import { AvailableTile } from '@/types/land';
-import { useLandTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
 const slideUpAnimation = keyframes`
   from {
@@ -117,7 +117,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
   onToggleBulkMode
 }) => {
   const theme = useTheme();
-  const { t } = useLandTranslation();
+  const { t } = useTranslation();
 
   if (!tile) return null;
 
@@ -176,7 +176,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
               />
             )}
             
-            <Tooltip title={String(t('CLOSE_TOOLBAR'))}>
+            <Tooltip title={String(t('land.CLOSE_TOOLBAR'))}>
               <IconButton size="small" onClick={onClose}>
                 <CloseIcon fontSize="small" />
               </IconButton>
@@ -211,7 +211,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
 
         {/* Action Buttons */}
         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-          <Tooltip title={String(t('QUICK_PURCHASE_TOOLTIP'))} arrow>
+          <Tooltip title={String(t('land.QUICK_PURCHASE_TOOLTIP'))} arrow>
             <span>
               <ActionButton
                 color="success"
@@ -230,7 +230,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
             </span>
           </Tooltip>
 
-          <Tooltip title={String(t('PURCHASE_LAND_TOOLTIP'))} arrow>
+          <Tooltip title={String(t('land.PURCHASE_LAND_TOOLTIP'))} arrow>
             <span>
               <ActionButton
                 color="primary"
@@ -249,7 +249,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
             </span>
           </Tooltip>
 
-          <Tooltip title={String(t('CALCULATE_COSTS_TOOLTIP'))} arrow>
+          <Tooltip title={String(t('land.CALCULATE_COSTS_TOOLTIP'))} arrow>
             <ActionButton
               color="info"
               onClick={() => onCalculateCost(tile)}
@@ -265,7 +265,7 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
             </ActionButton>
           </Tooltip>
 
-          <Tooltip title={String(t('VIEW_DETAILS_TOOLTIP'))} arrow>
+          <Tooltip title={String(t('land.VIEW_DETAILS_TOOLTIP'))} arrow>
             <ActionButton
               color="secondary"
               onClick={() => onViewDetails(tile)}

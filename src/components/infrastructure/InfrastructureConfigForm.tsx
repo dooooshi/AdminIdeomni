@@ -16,7 +16,7 @@ import {
   Grid
 } from '@mui/material';
 import {} from '@mui/icons-material';
-import { useInfrastructureTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import InfrastructureConfigService from '@/lib/services/infrastructureConfigService';
 import {
   InfrastructureConfig,
@@ -42,7 +42,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
   onCancel,
   isEmbedded = false
 }) => {
-  const { t } = useInfrastructureTranslation();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<CreateInfrastructureConfigDto>(DEFAULT_INFRASTRUCTURE_CONFIG);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -131,14 +131,14 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
         savedConfig = await InfrastructureConfigService.upsertConfig(templateId, formData);
       }
 
-      setSuccessMessage(t('CONFIG_SAVED_SUCCESSFULLY'));
+      setSuccessMessage(t('infrastructure.CONFIG_SAVED_SUCCESSFULLY'));
       
       if (onSave) {
         onSave(savedConfig);
       }
     } catch (error) {
       console.error('Failed to save infrastructure config:', error);
-      setErrors({ general: t('FAILED_TO_SAVE_CONFIG') });
+      setErrors({ general: t('infrastructure.FAILED_TO_SAVE_CONFIG') });
     } finally {
       setIsLoading(false);
     }
@@ -169,14 +169,14 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
         isActive: defaultConfig.isActive
       });
       
-      setSuccessMessage(t('DEFAULTS_APPLIED'));
+      setSuccessMessage(t('infrastructure.DEFAULTS_APPLIED'));
       
       if (onSave) {
         onSave(defaultConfig);
       }
     } catch (error) {
       console.error('Failed to apply defaults:', error);
-      setErrors({ general: t('FAILED_TO_APPLY_DEFAULTS') });
+      setErrors({ general: t('infrastructure.FAILED_TO_APPLY_DEFAULTS') });
     } finally {
       setIsLoading(false);
     }
@@ -202,7 +202,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
           }}
           title={
             <Typography variant="h6" fontWeight={500}>
-              {config ? t('EDIT_INFRASTRUCTURE_CONFIG') : t('CREATE_INFRASTRUCTURE_CONFIG')}
+              {config ? t('infrastructure.EDIT_INFRASTRUCTURE_CONFIG') : t('infrastructure.CREATE_INFRASTRUCTURE_CONFIG')}
             </Typography>
           }
           action={
@@ -212,7 +212,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
               onClick={handleApplyDefaults}
               disabled={isLoading}
             >
-              {t('APPLY_DEFAULTS')}
+              {t('infrastructure.APPLY_DEFAULTS')}
             </Button>
           }
         />
@@ -234,7 +234,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
         <Grid container spacing={4}>
           <Grid item xs={12}>
             <Typography variant="subtitle2" fontWeight={500} color="text.secondary" sx={{ mb: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              {t('WATER_RESOURCES')}
+              {t('infrastructure.WATER_RESOURCES')}
             </Typography>
           </Grid>
 
@@ -242,7 +242,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('WATER_RESOURCE_BASE_PRICE')}
+              label={t('infrastructure.WATER_RESOURCE_BASE_PRICE')}
               type="number"
               value={formData.waterResourceBasePrice}
               onChange={handleInputChange('waterResourceBasePrice')}
@@ -259,7 +259,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('WATER_PLANT_INDEX')}
+              label={t('infrastructure.WATER_PLANT_INDEX')}
               type="number"
               value={formData.waterPlantIndex}
               onChange={handleInputChange('waterPlantIndex')}
@@ -278,7 +278,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('WATER_PLANT_BASE_OPERATION_POINTS')}
+              label={t('infrastructure.WATER_PLANT_BASE_OPERATION_POINTS')}
               type="number"
               value={formData.waterPlantBaseOperationPoints}
               onChange={handleInputChange('waterPlantBaseOperationPoints')}
@@ -295,7 +295,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('WATER_PLANT_UPGRADE_OPERATION_POINTS')}
+              label={t('infrastructure.WATER_PLANT_UPGRADE_OPERATION_POINTS')}
               type="number"
               value={formData.waterPlantUpgradeOperationPoints}
               onChange={handleInputChange('waterPlantUpgradeOperationPoints')}
@@ -311,7 +311,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
           <Grid item xs={12}>
             <Divider sx={{ my: 1 }} />
             <Typography variant="subtitle2" fontWeight={500} color="text.secondary" sx={{ mt: 3, mb: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              {t('ELECTRICITY_RESOURCES')}
+              {t('infrastructure.ELECTRICITY_RESOURCES')}
             </Typography>
           </Grid>
 
@@ -319,7 +319,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('ELECTRICITY_RESOURCE_BASE_PRICE')}
+              label={t('infrastructure.ELECTRICITY_RESOURCE_BASE_PRICE')}
               type="number"
               value={formData.electricityResourceBasePrice}
               onChange={handleInputChange('electricityResourceBasePrice')}
@@ -336,7 +336,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('POWER_PLANT_INDEX')}
+              label={t('infrastructure.POWER_PLANT_INDEX')}
               type="number"
               value={formData.powerPlantIndex}
               onChange={handleInputChange('powerPlantIndex')}
@@ -355,7 +355,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('POWER_PLANT_BASE_OPERATION_POINTS')}
+              label={t('infrastructure.POWER_PLANT_BASE_OPERATION_POINTS')}
               type="number"
               value={formData.powerPlantBaseOperationPoints}
               onChange={handleInputChange('powerPlantBaseOperationPoints')}
@@ -372,7 +372,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('POWER_PLANT_UPGRADE_OPERATION_POINTS')}
+              label={t('infrastructure.POWER_PLANT_UPGRADE_OPERATION_POINTS')}
               type="number"
               value={formData.powerPlantUpgradeOperationPoints}
               onChange={handleInputChange('powerPlantUpgradeOperationPoints')}
@@ -388,7 +388,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
           <Grid item xs={12}>
             <Divider sx={{ my: 1 }} />
             <Typography variant="subtitle2" fontWeight={500} color="text.secondary" sx={{ mt: 3, mb: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              {t('BASE_STATIONS_AND_SERVICES')}
+              {t('infrastructure.BASE_STATIONS_AND_SERVICES')}
             </Typography>
           </Grid>
 
@@ -396,7 +396,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('BASE_STATION_BASE_COST')}
+              label={t('infrastructure.BASE_STATION_BASE_COST')}
               type="number"
               value={formData.baseStationBaseCost}
               onChange={handleInputChange('baseStationBaseCost')}
@@ -413,7 +413,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
             <TextField
               fullWidth
               size="small"
-              label={t('FIRE_STATION_BASE_COST')}
+              label={t('infrastructure.FIRE_STATION_BASE_COST')}
               type="number"
               value={formData.fireStationBaseCost}
               onChange={handleInputChange('fireStationBaseCost')}
@@ -435,7 +435,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
                   disabled={isLoading}
                   size="small"
                 >
-                  {t('RESET')}
+                  {t('infrastructure.RESET')}
                 </Button>
                 <Box display="flex" gap={1}>
                   {onCancel && (
@@ -445,7 +445,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
                       disabled={isLoading}
                       size="small"
                     >
-                      {t('CANCEL')}
+                      {t('infrastructure.CANCEL')}
                     </Button>
                   )}
                   <Button
@@ -454,7 +454,7 @@ const InfrastructureConfigForm: React.FC<InfrastructureConfigFormProps> = ({
                     disabled={isLoading}
                     size="small"
                   >
-                    {isLoading ? <CircularProgress size={16} /> : t('SAVE')}
+                    {isLoading ? <CircularProgress size={16} /> : t('infrastructure.SAVE')}
                   </Button>
                 </Box>
               </Box>

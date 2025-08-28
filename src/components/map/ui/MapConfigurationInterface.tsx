@@ -74,7 +74,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
   readOnly = false,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation('map');
+  const { t } = useTranslation();
 
   // State management
   const [selectedTileId, setSelectedTileId] = useState<number | null>(null);
@@ -107,13 +107,13 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
       setHasUnsavedChanges(true);
       setNotification({
         open: true,
-        message: t('TILE_UPDATED_SUCCESS'),
+        message: t('map.TILE_UPDATED_SUCCESS'),
         severity: 'success',
       });
     } catch (error) {
       setNotification({
         open: true,
-        message: t('TILE_UPDATE_ERROR'),
+        message: t('map.TILE_UPDATE_ERROR'),
         severity: 'error',
       });
     }
@@ -134,7 +134,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
     } catch (error) {
       setNotification({
         open: true,
-        message: t('BATCH_UPDATE_ERROR'),
+        message: t('map.BATCH_UPDATE_ERROR'),
         severity: 'error',
       });
     }
@@ -147,13 +147,13 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
       setHasUnsavedChanges(false);
       setNotification({
         open: true,
-        message: t('TEMPLATE_SAVED_SUCCESS'),
+        message: t('map.TEMPLATE_SAVED_SUCCESS'),
         severity: 'success',
       });
     } catch (error) {
       setNotification({
         open: true,
-        message: t('TEMPLATE_SAVE_ERROR'),
+        message: t('map.TEMPLATE_SAVE_ERROR'),
         severity: 'error',
       });
     }
@@ -184,14 +184,14 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
               {template.name}
             </Typography>
             <Chip 
-              label={template.isDefault ? t('DEFAULT_TEMPLATE') : t('CUSTOM_TEMPLATE')}
+              label={template.isDefault ? t('map.DEFAULT_TEMPLATE') : t('map.CUSTOM_TEMPLATE')}
               size="small"
               color={template.isDefault ? 'primary' : 'default'}
               variant="outlined"
             />
             {hasUnsavedChanges && (
               <Chip 
-                label={t('UNSAVED_CHANGES')}
+                label={t('map.UNSAVED_CHANGES')}
                 size="small"
                 color="warning"
                 variant="filled"
@@ -210,13 +210,13 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
                   size="small"
                 />
               }
-              label={t('CONFIG_MODE')}
+              label={t('map.CONFIG_MODE')}
               labelPlacement="start"
             />
 
             <Divider orientation="vertical" flexItem />
 
-            <Tooltip title={showConfigPanel ? t('HIDE_CONFIG_PANEL') : t('SHOW_CONFIG_PANEL')}>
+            <Tooltip title={showConfigPanel ? t('map.HIDE_CONFIG_PANEL') : t('map.SHOW_CONFIG_PANEL')}>
               <IconButton 
                 onClick={() => setShowConfigPanel(!showConfigPanel)}
                 color={showConfigPanel ? 'primary' : 'default'}
@@ -225,7 +225,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={isFullscreen ? t('EXIT_FULLSCREEN') : t('ENTER_FULLSCREEN')}>
+            <Tooltip title={isFullscreen ? t('map.EXIT_FULLSCREEN') : t('map.ENTER_FULLSCREEN')}>
               <IconButton onClick={toggleFullscreen}>
                 <FullscreenIcon />
               </IconButton>
@@ -234,7 +234,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
             <Divider orientation="vertical" flexItem />
 
             {/* Action Buttons */}
-            <Tooltip title={t('REFRESH')}>
+            <Tooltip title={t('map.REFRESH')}>
               <IconButton disabled={isLoading}>
                 <RefreshIcon />
               </IconButton>
@@ -247,7 +247,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
                 onClick={handleSave}
                 disabled={isLoading || !hasUnsavedChanges}
               >
-                {t('SAVE')}
+                {t('map.SAVE')}
               </Button>
             )}
           </Stack>
@@ -271,7 +271,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
                 zIndex: 1000 
               }}
             >
-              {t('CONFIG_MODE_HELP_TEXT')}
+              {t('map.CONFIG_MODE_HELP_TEXT')}
             </Alert>
           )}
 
@@ -305,7 +305,7 @@ const MapConfigurationInterface: React.FC<MapConfigurationInterfaceProps> = ({
             {/* Panel Header */}
             <Box sx={{ p: 1, borderBottom: 1, borderColor: 'divider' }}>
               <Typography variant="h6" sx={{ textAlign: 'center' }}>
-                {t('BASIC_CONFIGURATION')}
+                {t('map.BASIC_CONFIGURATION')}
               </Typography>
             </Box>
 

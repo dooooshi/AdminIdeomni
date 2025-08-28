@@ -82,7 +82,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
   onCreateActivity,
   onEditActivity,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [activityData, setActivityData] = useState<ActivitySearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -149,7 +149,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
         setActivityData(data);
       } else {
         console.error('Invalid API response structure:', data);
-        setError(t('ACTIVITY_LOAD_ERROR'));
+        setError(t('activityManagement.ACTIVITY_LOAD_ERROR'));
         setActivityData({ data: [], total: 0, page: 1, pageSize: 20, totalPages: 0, hasNext: false, hasPrevious: false });
       }
     } catch (err) {
@@ -164,9 +164,9 @@ const ActivityList: React.FC<ActivityListProps> = ({
       
       if (isApiNotFound && process.env.NODE_ENV === 'development') {
         // Show a helpful message for development
-        setError(`${t('ACTIVITY_LOAD_ERROR')} - API endpoint /api/activity may not be implemented yet. This is expected during development.`);
+        setError(`${t('activityManagement.ACTIVITY_LOAD_ERROR')} - API endpoint /api/activity may not be implemented yet. This is expected during development.`);
       } else {
-        setError(err instanceof Error ? err.message : t('ACTIVITY_LOAD_ERROR'));
+        setError(err instanceof Error ? err.message : t('activityManagement.ACTIVITY_LOAD_ERROR'));
       }
       
       // Set empty data structure to prevent map errors
@@ -251,7 +251,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
       setDeleteDialogOpen(false);
       setActivityToDelete(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('ACTIVITY_DELETE_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.ACTIVITY_DELETE_ERROR'));
     } finally {
       setDeleting(false);
     }
@@ -272,7 +272,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
       setRestoreDialogOpen(false);
       setActivityToRestore(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('ACTIVITY_RESTORE_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.ACTIVITY_RESTORE_ERROR'));
     } finally {
       setRestoring(false);
     }
@@ -286,11 +286,11 @@ const ActivityList: React.FC<ActivityListProps> = ({
   const getActivityTypeDisplayName = (type: ActivityType) => {
     switch (type) {
       case ActivityType.BizSimulation2_0:
-        return t('BIZSIMULATION2_0');
+        return t('activityManagement.BIZSIMULATION2_0');
       case ActivityType.BizSimulation2_2:
-        return t('BIZSIMULATION2_2');
+        return t('activityManagement.BIZSIMULATION2_2');
       case ActivityType.BizSimulation3_1:
-        return t('BIZSIMULATION3_1');
+        return t('activityManagement.BIZSIMULATION3_1');
       default:
         return type;
     }
@@ -313,18 +313,18 @@ const ActivityList: React.FC<ActivityListProps> = ({
   };
 
   const getActivityStatusName = (activity: Activity) => {
-    if (activity.deletedAt) return t('DELETED');
+    if (activity.deletedAt) return t('activityManagement.DELETED');
     
     const status = ActivityService.getActivityStatus(activity);
     switch (status) {
       case 'upcoming':
-        return t('UPCOMING');
+        return t('activityManagement.UPCOMING');
       case 'ongoing':
-        return t('ONGOING');
+        return t('activityManagement.ONGOING');
       case 'completed':
-        return t('COMPLETED');
+        return t('activityManagement.COMPLETED');
       default:
-        return t('UNKNOWN');
+        return t('activityManagement.UNKNOWN');
     }
   };
 
@@ -411,7 +411,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_ACTIVITIES')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_ACTIVITIES')}</Typography>
       </Box>
     );
   }
@@ -422,7 +422,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
               {/* Header */}
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h6" component="h2">
-          {t('ACTIVITY_LIST')}
+          {t('activityManagement.ACTIVITY_LIST')}
         </Typography>
         <Stack direction="row" spacing={2}>
           <Button
@@ -431,14 +431,14 @@ const ActivityList: React.FC<ActivityListProps> = ({
             onClick={() => loadActivities()}
             disabled={loading}
           >
-            {t('REFRESH_DATA')}
+            {t('activityManagement.REFRESH_DATA')}
           </Button>
           <Button
             variant="contained"
             startIcon={<AddIcon />}
             onClick={onCreateActivity}
           >
-            {t('CREATE_ACTIVITY')}
+            {t('activityManagement.CREATE_ACTIVITY')}
           </Button>
         </Stack>
       </Box>
@@ -454,13 +454,13 @@ const ActivityList: React.FC<ActivityListProps> = ({
         <Card sx={{ mb: 3 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              {t('FILTER_BY_TYPE')}
+              {t('activityManagement.FILTER_BY_TYPE')}
             </Typography>
             <Stack spacing={3}>
               {/* First row - search and basic filters */}
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
                 <TextField
-                  placeholder={t('SEARCH_ACTIVITIES')}
+                  placeholder={t('activityManagement.SEARCH_ACTIVITIES')}
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   InputProps={{
@@ -471,29 +471,29 @@ const ActivityList: React.FC<ActivityListProps> = ({
                 />
                 
                 <FormControl size="small" sx={{ minWidth: 180 }}>
-                  <InputLabel>{t('ACTIVITY_TYPE_LABEL')}</InputLabel>
+                  <InputLabel>{t('activityManagement.ACTIVITY_TYPE_LABEL')}</InputLabel>
                   <Select
                     value={filters.activityType}
-                    label={t('ACTIVITY_TYPE_LABEL')}
+                    label={t('activityManagement.ACTIVITY_TYPE_LABEL')}
                     onChange={(e) => handleFilterChange('activityType', e.target.value)}
                   >
-                    <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
-                    <MenuItem value={ActivityType.BizSimulation2_0}>{t('BIZSIMULATION2_0')}</MenuItem>
-                    <MenuItem value={ActivityType.BizSimulation2_2}>{t('BIZSIMULATION2_2')}</MenuItem>
-                    <MenuItem value={ActivityType.BizSimulation3_1}>{t('BIZSIMULATION3_1')}</MenuItem>
+                    <MenuItem value="">{t('activityManagement.ALL_TYPES')}</MenuItem>
+                    <MenuItem value={ActivityType.BizSimulation2_0}>{t('activityManagement.BIZSIMULATION2_0')}</MenuItem>
+                    <MenuItem value={ActivityType.BizSimulation2_2}>{t('activityManagement.BIZSIMULATION2_2')}</MenuItem>
+                    <MenuItem value={ActivityType.BizSimulation3_1}>{t('activityManagement.BIZSIMULATION3_1')}</MenuItem>
                   </Select>
                 </FormControl>
 
                 <FormControl size="small" sx={{ minWidth: 140 }}>
-                  <InputLabel>{t('STATUS')}</InputLabel>
+                  <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
                   <Select
                     value={filters.isActive}
-                    label={t('STATUS')}
+                    label={t('activityManagement.STATUS')}
                     onChange={(e) => handleFilterChange('isActive', e.target.value)}
                   >
-                    <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
-                    <MenuItem value="true">{t('ACTIVE')}</MenuItem>
-                    <MenuItem value="false">{t('INACTIVE')}</MenuItem>
+                    <MenuItem value="">{t('activityManagement.ALL_STATUSES')}</MenuItem>
+                    <MenuItem value="true">{t('activityManagement.ACTIVE')}</MenuItem>
+                    <MenuItem value="false">{t('activityManagement.INACTIVE')}</MenuItem>
                   </Select>
                 </FormControl>
 
@@ -504,20 +504,20 @@ const ActivityList: React.FC<ActivityListProps> = ({
                       onChange={(e) => handleFilterChange('includeDeleted', e.target.checked)}
                     />
                   }
-                  label={t('INCLUDE_DELETED')}
+                  label={t('activityManagement.INCLUDE_DELETED')}
                 />
               </Stack>
 
               {/* Second row - date filters */}
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
                 <DatePicker
-                  label={t('DATE_FROM')}
+                  label={t('activityManagement.DATE_FROM')}
                   value={filters.startFrom}
                   onChange={(date) => handleFilterChange('startFrom', date)}
                   slotProps={{ textField: { size: 'small', sx: { minWidth: 150 } } }}
                 />
                 <DatePicker
-                  label={t('DATE_TO')}
+                  label={t('activityManagement.DATE_TO')}
                   value={filters.startUntil}
                   onChange={(date) => handleFilterChange('startUntil', date)}
                   slotProps={{ textField: { size: 'small', sx: { minWidth: 150 } } }}
@@ -528,7 +528,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                   onClick={clearFilters}
                   sx={{ minWidth: 100 }}
                 >
-                  {t('CLEAR_FILTERS')}
+                  {t('activityManagement.CLEAR_FILTERS')}
                 </Button>
               </Stack>
             </Stack>
@@ -540,14 +540,14 @@ const ActivityList: React.FC<ActivityListProps> = ({
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('ACTIVITY_NAME')}</TableCell>
-                <TableCell>{t('ACTIVITY_TYPE')}</TableCell>
-                <TableCell>{t('START_DATE')}</TableCell>
-                <TableCell>{t('END_DATE')}</TableCell>
-                <TableCell>{t('DURATION')}</TableCell>
-                <TableCell>{t('STATUS')}</TableCell>
-                <TableCell>{t('CREATED_BY')}</TableCell>
-                <TableCell>{t('ACTIONS')}</TableCell>
+                <TableCell>{t('activityManagement.ACTIVITY_NAME')}</TableCell>
+                <TableCell>{t('activityManagement.ACTIVITY_TYPE')}</TableCell>
+                <TableCell>{t('activityManagement.START_DATE')}</TableCell>
+                <TableCell>{t('activityManagement.END_DATE')}</TableCell>
+                <TableCell>{t('activityManagement.DURATION')}</TableCell>
+                <TableCell>{t('activityManagement.STATUS')}</TableCell>
+                <TableCell>{t('activityManagement.CREATED_BY')}</TableCell>
+                <TableCell>{t('activityManagement.ACTIONS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -557,17 +557,17 @@ const ActivityList: React.FC<ActivityListProps> = ({
                     <Stack spacing={2} alignItems="center">
                       <EventIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
                       <Typography variant="h6" color="text.secondary">
-                        {t('NO_ACTIVITIES_FOUND')}
+                        {t('activityManagement.NO_ACTIVITIES_FOUND')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                        {t('NO_ACTIVITIES_MESSAGE')}
+                        {t('activityManagement.NO_ACTIVITIES_MESSAGE')}
                       </Typography>
                       <Button
                         variant="contained"
                         startIcon={<AddIcon />}
                         onClick={onCreateActivity}
                       >
-                        {t('CREATE_ACTIVITY')}
+                        {t('activityManagement.CREATE_ACTIVITY')}
                       </Button>
                     </Stack>
                   </TableCell>
@@ -622,7 +622,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                         />
                         {!activity.isActive && !activity.deletedAt && (
                           <Chip
-                            label={t('INACTIVE')}
+                            label={t('activityManagement.INACTIVE')}
                             size="small"
                             color="default"
                             variant="outlined"
@@ -642,7 +642,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                       <Stack direction="row" spacing={1}>
                         {!activity.deletedAt ? (
                           <>
-                            <Tooltip title={t('EDIT_TOOLTIP')}>
+                            <Tooltip title={t('activityManagement.EDIT_TOOLTIP')}>
                               <IconButton
                                 size="small"
                                 onClick={() => onEditActivity(activity)}
@@ -651,7 +651,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title={t('DELETE_TOOLTIP')}>
+                            <Tooltip title={t('activityManagement.DELETE_TOOLTIP')}>
                               <IconButton
                                 size="small"
                                 onClick={() => handleDeleteClick(activity)}
@@ -662,7 +662,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
                             </Tooltip>
                           </>
                         ) : (
-                          <Tooltip title={t('RESTORE_TOOLTIP')}>
+                          <Tooltip title={t('activityManagement.RESTORE_TOOLTIP')}>
                             <IconButton
                               size="small"
                               onClick={() => handleRestoreClick(activity)}
@@ -691,7 +691,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
             rowsPerPage={pageSize}
             onRowsPerPageChange={handlePageSizeChange}
             rowsPerPageOptions={[10, 20, 50, 100]}
-            labelRowsPerPage={t('ACTIVITIES_PER_PAGE')}
+            labelRowsPerPage={t('activityManagement.ACTIVITIES_PER_PAGE')}
             labelDisplayedRows={({ from, to, count }) =>
               t('SHOWING_ACTIVITIES', { start: from, end: to, total: count !== -1 ? count : `more than ${to}` })
             }
@@ -700,18 +700,18 @@ const ActivityList: React.FC<ActivityListProps> = ({
 
         {/* Delete Confirmation Dialog */}
         <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel} maxWidth="sm" fullWidth>
-          <DialogTitle>{t('DELETE_ACTIVITY_TITLE')}</DialogTitle>
+          <DialogTitle>{t('activityManagement.DELETE_ACTIVITY_TITLE')}</DialogTitle>
           <DialogContent>
             <Typography gutterBottom>
               {t('DELETE_ACTIVITY_MESSAGE', { activityName: activityToDelete?.name })}
             </Typography>
             <Typography variant="body2" color="warning.main">
-              {t('DELETE_ACTIVITY_WARNING')}
+              {t('activityManagement.DELETE_ACTIVITY_WARNING')}
             </Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDeleteCancel} disabled={deleting}>
-              {t('DELETE_CANCEL')}
+              {t('activityManagement.DELETE_CANCEL')}
             </Button>
             <Button
               onClick={handleDeleteConfirm}
@@ -720,14 +720,14 @@ const ActivityList: React.FC<ActivityListProps> = ({
               disabled={deleting}
               startIcon={deleting ? <CircularProgress size={16} /> : <DeleteIcon />}
             >
-              {deleting ? t('DELETING_ACTIVITY') : t('DELETE_CONFIRM')}
+              {deleting ? t('activityManagement.DELETING_ACTIVITY') : t('activityManagement.DELETE_CONFIRM')}
             </Button>
           </DialogActions>
         </Dialog>
 
         {/* Restore Confirmation Dialog */}
         <Dialog open={restoreDialogOpen} onClose={handleRestoreCancel} maxWidth="sm" fullWidth>
-          <DialogTitle>{t('RESTORE_ACTIVITY_TITLE')}</DialogTitle>
+          <DialogTitle>{t('activityManagement.RESTORE_ACTIVITY_TITLE')}</DialogTitle>
           <DialogContent>
             <Typography gutterBottom>
               {t('RESTORE_ACTIVITY_MESSAGE', { activityName: activityToRestore?.name })}
@@ -735,7 +735,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={handleRestoreCancel} disabled={restoring}>
-              {t('RESTORE_CANCEL')}
+              {t('activityManagement.RESTORE_CANCEL')}
             </Button>
             <Button
               onClick={handleRestoreConfirm}
@@ -744,7 +744,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
               disabled={restoring}
               startIcon={restoring ? <CircularProgress size={16} /> : <RestoreIcon />}
             >
-              {restoring ? t('RESTORING_ACTIVITY') : t('RESTORE_CONFIRM')}
+              {restoring ? t('activityManagement.RESTORING_ACTIVITY') : t('activityManagement.RESTORE_CONFIRM')}
             </Button>
           </DialogActions>
         </Dialog>

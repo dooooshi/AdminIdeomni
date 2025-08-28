@@ -77,7 +77,7 @@ function a11yProps(index: number) {
 }
 
 const UserManagementPage: React.FC = () => {
-  const { t } = useTranslation('userManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [userFormOpen, setUserFormOpen] = useState(false);
@@ -186,7 +186,7 @@ const UserManagementPage: React.FC = () => {
             </Link>
             <Typography color="text.primary" className="flex items-center">
               <PeopleIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('USER_MANAGEMENT')}
+              {t('userManagement.USER_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
 
@@ -197,13 +197,13 @@ const UserManagementPage: React.FC = () => {
                 component="h1"
                 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
               >
-                {t('USER_MANAGEMENT')}
+                {t('userManagement.USER_MANAGEMENT')}
               </Typography>
               <Typography
                 className="text-lg opacity-80 tracking-tight max-w-md"
                 color="text.secondary"
               >
-                {t('USER_MANAGEMENT_SUBTITLE')}
+                {t('userManagement.USER_MANAGEMENT_SUBTITLE')}
               </Typography>
             </div>
           </div>
@@ -223,19 +223,19 @@ const UserManagementPage: React.FC = () => {
               >
                 <Tab 
                   icon={<PeopleIcon />} 
-                  label={t('USERS')} 
+                  label={t('userManagement.USERS')} 
                   {...a11yProps(0)} 
                   iconPosition="start"
                 />
                 <Tab 
                   icon={<AnalyticsIcon />} 
-                  label={t('USER_ANALYTICS')} 
+                  label={t('userManagement.USER_ANALYTICS')} 
                   {...a11yProps(1)} 
                   iconPosition="start"
                 />
                 <Tab 
                   icon={<GetAppIcon />} 
-                  label={t('DATA_EXPORT')} 
+                  label={t('userManagement.DATA_EXPORT')} 
                   {...a11yProps(2)} 
                   iconPosition="start"
                 />
@@ -274,7 +274,7 @@ const UserManagementPage: React.FC = () => {
                     <CardContent sx={{ textAlign: 'center', py: 8 }}>
                       <GetAppIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
                       <Typography variant="h6" gutterBottom>
-                        {t('DATA_EXPORT')}
+                        {t('userManagement.DATA_EXPORT')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
                         Export user data in various formats for reporting and analysis
@@ -307,7 +307,7 @@ const UserManagementPage: React.FC = () => {
             <DialogTitle>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="h6">
-                  {t('USER_DETAILS')}
+                  {t('userManagement.USER_DETAILS')}
                 </Typography>
                 <IconButton onClick={handleCloseUserDetails} size="small">
                   <CloseIcon />
@@ -320,7 +320,7 @@ const UserManagementPage: React.FC = () => {
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('USERNAME')}
+                        {t('userManagement.USERNAME')}
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 600 }}>
                         {viewingUser.username}
@@ -329,7 +329,7 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('EMAIL')}
+                        {t('userManagement.EMAIL')}
                       </Typography>
                       <Typography variant="body1">
                         {viewingUser.email}
@@ -338,7 +338,7 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('FIRST_NAME')}
+                        {t('userManagement.FIRST_NAME')}
                       </Typography>
                       <Typography variant="body1">
                         {viewingUser.firstName || '-'}
@@ -347,7 +347,7 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('LAST_NAME')}
+                        {t('userManagement.LAST_NAME')}
                       </Typography>
                       <Typography variant="body1">
                         {viewingUser.lastName || '-'}
@@ -356,7 +356,7 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('USER_TYPE')}
+                        {t('userManagement.USER_TYPE')}
                       </Typography>
                       <Chip
                         label={UserService.getUserTypeName(viewingUser.userType)}
@@ -367,10 +367,10 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('STATUS')}
+                        {t('userManagement.STATUS')}
                       </Typography>
                       <Chip
-                        label={viewingUser.isActive ? t('ACTIVE') : t('INACTIVE')}
+                        label={viewingUser.isActive ? t('userManagement.ACTIVE') : t('userManagement.INACTIVE')}
                         size="small"
                         color={viewingUser.isActive ? 'success' : 'default'}
                       />
@@ -378,7 +378,7 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 12 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('ROLES')}
+                        {t('userManagement.ROLES')}
                       </Typography>
                       <Box display="flex" gap={1} flexWrap="wrap">
                         {viewingUser.roles && viewingUser.roles.length > 0 ? (
@@ -387,7 +387,7 @@ const UserManagementPage: React.FC = () => {
                           ))
                         ) : (
                           <Typography variant="body2" color="text.secondary">
-                            {t('NONE')}
+                            {t('userManagement.NONE')}
                           </Typography>
                         )}
                       </Box>
@@ -395,16 +395,16 @@ const UserManagementPage: React.FC = () => {
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('LAST_LOGIN')}
+                        {t('userManagement.LAST_LOGIN')}
                       </Typography>
                       <Typography variant="body2">
-                        {viewingUser.lastLoginAt ? formatDate(viewingUser.lastLoginAt) : t('NEVER')}
+                        {viewingUser.lastLoginAt ? formatDate(viewingUser.lastLoginAt) : t('userManagement.NEVER')}
                       </Typography>
                     </Grid>
 
                     <Grid size={{ xs: 6 }}>
                       <Typography variant="subtitle2" color="text.secondary">
-                        {t('CREATED_AT')}
+                        {t('userManagement.CREATED_AT')}
                       </Typography>
                       <Typography variant="body2">
                         {formatDate(viewingUser.createdAt)}
@@ -415,13 +415,13 @@ const UserManagementPage: React.FC = () => {
                       <>
                         <Grid size={{ xs: 12 }}>
                           <Typography variant="subtitle1" sx={{ mt: 2, mb: 1, fontWeight: 600 }}>
-                            {t('USER_ACTIVITIES')}
+                            {t('userManagement.USER_ACTIVITIES')}
                           </Typography>
                         </Grid>
 
                         <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
-                            {t('ACTIVITIES_PARTICIPATED')}
+                            {t('userManagement.ACTIVITIES_PARTICIPATED')}
                           </Typography>
                           <Typography variant="h6" color="primary">
                             {viewingUser.statistics.activitiesParticipated}
@@ -430,7 +430,7 @@ const UserManagementPage: React.FC = () => {
 
                         <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
-                            {t('ACTIVITIES_COMPLETED')}
+                            {t('userManagement.ACTIVITIES_COMPLETED')}
                           </Typography>
                           <Typography variant="h6" color="success.main">
                             {viewingUser.statistics.activitiesCompleted}
@@ -439,7 +439,7 @@ const UserManagementPage: React.FC = () => {
 
                         <Grid size={{ xs: 4 }}>
                           <Typography variant="subtitle2" color="text.secondary">
-                            {t('TOTAL_LOGIN_COUNT')}
+                            {t('userManagement.TOTAL_LOGIN_COUNT')}
                           </Typography>
                           <Typography variant="h6" color="info.main">
                             {viewingUser.statistics.totalLoginCount}
@@ -453,7 +453,7 @@ const UserManagementPage: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseUserDetails}>
-                {t('CLOSE')}
+                {t('userManagement.CLOSE')}
               </Button>
               {viewingUser && (
                 <Button 
@@ -463,7 +463,7 @@ const UserManagementPage: React.FC = () => {
                     handleEditUser(viewingUser);
                   }}
                 >
-                  {t('EDIT_USER')}
+                  {t('userManagement.EDIT_USER')}
                 </Button>
               )}
             </DialogActions>
@@ -479,7 +479,7 @@ const UserManagementPage: React.FC = () => {
             <DialogTitle>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="h6">
-                  {t('RESET_PASSWORD_TITLE')}
+                  {t('userManagement.RESET_PASSWORD_TITLE')}
                 </Typography>
                 <IconButton onClick={handleClosePasswordReset} size="small">
                   <CloseIcon />
@@ -490,7 +490,7 @@ const UserManagementPage: React.FC = () => {
               {resetPasswordUser && (
                 <Box>
                   <Alert severity="warning" sx={{ mb: 3 }}>
-                    {t('RESET_PASSWORD_CONFIRM')}
+                    {t('userManagement.RESET_PASSWORD_CONFIRM')}
                     <br />
                     <strong>{resetPasswordUser.username} ({resetPasswordUser.email})</strong>
                   </Alert>
@@ -507,7 +507,7 @@ const UserManagementPage: React.FC = () => {
                             }))}
                           />
                         }
-                        label={t('GENERATE_TEMPORARY')}
+                        label={t('userManagement.GENERATE_TEMPORARY')}
                       />
                     </Grid>
 
@@ -522,7 +522,7 @@ const UserManagementPage: React.FC = () => {
                             }))}
                           />
                         }
-                        label={t('REQUIRE_CHANGE')}
+                        label={t('userManagement.REQUIRE_CHANGE')}
                       />
                     </Grid>
 
@@ -537,7 +537,7 @@ const UserManagementPage: React.FC = () => {
                             }))}
                           />
                         }
-                        label={t('SEND_EMAIL')}
+                        label={t('userManagement.SEND_EMAIL')}
                       />
                     </Grid>
                   </Grid>
@@ -546,7 +546,7 @@ const UserManagementPage: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClosePasswordReset}>
-                {t('CANCEL')}
+                {t('userManagement.CANCEL')}
               </Button>
               <Button 
                 variant="contained" 
@@ -554,7 +554,7 @@ const UserManagementPage: React.FC = () => {
                 onClick={handleConfirmPasswordReset}
                 startIcon={<VpnKeyIcon />}
               >
-                {t('RESET_PASSWORD')}
+                {t('userManagement.RESET_PASSWORD')}
               </Button>
             </DialogActions>
           </Dialog>

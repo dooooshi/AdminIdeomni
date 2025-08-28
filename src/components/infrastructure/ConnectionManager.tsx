@@ -56,7 +56,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
   facilities,
   onUpdate,
 }) => {
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -124,7 +124,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       }
     } catch (err: any) {
       console.error('Error loading data:', err);
-      setError(err.message || t('ERROR_LOADING_DATA'));
+      setError(err.message || t('infrastructure.ERROR_LOADING_DATA'));
     } finally {
       setLoading(false);
     }
@@ -145,7 +145,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       loadData();
       onUpdate();
     } catch (err: any) {
-      setError(err.message || t('ERROR_ACCEPTING_REQUEST'));
+      setError(err.message || t('infrastructure.ERROR_ACCEPTING_REQUEST'));
     } finally {
       setLoading(false);
     }
@@ -166,7 +166,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       loadData();
       onUpdate();
     } catch (err: any) {
-      setError(err.message || t('ERROR_REJECTING_REQUEST'));
+      setError(err.message || t('infrastructure.ERROR_REJECTING_REQUEST'));
     } finally {
       setLoading(false);
     }
@@ -187,7 +187,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       loadData();
       onUpdate();
     } catch (err: any) {
-      setError(err.message || t('ERROR_CANCELLING_REQUEST'));
+      setError(err.message || t('infrastructure.ERROR_CANCELLING_REQUEST'));
     } finally {
       setLoading(false);
     }
@@ -208,7 +208,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       loadData();
       onUpdate();
     } catch (err: any) {
-      setError(err.message || t('ERROR_DISCONNECTING'));
+      setError(err.message || t('infrastructure.ERROR_DISCONNECTING'));
     } finally {
       setLoading(false);
     }
@@ -239,14 +239,14 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
           <Tab 
             label={
               <Badge badgeContent={consumerRequests.filter(r => r.status === 'PENDING' || r.status === RequestStatus.PENDING).length} color="warning">
-                {t('AS_CONSUMER')}
+                {t('infrastructure.AS_CONSUMER')}
               </Badge>
             } 
           />
           <Tab 
             label={
               <Badge badgeContent={providerRequests.filter(r => r.status === 'PENDING' || r.status === RequestStatus.PENDING).length} color="warning">
-                {t('AS_PROVIDER')}
+                {t('infrastructure.AS_PROVIDER')}
               </Badge>
             } 
           />
@@ -262,23 +262,23 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
         <Box sx={{ display: tabValue === 0 ? 'block' : 'none' }}>
           {/* Active Connections */}
           <Typography variant="h6" gutterBottom>
-            {t('ACTIVE_CONNECTIONS')}
+            {t('infrastructure.ACTIVE_CONNECTIONS')}
           </Typography>
           {consumerConnections.length === 0 ? (
             <Alert severity="info" sx={{ mb: 3 }}>
-              {t('NO_ACTIVE_CONNECTIONS')}
+              {t('infrastructure.NO_ACTIVE_CONNECTIONS')}
             </Alert>
           ) : (
             <TableContainer component={Paper} sx={{ mb: 3 }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('TYPE')}</TableCell>
-                    <TableCell>{t('PROVIDER')}</TableCell>
-                    <TableCell>{t('UNIT_PRICE')}</TableCell>
-                    <TableCell>{t('DISTANCE')}</TableCell>
-                    <TableCell>{t('STATUS')}</TableCell>
-                    <TableCell>{t('ACTIONS')}</TableCell>
+                    <TableCell>{t('infrastructure.TYPE')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                    <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
+                    <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                    <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -287,7 +287,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(connection.connectionType)}
-                          {t(connection.connectionType)}
+                          {t(`infrastructure.${connection.connectionType}`)}
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -302,7 +302,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>{(connection.operationPointsCost || 1) - 1}</TableCell>
                       <TableCell>
                         <Chip
-                          label={t(connection.status)}
+                          label={t(`infrastructure.${connection.status}`)}
                           color={getStatusColor(connection.status as ConnectionStatus)}
                           size="small"
                         />
@@ -328,24 +328,24 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 
           {/* Connection Requests */}
           <Typography variant="h6" gutterBottom>
-            {t('CONNECTION_REQUESTS')}
+            {t('infrastructure.CONNECTION_REQUESTS')}
           </Typography>
           {consumerRequests.length === 0 ? (
             <Alert severity="info">
-              {t('NO_CONNECTION_REQUESTS')}
+              {t('infrastructure.NO_CONNECTION_REQUESTS')}
             </Alert>
           ) : (
             <TableContainer component={Paper}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('TYPE')}</TableCell>
-                    <TableCell>{t('PROVIDER')}</TableCell>
-                    <TableCell>{t('PROPOSED_PRICE')}</TableCell>
-                    <TableCell>{t('DISTANCE')}</TableCell>
-                    <TableCell>{t('STATUS')}</TableCell>
-                    <TableCell>{t('CREATED_AT')}</TableCell>
-                    <TableCell>{t('ACTIONS')}</TableCell>
+                    <TableCell>{t('infrastructure.TYPE')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                    <TableCell>{t('infrastructure.PROPOSED_PRICE')}</TableCell>
+                    <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                    <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell>{t('infrastructure.CREATED_AT')}</TableCell>
+                    <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -354,7 +354,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(request.connectionType)}
-                          {t(request.connectionType)}
+                          {t(`infrastructure.${request.connectionType}`)}
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -371,7 +371,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>{request.distance}</TableCell>
                       <TableCell>
                         <Chip
-                          label={t(request.status)}
+                          label={t(`infrastructure.${request.status}`)}
                           color={getStatusColor(request.status as RequestStatus)}
                           size="small"
                         />
@@ -388,7 +388,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                               setSelectedRequest(request);
                               setCancelDialogOpen(true);
                             }}
-                            title={t('CANCEL_REQUEST')}
+                            title={t('infrastructure.CANCEL_REQUEST')}
                           >
                             <CancelIcon fontSize="small" />
                           </IconButton>
@@ -410,23 +410,23 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
         <Box sx={{ display: tabValue === 1 ? 'block' : 'none' }}>
           {/* Active Connections */}
           <Typography variant="h6" gutterBottom>
-            {t('PROVIDED_CONNECTIONS')}
+            {t('infrastructure.PROVIDED_CONNECTIONS')}
           </Typography>
           {providerConnections.length === 0 ? (
             <Alert severity="info" sx={{ mb: 3 }}>
-              {t('NO_PROVIDED_CONNECTIONS')}
+              {t('infrastructure.NO_PROVIDED_CONNECTIONS')}
             </Alert>
           ) : (
             <TableContainer component={Paper} sx={{ mb: 3 }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('TYPE')}</TableCell>
-                    <TableCell>{t('CONSUMER')}</TableCell>
-                    <TableCell>{t('UNIT_PRICE')}</TableCell>
-                    <TableCell>{t('OP_COST')}</TableCell>
-                    <TableCell>{t('STATUS')}</TableCell>
-                    <TableCell>{t('ACTIONS')}</TableCell>
+                    <TableCell>{t('infrastructure.TYPE')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER')}</TableCell>
+                    <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
+                    <TableCell>{t('infrastructure.OP_COST')}</TableCell>
+                    <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -435,7 +435,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(connection.connectionType)}
-                          {t(connection.connectionType)}
+                          {t(`infrastructure.${connection.connectionType}`)}
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -450,7 +450,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>{connection.operationPointsCost || '0'}</TableCell>
                       <TableCell>
                         <Chip
-                          label={t(connection.status)}
+                          label={t(`infrastructure.${connection.status}`)}
                           color={getStatusColor(connection.status as ConnectionStatus)}
                           size="small"
                         />
@@ -476,24 +476,24 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 
           {/* Incoming Requests */}
           <Typography variant="h6" gutterBottom>
-            {t('INCOMING_REQUESTS')}
+            {t('infrastructure.INCOMING_REQUESTS')}
           </Typography>
           {providerRequests.length === 0 ? (
             <Alert severity="info">
-              {t('NO_INCOMING_REQUESTS')}
+              {t('infrastructure.NO_INCOMING_REQUESTS')}
             </Alert>
           ) : (
             <TableContainer component={Paper}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('TYPE')}</TableCell>
-                    <TableCell>{t('CONSUMER')}</TableCell>
-                    <TableCell>{t('DISTANCE')}</TableCell>
-                    <TableCell>{t('OP_NEEDED')}</TableCell>
-                    <TableCell>{t('PROPOSED_PRICE')}</TableCell>
-                    <TableCell>{t('STATUS')}</TableCell>
-                    <TableCell>{t('ACTIONS')}</TableCell>
+                    <TableCell>{t('infrastructure.TYPE')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER')}</TableCell>
+                    <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                    <TableCell>{t('infrastructure.OP_NEEDED')}</TableCell>
+                    <TableCell>{t('infrastructure.PROPOSED_PRICE')}</TableCell>
+                    <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -502,7 +502,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(request.connectionType)}
-                          {t(request.connectionType)}
+                          {t(`infrastructure.${request.connectionType}`)}
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -520,7 +520,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       </TableCell>
                       <TableCell>
                         <Chip
-                          label={t(request.status)}
+                          label={t(`infrastructure.${request.status}`)}
                           color={getStatusColor(request.status as RequestStatus)}
                           size="small"
                         />
@@ -567,12 +567,12 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 
       {/* Accept Dialog */}
       <Dialog open={acceptDialogOpen} onClose={() => setAcceptDialogOpen(false)}>
-        <DialogTitle>{t('ACCEPT_CONNECTION_REQUEST')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.ACCEPT_CONNECTION_REQUEST')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label={t('UNIT_PRICE')}
+            label={t('infrastructure.UNIT_PRICE')}
             type="number"
             fullWidth
             variant="outlined"
@@ -585,21 +585,21 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             setAcceptDialogOpen(false);
             setSelectedRequest(null);
             setUnitPrice('');
-          }}>{t('CANCEL')}</Button>
+          }}>{t('infrastructure.CANCEL')}</Button>
           <Button onClick={handleAcceptRequest} variant="contained" disabled={!unitPrice || loading}>
-            {t('ACCEPT')}
+            {t('infrastructure.ACCEPT')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Reject Dialog */}
       <Dialog open={rejectDialogOpen} onClose={() => setRejectDialogOpen(false)}>
-        <DialogTitle>{t('REJECT_CONNECTION_REQUEST')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.REJECT_CONNECTION_REQUEST')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label={t('REASON')}
+            label={t('infrastructure.REASON')}
             multiline
             rows={3}
             fullWidth
@@ -613,24 +613,24 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             setRejectDialogOpen(false);
             setSelectedRequest(null);
             setReason('');
-          }}>{t('CANCEL')}</Button>
+          }}>{t('infrastructure.CANCEL')}</Button>
           <Button onClick={handleRejectRequest} variant="contained" color="error" disabled={loading}>
-            {t('REJECT')}
+            {t('infrastructure.REJECT')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Cancel Request Dialog */}
       <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)}>
-        <DialogTitle>{t('CANCEL_CONNECTION_REQUEST')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.CANCEL_CONNECTION_REQUEST')}</DialogTitle>
         <DialogContent>
           <Alert severity="info" sx={{ mb: 2 }}>
-            {t('CANCEL_REQUEST_INFO')}
+            {t('infrastructure.CANCEL_REQUEST_INFO')}
           </Alert>
           <TextField
             autoFocus
             margin="dense"
-            label={t('REASON')}
+            label={t('infrastructure.REASON')}
             multiline
             rows={3}
             fullWidth
@@ -644,24 +644,24 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             setCancelDialogOpen(false);
             setSelectedRequest(null);
             setReason('');
-          }}>{t('CLOSE')}</Button>
+          }}>{t('infrastructure.CLOSE')}</Button>
           <Button onClick={handleCancelRequest} variant="contained" color="warning" disabled={loading}>
-            {t('CANCEL_REQUEST')}
+            {t('infrastructure.CANCEL_REQUEST')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Disconnect Dialog */}
       <Dialog open={disconnectDialogOpen} onClose={() => setDisconnectDialogOpen(false)}>
-        <DialogTitle>{t('DISCONNECT_CONNECTION')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.DISCONNECT_CONNECTION')}</DialogTitle>
         <DialogContent>
           <Alert severity="warning" sx={{ mb: 2 }}>
-            {t('DISCONNECT_WARNING')}
+            {t('infrastructure.DISCONNECT_WARNING')}
           </Alert>
           <TextField
             autoFocus
             margin="dense"
-            label={t('REASON')}
+            label={t('infrastructure.REASON')}
             multiline
             rows={3}
             fullWidth
@@ -675,9 +675,9 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             setDisconnectDialogOpen(false);
             setSelectedConnection(null);
             setReason('');
-          }}>{t('CANCEL')}</Button>
+          }}>{t('infrastructure.CANCEL')}</Button>
           <Button onClick={handleDisconnect} variant="contained" color="error" disabled={loading}>
-            {t('DISCONNECT')}
+            {t('infrastructure.DISCONNECT')}
           </Button>
         </DialogActions>
       </Dialog>

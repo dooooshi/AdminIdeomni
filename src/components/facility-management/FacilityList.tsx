@@ -78,7 +78,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
   onEditFacility,
   onViewFacility,
 }) => {
-  const { t } = useTranslation('facilityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [facilityData, setFacilityData] = useState<FacilitySearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -128,7 +128,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       const data = await FacilityService.searchFacilities(requestParams);
       setFacilityData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('FACILITY_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('facilityManagement.FACILITY_LOAD_ERROR'));
       setFacilityData(null);
     } finally {
       setLoading(false);
@@ -186,7 +186,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       setFacilityToDelete(null);
       loadFacilities();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('FACILITY_DELETE_ERROR'));
+      setError(err instanceof Error ? err.message : t('facilityManagement.FACILITY_DELETE_ERROR'));
     } finally {
       setDeleting(false);
     }
@@ -207,7 +207,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       setFacilityToRestore(null);
       loadFacilities();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('FACILITY_RESTORE_ERROR'));
+      setError(err instanceof Error ? err.message : t('facilityManagement.FACILITY_RESTORE_ERROR'));
     } finally {
       setRestoring(false);
     }
@@ -218,7 +218,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
       await FacilityService.toggleFacilityStatus(facility.id);
       loadFacilities();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('FACILITY_UPDATE_ERROR'));
+      setError(err instanceof Error ? err.message : t('facilityManagement.FACILITY_UPDATE_ERROR'));
     }
   };
 
@@ -264,7 +264,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
-                  {t('TOTAL_FACILITIES')}
+                  {t('facilityManagement.TOTAL_FACILITIES')}
                 </Typography>
                 <Typography variant="h4">
                   {facilityData.total}
@@ -276,7 +276,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
-                  {t('ACTIVE_FACILITIES')}
+                  {t('facilityManagement.ACTIVE_FACILITIES')}
                 </Typography>
                 <Typography variant="h4" color="success.main">
                   {facilityData.data.filter(f => f.isActive).length}
@@ -288,7 +288,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
-                  {t('INACTIVE_FACILITIES')}
+                  {t('facilityManagement.INACTIVE_FACILITIES')}
                 </Typography>
                 <Typography variant="h4" color="warning.main">
                   {facilityData.data.filter(f => !f.isActive).length}
@@ -300,7 +300,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
             <Card>
               <CardContent>
                 <Typography color="textSecondary" gutterBottom variant="h6">
-                  {t('FACILITIES_BY_CATEGORY')}
+                  {t('facilityManagement.FACILITIES_BY_CATEGORY')}
                 </Typography>
                 <Typography variant="h4">
                   {facilityCategories.length}
@@ -319,7 +319,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
               <TextField
                 fullWidth
                 variant="outlined"
-                placeholder={t('SEARCH_PLACEHOLDER')}
+                placeholder={t('facilityManagement.SEARCH_PLACEHOLDER')}
                 value={searchValue}
                 onChange={handleSearchChange}
                 InputProps={{
@@ -329,14 +329,14 @@ const FacilityList: React.FC<FacilityListProps> = ({
             </Grid>
             <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('FILTER_BY_CATEGORY')}</InputLabel>
+                <InputLabel>{t('facilityManagement.FILTER_BY_CATEGORY')}</InputLabel>
                 <Select
                   value={filters.category}
-                  label={t('FILTER_BY_CATEGORY')}
+                  label={t('facilityManagement.FILTER_BY_CATEGORY')}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
                   sx={{ minWidth: 180 }}
                 >
-                  <MenuItem value="">{t('ALL_CATEGORIES')}</MenuItem>
+                  <MenuItem value="">{t('facilityManagement.ALL_CATEGORIES')}</MenuItem>
                   {facilityCategories.map((category) => (
                     <MenuItem key={category} value={category}>
                       {t(category)}
@@ -347,14 +347,14 @@ const FacilityList: React.FC<FacilityListProps> = ({
             </Grid>
             <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('FILTER_BY_TYPE')}</InputLabel>
+                <InputLabel>{t('facilityManagement.FILTER_BY_TYPE')}</InputLabel>
                 <Select
                   value={filters.facilityType}
-                  label={t('FILTER_BY_TYPE')}
+                  label={t('facilityManagement.FILTER_BY_TYPE')}
                   onChange={(e) => handleFilterChange('facilityType', e.target.value)}
                   sx={{ minWidth: 160 }}
                 >
-                  <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
+                  <MenuItem value="">{t('facilityManagement.ALL_TYPES')}</MenuItem>
                   {facilityTypes.map((type) => (
                     <MenuItem key={type} value={type}>
                       {t(type)}
@@ -365,16 +365,16 @@ const FacilityList: React.FC<FacilityListProps> = ({
             </Grid>
             <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('FILTER_BY_STATUS')}</InputLabel>
+                <InputLabel>{t('facilityManagement.FILTER_BY_STATUS')}</InputLabel>
                 <Select
                   value={filters.status}
-                  label={t('FILTER_BY_STATUS')}
+                  label={t('facilityManagement.FILTER_BY_STATUS')}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
                   sx={{ minWidth: 140 }}
                 >
-                  <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
-                  <MenuItem value="active">{t('ACTIVE')}</MenuItem>
-                  <MenuItem value="inactive">{t('INACTIVE')}</MenuItem>
+                  <MenuItem value="">{t('facilityManagement.ALL_STATUSES')}</MenuItem>
+                  <MenuItem value="active">{t('facilityManagement.ACTIVE')}</MenuItem>
+                  <MenuItem value="inactive">{t('facilityManagement.INACTIVE')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -386,7 +386,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   onClick={onCreateFacility}
                   fullWidth
                 >
-                  {t('CREATE_FACILITY')}
+                  {t('facilityManagement.CREATE_FACILITY')}
                 </Button>
                 <IconButton onClick={() => loadFacilities()}>
                   <RefreshIcon />
@@ -414,42 +414,42 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'name'}
                     direction={filters.sortBy === 'name' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('name')}
+                    onClick={() => handleSort('facilityManagement.name')}
                   >
-                    {t('NAME')}
+                    {t('facilityManagement.NAME')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'facilityType'}
                     direction={filters.sortBy === 'facilityType' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityType')}
+                    onClick={() => handleSort('facilityManagement.facilityType')}
                   >
-                    {t('TYPE')}
+                    {t('facilityManagement.TYPE')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'category'}
                     direction={filters.sortBy === 'category' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('category')}
+                    onClick={() => handleSort('facilityManagement.category')}
                   >
-                    {t('CATEGORY')}
+                    {t('facilityManagement.CATEGORY')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('CAPACITY')}</TableCell>
-                <TableCell>{t('BUILD_COST')}</TableCell>
-                <TableCell>{t('STATUS')}</TableCell>
+                <TableCell>{t('facilityManagement.CAPACITY')}</TableCell>
+                <TableCell>{t('facilityManagement.BUILD_COST')}</TableCell>
+                <TableCell>{t('facilityManagement.STATUS')}</TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'createdAt'}
                     direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('createdAt')}
+                    onClick={() => handleSort('facilityManagement.createdAt')}
                   >
-                    {t('CREATED_AT')}
+                    {t('facilityManagement.CREATED_AT')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('ACTIONS')}</TableCell>
+                <TableCell>{t('facilityManagement.ACTIONS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -458,7 +458,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableCell colSpan={8} align="center">
                     <CircularProgress />
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      {t('LOADING_FACILITIES')}
+                      {t('facilityManagement.LOADING_FACILITIES')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -466,7 +466,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                 <TableRow>
                   <TableCell colSpan={8} align="center">
                     <Typography variant="body2" color="textSecondary">
-                      {t('NO_FACILITIES_FOUND')}
+                      {t('facilityManagement.NO_FACILITIES_FOUND')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -510,7 +510,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                     </TableCell>
                     <TableCell>
                       <Chip
-                        label={facility.isActive ? t('ACTIVE') : t('INACTIVE')}
+                        label={facility.isActive ? t('facilityManagement.ACTIVE') : t('facilityManagement.INACTIVE')}
                         color={facility.isActive ? 'success' : 'default'}
                         size="small"
                       />
@@ -522,7 +522,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1}>
-                        <Tooltip title={t('VIEW')}>
+                        <Tooltip title={t('facilityManagement.VIEW')}>
                           <IconButton
                             size="small"
                             onClick={() => onViewFacility(facility)}
@@ -530,7 +530,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                             <ViewIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title={t('EDIT')}>
+                        <Tooltip title={t('facilityManagement.EDIT')}>
                           <IconButton
                             size="small"
                             onClick={() => onEditFacility(facility)}
@@ -538,7 +538,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title={t('TOGGLE_STATUS')}>
+                        <Tooltip title={t('facilityManagement.TOGGLE_STATUS')}>
                           <IconButton
                             size="small"
                             onClick={() => handleToggleStatus(facility)}
@@ -547,7 +547,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                           </IconButton>
                         </Tooltip>
                         {facility.deletedAt ? (
-                          <Tooltip title={t('RESTORE')}>
+                          <Tooltip title={t('facilityManagement.RESTORE')}>
                             <IconButton
                               size="small"
                               onClick={() => handleRestoreClick(facility)}
@@ -557,7 +557,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                             </IconButton>
                           </Tooltip>
                         ) : (
-                          <Tooltip title={t('DELETE')}>
+                          <Tooltip title={t('facilityManagement.DELETE')}>
                             <IconButton
                               size="small"
                               onClick={() => handleDeleteClick(facility)}
@@ -595,10 +595,10 @@ const FacilityList: React.FC<FacilityListProps> = ({
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-        <DialogTitle>{t('DELETE_FACILITY')}</DialogTitle>
+        <DialogTitle>{t('facilityManagement.DELETE_FACILITY')}</DialogTitle>
         <DialogContent>
           <Typography>
-            {t('DELETE_FACILITY_CONFIRM')}
+            {t('facilityManagement.DELETE_FACILITY_CONFIRM')}
           </Typography>
           {facilityToDelete && (
             <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
@@ -606,12 +606,12 @@ const FacilityList: React.FC<FacilityListProps> = ({
             </Typography>
           )}
           <Alert severity="info" sx={{ mt: 2 }}>
-            {t('DELETE_FACILITY_WARNING')}
+            {t('facilityManagement.DELETE_FACILITY_WARNING')}
           </Alert>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
@@ -619,17 +619,17 @@ const FacilityList: React.FC<FacilityListProps> = ({
             disabled={deleting}
             startIcon={deleting ? <CircularProgress size={16} /> : undefined}
           >
-            {t('DELETE')}
+            {t('facilityManagement.DELETE')}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Restore Confirmation Dialog */}
       <Dialog open={restoreDialogOpen} onClose={() => setRestoreDialogOpen(false)}>
-        <DialogTitle>{t('RESTORE_FACILITY')}</DialogTitle>
+        <DialogTitle>{t('facilityManagement.RESTORE_FACILITY')}</DialogTitle>
         <DialogContent>
           <Typography>
-            {t('RESTORE_FACILITY_CONFIRM')}
+            {t('facilityManagement.RESTORE_FACILITY_CONFIRM')}
           </Typography>
           {facilityToRestore && (
             <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
@@ -639,7 +639,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setRestoreDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleRestoreConfirm}
@@ -647,7 +647,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
             disabled={restoring}
             startIcon={restoring ? <CircularProgress size={16} /> : undefined}
           >
-            {t('RESTORE')}
+            {t('facilityManagement.RESTORE')}
           </Button>
         </DialogActions>
       </Dialog>

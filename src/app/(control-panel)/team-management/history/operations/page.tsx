@@ -36,7 +36,7 @@ import { TeamOperationType, TeamResourceType, HistoryFilterState } from '@/types
  * Complete list of team account operations with filtering and pagination
  */
 function AllOperationsPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { data: teamAccount, isLoading, error } = useGetCurrentUserTeamAccountQuery();
   
@@ -97,17 +97,17 @@ function AllOperationsPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -133,32 +133,32 @@ function AllOperationsPage() {
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BACK')}
+                {t('teamManagement.BACK')}
               </Button>
             </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:ALL_OPERATIONS')}
+              {t('teamManagement.ALL_OPERATIONS')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Complete history of all team account operations and transactions
+              {t('teamManagement.ALL_OPERATIONS_DESCRIPTION')}
             </Typography>
           </div>
 
           {/* Filters */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:FILTER_OPERATIONS')}
+              {t('teamManagement.FILTER_OPERATIONS')}
             </Typography>
               <Grid component="div" container spacing={3}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('teamManagement:OPERATION_TYPE')}</InputLabel>
+                    <InputLabel>{t('teamManagement.OPERATION_TYPE')}</InputLabel>
                     <Select
                       value={filters.operationType}
-                      label={t('teamManagement:OPERATION_TYPE')}
+                      label={t('teamManagement.OPERATION_TYPE')}
                       onChange={(e) => handleFilterChange('operationType', e.target.value)}
                     >
-                      <MenuItem value="all">{t('teamManagement:ALL_TYPES')}</MenuItem>
+                      <MenuItem value="all">{t('teamManagement.ALL_TYPES')}</MenuItem>
                       {Object.values(TeamOperationType).map((type) => (
                         <MenuItem key={type} value={type}>
                           {TeamTransferService.getOperationTypeDisplayName(type)}
@@ -169,15 +169,15 @@ function AllOperationsPage() {
                 </Grid>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('teamManagement:RESOURCE_TYPE')}</InputLabel>
+                    <InputLabel>{t('teamManagement.RESOURCE_TYPE')}</InputLabel>
                     <Select
                       value={filters.resourceType}
-                      label={t('teamManagement:RESOURCE_TYPE')}
+                      label={t('teamManagement.RESOURCE_TYPE')}
                       onChange={(e) => handleFilterChange('resourceType', e.target.value)}
                     >
-                      <MenuItem value="all">{t('teamManagement:ALL_RESOURCES')}</MenuItem>
-                      <MenuItem value={TeamResourceType.GOLD}>{t('teamManagement:GOLD')}</MenuItem>
-                      <MenuItem value={TeamResourceType.CARBON}>{t('teamManagement:CARBON')}</MenuItem>
+                      <MenuItem value="all">{t('teamManagement.ALL_RESOURCES')}</MenuItem>
+                      <MenuItem value={TeamResourceType.GOLD}>{t('teamManagement.GOLD')}</MenuItem>
+                      <MenuItem value={TeamResourceType.CARBON}>{t('teamManagement.CARBON')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -185,7 +185,7 @@ function AllOperationsPage() {
                   <TextField
                     fullWidth
                     type="date"
-                    label={t('teamManagement:FROM_DATE')}
+                    label={t('teamManagement.FROM_DATE')}
                     value={filters.startDate}
                     onChange={(e) => handleFilterChange('startDate', e.target.value)}
                     InputLabelProps={{ shrink: true }}
@@ -195,7 +195,7 @@ function AllOperationsPage() {
                   <TextField
                     fullWidth
                     type="date"
-                    label={t('teamManagement:TO_DATE')}
+                    label={t('teamManagement.TO_DATE')}
                     value={filters.endDate}
                     onChange={(e) => handleFilterChange('endDate', e.target.value)}
                     InputLabelProps={{ shrink: true }}
@@ -209,7 +209,7 @@ function AllOperationsPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
               >
-                {t('teamManagement:CLEAR_FILTERS')}
+                {t('teamManagement.CLEAR_FILTERS')}
               </Button>
               <Button
                 variant="outlined"
@@ -217,7 +217,7 @@ function AllOperationsPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
               >
-                {t('teamManagement:APPLY_FILTERS')}
+                {t('teamManagement.APPLY_FILTERS')}
               </Button>
             </div>
           </Paper>
@@ -228,14 +228,14 @@ function AllOperationsPage() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('teamManagement:DATE')}</TableCell>
-                      <TableCell>{t('teamManagement:TYPE')}</TableCell>
-                      <TableCell>{t('teamManagement:RESOURCE')}</TableCell>
-                      <TableCell>{t('teamManagement:AMOUNT')}</TableCell>
-                      <TableCell>{t('teamManagement:PARTNER_TEAM')}</TableCell>
-                      <TableCell>{t('teamManagement:BALANCE_BEFORE')}</TableCell>
-                      <TableCell>{t('teamManagement:BALANCE_AFTER')}</TableCell>
-                      <TableCell>{t('teamManagement:USER')}</TableCell>
+                      <TableCell>{t('teamManagement.DATE')}</TableCell>
+                      <TableCell>{t('teamManagement.TYPE')}</TableCell>
+                      <TableCell>{t('teamManagement.RESOURCE')}</TableCell>
+                      <TableCell>{t('teamManagement.AMOUNT')}</TableCell>
+                      <TableCell>{t('teamManagement.PARTNER_TEAM')}</TableCell>
+                      <TableCell>{t('teamManagement.BALANCE_BEFORE')}</TableCell>
+                      <TableCell>{t('teamManagement.BALANCE_AFTER')}</TableCell>
+                      <TableCell>{t('teamManagement.USER')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -343,10 +343,10 @@ function AllOperationsPage() {
                             </IdeomniSvgIcon>
                           </div>
                           <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
-                            {t('teamManagement:NO_OPERATIONS_FOUND')}
+                            {t('teamManagement.NO_OPERATIONS_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Try adjusting your filters or make your first transfer
+                            {t('teamManagement.NO_OPERATIONS_FOUND_HINT')}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -360,7 +360,7 @@ function AllOperationsPage() {
                 <Box className="p-6 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement:TO')} {Math.min(page * pageSize, operationsData.total)} {t('teamManagement:OF')} {operationsData.total} {t('teamManagement:ENTRIES')}
+                      {t('teamManagement.SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement.TO')} {Math.min(page * pageSize, operationsData.total)} {t('teamManagement.OF')} {operationsData.total} {t('teamManagement.ENTRIES')}
                     </Typography>
                     <Pagination
                       count={operationsData.totalPages}
@@ -376,7 +376,7 @@ function AllOperationsPage() {
           {/* Quick Actions */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:QUICK_ACTIONS')}
+              {t('teamManagement.QUICK_ACTIONS')}
             </Typography>
             <div className="flex gap-4 flex-wrap">
               <Button
@@ -385,7 +385,7 @@ function AllOperationsPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
               >
-                {t('teamManagement:TRANSFER_HISTORY')}
+                {t('teamManagement.TRANSFER_HISTORY')}
               </Button>
               <Button
                 variant="outlined"
@@ -393,7 +393,7 @@ function AllOperationsPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BALANCE_HISTORY')}
+                {t('teamManagement.BALANCE_HISTORY')}
               </Button>
               <Button
                 variant="outlined"
@@ -401,7 +401,7 @@ function AllOperationsPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
               >
-                {t('teamManagement:TRANSFER_RESOURCES')}
+                {t('teamManagement.TRANSFER_RESOURCES')}
               </Button>
             </div>
           </Paper>

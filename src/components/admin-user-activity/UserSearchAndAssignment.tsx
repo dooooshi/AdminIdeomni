@@ -98,7 +98,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
   onDataChange,
   statistics,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // Helper function to get user type translation key
@@ -218,7 +218,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
       setUsers(data);
     } catch (err) {
       console.error('Failed to load users:', err);
-      setError(err instanceof Error ? err.message : t('USERS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.USERS_LOAD_ERROR'));
     } finally {
       setLoading(false);
     }
@@ -291,7 +291,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         forceAssignment: false,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('ASSIGNMENT_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.ASSIGNMENT_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -321,7 +321,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         reason: '',
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('TRANSFER_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.TRANSFER_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -356,7 +356,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         forceAssignment: false,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('BULK_ASSIGNMENT_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.BULK_ASSIGNMENT_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -372,7 +372,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
       await loadUsers();
       onDataChange();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('REMOVE_USER_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.REMOVE_USER_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -406,7 +406,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_USERS')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_USERS')}</Typography>
       </Box>
     );
   }
@@ -418,7 +418,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         <CardContent>
           <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <SearchIcon />
-            {t('ADVANCED_USER_SEARCH')}
+            {t('activityManagement.ADVANCED_USER_SEARCH')}
           </Typography>
           
           <Grid container spacing={2} alignItems="center">
@@ -426,30 +426,30 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
-                label={t('SEARCH_USERS')}
+                label={t('activityManagement.SEARCH_USERS')}
                 value={filters.q}
                 onChange={(e) => handleFilterChange('q', e.target.value)}
                 InputProps={{
                   startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
-                placeholder={t('SEARCH_BY_NAME_EMAIL_USERNAME')}
+                placeholder={t('activityManagement.SEARCH_BY_NAME_EMAIL_USERNAME')}
               />
             </Grid>
 
             {/* User Type Filter */}
             <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
-                <InputLabel>{t('USER_TYPE')}</InputLabel>
+                <InputLabel>{t('activityManagement.USER_TYPE')}</InputLabel>
                 <Select
                   value={filters.userType}
                   onChange={(e) => handleFilterChange('userType', e.target.value)}
-                  label={t('USER_TYPE')}
+                  label={t('activityManagement.USER_TYPE')}
                   sx={{ minWidth: 150 }}
                 >
-                  <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
-                  <MenuItem value={USER_TYPES.MANAGER}>{t('MANAGER')}</MenuItem>
-                  <MenuItem value={USER_TYPES.WORKER}>{t('WORKER')}</MenuItem>
-                  <MenuItem value={USER_TYPES.STUDENT}>{t('STUDENT')}</MenuItem>
+                  <MenuItem value="">{t('activityManagement.ALL_TYPES')}</MenuItem>
+                  <MenuItem value={USER_TYPES.MANAGER}>{t('activityManagement.MANAGER')}</MenuItem>
+                  <MenuItem value={USER_TYPES.WORKER}>{t('activityManagement.WORKER')}</MenuItem>
+                  <MenuItem value={USER_TYPES.STUDENT}>{t('activityManagement.STUDENT')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -457,16 +457,16 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             {/* Activity Status Filter */}
             <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
-                <InputLabel>{t('ACTIVITY_STATUS')}</InputLabel>
+                <InputLabel>{t('activityManagement.ACTIVITY_STATUS')}</InputLabel>
                 <Select
                   value={filters.activityStatus}
                   onChange={(e) => handleFilterChange('activityStatus', e.target.value)}
-                  label={t('ACTIVITY_STATUS')}
+                  label={t('activityManagement.ACTIVITY_STATUS')}
                   sx={{ minWidth: 170 }}
                 >
-                  <MenuItem value="all">{t('ALL_USERS')}</MenuItem>
-                  <MenuItem value="assigned">{t('ASSIGNED_USERS')}</MenuItem>
-                  <MenuItem value="unassigned">{t('UNASSIGNED_USERS')}</MenuItem>
+                  <MenuItem value="all">{t('activityManagement.ALL_USERS')}</MenuItem>
+                  <MenuItem value="assigned">{t('activityManagement.ASSIGNED_USERS')}</MenuItem>
+                  <MenuItem value="unassigned">{t('activityManagement.UNASSIGNED_USERS')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -474,14 +474,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             {/* Enrollment Status Filter */}
             <Grid item xs={12} sm={6} md={2}>
               <FormControl fullWidth>
-                <InputLabel>{t('STATUS')}</InputLabel>
+                <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
                 <Select
                   value={filters.enrollmentStatus}
                   onChange={(e) => handleFilterChange('enrollmentStatus', e.target.value)}
-                  label={t('STATUS')}
+                  label={t('activityManagement.STATUS')}
                   sx={{ minWidth: 140 }}
                 >
-                  <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
+                  <MenuItem value="">{t('activityManagement.ALL_STATUSES')}</MenuItem>
                   {Object.values(UserActivityStatus).map((status) => (
                     <MenuItem key={status} value={status}>
                       {t(status)}
@@ -500,7 +500,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     onChange={(e) => handleFilterChange('includeInactive', e.target.checked)}
                   />
                 }
-                label={t('INCLUDE_INACTIVE')}
+                label={t('activityManagement.INCLUDE_INACTIVE')}
               />
             </Grid>
 
@@ -513,7 +513,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   onClick={loadUsers}
                   disabled={loading}
                 >
-                  {t('REFRESH')}
+                  {t('activityManagement.REFRESH')}
                 </Button>
                 
                 <Button
@@ -533,7 +533,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     setPage(0);
                   }}
                 >
-                  {t('CLEAR_FILTERS')}
+                  {t('activityManagement.CLEAR_FILTERS')}
                 </Button>
 
                 {selectedUsers.length > 0 && (
@@ -545,7 +545,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       loadAvailableActivities();
                     }}
                   >
-                    {t('BULK_ASSIGN')} ({selectedUsers.length})
+                    {t('activityManagement.BULK_ASSIGN')} ({selectedUsers.length})
                   </Button>
                 )}
               </Stack>
@@ -579,13 +579,13 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   onChange={handleSelectAll}
                 />
               </TableCell>
-              <TableCell>{t('USER')}</TableCell>
-              <TableCell>{t('USER_TYPE')}</TableCell>
-              <TableCell>{t('CURRENT_ACTIVITY')}</TableCell>
-              <TableCell>{t('CURRENT_TEAM')}</TableCell>
-              <TableCell>{t('STATUS')}</TableCell>
-              <TableCell>{t('ASSIGNED_AT')}</TableCell>
-              <TableCell>{t('ACTIONS')}</TableCell>
+              <TableCell>{t('activityManagement.USER')}</TableCell>
+              <TableCell>{t('activityManagement.USER_TYPE')}</TableCell>
+              <TableCell>{t('activityManagement.CURRENT_ACTIVITY')}</TableCell>
+              <TableCell>{t('activityManagement.CURRENT_TEAM')}</TableCell>
+              <TableCell>{t('activityManagement.STATUS')}</TableCell>
+              <TableCell>{t('activityManagement.ASSIGNED_AT')}</TableCell>
+              <TableCell>{t('activityManagement.ACTIONS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -595,10 +595,10 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   <Stack spacing={2} alignItems="center">
                     <PersonIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
                     <Typography variant="h6" color="text.secondary">
-                      {t('NO_USERS_FOUND')}
+                      {t('activityManagement.NO_USERS_FOUND')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('TRY_ADJUSTING_FILTERS')}
+                      {t('activityManagement.TRY_ADJUSTING_FILTERS')}
                     </Typography>
                   </Stack>
                 </TableCell>
@@ -619,14 +619,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       </Avatar>
                       <Box>
                         <Typography variant="body2" fontWeight="medium">
-                          {AdminUserActivityService.formatUserDisplayName(userWithActivity.user) || t('UNKNOWN')}
+                          {AdminUserActivityService.formatUserDisplayName(userWithActivity.user) || t('activityManagement.UNKNOWN')}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.user.email || t('NO_EMAIL')}
+                          {userWithActivity.user.email || t('activityManagement.NO_EMAIL')}
                         </Typography>
                         {!userWithActivity.user.isActive && (
                           <Chip
-                            label={t('ACTIVITY_STATUS_INACTIVE')}
+                            label={t('activityManagement.ACTIVITY_STATUS_INACTIVE')}
                             color="error"
                             size="small"
                             sx={{ ml: 1 }}
@@ -654,7 +654,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       </Box>
                     ) : (
                       <Chip
-                        label={t('UNASSIGNED')}
+                        label={t('activityManagement.UNASSIGNED')}
                         color="default"
                         size="small"
                         variant="outlined"
@@ -668,12 +668,12 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                           {userWithActivity.currentTeam.name}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.currentTeam.isLeader ? t('TEAM_LEADER') : t('TEAM_MEMBER')}
+                          {userWithActivity.currentTeam.isLeader ? t('activityManagement.TEAM_LEADER') : t('activityManagement.TEAM_MEMBER')}
                         </Typography>
                       </Box>
                     ) : (
                       <Typography variant="body2" color="text.secondary">
-                        {t('NO_TEAM')}
+                        {t('activityManagement.NO_TEAM')}
                       </Typography>
                     )}
                   </TableCell>
@@ -687,7 +687,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       />
                     ) : (
                       <Typography variant="body2" color="text.secondary">
-                        {t('N_A')}
+                        {t('activityManagement.N_A')}
                       </Typography>
                     )}
                   </TableCell>
@@ -698,14 +698,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       </Typography>
                     ) : (
                       <Typography variant="body2" color="text.secondary">
-                        {t('N_A')}
+                        {t('activityManagement.N_A')}
                       </Typography>
                     )}
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
                       {canAssignUser(userWithActivity) ? (
-                        <Tooltip title={t('ASSIGN_TO_ACTIVITY')}>
+                        <Tooltip title={t('activityManagement.ASSIGN_TO_ACTIVITY')}>
                           <IconButton
                             size="small"
                             onClick={() => {
@@ -724,7 +724,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                         </Tooltip>
                       ) : (
                         <>
-                          <Tooltip title={t('TRANSFER_TO_ANOTHER_ACTIVITY')}>
+                          <Tooltip title={t('activityManagement.TRANSFER_TO_ANOTHER_ACTIVITY')}>
                             <IconButton
                               size="small"
                               onClick={() => {
@@ -740,7 +740,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                               <SwapHorizIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title={t('REMOVE_FROM_ACTIVITY')}>
+                          <Tooltip title={t('activityManagement.REMOVE_FROM_ACTIVITY')}>
                             <IconButton
                               size="small"
                               color="error"
@@ -751,7 +751,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                           </Tooltip>
                         </>
                       )}
-                      <Tooltip title={t('VIEW_USER_HISTORY')}>
+                      <Tooltip title={t('activityManagement.VIEW_USER_HISTORY')}>
                         <IconButton
                           size="small"
                           onClick={() => {/* TODO: Open user history */}}
@@ -759,7 +759,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                           <HistoryIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('SEND_EMAIL')}>
+                      <Tooltip title={t('activityManagement.SEND_EMAIL')}>
                         <IconButton
                           size="small"
                           onClick={() => window.open(`mailto:${userWithActivity.user.email}`, '_blank')}
@@ -796,12 +796,12 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>{t('ASSIGN_USER_TO_ACTIVITY')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.ASSIGN_USER_TO_ACTIVITY')}</DialogTitle>
         <DialogContent>
           {assignDialog.user && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
-                <strong>{t('USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(assignDialog.user.user)}
+                <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(assignDialog.user.user)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {assignDialog.user.user.email}
@@ -812,20 +812,20 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel>{t('SELECT_ACTIVITY')}</InputLabel>
+                <InputLabel>{t('activityManagement.SELECT_ACTIVITY')}</InputLabel>
                 <Select
                   value={assignDialog.selectedActivity}
                   onChange={(e) => setAssignDialog({
                     ...assignDialog,
                     selectedActivity: e.target.value
                   })}
-                  label={t('SELECT_ACTIVITY')}
+                  label={t('activityManagement.SELECT_ACTIVITY')}
                   disabled={loadingActivities}
                 >
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('LOADING_ACTIVITIES')}
+                      {t('activityManagement.LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities.map((activity) => (
@@ -880,7 +880,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={assignDialog.reason}
@@ -888,7 +888,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   ...assignDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('ASSIGNMENT_REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.ASSIGNMENT_REASON_PLACEHOLDER')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -902,7 +902,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     })}
                   />
                 }
-                label={t('FORCE_ASSIGNMENT')}
+                label={t('activityManagement.FORCE_ASSIGNMENT')}
               />
             </Grid>
           </Grid>
@@ -912,14 +912,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             onClick={() => setAssignDialog({ ...assignDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleAssignUser}
             variant="contained"
             disabled={operationLoading || !assignDialog.selectedActivity}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('ASSIGN')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.ASSIGN')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -931,19 +931,19 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>{t('TRANSFER_USER_ACTIVITY')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.TRANSFER_USER_ACTIVITY')}</DialogTitle>
         <DialogContent>
           {transferDialog.user && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
-                <strong>{t('USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(transferDialog.user.user)}
+                <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(transferDialog.user.user)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {transferDialog.user.user.email}
               </Typography>
               {transferDialog.user.currentActivity && (
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  <strong>{t('CURRENT_ACTIVITY')}:</strong> {transferDialog.user.currentActivity.name}
+                  <strong>{t('activityManagement.CURRENT_ACTIVITY')}:</strong> {transferDialog.user.currentActivity.name}
                 </Typography>
               )}
             </Box>
@@ -952,20 +952,20 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel>{t('SELECT_NEW_ACTIVITY')}</InputLabel>
+                <InputLabel>{t('activityManagement.SELECT_NEW_ACTIVITY')}</InputLabel>
                 <Select
                   value={transferDialog.newActivity}
                   onChange={(e) => setTransferDialog({
                     ...transferDialog,
                     newActivity: e.target.value
                   })}
-                  label={t('SELECT_NEW_ACTIVITY')}
+                  label={t('activityManagement.SELECT_NEW_ACTIVITY')}
                   disabled={loadingActivities}
                 >
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('LOADING_ACTIVITIES')}
+                      {t('activityManagement.LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities
@@ -1022,7 +1022,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={transferDialog.reason}
@@ -1030,7 +1030,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   ...transferDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('TRANSFER_REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.TRANSFER_REASON_PLACEHOLDER')}
               />
             </Grid>
           </Grid>
@@ -1040,14 +1040,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             onClick={() => setTransferDialog({ ...transferDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleTransferUser}
             variant="contained"
             disabled={operationLoading || !transferDialog.newActivity}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('TRANSFER')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.TRANSFER')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -1059,34 +1059,34 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>{t('BULK_ASSIGN_USERS')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.BULK_ASSIGN_USERS')}</DialogTitle>
         <DialogContent>
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" gutterBottom>
-              <strong>{t('SELECTED_USERS')}:</strong> {selectedUsers.length} {t('USERS')}
+              <strong>{t('activityManagement.SELECTED_USERS')}:</strong> {selectedUsers.length} {t('activityManagement.USERS')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('BULK_ASSIGN_DESCRIPTION')}
+              {t('activityManagement.BULK_ASSIGN_DESCRIPTION')}
             </Typography>
           </Box>
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <FormControl fullWidth>
-                <InputLabel>{t('SELECT_ACTIVITY')}</InputLabel>
+                <InputLabel>{t('activityManagement.SELECT_ACTIVITY')}</InputLabel>
                 <Select
                   value={bulkAssignDialog.activityId}
                   onChange={(e) => setBulkAssignDialog({
                     ...bulkAssignDialog,
                     activityId: e.target.value
                   })}
-                  label={t('SELECT_ACTIVITY')}
+                  label={t('activityManagement.SELECT_ACTIVITY')}
                   disabled={loadingActivities}
                 >
                   {loadingActivities ? (
                     <MenuItem disabled>
                       <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('LOADING_ACTIVITIES')}
+                      {t('activityManagement.LOADING_ACTIVITIES')}
                     </MenuItem>
                   ) : (
                     availableActivities.map((activity) => (
@@ -1141,7 +1141,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={bulkAssignDialog.reason}
@@ -1149,7 +1149,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                   ...bulkAssignDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
               />
             </Grid>
             <Grid item xs={12}>
@@ -1163,7 +1163,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                     })}
                   />
                 }
-                label={t('FORCE_ASSIGNMENT')}
+                label={t('activityManagement.FORCE_ASSIGNMENT')}
               />
             </Grid>
           </Grid>
@@ -1173,14 +1173,14 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             onClick={() => setBulkAssignDialog({ ...bulkAssignDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleBulkAssign}
             variant="contained"
             disabled={operationLoading || !bulkAssignDialog.activityId}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('BULK_ASSIGN')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.BULK_ASSIGN')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -1195,7 +1195,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>{t('BULK_OPERATION_RESULTS')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.BULK_OPERATION_RESULTS')}</DialogTitle>
         <DialogContent>
           {operationResult && (
             <Box>
@@ -1207,7 +1207,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       {operationResult.successCount}
                     </Typography>
                     <Typography variant="body2">
-                      {t('SUCCESSFUL')}
+                      {t('activityManagement.SUCCESSFUL')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -1218,7 +1218,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       {operationResult.failedCount}
                     </Typography>
                     <Typography variant="body2">
-                      {t('FAILED')}
+                      {t('activityManagement.FAILED')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -1229,7 +1229,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
                       {operationResult.totalCount - operationResult.successCount - operationResult.failedCount}
                     </Typography>
                     <Typography variant="body2">
-                      {t('SKIPPED')}
+                      {t('activityManagement.SKIPPED')}
                     </Typography>
                   </Box>
                 </Grid>
@@ -1238,7 +1238,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
               {operationResult.details?.filter(d => !d.success).length > 0 && (
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="h6" gutterBottom color="error.main">
-                    {t('FAILED_ASSIGNMENTS')}
+                    {t('activityManagement.FAILED_ASSIGNMENTS')}
                   </Typography>
                   {operationResult.details?.filter(d => !d.success).map((result, index) => (
                     <Alert key={index} severity="error" sx={{ mb: 1 }}>
@@ -1253,10 +1253,10 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
               {operationResult.successCount > 0 && (
                 <Box>
                   <Typography variant="h6" gutterBottom color="success.main">
-                    {t('SUCCESSFUL_ASSIGNMENTS')}
+                    {t('activityManagement.SUCCESSFUL_ASSIGNMENTS')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {operationResult.successCount} {t('USERS_SUCCESSFULLY_ASSIGNED')}
+                    {operationResult.successCount} {t('activityManagement.USERS_SUCCESSFULLY_ASSIGNED')}
                   </Typography>
                 </Box>
               )}
@@ -1271,7 +1271,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
             }}
             variant="contained"
           >
-            {t('CLOSE')}
+            {t('activityManagement.CLOSE')}
           </Button>
         </DialogActions>
       </Dialog>

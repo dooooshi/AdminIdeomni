@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTranslation, useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Tabs,
@@ -119,12 +119,12 @@ const TemplateList: React.FC<TemplateListProps> = ({
   onGenerateTemplate,
   onRefresh,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
-        <Typography>{t('LOADING_TEMPLATES')}</Typography>
+        <Typography>{t('mapTemplate.LOADING_TEMPLATES')}</Typography>
       </Box>
     );
   }
@@ -132,9 +132,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h6">{t('MAP_TEMPLATES')}</Typography>
+        <Typography variant="h6">{t('mapTemplate.MAP_TEMPLATES')}</Typography>
         <Box>
-          <Tooltip title={t('REFRESH')}>
+          <Tooltip title={t('mapTemplate.REFRESH')}>
             <IconButton onClick={onRefresh} sx={{ mr: 1 }}>
               <RefreshIcon />
             </IconButton>
@@ -145,14 +145,14 @@ const TemplateList: React.FC<TemplateListProps> = ({
             onClick={onCreateTemplate}
             sx={{ mr: 1 }}
           >
-            {t('CREATE_TEMPLATE')}
+            {t('mapTemplate.CREATE_TEMPLATE')}
           </Button>
           <Button
             variant="contained"
             startIcon={<AutoFixHighIcon />}
             onClick={onGenerateTemplate}
           >
-            {t('GENERATE_TEMPLATE')}
+            {t('mapTemplate.GENERATE_TEMPLATE')}
           </Button>
         </Box>
       </Box>
@@ -162,17 +162,17 @@ const TemplateList: React.FC<TemplateListProps> = ({
           <CardContent sx={{ textAlign: 'center', py: 8 }}>
             <MapIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" gutterBottom>
-              {t('NO_TEMPLATES_FOUND')}
+              {t('mapTemplate.NO_TEMPLATES_FOUND')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              {t('NO_TEMPLATES_DESCRIPTION')}
+              {t('mapTemplate.NO_TEMPLATES_DESCRIPTION')}
             </Typography>
             <Button
               variant="contained"
               startIcon={<AutoFixHighIcon />}
               onClick={onGenerateTemplate}
             >
-              {t('CREATE_FIRST_TEMPLATE')}
+              {t('mapTemplate.CREATE_FIRST_TEMPLATE')}
             </Button>
           </CardContent>
         </Card>
@@ -209,7 +209,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
                           color: 'primary.contrastText',
                         }}
                       >
-                        {t('DEFAULT')}
+                        {t('mapTemplate.DEFAULT')}
                       </Typography>
                     )}
                   </Box>
@@ -222,16 +222,16 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Typography variant="caption" color="text.secondary">
-                      {t('VERSION')}: {template.version}
+                      {t('mapTemplate.VERSION')}: {template.version}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {template.tileCount || 0} {t('TILES')}
+                      {template.tileCount || 0} {t('mapTemplate.TILES')}
                     </Typography>
                   </Box>
 
                   <Box mt={2} display="flex" justifyContent="flex-end">
                     <Button size="small" startIcon={<SettingsIcon />}>
-                      {t('CONFIGURE')}
+                      {t('mapTemplate.CONFIGURE')}
                     </Button>
                   </Box>
                 </CardContent>
@@ -245,9 +245,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 };
 
 const MapTemplateManagementPage: React.FC = () => {
-  const { t } = useMapTemplateTranslation();
-  const { t: tNav } = useTranslation('navigation');
-  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation();
+  const { t: tNav } = useTranslation();
+  const { t: tCommon } = useTranslation();
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState<EnhancedMapTemplate | null>(null);
@@ -312,8 +312,8 @@ const MapTemplateManagementPage: React.FC = () => {
       const mockTemplates: EnhancedMapTemplate[] = [
         {
           id: 1,
-          name: t('DEFAULT_ECONOMIC_TEMPLATE'),
-          description: t('DEFAULT_ECONOMIC_TEMPLATE_DESC'),
+          name: t('mapTemplate.DEFAULT_ECONOMIC_TEMPLATE'),
+          description: t('mapTemplate.DEFAULT_ECONOMIC_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: true,
@@ -323,8 +323,8 @@ const MapTemplateManagementPage: React.FC = () => {
         },
         {
           id: 2,
-          name: t('COASTAL_DEVELOPMENT_TEMPLATE'),
-          description: t('COASTAL_DEVELOPMENT_TEMPLATE_DESC'),
+          name: t('mapTemplate.COASTAL_DEVELOPMENT_TEMPLATE'),
+          description: t('mapTemplate.COASTAL_DEVELOPMENT_TEMPLATE_DESC'),
           version: '1.0',
           isActive: true,
           isDefault: false,
@@ -428,23 +428,23 @@ const MapTemplateManagementPage: React.FC = () => {
     <IdeomniPageSimple
       header={
         <Box sx={{ p: 3 }}>
-          <Breadcrumbs aria-label={tCommon('BREADCRUMB')} sx={{ mb: 2 }}>
+          <Breadcrumbs aria-label={tCommon('common.BREADCRUMB')} sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {tNav('DASHBOARD')}
+              {tNav('navigation.DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <MapIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('MAP_TEMPLATE_MANAGEMENT')}
+              {t('mapTemplate.MAP_TEMPLATE_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
           
           <Typography variant="h4" component="h1" gutterBottom>
-            {t('MAP_TEMPLATE_MANAGEMENT')}
+            {t('mapTemplate.MAP_TEMPLATE_MANAGEMENT')}
           </Typography>
           
           <Typography variant="body1" color="text.secondary">
-            {t('MAP_TEMPLATE_MANAGEMENT_SUBTITLE')}
+            {t('mapTemplate.MAP_TEMPLATE_MANAGEMENT_SUBTITLE')}
           </Typography>
         </Box>
       }
@@ -455,39 +455,39 @@ const MapTemplateManagementPage: React.FC = () => {
             <Tabs 
               value={tabValue} 
               onChange={handleTabChange} 
-              aria-label={tCommon('MAP_TEMPLATE_TABS')}
+              aria-label={tCommon('common.MAP_TEMPLATE_TABS')}
               variant="scrollable"
               scrollButtons="auto"
             >
               <Tab 
-                label={t('TEMPLATE_LIST')} 
+                label={t('mapTemplate.TEMPLATE_LIST')} 
                 icon={<ListIcon />} 
                 iconPosition="start"
                 {...a11yProps(0)} 
               />
               <Tab 
-                label={selectedTemplate ? t('TILE_CONFIGURATION') : t('SELECT_TEMPLATE')} 
+                label={selectedTemplate ? t('mapTemplate.TILE_CONFIGURATION') : t('mapTemplate.SELECT_TEMPLATE')} 
                 icon={<SettingsIcon />} 
                 iconPosition="start"
                 {...a11yProps(1)}
                 disabled={!selectedTemplate}
               />
               <Tab 
-                label={t('FACILITY_CONFIG')} 
+                label={t('mapTemplate.FACILITY_CONFIG')} 
                 icon={<BuildIcon />} 
                 iconPosition="start"
                 {...a11yProps(2)}
                 disabled={!selectedTemplate}
               />
               <Tab 
-                label={t('BULK_TILE_MANAGEMENT')} 
+                label={t('mapTemplate.BULK_TILE_MANAGEMENT')} 
                 icon={<AutoFixHighIcon />} 
                 iconPosition="start"
                 {...a11yProps(3)}
                 disabled={!selectedTemplate}
               />
               <Tab 
-                label={t('INFRASTRUCTURE_CONFIG')} 
+                label={t('mapTemplate.INFRASTRUCTURE_CONFIG')} 
                 icon={<FactoryIcon />} 
                 iconPosition="start"
                 {...a11yProps(4)}
@@ -526,7 +526,7 @@ const MapTemplateManagementPage: React.FC = () => {
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info">
-                    {t('SELECT_TEMPLATE_TO_CONFIGURE')}
+                    {t('mapTemplate.SELECT_TEMPLATE_TO_CONFIGURE')}
                   </Alert>
                 </Box>
               )}
@@ -541,7 +541,7 @@ const MapTemplateManagementPage: React.FC = () => {
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info">
-                    {t('SELECT_TEMPLATE_FOR_FACILITY_CONFIG')}
+                    {t('mapTemplate.SELECT_TEMPLATE_FOR_FACILITY_CONFIG')}
                   </Alert>
                 </Box>
               )}
@@ -569,7 +569,7 @@ const MapTemplateManagementPage: React.FC = () => {
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info">
-                    {t('SELECT_TEMPLATE_FOR_BULK_TILE_MANAGEMENT')}
+                    {t('mapTemplate.SELECT_TEMPLATE_FOR_BULK_TILE_MANAGEMENT')}
                   </Alert>
                 </Box>
               )}
@@ -582,7 +582,7 @@ const MapTemplateManagementPage: React.FC = () => {
               ) : (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info" variant="outlined">
-                    {t('SELECT_TEMPLATE_FOR_INFRASTRUCTURE_CONFIG')}
+                    {t('mapTemplate.SELECT_TEMPLATE_FOR_INFRASTRUCTURE_CONFIG')}
                   </Alert>
                 </Box>
               )}
@@ -594,7 +594,7 @@ const MapTemplateManagementPage: React.FC = () => {
           <Zoom in={tabValue === 0}>
             <Fab
               color="primary"
-              aria-label={tCommon('GENERATE_TEMPLATE')}
+              aria-label={tCommon('common.GENERATE_TEMPLATE')}
               sx={{
                 position: 'fixed',
                 bottom: 16,
@@ -624,7 +624,7 @@ const MapTemplateManagementPage: React.FC = () => {
               <Box display="flex" alignItems="center" gap={1}>
                 <AutoFixHighIcon />
                 <Typography variant="h6">
-                  {t('GENERATE_NEW_TEMPLATE')}
+                  {t('mapTemplate.GENERATE_NEW_TEMPLATE')}
                 </Typography>
               </Box>
             </DialogTitle>
@@ -636,7 +636,7 @@ const MapTemplateManagementPage: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setGenerationDialogOpen(false)}>
-                {t('CANCEL')}
+                {t('mapTemplate.CANCEL')}
               </Button>
             </DialogActions>
           </Dialog>

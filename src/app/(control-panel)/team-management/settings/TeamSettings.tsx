@@ -39,24 +39,24 @@ type FormData = {
  * Team Settings Component
  */
 function TeamSettings() {
-  const { t } = useTranslation(['teamManagement', 'common']);
+  const { t } = useTranslation();
   
   // Validation schema - must be inside component to access t function
   const schema = yup.object({
     name: yup
       .string()
-      .required(t('TEAM_NAME_REQUIRED'))
-      .min(1, t('TEAM_NAME_MIN_LENGTH'))
-      .max(50, t('TEAM_NAME_MAX_LENGTH')),
+      .required(t('teamManagement.TEAM_NAME_REQUIRED'))
+      .min(1, t('teamManagement.TEAM_NAME_MIN_LENGTH'))
+      .max(50, t('teamManagement.TEAM_NAME_MAX_LENGTH')),
     description: yup
       .string()
       .optional()
-      .max(200, t('DESCRIPTION_MAX_LENGTH')),
+      .max(200, t('teamManagement.DESCRIPTION_MAX_LENGTH')),
     maxMembers: yup
       .number()
-      .required(t('MAX_MEMBERS_REQUIRED'))
-      .min(2, t('TEAM_MIN_MEMBERS'))
-      .max(20, t('TEAM_MAX_MEMBERS')),
+      .required(t('teamManagement.MAX_MEMBERS_REQUIRED'))
+      .min(2, t('teamManagement.TEAM_MIN_MEMBERS'))
+      .max(20, t('teamManagement.TEAM_MAX_MEMBERS')),
     isOpen: yup.boolean().optional()
   });
   const router = useRouter();
@@ -116,13 +116,13 @@ function TeamSettings() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Alert severity="error">
-          {t('FAILED_TO_LOAD_TEAM_SETTINGS')}
+          {t('teamManagement.FAILED_TO_LOAD_TEAM_SETTINGS')}
         </Alert>
         <Button
           onClick={() => router.push('/team-management/dashboard')}
           className="mt-4"
         >
-          {t('BACK_TO_DASHBOARD')}
+          {t('teamManagement.BACK_TO_DASHBOARD')}
         </Button>
       </div>
     );
@@ -135,13 +135,13 @@ function TeamSettings() {
     return (
       <div className="flex flex-col flex-1 items-center justify-center p-8">
         <Alert severity="warning">
-          {t('ONLY_TEAM_LEADERS_CAN_ACCESS')}
+          {t('teamManagement.ONLY_TEAM_LEADERS_CAN_ACCESS')}
         </Alert>
         <Button
           onClick={() => router.push('/team-management/dashboard')}
           className="mt-4"
         >
-          {t('BACK_TO_DASHBOARD')}
+          {t('teamManagement.BACK_TO_DASHBOARD')}
         </Button>
       </div>
     );
@@ -186,14 +186,14 @@ function TeamSettings() {
                 onClick={() => router.push('/team-management/dashboard')}
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                {t('BACK_TO_DASHBOARD')}
+                {t('teamManagement.BACK_TO_DASHBOARD')}
               </Button>
             </div>
             <Typography variant="h3" className="font-semibold">
-              Team Settings
+              {t('teamManagement.TEAM_SETTINGS')}
             </Typography>
             <Typography color="text.secondary" className="mt-2">
-              Manage your team configuration and preferences
+              {t('teamManagement.MANAGE_TEAM_CONFIG')}
             </Typography>
           </motion.div>
 
@@ -201,7 +201,7 @@ function TeamSettings() {
           {updateError && (
             <motion.div variants={item}>
               <Alert severity="error">
-                {t('FAILED_TO_UPDATE_TEAM_SETTINGS')}
+                {t('teamManagement.FAILED_TO_UPDATE_TEAM_SETTINGS')}
               </Alert>
             </motion.div>
           )}
@@ -210,7 +210,7 @@ function TeamSettings() {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                {t('GENERAL_SETTINGS')}
+                {t('teamManagement.GENERAL_SETTINGS')}
               </Typography>
               
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -222,8 +222,8 @@ function TeamSettings() {
                     <TextField
                       {...field}
                       fullWidth
-                      label={t('TEAM_NAME')}
-                      placeholder={t('ENTER_TEAM_NAME')}
+                      label={t('teamManagement.TEAM_NAME')}
+                      placeholder={t('teamManagement.ENTER_TEAM_NAME')}
                       error={!!errors.name}
                       helperText={errors.name?.message}
                       InputProps={{
@@ -247,10 +247,10 @@ function TeamSettings() {
                       fullWidth
                       multiline
                       rows={3}
-                      label={t('DESCRIPTION')}
-                      placeholder={t('DESCRIBE_TEAM_PURPOSE')}
+                      label={t('teamManagement.DESCRIPTION')}
+                      placeholder={t('teamManagement.DESCRIBE_TEAM_PURPOSE')}
                       error={!!errors.description}
-                      helperText={errors.description?.message || `${field.value?.length || 0}/200 characters`}
+                      helperText={errors.description?.message || `${field.value?.length || 0}/200 ${t('teamManagement.DESCRIPTION_CHAR_COUNT')}`}
                       InputProps={{
                         startAdornment: (
                           <IdeomniSvgIcon className="mr-2 self-start mt-3">
@@ -265,7 +265,7 @@ function TeamSettings() {
                 {/* Max Members */}
                 <div>
                   <Typography variant="subtitle1" className="mb-2">
-                    {t('MAXIMUM_MEMBERS')}
+                    {t('teamManagement.MAXIMUM_MEMBERS')}
                   </Typography>
                   <Controller
                     name="maxMembers"
@@ -286,7 +286,7 @@ function TeamSettings() {
                           ]}
                         />
                         <Typography variant="body2" color="text.secondary" className="mt-2">
-                          {t('TEAM_ALLOW_MEMBERS', { max: maxMembersValue, current: currentMembersCount })}
+                          {t('teamManagement.TEAM_WILL_ALLOW')} {maxMembersValue} {t('teamManagement.MEMBERS')} ({t('teamManagement.CURRENT')}: {currentMembersCount})
                         </Typography>
                       </div>
                     )}
@@ -303,10 +303,10 @@ function TeamSettings() {
                       label={
                         <div>
                           <Typography variant="body1">
-                            Open Team
+                            {t('teamManagement.OPEN_TEAM')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Allow others to discover and join your team
+                            {t('teamManagement.ALLOW_OTHERS_TO_JOIN')}
                           </Typography>
                         </div>
                       }
@@ -324,7 +324,7 @@ function TeamSettings() {
                     startIcon={<IdeomniSvgIcon>heroicons-outline:check</IdeomniSvgIcon>}
                     fullWidth
                   >
-                    {isUpdating ? t('teamManagement:SAVING_CHANGES') : t('teamManagement:SAVE_CHANGES')}
+                    {isUpdating ? t('teamManagement.SAVING_CHANGES') : t('teamManagement.SAVE_CHANGES')}
                   </Button>
                 </div>
               </form>

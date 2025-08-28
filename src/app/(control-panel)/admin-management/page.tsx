@@ -60,7 +60,7 @@ function a11yProps(index: number) {
 }
 
 const AdminManagementPage: React.FC = () => {
-  const { t } = useTranslation('adminManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [adminFormOpen, setAdminFormOpen] = useState(false);
@@ -117,11 +117,11 @@ const AdminManagementPage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('DASHBOARD', { ns: 'navigation' })}
+              {t('navigation.DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <SupervisorAccountIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('ADMIN_MANAGEMENT')}
+              {t('adminManagement.ADMIN_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
           
@@ -130,7 +130,7 @@ const AdminManagementPage: React.FC = () => {
           </Typography>
           
           <Typography variant="body1" color="text.secondary">
-            {t('ADMIN_MANAGEMENT_SUBTITLE')}
+            {t('adminManagement.ADMIN_MANAGEMENT_SUBTITLE')}
           </Typography>
         </Box>
       }
@@ -146,13 +146,13 @@ const AdminManagementPage: React.FC = () => {
                 variant="fullWidth"
               >
                 <Tab 
-                  label={t('ADMIN_ACCOUNTS')} 
+                  label={t('adminManagement.ADMIN_ACCOUNTS')} 
                   icon={<SupervisorAccountIcon />} 
                   iconPosition="start"
                   {...a11yProps(0)} 
                 />
                 <Tab 
-                  label={t('SYSTEM_LOGS')} 
+                  label={t('adminManagement.SYSTEM_LOGS')} 
                   icon={<HistoryIcon />} 
                   iconPosition="start"
                   {...a11yProps(1)} 
@@ -181,10 +181,10 @@ const AdminManagementPage: React.FC = () => {
                     <CardContent sx={{ textAlign: 'center', py: 8 }}>
                       <HistoryIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
                       <Typography variant="h6" gutterBottom>
-                        {t('SYSTEM_LOGS_TITLE')}
+                        {t('adminManagement.SYSTEM_LOGS_TITLE')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                        {t('SYSTEM_LOGS_DESCRIPTION')}
+                        {t('adminManagement.SYSTEM_LOGS_DESCRIPTION')}
                       </Typography>
                       <Typography
                         variant="body2"
@@ -192,7 +192,7 @@ const AdminManagementPage: React.FC = () => {
                         sx={{ cursor: 'pointer', textDecoration: 'underline' }}
                         onClick={handleViewSystemLogs}
                       >
-                        {t('OPEN_SYSTEM_LOGS_VIEWER')}
+                        {t('adminManagement.OPEN_SYSTEM_LOGS_VIEWER')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -214,7 +214,7 @@ const AdminManagementPage: React.FC = () => {
             open={logsDialogOpen}
             onClose={handleCloseLogsDialog}
             admin={selectedAdminForLogs}
-            title={selectedAdminForLogs ? undefined : t('SYSTEM_OPERATION_LOGS')}
+            title={selectedAdminForLogs ? undefined : t('adminManagement.SYSTEM_OPERATION_LOGS')}
           />
         </Box>
       }

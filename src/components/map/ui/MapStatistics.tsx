@@ -7,17 +7,17 @@ interface MapStatisticsProps {
 }
 
 function MapStatistics({ tiles }: MapStatisticsProps) {
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 
 	// Helper function to get translated terrain name
 	const getTerrainName = (landType: string): string => {
 		switch (landType) {
 			case 'MARINE':
-				return t('TERRAIN_MARINE');
+				return t('map.TERRAIN_MARINE');
 			case 'PLAIN':
-				return t('TERRAIN_PLAIN');
+				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
-				return t('TERRAIN_COASTAL');
+				return t('map.TERRAIN_COASTAL');
 			default:
 				return landType.toLowerCase();
 		}
@@ -51,7 +51,7 @@ function MapStatistics({ tiles }: MapStatisticsProps) {
 					mb: 2.5
 				}}
 			>
-				{t('STATISTICS')}
+				{t('map.STATISTICS')}
 			</Typography>
 			<div className="space-y-3">
 				{Object.entries(terrainStats).map(([type, count]) => (
@@ -95,7 +95,7 @@ function MapStatistics({ tiles }: MapStatisticsProps) {
 							color: 'text.primary'
 						}}
 					>
-						{t('TOTAL')}
+						{t('map.TOTAL')}
 					</Typography>
 					<Typography 
 						variant="body2" 

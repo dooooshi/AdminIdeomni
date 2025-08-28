@@ -41,7 +41,7 @@ import {
 import infrastructureService, { OperationalStatus } from '@/lib/services/infrastructureService';
 
 const InfrastructurePage: React.FC = () => {
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
   const theme = useTheme();
   
   // State management
@@ -74,7 +74,7 @@ const InfrastructurePage: React.FC = () => {
       );
       setHasProviderFacilities(hasProvider);
     } catch (err: any) {
-      setError(err.message || t('ERROR_LOADING_DATA'));
+      setError(err.message || t('infrastructure.ERROR_LOADING_DATA'));
     } finally {
       setLoading(false);
     }
@@ -125,21 +125,21 @@ const InfrastructurePage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('DASHBOARD')}
+              {t('infrastructure.DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <PowerIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('INFRASTRUCTURE_MANAGEMENT')}
+              {t('infrastructure.INFRASTRUCTURE_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
           
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Box>
               <Typography variant="h4" component="h1" gutterBottom>
-                {t('INFRASTRUCTURE_MANAGEMENT')}
+                {t('infrastructure.INFRASTRUCTURE_MANAGEMENT')}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                {t('INFRASTRUCTURE_SUBTITLE')}
+                {t('infrastructure.INFRASTRUCTURE_SUBTITLE')}
               </Typography>
             </Box>
             <Button
@@ -148,7 +148,7 @@ const InfrastructurePage: React.FC = () => {
               onClick={handleRefresh}
               disabled={loading}
             >
-              {t('REFRESH')}
+              {t('infrastructure.REFRESH')}
             </Button>
           </Box>
 
@@ -169,7 +169,7 @@ const InfrastructurePage: React.FC = () => {
                     display="block"
                     sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5 }}
                   >
-                    {t('TOTAL_FACILITIES')}
+                    {t('infrastructure.TOTAL_FACILITIES')}
                   </Typography>
                   <Typography variant="h3" fontWeight={600} color="primary.main">
                     {teamFacilitiesStatus.summary.totalFacilities}
@@ -190,7 +190,7 @@ const InfrastructurePage: React.FC = () => {
                     display="block"
                     sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
                   >
-                    {t('FULLY_OPERATIONAL')}
+                    {t('infrastructure.FULLY_OPERATIONAL')}
                   </Typography>
                   <Typography variant="h3" fontWeight={600}>
                     {teamFacilitiesStatus.summary.fullyOperational}
@@ -211,7 +211,7 @@ const InfrastructurePage: React.FC = () => {
                     display="block"
                     sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
                   >
-                    {t('PARTIALLY_OPERATIONAL')}
+                    {t('infrastructure.PARTIALLY_OPERATIONAL')}
                   </Typography>
                   <Typography variant="h3" fontWeight={600}>
                     {teamFacilitiesStatus.summary.partiallyOperational}
@@ -232,7 +232,7 @@ const InfrastructurePage: React.FC = () => {
                     display="block"
                     sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
                   >
-                    {t('NON_OPERATIONAL')}
+                    {t('infrastructure.NON_OPERATIONAL')}
                   </Typography>
                   <Typography variant="h3" fontWeight={600}>
                     {teamFacilitiesStatus.summary.nonOperational}
@@ -262,12 +262,12 @@ const InfrastructurePage: React.FC = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
                 <DashboardIcon />
-                <Typography variant="h6">{t('INFRASTRUCTURE_OVERVIEW')}</Typography>
+                <Typography variant="h6">{t('infrastructure.INFRASTRUCTURE_OVERVIEW')}</Typography>
                 {teamFacilitiesStatus && (
                   <Box sx={{ ml: 'auto', mr: 2, display: 'flex', gap: 1 }}>
                     <Chip 
                       icon={<WaterIcon />} 
-                      label={t('WATER')} 
+                      label={t('infrastructure.WATER')} 
                       size="small" 
                       color={teamFacilitiesStatus.facilities.some((f: any) => 
                         f.infrastructureStatus?.water?.connected
@@ -275,7 +275,7 @@ const InfrastructurePage: React.FC = () => {
                     />
                     <Chip 
                       icon={<PowerIcon />} 
-                      label={t('POWER')} 
+                      label={t('infrastructure.POWER')} 
                       size="small"
                       color={teamFacilitiesStatus.facilities.some((f: any) => 
                         f.infrastructureStatus?.power?.connected
@@ -283,7 +283,7 @@ const InfrastructurePage: React.FC = () => {
                     />
                     <Chip 
                       icon={<BaseStationIcon />} 
-                      label={t('BASE_STATION')} 
+                      label={t('infrastructure.BASE_STATION')} 
                       size="small"
                       color={teamFacilitiesStatus.facilities.some((f: any) => 
                         f.infrastructureStatus?.baseStation?.covered
@@ -291,7 +291,7 @@ const InfrastructurePage: React.FC = () => {
                     />
                     <Chip 
                       icon={<FireStationIcon />} 
-                      label={t('FIRE_STATION')} 
+                      label={t('infrastructure.FIRE_STATION')} 
                       size="small"
                       color={teamFacilitiesStatus.facilities.some((f: any) => 
                         f.infrastructureStatus?.fireStation?.covered
@@ -318,9 +318,9 @@ const InfrastructurePage: React.FC = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <BaseStationIcon />
-                <Typography variant="h6">{t('DISCOVER_PROVIDERS')}</Typography>
+                <Typography variant="h6">{t('infrastructure.DISCOVER_PROVIDERS')}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('FIND_AVAILABLE_INFRASTRUCTURE')}
+                  {t('infrastructure.FIND_AVAILABLE_INFRASTRUCTURE')}
                 </Typography>
               </Box>
             </AccordionSummary>
@@ -342,9 +342,9 @@ const InfrastructurePage: React.FC = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <WaterIcon />
-                <Typography variant="h6">{t('CONNECTIONS_MANAGEMENT')}</Typography>
+                <Typography variant="h6">{t('infrastructure.CONNECTIONS_MANAGEMENT')}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('WATER_POWER_CONNECTIONS')}
+                  {t('infrastructure.WATER_POWER_CONNECTIONS')}
                 </Typography>
               </Box>
             </AccordionSummary>
@@ -365,9 +365,9 @@ const InfrastructurePage: React.FC = () => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <FireStationIcon />
-                <Typography variant="h6">{t('SERVICE_SUBSCRIPTIONS')}</Typography>
+                <Typography variant="h6">{t('infrastructure.SERVICE_SUBSCRIPTIONS')}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('BASE_FIRE_STATION_SERVICES')}
+                  {t('infrastructure.BASE_FIRE_STATION_SERVICES')}
                 </Typography>
               </Box>
             </AccordionSummary>
@@ -389,9 +389,9 @@ const InfrastructurePage: React.FC = () => {
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <PowerIcon />
-                  <Typography variant="h6">{t('PROVIDER_DASHBOARD')}</Typography>
+                  <Typography variant="h6">{t('infrastructure.PROVIDER_DASHBOARD')}</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('MANAGE_YOUR_INFRASTRUCTURE')}
+                    {t('infrastructure.MANAGE_YOUR_INFRASTRUCTURE')}
                   </Typography>
                 </Box>
               </AccordionSummary>

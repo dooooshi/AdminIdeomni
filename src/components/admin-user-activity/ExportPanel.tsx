@@ -66,7 +66,7 @@ interface ExportHistory {
 }
 
 const ExportPanel: React.FC = () => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -111,18 +111,18 @@ const ExportPanel: React.FC = () => {
 
   // Available export fields
   const availableFields = [
-    { value: 'username', label: t('USERNAME') },
-    { value: 'email', label: t('EMAIL') },
-    { value: 'firstName', label: t('FIRST_NAME') },
-    { value: 'lastName', label: t('LAST_NAME') },
-    { value: 'userType', label: t('USER_TYPE') },
-    { value: 'isActive', label: t('ACTIVE_STATUS') },
-    { value: 'currentActivity', label: t('CURRENT_ACTIVITY') },
-    { value: 'activityStatus', label: t('ACTIVITY_STATUS') },
-    { value: 'enrolledAt', label: t('ENROLLED_AT') },
-    { value: 'currentTeam', label: t('CURRENT_TEAM') },
-    { value: 'teamRole', label: t('TEAM_ROLE') },
-    { value: 'createdAt', label: t('CREATED_AT') },
+    { value: 'username', label: t('activityManagement.USERNAME') },
+    { value: 'email', label: t('activityManagement.EMAIL') },
+    { value: 'firstName', label: t('activityManagement.FIRST_NAME') },
+    { value: 'lastName', label: t('activityManagement.LAST_NAME') },
+    { value: 'userType', label: t('activityManagement.USER_TYPE') },
+    { value: 'isActive', label: t('activityManagement.ACTIVE_STATUS') },
+    { value: 'currentActivity', label: t('activityManagement.CURRENT_ACTIVITY') },
+    { value: 'activityStatus', label: t('activityManagement.ACTIVITY_STATUS') },
+    { value: 'enrolledAt', label: t('activityManagement.ENROLLED_AT') },
+    { value: 'currentTeam', label: t('activityManagement.CURRENT_TEAM') },
+    { value: 'teamRole', label: t('activityManagement.TEAM_ROLE') },
+    { value: 'createdAt', label: t('activityManagement.CREATED_AT') },
   ];
 
   // Handle export parameter changes
@@ -153,10 +153,10 @@ const ExportPanel: React.FC = () => {
       const result = await AdminUserActivityService.exportUserActivityData(exportParams);
       setExportResult(result);
       setShowResult(true);
-      setSuccess(t('EXPORT_COMPLETED_SUCCESSFULLY'));
+      setSuccess(t('activityManagement.EXPORT_COMPLETED_SUCCESSFULLY'));
     } catch (err) {
       console.error('Export failed:', err);
-      setError(err instanceof Error ? err.message : t('EXPORT_FAILED'));
+      setError(err instanceof Error ? err.message : t('activityManagement.EXPORT_FAILED'));
     } finally {
       setLoading(false);
     }
@@ -180,11 +180,11 @@ const ExportPanel: React.FC = () => {
   const getFormatDescription = (format: string) => {
     switch (format) {
       case 'csv':
-        return t('CSV_DESCRIPTION');
+        return t('activityManagement.CSV_DESCRIPTION');
       case 'excel':
-        return t('EXCEL_DESCRIPTION');
+        return t('activityManagement.EXCEL_DESCRIPTION');
       case 'json':
-        return t('JSON_DESCRIPTION');
+        return t('activityManagement.JSON_DESCRIPTION');
       default:
         return '';
     }
@@ -201,7 +201,7 @@ const ExportPanel: React.FC = () => {
       {/* Header */}
       <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
         <DownloadIcon />
-        {t('DATA_EXPORT_REPORTS')}
+        {t('activityManagement.DATA_EXPORT_REPORTS')}
       </Typography>
 
       <Grid container spacing={3}>
@@ -210,18 +210,18 @@ const ExportPanel: React.FC = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                {t('EXPORT_CONFIGURATION')}
+                {t('activityManagement.EXPORT_CONFIGURATION')}
               </Typography>
 
               <Grid container spacing={3}>
                 {/* Export Format */}
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('EXPORT_FORMAT')}</InputLabel>
+                    <InputLabel>{t('activityManagement.EXPORT_FORMAT')}</InputLabel>
                     <Select
                       value={exportParams.format}
                       onChange={(e) => handleParamChange('format', e.target.value)}
-                      label={t('EXPORT_FORMAT')}
+                      label={t('activityManagement.EXPORT_FORMAT')}
                     >
                       <MenuItem value="csv">
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -251,16 +251,16 @@ const ExportPanel: React.FC = () => {
                 {/* User Type Filter */}
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('USER_TYPE_FILTER')}</InputLabel>
+                    <InputLabel>{t('activityManagement.USER_TYPE_FILTER')}</InputLabel>
                     <Select
                       value={exportParams.userType || ''}
                       onChange={(e) => handleParamChange('userType', e.target.value || undefined)}
-                      label={t('USER_TYPE_FILTER')}
+                      label={t('activityManagement.USER_TYPE_FILTER')}
                     >
-                      <MenuItem value="">{t('ALL_USER_TYPES')}</MenuItem>
-                      <MenuItem value={USER_TYPES.MANAGER}>{t('MANAGERS_ONLY')}</MenuItem>
-                      <MenuItem value={USER_TYPES.WORKER}>{t('WORKERS_ONLY')}</MenuItem>
-                      <MenuItem value={USER_TYPES.STUDENT}>{t('STUDENTS_ONLY')}</MenuItem>
+                      <MenuItem value="">{t('activityManagement.ALL_USER_TYPES')}</MenuItem>
+                      <MenuItem value={USER_TYPES.MANAGER}>{t('activityManagement.MANAGERS_ONLY')}</MenuItem>
+                      <MenuItem value={USER_TYPES.WORKER}>{t('activityManagement.WORKERS_ONLY')}</MenuItem>
+                      <MenuItem value={USER_TYPES.STUDENT}>{t('activityManagement.STUDENTS_ONLY')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -268,17 +268,17 @@ const ExportPanel: React.FC = () => {
                 {/* Activity Filter */}
                 <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('ACTIVITY_FILTER')}</InputLabel>
+                    <InputLabel>{t('activityManagement.ACTIVITY_FILTER')}</InputLabel>
                     <Select
                       value={exportParams.activityId || ''}
                       onChange={(e) => handleParamChange('activityId', e.target.value)}
-                      label={t('ACTIVITY_FILTER')}
+                      label={t('activityManagement.ACTIVITY_FILTER')}
                     >
-                      <MenuItem value="">{t('ALL_ACTIVITIES')}</MenuItem>
+                      <MenuItem value="">{t('activityManagement.ALL_ACTIVITIES')}</MenuItem>
                       {/* TODO: Load from real activities API - hardcoded for now */}
-                      <MenuItem value="activity1">{t('BUSINESS_STRATEGY_SIMULATION')}</MenuItem>
-                      <MenuItem value="activity2">{t('ADVANCED_LEADERSHIP_TRAINING')}</MenuItem>
-                      <MenuItem value="activity3">{t('TEAM_BUILDING_WORKSHOP')}</MenuItem>
+                      <MenuItem value="activity1">{t('activityManagement.BUSINESS_STRATEGY_SIMULATION')}</MenuItem>
+                      <MenuItem value="activity2">{t('activityManagement.ADVANCED_LEADERSHIP_TRAINING')}</MenuItem>
+                      <MenuItem value="activity3">{t('activityManagement.TEAM_BUILDING_WORKSHOP')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -286,7 +286,7 @@ const ExportPanel: React.FC = () => {
                 {/* Include Options */}
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('INCLUDE_OPTIONS')}
+                    {t('activityManagement.INCLUDE_OPTIONS')}
                   </Typography>
                   <Stack spacing={1}>
                     <FormControlLabel
@@ -296,7 +296,7 @@ const ExportPanel: React.FC = () => {
                           onChange={(e) => handleParamChange('includeUnassigned', e.target.checked)}
                         />
                       }
-                      label={t('INCLUDE_UNASSIGNED_USERS')}
+                      label={t('activityManagement.INCLUDE_UNASSIGNED_USERS')}
                     />
                     <FormControlLabel
                       control={
@@ -305,7 +305,7 @@ const ExportPanel: React.FC = () => {
                           onChange={(e) => handleParamChange('includeInactive', e.target.checked)}
                         />
                       }
-                      label={t('INCLUDE_INACTIVE_USERS')}
+                      label={t('activityManagement.INCLUDE_INACTIVE_USERS')}
                     />
                   </Stack>
                 </Grid>
@@ -313,10 +313,10 @@ const ExportPanel: React.FC = () => {
                 {/* Field Selection */}
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('EXPORT_FIELDS')} ({t('OPTIONAL')})
+                    {t('activityManagement.EXPORT_FIELDS')} ({t('activityManagement.OPTIONAL')})
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {t('EXPORT_FIELDS_DESCRIPTION')}
+                    {t('activityManagement.EXPORT_FIELDS_DESCRIPTION')}
                   </Typography>
                   <Paper variant="outlined" sx={{ p: 2, maxHeight: 200, overflow: 'auto' }}>
                     <Grid container spacing={1}>
@@ -339,7 +339,7 @@ const ExportPanel: React.FC = () => {
                   {exportParams.fields && exportParams.fields.length > 0 && (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="body2" color="text.secondary" gutterBottom>
-                        {t('SELECTED_FIELDS')}:
+                        {t('activityManagement.SELECTED_FIELDS')}:
                       </Typography>
                       <Stack direction="row" spacing={1} flexWrap="wrap">
                         {exportParams.fields.map((fieldValue) => {
@@ -392,7 +392,7 @@ const ExportPanel: React.FC = () => {
                       setSuccess(null);
                     }}
                   >
-                    {t('RESET')}
+                    {t('activityManagement.RESET')}
                   </Button>
                   <Button
                     variant="contained"
@@ -400,7 +400,7 @@ const ExportPanel: React.FC = () => {
                     onClick={handleExport}
                     disabled={loading || !isExportValid()}
                   >
-                    {loading ? t('EXPORTING') : t('START_EXPORT')}
+                    {loading ? t('activityManagement.EXPORTING') : t('activityManagement.START_EXPORT')}
                   </Button>
                 </Stack>
               </Box>
@@ -414,9 +414,9 @@ const ExportPanel: React.FC = () => {
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
-                  {t('EXPORT_HISTORY')}
+                  {t('activityManagement.EXPORT_HISTORY')}
                 </Typography>
-                <Tooltip title={t('REFRESH_HISTORY')}>
+                <Tooltip title={t('activityManagement.REFRESH_HISTORY')}>
                   <IconButton size="small">
                     <RefreshIcon />
                   </IconButton>
@@ -425,7 +425,7 @@ const ExportPanel: React.FC = () => {
 
               {exportHistory.length === 0 ? (
                 <Alert severity="info">
-                  {t('NO_EXPORT_HISTORY')}
+                  {t('activityManagement.NO_EXPORT_HISTORY')}
                 </Alert>
               ) : (
                 <List>
@@ -438,7 +438,7 @@ const ExportPanel: React.FC = () => {
                         }}
                         secondaryAction={
                           export_.status === 'completed' && (
-                            <Tooltip title={t('DOWNLOAD')}>
+                            <Tooltip title={t('activityManagement.DOWNLOAD')}>
                               <IconButton
                                 size="small"
                                 onClick={() => window.open(export_.downloadUrl, '_blank')}
@@ -468,19 +468,19 @@ const ExportPanel: React.FC = () => {
                           secondary={
                             <Stack spacing={0.5}>
                               <Typography variant="caption" color="text.secondary">
-                                {export_.recordCount.toLocaleString()} {t('RECORDS')}
+                                {export_.recordCount.toLocaleString()} {t('activityManagement.RECORDS')}
                               </Typography>
                               <Typography variant="caption" color="text.secondary">
                                 {format(new Date(export_.createdAt), 'MMM dd, yyyy HH:mm')}
                               </Typography>
                               {export_.status === 'completed' && (
                                 <Typography variant="caption" color="warning.main">
-                                  {t('EXPIRES')}: {format(new Date(export_.expiresAt), 'MMM dd, HH:mm')}
+                                  {t('activityManagement.EXPIRES')}: {format(new Date(export_.expiresAt), 'MMM dd, HH:mm')}
                                 </Typography>
                               )}
                               {export_.status === 'expired' && (
                                 <Typography variant="caption" color="error.main">
-                                  {t('EXPIRED')}
+                                  {t('activityManagement.EXPIRED')}
                                 </Typography>
                               )}
                             </Stack>
@@ -507,7 +507,7 @@ const ExportPanel: React.FC = () => {
         <DialogTitle>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <CheckCircleIcon color="success" />
-            {t('EXPORT_COMPLETED')}
+            {t('activityManagement.EXPORT_COMPLETED')}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -520,30 +520,30 @@ const ExportPanel: React.FC = () => {
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('EXPORT_DETAILS')}:
+                    {t('activityManagement.EXPORT_DETAILS')}:
                   </Typography>
                   <List dense>
                     <ListItem>
                       <ListItemText
-                        primary={t('FILENAME')}
+                        primary={t('activityManagement.FILENAME')}
                         secondary={exportResult.data.filename}
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary={t('FORMAT')}
+                        primary={t('activityManagement.FORMAT')}
                         secondary={exportResult.data.format.toUpperCase()}
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary={t('RECORD_COUNT')}
+                        primary={t('activityManagement.RECORD_COUNT')}
                         secondary={exportResult.data.recordCount.toLocaleString()}
                       />
                     </ListItem>
                     <ListItem>
                       <ListItemText
-                        primary={t('EXPIRES_AT')}
+                        primary={t('activityManagement.EXPIRES_AT')}
                         secondary={format(new Date(exportResult.data.expiresAt), 'MMM dd, yyyy HH:mm')}
                       />
                     </ListItem>
@@ -555,7 +555,7 @@ const ExportPanel: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowResult(false)}>
-            {t('CLOSE')}
+            {t('activityManagement.CLOSE')}
           </Button>
           {exportResult && (
             <Button
@@ -563,7 +563,7 @@ const ExportPanel: React.FC = () => {
               startIcon={<FileDownloadIcon />}
               onClick={() => window.open(exportResult.data.downloadUrl, '_blank')}
             >
-              {t('DOWNLOAD_NOW')}
+              {t('activityManagement.DOWNLOAD_NOW')}
             </Button>
           )}
         </DialogActions>

@@ -54,7 +54,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
   onRequestConnection,
   onSubscribeService,
 }) => {
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
   const [selectedFacility, setSelectedFacility] = useState<string>('');
   const [searchType, setSearchType] = useState<'connections' | 'services'>('connections');
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
         setProviders(data);
       }
     } catch (err: any) {
-      setError(err.message || t('ERROR_SEARCHING'));
+      setError(err.message || t('infrastructure.ERROR_SEARCHING'));
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       setProposedPrice('');
       onRequestConnection();
     } catch (err: any) {
-      setError(err.message || t('ERROR_REQUESTING_CONNECTION'));
+      setError(err.message || t('infrastructure.ERROR_REQUESTING_CONNECTION'));
     } finally {
       setLoading(false);
     }
@@ -133,7 +133,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       setProposedPrice('');
       onSubscribeService();
     } catch (err: any) {
-      setError(err.message || t('ERROR_SUBSCRIBING'));
+      setError(err.message || t('infrastructure.ERROR_SUBSCRIBING'));
     } finally {
       setLoading(false);
     }
@@ -144,44 +144,44 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('SEARCH_FOR_PROVIDERS')}
+            {t('infrastructure.SEARCH_FOR_PROVIDERS')}
           </Typography>
           
           <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('SELECT_FACILITY')}</InputLabel>
+              <InputLabel>{t('infrastructure.SELECT_FACILITY')}</InputLabel>
               <Select
                 value={selectedFacility}
                 onChange={(e) => setSelectedFacility(e.target.value)}
-                label={t('SELECT_FACILITY')}
+                label={t('infrastructure.SELECT_FACILITY')}
               >
                 {consumerFacilities.map(facility => (
                   <MenuItem key={facility.facilityId} value={facility.facilityId}>
-                    {t(facility.facilityType)} - ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
+                    {t(`infrastructure.${facility.facilityType}`)} - ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
             
             <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>{t('SEARCH_TYPE')}</InputLabel>
+              <InputLabel>{t('infrastructure.SEARCH_TYPE')}</InputLabel>
               <Select
                 value={searchType}
                 onChange={(e) => setSearchType(e.target.value as 'connections' | 'services')}
-                label={t('SEARCH_TYPE')}
+                label={t('infrastructure.SEARCH_TYPE')}
               >
                 <MenuItem value="connections">
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <WaterIcon fontSize="small" />
                     <PowerIcon fontSize="small" />
-                    {t('WATER_POWER')}
+                    {t('infrastructure.WATER_POWER')}
                   </Box>
                 </MenuItem>
                 <MenuItem value="services">
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <BaseStationIcon fontSize="small" />
                     <FireStationIcon fontSize="small" />
-                    {t('BASE_FIRE_STATIONS')}
+                    {t('infrastructure.BASE_FIRE_STATIONS')}
                   </Box>
                 </MenuItem>
               </Select>
@@ -193,7 +193,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               disabled={!selectedFacility || loading}
               startIcon={<SearchIcon />}
             >
-              {t('SEARCH')}
+              {t('infrastructure.SEARCH')}
             </Button>
           </Box>
           
@@ -213,19 +213,19 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
           {providers.waterProviders && providers.waterProviders.length > 0 && (
             <>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <WaterIcon /> {t('AVAILABLE_WATER_PROVIDERS')}
+                <WaterIcon /> {t('infrastructure.AVAILABLE_WATER_PROVIDERS')}
               </Typography>
               <TableContainer component={Paper} sx={{ mb: 3 }}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('PROVIDER')}</TableCell>
-                      <TableCell>{t('LEVEL')}</TableCell>
-                      <TableCell>{t('DISTANCE')}</TableCell>
-                      <TableCell>{t('OP_COST')}</TableCell>
-                      <TableCell>{t('UNIT_PRICE')}</TableCell>
-                      <TableCell>{t('AVAILABLE_CAPACITY')}</TableCell>
-                      <TableCell>{t('ACTIONS')}</TableCell>
+                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell>{t('infrastructure.OP_COST')}</TableCell>
+                      <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
+                      <TableCell>{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
+                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -247,7 +247,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                             }}
                             disabled={!provider.pathValid}
                           >
-                            {t('REQUEST')}
+                            {t('infrastructure.REQUEST')}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -261,19 +261,19 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
           {providers.powerProviders && providers.powerProviders.length > 0 && (
             <>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <PowerIcon /> {t('AVAILABLE_POWER_PROVIDERS')}
+                <PowerIcon /> {t('infrastructure.AVAILABLE_POWER_PROVIDERS')}
               </Typography>
               <TableContainer component={Paper}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('PROVIDER')}</TableCell>
-                      <TableCell>{t('LEVEL')}</TableCell>
-                      <TableCell>{t('DISTANCE')}</TableCell>
-                      <TableCell>{t('OP_COST')}</TableCell>
-                      <TableCell>{t('UNIT_PRICE')}</TableCell>
-                      <TableCell>{t('AVAILABLE_CAPACITY')}</TableCell>
-                      <TableCell>{t('ACTIONS')}</TableCell>
+                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell>{t('infrastructure.OP_COST')}</TableCell>
+                      <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
+                      <TableCell>{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
+                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -295,7 +295,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                             }}
                             disabled={!provider.pathValid}
                           >
-                            {t('REQUEST')}
+                            {t('infrastructure.REQUEST')}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -314,18 +314,18 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
           {providers.baseStations && providers.baseStations.length > 0 && (
             <>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <BaseStationIcon /> {t('AVAILABLE_BASE_STATIONS')}
+                <BaseStationIcon /> {t('infrastructure.AVAILABLE_BASE_STATIONS')}
               </Typography>
               <TableContainer component={Paper} sx={{ mb: 3 }}>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('PROVIDER')}</TableCell>
-                      <TableCell>{t('LEVEL')}</TableCell>
-                      <TableCell>{t('DISTANCE')}</TableCell>
-                      <TableCell>{t('IN_RANGE')}</TableCell>
-                      <TableCell>{t('ANNUAL_FEE')}</TableCell>
-                      <TableCell>{t('ACTIONS')}</TableCell>
+                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell>{t('infrastructure.IN_RANGE')}</TableCell>
+                      <TableCell>{t('infrastructure.ANNUAL_FEE')}</TableCell>
+                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -336,7 +336,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                         <TableCell>{service.distance}</TableCell>
                         <TableCell>
                           <Chip
-                            label={service.inRange ? t('YES') : t('NO')}
+                            label={service.inRange ? t('infrastructure.YES') : t('infrastructure.NO')}
                             color={service.inRange ? 'success' : 'error'}
                             size="small"
                           />
@@ -352,7 +352,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                             }}
                             disabled={!service.inRange}
                           >
-                            {t('SUBSCRIBE')}
+                            {t('infrastructure.SUBSCRIBE')}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -368,29 +368,29 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       {/* Request/Subscribe Dialog */}
       <Dialog open={requestDialogOpen} onClose={() => setRequestDialogOpen(false)}>
         <DialogTitle>
-          {searchType === 'connections' ? t('REQUEST_CONNECTION') : t('SUBSCRIBE_TO_SERVICE')}
+          {searchType === 'connections' ? t('infrastructure.REQUEST_CONNECTION') : t('infrastructure.SUBSCRIBE_TO_SERVICE')}
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label={searchType === 'connections' ? t('PROPOSED_UNIT_PRICE') : t('PROPOSED_ANNUAL_FEE')}
+            label={searchType === 'connections' ? t('infrastructure.PROPOSED_UNIT_PRICE') : t('infrastructure.PROPOSED_ANNUAL_FEE')}
             type="number"
             fullWidth
             variant="outlined"
             value={proposedPrice}
             onChange={(e) => setProposedPrice(e.target.value)}
-            helperText={t('OPTIONAL_LEAVE_BLANK_FOR_DEFAULT')}
+            helperText={t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT')}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setRequestDialogOpen(false)}>{t('CANCEL')}</Button>
+          <Button onClick={() => setRequestDialogOpen(false)}>{t('infrastructure.CANCEL')}</Button>
           <Button
             onClick={searchType === 'connections' ? handleRequestConnection : handleSubscribeService}
             variant="contained"
             startIcon={<SendIcon />}
           >
-            {searchType === 'connections' ? t('SEND_REQUEST') : t('SUBSCRIBE')}
+            {searchType === 'connections' ? t('infrastructure.SEND_REQUEST') : t('infrastructure.SUBSCRIBE')}
           </Button>
         </DialogActions>
       </Dialog>

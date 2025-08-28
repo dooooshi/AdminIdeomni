@@ -1,25 +1,27 @@
-# Lightweight I18n System
+# Simplified I18n Module
 
 ## Overview
-A simplified internationalization system replacing the over-engineered 8,743-line complex system with a clean, focused solution.
+A clean and simple internationalization module using react-i18next without unnecessary namespace complexity.
 
 ## Architecture
 
-### Core Files (266 lines total)
+### Core Files
 - `index.ts` - Main i18n configuration and setup
-- `translations/en.ts` - English translations  
-- `translations/zh.ts` - Chinese translations
 - `hooks/useTranslation.ts` - Single translation hook
-- `components/LanguageSwitcher.tsx` - Language switching component
+- `hooks/useErrorTranslation.ts` - Error translation utilities
 - `components/I18nProvider.tsx` - React provider wrapper
+- `components/LanguageSwitcher.tsx` - Language switching component
+- `translations/en.ts` - English translations
+- `translations/en-extended.ts` - Extended English translations
+- `translations/zh.ts` - Chinese translations
+- `translations/zh-extended.ts` - Extended Chinese translations
 
 ## Features
 - **2 Languages**: English (en-US) and Chinese (zh-CN)
 - **Simple API**: Single `useTranslation()` hook
 - **Local Storage**: Automatic language persistence
-- **Clean TypeScript**: Full type support without complexity
-- **No Development Bloat**: No console logging or validation in production
-- **Lightweight**: 266 lines vs 8,743 lines (97% reduction)
+- **No Namespace Complexity**: Direct key access with prefixes
+- **Clean TypeScript**: Full type support
 
 ## Usage
 
@@ -30,7 +32,14 @@ import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 function MyComponent() {
   const { t } = useTranslation();
   
-  return <h1>{t('SAVE')}</h1>; // "Save" or "保存"
+  // Access translations with namespace prefixes
+  return (
+    <div>
+      {t('common.SAVE')}
+      {t('navigation.DASHBOARD')}
+      {t('map.TITLE')}
+    </div>
+  );
 }
 ```
 
@@ -39,7 +48,7 @@ function MyComponent() {
 import { LanguageSwitcher } from '@/lib/i18n/components/LanguageSwitcher';
 
 function Header() {
-  return <LanguageSwitcher variant="button" />;
+  return <LanguageSwitcher />;
 }
 ```
 
@@ -56,35 +65,60 @@ function App() {
 }
 ```
 
-## Migration Results
-- **Size Reduction**: 8,743 → 266 lines (97% smaller)
-- **Files Updated**: 92 component files migrated
-- **Bundle Size**: Dramatically reduced
-- **Performance**: No heavy validation or development utilities
-- **Maintenance**: Simple, focused codebase
+### Error Translation
+```tsx
+import { translateErrorCode } from '@/lib/i18n/hooks/useErrorTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
-## Key Improvements
-1. **Eliminated Over-Engineering**: Removed unnecessary abstractions
-2. **Production-Ready**: No development code in production builds
-3. **Simple Translation Keys**: Flat structure instead of complex nesting
-4. **Single Hook**: One `useTranslation()` instead of 6+ variations
-5. **Clean Dependencies**: Only react-i18next essentials
+function ErrorHandler({ errorCode }: { errorCode: string }) {
+  const { t } = useTranslation();
+  
+  const errorMessage = translateErrorCode(errorCode, t);
+  return <div>{errorMessage}</div>;
+}
+```
 
-## Translation Keys
-All translations use flat keys in UPPER_SNAKE_CASE for consistency:
-- Actions: `SAVE`, `CANCEL`, `DELETE`, `EDIT`, etc.
-- Status: `LOADING`, `SUCCESS`, `ERROR`, etc.
-- Auth: `SIGN_IN`, `EMAIL`, `PASSWORD`, etc.
-- Navigation: `DASHBOARDS`, `MAP`, `ADMIN_MANAGEMENT`, etc.
+## Translation Key Structure
 
-## Comparison
-| Aspect | Old System | New System |  
-|--------|------------|------------|
-| Lines of Code | 8,743 | 266 |
-| Files | 50+ | 6 |
-| Hooks | 6+ variants | 1 simple hook |
-| Bundle Impact | Heavy | Lightweight |
-| Complexity | Over-engineered | Focused |
-| Maintenance | High overhead | Simple & clean |
+All translation keys use namespace prefixes for organization:
 
-This lightweight system provides the same functionality with 97% less code and complexity.
+- **Common**: `common.SAVE`, `common.CANCEL`, `common.DELETE`
+- **Navigation**: `navigation.DASHBOARD`, `navigation.MAP`, `navigation.ADMIN`
+- **Map**: `map.TITLE`, `map.LEGEND`, `map.STATISTICS`
+- **Activity**: `activity.NAME`, `activity.DESCRIPTION`, `activity.STATUS`
+- **Auth**: `auth.SIGN_IN`, `auth.EMAIL`, `auth.PASSWORD`
+- **Errors**: `errors.NETWORK_ERROR`, `errors.VALIDATION_FAILED`
+
+## Key Improvements from Previous Version
+1. **Removed Namespace Functions**: No more specialized hooks like `useMapTranslation()` 
+2. **Single Hook**: One `useTranslation()` for all components
+3. **Direct Key Access**: Simple prefixed keys instead of complex namespace configuration
+4. **Cleaner Codebase**: Removed unnecessary namespace creation logic
+5. **Better Maintainability**: Straightforward translation structure
+
+## Adding New Translations
+
+To add new translations:
+
+1. Add the key-value pair to both language files (`en.ts` and `zh.ts`)
+2. Use the appropriate namespace prefix (e.g., `'module.KEY': 'Value'`)
+3. Access using `t('module.KEY')` in components
+
+Example:
+```typescript
+// In en.ts
+'profile.SETTINGS': 'Settings',
+
+// In zh.ts
+'profile.SETTINGS': '设置',
+
+// In component
+const { t } = useTranslation();
+<button>{t('profile.SETTINGS')}</button>
+```
+
+## Supported Languages
+- **English (en-US)** - Default fallback
+- **Chinese Simplified (zh-CN)**
+
+The system automatically detects the user's browser language and persists the selection in localStorage.

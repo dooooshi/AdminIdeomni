@@ -57,7 +57,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
   onRefresh,
   loading,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // Get participation percentage
@@ -73,7 +73,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
     const { byUserType, totalUsers } = statistics;
     return [
       {
-        type: t('MANAGERS'),
+        type: t('activityManagement.MANAGERS'),
         total: byUserType.managers.total,
         withActivity: byUserType.managers.withActivity,
         withoutActivity: byUserType.managers.withoutActivity,
@@ -83,7 +83,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
         icon: <PeopleIcon />,
       },
       {
-        type: t('WORKERS'),
+        type: t('activityManagement.WORKERS'),
         total: byUserType.workers.total,
         withActivity: byUserType.workers.withActivity,
         withoutActivity: byUserType.workers.withoutActivity,
@@ -93,7 +93,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
         icon: <PeopleIcon />,
       },
       {
-        type: t('STUDENTS'),
+        type: t('activityManagement.STUDENTS'),
         total: byUserType.students.total,
         withActivity: byUserType.students.withActivity,
         withoutActivity: byUserType.students.withoutActivity,
@@ -125,7 +125,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_STATISTICS')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_STATISTICS')}</Typography>
       </Box>
     );
   }
@@ -133,7 +133,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
   if (!statistics) {
     return (
       <Alert severity="warning">
-        {t('NO_STATISTICS_AVAILABLE')}
+        {t('activityManagement.NO_STATISTICS_AVAILABLE')}
       </Alert>
     );
   }
@@ -144,10 +144,10 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <AnalyticsIcon />
-          {t('COMPREHENSIVE_STATISTICS')}
+          {t('activityManagement.COMPREHENSIVE_STATISTICS')}
         </Typography>
         <Stack direction="row" spacing={2}>
-          <Tooltip title={t('REFRESH_STATISTICS')}>
+          <Tooltip title={t('activityManagement.REFRESH_STATISTICS')}>
             <IconButton onClick={onRefresh} disabled={loading}>
               <RefreshIcon />
             </IconButton>
@@ -157,7 +157,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
             startIcon={<DownloadIcon />}
             onClick={() => {/* TODO: Export statistics */}}
           >
-            {t('EXPORT_REPORT')}
+            {t('activityManagement.EXPORT_REPORT')}
           </Button>
         </Stack>
       </Box>
@@ -166,7 +166,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('OVERALL_PARTICIPATION')}
+            {t('activityManagement.OVERALL_PARTICIPATION')}
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -175,7 +175,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.totalUsers.toLocaleString()}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {t('TOTAL_USERS')}
+                  {t('activityManagement.TOTAL_USERS')}
                 </Typography>
               </Box>
             </Grid>
@@ -185,7 +185,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.usersWithActivity.toLocaleString()}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {t('USERS_WITH_ACTIVITY')}
+                  {t('activityManagement.USERS_WITH_ACTIVITY')}
                 </Typography>
                 <LinearProgress
                   variant="determinate"
@@ -194,7 +194,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   sx={{ mt: 1, height: 8, borderRadius: 4 }}
                 />
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  {getParticipationPercentage().toFixed(1)}% {t('PARTICIPATION_RATE')}
+                  {getParticipationPercentage().toFixed(1)}% {t('activityManagement.PARTICIPATION_RATE')}
                 </Typography>
               </Box>
             </Grid>
@@ -204,7 +204,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.usersWithoutActivity.toLocaleString()}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {t('UNASSIGNED_USERS')}
+                  {t('activityManagement.UNASSIGNED_USERS')}
                 </Typography>
                 <LinearProgress
                   variant="determinate"
@@ -213,7 +213,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   sx={{ mt: 1, height: 8, borderRadius: 4 }}
                 />
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  {(100 - getParticipationPercentage()).toFixed(1)}% {t('UNASSIGNED')}
+                  {(100 - getParticipationPercentage()).toFixed(1)}% {t('activityManagement.UNASSIGNED')}
                 </Typography>
               </Box>
             </Grid>
@@ -225,7 +225,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('USER_TYPE_BREAKDOWN')}
+            {t('activityManagement.USER_TYPE_BREAKDOWN')}
           </Typography>
           <Grid container spacing={3}>
             {getUserTypeStats().map((userType, index) => (
@@ -246,14 +246,14 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                         {userType.total.toLocaleString()}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {userType.percentage.toFixed(1)}% {t('OF_TOTAL_USERS')}
+                        {userType.percentage.toFixed(1)}% {t('activityManagement.OF_TOTAL_USERS')}
                       </Typography>
                     </Box>
 
                     <Stack spacing={1}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2">
-                          {t('WITH_ACTIVITY')}:
+                          {t('activityManagement.WITH_ACTIVITY')}:
                         </Typography>
                         <Typography variant="body2" fontWeight="medium" color="success.main">
                           {userType.withActivity}
@@ -261,7 +261,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                       </Box>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body2">
-                          {t('WITHOUT_ACTIVITY')}:
+                          {t('activityManagement.WITHOUT_ACTIVITY')}:
                         </Typography>
                         <Typography variant="body2" fontWeight="medium" color="warning.main">
                           {userType.withoutActivity}
@@ -274,7 +274,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                         sx={{ mt: 1, height: 6, borderRadius: 3 }}
                       />
                       <Typography variant="caption" color="text.secondary" textAlign="center">
-                        {userType.participationRate.toFixed(1)}% {t('PARTICIPATION_RATE')}
+                        {userType.participationRate.toFixed(1)}% {t('activityManagement.PARTICIPATION_RATE')}
                       </Typography>
                     </Stack>
                   </CardContent>
@@ -289,24 +289,24 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('ACTIVITY_STATISTICS')}
+            {t('activityManagement.ACTIVITY_STATISTICS')}
           </Typography>
           {statistics.byActivity.length === 0 ? (
             <Alert severity="info">
-              {t('NO_ACTIVITIES_WITH_PARTICIPANTS')}
+              {t('activityManagement.NO_ACTIVITIES_WITH_PARTICIPANTS')}
             </Alert>
           ) : (
             <TableContainer>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>{t('ACTIVITY')}</TableCell>
-                    <TableCell align="center">{t('TOTAL_PARTICIPANTS')}</TableCell>
-                    <TableCell align="center">{t('ENROLLED')}</TableCell>
-                    <TableCell align="center">{t('COMPLETED')}</TableCell>
-                    <TableCell align="center">{t('CANCELLED')}</TableCell>
-                    <TableCell align="center">{t('NO_SHOW')}</TableCell>
-                    <TableCell align="center">{t('COMPLETION_RATE')}</TableCell>
+                    <TableCell>{t('activityManagement.ACTIVITY')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.TOTAL_PARTICIPANTS')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.ENROLLED')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.COMPLETED')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.CANCELLED')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.NO_SHOW')}</TableCell>
+                    <TableCell align="center">{t('activityManagement.COMPLETION_RATE')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -387,7 +387,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('TEAM_STATISTICS')}
+            {t('activityManagement.TEAM_STATISTICS')}
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -396,7 +396,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.teamStatistics.totalTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('TOTAL_TEAMS')}
+                  {t('activityManagement.TOTAL_TEAMS')}
                 </Typography>
               </Box>
             </Grid>
@@ -406,7 +406,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.teamStatistics.usersInTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('USERS_IN_TEAMS')}
+                  {t('activityManagement.USERS_IN_TEAMS')}
                 </Typography>
               </Box>
             </Grid>
@@ -416,7 +416,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.teamStatistics.usersWithoutTeams}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('USERS_WITHOUT_TEAMS')}
+                  {t('activityManagement.USERS_WITHOUT_TEAMS')}
                 </Typography>
               </Box>
             </Grid>
@@ -426,7 +426,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                   {statistics.teamStatistics.averageTeamSize.toFixed(1)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('AVERAGE_TEAM_SIZE')}
+                  {t('activityManagement.AVERAGE_TEAM_SIZE')}
                 </Typography>
               </Box>
             </Grid>
@@ -435,16 +435,16 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
           {statistics.teamStatistics.teamsByActivity.length > 0 && (
             <Box sx={{ mt: 4 }}>
               <Typography variant="subtitle1" gutterBottom>
-                {t('TEAMS_BY_ACTIVITY')}
+                {t('activityManagement.TEAMS_BY_ACTIVITY')}
               </Typography>
               <TableContainer>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('ACTIVITY')}</TableCell>
-                      <TableCell align="center">{t('TOTAL_TEAMS')}</TableCell>
-                      <TableCell align="center">{t('TOTAL_MEMBERS')}</TableCell>
-                      <TableCell align="center">{t('AVERAGE_SIZE')}</TableCell>
+                      <TableCell>{t('activityManagement.ACTIVITY')}</TableCell>
+                      <TableCell align="center">{t('activityManagement.TOTAL_TEAMS')}</TableCell>
+                      <TableCell align="center">{t('activityManagement.TOTAL_MEMBERS')}</TableCell>
+                      <TableCell align="center">{t('activityManagement.AVERAGE_SIZE')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -484,7 +484,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('RECENT_ACTIVITY_TRENDS')}
+            {t('activityManagement.RECENT_ACTIVITY_TRENDS')}
           </Typography>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -495,7 +495,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                     {statistics.recentAssignments.today}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('ASSIGNMENTS_TODAY')}
+                    {t('activityManagement.ASSIGNMENTS_TODAY')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -508,7 +508,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                     {statistics.recentAssignments.thisWeek}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('ASSIGNMENTS_THIS_WEEK')}
+                    {t('activityManagement.ASSIGNMENTS_THIS_WEEK')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -521,7 +521,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                     {statistics.recentAssignments.thisMonth}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('ASSIGNMENTS_THIS_MONTH')}
+                    {t('activityManagement.ASSIGNMENTS_THIS_MONTH')}
                   </Typography>
                 </CardContent>
               </Card>

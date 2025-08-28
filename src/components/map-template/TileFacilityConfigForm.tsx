@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -66,7 +66,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
   onRestore,
   isLoading = false,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // Form state
   const [formData, setFormData] = useState<CreateTileFacilityBuildConfigDto>({
@@ -193,11 +193,11 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={1}>
             <Typography variant="h6">
-              {mode === 'create' ? t('CREATE_FACILITY_CONFIG') : t('EDIT_FACILITY_CONFIG')}
+              {mode === 'create' ? t('mapTemplate.CREATE_FACILITY_CONFIG') : t('mapTemplate.EDIT_FACILITY_CONFIG')}
             </Typography>
             {config?.deletedAt && (
               <Chip 
-                label={t('DELETED')} 
+                label={t('mapTemplate.DELETED')} 
                 color="error" 
                 size="small" 
                 variant="outlined" 
@@ -208,14 +208,14 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
         action={
           <Box display="flex" gap={1}>
             {mode === 'edit' && config?.deletedAt && onRestore && (
-              <Tooltip title={t('RESTORE_CONFIG')}>
+              <Tooltip title={t('mapTemplate.RESTORE_CONFIG')}>
                 <IconButton onClick={handleRestore} color="success">
                   <RestoreIcon />
                 </IconButton>
               </Tooltip>
             )}
             {mode === 'edit' && !config?.deletedAt && onDelete && (
-              <Tooltip title={t('DELETE_CONFIG')}>
+              <Tooltip title={t('mapTemplate.DELETE_CONFIG')}>
                 <IconButton onClick={handleDelete} color="error">
                   <DeleteIcon />
                 </IconButton>
@@ -230,18 +230,18 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
           {/* Basic Configuration */}
           <Box>
             <Typography variant="h6" gutterBottom>
-              {t('BASIC_CONFIGURATION')}
+              {t('mapTemplate.BASIC_CONFIGURATION')}
             </Typography>
             
             <Stack spacing={3}>
               <Box display="flex" gap={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
                 <FormControl fullWidth error={!!validationErrors.facilityType}>
-                  <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
+                  <InputLabel>{t('mapTemplate.FACILITY_TYPE')}</InputLabel>
                   <Select
                     value={formData.facilityType}
                     onChange={(e) => handleInputChange('facilityType', e.target.value)}
                     disabled={mode === 'edit'}
-                    label={t('FACILITY_TYPE')}
+                    label={t('mapTemplate.FACILITY_TYPE')}
                   >
                     {Object.values(FacilityType).map((type) => (
                       <MenuItem key={type} value={type}>
@@ -258,12 +258,12 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
                 </FormControl>
 
                 <FormControl fullWidth error={!!validationErrors.landType}>
-                  <InputLabel>{t('LAND_TYPE')}</InputLabel>
+                  <InputLabel>{t('mapTemplate.LAND_TYPE')}</InputLabel>
                   <Select
                     value={formData.landType}
                     onChange={(e) => handleInputChange('landType', e.target.value)}
                     disabled={mode === 'edit'}
-                    label={t('LAND_TYPE')}
+                    label={t('mapTemplate.LAND_TYPE')}
                   >
                     {Object.values(LandType).map((type) => (
                       <MenuItem 
@@ -275,7 +275,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
                           <TerrainIcon />
                           {t(`LAND_TYPE_${type}`)}
                           {!isLandTypeAllowed(type) && (
-                            <Chip label={t('NOT_COMPATIBLE')} size="small" color="error" variant="outlined" />
+                            <Chip label={t('mapTemplate.NOT_COMPATIBLE')} size="small" color="error" variant="outlined" />
                           )}
                         </Box>
                       </MenuItem>
@@ -294,7 +294,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
                     onChange={(e) => handleInputChange('isAllowed', e.target.checked)}
                   />
                 }
-                label={t('FACILITY_ENABLED')}
+                label={t('mapTemplate.FACILITY_ENABLED')}
               />
             </Stack>
           </Box>
@@ -302,14 +302,14 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
           {/* Build Requirements */}
           <Box>
             <Typography variant="h6" gutterBottom>
-              {t('BUILD_REQUIREMENTS')}
+              {t('mapTemplate.BUILD_REQUIREMENTS')}
             </Typography>
             
             <Stack spacing={3}>
               <Box display="flex" gap={2} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
                 <TextField
                   fullWidth
-                  label={t('GOLD_COST')}
+                  label={t('mapTemplate.GOLD_COST')}
                   type="number"
                   value={formData.requiredGold}
                   onChange={(e) => handleInputChange('requiredGold', Number(e.target.value))}
@@ -327,7 +327,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
 
                 <TextField
                   fullWidth
-                  label={t('CARBON_COST')}
+                  label={t('mapTemplate.CARBON_COST')}
                   type="number"
                   value={formData.requiredCarbon}
                   onChange={(e) => handleInputChange('requiredCarbon', Number(e.target.value))}
@@ -348,7 +348,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
               <Box display="flex" gap={2} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
                 <TextField
                   fullWidth
-                  label={t('REQUIRED_AREAS')}
+                  label={t('mapTemplate.REQUIRED_AREAS')}
                   type="number"
                   value={formData.requiredAreas}
                   onChange={(e) => handleInputChange('requiredAreas', Number(e.target.value))}
@@ -359,7 +359,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
 
                 <TextField
                   fullWidth
-                  label={t('MAX_INSTANCES')}
+                  label={t('mapTemplate.MAX_INSTANCES')}
                   type="number"
                   value={formData.maxInstances}
                   onChange={(e) => handleInputChange('maxInstances', Number(e.target.value))}
@@ -374,14 +374,14 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
           {/* Upgrade Configuration */}
           <Box>
             <Typography variant="h6" gutterBottom>
-              {t('UPGRADE_CONFIGURATION')}
+              {t('mapTemplate.UPGRADE_CONFIGURATION')}
             </Typography>
             
             <Stack spacing={3}>
               <Box display="flex" gap={2} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
                 <TextField
                   fullWidth
-                  label={t('MAX_LEVEL')}
+                  label={t('mapTemplate.MAX_LEVEL')}
                   type="number"
                   value={formData.maxLevel}
                   onChange={(e) => handleInputChange('maxLevel', Number(e.target.value))}
@@ -392,7 +392,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
 
                 <TextField
                   fullWidth
-                  label={t('BASE_UPGRADE_GOLD_COST')}
+                  label={t('mapTemplate.BASE_UPGRADE_GOLD_COST')}
                   type="number"
                   value={formData.upgradeGoldCost}
                   onChange={(e) => handleInputChange('upgradeGoldCost', Number(e.target.value))}
@@ -407,7 +407,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
               <Box display="flex" gap={2} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
                 <TextField
                   fullWidth
-                  label={t('BASE_UPGRADE_CARBON_COST')}
+                  label={t('mapTemplate.BASE_UPGRADE_CARBON_COST')}
                   type="number"
                   value={formData.upgradeCarbonCost}
                   onChange={(e) => handleInputChange('upgradeCarbonCost', Number(e.target.value))}
@@ -420,7 +420,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
 
                 <TextField
                   fullWidth
-                  label={t('UPGRADE_MULTIPLIER')}
+                  label={t('mapTemplate.UPGRADE_MULTIPLIER')}
                   type="number"
                   value={formData.upgradeMultiplier}
                   onChange={(e) => handleInputChange('upgradeMultiplier', Number(e.target.value))}
@@ -436,7 +436,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
           {Object.keys(validationErrors).length > 0 && (
             <Alert severity="error">
               <Typography variant="body2">
-                {t('PLEASE_FIX_VALIDATION_ERRORS')}
+                {t('mapTemplate.PLEASE_FIX_VALIDATION_ERRORS')}
               </Typography>
             </Alert>
           )}
@@ -448,7 +448,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
               startIcon={<CancelIcon />} 
               onClick={onCancel}
             >
-              {t('CANCEL')}
+              {t('mapTemplate.CANCEL')}
             </Button>
             <LoadingButton
               variant="contained"
@@ -457,7 +457,7 @@ const TileFacilityConfigForm: React.FC<TileFacilityConfigFormProps> = ({
               loading={isLoading}
               disabled={!formData.isAllowed && mode === 'create'}
             >
-              {mode === 'create' ? t('CREATE_CONFIGURATION') : t('SAVE_CHANGES')}
+              {mode === 'create' ? t('mapTemplate.CREATE_CONFIGURATION') : t('mapTemplate.SAVE_CHANGES')}
             </LoadingButton>
           </Box>
         </Stack>

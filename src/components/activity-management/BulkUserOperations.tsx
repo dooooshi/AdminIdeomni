@@ -71,7 +71,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
   preSelectedUserIds = [],
   onSuccess,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -111,7 +111,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
       setSelectedUsers(users);
     } catch (err) {
       console.error('Failed to load pre-selected users:', err);
-      setError(t('FAILED_TO_LOAD_USERS'));
+      setError(t('activityManagement.FAILED_TO_LOAD_USERS'));
     }
   };
 
@@ -157,7 +157,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
 
   const handleOperation = async () => {
     if (selectedUsers.length === 0) {
-      setError(t('NO_USERS_SELECTED'));
+      setError(t('activityManagement.NO_USERS_SELECTED'));
       return;
     }
 
@@ -193,7 +193,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
       }
     } catch (err) {
       console.error(`${operation} operation failed:`, err);
-      setError(err instanceof Error ? err.message : t('OPERATION_FAILED'));
+      setError(err instanceof Error ? err.message : t('activityManagement.OPERATION_FAILED'));
     } finally {
       setOperationLoading(false);
     }
@@ -211,8 +211,8 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
 
   const getOperationTitle = () => {
     return operation === 'add' 
-      ? t('ADD_USERS_TO_ACTIVITY')
-      : t('REMOVE_USERS_FROM_ACTIVITY');
+      ? t('activityManagement.ADD_USERS_TO_ACTIVITY')
+      : t('activityManagement.REMOVE_USERS_FROM_ACTIVITY');
   };
 
   const getOperationColor = () => {
@@ -228,10 +228,10 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
 
   const getUserTypeDisplayName = (userType: number) => {
     switch (userType) {
-      case 1: return t('MANAGER');
-      case 2: return t('WORKER');
-      case 3: return t('STUDENT');
-      default: return t('UNKNOWN');
+      case 1: return t('activityManagement.MANAGER');
+      case 2: return t('activityManagement.WORKER');
+      case 3: return t('activityManagement.STUDENT');
+      default: return t('activityManagement.UNKNOWN');
     }
   };
 
@@ -250,7 +250,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
         <DialogTitle>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {getOperationIcon()}
-            {t('OPERATION_RESULTS')}
+            {t('activityManagement.OPERATION_RESULTS')}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -259,7 +259,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
               {activity.name}
             </Typography>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              {t('OPERATION_COMPLETED_AT')}: {new Date(operationResult.metadata.operationTimestamp).toLocaleString()}
+              {t('activityManagement.OPERATION_COMPLETED_AT')}: {new Date(operationResult.metadata.operationTimestamp).toLocaleString()}
             </Typography>
           </Box>
 
@@ -272,7 +272,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                     {operationResult.totalCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('TOTAL_PROCESSED')}
+                    {t('activityManagement.TOTAL_PROCESSED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -284,7 +284,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                     {operationResult.successCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('SUCCESSFUL')}
+                    {t('activityManagement.SUCCESSFUL')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -296,7 +296,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                     {operationResult.failedCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('FAILED')}
+                    {t('activityManagement.FAILED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -305,7 +305,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
 
           {/* Detailed Results */}
           <Typography variant="h6" gutterBottom>
-            {t('DETAILED_RESULTS')}
+            {t('activityManagement.DETAILED_RESULTS')}
           </Typography>
           <List>
             {operationResult.details.map((detail, index) => (
@@ -328,8 +328,8 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                   }
                   secondary={
                     detail.success ? 
-                      t('OPERATION_SUCCESSFUL') : 
-                      detail.error || t('OPERATION_FAILED')
+                      t('activityManagement.OPERATION_SUCCESSFUL') : 
+                      detail.error || t('activityManagement.OPERATION_FAILED')
                   }
                 />
               </ListItem>
@@ -338,7 +338,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained">
-            {t('CLOSE')}
+            {t('activityManagement.CLOSE')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -359,7 +359,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
             {activity.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {t('ACTIVITY_TYPE')}: {activity.activityType}
+            {t('activityManagement.ACTIVITY_TYPE')}: {activity.activityType}
           </Typography>
         </Box>
 
@@ -381,7 +381,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
             {operation === 'add' && (
               <Box sx={{ flex: 1 }}>
                 <Typography variant="h6" gutterBottom>
-                  {t('SEARCH_USERS')}
+                  {t('activityManagement.SEARCH_USERS')}
                 </Typography>
                 <Autocomplete
                   options={searchResults}
@@ -420,13 +420,13 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                     }
                   }}
                   loading={searchLoading}
-                  loadingText={t('SEARCHING_USERS')}
-                  noOptionsText={searchValue ? t('NO_USERS_FOUND') : t('START_TYPING_TO_SEARCH')}
+                  loadingText={t('activityManagement.SEARCHING_USERS')}
+                  noOptionsText={searchValue ? t('activityManagement.NO_USERS_FOUND') : t('activityManagement.START_TYPING_TO_SEARCH')}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={t('SEARCH_USERS_BY_NAME_EMAIL')}
-                      placeholder={t('TYPE_TO_SEARCH')}
+                      label={t('activityManagement.SEARCH_USERS_BY_NAME_EMAIL')}
+                      placeholder={t('activityManagement.TYPE_TO_SEARCH')}
                       InputProps={{
                         ...params.InputProps,
                         startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
@@ -447,7 +447,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
             <Box sx={{ flex: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                 <Typography variant="h6">
-                  {operation === 'add' ? t('SELECTED_USERS') : t('USERS_TO_REMOVE')}
+                  {operation === 'add' ? t('activityManagement.SELECTED_USERS') : t('activityManagement.USERS_TO_REMOVE')}
                 </Typography>
                 <Badge badgeContent={selectedUsers.length} color="primary">
                   <GroupIcon />
@@ -459,8 +459,8 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                   <GroupIcon sx={{ fontSize: 48, mb: 2 }} />
                   <Typography variant="body1">
                     {operation === 'add' 
-                      ? t('NO_USERS_SELECTED_ADD') 
-                      : t('NO_USERS_SELECTED_REMOVE')
+                      ? t('activityManagement.NO_USERS_SELECTED_ADD') 
+                      : t('activityManagement.NO_USERS_SELECTED_REMOVE')
                     }
                   </Typography>
                 </Box>
@@ -502,20 +502,20 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
           <Box>
             <Divider sx={{ my: 2 }} />
             <Typography variant="h6" gutterBottom>
-              {t('OPERATION_DETAILS')}
+              {t('activityManagement.OPERATION_DETAILS')}
             </Typography>
             <Stack spacing={2}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder={
                   operation === 'add' 
-                    ? t('REASON_FOR_ADDING_USERS')
-                    : t('REASON_FOR_REMOVING_USERS')
+                    ? t('activityManagement.REASON_FOR_ADDING_USERS')
+                    : t('activityManagement.REASON_FOR_REMOVING_USERS')
                 }
               />
               <FormControlLabel
@@ -525,7 +525,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
                     onChange={(e) => setSendNotification(e.target.checked)}
                   />
                 }
-                label={t('SEND_EMAIL_NOTIFICATION')}
+                label={t('activityManagement.SEND_EMAIL_NOTIFICATION')}
               />
             </Stack>
           </Box>
@@ -533,7 +533,7 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} disabled={operationLoading}>
-          {t('CANCEL')}
+          {t('activityManagement.CANCEL')}
         </Button>
         <Button
           onClick={handleOperation}
@@ -543,10 +543,10 @@ const BulkUserOperations: React.FC<BulkUserOperationsProps> = ({
           startIcon={operationLoading ? <CircularProgress size={20} /> : getOperationIcon()}
         >
           {operationLoading 
-            ? t('PROCESSING') 
+            ? t('activityManagement.PROCESSING') 
             : operation === 'add' 
-              ? t('ADD_USERS') 
-              : t('REMOVE_USERS')
+              ? t('activityManagement.ADD_USERS') 
+              : t('activityManagement.REMOVE_USERS')
           } ({selectedUsers.length})
         </Button>
       </DialogActions>

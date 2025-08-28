@@ -63,7 +63,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
   isLoading = false,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation('map');
+  const { t } = useTranslation();
 
   // Form state
   const [formData, setFormData] = useState<GenerateMapTemplateDto>({
@@ -170,11 +170,11 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
     const newErrors: FormErrors = {};
 
     if (!formData.templateName.trim()) {
-      newErrors.templateName = t('VALIDATION_TEMPLATE_NAME_REQUIRED');
+      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_REQUIRED');
     } else if (formData.templateName.length < 3) {
-      newErrors.templateName = t('VALIDATION_TEMPLATE_NAME_TOO_SHORT');
+      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_TOO_SHORT');
     } else if (formData.templateName.length > 100) {
-      newErrors.templateName = t('VALIDATION_TEMPLATE_NAME_TOO_LONG');
+      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_TOO_LONG');
     }
 
     validationErrors.forEach(error => {
@@ -215,25 +215,25 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
           <Box display="flex" alignItems="center" gap={1}>
             <AutoFixHighIcon />
             <Typography variant="h6">
-              {t('GENERATE_MAP_TEMPLATE')}
+              {t('map.GENERATE_MAP_TEMPLATE')}
             </Typography>
           </Box>
         }
-        subheader={t('GENERATE_TEMPLATE_DESCRIPTION')}
+        subheader={t('map.GENERATE_TEMPLATE_DESCRIPTION')}
       />
       
       <CardContent>
         <Stack spacing={3}>
           {/* Basic Information */}
           <Typography variant="subtitle2" color="text.secondary">
-            {t('BASIC_INFORMATION')}
+            {t('map.BASIC_INFORMATION')}
           </Typography>
 
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 8 }}>
               <TextField
                 fullWidth
-                label={t('TEMPLATE_NAME')}
+                label={t('map.TEMPLATE_NAME')}
                 value={formData.templateName}
                 onChange={(e) => handleFieldChange('templateName', e.target.value)}
                 disabled={isLoading}
@@ -246,7 +246,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
-                label={t('RANDOM_SEED')}
+                label={t('map.RANDOM_SEED')}
                 type="number"
                 value={formData.randomSeed || ''}
                 onChange={(e) => handleFieldChange('randomSeed', parseInt(e.target.value))}
@@ -266,13 +266,13 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('DESCRIPTION')}
+                label={t('map.DESCRIPTION')}
                 multiline
                 rows={3}
                 value={formData.description || ''}
                 onChange={(e) => handleFieldChange('description', e.target.value)}
                 disabled={isLoading}
-                placeholder={t('TEMPLATE_DESCRIPTION_PLACEHOLDER')}
+                placeholder={t('map.TEMPLATE_DESCRIPTION_PLACEHOLDER')}
               />
             </Grid>
           </Grid>
@@ -281,13 +281,13 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
 
           {/* Map Dimensions */}
           <Typography variant="subtitle2" color="text.secondary">
-            {t('MAP_DIMENSIONS')}
+            {t('map.MAP_DIMENSIONS')}
           </Typography>
 
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 4 }}>
               <Typography gutterBottom>
-                {t('WIDTH')}: {formData.width}
+                {t('map.WIDTH')}: {formData.width}
               </Typography>
               <Slider
                 value={formData.width}
@@ -303,7 +303,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
             
             <Grid size={{ xs: 12, md: 4 }}>
               <Typography gutterBottom>
-                {t('HEIGHT')}: {formData.height}
+                {t('map.HEIGHT')}: {formData.height}
               </Typography>
               <Slider
                 value={formData.height}
@@ -321,7 +321,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               <Paper variant="outlined" sx={{ p: 2, textAlign: 'center' }}>
                 <MapIcon color="primary" />
                 <Typography variant="caption" display="block">
-                  {t('ESTIMATED_TILES')}
+                  {t('map.ESTIMATED_TILES')}
                 </Typography>
                 <Typography variant="h6">
                   {estimatedTileCount}
@@ -334,7 +334,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
 
           {/* Land Distribution */}
           <Typography variant="subtitle2" color="text.secondary">
-            {t('LAND_DISTRIBUTION')}
+            {t('map.LAND_DISTRIBUTION')}
           </Typography>
 
           <Grid container spacing={3}>
@@ -349,7 +349,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                   }}
                 />
                 <Typography variant="body2">
-                  {t('TERRAIN_MARINE')}: {formData.marinePercentage}%
+                  {t('map.TERRAIN_MARINE')}: {formData.marinePercentage}%
                 </Typography>
               </Box>
               <Slider
@@ -375,7 +375,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                   }}
                 />
                 <Typography variant="body2">
-                  {t('TERRAIN_COASTAL')}: {formData.coastalPercentage}%
+                  {t('map.TERRAIN_COASTAL')}: {formData.coastalPercentage}%
                 </Typography>
               </Box>
               <Slider
@@ -401,7 +401,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                   }}
                 />
                 <Typography variant="body2">
-                  {t('TERRAIN_PLAIN')}: {formData.plainPercentage}%
+                  {t('map.TERRAIN_PLAIN')}: {formData.plainPercentage}%
                 </Typography>
               </Box>
               <Slider
@@ -420,21 +420,21 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
           {/* Distribution Preview */}
           <Box>
             <Typography variant="body2" color="text.secondary" gutterBottom>
-              {t('LAND_DISTRIBUTION_PREVIEW')}
+              {t('map.LAND_DISTRIBUTION_PREVIEW')}
             </Typography>
             <Stack direction="row" spacing={1}>
               <Chip
-                label={`${t('TERRAIN_MARINE')} ${formData.marinePercentage}%`}
+                label={`${t('map.TERRAIN_MARINE')} ${formData.marinePercentage}%`}
                 sx={{ backgroundColor: getLandTypeColor('MARINE'), color: 'white' }}
                 size="small"
               />
               <Chip
-                label={`${t('TERRAIN_COASTAL')} ${formData.coastalPercentage}%`}
+                label={`${t('map.TERRAIN_COASTAL')} ${formData.coastalPercentage}%`}
                 sx={{ backgroundColor: getLandTypeColor('COASTAL'), color: 'white' }}
                 size="small"
               />
               <Chip
-                label={`${t('TERRAIN_PLAIN')} ${formData.plainPercentage}%`}
+                label={`${t('map.TERRAIN_PLAIN')} ${formData.plainPercentage}%`}
                 sx={{ backgroundColor: getLandTypeColor('PLAIN'), color: 'white' }}
                 size="small"
               />
@@ -450,7 +450,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               onClick={() => setShowAdvanced(!showAdvanced)}
               sx={{ mb: 2 }}
             >
-              {t('ADVANCED_CONFIGURATION')}
+              {t('map.ADVANCED_CONFIGURATION')}
             </Button>
             
             <Collapse in={showAdvanced}>
@@ -464,14 +464,14 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                       disabled={isLoading}
                     />
                   }
-                  label={t('CUSTOM_ECONOMIC_CONFIGURATION')}
+                  label={t('map.CUSTOM_ECONOMIC_CONFIGURATION')}
                 />
 
                 {/* Custom Pricing Configuration */}
                 <Collapse in={showCustomPricing}>
                   <Stack spacing={2}>
                     <Typography variant="subtitle2" color="text.secondary">
-                      {t('CUSTOM_LAND_TYPE_CONFIGURATION')}
+                      {t('map.CUSTOM_LAND_TYPE_CONFIGURATION')}
                     </Typography>
                     
                     {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => (
@@ -494,7 +494,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                           <Grid size={{ xs: 12, md: 4 }}>
                             <TextField
                               fullWidth
-                              label={t('INITIAL_PRICE')}
+                              label={t('map.INITIAL_PRICE')}
                               type="number"
                               value={formData.customPricing?.[landType] || ''}
                               onChange={(e) => {
@@ -522,7 +522,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                           <Grid size={{ xs: 12, md: 4 }}>
                             <TextField
                               fullWidth
-                              label={t('INITIAL_POPULATION')}
+                              label={t('map.INITIAL_POPULATION')}
                               type="number"
                               value={formData.customPopulation?.[landType] || ''}
                               onChange={(e) => {
@@ -550,7 +550,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                           <Grid size={{ xs: 12, md: 4 }}>
                             <TextField
                               fullWidth
-                              label={t('TRANSPORTATION_COST')}
+                              label={t('map.TRANSPORTATION_COST')}
                               type="number"
                               value={formData.customTransportation?.[landType] || ''}
                               onChange={(e) => {
@@ -606,7 +606,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               startIcon={<PreviewIcon />}
               disabled={isLoading}
             >
-              {t('PREVIEW')}
+              {t('map.PREVIEW')}
             </Button>
             
             <Button
@@ -615,7 +615,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               disabled={isLoading || !formData.templateName.trim()}
               startIcon={<AutoFixHighIcon />}
             >
-              {isLoading ? t('GENERATING') : t('GENERATE_TEMPLATE')}
+              {isLoading ? t('map.GENERATING') : t('map.GENERATE_TEMPLATE')}
             </Button>
           </Stack>
         </Stack>

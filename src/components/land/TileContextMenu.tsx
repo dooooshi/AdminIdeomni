@@ -42,7 +42,7 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
   onViewDetails,
   onCalculateCost
 }) => {
-  const { t } = useTranslation('land');
+  const { t } = useTranslation();
 
   if (!tile) return null;
 
@@ -71,10 +71,10 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
       {/* Tile Header */}
       <Box sx={{ px: 2, py: 1, bgcolor: 'action.hover' }}>
         <Typography variant="subtitle2" fontWeight="bold">
-          {t('TILE')} {tile.tileId}
+          {t('land.TILE')} {tile.tileId}
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          {t(`TERRAIN_${tile.landType}`)} • {t('AVAILABLE')}: {tile.availableArea?.toFixed(1) || 0} {t('AREA_UNITS')}
+          {t(`TERRAIN_${tile.landType}`)} • {t('land.AVAILABLE')}: {tile.availableArea?.toFixed(1) || 0} {t('land.AREA_UNITS')}
         </Typography>
       </Box>
 
@@ -94,8 +94,8 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
               <SpeedIcon color="success" />
             </ListItemIcon>
             <ListItemText
-              primary={t('QUICK_PURCHASE')}
-              secondary={`${t('BUY')} 1 ${t('AREA_UNIT')} (${((tile.currentGoldPrice || 0) + (tile.currentCarbonPrice || 0)).toFixed(2)})`}
+              primary={t('land.QUICK_PURCHASE')}
+              secondary={`${t('land.BUY')} 1 ${t('land.AREA_UNIT')} (${((tile.currentGoldPrice || 0) + (tile.currentCarbonPrice || 0)).toFixed(2)})`}
             />
           </MenuItem>
 
@@ -110,8 +110,8 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
               <ShoppingCartIcon color="success" />
             </ListItemIcon>
             <ListItemText
-              primary={t('PURCHASE_MAX_AVAILABLE')}
-              secondary={`${t('BUY')} ${tile.availableArea?.toFixed(1)} ${t('AREA_UNITS')}`}
+              primary={t('land.PURCHASE_MAX_AVAILABLE')}
+              secondary={`${t('land.BUY')} ${tile.availableArea?.toFixed(1)} ${t('land.AREA_UNITS')}`}
             />
           </MenuItem>
 
@@ -131,8 +131,8 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
           <InfoIcon color="primary" />
         </ListItemIcon>
         <ListItemText
-          primary={t('VIEW_DETAILS')}
-          secondary={t('VIEW_TILE_INFORMATION')}
+          primary={t('land.VIEW_DETAILS')}
+          secondary={t('land.VIEW_TILE_INFORMATION')}
         />
       </MenuItem>
 
@@ -147,8 +147,8 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
           <CalculateIcon color="info" />
         </ListItemIcon>
         <ListItemText
-          primary={t('CALCULATE_COST')}
-          secondary={t('ESTIMATE_PURCHASE_COST')}
+          primary={t('land.CALCULATE_COST')}
+          secondary={t('land.ESTIMATE_PURCHASE_COST')}
         />
       </MenuItem>
 
@@ -161,11 +161,11 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
               <CloseIcon color="disabled" />
             </ListItemIcon>
             <ListItemText
-              primary={t('PURCHASE_UNAVAILABLE')}
+              primary={t('land.PURCHASE_UNAVAILABLE')}
               secondary={
                 tile.isOwned 
-                  ? t('ALREADY_OWNED_BY_TEAM')
-                  : t('NOT_AVAILABLE_FOR_PURCHASE')
+                  ? t('land.ALREADY_OWNED_BY_TEAM')
+                  : t('land.NOT_AVAILABLE_FOR_PURCHASE')
               }
             />
           </MenuItem>

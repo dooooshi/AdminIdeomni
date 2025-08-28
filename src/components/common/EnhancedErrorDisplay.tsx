@@ -69,7 +69,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
   onClose,
   context
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopyError = async () => {
@@ -99,7 +99,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={1}>
             <BugReportIcon color="error" />
-            <Typography variant="h6">{t('ERROR_REPORT')}</Typography>
+            <Typography variant="h6">{t('activityManagement.ERROR_REPORT')}</Typography>
           </Box>
           <IconButton onClick={onClose} size="small">
             <CloseIcon />
@@ -109,7 +109,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
       <DialogContent>
         <Stack spacing={2}>
           <Alert severity="info">
-            {t('HELP_IMPROVE')}
+            {t('activityManagement.HELP_IMPROVE')}
           </Alert>
           
           <Paper variant="outlined" sx={{ p: 2 }}>
@@ -124,14 +124,14 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary={t('ERROR_CODE')}
+                  primary={t('activityManagement.ERROR_CODE')}
                   secondary={error.code}
                 />
               </ListItem>
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary={t('TIMESTAMP')}
+                  primary={t('activityManagement.TIMESTAMP')}
                   secondary={format(error.timestamp, 'yyyy-MM-dd HH:mm:ss')}
                 />
               </ListItem>
@@ -139,7 +139,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
                 <ListItem>
                   <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                   <ListItemText
-                    primary={t('ERROR_CONTEXT')}
+                    primary={t('activityManagement.ERROR_CONTEXT')}
                     secondary={context}
                   />
                 </ListItem>
@@ -147,14 +147,14 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary={t('USER_MESSAGE')}
+                  primary={t('activityManagement.USER_MESSAGE')}
                   secondary={error.userMessage}
                 />
               </ListItem>
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary={t('TECHNICAL_MESSAGE')}
+                  primary={t('activityManagement.TECHNICAL_MESSAGE')}
                   secondary={error.message}
                 />
               </ListItem>
@@ -164,7 +164,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
           {error.details && Object.keys(error.details).length > 0 && (
             <Paper variant="outlined" sx={{ p: 2 }}>
               <Typography variant="subtitle2" gutterBottom>
-                {t('ADDITIONAL_DETAILS')}
+                {t('activityManagement.ADDITIONAL_DETAILS')}
               </Typography>
               <Box component="pre" sx={{ 
                 fontSize: '0.8rem', 
@@ -187,9 +187,9 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
           onClick={handleCopyError}
           color={copied ? 'success' : 'primary'}
         >
-          {copied ? t('ERROR_COPIED') : t('COPY_ERROR_REPORT')}
+          {copied ? t('activityManagement.ERROR_COPIED') : t('activityManagement.COPY_ERROR_REPORT')}
         </Button>
-        <Button onClick={onClose}>{t('CLOSE')}</Button>
+        <Button onClick={onClose}>{t('activityManagement.CLOSE')}</Button>
       </DialogActions>
     </Dialog>
   );
@@ -207,7 +207,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
   compact = false,
   context
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [showDetailedView, setShowDetailedView] = useState(showDetails);
   const [showReportDialog, setShowReportDialog] = useState(false);
@@ -271,7 +271,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
               onClick={onRetry}
               startIcon={<RefreshIcon />}
             >
-              {t('RETRY')}
+              {t('activityManagement.RETRY')}
             </Button>
           ) : undefined
         }
@@ -296,7 +296,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
             </Typography>
             <Stack direction="row" spacing={1}>
               <Chip 
-                label={`${t('ERROR_CODE')}: ${processedError.code}`} 
+                label={`${t('activityManagement.ERROR_CODE')}: ${processedError.code}`} 
                 size="small" 
                 variant="outlined"
                 color={severity === 'error' ? 'error' : 'default'}
@@ -318,7 +318,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
               onClick={onRetry}
               color={severity === 'error' ? 'error' : 'primary'}
             >
-              {t('TRY_AGAIN')}
+              {t('activityManagement.TRY_AGAIN')}
             </Button>
           )}
           
@@ -328,7 +328,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
             startIcon={showDetailedView ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             onClick={() => setShowDetailedView(!showDetailedView)}
           >
-            {showDetailedView ? t('HIDE_DETAILS') : t('SHOW_DETAILS')}
+            {showDetailedView ? t('activityManagement.HIDE_DETAILS') : t('activityManagement.SHOW_DETAILS')}
           </Button>
 
           <Button
@@ -337,7 +337,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
             startIcon={<BugReportIcon />}
             onClick={() => setShowReportDialog(true)}
           >
-            {t('REPORT_ISSUE')}
+            {t('activityManagement.REPORT_ISSUE')}
           </Button>
         </Stack>
       </Alert>
@@ -352,39 +352,39 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
           }}
         >
           <Typography variant="subtitle2" gutterBottom>
-            {t('TECHNICAL_DETAILS')}
+            {t('activityManagement.TECHNICAL_DETAILS')}
           </Typography>
           
           <List dense>
             <ListItem>
               <ListItemText
-                primary={t('ERROR_TYPE')}
+                primary={t('activityManagement.ERROR_TYPE')}
                 secondary={processedError.type}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary={t('ERROR_CODE')}
+                primary={t('activityManagement.ERROR_CODE')}
                 secondary={processedError.code}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary={t('TIMESTAMP')}
+                primary={t('activityManagement.TIMESTAMP')}
                 secondary={format(processedError.timestamp, 'MMM dd, yyyy HH:mm:ss')}
               />
             </ListItem>
             {context && (
               <ListItem>
                 <ListItemText
-                  primary={t('CONTEXT')}
+                  primary={t('activityManagement.CONTEXT')}
                   secondary={context}
                 />
               </ListItem>
             )}
             <ListItem>
               <ListItemText
-                primary={t('TECHNICAL_MESSAGE')}
+                primary={t('activityManagement.TECHNICAL_MESSAGE')}
                 secondary={processedError.message}
               />
             </ListItem>
@@ -394,7 +394,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
             <>
               <Divider sx={{ my: 1 }} />
               <Typography variant="body2" color="text.secondary">
-                {t('ADDITIONAL_DETAILS_AVAILABLE')}
+                {t('activityManagement.ADDITIONAL_DETAILS_AVAILABLE')}
               </Typography>
             </>
           )}

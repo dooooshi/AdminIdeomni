@@ -26,7 +26,7 @@ function UserMenu(props: UserMenuProps) {
 	const { user, isAuthenticated, userType } = useAuth();
 	const displayName = useUserDisplayName();
 	const { logout } = useLogout();
-	const { t } = useTranslation('common');
+	const { t } = useTranslation();
 	const [userMenu, setUserMenu] = useState<HTMLElement | null>(null);
 	const userMenuClick = (event: React.MouseEvent<HTMLElement>) => {
 		setUserMenu(event.currentTarget);
@@ -77,7 +77,7 @@ function UserMenu(props: UserMenuProps) {
 					<Tooltip
 						title={
 							<>
-								{userType === 'admin' ? t('ADMINISTRATOR') : userType === 'user' ? t('USER') : t('GUEST')}
+								{userType === 'admin' ? t('common.ADMINISTRATOR') : userType === 'user' ? t('common.USER') : t('common.GUEST')}
 							</>
 						}
 					>
@@ -123,7 +123,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:lock-closed</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary={t('SIGN_IN')} />
+							<ListItemText primary={t('common.SIGN_IN')} />
 						</MenuItem>
 						<MenuItem
 							component={Link}
@@ -133,7 +133,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:user-plus</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary={t('SIGN_UP')} />
+							<ListItemText primary={t('common.SIGN_UP')} />
 						</MenuItem>
 					</>
 				) : (
@@ -158,7 +158,7 @@ function UserMenu(props: UserMenuProps) {
 							<ListItemIcon className="min-w-9">
 								<IdeomniSvgIcon>heroicons-outline:arrow-right-on-rectangle</IdeomniSvgIcon>
 							</ListItemIcon>
-							<ListItemText primary={t('SIGN_OUT')} />
+							<ListItemText primary={t('common.SIGN_OUT')} />
 						</MenuItem>
 					</>
 				)}

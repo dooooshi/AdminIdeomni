@@ -36,7 +36,7 @@ import { TeamResourceType, HistoryFilterState } from '@/types/teamTransfer';
  * Dedicated page for viewing transfer operations with directional filtering
  */
 function TransferHistoryPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { data: teamAccount, isLoading, error } = useGetCurrentUserTeamAccountQuery();
   
@@ -97,17 +97,17 @@ function TransferHistoryPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -133,11 +133,11 @@ function TransferHistoryPage() {
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BACK')}
+                {t('teamManagement.BACK')}
               </Button>
             </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:TRANSFER_HISTORY')}
+              {t('teamManagement.TRANSFER_HISTORY')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
               View all resource transfers sent and received by your team
@@ -147,34 +147,34 @@ function TransferHistoryPage() {
           {/* Filters */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:FILTER_OPERATIONS')}
+              {t('teamManagement.FILTER_OPERATIONS')}
             </Typography>
               <Grid component="div" container spacing={3}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('teamManagement:TRANSFER_DIRECTION')}</InputLabel>
+                    <InputLabel>{t('teamManagement.TRANSFER_DIRECTION')}</InputLabel>
                     <Select
                       value={filters.direction}
-                      label={t('teamManagement:TRANSFER_DIRECTION')}
+                      label={t('teamManagement.TRANSFER_DIRECTION')}
                       onChange={(e) => handleFilterChange('direction', e.target.value)}
                     >
-                      <MenuItem value="all">{t('teamManagement:ALL_DIRECTIONS')}</MenuItem>
-                      <MenuItem value="incoming">{t('teamManagement:INCOMING')}</MenuItem>
-                      <MenuItem value="outgoing">{t('teamManagement:OUTGOING')}</MenuItem>
+                      <MenuItem value="all">{t('teamManagement.ALL_DIRECTIONS')}</MenuItem>
+                      <MenuItem value="incoming">{t('teamManagement.INCOMING')}</MenuItem>
+                      <MenuItem value="outgoing">{t('teamManagement.OUTGOING')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
                   <FormControl fullWidth>
-                    <InputLabel>{t('teamManagement:RESOURCE_TYPE')}</InputLabel>
+                    <InputLabel>{t('teamManagement.RESOURCE_TYPE')}</InputLabel>
                     <Select
                       value={filters.resourceType}
-                      label={t('teamManagement:RESOURCE_TYPE')}
+                      label={t('teamManagement.RESOURCE_TYPE')}
                       onChange={(e) => handleFilterChange('resourceType', e.target.value)}
                     >
-                      <MenuItem value="all">{t('teamManagement:ALL_RESOURCES')}</MenuItem>
-                      <MenuItem value={TeamResourceType.GOLD}>{t('teamManagement:GOLD')}</MenuItem>
-                      <MenuItem value={TeamResourceType.CARBON}>{t('teamManagement:CARBON')}</MenuItem>
+                      <MenuItem value="all">{t('teamManagement.ALL_RESOURCES')}</MenuItem>
+                      <MenuItem value={TeamResourceType.GOLD}>{t('teamManagement.GOLD')}</MenuItem>
+                      <MenuItem value={TeamResourceType.CARBON}>{t('teamManagement.CARBON')}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -182,7 +182,7 @@ function TransferHistoryPage() {
                   <TextField
                     fullWidth
                     type="date"
-                    label={t('teamManagement:FROM_DATE')}
+                    label={t('teamManagement.FROM_DATE')}
                     value={filters.startDate}
                     onChange={(e) => handleFilterChange('startDate', e.target.value)}
                     InputLabelProps={{ shrink: true }}
@@ -192,7 +192,7 @@ function TransferHistoryPage() {
                   <TextField
                     fullWidth
                     type="date"
-                    label={t('teamManagement:TO_DATE')}
+                    label={t('teamManagement.TO_DATE')}
                     value={filters.endDate}
                     onChange={(e) => handleFilterChange('endDate', e.target.value)}
                     InputLabelProps={{ shrink: true }}
@@ -206,7 +206,7 @@ function TransferHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
               >
-                {t('teamManagement:CLEAR_FILTERS')}
+                {t('teamManagement.CLEAR_FILTERS')}
               </Button>
               <Button
                 variant="outlined"
@@ -214,7 +214,7 @@ function TransferHistoryPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
               >
-                {t('teamManagement:APPLY_FILTERS')}
+                {t('teamManagement.APPLY_FILTERS')}
               </Button>
             </div>
           </Paper>
@@ -227,7 +227,7 @@ function TransferHistoryPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                        {t('teamManagement:TOTAL_TRANSFERS')}
+                        {t('teamManagement.TOTAL_TRANSFERS')}
                       </Typography>
                       <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                         {transfersData.total}
@@ -246,7 +246,7 @@ function TransferHistoryPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                        {t('teamManagement:INCOMING')}
+                        {t('teamManagement.INCOMING')}
                       </Typography>
                       <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                         {transfersData.data.filter(t => t.operationType === 'TRANSFER_IN').length}
@@ -265,7 +265,7 @@ function TransferHistoryPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                        {t('teamManagement:OUTGOING')}
+                        {t('teamManagement.OUTGOING')}
                       </Typography>
                       <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                         {transfersData.data.filter(t => t.operationType === 'TRANSFER_OUT').length}
@@ -288,13 +288,13 @@ function TransferHistoryPage() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('teamManagement:DATE')}</TableCell>
-                      <TableCell>{t('teamManagement:DIRECTION')}</TableCell>
-                      <TableCell>{t('teamManagement:PARTNER_TEAM')}</TableCell>
-                      <TableCell>{t('teamManagement:RESOURCE')}</TableCell>
-                      <TableCell>{t('teamManagement:AMOUNT')}</TableCell>
-                      <TableCell>{t('teamManagement:DESCRIPTION')}</TableCell>
-                      <TableCell>{t('teamManagement:USER')}</TableCell>
+                      <TableCell>{t('teamManagement.DATE')}</TableCell>
+                      <TableCell>{t('teamManagement.DIRECTION')}</TableCell>
+                      <TableCell>{t('teamManagement.PARTNER_TEAM')}</TableCell>
+                      <TableCell>{t('teamManagement.RESOURCE')}</TableCell>
+                      <TableCell>{t('teamManagement.AMOUNT')}</TableCell>
+                      <TableCell>{t('teamManagement.DESCRIPTION')}</TableCell>
+                      <TableCell>{t('teamManagement.USER')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -318,7 +318,7 @@ function TransferHistoryPage() {
                           <TableCell>
                             <Chip
                               size="small"
-                              label={transfer.operationType === 'TRANSFER_OUT' ? t('teamManagement:OUTGOING') : t('teamManagement:INCOMING')}
+                              label={transfer.operationType === 'TRANSFER_OUT' ? t('teamManagement.OUTGOING') : t('teamManagement.INCOMING')}
                               color={transfer.operationType === 'TRANSFER_OUT' ? 'error' : 'success'}
                               icon={
                                 <IdeomniSvgIcon size={16}>
@@ -396,7 +396,7 @@ function TransferHistoryPage() {
                             </IdeomniSvgIcon>
                           </div>
                           <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
-                            {t('teamManagement:NO_TRANSFERS_FOUND')}
+                            {t('teamManagement.NO_TRANSFERS_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             Try adjusting your filters or make your first transfer
@@ -413,7 +413,7 @@ function TransferHistoryPage() {
                 <Box className="p-6 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement:TO')} {Math.min(page * pageSize, transfersData.total)} {t('teamManagement:OF')} {transfersData.total} {t('teamManagement:ENTRIES')}
+                      {t('teamManagement.SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement.TO')} {Math.min(page * pageSize, transfersData.total)} {t('teamManagement.OF')} {transfersData.total} {t('teamManagement.ENTRIES')}
                     </Typography>
                     <Pagination
                       count={transfersData.totalPages}
@@ -429,7 +429,7 @@ function TransferHistoryPage() {
           {/* Quick Actions */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:QUICK_ACTIONS')}
+              {t('teamManagement.QUICK_ACTIONS')}
             </Typography>
             <div className="flex gap-4 flex-wrap">
               <Button
@@ -438,7 +438,7 @@ function TransferHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
               >
-                {t('teamManagement:ALL_OPERATIONS')}
+                {t('teamManagement.ALL_OPERATIONS')}
               </Button>
               <Button
                 variant="outlined"
@@ -446,7 +446,7 @@ function TransferHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BALANCE_HISTORY')}
+                {t('teamManagement.BALANCE_HISTORY')}
               </Button>
               <Button
                 variant="outlined"
@@ -454,7 +454,7 @@ function TransferHistoryPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
               >
-                {t('teamManagement:TRANSFER_RESOURCES')}
+                {t('teamManagement.TRANSFER_RESOURCES')}
               </Button>
             </div>
           </Paper>

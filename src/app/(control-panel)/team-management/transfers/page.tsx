@@ -23,7 +23,7 @@ import { TeamResourceType } from '@/types/teamTransfer';
  * Main hub for all resource transfer operations
  */
 function TransferHubPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { data: teamAccount, isLoading, error } = useGetCurrentUserTeamAccountQuery();
   const { data: recentTransfers } = useGetTransferHistoryQuery({ 
@@ -52,17 +52,17 @@ function TransferHubPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -82,22 +82,22 @@ function TransferHubPage() {
           {/* Header */}
           <div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:RESOURCE_TRANSFERS')}
+              {t('teamManagement.RESOURCE_TRANSFERS')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('teamManagement:SEND_RESOURCES_SUBTITLE')}
+              {t('teamManagement.SEND_RESOURCES_SUBTITLE')}
             </Typography>
           </div>
 
           {/* Current Balance Card */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:CURRENT_BALANCE')}
+              {t('teamManagement.CURRENT_BALANCE')}
             </Typography>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:GOLD')}
+                  {t('teamManagement.GOLD')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
@@ -105,7 +105,7 @@ function TransferHubPage() {
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:CARBON')}
+                  {t('teamManagement.CARBON')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
@@ -117,7 +117,7 @@ function TransferHubPage() {
           {/* Transfer Options */}
           <div>
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:SELECT_TRANSFER_TYPE')}
+              {t('teamManagement.SELECT_TRANSFER_TYPE')}
             </Typography>
             <Grid component="div" container spacing={6}>
               {/* Gold Transfer Card */}
@@ -131,14 +131,14 @@ function TransferHubPage() {
                         </IdeomniSvgIcon>
                       </div>
                       <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                        {t('teamManagement:GOLD_TRANSFERS')}
+                        {t('teamManagement.GOLD_TRANSFERS')}
                       </Typography>
                     </div>
                     <Typography color="text.secondary" className="mb-6 leading-relaxed">
-                      {t('teamManagement:TRANSFER_GOLD_SUBTITLE')}
+                      {t('teamManagement.TRANSFER_GOLD_SUBTITLE')}
                     </Typography>
                     <Typography variant="body2" className="mb-2">
-                      <span className="font-medium">{t('teamManagement:AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
                     </Typography>
                   </CardContent>
                   <CardActions className="p-8 pt-0">
@@ -150,7 +150,7 @@ function TransferHubPage() {
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:TRANSFER_GOLD')}
+                      {t('teamManagement.TRANSFER_GOLD')}
                     </Button>
                   </CardActions>
                 </Card>
@@ -167,14 +167,14 @@ function TransferHubPage() {
                         </IdeomniSvgIcon>
                       </div>
                       <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                        {t('teamManagement:CARBON_TRANSFERS')}
+                        {t('teamManagement.CARBON_TRANSFERS')}
                       </Typography>
                     </div>
                     <Typography color="text.secondary" className="mb-6 leading-relaxed">
-                      {t('teamManagement:TRANSFER_CARBON_SUBTITLE')}
+                      {t('teamManagement.TRANSFER_CARBON_SUBTITLE')}
                     </Typography>
                     <Typography variant="body2" className="mb-2">
-                      <span className="font-medium">{t('teamManagement:AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
                     </Typography>
                   </CardContent>
                   <CardActions className="p-8 pt-0">
@@ -186,7 +186,7 @@ function TransferHubPage() {
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
                     >
-                      {t('teamManagement:TRANSFER_CARBON')}
+                      {t('teamManagement.TRANSFER_CARBON')}
                     </Button>
                   </CardActions>
                 </Card>
@@ -199,7 +199,7 @@ function TransferHubPage() {
             <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
               <div className="flex items-center justify-between mb-6">
                 <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-                  {t('teamManagement:RECENT_TRANSFERS')}
+                  {t('teamManagement.RECENT_TRANSFERS')}
                 </Typography>
                 <Button
                   variant="text"
@@ -208,7 +208,7 @@ function TransferHubPage() {
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   endIcon={<IdeomniSvgIcon>heroicons-outline:arrow-right</IdeomniSvgIcon>}
                 >
-                  {t('teamManagement:VIEW_HISTORY')}
+                  {t('teamManagement.VIEW_HISTORY')}
                 </Button>
               </div>
               <div className="space-y-2">
@@ -229,8 +229,8 @@ function TransferHubPage() {
                       <div>
                         <Typography variant="body2" className="font-medium text-gray-900 dark:text-white">
                           {transfer.operationType === 'TRANSFER_OUT' 
-                            ? `${t('teamManagement:TO')} ${transfer.targetTeam?.name || t('common:UNKNOWN_TEAM')}`
-                            : `${t('teamManagement:FROM')} ${transfer.sourceTeam?.name || t('common:UNKNOWN_TEAM')}`
+                            ? `${t('teamManagement.TO')} ${transfer.targetTeam?.name || t('common.UNKNOWN_TEAM')}`
+                            : `${t('teamManagement.FROM')} ${transfer.sourceTeam?.name || t('common.UNKNOWN_TEAM')}`
                           }
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
@@ -256,7 +256,7 @@ function TransferHubPage() {
           {/* Quick Actions */}
           <div>
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:QUICK_ACTIONS')}
+              {t('teamManagement.QUICK_ACTIONS')}
             </Typography>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Button
@@ -266,7 +266,7 @@ function TransferHubPage() {
                 startIcon={<IdeomniSvgIcon>heroicons-outline:clock</IdeomniSvgIcon>}
               >
                 <div className="text-left">
-                  <div className="font-medium">{t('teamManagement:VIEW_ACCOUNT_HISTORY')}</div>
+                  <div className="font-medium">{t('teamManagement.VIEW_ACCOUNT_HISTORY')}</div>
                 </div>
               </Button>
               <Button
@@ -276,7 +276,7 @@ function TransferHubPage() {
                 startIcon={<IdeomniSvgIcon>heroicons-outline:home</IdeomniSvgIcon>}
               >
                 <div className="text-left">
-                  <div className="font-medium">{t('teamManagement:TEAM_DASHBOARD')}</div>
+                  <div className="font-medium">{t('teamManagement.TEAM_DASHBOARD')}</div>
                 </div>
               </Button>
               <Button
@@ -286,7 +286,7 @@ function TransferHubPage() {
                 startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
               >
                 <div className="text-left">
-                  <div className="font-medium">{t('teamManagement:BROWSE_OTHER_TEAMS')}</div>
+                  <div className="font-medium">{t('teamManagement.BROWSE_OTHER_TEAMS')}</div>
                 </div>
               </Button>
             </div>

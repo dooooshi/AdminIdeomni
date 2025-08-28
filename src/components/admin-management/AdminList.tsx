@@ -67,7 +67,7 @@ const AdminList: React.FC<AdminListProps> = ({
   onEditAdmin,
   onViewLogs,
 }) => {
-  const { t } = useTranslation('adminManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [adminData, setAdminData] = useState<AdminSearchResponseDto | null>(null);
   const [loading, setLoading] = useState(true);
@@ -112,7 +112,7 @@ const AdminList: React.FC<AdminListProps> = ({
       const data = await AdminService.getAdminList(requestParams);
       setAdminData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('ADMIN_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('adminManagement.ADMIN_LOAD_ERROR'));
       setAdminData(null);
     } finally {
       setLoading(false);
@@ -188,7 +188,7 @@ const AdminList: React.FC<AdminListProps> = ({
       setDeleteDialogOpen(false);
       setAdminToDelete(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('ADMIN_DELETE_ERROR'));
+      setError(err instanceof Error ? err.message : t('adminManagement.ADMIN_DELETE_ERROR'));
     } finally {
       setDeleting(false);
     }
@@ -214,17 +214,17 @@ const AdminList: React.FC<AdminListProps> = ({
   const getAdminTypeName = (admin: Admin) => {
     // Handle both new role field and legacy adminType field
     if (admin.adminType !== undefined) {
-      return admin.adminType === 1 ? t('SUPER_ADMIN') : t('LIMITED_ADMIN');
+      return admin.adminType === 1 ? t('adminManagement.SUPER_ADMIN') : t('adminManagement.LIMITED_ADMIN');
     }
-    return admin.role === 'super_admin' ? t('SUPER_ADMIN') : t('LIMITED_ADMIN');
+    return admin.role === 'super_admin' ? t('adminManagement.SUPER_ADMIN') : t('adminManagement.LIMITED_ADMIN');
   };
 
   const getStatusName = (admin: Admin) => {
     // Handle both new status field and legacy isActive field
     if (admin.isActive !== undefined) {
-      return admin.isActive ? t('ACTIVE') : t('INACTIVE');
+      return admin.isActive ? t('adminManagement.ACTIVE') : t('adminManagement.INACTIVE');
     }
-    return admin.status === 'active' ? t('ACTIVE') : t('INACTIVE');
+    return admin.status === 'active' ? t('adminManagement.ACTIVE') : t('adminManagement.INACTIVE');
   };
 
   const formatDate = (dateString: string) => {
@@ -264,7 +264,7 @@ const AdminList: React.FC<AdminListProps> = ({
         <CardContent sx={{ textAlign: 'center', py: 8 }}>
           <CircularProgress />
           <Typography variant="h6" sx={{ mt: 2 }}>
-            {t('LOADING_ADMINS')}
+            {t('adminManagement.LOADING_ADMINS')}
           </Typography>
         </CardContent>
       </Card>
@@ -276,14 +276,14 @@ const AdminList: React.FC<AdminListProps> = ({
       {/* Header */}
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h5" component="h2">
-          {t('ADMIN_MANAGEMENT')}
+          {t('adminManagement.ADMIN_MANAGEMENT')}
         </Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={onCreateAdmin}
         >
-          {t('CREATE_ADMIN')}
+          {t('adminManagement.CREATE_ADMIN')}
         </Button>
       </Box>
 
@@ -299,7 +299,7 @@ const AdminList: React.FC<AdminListProps> = ({
         <CardContent>
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
             <TextField
-              placeholder={t('SEARCH_PLACEHOLDER')}
+              placeholder={t('adminManagement.SEARCH_PLACEHOLDER')}
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               InputProps={{
@@ -310,28 +310,28 @@ const AdminList: React.FC<AdminListProps> = ({
             />
             
             <FormControl size="small" sx={{ minWidth: 170 }}>
-              <InputLabel>{t('FILTER_BY_ROLE')}</InputLabel>
+              <InputLabel>{t('adminManagement.FILTER_BY_ROLE')}</InputLabel>
               <Select
                 value={filters.role}
-                label={t('FILTER_BY_ROLE')}
+                label={t('adminManagement.FILTER_BY_ROLE')}
                 onChange={(e) => handleFilterChange('role', e.target.value)}
               >
-                <MenuItem value="">{t('ALL_ROLES')}</MenuItem>
-                <MenuItem value="super_admin">{t('SUPER_ADMIN')}</MenuItem>
-                <MenuItem value="admin">{t('LIMITED_ADMIN')}</MenuItem>
+                <MenuItem value="">{t('adminManagement.ALL_ROLES')}</MenuItem>
+                <MenuItem value="super_admin">{t('adminManagement.SUPER_ADMIN')}</MenuItem>
+                <MenuItem value="admin">{t('adminManagement.LIMITED_ADMIN')}</MenuItem>
               </Select>
             </FormControl>
 
             <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel>{t('FILTER_BY_STATUS')}</InputLabel>
+              <InputLabel>{t('adminManagement.FILTER_BY_STATUS')}</InputLabel>
               <Select
                 value={filters.status}
-                label={t('FILTER_BY_STATUS')}
+                label={t('adminManagement.FILTER_BY_STATUS')}
                 onChange={(e) => handleFilterChange('status', e.target.value)}
               >
-                <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
-                <MenuItem value="active">{t('ACTIVE')}</MenuItem>
-                <MenuItem value="inactive">{t('INACTIVE')}</MenuItem>
+                <MenuItem value="">{t('adminManagement.ALL_STATUSES')}</MenuItem>
+                <MenuItem value="active">{t('adminManagement.ACTIVE')}</MenuItem>
+                <MenuItem value="inactive">{t('adminManagement.INACTIVE')}</MenuItem>
               </Select>
             </FormControl>
 
@@ -342,7 +342,7 @@ const AdminList: React.FC<AdminListProps> = ({
               size="small"
               disabled={loading}
             >
-              {loading ? <CircularProgress size={20} /> : t('REFRESH_DATA')}
+              {loading ? <CircularProgress size={20} /> : t('adminManagement.REFRESH_DATA')}
             </Button>
           </Stack>
         </CardContent>
@@ -353,23 +353,23 @@ const AdminList: React.FC<AdminListProps> = ({
         <Stack direction="row" spacing={2} flexWrap="wrap">
           <Chip
             icon={<PersonIcon />}
-            label={`${stats.total} ${t('TOTAL_ADMINS')}`}
+            label={`${stats.total} ${t('adminManagement.TOTAL_ADMINS')}`}
             variant="outlined"
           />
           <Chip
             icon={<ShieldIcon />}
-            label={`${stats.superAdmins} ${t('SUPER_ADMINS')}`}
+            label={`${stats.superAdmins} ${t('adminManagement.SUPER_ADMINS')}`}
             color="error"
             variant="outlined"
           />
           <Chip
             icon={<PersonIcon />}
-            label={`${stats.limitedAdmins} ${t('LIMITED_ADMINS')}`}
+            label={`${stats.limitedAdmins} ${t('adminManagement.LIMITED_ADMINS')}`}
             color="primary"
             variant="outlined"
           />
           <Chip
-            label={`${stats.active} ${t('ACTIVE_ADMINS')}`}
+            label={`${stats.active} ${t('adminManagement.ACTIVE_ADMINS')}`}
             color="success"
             variant="outlined"
           />
@@ -387,22 +387,22 @@ const AdminList: React.FC<AdminListProps> = ({
                   direction={filters.sortBy === 'username' ? filters.sortOrder : 'asc'}
                   onClick={() => handleSortChange('username')}
                 >
-                  {t('ADMIN')}
+                  {t('adminManagement.ADMIN')}
                 </TableSortLabel>
               </TableCell>
-              <TableCell>{t('ADMIN_TYPE')}</TableCell>
-              <TableCell>{t('STATUS')}</TableCell>
-              <TableCell>{t('LAST_LOGIN')}</TableCell>
+              <TableCell>{t('adminManagement.ADMIN_TYPE')}</TableCell>
+              <TableCell>{t('adminManagement.STATUS')}</TableCell>
+              <TableCell>{t('adminManagement.LAST_LOGIN')}</TableCell>
               <TableCell>
                 <TableSortLabel
                   active={filters.sortBy === 'createdAt'}
                   direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
                   onClick={() => handleSortChange('createdAt')}
                 >
-                  {t('CREATED_AT')}
+                  {t('adminManagement.CREATED_AT')}
                 </TableSortLabel>
               </TableCell>
-              <TableCell align="center">{t('ACTIONS')}</TableCell>
+              <TableCell align="center">{t('adminManagement.ACTIONS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -417,8 +417,8 @@ const AdminList: React.FC<AdminListProps> = ({
                 <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
                   <Typography variant="body1" color="text.secondary">
                     {filters.search || filters.role || filters.status
-                      ? t('NO_ADMINS_FOUND')
-                      : t('NO_ADMINS_FOUND')}
+                      ? t('adminManagement.NO_ADMINS_FOUND')
+                      : t('adminManagement.NO_ADMINS_FOUND')}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -463,7 +463,7 @@ const AdminList: React.FC<AdminListProps> = ({
                     <Typography variant="body2">
                       {admin.lastLoginAt 
                         ? formatDate(admin.lastLoginAt)
-                        : t('NEVER')}
+                        : t('adminManagement.NEVER')}
                     </Typography>
                   </TableCell>
                   
@@ -475,7 +475,7 @@ const AdminList: React.FC<AdminListProps> = ({
                   
                   <TableCell align="center">
                     <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                      <Tooltip title={t('VIEW_LOGS')}>
+                      <Tooltip title={t('adminManagement.VIEW_LOGS')}>
                         <IconButton
                           size="small"
                           onClick={() => onViewLogs(admin)}
@@ -485,7 +485,7 @@ const AdminList: React.FC<AdminListProps> = ({
                         </IconButton>
                       </Tooltip>
                       
-                      <Tooltip title={t('EDIT_ADMIN')}>
+                      <Tooltip title={t('adminManagement.EDIT_ADMIN')}>
                         <IconButton
                           size="small"
                           onClick={() => onEditAdmin(admin)}
@@ -495,7 +495,7 @@ const AdminList: React.FC<AdminListProps> = ({
                         </IconButton>
                       </Tooltip>
                       
-                      <Tooltip title={t('DELETE_ADMIN')}>
+                      <Tooltip title={t('adminManagement.DELETE_ADMIN')}>
                         <IconButton
                           size="small"
                           onClick={() => handleDeleteClick(admin)}
@@ -527,10 +527,10 @@ const AdminList: React.FC<AdminListProps> = ({
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel} maxWidth="sm" fullWidth>
-        <DialogTitle>{t('DELETE_ADMIN_TITLE')}</DialogTitle>
+        <DialogTitle>{t('adminManagement.DELETE_ADMIN_TITLE')}</DialogTitle>
         <DialogContent>
           <Typography variant="body1" gutterBottom>
-            {t('DELETE_ADMIN_MESSAGE')}
+            {t('adminManagement.DELETE_ADMIN_MESSAGE')}
           </Typography>
           {adminToDelete && (
             <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.100', borderRadius: 1 }}>
@@ -544,12 +544,12 @@ const AdminList: React.FC<AdminListProps> = ({
             </Box>
           )}
           <Alert severity="warning" sx={{ mt: 2 }}>
-            {t('DELETE_ADMIN_WARNING')}
+            {t('adminManagement.DELETE_ADMIN_WARNING')}
           </Alert>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCancel} disabled={deleting}>
-            {t('DELETE_ADMIN_CANCEL')}
+            {t('adminManagement.DELETE_ADMIN_CANCEL')}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
@@ -558,7 +558,7 @@ const AdminList: React.FC<AdminListProps> = ({
             disabled={deleting}
             startIcon={deleting ? <CircularProgress size={16} /> : <DeleteIcon />}
           >
-            {deleting ? t('LOADING') : t('DELETE_ADMIN_CONFIRM')}
+            {deleting ? t('adminManagement.LOADING') : t('adminManagement.DELETE_ADMIN_CONFIRM')}
           </Button>
         </DialogActions>
       </Dialog>

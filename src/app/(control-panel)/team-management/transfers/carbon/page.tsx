@@ -130,17 +130,17 @@ function CarbonTransferPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -159,10 +159,10 @@ function CarbonTransferPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:INSUFFICIENT_BALANCE_ERROR')}
+              {t('teamManagement.INSUFFICIENT_BALANCE_ERROR')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:NO_CARBON_TO_TRANSFER_MESSAGE', { balance: TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON) })}
+              {t('teamManagement.NO_CARBON_TO_TRANSFER_MESSAGE', { balance: TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON) })}
             </Typography>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
@@ -170,14 +170,14 @@ function CarbonTransferPage() {
                 onClick={() => router.push('/team-management/transfers')}
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
               >
-                {t('teamManagement:TRANSFER_HUB')}
+                {t('teamManagement.TRANSFER_HUB')}
               </Button>
               <Button
                 variant="outlined"
                 onClick={() => router.push('/team-management/dashboard')}
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
               >
-                {t('teamManagement:TEAM_DASHBOARD')}
+                {t('teamManagement.TEAM_DASHBOARD')}
               </Button>
             </div>
           </Paper>
@@ -211,14 +211,14 @@ function CarbonTransferPage() {
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BACK')}
+                {t('teamManagement.BACK')}
               </Button>
             </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:TRANSFER_CARBON_TO_TEAM')}
+              {t('teamManagement.TRANSFER_CARBON_TO_TEAM')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('teamManagement:TRANSFER_CARBON_SUBTITLE')}
+              {t('teamManagement.TRANSFER_CARBON_SUBTITLE')}
             </Typography>
           </div>
 
@@ -232,7 +232,7 @@ function CarbonTransferPage() {
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                  {t('teamManagement:AVAILABLE_BALANCE')}
+                  {t('teamManagement.AVAILABLE_BALANCE')}
                 </Typography>
                 <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1">
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
@@ -247,7 +247,7 @@ function CarbonTransferPage() {
               {/* Target Team Selection */}
               <div>
                 <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
-                  {t('teamManagement:SELECT_TARGET_TEAM')} <span className="text-red-500">*</span>
+                  {t('teamManagement.SELECT_TARGET_TEAM')} <span className="text-red-500">*</span>
                 </Typography>
                 <Autocomplete
                   options={Array.isArray(availableTeams) ? availableTeams : []}
@@ -260,11 +260,11 @@ function CarbonTransferPage() {
                       selectedTeamId: newValue?.id || null 
                     }));
                   }}
-                  noOptionsText={loadingTeams ? t('teamManagement:LOADING_TEAMS') : t('teamManagement:NO_TEAMS_AVAILABLE_FOR_TRANSFER')}
+                  noOptionsText={loadingTeams ? t('teamManagement.LOADING_TEAMS') : t('teamManagement.NO_TEAMS_AVAILABLE_FOR_TRANSFER')}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      placeholder={t('teamManagement:SELECT_TEAM_PLACEHOLDER')}
+                      placeholder={t('teamManagement.SELECT_TEAM_PLACEHOLDER')}
                       fullWidth
                       InputProps={{
                         ...params.InputProps,
@@ -290,7 +290,7 @@ function CarbonTransferPage() {
                             {team.name}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {team?.memberCount || 0}/{team?.maxMembers || 0} {t('teamManagement:MEMBERS')} • {team?.leader?.firstName ? `${team.leader.firstName} ${team.leader.lastName}` : team?.leader?.username || 'Unknown'}
+                            {team?.memberCount || 0}/{team?.maxMembers || 0} {t('teamManagement.MEMBERS')} • {team?.leader?.firstName ? `${team.leader.firstName} ${team.leader.lastName}` : team?.leader?.username || 'Unknown'}
                           </Typography>
                         </div>
                       </div>
@@ -303,11 +303,11 @@ function CarbonTransferPage() {
               {/* Amount Input */}
               <div>
                 <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
-                  {t('teamManagement:TRANSFER_AMOUNT')} <span className="text-red-500">*</span>
+                  {t('teamManagement.TRANSFER_AMOUNT')} <span className="text-red-500">*</span>
                 </Typography>
                 <TextField
                   fullWidth
-                  placeholder={t('teamManagement:AMOUNT_PLACEHOLDER')}
+                  placeholder={t('teamManagement.AMOUNT_PLACEHOLDER')}
                   value={formState.amount}
                   onChange={(e) => handleAmountChange(e.target.value)}
                   InputProps={{
@@ -317,27 +317,27 @@ function CarbonTransferPage() {
                       </IdeomniSvgIcon>
                     ),
                   }}
-                  helperText={`${t('teamManagement:AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}`}
+                  helperText={`${t('teamManagement.AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}`}
                 />
               </div>
 
               {/* Description */}
               <div>
                 <Typography variant="body1" className="mb-3 font-medium text-gray-900 dark:text-white">
-                  {t('teamManagement:TRANSFER_DESCRIPTION')}
+                  {t('teamManagement.TRANSFER_DESCRIPTION')}
                 </Typography>
                 <TextField
                   fullWidth
                   multiline
                   rows={3}
-                  placeholder={t('teamManagement:TRANSFER_DESCRIPTION_PLACEHOLDER')}
+                  placeholder={t('teamManagement.TRANSFER_DESCRIPTION_PLACEHOLDER')}
                   value={formState.description}
                   onChange={(e) => setFormState(prev => ({ 
                     ...prev, 
                     description: e.target.value 
                   }))}
                   inputProps={{ maxLength: 200 }}
-                  helperText={`${formState.description.length}/200 ${t('teamManagement:DESCRIPTION_CHAR_COUNT')}`}
+                  helperText={`${formState.description.length}/200 ${t('teamManagement.DESCRIPTION_CHAR_COUNT')}`}
                 />
               </div>
 
@@ -375,7 +375,7 @@ function CarbonTransferPage() {
                   onClick={() => router.push('/team-management/transfers')}
                   className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 >
-                  {t('teamManagement:CANCEL_TRANSFER')}
+                  {t('teamManagement.CANCEL_TRANSFER')}
                 </Button>
                 <Button
                   variant="outlined"
@@ -389,7 +389,7 @@ function CarbonTransferPage() {
                   className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                   startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
                 >
-                  {t('teamManagement:SEND_TRANSFER')}
+                  {t('teamManagement.SEND_TRANSFER')}
                 </Button>
               </div>
             </div>
@@ -405,18 +405,18 @@ function CarbonTransferPage() {
         fullWidth
       >
         <DialogTitle>
-          {t('teamManagement:TRANSFER_CONFIRMATION')}
+          {t('teamManagement.TRANSFER_CONFIRMATION')}
         </DialogTitle>
         <DialogContent>
           <Typography className="mb-4">
-            {t('teamManagement:REVIEW_TRANSFER_DETAILS')}
+            {t('teamManagement.REVIEW_TRANSFER_DETAILS')}
           </Typography>
           
           {confirmationData && (
             <div className="space-y-3">
               <div className="flex justify-between">
                 <Typography variant="body2" color="text.secondary">
-                  {t('teamManagement:TARGET_TEAM')}:
+                  {t('teamManagement.TARGET_TEAM')}:
                 </Typography>
                 <Typography variant="body2" className="font-medium">
                   {confirmationData.targetTeam?.name}
@@ -424,7 +424,7 @@ function CarbonTransferPage() {
               </div>
               <div className="flex justify-between">
                 <Typography variant="body2" color="text.secondary">
-                  {t('teamManagement:AMOUNT')}:
+                  {t('teamManagement.AMOUNT')}:
                 </Typography>
                 <Typography variant="body2" className="font-medium text-green-600">
                   {TeamTransferService.formatTransferAmount(confirmationData.amount, TeamResourceType.CARBON)}
@@ -433,7 +433,7 @@ function CarbonTransferPage() {
               {formState.description && (
                 <div className="flex justify-between">
                   <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:DESCRIPTION')}:
+                    {t('teamManagement.DESCRIPTION')}:
                   </Typography>
                   <Typography variant="body2" className="font-medium">
                     {formState.description}
@@ -443,7 +443,7 @@ function CarbonTransferPage() {
               <div className="border-t pt-3">
                 <div className="flex justify-between mb-1">
                   <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:CURRENT_BALANCE')}:
+                    {t('teamManagement.CURRENT_BALANCE')}:
                   </Typography>
                   <Typography variant="body2">
                     {TeamTransferService.formatTransferAmount(confirmationData.currentBalance, TeamResourceType.CARBON)}
@@ -451,7 +451,7 @@ function CarbonTransferPage() {
                 </div>
                 <div className="flex justify-between">
                   <Typography variant="body2" color="text.secondary">
-                    {t('teamManagement:BALANCE_AFTER_TRANSFER')}:
+                    {t('teamManagement.BALANCE_AFTER_TRANSFER')}:
                   </Typography>
                   <Typography variant="body2" className="font-medium">
                     {TeamTransferService.formatTransferAmount(confirmationData.balanceAfter, TeamResourceType.CARBON)}
@@ -466,14 +466,14 @@ function CarbonTransferPage() {
             onClick={() => setShowConfirmDialog(false)} 
             disabled={isTransferring}
           >
-            {t('teamManagement:CANCEL_TRANSFER')}
+            {t('teamManagement.CANCEL_TRANSFER')}
           </Button>
           <Button 
             onClick={handleConfirmTransfer} 
             variant="contained"
             disabled={isTransferring}
           >
-            {isTransferring ? t('teamManagement:SENDING_TRANSFER') : t('teamManagement:CONFIRM_TRANSFER')}
+            {isTransferring ? t('teamManagement.SENDING_TRANSFER') : t('teamManagement.CONFIRM_TRANSFER')}
           </Button>
         </DialogActions>
       </Dialog>

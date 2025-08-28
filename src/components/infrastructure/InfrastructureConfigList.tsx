@@ -32,7 +32,7 @@ import {
   Add as AddIcon,
   Refresh as RefreshIcon
 } from '@mui/icons-material';
-import { useInfrastructureTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import InfrastructureConfigService from '@/lib/services/infrastructureConfigService';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 import { InfrastructureConfig } from '@/types/infrastructure';
@@ -48,7 +48,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
   templateId,
   onConfigSelect
 }) => {
-  const { t } = useInfrastructureTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const [configs, setConfigs] = useState<InfrastructureConfig[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,7 +79,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
         setConfigs([]);
       } else {
         console.error('Failed to load infrastructure configs:', error);
-        setError(t('FAILED_TO_LOAD_CONFIGS'));
+        setError(t('infrastructure.FAILED_TO_LOAD_CONFIGS'));
       }
     } finally {
       setIsLoading(false);
@@ -107,7 +107,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
       loadConfigs();
     } catch (error) {
       console.error('Failed to delete config:', error);
-      setError(t('FAILED_TO_DELETE_CONFIG'));
+      setError(t('infrastructure.FAILED_TO_DELETE_CONFIG'));
     }
   };
 
@@ -118,7 +118,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
       loadConfigs();
     } catch (error) {
       console.error('Failed to apply defaults:', error);
-      setError(t('FAILED_TO_APPLY_DEFAULTS'));
+      setError(t('infrastructure.FAILED_TO_APPLY_DEFAULTS'));
     }
   };
 
@@ -160,7 +160,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
           }}
           title={
             <Typography variant="h6" fontWeight={500}>
-              {templateId ? t('INFRASTRUCTURE_CONFIG') : t('ALL_INFRASTRUCTURE_CONFIGS')}
+              {templateId ? t('infrastructure.INFRASTRUCTURE_CONFIG') : t('infrastructure.ALL_INFRASTRUCTURE_CONFIGS')}
             </Typography>
           }
           action={
@@ -174,10 +174,10 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                       onChange={(e) => setIncludeDeleted(e.target.checked)}
                     />
                   }
-                  label={<Typography variant="body2">{t('SHOW_DELETED')}</Typography>}
+                  label={<Typography variant="body2">{t('infrastructure.SHOW_DELETED')}</Typography>}
                 />
               )}
-              <Tooltip title={t('REFRESH')}>
+              <Tooltip title={t('infrastructure.REFRESH')}>
                 <IconButton size="small" onClick={loadConfigs}>
                   <RefreshIcon fontSize="small" />
                 </IconButton>
@@ -189,7 +189,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                   startIcon={<AddIcon />}
                   onClick={() => handleApplyDefaults(templateId)}
                 >
-                  {t('CREATE_CONFIG')}
+                  {t('infrastructure.CREATE_CONFIG')}
                 </Button>
               )}
             </Box>
@@ -206,10 +206,10 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
           {configs.length === 0 ? (
             <Box textAlign="center" py={8}>
               <Typography variant="h6" color="text.secondary" gutterBottom>
-                {t('NO_CONFIGS_FOUND')}
+                {t('infrastructure.NO_CONFIGS_FOUND')}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                {t('NO_CONFIGS_DESCRIPTION')}
+                {t('infrastructure.NO_CONFIGS_DESCRIPTION')}
               </Typography>
               {templateId && (
                 <Button
@@ -218,7 +218,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                   startIcon={<AddIcon />}
                   onClick={() => handleApplyDefaults(templateId)}
                 >
-                  {t('CREATE_DEFAULT_CONFIG')}
+                  {t('infrastructure.CREATE_DEFAULT_CONFIG')}
                 </Button>
               )}
             </Box>
@@ -231,13 +231,13 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                       backgroundImage: `linear-gradient(180deg, ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.05 : 0.10)}, transparent)`
                     }}
                   >
-                    {!templateId && <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('TEMPLATE')}</TableCell>}
-                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('WATER_RESOURCES')}</TableCell>
-                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('ELECTRICITY_RESOURCES')}</TableCell>
-                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('OPERATION_POINTS')}</TableCell>
-                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('BASE_COSTS')}</TableCell>
-                    <TableCell align="center" sx={{ fontWeight: 500, py: 2 }}>{t('STATUS')}</TableCell>
-                    <TableCell align="right" sx={{ fontWeight: 500, py: 2 }}>{t('ACTIONS')}</TableCell>
+                    {!templateId && <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.TEMPLATE')}</TableCell>}
+                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.WATER_RESOURCES')}</TableCell>
+                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.ELECTRICITY_RESOURCES')}</TableCell>
+                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.OPERATION_POINTS')}</TableCell>
+                    <TableCell sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.BASE_COSTS')}</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell align="right" sx={{ fontWeight: 500, py: 2 }}>{t('infrastructure.ACTIONS')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -264,7 +264,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                           </Typography>
                           {config.template?.isDefault && (
                             <Typography variant="caption" color="primary">
-                              {t('DEFAULT')}
+                              {t('infrastructure.DEFAULT')}
                             </Typography>
                           )}
                         </TableCell>
@@ -306,10 +306,10 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                       <TableCell>
                         <Box>
                           <Typography variant="body2">
-                            {t('BASE')}: {formatValue(config.baseStationBaseCost, 'currency')}
+                            {t('infrastructure.BASE')}: {formatValue(config.baseStationBaseCost, 'currency')}
                           </Typography>
                           <Typography variant="body2">
-                            {t('FIRE')}: {formatValue(config.fireStationBaseCost, 'currency')}
+                            {t('infrastructure.FIRE')}: {formatValue(config.fireStationBaseCost, 'currency')}
                           </Typography>
                         </Box>
                       </TableCell>
@@ -323,13 +323,13 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                             'text.secondary'
                           }
                         >
-                          {config.deletedAt ? t('DELETED') : config.isActive ? t('ACTIVE') : t('INACTIVE')}
+                          {config.deletedAt ? t('infrastructure.DELETED') : config.isActive ? t('infrastructure.ACTIVE') : t('infrastructure.INACTIVE')}
                         </Typography>
                       </TableCell>
                       
                       <TableCell align="right">
                         <Box display="flex" justifyContent="flex-end" gap={0.5}>
-                          <Tooltip title={t('EDIT')}>
+                          <Tooltip title={t('infrastructure.EDIT')}>
                             <IconButton
                               size="small"
                               onClick={(e) => {
@@ -341,7 +341,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
                               <EditIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title={t('DELETE')}>
+                          <Tooltip title={t('infrastructure.DELETE')}>
                             <IconButton
                               size="small"
                               onClick={(e) => {
@@ -371,7 +371,7 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>{t('EDIT_INFRASTRUCTURE_CONFIG')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.EDIT_INFRASTRUCTURE_CONFIG')}</DialogTitle>
         <DialogContent>
           {selectedConfig && (
             <InfrastructureConfigForm
@@ -389,18 +389,18 @@ const InfrastructureConfigList: React.FC<InfrastructureConfigListProps> = ({
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
       >
-        <DialogTitle>{t('DELETE_CONFIG')}</DialogTitle>
+        <DialogTitle>{t('infrastructure.DELETE_CONFIG')}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {t('DELETE_CONFIG_CONFIRMATION')}
+            {t('infrastructure.DELETE_CONFIG_CONFIRMATION')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('infrastructure.CANCEL')}
           </Button>
           <Button onClick={handleDeleteConfirm} color="error" variant="contained">
-            {t('DELETE')}
+            {t('infrastructure.DELETE')}
           </Button>
         </DialogActions>
       </Dialog>

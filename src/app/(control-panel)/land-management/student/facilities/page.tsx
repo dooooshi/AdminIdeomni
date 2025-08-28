@@ -21,11 +21,9 @@ import {
   AddOutlined,
   RefreshOutlined,
   ListAltOutlined,
-  ViewModuleOutlined,
-  TableRowsOutlined,
 } from '@mui/icons-material';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { FacilityCard, FacilityTable, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
+import { FacilityTable, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type { 
@@ -38,14 +36,13 @@ import { FacilityType } from '@/types/facilities';
 
 
 const StudentFacilitiesPage: React.FC = () => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
 
   // State management
   const [facilities, setFacilities] = useState<TileFacilityInstance[]>([]);
   const [summary, setSummary] = useState<TeamFacilitySummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'card' | 'table'>('table');
   
   // Filters and search
   const [searchTerm, setSearchTerm] = useState('');
@@ -92,7 +89,7 @@ const StudentFacilitiesPage: React.FC = () => {
 
     } catch (err) {
       console.error('Failed to load facility data:', err);
-      setError(t('facilityManagement:FACILITY_LOAD_ERROR'));
+      setError(t('facilityManagement.FACILITY_LOAD_ERROR'));
       setFacilities([]);
       setSummary(null);
     } finally {
@@ -117,7 +114,7 @@ const StudentFacilitiesPage: React.FC = () => {
 
     } catch (err) {
       console.error('Failed to load facilities:', err);
-      setError(t('facilityManagement:FACILITY_LOAD_ERROR'));
+      setError(t('facilityManagement.FACILITY_LOAD_ERROR'));
       setFacilities([]);
     }
   };
@@ -170,7 +167,7 @@ const StudentFacilitiesPage: React.FC = () => {
     if (!searchTerm) return true;
     
     const searchLower = searchTerm.toLowerCase();
-    const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`).toLowerCase();
+    const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`).toLowerCase();
     const description = facility.description?.toLowerCase() || '';
     
     return facilityName.includes(searchLower) || 
@@ -192,10 +189,10 @@ const StudentFacilitiesPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-            {t('facilityManagement:FACILITY_MANAGEMENT')}
+            {t('facilityManagement.FACILITY_MANAGEMENT')}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            {t('facilityManagement:MANAGE_YOUR_FACILITIES_DESCRIPTION')}
+            {t('facilityManagement.MANAGE_YOUR_FACILITIES_DESCRIPTION')}
           </Typography>
         </div>
 
@@ -209,35 +206,10 @@ const StudentFacilitiesPage: React.FC = () => {
       {/* Header Actions */}
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={4}>
         <Typography variant="h4" fontWeight={500} color="text.primary">
-          {t('facilityManagement:MY_FACILITIES')}
+          {t('facilityManagement.MY_FACILITIES')}
         </Typography>
         
         <Stack direction="row" spacing={2}>
-          <Button
-            variant={viewMode === 'card' ? 'contained' : 'outlined'}
-            startIcon={<ViewModuleOutlined />}
-            onClick={() => setViewMode('card')}
-            sx={{ 
-              borderColor: 'grey.300',
-              color: viewMode === 'card' ? undefined : 'text.secondary',
-              '&:hover': { borderColor: 'grey.400' }
-            }}
-          >
-            {t('common:CARD_VIEW')}
-          </Button>
-          <Button
-            variant={viewMode === 'table' ? 'contained' : 'outlined'}
-            startIcon={<TableRowsOutlined />}
-            onClick={() => setViewMode('table')}
-            sx={{ 
-              borderColor: 'grey.300',
-              color: viewMode === 'table' ? undefined : 'text.secondary',
-              '&:hover': { borderColor: 'grey.400' }
-            }}
-          >
-            {t('common:TABLE_VIEW')}
-          </Button>
-          <Divider orientation="vertical" flexItem />
           <Button
             variant="outlined"
             startIcon={<RefreshOutlined />}
@@ -249,7 +221,7 @@ const StudentFacilitiesPage: React.FC = () => {
               '&:hover': { borderColor: 'grey.400' }
             }}
           >
-            {t('facilityManagement:REFRESH')}
+            {t('facilityManagement.REFRESH')}
           </Button>
           <Button
             variant="contained"
@@ -261,7 +233,7 @@ const StudentFacilitiesPage: React.FC = () => {
               '&:hover': { backgroundColor: 'primary.dark', boxShadow: 'none' }
             }}
           >
-            {t('facilityManagement:BUILD_FACILITY')}
+            {t('facilityManagement.BUILD_FACILITY')}
           </Button>
         </Stack>
       </Stack>
@@ -276,7 +248,7 @@ const StudentFacilitiesPage: React.FC = () => {
                   <TextField
                     fullWidth
                     size="small"
-                    placeholder={t('facilityManagement:SEARCH_PLACEHOLDER')}
+                    placeholder={t('facilityManagement.SEARCH_PLACEHOLDER')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     InputProps={{
@@ -294,15 +266,15 @@ const StudentFacilitiesPage: React.FC = () => {
                     fullWidth
                     size="small"
                     select
-                    label={t('facilityManagement:STATUS')}
+                    label={t('facilityManagement.STATUS')}
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value as FacilityInstanceStatus | 'ALL')}
                   >
-                    <MenuItem value="ALL">{t('facilityManagement:ALL_STATUSES')}</MenuItem>
-                    <MenuItem value="ACTIVE">{t('facilityManagement:ACTIVE')}</MenuItem>
-                    <MenuItem value="UNDER_CONSTRUCTION">{t('facilityManagement:UNDER_CONSTRUCTION')}</MenuItem>
-                    <MenuItem value="MAINTENANCE">{t('facilityManagement:MAINTENANCE')}</MenuItem>
-                    <MenuItem value="DAMAGED">{t('facilityManagement:DAMAGED')}</MenuItem>
+                    <MenuItem value="ALL">{t('facilityManagement.ALL_STATUSES')}</MenuItem>
+                    <MenuItem value="ACTIVE">{t('facilityManagement.ACTIVE')}</MenuItem>
+                    <MenuItem value="UNDER_CONSTRUCTION">{t('facilityManagement.UNDER_CONSTRUCTION')}</MenuItem>
+                    <MenuItem value="MAINTENANCE">{t('facilityManagement.MAINTENANCE')}</MenuItem>
+                    <MenuItem value="DAMAGED">{t('facilityManagement.DAMAGED')}</MenuItem>
                   </TextField>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3}>
@@ -310,14 +282,14 @@ const StudentFacilitiesPage: React.FC = () => {
                     fullWidth
                     size="small"
                     select
-                    label={t('facilityManagement:TYPE')}
+                    label={t('facilityManagement.TYPE')}
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value as FacilityType | 'ALL')}
                   >
-                    <MenuItem value="ALL">{t('facilityManagement:ALL_TYPES')}</MenuItem>
+                    <MenuItem value="ALL">{t('facilityManagement.ALL_TYPES')}</MenuItem>
                     {FacilityType && Object.values(FacilityType) ? Object.values(FacilityType).map((type) => (
                       <MenuItem key={type} value={type}>
-                        {t(`facilityManagement:FACILITY_TYPE_${type}`)}
+                        {t(`facilityManagement.FACILITY_TYPE_${type}`)}
                       </MenuItem>
                     )) : null}
                   </TextField>
@@ -334,7 +306,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     }}
                     sx={{ minWidth: 'auto', px: 2 }}
                   >
-                    Clear
+                    {t('facilityManagement.CLEAR_FILTERS')}
                   </Button>
                 </Grid>
               </Grid>
@@ -345,7 +317,7 @@ const StudentFacilitiesPage: React.FC = () => {
                   <Divider sx={{ mb: 2 }} />
                   <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
                     <Typography variant="caption" color="text.secondary">
-                      Filters:
+                      {t('facilityManagement.FILTERS')}:
                     </Typography>
                     {searchTerm && (
                       <Chip
@@ -356,14 +328,14 @@ const StudentFacilitiesPage: React.FC = () => {
                     )}
                     {statusFilter !== 'ALL' && (
                       <Chip
-                        label={t(`facilityManagement:${statusFilter}`)}
+                        label={t(`facilityManagement.${statusFilter}`)}
                         size="small"
                         onDelete={() => setStatusFilter('ALL')}
                       />
                     )}
                     {typeFilter !== 'ALL' && (
                       <Chip
-                        label={t(`facilityManagement:FACILITY_TYPE_${typeFilter}`)}
+                        label={t(`facilityManagement.FACILITY_TYPE_${typeFilter}`)}
                         size="small"
                         onDelete={() => setTypeFilter('ALL')}
                       />
@@ -379,10 +351,10 @@ const StudentFacilitiesPage: React.FC = () => {
             <div>
               <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h6" fontWeight={500}>
-                  {filteredFacilities?.length || 0} Facilities
+                  {filteredFacilities?.length || 0} {t('facilityManagement.FACILITIES')}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Total Value: {StudentFacilityService.formatCurrency(
+                  {t('facilityManagement.TOTAL_VALUE')}: {StudentFacilityService.formatCurrency(
                     (filteredFacilities || []).reduce((sum, f) => {
                       const totalInvestment = StudentFacilityService.calculateTotalInvestment(f);
                       return sum + totalInvestment;
@@ -391,43 +363,28 @@ const StudentFacilitiesPage: React.FC = () => {
                 </Typography>
               </Stack>
               
-              {viewMode === 'card' ? (
-                <Grid container spacing={3}>
-                  {filteredFacilities && filteredFacilities.length > 0 ? filteredFacilities.map((facility) => (
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={facility.id}>
-                      <FacilityCard
-                        facility={facility}
-                        onClick={handleFacilityClick}
-                        onUpgrade={handleUpgradeClick}
-                        onViewDetails={handleFacilityClick}
-                      />
-                    </Grid>
-                  )) : null}
-                </Grid>
-              ) : (
-                <FacilityTable
-                  facilities={filteredFacilities || []}
-                  onClick={handleFacilityClick}
-                  onUpgrade={handleUpgradeClick}
-                  onViewDetails={handleFacilityClick}
-                  showActions={true}
-                />
-              )}
+              <FacilityTable
+                facilities={filteredFacilities || []}
+                onClick={handleFacilityClick}
+                onUpgrade={handleUpgradeClick}
+                onViewDetails={handleFacilityClick}
+                showActions={true}
+              />
             </div>
           ) : (
             <Card variant="outlined">
               <CardContent sx={{ textAlign: 'center', py: 8 }}>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
                   {searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL'
-                    ? t('facilityManagement:NO_FACILITIES_MATCH_FILTERS')
-                    : t('facilityManagement:NO_FACILITIES_BUILT')
+                    ? t('facilityManagement.NO_FACILITIES_MATCH_FILTERS')
+                    : t('facilityManagement.NO_FACILITIES_BUILT')
                   }
                 </Typography>
                 
                 <Typography variant="body2" color="text.secondary" mb={3}>
                   {searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL'
-                    ? t('facilityManagement:TRY_DIFFERENT_FILTERS')
-                    : t('facilityManagement:BUILD_YOUR_FIRST_FACILITY_DESCRIPTION')
+                    ? t('facilityManagement.TRY_DIFFERENT_FILTERS')
+                    : t('facilityManagement.BUILD_YOUR_FIRST_FACILITY_DESCRIPTION')
                   }
                 </Typography>
                 
@@ -441,7 +398,7 @@ const StudentFacilitiesPage: React.FC = () => {
                         setTypeFilter('ALL');
                       }}
                     >
-                      {t('facilityManagement:CLEAR_FILTERS')}
+                      {t('facilityManagement.CLEAR_FILTERS')}
                     </Button>
                   )}
                   <Button
@@ -450,7 +407,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     onClick={handleBuildNewFacility}
                     sx={{ boxShadow: 'none' }}
                   >
-                    {t('facilityManagement:BUILD_FACILITY')}
+                    {t('facilityManagement.BUILD_FACILITY')}
                   </Button>
                 </Stack>
               </CardContent>

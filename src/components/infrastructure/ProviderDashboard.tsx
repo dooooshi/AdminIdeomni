@@ -29,7 +29,7 @@ interface ProviderDashboardProps {
 }
 
 const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpdate }) => {
-  const { t } = useTranslation('infrastructure');
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [capacityData, setCapacityData] = useState<Map<string, ProviderCapacity>>(new Map());
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
       }
       setCapacityData(newCapacityData);
     } catch (err: any) {
-      setError(err.message || t('ERROR_LOADING_PROVIDER_DATA'));
+      setError(err.message || t('infrastructure.ERROR_LOADING_PROVIDER_DATA'));
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        {t('YOUR_INFRASTRUCTURE_OPERATIONS')}
+        {t('infrastructure.YOUR_INFRASTRUCTURE_OPERATIONS')}
       </Typography>
       
       <Grid container spacing={2}>
@@ -90,10 +90,10 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                     {getFacilityIcon(facility.facilityType)}
                     <Typography variant="h6">
-                      {t(facility.facilityType)}
+                      {t(`infrastructure.${facility.facilityType}`)}
                     </Typography>
                     <Chip 
-                      label={`${t('LEVEL')} ${facility.level}`}
+                      label={`${t('infrastructure.LEVEL')} ${facility.level}`}
                       size="small"
                       color="primary"
                     />
@@ -102,7 +102,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                   {capacity && (
                     <>
                       <Typography variant="body2" color="text.secondary" gutterBottom>
-                        {t('CAPACITY_UTILIZATION')}
+                        {t('infrastructure.CAPACITY_UTILIZATION')}
                       </Typography>
                       <LinearProgress 
                         variant="determinate" 
@@ -111,18 +111,18 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                         color={utilizationPercentage > 80 ? 'warning' : 'primary'}
                       />
                       <Typography variant="body2" align="center">
-                        {capacity.usedOperationPoints} / {capacity.totalOperationPoints} {t('OPERATION_POINTS')}
+                        {capacity.usedOperationPoints} / {capacity.totalOperationPoints} {t('infrastructure.OPERATION_POINTS')}
                       </Typography>
                       
                       <Box sx={{ mt: 2 }}>
                         <Typography variant="body2">
-                          {t('ACTIVE_CONNECTIONS')}: {capacity.connections?.length || 0}
+                          {t('infrastructure.ACTIVE_CONNECTIONS')}: {capacity.connections?.length || 0}
                         </Typography>
                         <Typography variant="body2">
-                          {t('AVAILABLE_CAPACITY')}: {capacity.availableOperationPoints || 0}
+                          {t('infrastructure.AVAILABLE_CAPACITY')}: {capacity.availableOperationPoints || 0}
                         </Typography>
                         <Typography variant="body2">
-                          {t('MAX_ADDITIONAL')}: {capacity.maxAdditionalConnections || 0}
+                          {t('infrastructure.MAX_ADDITIONAL')}: {capacity.maxAdditionalConnections || 0}
                         </Typography>
                       </Box>
                     </>
@@ -131,10 +131,10 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                   {['BASE_STATION', 'FIRE_STATION'].includes(facility.facilityType) && (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {t('INFLUENCE_RANGE')}: {facility.level - 1} {t('TILES')}
+                        {t('infrastructure.INFLUENCE_RANGE')}: {facility.level - 1} {t('infrastructure.TILES')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {t('LOCATION')}: ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
+                        {t('infrastructure.LOCATION')}: ({facility.tileCoordinates.q}, {facility.tileCoordinates.r})
                       </Typography>
                     </Box>
                   )}

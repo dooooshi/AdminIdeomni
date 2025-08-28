@@ -31,18 +31,18 @@ interface CreateTeamModalProps {
 const createSchema = (t: (key: string) => string) => yup.object({
   name: yup
     .string()
-    .required(t('teamManagement:TEAM_NAME_REQUIRED'))
-    .min(1, t('teamManagement:TEAM_NAME_MIN_LENGTH'))
-    .max(50, t('teamManagement:TEAM_NAME_MAX_LENGTH')),
+    .required(t('teamManagement.TEAM_NAME_REQUIRED'))
+    .min(1, t('teamManagement.TEAM_NAME_MIN_LENGTH'))
+    .max(50, t('teamManagement.TEAM_NAME_MAX_LENGTH')),
   description: yup
     .string()
     .optional()
-    .max(200, t('teamManagement:DESCRIPTION_MAX_LENGTH')),
+    .max(200, t('teamManagement.DESCRIPTION_MAX_LENGTH')),
   maxMembers: yup
     .number()
-    .required(t('teamManagement:MAX_MEMBERS_REQUIRED'))
-    .min(2, t('teamManagement:MIN_MEMBERS'))
-    .max(20, t('teamManagement:MAX_MEMBERS_LIMIT')),
+    .required(t('teamManagement.MAX_MEMBERS_REQUIRED'))
+    .min(2, t('teamManagement.MIN_MEMBERS'))
+    .max(20, t('teamManagement.MAX_MEMBERS_LIMIT')),
   isOpen: yup.boolean().optional()
 });
 
@@ -117,10 +117,10 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
       <DialogTitle>
         <div>
           <Typography variant="h6" className="font-semibold">
-            {t('teamManagement:CREATE_NEW_TEAM')}
+            {t('teamManagement.CREATE_NEW_TEAM')}
           </Typography>
           <Typography color="text.secondary" variant="body2" className="mt-1">
-            {t('teamManagement:CREATE_TEAM_SUBTITLE')}
+            {t('teamManagement.CREATE_TEAM_SUBTITLE')}
           </Typography>
         </div>
       </DialogTitle>
@@ -130,7 +130,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
           {/* Error Alert */}
           {error && (
             <Alert severity="error">
-              {t('teamManagement:FAILED_TO_CREATE_TEAM')}
+              {t('teamManagement.FAILED_TO_CREATE_TEAM')}
             </Alert>
           )}
 
@@ -142,8 +142,8 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
               <TextField
                 {...field}
                 fullWidth
-                label={t('teamManagement:TEAM_NAME')}
-                placeholder={t('teamManagement:TEAM_NAME_PLACEHOLDER')}
+                label={t('teamManagement.TEAM_NAME')}
+                placeholder={t('teamManagement.TEAM_NAME_PLACEHOLDER')}
                 error={!!errors.name}
                 helperText={errors.name?.message}
                 InputProps={{
@@ -167,10 +167,10 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
                 fullWidth
                 multiline
                 rows={3}
-                label={t('teamManagement:DESCRIPTION_OPTIONAL')}
-                placeholder={t('teamManagement:DESCRIPTION_PLACEHOLDER')}
+                label={t('teamManagement.DESCRIPTION_OPTIONAL')}
+                placeholder={t('teamManagement.DESCRIPTION_PLACEHOLDER')}
                 error={!!errors.description}
-                helperText={errors.description?.message || `${field.value?.length || 0}/200 ${t('teamManagement:DESCRIPTION_CHAR_COUNT')}`}
+                helperText={errors.description?.message || `${field.value?.length || 0}/200 ${t('teamManagement.DESCRIPTION_CHAR_COUNT')}`}
                 InputProps={{
                   startAdornment: (
                     <IdeomniSvgIcon className="mr-2 self-start mt-3">
@@ -185,7 +185,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
           {/* Max Members */}
           <div>
             <Typography variant="subtitle1" className="mb-2">
-              {t('teamManagement:MAXIMUM_MEMBERS')}
+              {t('teamManagement.MAXIMUM_MEMBERS')}
             </Typography>
             <Controller
               name="maxMembers"
@@ -206,7 +206,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
                     ]}
                   />
                   <Typography variant="body2" color="text.secondary" className="mt-2">
-                    {t('teamManagement:TEAM_WILL_ALLOW')} {maxMembersValue} {t('teamManagement:MEMBERS')}
+                    {t('teamManagement.TEAM_WILL_ALLOW')} {maxMembersValue} {t('teamManagement.MEMBERS')}
                   </Typography>
                 </div>
               )}
@@ -223,10 +223,10 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
                 label={
                   <div>
                     <Typography variant="body1">
-                      {t('teamManagement:OPEN_TEAM')}
+                      {t('teamManagement.OPEN_TEAM')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:OPEN_TEAM_DESCRIPTION')}
+                      {t('teamManagement.OPEN_TEAM_DESCRIPTION')}
                     </Typography>
                   </div>
                 }
@@ -242,13 +242,13 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
               </IdeomniSvgIcon>
               <div>
                 <Typography variant="subtitle2" className="mb-1">
-                  {t('teamManagement:TEAM_CREATION_GUIDELINES')}
+                  {t('teamManagement.TEAM_CREATION_GUIDELINES')}
                 </Typography>
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                  <li>{t('teamManagement:GUIDELINE_ONE_TEAM')}</li>
-                  <li>{t('teamManagement:GUIDELINE_AUTO_LEADER')}</li>
-                  <li>{t('teamManagement:GUIDELINE_UNIQUE_NAME')}</li>
-                  <li>{t('teamManagement:GUIDELINE_CHANGE_SETTINGS')}</li>
+                  <li>{t('teamManagement.GUIDELINE_ONE_TEAM')}</li>
+                  <li>{t('teamManagement.GUIDELINE_AUTO_LEADER')}</li>
+                  <li>{t('teamManagement.GUIDELINE_UNIQUE_NAME')}</li>
+                  <li>{t('teamManagement.GUIDELINE_CHANGE_SETTINGS')}</li>
                 </ul>
               </div>
             </div>
@@ -262,7 +262,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
           variant="outlined"
           disabled={isLoading}
         >
-          {t('common:CANCEL')}
+          {t('common.CANCEL')}
         </Button>
         <Button
           onClick={handleSubmit(onSubmit)}
@@ -270,7 +270,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
           disabled={isLoading}
           startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
         >
-          {isLoading ? t('teamManagement:CREATING_TEAM') : t('teamManagement:CREATE_TEAM')}
+          {isLoading ? t('teamManagement.CREATING_TEAM') : t('teamManagement.CREATE_TEAM')}
         </Button>
       </DialogActions>
     </Dialog>

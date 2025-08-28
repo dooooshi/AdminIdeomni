@@ -60,7 +60,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
   admin,
   onSuccess,
 }) => {
-  const { t } = useTranslation('adminManagement');
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -70,30 +70,30 @@ const AdminForm: React.FC<AdminFormProps> = ({
   // Validation schema
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, t('USERNAME_MIN_LENGTH'))
-      .max(50, t('USERNAME_MAX_LENGTH'))
-      .matches(/^[a-zA-Z0-9_]+$/, t('USERNAME_INVALID_CHARS'))
-      .required(t('USERNAME_REQUIRED')),
+      .min(3, t('adminManagement.USERNAME_MIN_LENGTH'))
+      .max(50, t('adminManagement.USERNAME_MAX_LENGTH'))
+      .matches(/^[a-zA-Z0-9_]+$/, t('adminManagement.USERNAME_INVALID_CHARS'))
+      .required(t('adminManagement.USERNAME_REQUIRED')),
     
     email: Yup.string()
-      .email(t('EMAIL_INVALID'))
-      .required(t('EMAIL_REQUIRED')),
+      .email(t('adminManagement.EMAIL_INVALID'))
+      .required(t('adminManagement.EMAIL_REQUIRED')),
     
     password: isEditMode 
       ? Yup.string() // Password optional in edit mode
       : Yup.string()
-          .min(6, t('PASSWORD_MIN_LENGTH'))
-          .required(t('PASSWORD_REQUIRED')),
+          .min(6, t('adminManagement.PASSWORD_MIN_LENGTH'))
+          .required(t('adminManagement.PASSWORD_REQUIRED')),
     
     firstName: Yup.string()
-      .max(100, t('FIRST_NAME_MAX_LENGTH')),
+      .max(100, t('adminManagement.FIRST_NAME_MAX_LENGTH')),
     
     lastName: Yup.string()
-      .max(100, t('LAST_NAME_MAX_LENGTH')),
+      .max(100, t('adminManagement.LAST_NAME_MAX_LENGTH')),
     
     adminType: Yup.number()
-      .oneOf([1, 2], t('ADMIN_TYPE_INVALID'))
-      .required(t('ADMIN_TYPE_REQUIRED')),
+      .oneOf([1, 2], t('adminManagement.ADMIN_TYPE_INVALID'))
+      .required(t('adminManagement.ADMIN_TYPE_REQUIRED')),
     
     isActive: Yup.boolean(),
   });
@@ -145,7 +145,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
         onClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : t('ADMIN_CREATE_ERROR'));
+        setError(err instanceof Error ? err.message : t('adminManagement.ADMIN_CREATE_ERROR'));
       } finally {
         setLoading(false);
       }
@@ -171,15 +171,15 @@ const AdminForm: React.FC<AdminFormProps> = ({
   const getAdminTypeInfo = (type: 1 | 2) => {
     if (type === 1) {
       return {
-        name: t('SUPER_ADMIN'),
-        description: t('SUPER_ADMIN_DESCRIPTION'),
+        name: t('adminManagement.SUPER_ADMIN'),
+        description: t('adminManagement.SUPER_ADMIN_DESCRIPTION'),
         icon: <ShieldIcon />,
         color: 'error' as const,
       };
     }
     return {
-      name: t('LIMITED_ADMIN'),
-      description: t('LIMITED_ADMIN_DESCRIPTION'),
+      name: t('adminManagement.LIMITED_ADMIN'),
+      description: t('adminManagement.LIMITED_ADMIN_DESCRIPTION'),
       icon: <PersonIcon />,
       color: 'primary' as const,
     };
@@ -198,7 +198,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h6">
-            {isEditMode ? t('ADMIN_FORM_EDIT_TITLE') : t('ADMIN_FORM_CREATE_TITLE')}
+            {isEditMode ? t('adminManagement.ADMIN_FORM_EDIT_TITLE') : t('adminManagement.ADMIN_FORM_CREATE_TITLE')}
           </Typography>
           <IconButton onClick={handleClose} disabled={loading}>
             <CloseIcon />
@@ -206,7 +206,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
         </Box>
         {isEditMode && admin && (
           <Typography variant="body2" color="text.secondary">
-            {t('ADMIN_FORM_EDITING_INFO', { username: admin.username, email: admin.email })}
+            {t('adminManagement.ADMIN_FORM_EDITING_INFO', { username: admin.username, email: admin.email })}
           </Typography>
         )}
       </DialogTitle>
@@ -223,7 +223,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             {/* Basic Information */}
             <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
-                {t('ADMIN_FORM_BASIC_INFO')}
+                {t('adminManagement.ADMIN_FORM_BASIC_INFO')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
@@ -231,7 +231,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label={t('USERNAME_LABEL')}
+                label={t('adminManagement.USERNAME_LABEL')}
                 name="username"
                 value={formik.values.username}
                 onChange={formik.handleChange}
@@ -246,7 +246,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label={t('EMAIL_LABEL')}
+                label={t('adminManagement.EMAIL_LABEL')}
                 name="email"
                 type="email"
                 value={formik.values.email}
@@ -262,7 +262,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label={t('FIRST_NAME_LABEL')}
+                label={t('adminManagement.FIRST_NAME_LABEL')}
                 name="firstName"
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
@@ -276,7 +276,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label={t('LAST_NAME_LABEL')}
+                label={t('adminManagement.LAST_NAME_LABEL')}
                 name="lastName"
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
@@ -292,7 +292,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               <Grid size={{ xs: 12 }}>
                 <TextField
                   fullWidth
-                  label={isEditMode ? t('PASSWORD_LABEL') + " " + t('PASSWORD_EDIT_HINT') : t('PASSWORD_LABEL')}
+                  label={isEditMode ? t('adminManagement.PASSWORD_LABEL') + " " + t('adminManagement.PASSWORD_EDIT_HINT') : t('adminManagement.PASSWORD_LABEL')}
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formik.values.password}
@@ -308,7 +308,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
                         <IconButton
                           onClick={() => setShowPassword(!showPassword)}
                           edge="end"
-                          aria-label={t('TOGGLE_PASSWORD_VISIBILITY')}
+                          aria-label={t('adminManagement.TOGGLE_PASSWORD_VISIBILITY')}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -322,29 +322,29 @@ const AdminForm: React.FC<AdminFormProps> = ({
             {/* Admin Configuration */}
             <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium" sx={{ mt: 2 }}>
-                {t('ADMIN_TYPE_LABEL')}
+                {t('adminManagement.ADMIN_TYPE_LABEL')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
 
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('ADMIN_TYPE_LABEL')}</InputLabel>
+                <InputLabel>{t('adminManagement.ADMIN_TYPE_LABEL')}</InputLabel>
                 <Select
                   name="adminType"
                   value={formik.values.adminType}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   error={formik.touched.adminType && Boolean(formik.errors.adminType)}
-                  label={t('ADMIN_TYPE_LABEL')}
+                  label={t('adminManagement.ADMIN_TYPE_LABEL')}
                 >
                   <MenuItem value={2}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <PersonIcon color="primary" />
                       <Box>
-                        <Typography variant="body1">{t('LIMITED_ADMIN')}</Typography>
+                        <Typography variant="body1">{t('adminManagement.LIMITED_ADMIN')}</Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {t('LIMITED_ADMIN_DESCRIPTION')}
+                          {t('adminManagement.LIMITED_ADMIN_DESCRIPTION')}
                         </Typography>
                       </Box>
                     </Box>
@@ -353,9 +353,9 @@ const AdminForm: React.FC<AdminFormProps> = ({
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <ShieldIcon color="error" />
                       <Box>
-                        <Typography variant="body1">{t('SUPER_ADMIN')}</Typography>
+                        <Typography variant="body1">{t('adminManagement.SUPER_ADMIN')}</Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {t('SUPER_ADMIN_DESCRIPTION')}
+                          {t('adminManagement.SUPER_ADMIN_DESCRIPTION')}
                         </Typography>
                       </Box>
                     </Box>
@@ -394,12 +394,12 @@ const AdminForm: React.FC<AdminFormProps> = ({
                   label={
                     <Box>
                       <Typography variant="body2">
-                        {t('IS_ACTIVE_LABEL')}
+                        {t('adminManagement.IS_ACTIVE_LABEL')}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         {formik.values.isActive 
-                          ? t('ACTIVE')
-                          : t('INACTIVE')}
+                          ? t('adminManagement.ACTIVE')
+                          : t('adminManagement.INACTIVE')}
                       </Typography>
                     </Box>
                   }
@@ -412,10 +412,10 @@ const AdminForm: React.FC<AdminFormProps> = ({
               <Grid size={{ xs: 12 }}>
                 <Alert severity="warning">
                   <Typography variant="body2" fontWeight="medium" gutterBottom>
-                    {t('SECURITY_WARNING')}
+                    {t('adminManagement.SECURITY_WARNING')}
                   </Typography>
                   <Typography variant="body2">
-                    {t('SUPER_ADMIN_WARNING')}
+                    {t('adminManagement.SUPER_ADMIN_WARNING')}
                   </Typography>
                 </Alert>
               </Grid>
@@ -429,7 +429,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             disabled={loading}
             color="inherit"
           >
-            {t('CANCEL_BUTTON')}
+            {t('adminManagement.CANCEL_BUTTON')}
           </Button>
           <Button
             type="submit"
@@ -438,8 +438,8 @@ const AdminForm: React.FC<AdminFormProps> = ({
             startIcon={loading ? <CircularProgress size={16} /> : <SaveIcon />}
           >
             {loading 
-              ? t('LOADING')
-              : (isEditMode ? t('UPDATE_ADMIN_BUTTON') : t('CREATE_ADMIN_BUTTON'))
+              ? t('adminManagement.LOADING')
+              : (isEditMode ? t('adminManagement.UPDATE_ADMIN_BUTTON') : t('adminManagement.CREATE_ADMIN_BUTTON'))
             }
           </Button>
         </DialogActions>

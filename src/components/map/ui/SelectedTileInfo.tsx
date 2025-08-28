@@ -7,17 +7,17 @@ interface SelectedTileInfoProps {
 }
 
 function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 
 	// Helper function to get translated terrain name
 	const getTerrainName = (landType: string): string => {
 		switch (landType) {
 			case 'MARINE':
-				return t('TERRAIN_MARINE');
+				return t('map.TERRAIN_MARINE');
 			case 'PLAIN':
-				return t('TERRAIN_PLAIN');
+				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
-				return t('TERRAIN_COASTAL');
+				return t('map.TERRAIN_COASTAL');
 			default:
 				return landType.toLowerCase();
 		}
@@ -49,7 +49,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 					mb: 2.5
 				}}
 			>
-				{t('SELECTED_TILE')}
+				{t('map.SELECTED_TILE')}
 			</Typography>
 			<div className="space-y-3">
 				<div className="flex justify-between">
@@ -60,7 +60,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 							color: 'text.secondary'
 						}}
 					>
-						{t('TILE_ID_SHORT')}:
+						{t('map.TILE_ID_SHORT')}:
 					</Typography>
 					<Typography 
 						variant="body2" 
@@ -81,7 +81,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 							color: 'text.secondary'
 						}}
 					>
-						{t('POSITION')}:
+						{t('map.POSITION')}:
 					</Typography>
 					<Typography 
 						variant="body2" 
@@ -102,7 +102,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 							color: 'text.secondary'
 						}}
 					>
-						{t('TERRAIN')}:
+						{t('map.TERRAIN')}:
 					</Typography>
 					<Typography 
 						variant="body2" 
@@ -124,7 +124,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 							color: 'text.secondary'
 						}}
 					>
-						{t('STATUS')}:
+						{t('map.STATUS')}:
 					</Typography>
 					<Typography 
 						variant="body2" 
@@ -134,7 +134,7 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 							color: selectedTile.isActive ? 'success.main' : 'error.main'
 						}}
 					>
-						{selectedTile.isActive ? t('ACTIVE') : t('INACTIVE')}
+						{selectedTile.isActive ? t('map.ACTIVE') : t('map.INACTIVE')}
 					</Typography>
 				</div>
 			</div>

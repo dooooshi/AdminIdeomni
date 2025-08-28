@@ -15,15 +15,15 @@ type NavigationSearchProps = {
 function NavigationSearch(props: NavigationSearchProps) {
 	const { variant, className } = props;
 	const { flattenNavigation: navigation } = useNavigation();
-	const { t } = useTranslation('common');
+	const { t } = useTranslation();
 
 	return (
 		<IdeomniSearch
 			className={className}
 			variant={variant}
 			navigation={navigation}
-			placeholder={t('SEARCH_PLACEHOLDER')}
-			noResults={t('NO_RESULTS')}
+			placeholder={t('common.SEARCH_PLACEHOLDER')}
+			noResults={t('common.NO_RESULTS')}
 		/>
 	);
 }

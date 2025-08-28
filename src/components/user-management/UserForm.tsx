@@ -76,7 +76,7 @@ const UserForm: React.FC<UserFormProps> = ({
   user,
   onSuccess,
 }) => {
-  const { t } = useTranslation('userManagement');
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -88,34 +88,34 @@ const UserForm: React.FC<UserFormProps> = ({
   // Validation schema
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, t('USERNAME_MIN_LENGTH'))
-      .max(50, t('USERNAME_MAX_LENGTH'))
-      .matches(/^[a-zA-Z0-9_]+$/, t('USERNAME_INVALID_CHARS'))
-      .required(t('USERNAME_REQUIRED')),
+      .min(3, t('userManagement.USERNAME_MIN_LENGTH'))
+      .max(50, t('userManagement.USERNAME_MAX_LENGTH'))
+      .matches(/^[a-zA-Z0-9_]+$/, t('userManagement.USERNAME_INVALID_CHARS'))
+      .required(t('userManagement.USERNAME_REQUIRED')),
     
     email: Yup.string()
-      .email(t('EMAIL_INVALID'))
-      .required(t('EMAIL_REQUIRED')),
+      .email(t('userManagement.EMAIL_INVALID'))
+      .required(t('userManagement.EMAIL_REQUIRED')),
     
     password: isEditMode 
       ? Yup.string()
-          .min(6, t('PASSWORD_MIN_LENGTH'))
+          .min(6, t('userManagement.PASSWORD_MIN_LENGTH'))
       : Yup.string()
-          .min(6, t('PASSWORD_MIN_LENGTH'))
-          .required(t('PASSWORD_REQUIRED')),
+          .min(6, t('userManagement.PASSWORD_MIN_LENGTH'))
+          .required(t('userManagement.PASSWORD_REQUIRED')),
     
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password')], t('PASSWORD_MISMATCH')),
+      .oneOf([Yup.ref('password')], t('userManagement.PASSWORD_MISMATCH')),
     
     firstName: Yup.string()
-      .max(100, t('FIRST_NAME_MAX_LENGTH')),
+      .max(100, t('userManagement.FIRST_NAME_MAX_LENGTH')),
     
     lastName: Yup.string()
-      .max(100, t('LAST_NAME_MAX_LENGTH')),
+      .max(100, t('userManagement.LAST_NAME_MAX_LENGTH')),
     
     userType: Yup.number()
-      .oneOf([1, 2, 3], t('USER_TYPE_INVALID'))
-      .required(t('USER_TYPE_REQUIRED')),
+      .oneOf([1, 2, 3], t('userManagement.USER_TYPE_INVALID'))
+      .required(t('userManagement.USER_TYPE_REQUIRED')),
     
     isActive: Yup.boolean(),
     
@@ -187,7 +187,7 @@ const UserForm: React.FC<UserFormProps> = ({
 
         handleClose();
       } catch (err) {
-        setError(err instanceof Error ? err.message : t('USER_CREATE_ERROR'));
+        setError(err instanceof Error ? err.message : t('userManagement.USER_CREATE_ERROR'));
       } finally {
         setLoading(false);
       }
@@ -220,9 +220,9 @@ const UserForm: React.FC<UserFormProps> = ({
 
   const getUserTypeDescription = (userType: number) => {
     switch (userType) {
-      case 1: return t('MANAGER_DESCRIPTION');
-      case 2: return t('WORKER_DESCRIPTION');
-      case 3: return t('STUDENT_DESCRIPTION');
+      case 1: return t('userManagement.MANAGER_DESCRIPTION');
+      case 2: return t('userManagement.WORKER_DESCRIPTION');
+      case 3: return t('userManagement.STUDENT_DESCRIPTION');
       default: return '';
     }
   };
@@ -242,15 +242,15 @@ const UserForm: React.FC<UserFormProps> = ({
 
   const steps = [
     {
-      label: t('USER_FORM_BASIC_INFO'),
+      label: t('userManagement.USER_FORM_BASIC_INFO'),
       content: (
         <Grid container spacing={3}>
           <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
               name="username"
-              label={t('USERNAME_LABEL')}
-              placeholder={t('USERNAME_PLACEHOLDER')}
+              label={t('userManagement.USERNAME_LABEL')}
+              placeholder={t('userManagement.USERNAME_PLACEHOLDER')}
               value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -267,7 +267,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
             {isEditMode && (
               <Typography variant="caption" color="text.secondary">
-                {t('USERNAME_EDIT_HINT')}
+                {t('userManagement.USERNAME_EDIT_HINT')}
               </Typography>
             )}
           </Grid>
@@ -276,8 +276,8 @@ const UserForm: React.FC<UserFormProps> = ({
             <TextField
               fullWidth
               name="email"
-              label={t('EMAIL_LABEL')}
-              placeholder={t('EMAIL_PLACEHOLDER')}
+              label={t('userManagement.EMAIL_LABEL')}
+              placeholder={t('userManagement.EMAIL_PLACEHOLDER')}
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -298,8 +298,8 @@ const UserForm: React.FC<UserFormProps> = ({
             <TextField
               fullWidth
               name="firstName"
-              label={t('FIRST_NAME_LABEL')}
-              placeholder={t('FIRST_NAME_PLACEHOLDER')}
+              label={t('userManagement.FIRST_NAME_LABEL')}
+              placeholder={t('userManagement.FIRST_NAME_PLACEHOLDER')}
               value={formik.values.firstName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -313,8 +313,8 @@ const UserForm: React.FC<UserFormProps> = ({
             <TextField
               fullWidth
               name="lastName"
-              label={t('LAST_NAME_LABEL')}
-              placeholder={t('LAST_NAME_PLACEHOLDER')}
+              label={t('userManagement.LAST_NAME_LABEL')}
+              placeholder={t('userManagement.LAST_NAME_PLACEHOLDER')}
               value={formik.values.lastName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -327,7 +327,7 @@ const UserForm: React.FC<UserFormProps> = ({
       ),
     },
     {
-      label: t('PASSWORD_LABEL'),
+      label: t('userManagement.PASSWORD_LABEL'),
       content: (
         <Grid container spacing={3}>
           <Grid size={{ xs: 12 }}>
@@ -335,15 +335,15 @@ const UserForm: React.FC<UserFormProps> = ({
               fullWidth
               name="password"
               type={showPassword ? 'text' : 'password'}
-              label={t('PASSWORD_LABEL')}
-              placeholder={t('PASSWORD_PLACEHOLDER')}
+              label={t('userManagement.PASSWORD_LABEL')}
+              placeholder={t('userManagement.PASSWORD_PLACEHOLDER')}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={
                 formik.touched.password && formik.errors.password ||
-                (isEditMode ? t('PASSWORD_EDIT_HINT') : '')
+                (isEditMode ? t('userManagement.PASSWORD_EDIT_HINT') : '')
               }
               disabled={loading}
               InputProps={{
@@ -372,8 +372,8 @@ const UserForm: React.FC<UserFormProps> = ({
                 fullWidth
                 name="confirmPassword"
                 type={showConfirmPassword ? 'text' : 'password'}
-                label={t('CONFIRM_PASSWORD_LABEL')}
-                placeholder={t('CONFIRM_PASSWORD_PLACEHOLDER')}
+                label={t('userManagement.CONFIRM_PASSWORD_LABEL')}
+                placeholder={t('userManagement.CONFIRM_PASSWORD_PLACEHOLDER')}
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -404,19 +404,19 @@ const UserForm: React.FC<UserFormProps> = ({
       ),
     },
     {
-      label: t('USER_FORM_PERMISSIONS'),
+      label: t('userManagement.USER_FORM_PERMISSIONS'),
       content: (
         <Grid container spacing={3}>
           <Grid size={{ xs: 12 }}>
             <FormControl fullWidth>
-              <InputLabel>{t('USER_TYPE_LABEL')}</InputLabel>
+              <InputLabel>{t('userManagement.USER_TYPE_LABEL')}</InputLabel>
               <Select
                 name="userType"
                 value={formik.values.userType}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.userType && Boolean(formik.errors.userType)}
-                label={t('USER_TYPE_LABEL')}
+                label={t('userManagement.USER_TYPE_LABEL')}
                 disabled={loading}
               >
                 {UserService.getUserTypeOptions().map((option) => (
@@ -462,9 +462,9 @@ const UserForm: React.FC<UserFormProps> = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t('ROLES_LABEL')}
-                  placeholder={t('ROLES_PLACEHOLDER')}
-                  helperText={t('ROLES_HELP')}
+                  label={t('userManagement.ROLES_LABEL')}
+                  placeholder={t('userManagement.ROLES_PLACEHOLDER')}
+                  helperText={t('userManagement.ROLES_HELP')}
                 />
               )}
               disabled={loading}
@@ -480,7 +480,7 @@ const UserForm: React.FC<UserFormProps> = ({
                   disabled={loading}
                 />
               }
-              label={t('IS_ACTIVE_LABEL')}
+              label={t('userManagement.IS_ACTIVE_LABEL')}
             />
           </Grid>
 
@@ -494,7 +494,7 @@ const UserForm: React.FC<UserFormProps> = ({
                     disabled={loading}
                   />
                 }
-                label={t('SEND_WELCOME_EMAIL')}
+                label={t('userManagement.SEND_WELCOME_EMAIL')}
               />
             </Grid>
           )}
@@ -516,7 +516,7 @@ const UserForm: React.FC<UserFormProps> = ({
       <DialogTitle>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h6">
-            {isEditMode ? t('USER_FORM_EDIT_TITLE') : t('USER_FORM_CREATE_TITLE')}
+            {isEditMode ? t('userManagement.USER_FORM_EDIT_TITLE') : t('userManagement.USER_FORM_CREATE_TITLE')}
           </Typography>
           <IconButton onClick={handleClose} size="small">
             <CloseIcon />
@@ -553,8 +553,8 @@ const UserForm: React.FC<UserFormProps> = ({
                     startIcon={loading && <CircularProgress size={16} />}
                   >
                     {index === steps.length - 1 
-                      ? (loading ? t('SAVING') : (isEditMode ? t('UPDATE') : t('CREATE')))
-                      : t('CONTINUE')
+                      ? (loading ? t('userManagement.SAVING') : (isEditMode ? t('userManagement.UPDATE') : t('userManagement.CREATE')))
+                      : t('userManagement.CONTINUE')
                     }
                   </Button>
                   {index > 0 && (
@@ -563,7 +563,7 @@ const UserForm: React.FC<UserFormProps> = ({
                       sx={{ mt: 1, mr: 1 }}
                       disabled={loading}
                     >
-                      {t('BACK')}
+                      {t('userManagement.BACK')}
                     </Button>
                   )}
                 </Box>
@@ -575,7 +575,7 @@ const UserForm: React.FC<UserFormProps> = ({
 
       <DialogActions>
         <Button onClick={handleClose} disabled={loading}>
-          {t('CANCEL')}
+          {t('userManagement.CANCEL')}
         </Button>
       </DialogActions>
     </Dialog>

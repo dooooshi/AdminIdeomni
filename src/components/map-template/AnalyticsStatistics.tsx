@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -98,7 +98,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
   onTemplateSelect,
   maxHeight = 800,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // State
   const [tabValue, setTabValue] = useState(0);
@@ -211,7 +211,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
     if (!analyticsData || !selectedTemplate) {
       return (
         <Alert severity="info">
-          {t('SELECT_TEMPLATE_FOR_ANALYTICS')}
+          {t('mapTemplate.SELECT_TEMPLATE_FOR_ANALYTICS')}
         </Alert>
       );
     }
@@ -223,7 +223,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {/* Key Metrics */}
         <Grid size={{ xs: 12 }}>
           <Typography variant="h6" gutterBottom>
-            {t('KEY_METRICS')}
+            {t('mapTemplate.KEY_METRICS')}
           </Typography>
         </Grid>
 
@@ -233,7 +233,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               {selectedTemplate.tileCount || 0}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('TOTAL_TILES')}
+              {t('mapTemplate.TOTAL_TILES')}
             </Typography>
           </Paper>
         </Grid>
@@ -244,7 +244,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               {facilityStats?.totalConfigs || 0}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('FACILITY_CONFIGURATIONS')}
+              {t('mapTemplate.FACILITY_CONFIGURATIONS')}
             </Typography>
           </Paper>
         </Grid>
@@ -255,7 +255,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               {facilityStats?.allowedConfigs || 0}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('ALLOWED_FACILITIES')}
+              {t('mapTemplate.ALLOWED_FACILITIES')}
             </Typography>
           </Paper>
         </Grid>
@@ -266,7 +266,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               {facilityStats ? TileFacilityBuildConfigService.formatCurrency(facilityStats.averageCosts.requiredGold) : '$0'}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('AVERAGE_BUILD_COST')}
+              {t('mapTemplate.AVERAGE_BUILD_COST')}
             </Typography>
           </Paper>
         </Grid>
@@ -275,7 +275,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {facilityStats && (
           <Grid size={{ xs: 12, md: 6 }}>
             <Card>
-              <CardHeader title={t('LAND_TYPE_DISTRIBUTION')} />
+              <CardHeader title={t('mapTemplate.LAND_TYPE_DISTRIBUTION')} />
               <CardContent>
                 {Object.entries(facilityStats.configsByLandType).map(([landType, count]) => {
                   const percentage = (count / facilityStats.totalConfigs) * 100;
@@ -283,7 +283,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                     <Box key={landType} sx={{ mb: 2 }}>
                       <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                         <Chip
-                          label={t(`LAND_TYPE_${landType}`)}
+                          label={t(`mapTemplate.LAND_TYPE_${landType}`)}
                           color={getLandTypeColor(landType as LandType)}
                           variant="outlined"
                           size="small"
@@ -309,12 +309,12 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {facilityStats && (
           <Grid size={{ xs: 12, md: 6 }}>
             <Card>
-              <CardHeader title={t('COST_ANALYSIS')} />
+              <CardHeader title={t('mapTemplate.COST_ANALYSIS')} />
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('GOLD_COST_RANGE')}
+                      {t('mapTemplate.GOLD_COST_RANGE')}
                     </Typography>
                     <Typography variant="h6">
                       {TileFacilityBuildConfigService.formatCurrency(facilityStats.costRanges.goldRange.min)} - {TileFacilityBuildConfigService.formatCurrency(facilityStats.costRanges.goldRange.max)}
@@ -322,7 +322,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Grid>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('CARBON_COST_RANGE')}
+                      {t('mapTemplate.CARBON_COST_RANGE')}
                     </Typography>
                     <Typography variant="h6">
                       {facilityStats.costRanges.carbonRange.min} - {facilityStats.costRanges.carbonRange.max} CO₂
@@ -330,7 +330,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Grid>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('AVERAGE_UPGRADE_COST')}
+                      {t('mapTemplate.AVERAGE_UPGRADE_COST')}
                     </Typography>
                     <Typography variant="h6">
                       {TileFacilityBuildConfigService.formatCurrency(facilityStats.averageCosts.upgradeGoldCost)}
@@ -338,7 +338,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Grid>
                   <Grid size={{ xs: 6 }}>
                     <Typography variant="body2" color="text.secondary">
-                      {t('COST_EFFICIENCY')}
+                      {t('mapTemplate.COST_EFFICIENCY')}
                     </Typography>
                     <Typography variant="h6">
                       {calculateCostEfficiency(facilityStats).toFixed(2)}
@@ -354,17 +354,17 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {facilityStats && (
           <Grid size={{ xs: 12 }}>
             <Card>
-              <CardHeader title={t('FACILITY_TYPE_BREAKDOWN')} />
+              <CardHeader title={t('mapTemplate.FACILITY_TYPE_BREAKDOWN')} />
               <CardContent>
                 <TableContainer>
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>{t('FACILITY_TYPE')}</TableCell>
-                        <TableCell align="center">{t('TOTAL')}</TableCell>
-                        <TableCell align="center">{t('ALLOWED')}</TableCell>
-                        <TableCell align="right">{t('AVERAGE_COST')}</TableCell>
-                        <TableCell align="center">{t('STATUS')}</TableCell>
+                        <TableCell>{t('mapTemplate.FACILITY_TYPE')}</TableCell>
+                        <TableCell align="center">{t('mapTemplate.TOTAL')}</TableCell>
+                        <TableCell align="center">{t('mapTemplate.ALLOWED')}</TableCell>
+                        <TableCell align="right">{t('mapTemplate.AVERAGE_COST')}</TableCell>
+                        <TableCell align="center">{t('mapTemplate.STATUS')}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -373,7 +373,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                           <TableCell>
                             <Box display="flex" alignItems="center" gap={1}>
                               <BuildIcon fontSize="small" />
-                              {t(`FACILITY_TYPE_${facilityType}`)}
+                              {t(`mapTemplate.FACILITY_TYPE_${facilityType}`)}
                             </Box>
                           </TableCell>
                           <TableCell align="center">
@@ -415,7 +415,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
     if (!analyticsData?.facilityStats) {
       return (
         <Alert severity="info">
-          {t('NO_FACILITY_STATISTICS')}
+          {t('mapTemplate.NO_FACILITY_STATISTICS')}
         </Alert>
       );
     }
@@ -427,7 +427,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {/* Max Level Distribution */}
         <Grid size={{ xs: 12, md: 6 }}>
           <Card>
-            <CardHeader title={t('MAX_LEVEL_DISTRIBUTION')} />
+            <CardHeader title={t('mapTemplate.MAX_LEVEL_DISTRIBUTION')} />
             <CardContent>
               {Object.entries(facilityStats.maxLevelDistribution).map(([level, count]) => {
                 const percentage = (count / facilityStats.totalConfigs) * 100;
@@ -435,7 +435,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   <Box key={level} sx={{ mb: 2 }}>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                       <Typography variant="body2">
-                        {t('LEVEL')} {level}
+                        {t('mapTemplate.LEVEL')} {level}
                       </Typography>
                       <Typography variant="body2">
                         {count} ({percentage.toFixed(1)}%)
@@ -456,12 +456,12 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         {/* Configuration Status */}
         <Grid size={{ xs: 12, md: 6 }}>
           <Card>
-            <CardHeader title={t('CONFIGURATION_STATUS')} />
+            <CardHeader title={t('mapTemplate.CONFIGURATION_STATUS')} />
             <CardContent>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="body2">{t('ALLOWED_CONFIGURATIONS')}</Typography>
+                    <Typography variant="body2">{t('mapTemplate.ALLOWED_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="success.main">
                       {facilityStats.allowedConfigs}
                     </Typography>
@@ -476,7 +476,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
                 <Grid size={{ xs: 12 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="body2">{t('DISALLOWED_CONFIGURATIONS')}</Typography>
+                    <Typography variant="body2">{t('mapTemplate.DISALLOWED_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="error.main">
                       {facilityStats.disallowedConfigs}
                     </Typography>
@@ -491,7 +491,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
                 <Grid size={{ xs: 12 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography variant="body2">{t('UPGRADABLE_CONFIGURATIONS')}</Typography>
+                    <Typography variant="body2">{t('mapTemplate.UPGRADABLE_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="info.main">
                       {facilityStats.upgradableConfigs}
                     </Typography>
@@ -512,7 +512,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         <Grid size={{ xs: 12 }}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="h6">{t('ADVANCED_METRICS')}</Typography>
+              <Typography variant="h6">{t('mapTemplate.ADVANCED_METRICS')}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
@@ -522,7 +522,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {(facilityStats.allowedConfigs / facilityStats.totalConfigs * 100).toFixed(1)}%
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('FACILITY_AVAILABILITY_RATE')}
+                      {t('mapTemplate.FACILITY_AVAILABILITY_RATE')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -533,7 +533,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {(facilityStats.upgradableConfigs / facilityStats.allowedConfigs * 100).toFixed(1)}%
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('UPGRADE_AVAILABILITY_RATE')}
+                      {t('mapTemplate.UPGRADE_AVAILABILITY_RATE')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -544,7 +544,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {TileFacilityBuildConfigService.formatNumber(facilityStats.averageCosts.requiredCarbon)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('AVERAGE_CARBON_COST')}
+                      {t('mapTemplate.AVERAGE_CARBON_COST')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -555,7 +555,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {calculateCostEfficiency(facilityStats).toFixed(2)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('OVERALL_EFFICIENCY')}
+                      {t('mapTemplate.OVERALL_EFFICIENCY')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -572,11 +572,11 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
       return (
         <Box>
           <Alert severity="info" sx={{ mb: 3 }}>
-            {t('SELECT_TEMPLATES_FOR_COMPARISON')}
+            {t('mapTemplate.SELECT_TEMPLATES_FOR_COMPARISON')}
           </Alert>
           
           <Typography variant="h6" gutterBottom>
-            {t('SELECT_TEMPLATES_TO_COMPARE')}
+            {t('mapTemplate.SELECT_TEMPLATES_TO_COMPARE')}
           </Typography>
           
           <Grid container spacing={2}>
@@ -601,10 +601,10 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {template.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {template.tileCount || 0} {t('TILES')}
+                      {template.tileCount || 0} {t('mapTemplate.TILES')}
                     </Typography>
                     {comparisonTemplates.includes(template.id) && (
-                      <Chip label={t('SELECTED')} color="primary" size="small" sx={{ mt: 1 }} />
+                      <Chip label={t('mapTemplate.SELECTED')} color="primary" size="small" sx={{ mt: 1 }} />
                     )}
                   </CardContent>
                 </Card>
@@ -621,7 +621,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
       <Grid container spacing={3}>
         <Grid size={{ xs: 12 }}>
           <Typography variant="h6" gutterBottom>
-            {t('TEMPLATE_COMPARISON')} ({comparisons.length} {t('TEMPLATES')})
+            {t('mapTemplate.TEMPLATE_COMPARISON')} ({comparisons.length} {t('mapTemplate.TEMPLATES')})
           </Typography>
         </Grid>
 
@@ -630,12 +630,12 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('TEMPLATE_NAME')}</TableCell>
-                  <TableCell align="center">{t('TILES')}</TableCell>
-                  <TableCell align="center">{t('FACILITY_CONFIGS')}</TableCell>
-                  <TableCell align="right">{t('AVERAGE_BUILD_COST')}</TableCell>
-                  <TableCell align="right">{t('AVERAGE_UPGRADE_COST')}</TableCell>
-                  <TableCell align="center">{t('EFFICIENCY')}</TableCell>
+                  <TableCell>{t('mapTemplate.TEMPLATE_NAME')}</TableCell>
+                  <TableCell align="center">{t('mapTemplate.TILES')}</TableCell>
+                  <TableCell align="center">{t('mapTemplate.FACILITY_CONFIGS')}</TableCell>
+                  <TableCell align="right">{t('mapTemplate.AVERAGE_BUILD_COST')}</TableCell>
+                  <TableCell align="right">{t('mapTemplate.AVERAGE_UPGRADE_COST')}</TableCell>
+                  <TableCell align="center">{t('mapTemplate.EFFICIENCY')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -669,13 +669,13 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       <TableCell align="right" sx={{ fontFamily: 'monospace' }}>
                         {comparison.averageCosts ? 
                           TileFacilityBuildConfigService.formatCurrency(comparison.averageCosts.buildCost) : 
-                          t('NOT_AVAILABLE')
+                          t('mapTemplate.NOT_AVAILABLE')
                         }
                       </TableCell>
                       <TableCell align="right" sx={{ fontFamily: 'monospace' }}>
                         {comparison.averageCosts ? 
                           TileFacilityBuildConfigService.formatCurrency(comparison.averageCosts.upgradeCost) : 
-                          t('NOT_AVAILABLE')
+                          t('mapTemplate.NOT_AVAILABLE')
                         }
                       </TableCell>
                       <TableCell align="center">
@@ -705,7 +705,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               variant="outlined"
               onClick={() => setComparisonTemplates([])}
             >
-              {t('CLEAR_COMPARISON')}
+              {t('mapTemplate.CLEAR_COMPARISON')}
             </Button>
             <Button
               variant="outlined"
@@ -717,11 +717,11 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = t('TEMPLATE_COMPARISON_FILENAME');
+                link.download = t('mapTemplate.TEMPLATE_COMPARISON_FILENAME');
                 link.click();
               }}
             >
-              {t('EXPORT_COMPARISON')}
+              {t('mapTemplate.EXPORT_COMPARISON')}
             </Button>
           </Box>
         </Grid>
@@ -735,16 +735,16 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={1}>
             <AssessmentIcon />
-            <Typography variant="h6">{t('ANALYTICS_STATISTICS')}</Typography>
+            <Typography variant="h6">{t('mapTemplate.ANALYTICS_STATISTICS')}</Typography>
           </Box>
         }
         action={
           <Box display="flex" alignItems="center" gap={1}>
             <FormControl size="small" sx={{ minWidth: 250 }}>
-              <InputLabel>{t('SELECT_TEMPLATE')}</InputLabel>
+              <InputLabel>{t('mapTemplate.SELECT_TEMPLATE')}</InputLabel>
               <Select
                 value={selectedTemplateId || ''}
-                label={t('SELECT_TEMPLATE')}
+                label={t('mapTemplate.SELECT_TEMPLATE')}
                 onChange={(e) => handleTemplateChange(Number(e.target.value))}
                 MenuProps={{
                   PaperProps: {
@@ -762,7 +762,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
               </Select>
             </FormControl>
             
-            <Tooltip title={t('REFRESH_ANALYTICS')}>
+            <Tooltip title={t('mapTemplate.REFRESH_ANALYTICS')}>
               <IconButton 
                 onClick={() => selectedTemplateId && loadAnalyticsData(selectedTemplateId)}
                 disabled={isLoading}
@@ -788,15 +788,15 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
           >
             <ToggleButton value="overview">
               <InsightsIcon sx={{ mr: 1 }} />
-              {t('OVERVIEW')}
+              {t('mapTemplate.OVERVIEW')}
             </ToggleButton>
             <ToggleButton value="detailed">
               <BarChartIcon sx={{ mr: 1 }} />
-              {t('DETAILED')}
+              {t('mapTemplate.DETAILED')}
             </ToggleButton>
             <ToggleButton value="comparison">
               <CompareIcon sx={{ mr: 1 }} />
-              {t('COMPARISON')}
+              {t('mapTemplate.COMPARISON')}
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>

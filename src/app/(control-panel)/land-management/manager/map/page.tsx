@@ -81,7 +81,7 @@ const TileInfoPanel = styled(Paper)(({ theme }) => ({
 interface ManagerLandMapPageProps {}
 
 const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
-  const { t } = useTranslation('landManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const mapRef = useRef<HexagonalMapRef>(null);
   
@@ -211,7 +211,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           {selectedTile.ownershipBreakdown.length > 0 && (
             <>
               <Divider />
-              <Typography variant="subtitle2">{t('landManagement:TEAM_OWNERSHIP')}</Typography>
+              <Typography variant="subtitle2">{t('landManagement.landManagement:TEAM_OWNERSHIP')}</Typography>
               <Stack spacing={1}>
                 {selectedTile.ownershipBreakdown.slice(0, 3).map((ownership) => (
                   <Box key={ownership.teamId} display="flex" justifyContent="space-between">
@@ -321,7 +321,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
       <MapContainer elevation={2}>
         {/* Map Controls */}
         <ControlsContainer>
-          <Tooltip title={t('common:REFRESH_DATA')}>
+          <Tooltip title={t('landManagement.common:REFRESH_DATA')}>
             <IconButton 
               onClick={handleRefresh}
               sx={{ 
@@ -333,7 +333,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <RefreshIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('common:ZOOM_IN')}>
+          <Tooltip title={t('landManagement.common:ZOOM_IN')}>
             <IconButton 
               onClick={handleZoomIn}
               sx={{ 
@@ -345,7 +345,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <ZoomInIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('common:ZOOM_OUT')}>
+          <Tooltip title={t('landManagement.common:ZOOM_OUT')}>
             <IconButton 
               onClick={handleZoomOut}
               sx={{ 
@@ -357,7 +357,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
               <ZoomOutIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t('common:RESET_ZOOM')}>
+          <Tooltip title={t('landManagement.common:RESET_ZOOM')}>
             <IconButton 
               onClick={handleResetZoom}
               sx={{ 
@@ -389,23 +389,23 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           <Card sx={{ bgcolor: 'rgba(255,255,255,0.95)' }}>
             <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
               <Typography variant="subtitle2" color="primary" gutterBottom>
-                {t('ACTIVITY_OVERVIEW')}
+                {t('landManagement.ACTIVITY_OVERVIEW')}
               </Typography>
               <Stack spacing={1}>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">{t('TOTAL_PURCHASES')}:</Typography>
+                  <Typography variant="body2">{t('landManagement.TOTAL_PURCHASES')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {overview?.totalLandPurchases || 0}
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">{t('AREA_PURCHASED')}:</Typography>
+                  <Typography variant="body2">{t('landManagement.AREA_PURCHASED')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {LandService.formatArea(overview?.totalAreaPurchased || 0)}
                   </Typography>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="body2">{t('GOLD_SPENT')}:</Typography>
+                  <Typography variant="body2">{t('landManagement.GOLD_SPENT')}:</Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {LandService.formatCurrency(overview?.totalGoldSpent || 0, 'gold')}
                   </Typography>
@@ -437,7 +437,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
       <Card sx={{ mt: 2 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {t('MAP_LEGEND')}
+            {t('landManagement.MAP_LEGEND')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -450,7 +450,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">{t('PLAIN_LAND')}</Typography>
+                <Typography variant="body2">{t('landManagement.PLAIN_LAND')}</Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -463,7 +463,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">{t('COASTAL_LAND')}</Typography>
+                <Typography variant="body2">{t('landManagement.COASTAL_LAND')}</Typography>
               </Box>
             </Grid>
             <Grid size={{ xs: 12, sm: 4 }}>
@@ -476,7 +476,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                     borderRadius: '50%'
                   }} 
                 />
-                <Typography variant="body2">{t('MARINE_LAND')}</Typography>
+                <Typography variant="body2">{t('landManagement.MARINE_LAND')}</Typography>
               </Box>
             </Grid>
           </Grid>

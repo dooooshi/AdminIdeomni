@@ -63,7 +63,7 @@ function a11yProps(index: number) {
 }
 
 const ActivityManagementPage: React.FC = () => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [activityFormOpen, setActivityFormOpen] = useState(false);
@@ -109,16 +109,16 @@ const ActivityManagementPage: React.FC = () => {
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <EventIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('ACTIVITY_MANAGEMENT')}
+              {t('activityManagement.ACTIVITY_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
           
           <Typography variant="h4" component="h1" gutterBottom>
-            {t('ACTIVITY_MANAGEMENT')}
+            {t('activityManagement.ACTIVITY_MANAGEMENT')}
           </Typography>
           
           <Typography variant="body1" color="text.secondary">
-            {t('ACTIVITY_MANAGEMENT_SUBTITLE')}
+            {t('activityManagement.ACTIVITY_MANAGEMENT_SUBTITLE')}
           </Typography>
         </Box>
       }
@@ -134,13 +134,13 @@ const ActivityManagementPage: React.FC = () => {
                 variant="fullWidth"
               >
                 <Tab 
-                  label={t('ACTIVITY_LIST')} 
+                  label={t('activityManagement.ACTIVITY_LIST')} 
                   icon={<EventIcon />} 
                   iconPosition="start"
                   {...a11yProps(0)} 
                 />
                 <Tab 
-                  label={t('ACTIVITY_STATISTICS')} 
+                  label={t('activityManagement.ACTIVITY_STATISTICS')} 
                   icon={<BarChartIcon />} 
                   iconPosition="start"
                   {...a11yProps(1)} 

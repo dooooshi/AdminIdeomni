@@ -33,7 +33,7 @@ import { TeamResourceType, BalanceTrendData } from '@/types/teamTransfer';
  * View balance snapshots and changes over time
  */
 function BalanceHistoryPage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { data: teamAccount, isLoading, error } = useGetCurrentUserTeamAccountQuery();
   
@@ -84,17 +84,17 @@ function BalanceHistoryPage() {
               </IdeomniSvgIcon>
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:NOT_IN_TEAM_YET')}
+              {t('teamManagement.NOT_IN_TEAM_YET')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement:JOIN_OR_CREATE_TEAM')}
+              {t('teamManagement.JOIN_OR_CREATE_TEAM')}
             </Typography>
             <Button
               variant="outlined"
               onClick={() => router.push('/team-management/dashboard')}
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
             >
-              {t('teamManagement:TEAM_DASHBOARD')}
+              {t('teamManagement.TEAM_DASHBOARD')}
             </Button>
           </Paper>
         </div>
@@ -120,11 +120,11 @@ function BalanceHistoryPage() {
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
               >
-                {t('teamManagement:BACK')}
+                {t('teamManagement.BACK')}
               </Button>
             </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:BALANCE_HISTORY')}
+              {t('teamManagement.BALANCE_HISTORY')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
               Track how your team's balance has changed over time
@@ -134,12 +134,12 @@ function BalanceHistoryPage() {
           {/* Current Balance */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:CURRENT_BALANCE')}
+              {t('teamManagement.CURRENT_BALANCE')}
             </Typography>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:GOLD_BALANCE')}
+                  {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
@@ -147,7 +147,7 @@ function BalanceHistoryPage() {
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:CARBON_BALANCE')}
+                  {t('teamManagement.CARBON_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
@@ -159,19 +159,19 @@ function BalanceHistoryPage() {
           {/* Date Filters */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:DATE_RANGE')}
+              {t('teamManagement.DATE_RANGE')}
             </Typography>
             <div className="flex gap-4 items-end">
               <TextField
                 type="date"
-                label={t('teamManagement:FROM_DATE')}
+                label={t('teamManagement.FROM_DATE')}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
               />
               <TextField
                 type="date"
-                label={t('teamManagement:TO_DATE')}
+                label={t('teamManagement.TO_DATE')}
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 InputLabelProps={{ shrink: true }}
@@ -182,7 +182,7 @@ function BalanceHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:x-mark</IdeomniSvgIcon>}
               >
-                {t('teamManagement:CLEAR_FILTERS')}
+                {t('teamManagement.CLEAR_FILTERS')}
               </Button>
               <Button
                 variant="outlined"
@@ -190,7 +190,7 @@ function BalanceHistoryPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
               >
-                {t('teamManagement:APPLY_FILTERS')}
+                {t('teamManagement.APPLY_FILTERS')}
               </Button>
             </div>
           </Paper>
@@ -199,7 +199,7 @@ function BalanceHistoryPage() {
           {balanceSummary && (
             <div>
               <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-                {t('teamManagement:BALANCE_CHANGE_SUMMARY')}
+                {t('teamManagement.BALANCE_CHANGE_SUMMARY')}
               </Typography>
               <Grid component="div" container spacing={6}>
                 <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
@@ -208,7 +208,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:TOTAL_CHANGES')}
+                            {t('teamManagement.TOTAL_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.totalChanges}
@@ -229,7 +229,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:GOLD_CHANGES')}
+                            {t('teamManagement.GOLD_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.goldChanges}
@@ -250,7 +250,7 @@ function BalanceHistoryPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                            {t('teamManagement:CARBON_CHANGES')}
+                            {t('teamManagement.CARBON_CHANGES')}
                           </Typography>
                           <Typography variant="h4" className="font-light text-gray-900 dark:text-white mt-2">
                             {balanceSummary.carbonChanges}
@@ -269,13 +269,13 @@ function BalanceHistoryPage() {
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                        {t('teamManagement:LARGEST_INCREASES')}
+                        {t('teamManagement.LARGEST_INCREASES')}
                       </Typography>
                       <Typography variant="body2" className="text-yellow-600 mb-1">
-                        {t('teamManagement:GOLD')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
+                        {t('teamManagement.GOLD')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
                       </Typography>
                       <Typography variant="body2" className="text-green-600">
-                        {t('teamManagement:CARBON')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease, TeamResourceType.CARBON)}
+                        {t('teamManagement.CARBON')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease, TeamResourceType.CARBON)}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -290,12 +290,12 @@ function BalanceHistoryPage() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('teamManagement:DATE')}</TableCell>
-                      <TableCell>{t('teamManagement:GOLD_BALANCE')}</TableCell>
-                      <TableCell>{t('teamManagement:GOLD')} {t('teamManagement:CHANGE')}</TableCell>
-                      <TableCell>{t('teamManagement:CARBON_BALANCE')}</TableCell>
-                      <TableCell>{t('teamManagement:CARBON')} {t('teamManagement:CHANGE')}</TableCell>
-                      <TableCell>{t('teamManagement:RELATED_OPERATION')}</TableCell>
+                      <TableCell>{t('teamManagement.DATE')}</TableCell>
+                      <TableCell>{t('teamManagement.GOLD_BALANCE')}</TableCell>
+                      <TableCell>{t('teamManagement.GOLD')} {t('teamManagement.CHANGE')}</TableCell>
+                      <TableCell>{t('teamManagement.CARBON_BALANCE')}</TableCell>
+                      <TableCell>{t('teamManagement.CARBON')} {t('teamManagement.CHANGE')}</TableCell>
+                      <TableCell>{t('teamManagement.RELATED_OPERATION')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -372,10 +372,10 @@ function BalanceHistoryPage() {
                             </IdeomniSvgIcon>
                           </div>
                           <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
-                            {t('teamManagement:NO_BALANCE_CHANGES_FOUND')}
+                            {t('teamManagement.NO_BALANCE_CHANGES_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamManagement:BALANCE_CHANGES_MESSAGE')}
+                            {t('teamManagement.BALANCE_CHANGES_MESSAGE')}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -389,7 +389,7 @@ function BalanceHistoryPage() {
                 <Box className="p-6 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamManagement:SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement:TO')} {Math.min(page * pageSize, balanceData.total)} {t('teamManagement:OF')} {balanceData.total} {t('teamManagement:ENTRIES')}
+                      {t('teamManagement.SHOWING')} {((page - 1) * pageSize) + 1} {t('teamManagement.TO')} {Math.min(page * pageSize, balanceData.total)} {t('teamManagement.OF')} {balanceData.total} {t('teamManagement.ENTRIES')}
                     </Typography>
                     <Pagination
                       count={balanceData.totalPages}
@@ -405,7 +405,7 @@ function BalanceHistoryPage() {
           {/* Quick Actions */}
           <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement:QUICK_ACTIONS')}
+              {t('teamManagement.QUICK_ACTIONS')}
             </Typography>
             <div className="flex gap-4 flex-wrap">
               <Button
@@ -414,7 +414,7 @@ function BalanceHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
               >
-                {t('teamManagement:ALL_OPERATIONS')}
+                {t('teamManagement.ALL_OPERATIONS')}
               </Button>
               <Button
                 variant="outlined"
@@ -422,7 +422,7 @@ function BalanceHistoryPage() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
               >
-                {t('teamManagement:TRANSFER_HISTORY')}
+                {t('teamManagement.TRANSFER_HISTORY')}
               </Button>
               <Button
                 variant="outlined"
@@ -430,7 +430,7 @@ function BalanceHistoryPage() {
                 className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
               >
-                {t('teamManagement:TRANSFER_RESOURCES')}
+                {t('teamManagement.TRANSFER_RESOURCES')}
               </Button>
             </div>
           </Paper>

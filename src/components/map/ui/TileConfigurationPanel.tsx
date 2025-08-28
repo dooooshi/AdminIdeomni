@@ -73,7 +73,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
   readOnly = false,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation('map');
+  const { t } = useTranslation();
   
   // Local state for form data
   const [formData, setFormData] = useState<UpdateTileDto>({});
@@ -126,23 +126,23 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
       switch (field) {
         case 'initialGoldPrice':
           errors.initialGoldPrice = message.includes('negative') 
-            ? t('VALIDATION_GOLD_PRICE_NEGATIVE') 
-            : t('VALIDATION_GOLD_PRICE_TOO_HIGH');
+            ? t('map.VALIDATION_GOLD_PRICE_NEGATIVE') 
+            : t('map.VALIDATION_GOLD_PRICE_TOO_HIGH');
           break;
         case 'initialCarbonPrice':
           errors.initialCarbonPrice = message.includes('negative') 
-            ? t('VALIDATION_CARBON_PRICE_NEGATIVE') 
-            : t('VALIDATION_CARBON_PRICE_TOO_HIGH');
+            ? t('map.VALIDATION_CARBON_PRICE_NEGATIVE') 
+            : t('map.VALIDATION_CARBON_PRICE_TOO_HIGH');
           break;
         case 'initialPopulation':
           errors.initialPopulation = message.includes('negative') 
-            ? t('VALIDATION_POPULATION_NEGATIVE') 
-            : t('VALIDATION_POPULATION_TOO_HIGH');
+            ? t('map.VALIDATION_POPULATION_NEGATIVE') 
+            : t('map.VALIDATION_POPULATION_TOO_HIGH');
           break;
         case 'transportationCostUnit':
           errors.transportationCostUnit = message.includes('negative') 
-            ? t('VALIDATION_TRANSPORT_NEGATIVE') 
-            : t('VALIDATION_TRANSPORT_TOO_HIGH');
+            ? t('map.VALIDATION_TRANSPORT_NEGATIVE') 
+            : t('map.VALIDATION_TRANSPORT_TOO_HIGH');
           break;
         default:
           errors[field] = message;
@@ -222,10 +222,10 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
         <CardContent sx={{ textAlign: 'center', py: 8 }}>
           <InfoIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
           <Typography variant="h6" gutterBottom>
-            {t('SELECT_TILE_TO_CONFIGURE')}
+            {t('map.SELECT_TILE_TO_CONFIGURE')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {t('SELECT_TILE_HELP_TEXT')}
+            {t('map.SELECT_TILE_HELP_TEXT')}
           </Typography>
         </CardContent>
       </Card>
@@ -238,7 +238,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
         title={
           <Box display="flex" alignItems="center" gap={1}>
             <Typography variant="h6">
-              {t('TILE_CONFIGURATION')}
+              {t('map.TILE_CONFIGURATION')}
             </Typography>
             <Chip 
               label={selectedTile.landType}
@@ -251,11 +251,11 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             />
           </Box>
         }
-        subheader={`${t('COORDINATES')}: Q${selectedTile.axialQ}, R${selectedTile.axialR}`}
+        subheader={`${t('map.COORDINATES')}: Q${selectedTile.axialQ}, R${selectedTile.axialR}`}
         action={
           <Stack direction="row" spacing={1}>
             {hasChanges && (
-              <Tooltip title={t('RESET_CHANGES')}>
+              <Tooltip title={t('map.RESET_CHANGES')}>
                 <IconButton onClick={handleReset} size="small">
                   <UndoIcon />
                 </IconButton>
@@ -263,7 +263,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             )}
             {onClose && (
               <Button onClick={onClose} size="small">
-                {t('CLOSE')}
+                {t('map.CLOSE')}
               </Button>
             )}
           </Stack>
@@ -282,17 +282,17 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                   disabled={readOnly}
                 />
               }
-              label={t('BATCH_EDIT_MODE')}
+              label={t('map.BATCH_EDIT_MODE')}
             />
           )}
 
           {/* Land Type Selection */}
           <FormControl fullWidth disabled={readOnly}>
-            <InputLabel>{t('LAND_TYPE')}</InputLabel>
+            <InputLabel>{t('map.LAND_TYPE')}</InputLabel>
             <Select
               value={formData.landType || ''}
               onChange={(e) => handleLandTypeChange(e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN')}
-              label={t('LAND_TYPE')}
+              label={t('map.LAND_TYPE')}
             >
               <MenuItem value="MARINE">
                 <Box display="flex" alignItems="center" gap={1}>
@@ -304,7 +304,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                       backgroundColor: getLandTypeColor('MARINE'),
                     }}
                   />
-                  {t('TERRAIN_MARINE')}
+                  {t('map.TERRAIN_MARINE')}
                 </Box>
               </MenuItem>
               <MenuItem value="COASTAL">
@@ -317,7 +317,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                       backgroundColor: getLandTypeColor('COASTAL'),
                     }}
                   />
-                  {t('TERRAIN_COASTAL')}
+                  {t('map.TERRAIN_COASTAL')}
                 </Box>
               </MenuItem>
               <MenuItem value="PLAIN">
@@ -330,7 +330,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                       backgroundColor: getLandTypeColor('PLAIN'),
                     }}
                   />
-                  {t('TERRAIN_PLAIN')}
+                  {t('map.TERRAIN_PLAIN')}
                 </Box>
               </MenuItem>
             </Select>
@@ -338,7 +338,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
           {/* Economic Configuration */}
           <Typography variant="subtitle2" color="text.secondary">
-            {t('ECONOMIC_CONFIGURATION')}
+            {t('map.ECONOMIC_CONFIGURATION')}
           </Typography>
 
           <Grid container spacing={2}>
@@ -346,7 +346,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                label={t('INITIAL_GOLD_PRICE')}
+                label={t('map.INITIAL_GOLD_PRICE')}
                 type="number"
                 value={formData.initialGoldPrice || ''}
                 onChange={(e) => handleFieldChange('initialGoldPrice', e.target.value === '' ? undefined : parseFloat(e.target.value))}
@@ -366,7 +366,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
-                label={t('INITIAL_CARBON_PRICE')}
+                label={t('map.INITIAL_CARBON_PRICE')}
                 type="number"
                 value={formData.initialCarbonPrice || ''}
                 onChange={(e) => handleFieldChange('initialCarbonPrice', e.target.value === '' ? undefined : parseFloat(e.target.value))}
@@ -391,7 +391,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('INITIAL_POPULATION')}
+                label={t('map.INITIAL_POPULATION')}
                 type="number"
                 value={formData.initialPopulation || ''}
                 onChange={(e) => handleFieldChange('initialPopulation', e.target.value === '' ? undefined : parseInt(e.target.value))}
@@ -412,7 +412,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('TRANSPORTATION_COST_UNIT')}
+                label={t('map.TRANSPORTATION_COST_UNIT')}
                 type="number"
                 value={formData.transportationCostUnit || ''}
                 onChange={(e) => handleFieldChange('transportationCostUnit', e.target.value === '' ? undefined : parseFloat(e.target.value))}
@@ -438,7 +438,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
           {Object.keys(validationErrors).length > 0 && (
             <Alert severity="error">
               <Typography variant="body2">
-                {t('PLEASE_FIX_VALIDATION_ERRORS')}
+                {t('map.PLEASE_FIX_VALIDATION_ERRORS')}
               </Typography>
             </Alert>
           )}
@@ -452,7 +452,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                 disabled={!hasChanges || isLoading}
                 startIcon={<UndoIcon />}
               >
-                {t('RESET')}
+                {t('map.RESET')}
               </Button>
               
               <Button
@@ -463,7 +463,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
               >
                 {batchMode && selectedTileIds.length > 1 
                   ? t('SAVE_BATCH', { count: selectedTileIds.length })
-                  : t('SAVE')
+                  : t('map.SAVE')
                 }
               </Button>
             </Stack>

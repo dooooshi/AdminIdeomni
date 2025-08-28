@@ -21,7 +21,7 @@ import {
   Security as SecurityIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { useLandTranslation, useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import {
   AvailableTile,
@@ -76,8 +76,8 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   tile,
   onPurchaseComplete
 }) => {
-  const { t } = useLandTranslation();
-  const { t: tCommon } = useTranslation('common');
+  const { t } = useTranslation();
+  const { t: tCommon } = useTranslation();
   
   // Form state
   const [area, setArea] = useState(1);
@@ -198,7 +198,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Box>
             <Typography variant="h6" fontWeight={400} sx={{ fontSize: '18px', mb: 0.5 }}>
-              {t('PURCHASE_DIALOG_TITLE', { tileId: tile.tileId })}
+              {t('land.PURCHASE_DIALOG_TITLE', { tileId: tile.tileId })}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
               {tile.tileId} · {LandService.formatLandType(tile.landType)}
@@ -285,7 +285,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
               <Stack spacing={1.5}>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                    {t('GOLD')}
+                    {t('land.GOLD')}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {LandService.formatCurrency(validation.goldCost || 0, 'gold')}
@@ -293,7 +293,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 </Box>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                    {t('CARBON')}
+                    {t('land.CARBON')}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {LandService.formatCurrency(validation.carbonCost || 0, 'carbon')}
@@ -352,7 +352,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
             {enablePriceProtection && (
               <Stack spacing={2} sx={{ mt: 2 }}>
                 <TextField
-                  label={t('MAX_GOLD_COST')}
+                  label={t('land.MAX_GOLD_COST')}
                   type="number"
                   size="small"
                   value={maxGoldCost || ''}
@@ -375,7 +375,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                   }}
                 />
                 <TextField
-                  label={t('MAX_CARBON_COST')}
+                  label={t('land.MAX_CARBON_COST')}
                   type="number"
                   size="small"
                   value={maxCarbonCost || ''}
@@ -471,7 +471,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 }
               }}
             >
-              {purchasing ? tCommon('PROCESSING') : t('PURCHASE_UNITS', { amount: area })}
+              {purchasing ? tCommon('common.PROCESSING') : t('land.PURCHASE_UNITS', { amount: area })}
             </Button>
           </Stack>
         </Stack>

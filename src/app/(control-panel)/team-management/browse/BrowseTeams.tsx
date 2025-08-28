@@ -71,10 +71,10 @@ function BrowseTeams() {
           {/* Header */}
           <div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('teamManagement:BROWSE_TEAMS')}
+              {t('teamManagement.BROWSE_TEAMS')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('teamManagement:DISCOVER_JOIN_TEAMS')}
+              {t('teamManagement.DISCOVER_JOIN_TEAMS')}
             </Typography>
           </div>
 
@@ -83,7 +83,7 @@ function BrowseTeams() {
             <div className="flex gap-4">
               <TextField
                 fullWidth
-                placeholder={t('teamManagement:SEARCH_TEAMS_PLACEHOLDER')}
+                placeholder={t('teamManagement.SEARCH_TEAMS_PLACEHOLDER')}
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -101,7 +101,7 @@ function BrowseTeams() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
               >
-                {t('teamManagement:SEARCH')}
+                {t('teamManagement.SEARCH')}
               </Button>
             </div>
           </Paper>
@@ -109,7 +109,7 @@ function BrowseTeams() {
           {/* Results Count */}
           {teamsResponse && (
             <Typography variant="body2" color="text.secondary">
-              {t('teamManagement:FOUND_TEAMS')} {teamsResponse.total} {t('teamManagement:TEAMS')}
+              {t('teamManagement.FOUND_TEAMS')} {teamsResponse.total} {t('teamManagement.TEAMS')}
             </Typography>
           )}
 
@@ -122,10 +122,10 @@ function BrowseTeams() {
                 </IdeomniSvgIcon>
               </div>
               <Typography variant="h6" className="font-medium mb-3 text-gray-900 dark:text-white">
-                {t('teamManagement:FAILED_TO_LOAD_TEAMS')}
+                {t('teamManagement.FAILED_TO_LOAD_TEAMS')}
               </Typography>
               <Typography color="text.secondary">
-                {t('teamManagement:FAILED_TO_LOAD_TEAMS_MESSAGE')}
+                {t('teamManagement.FAILED_TO_LOAD_TEAMS_MESSAGE')}
               </Typography>
             </Paper>
           ) : teamsResponse?.data?.length === 0 ? (
@@ -136,10 +136,10 @@ function BrowseTeams() {
                 </IdeomniSvgIcon>
               </div>
               <Typography variant="h6" className="font-medium mb-3 text-gray-900 dark:text-white">
-                {t('teamManagement:NO_TEAMS_FOUND')}
+                {t('teamManagement.NO_TEAMS_FOUND')}
               </Typography>
               <Typography color="text.secondary" className="mb-8 max-w-md mx-auto">
-                {search ? t('teamManagement:NO_TEAMS_ADJUST_SEARCH') : t('teamManagement:NO_TEAMS_AVAILABLE')}
+                {search ? t('teamManagement.NO_TEAMS_ADJUST_SEARCH') : t('teamManagement.NO_TEAMS_AVAILABLE')}
               </Typography>
               <Button
                 variant="outlined"
@@ -147,7 +147,7 @@ function BrowseTeams() {
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
                 startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
               >
-                {t('teamManagement:CREATE_NEW_TEAM_BUTTON')}
+                {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
               </Button>
             </Paper>
           ) : (
@@ -164,7 +164,7 @@ function BrowseTeams() {
                         <div className="flex items-center gap-3">
                           <div className={`w-2 h-2 rounded-full ${team.isOpen ? 'bg-green-400' : 'bg-gray-400'}`} />
                           <Typography variant="body2" color="text.secondary">
-                            {team.currentMembers}/{team.maxMembers} {t('teamManagement:MEMBERS')}
+                            {team.currentMembers}/{team.maxMembers} {t('teamManagement.MEMBERS')}
                           </Typography>
                         </div>
                       </div>
@@ -190,7 +190,7 @@ function BrowseTeams() {
                     {/* Team Leader */}
                     <div className="mb-4">
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                        {t('teamManagement:TEAM_LEADER')}
+                        {t('teamManagement.TEAM_LEADER')}
                       </Typography>
                       <div className="flex items-center gap-3 mt-2">
                         <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm font-medium">
@@ -208,7 +208,7 @@ function BrowseTeams() {
 
                     {/* Created Date */}
                     <Typography variant="caption" color="text.secondary" className="mb-6">
-                      {t('teamManagement:CREATED')} {new Date(team.createdAt).toLocaleDateString()}
+                      {t('teamManagement.CREATED')} {new Date(team.createdAt).toLocaleDateString()}
                     </Typography>
 
                     {/* Actions */}
@@ -220,7 +220,7 @@ function BrowseTeams() {
                         className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white flex-1"
                         startIcon={<IdeomniSvgIcon>heroicons-outline:eye</IdeomniSvgIcon>}
                       >
-                        {t('teamManagement:VIEW_DETAILS')}
+                        {t('teamManagement.VIEW_DETAILS')}
                       </Button>
                       {team.isOpen && team.currentMembers < team.maxMembers && (
                         <Button
@@ -231,7 +231,7 @@ function BrowseTeams() {
                           className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
                           startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
                         >
-                          {t('teamManagement:JOIN')}
+                          {t('teamManagement.JOIN')}
                         </Button>
                       )}
                     </div>
@@ -256,10 +256,10 @@ function BrowseTeams() {
           {/* Create Team CTA */}
           <Paper className="p-8 text-center border border-gray-100 dark:border-gray-800 shadow-none">
             <Typography variant="h6" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement:CANT_FIND_RIGHT_TEAM')}
+              {t('teamManagement.CANT_FIND_RIGHT_TEAM')}
             </Typography>
             <Typography color="text.secondary" className="mb-6 max-w-md mx-auto">
-              {t('teamManagement:CREATE_OWN_TEAM_MESSAGE')}
+              {t('teamManagement.CREATE_OWN_TEAM_MESSAGE')}
             </Typography>
             <Button
               variant="outlined"
@@ -267,7 +267,7 @@ function BrowseTeams() {
               className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
               startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
             >
-              {t('teamManagement:CREATE_NEW_TEAM_BUTTON')}
+              {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
             </Button>
           </Paper>
         </motion.div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useMapTemplateTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -111,7 +111,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
   onClose,
   onComplete,
 }) => {
-  const { t } = useMapTemplateTranslation();
+  const { t } = useTranslation();
 
   // State
   const [activeStep, setActiveStep] = useState(0);
@@ -173,9 +173,9 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
     switch (stepIndex) {
       case 0: // Basic Information
         if (!wizardData.templateName.trim()) {
-          errors.templateName = t('VALIDATION_TEMPLATE_NAME_REQUIRED');
+          errors.templateName = t('mapTemplate.VALIDATION_TEMPLATE_NAME_REQUIRED');
         } else if (wizardData.templateName.trim().length < 3) {
-          errors.templateName = t('VALIDATION_TEMPLATE_NAME_TOO_SHORT');
+          errors.templateName = t('mapTemplate.VALIDATION_TEMPLATE_NAME_TOO_SHORT');
         }
         break;
 
@@ -183,13 +183,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
         if (wizardData.templateType === 'generate') {
           const totalPercentage = wizardData.marinePercentage + wizardData.coastalPercentage + wizardData.plainPercentage;
           if (Math.abs(totalPercentage - 100) > 0.01) {
-            errors.landDistribution = t('LAND_PERCENTAGES_MUST_SUM_TO_100');
+            errors.landDistribution = t('mapTemplate.LAND_PERCENTAGES_MUST_SUM_TO_100');
           }
           if (wizardData.width < 5 || wizardData.width > 25) {
-            errors.width = t('WIDTH_MUST_BE_BETWEEN_5_AND_25');
+            errors.width = t('mapTemplate.WIDTH_MUST_BE_BETWEEN_5_AND_25');
           }
           if (wizardData.height < 3 || wizardData.height > 20) {
-            errors.height = t('HEIGHT_MUST_BE_BETWEEN_3_AND_20');
+            errors.height = t('mapTemplate.HEIGHT_MUST_BE_BETWEEN_3_AND_20');
           }
         }
         break;
@@ -202,13 +202,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
         if (wizardData.customEconomicSettings && wizardData.economicSettings) {
           Object.entries(wizardData.economicSettings).forEach(([landType, settings]) => {
             if (settings.initialPrice < 0) {
-              errors[`${landType}_price`] = t('VALIDATION_PRICE_NEGATIVE');
+              errors[`${landType}_price`] = t('mapTemplate.VALIDATION_PRICE_NEGATIVE');
             }
             if (settings.initialPopulation < 0) {
-              errors[`${landType}_population`] = t('VALIDATION_POPULATION_NEGATIVE');
+              errors[`${landType}_population`] = t('mapTemplate.VALIDATION_POPULATION_NEGATIVE');
             }
             if (settings.transportationCost < 0) {
-              errors[`${landType}_transport`] = t('VALIDATION_TRANSPORT_NEGATIVE');
+              errors[`${landType}_transport`] = t('mapTemplate.VALIDATION_TRANSPORT_NEGATIVE');
             }
           });
         }
@@ -335,7 +335,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('TEMPLATE_NAME')}
+                label={t('mapTemplate.TEMPLATE_NAME')}
                 value={wizardData.templateName}
                 onChange={(e) => updateWizardData({ templateName: e.target.value })}
                 error={!!validationErrors.templateName}
@@ -348,18 +348,18 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 fullWidth
                 multiline
                 rows={3}
-                label={t('DESCRIPTION')}
+                label={t('mapTemplate.DESCRIPTION')}
                 value={wizardData.description}
                 onChange={(e) => updateWizardData({ description: e.target.value })}
-                placeholder={t('TEMPLATE_DESCRIPTION_PLACEHOLDER')}
+                placeholder={t('mapTemplate.TEMPLATE_DESCRIPTION_PLACEHOLDER')}
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth sx={{ minWidth: 250 }}>
-                <InputLabel>{t('TEMPLATE_TYPE')}</InputLabel>
+                <InputLabel>{t('mapTemplate.TEMPLATE_TYPE')}</InputLabel>
                 <Select
                   value={wizardData.templateType}
-                  label={t('TEMPLATE_TYPE')}
+                  label={t('mapTemplate.TEMPLATE_TYPE')}
                   onChange={(e) => updateWizardData({ templateType: e.target.value as 'generate' | 'manual' })}
                   MenuProps={{
                     PaperProps: {
@@ -372,13 +372,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   <MenuItem value="generate" sx={{ minWidth: 280 }}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <AutoFixHighIcon />
-                      {t('GENERATED_TEMPLATE')}
+                      {t('mapTemplate.GENERATED_TEMPLATE')}
                     </Box>
                   </MenuItem>
                   <MenuItem value="manual" sx={{ minWidth: 280 }}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <SettingsIcon />
-                      {t('MANUAL_TEMPLATE')}
+                      {t('mapTemplate.MANUAL_TEMPLATE')}
                     </Box>
                   </MenuItem>
                 </Select>
@@ -394,7 +394,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
               <TextField
                 fullWidth
                 type="number"
-                label={t('WIDTH')}
+                label={t('mapTemplate.WIDTH')}
                 value={wizardData.width}
                 onChange={(e) => updateWizardData({ width: Number(e.target.value) })}
                 error={!!validationErrors.width}
@@ -406,7 +406,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
               <TextField
                 fullWidth
                 type="number"
-                label={t('HEIGHT')}
+                label={t('mapTemplate.HEIGHT')}
                 value={wizardData.height}
                 onChange={(e) => updateWizardData({ height: Number(e.target.value) })}
                 error={!!validationErrors.height}
@@ -420,10 +420,10 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12 }}>
                   <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
                     <Typography variant="h6" gutterBottom>
-                      {t('LAND_DISTRIBUTION')}
+                      {t('mapTemplate.LAND_DISTRIBUTION')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>
-                      {t('ESTIMATED_TILES')}: {getEstimatedTileCount()}
+                      {t('mapTemplate.ESTIMATED_TILES')}: {getEstimatedTileCount()}
                     </Typography>
                     {validationErrors.landDistribution && (
                       <Alert severity="error" sx={{ mb: 2 }}>
@@ -474,18 +474,18 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12 }}>
                   <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                      <Typography variant="subtitle2">{t('ADVANCED_GENERATION_OPTIONS')}</Typography>
+                      <Typography variant="subtitle2">{t('mapTemplate.ADVANCED_GENERATION_OPTIONS')}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                       <TextField
                         fullWidth
                         type="number"
-                        label={t('RANDOM_SEED')}
+                        label={t('mapTemplate.RANDOM_SEED')}
                         value={wizardData.randomSeed || ''}
                         onChange={(e) => updateWizardData({ 
                           randomSeed: e.target.value ? Number(e.target.value) : undefined 
                         })}
-                        helperText={t('RANDOM_SEED_HELP_TEXT')}
+                        helperText={t('mapTemplate.RANDOM_SEED_HELP_TEXT')}
                       />
                     </AccordionDetails>
                   </Accordion>
@@ -506,10 +506,10 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                     onChange={(e) => updateWizardData({ initializeFacilityConfigs: e.target.checked })}
                   />
                 }
-                label={t('INITIALIZE_FACILITY_CONFIGURATIONS')}
+                label={t('mapTemplate.INITIALIZE_FACILITY_CONFIGURATIONS')}
               />
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                {t('INITIALIZE_FACILITY_CONFIGS_HELP_TEXT')}
+                {t('mapTemplate.INITIALIZE_FACILITY_CONFIGS_HELP_TEXT')}
               </Typography>
             </Grid>
 
@@ -517,10 +517,10 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
               <>
                 <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth sx={{ minWidth: 200 }}>
-                    <InputLabel>{t('DIFFICULTY_PRESET')}</InputLabel>
+                    <InputLabel>{t('mapTemplate.DIFFICULTY_PRESET')}</InputLabel>
                     <Select
                       value={wizardData.difficultyPreset}
-                      label={t('DIFFICULTY_PRESET')}
+                      label={t('mapTemplate.DIFFICULTY_PRESET')}
                       onChange={(e) => updateWizardData({ 
                         difficultyPreset: e.target.value as 'easy' | 'normal' | 'hard' | 'custom' 
                       })}
@@ -534,33 +534,33 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                     >
                       <MenuItem value="easy">
                         <Box>
-                          <Typography variant="body2">{t('EASY_MODE')}</Typography>
+                          <Typography variant="body2">{t('mapTemplate.EASY_MODE')}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {t('EASY_MODE_DESCRIPTION')}
+                            {t('mapTemplate.EASY_MODE_DESCRIPTION')}
                           </Typography>
                         </Box>
                       </MenuItem>
                       <MenuItem value="normal">
                         <Box>
-                          <Typography variant="body2">{t('NORMAL_MODE')}</Typography>
+                          <Typography variant="body2">{t('mapTemplate.NORMAL_MODE')}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {t('NORMAL_MODE_DESCRIPTION')}
+                            {t('mapTemplate.NORMAL_MODE_DESCRIPTION')}
                           </Typography>
                         </Box>
                       </MenuItem>
                       <MenuItem value="hard">
                         <Box>
-                          <Typography variant="body2">{t('HARD_MODE')}</Typography>
+                          <Typography variant="body2">{t('mapTemplate.HARD_MODE')}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {t('HARD_MODE_DESCRIPTION')}
+                            {t('mapTemplate.HARD_MODE_DESCRIPTION')}
                           </Typography>
                         </Box>
                       </MenuItem>
                       <MenuItem value="custom">
                         <Box>
-                          <Typography variant="body2">{t('CUSTOM_DIFFICULTY')}</Typography>
+                          <Typography variant="body2">{t('mapTemplate.CUSTOM_DIFFICULTY')}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {t('CUSTOM_DIFFICULTY_DESCRIPTION')}
+                            {t('mapTemplate.CUSTOM_DIFFICULTY_DESCRIPTION')}
                           </Typography>
                         </Box>
                       </MenuItem>
@@ -572,12 +572,12 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   <Grid size={{ xs: 12 }}>
                     <Paper sx={{ p: 2 }}>
                       <Typography variant="subtitle2" gutterBottom>
-                        {t('CUSTOM_DIFFICULTY_SETTINGS')}
+                        {t('mapTemplate.CUSTOM_DIFFICULTY_SETTINGS')}
                       </Typography>
                       <Grid container spacing={2}>
                         <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
-                            {t('GOLD_MULTIPLIER')}: {wizardData.customDifficultySettings?.goldMultiplier || 1.0}
+                            {t('mapTemplate.GOLD_MULTIPLIER')}: {wizardData.customDifficultySettings?.goldMultiplier || 1.0}
                           </Typography>
                           <Slider
                             value={wizardData.customDifficultySettings?.goldMultiplier || 1.0}
@@ -603,7 +603,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                         </Grid>
                         <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
-                            {t('CARBON_MULTIPLIER')}: {wizardData.customDifficultySettings?.carbonMultiplier || 1.0}
+                            {t('mapTemplate.CARBON_MULTIPLIER')}: {wizardData.customDifficultySettings?.carbonMultiplier || 1.0}
                           </Typography>
                           <Slider
                             value={wizardData.customDifficultySettings?.carbonMultiplier || 1.0}
@@ -629,7 +629,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                         </Grid>
                         <Grid size={{ xs: 12, sm: 4 }}>
                           <Typography variant="body2" gutterBottom>
-                            {t('UPGRADE_MULTIPLIER')}: {wizardData.customDifficultySettings?.upgradeMultiplier || 1.0}
+                            {t('mapTemplate.UPGRADE_MULTIPLIER')}: {wizardData.customDifficultySettings?.upgradeMultiplier || 1.0}
                           </Typography>
                           <Slider
                             value={wizardData.customDifficultySettings?.upgradeMultiplier || 1.0}
@@ -673,10 +673,10 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                     onChange={(e) => updateWizardData({ customEconomicSettings: e.target.checked })}
                   />
                 }
-                label={t('CUSTOM_ECONOMIC_SETTINGS')}
+                label={t('mapTemplate.CUSTOM_ECONOMIC_SETTINGS')}
               />
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                {t('CUSTOM_ECONOMIC_SETTINGS_HELP_TEXT')}
+                {t('mapTemplate.CUSTOM_ECONOMIC_SETTINGS_HELP_TEXT')}
               </Typography>
             </Grid>
 
@@ -684,13 +684,13 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
               <Grid size={{ xs: 12 }}>
                 <Paper sx={{ p: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('ECONOMIC_SETTINGS_BY_LAND_TYPE')}
+                    {t('mapTemplate.ECONOMIC_SETTINGS_BY_LAND_TYPE')}
                   </Typography>
                   {Object.values(LandType).map((landType) => (
                     <Accordion key={landType}>
                       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="body2">
-                          {t(`LAND_TYPE_${landType}`)} {t('SETTINGS')}
+                          {t(`LAND_TYPE_${landType}`)} {t('mapTemplate.SETTINGS')}
                         </Typography>
                       </AccordionSummary>
                       <AccordionDetails>
@@ -699,7 +699,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                             <TextField
                               fullWidth
                               type="number"
-                              label={t('INITIAL_PRICE')}
+                              label={t('mapTemplate.INITIAL_PRICE')}
                               value={wizardData.economicSettings?.[landType]?.initialPrice || 0}
                               onChange={(e) => {
                                 const settings = { ...wizardData.economicSettings };
@@ -717,7 +717,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                             <TextField
                               fullWidth
                               type="number"
-                              label={t('INITIAL_POPULATION')}
+                              label={t('mapTemplate.INITIAL_POPULATION')}
                               value={wizardData.economicSettings?.[landType]?.initialPopulation || 0}
                               onChange={(e) => {
                                 const settings = { ...wizardData.economicSettings };
@@ -735,7 +735,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                             <TextField
                               fullWidth
                               type="number"
-                              label={t('TRANSPORTATION_COST')}
+                              label={t('mapTemplate.TRANSPORTATION_COST')}
                               value={wizardData.economicSettings?.[landType]?.transportationCost || 0}
                               onChange={(e) => {
                                 const settings = { ...wizardData.economicSettings };
@@ -766,24 +766,24 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
               <>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
-                    {t('REVIEW_TEMPLATE_SETTINGS')}
+                    {t('mapTemplate.REVIEW_TEMPLATE_SETTINGS')}
                   </Typography>
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('BASIC_INFORMATION')}
+                      {t('mapTemplate.BASIC_INFORMATION')}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>{t('NAME')}:</strong> {wizardData.templateName}
+                      <strong>{t('mapTemplate.NAME')}:</strong> {wizardData.templateName}
                     </Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>{t('TYPE')}:</strong> {t(wizardData.templateType === 'generate' ? 'GENERATED_TEMPLATE' : 'MANUAL_TEMPLATE')}
+                      <strong>{t('mapTemplate.TYPE')}:</strong> {t(wizardData.templateType === 'generate' ? 'GENERATED_TEMPLATE' : 'MANUAL_TEMPLATE')}
                     </Typography>
                     {wizardData.description && (
                       <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>{t('DESCRIPTION')}:</strong> {wizardData.description}
+                        <strong>{t('mapTemplate.DESCRIPTION')}:</strong> {wizardData.description}
                       </Typography>
                     )}
                   </Paper>
@@ -792,28 +792,28 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('MAP_CONFIGURATION')}
+                      {t('mapTemplate.MAP_CONFIGURATION')}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>{t('DIMENSIONS')}:</strong> {wizardData.width} × {wizardData.height}
+                      <strong>{t('mapTemplate.DIMENSIONS')}:</strong> {wizardData.width} × {wizardData.height}
                     </Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>{t('ESTIMATED_TILES')}:</strong> {getEstimatedTileCount()}
+                      <strong>{t('mapTemplate.ESTIMATED_TILES')}:</strong> {getEstimatedTileCount()}
                     </Typography>
                     {wizardData.templateType === 'generate' && (
                       <Box sx={{ mt: 1 }}>
                         <Typography variant="body2">
-                          <strong>{t('LAND_DISTRIBUTION')}:</strong>
+                          <strong>{t('mapTemplate.LAND_DISTRIBUTION')}:</strong>
                         </Typography>
                         <Box sx={{ ml: 2 }}>
                           <Typography variant="caption">
-                            {t('LAND_TYPE_MARINE')}: {wizardData.marinePercentage}%
+                            {t('mapTemplate.LAND_TYPE_MARINE')}: {wizardData.marinePercentage}%
                           </Typography><br />
                           <Typography variant="caption">
-                            {t('LAND_TYPE_COASTAL')}: {wizardData.coastalPercentage}%
+                            {t('mapTemplate.LAND_TYPE_COASTAL')}: {wizardData.coastalPercentage}%
                           </Typography><br />
                           <Typography variant="caption">
-                            {t('LAND_TYPE_PLAIN')}: {wizardData.plainPercentage}%
+                            {t('mapTemplate.LAND_TYPE_PLAIN')}: {wizardData.plainPercentage}%
                           </Typography>
                         </Box>
                       </Box>
@@ -824,14 +824,14 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('FACILITY_CONFIGURATION')}
+                      {t('mapTemplate.FACILITY_CONFIGURATION')}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>{t('INITIALIZE_FACILITY_CONFIGURATIONS')}:</strong> {wizardData.initializeFacilityConfigs ? t('YES') : t('NO')}
+                      <strong>{t('mapTemplate.INITIALIZE_FACILITY_CONFIGURATIONS')}:</strong> {wizardData.initializeFacilityConfigs ? t('mapTemplate.YES') : t('mapTemplate.NO')}
                     </Typography>
                     {wizardData.initializeFacilityConfigs && (
                       <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>{t('DIFFICULTY_PRESET')}:</strong> {t(`${wizardData.difficultyPreset.toUpperCase()}_MODE`)}
+                        <strong>{t('mapTemplate.DIFFICULTY_PRESET')}:</strong> {t(`${wizardData.difficultyPreset.toUpperCase()}_MODE`)}
                       </Typography>
                     )}
                   </Paper>
@@ -851,10 +851,10 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12 }}>
                   <Alert severity="success" icon={<CheckCircleIcon />}>
                     <Typography variant="h6">
-                      {t('TEMPLATE_CREATED_SUCCESSFULLY')}
+                      {t('mapTemplate.TEMPLATE_CREATED_SUCCESSFULLY')}
                     </Typography>
                     <Typography variant="body2">
-                      {t('TEMPLATE_CREATION_SUCCESS_MESSAGE')}
+                      {t('mapTemplate.TEMPLATE_CREATION_SUCCESS_MESSAGE')}
                     </Typography>
                   </Alert>
                 </Grid>
@@ -862,16 +862,16 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 <Grid size={{ xs: 12, md: 6 }}>
                   <Paper sx={{ p: 2 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('TEMPLATE_DETAILS')}
+                      {t('mapTemplate.TEMPLATE_DETAILS')}
                     </Typography>
                     <Typography variant="body2">
-                      <strong>{t('ID')}:</strong> {createdTemplate.id}
+                      <strong>{t('mapTemplate.ID')}:</strong> {createdTemplate.id}
                     </Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>{t('NAME')}:</strong> {createdTemplate.name}
+                      <strong>{t('mapTemplate.NAME')}:</strong> {createdTemplate.name}
                     </Typography>
                     <Typography variant="body2" sx={{ mt: 1 }}>
-                      <strong>{t('CREATED')}:</strong> {new Date(createdTemplate.createdAt).toLocaleString()}
+                      <strong>{t('mapTemplate.CREATED')}:</strong> {new Date(createdTemplate.createdAt).toLocaleString()}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -880,16 +880,16 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Paper sx={{ p: 2 }}>
                       <Typography variant="subtitle2" gutterBottom>
-                        {t('FACILITY_STATISTICS')}
+                        {t('mapTemplate.FACILITY_STATISTICS')}
                       </Typography>
                       <Typography variant="body2">
-                        <strong>{t('TOTAL_CONFIGURATIONS')}:</strong> {facilityStats.totalConfigs}
+                        <strong>{t('mapTemplate.TOTAL_CONFIGURATIONS')}:</strong> {facilityStats.totalConfigs}
                       </Typography>
                       <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>{t('ALLOWED_FACILITIES')}:</strong> {facilityStats.allowedConfigs}
+                        <strong>{t('mapTemplate.ALLOWED_FACILITIES')}:</strong> {facilityStats.allowedConfigs}
                       </Typography>
                       <Typography variant="body2" sx={{ mt: 1 }}>
-                        <strong>{t('UPGRADABLE_FACILITIES')}:</strong> {facilityStats.upgradableConfigs}
+                        <strong>{t('mapTemplate.UPGRADABLE_FACILITIES')}:</strong> {facilityStats.upgradableConfigs}
                       </Typography>
                     </Paper>
                   </Grid>
@@ -910,7 +910,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
         <Box display="flex" alignItems="center" gap={1}>
           <AutoFixHighIcon />
           <Typography variant="h6">
-            {t('TEMPLATE_SETUP_WIZARD')}
+            {t('mapTemplate.TEMPLATE_SETUP_WIZARD')}
           </Typography>
         </Box>
       </DialogTitle>
@@ -935,12 +935,12 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
 
       <DialogActions>
         <Button onClick={onClose}>
-          {t('CANCEL')}
+          {t('mapTemplate.CANCEL')}
         </Button>
 
         {activeStep > 0 && activeStep < steps.length - 1 && (
           <Button onClick={handleBack} startIcon={<ArrowBackIcon />}>
-            {t('BACK')}
+            {t('mapTemplate.BACK')}
           </Button>
         )}
 
@@ -953,11 +953,11 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
                 variant="contained"
                 startIcon={<AutoFixHighIcon />}
               >
-                {t('CREATE_TEMPLATE')}
+                {t('mapTemplate.CREATE_TEMPLATE')}
               </LoadingButton>
             ) : (
               <Button onClick={handleNext} endIcon={<ArrowForwardIcon />}>
-                {t('NEXT')}
+                {t('mapTemplate.NEXT')}
               </Button>
             )}
           </>
@@ -972,7 +972,7 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
             variant="contained"
             startIcon={<CheckCircleIcon />}
           >
-            {t('COMPLETE')}
+            {t('mapTemplate.COMPLETE')}
           </Button>
         )}
       </DialogActions>

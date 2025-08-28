@@ -12,7 +12,7 @@ type ErrorProps = {
 };
 
 export default function Error({ error, reset }: ErrorProps) {
-	const { t } = useTranslation('common');
+	const { t } = useTranslation();
 	
 	useEffect(() => {
 		console.error(error);
@@ -32,13 +32,13 @@ export default function Error({ error, reset }: ErrorProps) {
 					className="text-xl lg:text-3xl mb-4"
 					color="error.main"
 				>
-					{t('ERROR_SOMETHING_WENT_WRONG')}
+					{t('common.ERROR_SOMETHING_WENT_WRONG')}
 				</Typography>
 				<Typography
 					className="mb-8"
 					color="text.secondary"
 				>
-					{error.message || t('ERROR_UNEXPECTED')}
+					{error.message || t('common.ERROR_UNEXPECTED')}
 				</Typography>
 				<div className="flex gap-2">
 					<Button
@@ -48,7 +48,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						color="primary"
 						size="small"
 					>
-						{t('GO_TO_HOMEPAGE')}
+						{t('common.GO_TO_HOMEPAGE')}
 					</Button>
 					<Button
 						onClick={() => reset()}
@@ -56,7 +56,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						color="secondary"
 						size="small"
 					>
-						{t('TRY_AGAIN')}
+						{t('common.TRY_AGAIN')}
 					</Button>
 				</div>
 			</div>

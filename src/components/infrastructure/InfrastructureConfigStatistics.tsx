@@ -15,7 +15,7 @@ import {
 import {
   Refresh as RefreshIcon
 } from '@mui/icons-material';
-import { useInfrastructureTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import InfrastructureConfigService from '@/lib/services/infrastructureConfigService';
 import { InfrastructureConfigStatistics } from '@/types/infrastructure';
 import { alpha, useTheme } from '@mui/material/styles';
@@ -70,7 +70,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
   templateId,
   refreshInterval = 60000
 }) => {
-  const { t } = useInfrastructureTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const [statistics, setStatistics] = useState<InfrastructureConfigStatistics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,7 +96,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
       setLastRefresh(new Date());
     } catch (error) {
       console.error('Failed to load infrastructure statistics:', error);
-      setError(t('FAILED_TO_LOAD_STATISTICS'));
+      setError(t('infrastructure.FAILED_TO_LOAD_STATISTICS'));
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +143,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
         }}
         title={
           <Typography variant="h6" fontWeight={500}>
-            {t('INFRASTRUCTURE_STATISTICS')}
+            {t('infrastructure.INFRASTRUCTURE_STATISTICS')}
           </Typography>
         }
         action={
@@ -151,7 +151,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
             <Typography variant="caption" color="text.secondary">
               {lastRefresh.toLocaleTimeString()}
             </Typography>
-            <Tooltip title={t('REFRESH')}>
+            <Tooltip title={t('infrastructure.REFRESH')}>
               <IconButton size="small" onClick={loadStatistics} disabled={isLoading}>
                 <RefreshIcon fontSize="small" />
               </IconButton>
@@ -172,7 +172,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
             <Box mb={4}>
               <Box display="flex" justifyContent="space-between" alignItems="baseline" mb={1}>
                 <Typography variant="subtitle2" fontWeight={500} textTransform="uppercase" letterSpacing={0.5} color="text.secondary">
-                  {t('CONFIGURATION_COVERAGE')}
+                  {t('infrastructure.CONFIGURATION_COVERAGE')}
                 </Typography>
                 <Typography variant="body2" fontWeight={500}>
                   {calculateCompletionRate().toFixed(0)}%
@@ -192,10 +192,10 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
               />
               <Box display="flex" justifyContent="space-between" mt={2}>
                 <Typography variant="caption" color="text.secondary">
-                  {statistics.totalConfigured} {t('CONFIGURED')}
+                  {statistics.totalConfigured} {t('infrastructure.CONFIGURED')}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {statistics.unconfiguredTemplates} {t('UNCONFIGURED')}
+                  {statistics.unconfiguredTemplates} {t('infrastructure.UNCONFIGURED')}
                 </Typography>
               </Box>
             </Box>
@@ -204,33 +204,33 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 3 }}>
               <Box>
                 <StatCard
-                  title={t('AVG_WATER_PRICE')}
+                  title={t('infrastructure.AVG_WATER_PRICE')}
                   value={formatCurrency(statistics.avgWaterPrice)}
-                  subtitle={t('PER_UNIT')}
+                  subtitle={t('infrastructure.PER_UNIT')}
                 />
               </Box>
 
               <Box>
                 <StatCard
-                  title={t('AVG_ELECTRICITY_PRICE')}
+                  title={t('infrastructure.AVG_ELECTRICITY_PRICE')}
                   value={formatCurrency(statistics.avgElectricityPrice)}
-                  subtitle={t('PER_UNIT')}
+                  subtitle={t('infrastructure.PER_UNIT')}
                 />
               </Box>
 
               <Box>
                 <StatCard
-                  title={t('AVG_WATER_PLANT_INDEX')}
+                  title={t('infrastructure.AVG_WATER_PLANT_INDEX')}
                   value={formatDecimal(statistics.avgWaterPlantIndex)}
-                  subtitle={t('EFFICIENCY_INDEX')}
+                  subtitle={t('infrastructure.EFFICIENCY_INDEX')}
                 />
               </Box>
 
               <Box>
                 <StatCard
-                  title={t('AVG_POWER_PLANT_INDEX')}
+                  title={t('infrastructure.AVG_POWER_PLANT_INDEX')}
                   value={formatDecimal(statistics.avgPowerPlantIndex)}
-                  subtitle={t('EFFICIENCY_INDEX')}
+                  subtitle={t('infrastructure.EFFICIENCY_INDEX')}
                 />
               </Box>
             </Box>
@@ -239,7 +239,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
                 <Box>
                   <Typography variant="caption" color="text.secondary" display="block">
-                    {t('TOTAL_TEMPLATES')}
+                    {t('infrastructure.TOTAL_TEMPLATES')}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
                     {statistics.totalConfigured + statistics.unconfiguredTemplates}
@@ -247,7 +247,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" display="block">
-                    {t('AVG_RESOURCE_PRICE')}
+                    {t('infrastructure.AVG_RESOURCE_PRICE')}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
                     {formatCurrency((statistics.avgWaterPrice + statistics.avgElectricityPrice) / 2)}
@@ -255,7 +255,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" display="block">
-                    {t('AVG_PLANT_INDEX')}
+                    {t('infrastructure.AVG_PLANT_INDEX')}
                   </Typography>
                   <Typography variant="body1" fontWeight={500}>
                     {formatDecimal((statistics.avgWaterPlantIndex + statistics.avgPowerPlantIndex) / 2)}
@@ -263,7 +263,7 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
                 </Box>
                 <Box>
                   <Typography variant="caption" color="text.secondary" display="block">
-                    {t('STATUS')}
+                    {t('infrastructure.STATUS')}
                   </Typography>
                   <Typography 
                     variant="body1" 
@@ -278,10 +278,10 @@ const InfrastructureConfigStatisticsComponent: React.FC<InfrastructureConfigStat
                   >
                     {
                       calculateCompletionRate() === 100 
-                        ? t('COMPLETE') 
+                        ? t('infrastructure.COMPLETE') 
                         : calculateCompletionRate() > 50 
-                        ? t('IN_PROGRESS')
-                        : t('INCOMPLETE')
+                        ? t('infrastructure.IN_PROGRESS')
+                        : t('infrastructure.INCOMPLETE')
                     }
                   </Typography>
                 </Box>

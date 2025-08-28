@@ -39,7 +39,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
   compact = false,
   className,
 }) => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
 
   const handleCardClick = () => {
     if (onClick) {
@@ -64,7 +64,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
   const statusColor = StudentFacilityService.getStatusColor(facility.status);
   const statusText = StudentFacilityService.getStatusText(facility.status);
   const facilityIcon = StudentFacilityService.getFacilityIcon(facility.facilityType);
-  const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`);
+  const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`);
   const totalInvestment = StudentFacilityService.calculateTotalInvestment(facility);
   const needsAttention = StudentFacilityService.needsAttention(facility);
 
@@ -118,7 +118,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
                 }}
               />
               <Typography variant="caption" color="text.secondary">
-                Tile {facility.tileId}
+                {t('facilityManagement.TILE')} {facility.tileId}
               </Typography>
             </Stack>
           </Box>
@@ -160,7 +160,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
         <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2} mb={2}>
           <Box>
             <Typography variant="caption" color="text.secondary" display="block">
-              Level
+              {t('facilityManagement.LEVEL')}
             </Typography>
             <Typography variant="body2" fontWeight={500}>
               {facility.level} / {maxLevel}
@@ -170,7 +170,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
           {facility.capacity && (
             <Box>
               <Typography variant="caption" color="text.secondary" display="block">
-                Capacity
+                {t('facilityManagement.CAPACITY')}
               </Typography>
               <Typography variant="body2" fontWeight={500}>
                 {new Intl.NumberFormat().format(facility.capacity)}
@@ -181,7 +181,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
           {facility.efficiency && (
             <Box>
               <Typography variant="caption" color="text.secondary" display="block">
-                Efficiency
+                {t('facilityManagement.EFFICIENCY')}
               </Typography>
               <Typography variant="body2" fontWeight={500}>
                 {facility.efficiency}%
@@ -191,7 +191,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
           
           <Box>
             <Typography variant="caption" color="text.secondary" display="block">
-              Investment
+              {t('facilityManagement.INVESTMENT')}
             </Typography>
             <Typography variant="body2" fontWeight={500} color="primary.main">
               {StudentFacilityService.formatCurrency(totalInvestment, 0)}
@@ -203,7 +203,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
         {facility.description && !compact && (
           <Box mb={2}>
             <Typography variant="caption" color="text.secondary" display="block" mb={0.5}>
-              Description
+              {t('common.DESCRIPTION')}
             </Typography>
             <Typography 
               variant="body2" 
@@ -227,7 +227,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
           <Box pt={1} borderTop={1} borderColor="divider">
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Typography variant="caption" color="text.secondary">
-                Built by {facility.builder?.firstName || 'Unknown'} {facility.builder?.lastName || ''}
+                {t('facilityManagement.BUILT_BY')} {facility.builder?.firstName || t('common.UNKNOWN')} {facility.builder?.lastName || ''}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {new Intl.DateTimeFormat('en-US', {

@@ -58,7 +58,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
   config,
   onSuccess,
 }) => {
-  const { t } = useTranslation('facilityManagement');
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [availableTypes, setAvailableTypes] = useState<FacilityType[]>([]);
@@ -67,12 +67,12 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
 
   // Simplified validation schema
   const validationSchema = Yup.object({
-    facilityType: Yup.string().required(t('FACILITY_TYPE_REQUIRED')),
-    category: Yup.string().required(t('CATEGORY_REQUIRED')),
-    defaultCapacity: Yup.number().min(1, t('CAPACITY_MIN_ERROR')).required(t('DEFAULT_CAPACITY_REQUIRED')),
-    defaultBuildCost: Yup.number().min(0, t('COST_MIN_ERROR')).required(t('DEFAULT_BUILD_COST_REQUIRED')),
-    defaultMaintenanceCost: Yup.number().min(0, t('COST_MIN_ERROR')).required(t('DEFAULT_MAINTENANCE_COST_REQUIRED')),
-    defaultOperationCost: Yup.number().min(0, t('COST_MIN_ERROR')).required(t('DEFAULT_OPERATION_COST_REQUIRED')),
+    facilityType: Yup.string().required(t('facilityManagement.FACILITY_TYPE_REQUIRED')),
+    category: Yup.string().required(t('facilityManagement.CATEGORY_REQUIRED')),
+    defaultCapacity: Yup.number().min(1, t('facilityManagement.CAPACITY_MIN_ERROR')).required(t('facilityManagement.DEFAULT_CAPACITY_REQUIRED')),
+    defaultBuildCost: Yup.number().min(0, t('facilityManagement.COST_MIN_ERROR')).required(t('facilityManagement.DEFAULT_BUILD_COST_REQUIRED')),
+    defaultMaintenanceCost: Yup.number().min(0, t('facilityManagement.COST_MIN_ERROR')).required(t('facilityManagement.DEFAULT_MAINTENANCE_COST_REQUIRED')),
+    defaultOperationCost: Yup.number().min(0, t('facilityManagement.COST_MIN_ERROR')).required(t('facilityManagement.DEFAULT_OPERATION_COST_REQUIRED')),
     isActive: Yup.boolean(),
   });
 
@@ -189,7 +189,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
       ) ?? true;
       
       if (!isValid) {
-        formik.setFieldError('facilityType', t('INVALID_TYPE_CATEGORY_COMBINATION'));
+        formik.setFieldError('facilityType', t('facilityManagement.INVALID_TYPE_CATEGORY_COMBINATION'));
       }
     }
   }, [formik.values.facilityType, formik.values.category, t]);
@@ -239,7 +239,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
       handleClose();
     } catch (err) {
       console.error('Error saving facility configuration:', err);
-      setError(isEditMode ? t('ERROR_UPDATING_CONFIGURATION') : t('ERROR_CREATING_CONFIGURATION'));
+      setError(isEditMode ? t('facilityManagement.ERROR_UPDATING_CONFIGURATION') : t('facilityManagement.ERROR_CREATING_CONFIGURATION'));
     } finally {
       setLoading(false);
     }
@@ -265,7 +265,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
         <Box display="flex" alignItems="center">
           <SettingsIcon sx={{ mr: 1 }} />
           <Typography variant="h6">
-            {isEditMode ? t('EDIT_CONFIGURATION') : t('CREATE_CONFIGURATION')}
+            {isEditMode ? t('facilityManagement.EDIT_CONFIGURATION') : t('facilityManagement.CREATE_CONFIGURATION')}
           </Typography>
         </Box>
       </DialogTitle>
@@ -283,7 +283,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
             <Box>
               <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                 <SettingsIcon sx={{ mr: 1, fontSize: 20 }} />
-                {t('BASIC_INFORMATION')}
+                {t('facilityManagement.BASIC_INFORMATION')}
               </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -291,11 +291,11 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     fullWidth
                     error={Boolean(formik.touched.category && formik.errors.category)}
                   >
-                    <InputLabel>{t('CATEGORY')}</InputLabel>
+                    <InputLabel>{t('facilityManagement.CATEGORY')}</InputLabel>
                     <Select
                       name="category"
                       value={formik.values.category}
-                      label={t('CATEGORY')}
+                      label={t('facilityManagement.CATEGORY')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     >
@@ -317,11 +317,11 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     error={Boolean(formik.touched.facilityType && formik.errors.facilityType)}
                     disabled={!formik.values.category}
                   >
-                    <InputLabel>{t('FACILITY_TYPE')}</InputLabel>
+                    <InputLabel>{t('facilityManagement.FACILITY_TYPE')}</InputLabel>
                     <Select
                       name="facilityType"
                       value={formik.values.facilityType}
-                      label={t('FACILITY_TYPE')}
+                      label={t('facilityManagement.FACILITY_TYPE')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     >
@@ -346,7 +346,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                         name="isActive"
                       />
                     }
-                    label={t('ACTIVE_CONFIGURATION')}
+                    label={t('facilityManagement.ACTIVE_CONFIGURATION')}
                   />
                 </Grid>
               </Grid>
@@ -358,7 +358,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
             <Box>
               <Typography variant="subtitle1" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                 <SpeedIcon sx={{ mr: 1, fontSize: 20 }} />
-                {t('CAPACITY_AND_COSTS')}
+                {t('facilityManagement.CAPACITY_AND_COSTS')}
               </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -366,7 +366,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     fullWidth
                     type="number"
                     name="defaultCapacity"
-                    label={t('DEFAULT_CAPACITY')}
+                    label={t('facilityManagement.DEFAULT_CAPACITY')}
                     value={formik.values.defaultCapacity}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -385,7 +385,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     fullWidth
                     type="number"
                     name="defaultBuildCost"
-                    label={t('BUILD_COST')}
+                    label={t('facilityManagement.BUILD_COST')}
                     value={formik.values.defaultBuildCost}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -404,7 +404,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     fullWidth
                     type="number"
                     name="defaultMaintenanceCost"
-                    label={t('MAINTENANCE_COST')}
+                    label={t('facilityManagement.MAINTENANCE_COST')}
                     value={formik.values.defaultMaintenanceCost}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -423,7 +423,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     fullWidth
                     type="number"
                     name="defaultOperationCost"
-                    label={t('OPERATION_COST')}
+                    label={t('facilityManagement.OPERATION_COST')}
                     value={formik.values.defaultOperationCost}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -443,7 +443,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
 
         <DialogActions sx={{ px: 3, py: 2, justifyContent: 'space-between' }}>
           <Button onClick={handleClose} disabled={loading}>
-            {t('CANCEL')}
+            {t('facilityManagement.CANCEL')}
           </Button>
           
           <Button
@@ -453,10 +453,10 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
             startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
           >
             {loading
-              ? t('SAVING')
+              ? t('facilityManagement.SAVING')
               : isEditMode
-              ? t('UPDATE_CONFIGURATION')
-              : t('CREATE_CONFIGURATION')}
+              ? t('facilityManagement.UPDATE_CONFIGURATION')
+              : t('facilityManagement.CREATE_CONFIGURATION')}
           </Button>
         </DialogActions>
       </form>

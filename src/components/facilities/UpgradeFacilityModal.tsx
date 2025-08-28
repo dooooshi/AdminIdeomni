@@ -4,31 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { RESOURCE_ICONS } from '@/constants/resourceIcons';
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogActions,
   Button,
   Box,
   Typography,
   Alert,
   CircularProgress,
-  Card,
-  CardContent,
-  Grid,
+  Paper,
   Stack,
   Slider,
-  Chip,
-  Divider,
-  LinearProgress,
   IconButton,
 } from '@mui/material';
 import {
-  UpgradeOutlined,
-  TrendingUpOutlined,
-  CheckCircleOutlined,
-  WarningAmberOutlined,
   CloseOutlined,
-  ArrowForwardOutlined,
 } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
@@ -61,7 +49,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
   facility,
   teamBalance,
 }) => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
 
   // State management
   const [targetLevel, setTargetLevel] = useState(2);
@@ -106,7 +94,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
       setUpgradeCalculation(calculation);
     } catch (err) {
       console.error('Failed to calculate upgrade costs:', err);
-      setError(t('facilityManagement:UPGRADE_CALCULATION_ERROR'));
+      setError(t('facilityManagement.UPGRADE_CALCULATION_ERROR'));
       setUpgradeCalculation(null);
     } finally {
       setLoading(false);
@@ -129,7 +117,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
       onClose();
     } catch (err) {
       console.error('Upgrade failed:', err);
-      setError(t('facilityManagement:FACILITY_UPGRADE_ERROR'));
+      setError(t('facilityManagement.FACILITY_UPGRADE_ERROR'));
     } finally {
       setUpgrading(false);
     }
@@ -173,7 +161,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
   if (!facility) return null;
 
   const facilityIcon = StudentFacilityService.getFacilityIcon(facility.facilityType);
-  const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`);
+  const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`);
   const levelsToUpgrade = targetLevel - facility.level;
   const canUpgrade = facility.level < maxLevel;
 
@@ -181,246 +169,395 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="xs"
       fullWidth
       PaperProps={{
         sx: {
           borderRadius: 2,
+          boxShadow: (theme) => theme.palette.mode === 'dark' 
+            ? '0px 4px 20px rgba(0, 0, 0, 0.3)' 
+            : '0px 4px 20px rgba(0, 0, 0, 0.08)',
+          border: '1px solid',
+          borderColor: (theme) => theme.palette.mode === 'dark' ? 'grey.700' : 'grey.200',
+          backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'background.paper',
+          overflow: 'visible'
         },
       }}
     >
-      <DialogTitle sx={{ m: 0, p: 2 }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" spacing={1.5}>
-            <Typography sx={{ fontSize: '1.5rem' }}>{facilityIcon}</Typography>
-            <Box>
-              <Typography variant="h6" fontWeight={600}>
-                {t('facilityManagement:UPGRADE_FACILITY')}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {facilityName} • {t('facilityManagement:TILE')} {facility.tileId}
-              </Typography>
-            </Box>
-          </Stack>
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{ color: 'text.secondary' }}
-          >
-            <CloseOutlined />
-          </IconButton>
-        </Stack>
-      </DialogTitle>
+      <DialogContent sx={{ p: 3 }}>        
+        {/* Close button */}
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            color: 'text.secondary',
+            width: 32,
+            height: 32,
+            '&:hover': {
+              backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.800' : 'grey.100',
+            },
+          }}
+        >
+          <CloseOutlined sx={{ fontSize: 18 }} />
+        </IconButton>
 
-      <Divider />
-
-      <DialogContent sx={{ p: 3 }}>
-        {/* Error Alert */}
+        {/* Header */}
+        <Box mb={3}>
+          <Typography variant="h6" fontWeight={500} sx={{ mb: 0.5 }}>
+            {t('facilityManagement.UPGRADE_FACILITY')}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {facilityName} • {t('facilityManagement.TILE')} {facility.tileId}
+          </Typography>
+        </Box>
+        {/* Error Alert - Fixed Layout */}
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError(null)}>
-            {error}
-          </Alert>
+          <Box sx={{ 
+            p: 2, 
+            mb: 2, 
+            backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'error.900' : 'error.50',
+            border: '1px solid', 
+            borderColor: (theme) => theme.palette.mode === 'dark' ? 'error.700' : 'error.200',
+            borderRadius: 1,
+            minHeight: 56
+          }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Typography variant="body2" color="error.main">
+                {error}
+              </Typography>
+              <IconButton 
+                size="small" 
+                onClick={() => setError(null)} 
+                sx={{ 
+                  color: 'error.main', 
+                  ml: 1,
+                  '&:hover': {
+                    backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'error.800' : 'error.100'
+                  }
+                }}
+              >
+                <CloseOutlined sx={{ fontSize: 16 }} />
+              </IconButton>
+            </Stack>
+          </Box>
         )}
 
         {!canUpgrade ? (
-          <Alert severity="info" sx={{ mb: 3 }}>
-            <Typography variant="body2">
-              {t('facilityManagement:FACILITY_AT_MAX_LEVEL')}
+          <Box sx={{ 
+            p: 2, 
+            backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'info.900' : 'info.50',
+            border: '1px solid', 
+            borderColor: (theme) => theme.palette.mode === 'dark' ? 'info.700' : 'info.200',
+            borderRadius: 1, 
+            mb: 2,
+            minHeight: 56,
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            <Typography variant="body2" color="info.main">
+              {t('facilityManagement.FACILITY_AT_MAX_LEVEL')}
             </Typography>
-          </Alert>
+          </Box>
         ) : (
           <>
-            {/* Level Selection */}
-            <Box sx={{ mb: 4 }}>
-              <Typography variant="subtitle2" fontWeight={600} gutterBottom>
-                {t('facilityManagement:UPGRADE_LEVEL')}
+            {/* Level Selection - Fixed Layout */}
+            <Box mb={2}>
+              <Typography variant="body2" sx={{ mb: 2, fontWeight: 500 }}>
+                {t('facilityManagement.UPGRADE_LEVEL')}
               </Typography>
               
-              <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
-                <Box sx={{ 
-                  p: 2, 
-                  borderRadius: 2, 
-                  bgcolor: 'grey.50',
-                  textAlign: 'center',
-                  minWidth: 80
-                }}>
+              <Stack direction="row" alignItems="center" justifyContent="center" spacing={4} mb={3}>
+                <Box sx={{ textAlign: 'center', minWidth: 60 }}>
                   <Typography variant="caption" color="text.secondary" display="block">
-                    {t('facilityManagement:CURRENT')}
+                    {t('facilityManagement.CURRENT')}
                   </Typography>
-                  <Typography variant="h5" fontWeight={600} color="text.primary">
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'text.primary',
+                      fontFamily: 'monospace',
+                      minHeight: 32,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
                     {facility.level}
                   </Typography>
                 </Box>
 
-                <ArrowForwardOutlined sx={{ color: 'primary.main' }} />
-
                 <Box sx={{ 
-                  p: 2, 
-                  borderRadius: 2, 
-                  bgcolor: 'primary.50',
-                  border: '2px solid',
-                  borderColor: 'primary.main',
-                  textAlign: 'center',
-                  minWidth: 80
-                }}>
-                  <Typography variant="caption" color="primary.main" display="block">
-                    {t('facilityManagement:TARGET')}
+                  width: 1, 
+                  height: 32, 
+                  backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.600' : 'grey.300' 
+                }} />
+
+                <Box sx={{ textAlign: 'center', minWidth: 60 }}>
+                  <Typography variant="caption" color="text.secondary" display="block">
+                    {t('facilityManagement.TARGET')}
                   </Typography>
-                  <Typography variant="h5" fontWeight={600} color="primary.main">
+                  <Typography 
+                    variant="h5" 
+                    sx={{ 
+                      fontWeight: 500, 
+                      color: 'primary.main',
+                      fontFamily: 'monospace',
+                      minHeight: 32,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
                     {targetLevel}
                   </Typography>
                 </Box>
-
-                <Chip
-                  label={`+${levelsToUpgrade} ${t('facilityManagement:LEVELS', { count: levelsToUpgrade })}`}
-                  color="primary"
-                  variant="outlined"
-                  size="small"
-                />
               </Stack>
 
-              <Box sx={{ px: 2 }}>
-                <Slider
-                  value={targetLevel}
-                  onChange={(e, value) => setTargetLevel(value as number)}
-                  min={facility.level + 1}
-                  max={maxLevel}
-                  step={1}
-                  marks
-                  valueLabelDisplay="auto"
-                  disabled={loading || !canUpgrade}
-                />
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="caption" color="text.secondary">
-                    {t('facilityManagement:LEVEL')} {facility.level + 1}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('facilityManagement:MAX_LEVEL')}: {maxLevel}
-                  </Typography>
-                </Stack>
-              </Box>
+              <Slider
+                value={targetLevel}
+                onChange={(e, value) => setTargetLevel(value as number)}
+                min={facility.level + 1}
+                max={maxLevel}
+                step={1}
+                marks
+                valueLabelDisplay="auto"
+                disabled={loading || !canUpgrade}
+                sx={{
+                  '& .MuiSlider-thumb': {
+                    width: 12,
+                    height: 12,
+                  },
+                  '& .MuiSlider-track': {
+                    height: 3,
+                  },
+                  '& .MuiSlider-rail': {
+                    height: 3,
+                    backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300',
+                  },
+                  '& .MuiSlider-mark': {
+                    backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.600' : 'grey.400',
+                  },
+                }}
+              />
             </Box>
 
-            {/* Loading */}
-            {loading && (
-              <Box sx={{ mb: 3, textAlign: 'center' }}>
-                <CircularProgress size={20} sx={{ mb: 1 }} />
-                <Typography variant="body2" color="text.secondary">
-                  {t('facilityManagement:CALCULATING_COSTS')}
-                </Typography>
-              </Box>
-            )}
-
-            {/* Cost Display */}
-            {upgradeCalculation && !loading && (
-              <>
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="subtitle2" fontWeight={600} gutterBottom>
-                    {t('facilityManagement:UPGRADE_COST')}
-                  </Typography>
-                  
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Card variant="outlined" sx={{ height: '100%' }}>
-                        <CardContent sx={{ p: 2 }}>
-                          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                            <Typography variant="h6">
-                              {RESOURCE_ICONS.GOLD_EMOJI}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {t('facilityManagement:GOLD')}
-                            </Typography>
-                          </Stack>
-                          <Typography variant="h5" fontWeight={600}>
-                            {new Intl.NumberFormat().format(getTotalGoldCost(upgradeCalculation))}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Card variant="outlined" sx={{ height: '100%' }}>
-                        <CardContent sx={{ p: 2 }}>
-                          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                            <Typography variant="h6">
-                              {RESOURCE_ICONS.CARBON_EMOJI}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {t('facilityManagement:CARBON')}
-                            </Typography>
-                          </Stack>
-                          <Typography variant="h5" fontWeight={600}>
-                            {new Intl.NumberFormat().format(getTotalCarbonCost(upgradeCalculation))}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                </Box>
-
-                {/* Balance Check */}
-                {teamBalance && (
-                  <Alert
-                    severity={canAffordUpgrade() ? 'success' : 'warning'}
-                    icon={canAffordUpgrade() ? <CheckCircleOutlined /> : <WarningAmberOutlined />}
-                    sx={{ mb: 3 }}
-                  >
-                    <Typography variant="body2" fontWeight={500}>
-                      {t('facilityManagement:YOUR_BALANCE')}:
+            {/* Cost Display - Fixed Layout */}
+            <Box sx={{ mb: 2, minHeight: loading ? 80 : 'auto' }}>
+              <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 500 }}>
+                {t('facilityManagement.UPGRADE_COST')}
+              </Typography>
+              
+              <Paper sx={{ 
+                p: 2, 
+                backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.800' : 'grey.50',
+                borderRadius: 1, 
+                border: '1px solid', 
+                borderColor: (theme) => theme.palette.mode === 'dark' ? 'grey.700' : 'grey.200',
+                minHeight: 56,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {loading ? (
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <CircularProgress size={16} />
+                    <Typography variant="caption" color="text.secondary">
+                      {t('facilityManagement.CALCULATING_COSTS')}
                     </Typography>
-                    <Stack direction="row" spacing={3} mt={0.5}>
-                      <Typography 
-                        variant="body2" 
-                        color={teamBalance.gold >= getTotalGoldCost(upgradeCalculation) ? 'success.main' : 'error.main'}
-                      >
-                        {RESOURCE_ICONS.GOLD_EMOJI} {new Intl.NumberFormat().format(teamBalance.gold)}
+                  </Stack>
+                ) : upgradeCalculation ? (
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: '100%' }}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="body2">
+                        {RESOURCE_ICONS.GOLD_EMOJI}
                       </Typography>
                       <Typography 
-                        variant="body2"
-                        color={teamBalance.carbon >= getTotalCarbonCost(upgradeCalculation) ? 'success.main' : 'error.main'}
+                        variant="body1" 
+                        fontWeight={500}
+                        sx={{ 
+                          fontFamily: 'monospace',
+                          minWidth: '80px',
+                          textAlign: 'right'
+                        }}
                       >
-                        {RESOURCE_ICONS.CARBON_EMOJI} {new Intl.NumberFormat().format(teamBalance.carbon)}
+                        {new Intl.NumberFormat().format(getTotalGoldCost(upgradeCalculation))}
                       </Typography>
                     </Stack>
-                    {!canAffordUpgrade() && (
-                      <Typography variant="caption" color="error" display="block" mt={1}>
-                        {t('facilityManagement:INSUFFICIENT_RESOURCES')}
+                    
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Typography variant="body2">
+                        {RESOURCE_ICONS.CARBON_EMOJI}
                       </Typography>
-                    )}
-                  </Alert>
+                      <Typography 
+                        variant="body1" 
+                        fontWeight={500}
+                        sx={{ 
+                          fontFamily: 'monospace',
+                          minWidth: '60px',
+                          textAlign: 'right'
+                        }}
+                      >
+                        {new Intl.NumberFormat().format(getTotalCarbonCost(upgradeCalculation))}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    {t('facilityManagement.NO_UPGRADE_CALCULATION_DATA')}
+                  </Typography>
                 )}
+              </Paper>
+            </Box>
 
-              </>
+            {/* Balance Check - Fixed Layout */}
+            {teamBalance && (
+              <Box sx={{ 
+                p: 2, 
+                borderRadius: 1, 
+                border: '1px solid', 
+                borderColor: (theme) => {
+                  const canAfford = upgradeCalculation && canAffordUpgrade();
+                  if (theme.palette.mode === 'dark') {
+                    return canAfford ? 'success.700' : 'error.700';
+                  }
+                  return canAfford ? 'success.200' : 'error.200';
+                },
+                backgroundColor: (theme) => {
+                  const canAfford = upgradeCalculation && canAffordUpgrade();
+                  if (theme.palette.mode === 'dark') {
+                    return canAfford ? 'success.900' : 'error.900';
+                  }
+                  return canAfford ? 'success.50' : 'error.50';
+                },
+                mb: 2,
+                minHeight: 76
+              }}>
+                <Typography 
+                  variant="caption" 
+                  color="text.secondary" 
+                  display="block" 
+                  sx={{ mb: 1 }}
+                >
+                  {t('facilityManagement.YOUR_BALANCE')}
+                </Typography>
+                <Stack direction="row" spacing={3}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Typography variant="body2">
+                      {RESOURCE_ICONS.GOLD_EMOJI}
+                    </Typography>
+                    <Typography 
+                      variant="body2"
+                      sx={{ 
+                        color: (theme) => {
+                          const hasEnough = upgradeCalculation && teamBalance.gold >= getTotalGoldCost(upgradeCalculation);
+                          return hasEnough ? 'success.main' : 'error.main';
+                        },
+                        fontFamily: 'monospace',
+                        minWidth: '80px',
+                        textAlign: 'right'
+                      }}
+                    >
+                      {new Intl.NumberFormat().format(teamBalance.gold)}
+                    </Typography>
+                  </Stack>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Typography variant="body2">
+                      {RESOURCE_ICONS.CARBON_EMOJI}
+                    </Typography>
+                    <Typography 
+                      variant="body2"
+                      sx={{ 
+                        color: (theme) => {
+                          const hasEnough = upgradeCalculation && teamBalance.carbon >= getTotalCarbonCost(upgradeCalculation);
+                          return hasEnough ? 'success.main' : 'error.main';
+                        },
+                        fontFamily: 'monospace',
+                        minWidth: '60px',
+                        textAlign: 'right'
+                      }}
+                    >
+                      {new Intl.NumberFormat().format(teamBalance.carbon)}
+                    </Typography>
+                  </Stack>
+                </Stack>
+                {upgradeCalculation && !canAffordUpgrade() && (
+                  <Typography 
+                    variant="caption" 
+                    color="error.main" 
+                    display="block" 
+                    sx={{ mt: 1, minHeight: 16 }}
+                  >
+                    {t('facilityManagement.INSUFFICIENT_RESOURCES')}
+                  </Typography>
+                )}
+              </Box>
             )}
           </>
         )}
-      </DialogContent>
-
-      <Divider />
-
-      <DialogActions sx={{ p: 2 }}>
-        <Button onClick={onClose} disabled={upgrading}>
-          {t('common:CANCEL')}
-        </Button>
-
-        {canUpgrade && (
-          <LoadingButton
-            variant="contained"
-            onClick={handleUpgrade}
-            loading={upgrading}
-            disabled={
-              !upgradeCalculation ||
-              loading ||
-              (teamBalance && !canAffordUpgrade())
-            }
-            startIcon={!upgrading && <TrendingUpOutlined />}
+        
+        {/* Actions - Dark/Light Mode Support */}
+        <Stack 
+          direction="row" 
+          spacing={2} 
+          sx={{ 
+            mt: 3, 
+            pt: 2, 
+            borderTop: '1px solid', 
+            borderColor: (theme) => theme.palette.mode === 'dark' ? 'grey.700' : 'grey.200'
+          }}
+        >
+          <Button 
+            onClick={onClose} 
+            disabled={upgrading}
+            variant="outlined"
+            sx={{ 
+              flex: 1, 
+              borderColor: (theme) => theme.palette.mode === 'dark' ? 'grey.600' : 'grey.300',
+              color: 'text.secondary',
+              '&:hover': { 
+                borderColor: (theme) => theme.palette.mode === 'dark' ? 'grey.500' : 'grey.400',
+                backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.800' : 'grey.50'
+              } 
+            }}
           >
-            {upgrading
-              ? t('facilityManagement:UPGRADING')
-              : t('facilityManagement:CONFIRM_UPGRADE')
-            }
-          </LoadingButton>
-        )}
-      </DialogActions>
+            {t('common.CANCEL')}
+          </Button>
+
+          {canUpgrade && (
+            <LoadingButton
+              variant="contained"
+              onClick={handleUpgrade}
+              loading={upgrading}
+              disabled={
+                !upgradeCalculation ||
+                loading ||
+                (teamBalance && !canAffordUpgrade())
+              }
+              sx={{ 
+                flex: 1,
+                backgroundColor: 'primary.main',
+                boxShadow: 'none',
+                '&:hover': { 
+                  backgroundColor: 'primary.dark',
+                  boxShadow: 'none' 
+                },
+                '&:disabled': {
+                  backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300',
+                  color: (theme) => theme.palette.mode === 'dark' ? 'grey.500' : 'grey.500'
+                }
+              }}
+            >
+              {upgrading
+                ? t('facilityManagement.UPGRADING')
+                : t('facilityManagement.CONFIRM_UPGRADE')
+              }
+            </LoadingButton>
+          )}
+        </Stack>
+      </DialogContent>
     </Dialog>
   );
 };

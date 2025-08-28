@@ -90,7 +90,7 @@ interface StudentPortfolioPageProps {}
 
 const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
   const theme = useTheme();
-  const { t } = useTranslation(['landManagement', 'navigation', 'common']);
+  const { t } = useTranslation();
   
   // State management
   const [teamSummary, setTeamSummary] = useState<TeamLandSummary | null>(null);
@@ -246,11 +246,11 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       </IconButton>
       
       <Typography variant="subtitle2" sx={{ minWidth: 'max-content' }}>
-        {t('landManagement:FILTERS')}:
+        {t('landManagement.FILTERS')}:
       </Typography>
 
       <TextField
-        label={t('landManagement:TILE_ID')}
+        label={t('landManagement.TILE_ID')}
         size="small"
         type="number"
         value={filters.tileId || ''}
@@ -259,29 +259,29 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       />
 
       <FormControl size="small" sx={{ minWidth: 120 }}>
-        <InputLabel>{t('landManagement:STATUS')}</InputLabel>
+        <InputLabel>{t('landManagement.STATUS')}</InputLabel>
         <Select
           value={filters.status || ''}
           label="Status"
           onChange={(e) => handleFilterChange('status', e.target.value || undefined)}
         >
-          <MenuItem value="">{t('common:ALL')}</MenuItem>
-          <MenuItem value="ACTIVE">{t('landManagement:ACTIVE')}</MenuItem>
-          <MenuItem value="CANCELLED">{t('landManagement:CANCELLED')}</MenuItem>
-          <MenuItem value="EXPIRED">{t('landManagement:EXPIRED')}</MenuItem>
+          <MenuItem value="">{t('common.ALL')}</MenuItem>
+          <MenuItem value="ACTIVE">{t('landManagement.ACTIVE')}</MenuItem>
+          <MenuItem value="CANCELLED">{t('landManagement.CANCELLED')}</MenuItem>
+          <MenuItem value="EXPIRED">{t('landManagement.EXPIRED')}</MenuItem>
         </Select>
       </FormControl>
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MuiDatePicker
-          label={t('landManagement:START_DATE')}
+          label={t('landManagement.START_DATE')}
           value={startDate}
           onChange={setStartDate}
           slotProps={{ textField: { size: 'small' } }}
         />
         
         <MuiDatePicker
-          label={t('landManagement:END_DATE')}
+          label={t('landManagement.END_DATE')}
           value={endDate}
           onChange={setEndDate}
           slotProps={{ textField: { size: 'small' } }}
@@ -295,7 +295,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         disabled={!hasActiveFilters()}
         className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
       >
-        {t('landManagement:CLEAR_FILTERS')}
+        {t('landManagement.CLEAR_FILTERS')}
       </Button>
 
       <Button
@@ -305,7 +305,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
         startIcon={<FilterIcon />}
       >
-        {t('landManagement:APPLY_FILTERS')}
+        {t('landManagement.APPLY_FILTERS')}
       </Button>
     </FilterContainer>
   );
@@ -317,7 +317,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <Paper className="border border-gray-100 dark:border-gray-800 shadow-none">
         <Box p={3}>
           <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-2">
-            {t('landManagement:PURCHASE_HISTORY')}
+            {t('landManagement.PURCHASE_HISTORY')}
           </Typography>
         </Box>
         
@@ -325,14 +325,14 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('landManagement:PURCHASE_DATE')}</TableCell>
+                <TableCell>{t('landManagement.PURCHASE_DATE')}</TableCell>
                 <TableCell>{t('landManagement:TILE_ID')}</TableCell>
-                <TableCell align="right">{t('landManagement:OWNED_AREA')}</TableCell>
-                <TableCell align="right">{t('landManagement:GOLD_COST')}</TableCell>
-                <TableCell align="right">{t('landManagement:CARBON_COST')}</TableCell>
-                <TableCell align="right">{t('landManagement:TOTAL_COST')}</TableCell>
-                <TableCell align="center">{t('landManagement:STATUS')}</TableCell>
-                <TableCell>{t('landManagement:DESCRIPTION')}</TableCell>
+                <TableCell align="right">{t('landManagement.OWNED_AREA')}</TableCell>
+                <TableCell align="right">{t('landManagement.GOLD_COST')}</TableCell>
+                <TableCell align="right">{t('landManagement.CARBON_COST')}</TableCell>
+                <TableCell align="right">{t('landManagement.TOTAL_COST')}</TableCell>
+                <TableCell align="center">{t('landManagement.STATUS')}</TableCell>
+                <TableCell>{t('landManagement.DESCRIPTION')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -349,7 +349,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                       <AssessmentIcon className="text-gray-400 dark:text-gray-500" />
                     </div>
                     <Typography variant="body1" className="font-medium text-gray-900 dark:text-white mb-1">
-                      {t('landManagement:NO_PURCHASES_FOUND')}
+                      {t('landManagement.NO_PURCHASES_FOUND')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Start investing in land to see your portfolio here
@@ -455,7 +455,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         <div className="max-w-2xl mx-auto px-6 py-16">
           <Alert severity="error" action={
             <Button color="inherit" size="small" onClick={handleRefresh}>
-              {t('landManagement:RETRY')}
+              {t('landManagement.RETRY')}
             </Button>
           }>
             {error}
@@ -470,7 +470,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
       <div className="min-h-screen bg-white dark:bg-zinc-900">
         <div className="max-w-2xl mx-auto px-6 py-16">
           <Alert severity="info">
-            {t('landManagement:NO_TEAM_DATA')}
+            {t('landManagement.NO_TEAM_DATA')}
           </Alert>
         </div>
       </div>
@@ -484,19 +484,19 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         <div className="flex items-start justify-between mb-8">
           <div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
-              {t('navigation:TEAM_LAND_MANAGEMENT')}
+              {t('navigation.TEAM_LAND_MANAGEMENT')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t('landManagement:PORTFOLIO_DESCRIPTION')}
+              {t('landManagement.PORTFOLIO_DESCRIPTION')}
             </Typography>
           </div>
           <Stack direction="row" spacing={2}>
-            <Tooltip title={t('common:EXPORT_DATA')}>
+            <Tooltip title={t('common.EXPORT_DATA')}>
               <IconButton className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('common:REFRESH_DATA')}>
+            <Tooltip title={t('common.REFRESH_DATA')}>
               <IconButton onClick={handleRefresh} className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
                 <RefreshIcon />
               </IconButton>

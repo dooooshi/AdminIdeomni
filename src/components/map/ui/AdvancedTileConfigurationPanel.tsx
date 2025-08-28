@@ -69,7 +69,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
   readOnly = false,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation('map');
+  const { t } = useTranslation();
 
   // State management
   const [batchUpdateDialogOpen, setBatchUpdateDialogOpen] = useState(false);
@@ -148,7 +148,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
 
       setLastOperationResult({
         success: true,
-        message: t('TEMPLATE_RESET_SUCCESS'),
+        message: t('map.TEMPLATE_RESET_SUCCESS'),
         details: result,
       });
 
@@ -158,7 +158,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       console.error('Failed to reset template:', error);
       setLastOperationResult({
         success: false,
-        message: t('TEMPLATE_RESET_FAILED'),
+        message: t('map.TEMPLATE_RESET_FAILED'),
       });
     } finally {
       setProcessing(false);
@@ -200,8 +200,8 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       {/* Land Type Statistics */}
       <Card sx={{ mb: 2 }}>
         <CardHeader
-          title={t('LAND_TYPE_STATISTICS')}
-          subheader={t('CURRENT_DISTRIBUTION_AVERAGES')}
+          title={t('map.LAND_TYPE_STATISTICS')}
+          subheader={t('map.CURRENT_DISTRIBUTION_AVERAGES')}
         />
         <CardContent>
           <Grid container spacing={2}>
@@ -254,8 +254,8 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
       {/* Batch Operations */}
       <Card>
         <CardHeader
-          title={t('BATCH_OPERATIONS')}
-          subheader={t('ADVANCED_TILE_CONFIG_TOOLS')}
+          title={t('map.BATCH_OPERATIONS')}
+          subheader={t('map.ADVANCED_TILE_CONFIG_TOOLS')}
         />
         <CardContent>
           <Stack spacing={2}>
@@ -266,7 +266,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
               disabled={readOnly || processing}
               fullWidth
             >
-              {t('BATCH_UPDATE_BY_LAND_TYPE')}
+              {t('map.BATCH_UPDATE_BY_LAND_TYPE')}
             </Button>
 
             <Button
@@ -277,7 +277,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
               color="warning"
               fullWidth
             >
-              {t('RESET_ALL_TILES_TO_DEFAULTS')}
+              {t('map.RESET_ALL_TILES_TO_DEFAULTS')}
             </Button>
           </Stack>
         </CardContent>
@@ -299,14 +299,14 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
           <Stack spacing={3} sx={{ pt: 1 }}>
             {/* Land Type Selection */}
             <FormControl fullWidth>
-              <InputLabel>{t('LAND_TYPE')}</InputLabel>
+              <InputLabel>{t('map.LAND_TYPE')}</InputLabel>
               <Select
                 value={batchData.landType}
                 onChange={(e) => setBatchData(prev => ({ 
                   ...prev, 
                   landType: e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN' 
                 }))}
-                label={t('LAND_TYPE')}
+                label={t('map.LAND_TYPE')}
                 disabled={processing}
               >
                 {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => (
@@ -331,13 +331,13 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             {/* Fixed Value Controls */}
             <Box>
               <Typography variant="subtitle2" gutterBottom>
-                {t('FIXED_VALUES_SECTION')}
+                {t('map.FIXED_VALUES_SECTION')}
               </Typography>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label={t('FIXED_PRICE')}
+                    label={t('map.FIXED_PRICE')}
                     type="number"
                     value={batchData.fixedPrice || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -353,7 +353,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label={t('FIXED_POPULATION')}
+                    label={t('map.FIXED_POPULATION')}
                     type="number"
                     value={batchData.fixedPopulation || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -366,7 +366,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     fullWidth
-                    label={t('FIXED_TRANSPORT_COST')}
+                    label={t('map.FIXED_TRANSPORT_COST')}
                     type="number"
                     value={batchData.fixedTransportationCost || ''}
                     onChange={(e) => setBatchData(prev => ({ 
@@ -395,14 +395,14 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={() => setBatchUpdateDialogOpen(false)}
             disabled={processing}
           >
-            {t('CANCEL')}
+            {t('map.CANCEL')}
           </Button>
           <Button 
             variant="contained" 
             onClick={handleLandTypeBatchUpdate}
             disabled={processing}
           >
-            {processing ? t('UPDATING') : t('APPLY_BATCH_UPDATE')}
+            {processing ? t('map.UPDATING') : t('map.APPLY_BATCH_UPDATE')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -417,7 +417,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
         <DialogTitle>
           <Box display="flex" alignItems="center" gap={1}>
             <WarningIcon color="warning" />
-            {t('RESET_TEMPLATE_TO_DEFAULTS')}
+            {t('map.RESET_TEMPLATE_TO_DEFAULTS')}
           </Box>
         </DialogTitle>
         <DialogContent>
@@ -425,22 +425,22 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
           
           <Alert severity="warning" sx={{ mb: 2 }}>
             <Typography variant="body2">
-              {t('RESET_WARNING_MESSAGE')}
+              {t('map.RESET_WARNING_MESSAGE')}
             </Typography>
           </Alert>
 
           <Typography variant="body2" color="text.secondary">
-            {t('DEFAULT_VALUES')}
+            {t('map.DEFAULT_VALUES')}
           </Typography>
           <Box sx={{ mt: 1, pl: 2 }}>
             <Typography variant="caption" display="block">
-              {t('DEFAULT_MARINE_VALUES')}
+              {t('map.DEFAULT_MARINE_VALUES')}
             </Typography>
             <Typography variant="caption" display="block">
-              {t('DEFAULT_COASTAL_VALUES')}
+              {t('map.DEFAULT_COASTAL_VALUES')}
             </Typography>
             <Typography variant="caption" display="block">
-              {t('DEFAULT_PLAIN_VALUES')}
+              {t('map.DEFAULT_PLAIN_VALUES')}
             </Typography>
           </Box>
         </DialogContent>
@@ -449,7 +449,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={() => setResetDialogOpen(false)}
             disabled={processing}
           >
-            {t('CANCEL')}
+            {t('map.CANCEL')}
           </Button>
           <Button 
             variant="contained"
@@ -457,7 +457,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             onClick={handleResetToDefaults}
             disabled={processing}
           >
-            {processing ? t('RESETTING') : t('RESET_TO_DEFAULTS')}
+            {processing ? t('map.RESETTING') : t('map.RESET_TO_DEFAULTS')}
           </Button>
         </DialogActions>
       </Dialog>

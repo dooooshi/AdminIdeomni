@@ -86,17 +86,17 @@ interface ActivityTypeCardProps {
 }
 
 const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({ type, count, total }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   
   const getTypeDisplayName = (type: ActivityType): string => {
     switch (type) {
       case ActivityType.BizSimulation2_0:
-        return t('BIZSIMULATION2_0');
+        return t('activityManagement.BIZSIMULATION2_0');
       case ActivityType.BizSimulation2_2:
-        return t('BIZSIMULATION2_2');
+        return t('activityManagement.BIZSIMULATION2_2');
       case ActivityType.BizSimulation3_1:
-        return t('BIZSIMULATION3_1');
+        return t('activityManagement.BIZSIMULATION3_1');
       default:
         return type;
     }
@@ -139,7 +139,7 @@ const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({ type, count, total 
           <Box>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
               <Typography variant="body2" color="text.secondary">
-                {t('PERCENTAGE_OF_TOTAL')}
+                {t('activityManagement.PERCENTAGE_OF_TOTAL')}
               </Typography>
               <Typography variant="body2" fontWeight={600}>
                 {percentage.toFixed(1)}%
@@ -166,7 +166,7 @@ const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({ type, count, total 
 };
 
 const ActivityStatisticsComponent: React.FC = () => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const [statistics, setStatistics] = useState<ActivityStatistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -183,7 +183,7 @@ const ActivityStatisticsComponent: React.FC = () => {
       setStatistics(data);
     } catch (err) {
       console.error('Failed to load activity statistics:', err);
-      setError(err instanceof Error ? err.message : t('STATISTICS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.STATISTICS_LOAD_ERROR'));
       setStatistics(null);
     } finally {
       setLoading(false);
@@ -195,7 +195,7 @@ const ActivityStatisticsComponent: React.FC = () => {
       <Box sx={{ p: 3 }}>
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
           <CircularProgress size={20} />
-          <Typography variant="h5">{t('LOADING_STATISTICS')}</Typography>
+          <Typography variant="h5">{t('activityManagement.LOADING_STATISTICS')}</Typography>
         </Stack>
       </Box>
     );
@@ -215,7 +215,7 @@ const ActivityStatisticsComponent: React.FC = () => {
     return (
       <Box sx={{ p: 3 }}>
         <Alert severity="info">
-          {t('NO_STATISTICS_AVAILABLE')}
+          {t('activityManagement.NO_STATISTICS_AVAILABLE')}
         </Alert>
       </Box>
     );
@@ -224,12 +224,12 @@ const ActivityStatisticsComponent: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" component="h2" gutterBottom>
-        {t('ACTIVITY_STATISTICS')}
+        {t('activityManagement.ACTIVITY_STATISTICS')}
       </Typography>
 
       {error && (
         <Alert severity="warning" sx={{ mb: 3 }}>
-          {t('STATISTICS_LOAD_ERROR_PARTIAL')}
+          {t('activityManagement.STATISTICS_LOAD_ERROR_PARTIAL')}
         </Alert>
       )}
 
@@ -237,7 +237,7 @@ const ActivityStatisticsComponent: React.FC = () => {
         {/* Overview Cards */}
         <Box>
           <Typography variant="h6" gutterBottom>
-            {t('OVERVIEW')}
+            {t('activityManagement.OVERVIEW')}
           </Typography>
           <Box
             sx={{
@@ -251,32 +251,32 @@ const ActivityStatisticsComponent: React.FC = () => {
             }}
           >
             <StatisticCard
-              title={t('TOTAL_ACTIVITIES')}
+              title={t('activityManagement.TOTAL_ACTIVITIES')}
               value={statistics.total}
               icon={<EventIcon />}
               color="primary"
-              description={t('ALL_ACTIVITIES_TOTAL')}
+              description={t('activityManagement.ALL_ACTIVITIES_TOTAL')}
             />
             <StatisticCard
-              title={t('ACTIVE_ACTIVITIES')}
+              title={t('activityManagement.ACTIVE_ACTIVITIES')}
               value={statistics.active}
               icon={<CheckCircleIcon />}
               color="success"
-              description={t('CURRENTLY_ACTIVE')}
+              description={t('activityManagement.CURRENTLY_ACTIVE')}
             />
             <StatisticCard
-              title={t('UPCOMING_ACTIVITIES')}
+              title={t('activityManagement.UPCOMING_ACTIVITIES')}
               value={statistics.upcoming}
               icon={<ScheduleIcon />}
               color="warning"
-              description={t('STARTING_SOON')}
+              description={t('activityManagement.STARTING_SOON')}
             />
             <StatisticCard
-              title={t('ONGOING_ACTIVITIES')}
+              title={t('activityManagement.ONGOING_ACTIVITIES')}
               value={statistics.ongoing}
               icon={<PlayIcon />}
               color="info"
-              description={t('IN_PROGRESS_NOW')}
+              description={t('activityManagement.IN_PROGRESS_NOW')}
             />
           </Box>
         </Box>
@@ -284,7 +284,7 @@ const ActivityStatisticsComponent: React.FC = () => {
         {/* Activity Types Breakdown */}
         <Box>
           <Typography variant="h6" gutterBottom>
-            {t('ACTIVITY_TYPES_BREAKDOWN')}
+            {t('activityManagement.ACTIVITY_TYPES_BREAKDOWN')}
           </Typography>
           <Box
             sx={{
@@ -320,7 +320,7 @@ const ActivityStatisticsComponent: React.FC = () => {
           <CardContent>
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
               <BarChartIcon color="primary" />
-              <Typography variant="h6">{t('STATISTICS_SUMMARY')}</Typography>
+              <Typography variant="h6">{t('activityManagement.STATISTICS_SUMMARY')}</Typography>
             </Stack>
             <Typography variant="body2" color="text.secondary">
               {statistics.total > 0 ? (
@@ -331,7 +331,7 @@ const ActivityStatisticsComponent: React.FC = () => {
                   ongoing: statistics.ongoing,
                 })
               ) : (
-                t('NO_ACTIVITIES_CREATED_YET')
+                t('activityManagement.NO_ACTIVITIES_CREATED_YET')
               )}
             </Typography>
           </CardContent>

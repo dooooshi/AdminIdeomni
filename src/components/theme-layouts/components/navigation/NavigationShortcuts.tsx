@@ -19,7 +19,7 @@ function NavigationShortcuts(props: NavigationShortcutsProps) {
 	const { flattenNavigation: navigation } = useNavigation();
 	const { user, isAuthenticated } = useAuth();
 	const [userShortcuts, setUserShortcuts] = useState<string[]>([]);
-	const { t } = useTranslation('common');
+	const { t } = useTranslation();
 	// const prevUserShortcuts = usePrevious(userShortcuts);
 
 	useEffect(() => {
@@ -44,8 +44,8 @@ function NavigationShortcuts(props: NavigationShortcutsProps) {
 			navigation={navigation}
 			shortcuts={userShortcuts}
 			onChange={handleShortcutsChange}
-			searchPlaceholder={t('SEARCH_FOR_APP_OR_PAGE')}
-			searchAriaLabel={t('SEARCH')}
+			searchPlaceholder={t('common.SEARCH_FOR_APP_OR_PAGE')}
+			searchAriaLabel={t('common.SEARCH')}
 		/>
 	);
 }

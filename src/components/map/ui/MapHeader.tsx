@@ -9,7 +9,7 @@ interface MapHeaderProps {
 }
 
 function MapHeader({ onRefresh, onSettings }: MapHeaderProps) {
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 	
 	return (
 		<div className="flex w-full container">
@@ -26,7 +26,7 @@ function MapHeader({ onRefresh, onSettings }: MapHeaderProps) {
 							mb: 1
 						}}
 					>
-						{t('MAP')}
+						{t('map.MAP')}
 					</Typography>
 				</div>
 				<div className="flex items-center mt-6 sm:mt-0 sm:mx-2 space-x-3">
@@ -45,7 +45,7 @@ function MapHeader({ onRefresh, onSettings }: MapHeaderProps) {
 							}
 						}}
 					>
-						{t('REFRESH')}
+						{t('map.REFRESH')}
 					</Button>
 					<Button
 						variant="text"
@@ -60,7 +60,7 @@ function MapHeader({ onRefresh, onSettings }: MapHeaderProps) {
 							}
 						}}
 					>
-						{t('SETTINGS')}
+						{t('map.SETTINGS')}
 					</Button>
 				</div>
 			</div>

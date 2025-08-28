@@ -33,7 +33,7 @@ interface MapContainerProps {
 }
 
 function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
-	const { t } = useTranslation('map');
+	const { t } = useTranslation();
 	const [zoomLevel, setZoomLevel] = useState(1);
 	const mapRef = useRef<HexagonalMapRef>(null);
 
@@ -78,7 +78,7 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 							mb: 0.5
 						}}
 					>
-						{t('INTERACTIVE_MAP')}
+						{t('map.INTERACTIVE_MAP')}
 					</Typography>
 					<Typography 
 						variant="body2" 
@@ -87,7 +87,7 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 							fontSize: '0.85rem'
 						}}
 					>
-						{tiles.length} {t('TILES_COUNT')} • {t('GRID_SIZE')} • {t('ZOOM_LEVEL')}: {Math.round(zoomLevel * 100)}%
+						{tiles.length} {t('map.TILES_COUNT')} • {t('map.GRID_SIZE')} • {t('map.ZOOM_LEVEL')}: {Math.round(zoomLevel * 100)}%
 					</Typography>
 				</div>
 				<div className="flex items-center space-x-2">
@@ -98,7 +98,7 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 							border: '1px solid rgba(0, 0, 0, 0.08)'
 						}}
 					>
-						<Tooltip title={t('ZOOM_OUT')} arrow placement="top">
+						<Tooltip title={t('map.ZOOM_OUT')} arrow placement="top">
 							<IconButton
 								size="small"
 								onClick={handleZoomOut}
@@ -118,7 +118,7 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 							</IconButton>
 						</Tooltip>
 						
-						<Tooltip title={t('RESET_ZOOM')} arrow placement="top">
+						<Tooltip title={t('map.RESET_ZOOM')} arrow placement="top">
 							<IconButton
 								size="small"
 								onClick={handleResetZoom}
@@ -138,7 +138,7 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 							</IconButton>
 						</Tooltip>
 
-						<Tooltip title={t('ZOOM_IN')} arrow placement="top">
+						<Tooltip title={t('map.ZOOM_IN')} arrow placement="top">
 							<IconButton
 								size="small"
 								onClick={handleZoomIn}

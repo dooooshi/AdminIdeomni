@@ -137,7 +137,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
   onComplete,
   onSkip
 }) => {
-  const { t } = useTranslation('landManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   
   // Tutorial state
@@ -155,11 +155,11 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
   const tutorialSteps: TutorialStep[] = [
     {
       id: 'welcome',
-      title: t('TUTORIAL_WELCOME_TITLE'),
-      content: t('TUTORIAL_WELCOME_CONTENT'),
+      title: t('landManagement.TUTORIAL_WELCOME_TITLE'),
+      content: t('landManagement.TUTORIAL_WELCOME_CONTENT'),
       action: 'observe',
       icon: <TutorialIcon />,
-      tip: t('TUTORIAL_WELCOME_TIP')
+      tip: t('landManagement.TUTORIAL_WELCOME_TIP')
     },
     {
       id: 'explore-map',
@@ -433,12 +433,12 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                     </Typography>
                   </Box>
                   <Box display="flex" gap={0.5}>
-                    <Tooltip title={isPaused ? t('RESUME') : t('PAUSE')}>
+                    <Tooltip title={isPaused ? t('landManagement.RESUME') : t('landManagement.PAUSE')}>
                       <IconButton size="small" onClick={pauseResumeTutorial}>
                         {isPaused ? <PlayIcon /> : <PauseIcon />}
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title={t('SKIP_TUTORIAL')}>
+                    <Tooltip title={t('landManagement.SKIP_TUTORIAL')}>
                       <IconButton size="small" onClick={skipTutorial}>
                         <CloseIcon />
                       </IconButton>
@@ -496,7 +496,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                 {currentStepData.action !== 'observe' && (
                   <Chip
                     icon={currentStepData.action === 'hover' ? <LookIcon /> : <TouchIcon />}
-                    label={currentStepData.action === 'hover' ? t('HOVER_TO_CONTINUE') : t('CLICK_TO_CONTINUE')}
+                    label={currentStepData.action === 'hover' ? t('landManagement.HOVER_TO_CONTINUE') : t('landManagement.CLICK_TO_CONTINUE')}
                     color="primary"
                     variant="outlined"
                     size="small"
@@ -512,7 +512,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                     startIcon={<BackIcon />}
                     size="small"
                   >
-                    {t('BACK')}
+                    {t('landManagement.BACK')}
                   </Button>
 
                   <Stack direction="row" spacing={1}>
@@ -541,7 +541,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                       startIcon={<CheckIcon />}
                       size="small"
                     >
-                      {t('COMPLETE')}
+                      {t('landManagement.COMPLETE')}
                     </Button>
                   ) : (
                     <Button
@@ -551,7 +551,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
                       size="small"
                       disabled={currentStepData.action !== 'observe' && currentStepData.action !== 'wait'}
                     >
-                      {t('NEXT')}
+                      {t('landManagement.NEXT')}
                     </Button>
                   )}
                 </Stack>
@@ -563,7 +563,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
 
       {/* Restart Tutorial Option */}
       {completed && (
-        <Tooltip title={t('RESTART_TUTORIAL')}>
+        <Tooltip title={t('landManagement.RESTART_TUTORIAL')}>
           <Fab
             color="primary"
             size="small"

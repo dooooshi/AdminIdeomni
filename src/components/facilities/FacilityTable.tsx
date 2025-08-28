@@ -56,7 +56,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
   onPageChange,
   onRowsPerPageChange,
 }) => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
   const maxLevel = 4;
 
   const handleRowClick = (facility: TileFacilityInstance) => {
@@ -73,38 +73,38 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
             <TableRow>
               <TableCell>
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:FACILITY')}
+                  {t('facilityManagement.FACILITY')}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:TILE')}
+                  {t('facilityManagement.TILE')}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:STATUS')}
+                  {t('facilityManagement.STATUS')}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:LEVEL')}
+                  {t('facilityManagement.LEVEL')}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:BUILDER')}
+                  {t('facilityManagement.BUILDER')}
                 </Typography>
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement:BUILT_DATE')}
+                  {t('facilityManagement.BUILT_DATE')}
                 </Typography>
               </TableCell>
               {showActions && (
                 <TableCell align="center">
                   <Typography variant="body2" fontWeight={600}>
-                    {t('common:ACTIONS')}
+                    {t('common.ACTIONS')}
                   </Typography>
                 </TableCell>
               )}
@@ -115,7 +115,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
               const statusColor = StudentFacilityService.getStatusColor(facility.status);
               const statusText = StudentFacilityService.getStatusText(facility.status);
               const facilityIcon = StudentFacilityService.getFacilityIcon(facility.facilityType);
-              const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`);
+              const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`);
               const needsAttention = StudentFacilityService.needsAttention(facility);
 
               return (
@@ -160,7 +160,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                         )}
                       </Box>
                       {needsAttention && (
-                        <Tooltip title={t('facilityManagement:NEEDS_ATTENTION')}>
+                        <Tooltip title={t('facilityManagement.NEEDS_ATTENTION')}>
                           <WarningAmberOutlined
                             color="warning"
                             sx={{ fontSize: 16 }}
@@ -194,7 +194,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" noWrap>
-                      {facility.builder?.firstName || 'Unknown'}{' '}
+                      {facility.builder?.firstName || t('common.UNKNOWN')}{' '}
                       {facility.builder?.lastName || ''}
                     </Typography>
                   </TableCell>
@@ -211,7 +211,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                     <TableCell align="center">
                       <Stack direction="row" spacing={0.5} justifyContent="center">
                         {onEdit && (
-                          <Tooltip title={t('common:EDIT')}>
+                          <Tooltip title={t('common.EDIT')}>
                             <IconButton
                               size="small"
                               onClick={(e) => {
@@ -228,7 +228,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                           </Tooltip>
                         )}
                         {onUpgrade && facility.level < maxLevel && (
-                          <Tooltip title={t('facilityManagement:UPGRADE')}>
+                          <Tooltip title={t('facilityManagement.UPGRADE')}>
                             <IconButton
                               size="small"
                               onClick={(e) => {
@@ -258,7 +258,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                   sx={{ py: 8 }}
                 >
                   <Typography variant="body1" color="text.secondary">
-                    {t('facilityManagement:NO_FACILITIES_FOUND')}
+                    {t('facilityManagement.NO_FACILITIES_FOUND')}
                   </Typography>
                 </TableCell>
               </TableRow>

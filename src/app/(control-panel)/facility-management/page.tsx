@@ -69,7 +69,7 @@ function a11yProps(index: number) {
 }
 
 const FacilityManagementPage: React.FC = () => {
-  const { t } = useTranslation('facilityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
   const [facilityFormOpen, setFacilityFormOpen] = useState(false);
@@ -160,20 +160,20 @@ const FacilityManagementPage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('DASHBOARD')}
+              {t('facilityManagement.DASHBOARD')}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <BusinessIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              {t('FACILITY_MANAGEMENT')}
+              {t('facilityManagement.FACILITY_MANAGEMENT')}
             </Typography>
           </Breadcrumbs>
           
           <Typography variant="h4" component="h1" gutterBottom>
-            {t('FACILITY_MANAGEMENT')}
+            {t('facilityManagement.FACILITY_MANAGEMENT')}
           </Typography>
           
           <Typography variant="body1" color="text.secondary">
-            {t('FACILITY_MANAGEMENT_SUBTITLE')}
+            {t('facilityManagement.FACILITY_MANAGEMENT_SUBTITLE')}
           </Typography>
         </Box>
       }
@@ -189,19 +189,19 @@ const FacilityManagementPage: React.FC = () => {
                 variant="fullWidth"
               >
                 <Tab 
-                  label={t('FACILITY_LIST_TAB')} 
+                  label={t('facilityManagement.FACILITY_LIST_TAB')} 
                   icon={<ViewListIcon />} 
                   iconPosition="start"
                   {...a11yProps(0)} 
                 />
                 <Tab 
-                  label={t('CONFIGURATIONS_TAB')} 
+                  label={t('facilityManagement.CONFIGURATIONS_TAB')} 
                   icon={<SettingsIcon />} 
                   iconPosition="start"
                   {...a11yProps(1)} 
                 />
                 <Tab 
-                  label={t('STATISTICS_TAB')} 
+                  label={t('facilityManagement.STATISTICS_TAB')} 
                   icon={<BarChartIcon />} 
                   iconPosition="start"
                   {...a11yProps(2)} 
@@ -267,7 +267,7 @@ const FacilityManagementPage: React.FC = () => {
                 <BusinessIcon />
                 <Box>
                   <Typography variant="h6">
-                    {t('VIEW_FACILITY')}
+                    {t('facilityManagement.VIEW_FACILITY')}
                   </Typography>
                   {viewingFacility && (
                     <Typography variant="body2" color="textSecondary">
@@ -282,7 +282,7 @@ const FacilityManagementPage: React.FC = () => {
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('NAME')}
+                      {t('facilityManagement.NAME')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
                       {viewingFacility.name}
@@ -290,7 +290,7 @@ const FacilityManagementPage: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('TYPE')}
+                      {t('facilityManagement.TYPE')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
                       {t(viewingFacility.facilityType)}
@@ -298,7 +298,7 @@ const FacilityManagementPage: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('CATEGORY')}
+                      {t('facilityManagement.CATEGORY')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
                       {t(viewingFacility.category)}
@@ -306,16 +306,16 @@ const FacilityManagementPage: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('STATUS')}
+                      {t('facilityManagement.STATUS')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium" color={viewingFacility.isActive ? 'success.main' : 'warning.main'}>
-                      {viewingFacility.isActive ? t('ACTIVE') : t('INACTIVE')}
+                      {viewingFacility.isActive ? t('facilityManagement.ACTIVE') : t('facilityManagement.INACTIVE')}
                     </Typography>
                   </Grid>
                   {viewingFacility.description && (
                     <Grid size={{ xs: 12 }}>
                       <Typography variant="body2" color="textSecondary">
-                        {t('DESCRIPTION')}
+                        {t('facilityManagement.DESCRIPTION')}
                       </Typography>
                       <Typography variant="body1">
                         {viewingFacility.description}
@@ -325,7 +325,7 @@ const FacilityManagementPage: React.FC = () => {
                   {viewingFacility.capacity && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Typography variant="body2" color="textSecondary">
-                        {t('CAPACITY')}
+                        {t('facilityManagement.CAPACITY')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
                         {viewingFacility.capacity.toLocaleString()}
@@ -335,7 +335,7 @@ const FacilityManagementPage: React.FC = () => {
                   {viewingFacility.buildCost && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Typography variant="body2" color="textSecondary">
-                        {t('BUILD_COST')}
+                        {t('facilityManagement.BUILD_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
                         ${viewingFacility.buildCost.toLocaleString()}
@@ -345,26 +345,26 @@ const FacilityManagementPage: React.FC = () => {
                   {viewingFacility.maintenanceCost && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Typography variant="body2" color="textSecondary">
-                        {t('MAINTENANCE_COST')}
+                        {t('facilityManagement.MAINTENANCE_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        ${viewingFacility.maintenanceCost.toLocaleString()} {t('PER_MONTH')}
+                        ${viewingFacility.maintenanceCost.toLocaleString()} {t('facilityManagement.PER_MONTH')}
                       </Typography>
                     </Grid>
                   )}
                   {viewingFacility.operationCost && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Typography variant="body2" color="textSecondary">
-                        {t('OPERATION_COST')}
+                        {t('facilityManagement.OPERATION_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        ${viewingFacility.operationCost.toLocaleString()} {t('PER_DAY')}
+                        ${viewingFacility.operationCost.toLocaleString()} {t('facilityManagement.PER_DAY')}
                       </Typography>
                     </Grid>
                   )}
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('CREATED_AT')}
+                      {t('facilityManagement.CREATED_AT')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
                       {new Date(viewingFacility.createdAt).toLocaleDateString()}
@@ -372,7 +372,7 @@ const FacilityManagementPage: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6 }}>
                     <Typography variant="body2" color="textSecondary">
-                      {t('UPDATED_AT')}
+                      {t('facilityManagement.UPDATED_AT')}
                     </Typography>
                     <Typography variant="body1" fontWeight="medium">
                       {new Date(viewingFacility.updatedAt).toLocaleDateString()}
@@ -383,7 +383,7 @@ const FacilityManagementPage: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseFacilityDetails}>
-                {t('CLOSE')}
+                {t('facilityManagement.CLOSE')}
               </Button>
               {viewingFacility && (
                 <Button 
@@ -393,7 +393,7 @@ const FacilityManagementPage: React.FC = () => {
                     handleEditFacility(viewingFacility);
                   }}
                 >
-                  {t('EDIT')}
+                  {t('facilityManagement.EDIT')}
                 </Button>
               )}
             </DialogActions>
@@ -419,7 +419,7 @@ const FacilityManagementPage: React.FC = () => {
                 <SettingsIcon />
                 <Box>
                   <Typography variant="h6">
-                    {t('CONFIGURATION_DETAILS')}
+                    {t('facilityManagement.CONFIGURATION_DETAILS')}
                   </Typography>
                   {viewingConfig && (
                     <Typography variant="body2" color="text.secondary">
@@ -434,55 +434,55 @@ const FacilityManagementPage: React.FC = () => {
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('BASIC_INFORMATION')}
+                      {t('facilityManagement.BASIC_INFORMATION')}
                     </Typography>
-                    <Typography><strong>{t('FACILITY_TYPE')}:</strong> {t(`FACILITY_TYPE_${viewingConfig.facilityType}`)}</Typography>
-                    <Typography><strong>{t('CATEGORY')}:</strong> {t(`FACILITY_CATEGORY_${viewingConfig.category}`)}</Typography>
-                    <Typography><strong>{t('STATUS')}:</strong> {viewingConfig.isActive ? t('ACTIVE') : t('INACTIVE')}</Typography>
-                    <Typography><strong>{t('CREATED_DATE')}:</strong> {new Date(viewingConfig.createdAt).toLocaleString()}</Typography>
+                    <Typography><strong>{t('facilityManagement.FACILITY_TYPE')}:</strong> {t(`FACILITY_TYPE_${viewingConfig.facilityType}`)}</Typography>
+                    <Typography><strong>{t('facilityManagement.CATEGORY')}:</strong> {t(`FACILITY_CATEGORY_${viewingConfig.category}`)}</Typography>
+                    <Typography><strong>{t('facilityManagement.STATUS')}:</strong> {viewingConfig.isActive ? t('facilityManagement.ACTIVE') : t('facilityManagement.INACTIVE')}</Typography>
+                    <Typography><strong>{t('facilityManagement.CREATED_DATE')}:</strong> {new Date(viewingConfig.createdAt).toLocaleString()}</Typography>
                   </Grid>
                   
                   <Grid size={{ xs: 12, sm: 6 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('CAPACITY_CONFIGURATION')}
+                      {t('facilityManagement.CAPACITY_CONFIGURATION')}
                     </Typography>
-                    <Typography><strong>{t('MIN_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.minCapacity)}</Typography>
-                    <Typography><strong>{t('MAX_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.maxCapacity)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MIN_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.minCapacity)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MAX_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.maxCapacity)}</Typography>
                     {viewingConfig.defaultCapacity && (
-                      <Typography><strong>{t('DEFAULT_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.defaultCapacity)}</Typography>
+                      <Typography><strong>{t('facilityManagement.DEFAULT_CAPACITY')}:</strong> {FacilityConfigService.formatCapacity(viewingConfig.defaultCapacity)}</Typography>
                     )}
                   </Grid>
                   
                   <Grid size={{ xs: 12, sm: 4 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('BUILD_COST')}
+                      {t('facilityManagement.BUILD_COST')}
                     </Typography>
-                    <Typography><strong>{t('MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minBuildCost)}</Typography>
-                    <Typography><strong>{t('MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxBuildCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minBuildCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxBuildCost)}</Typography>
                     {viewingConfig.defaultBuildCost && (
-                      <Typography><strong>{t('DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultBuildCost)}</Typography>
+                      <Typography><strong>{t('facilityManagement.DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultBuildCost)}</Typography>
                     )}
                   </Grid>
                   
                   <Grid size={{ xs: 12, sm: 4 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('MAINTENANCE_COST')}
+                      {t('facilityManagement.MAINTENANCE_COST')}
                     </Typography>
-                    <Typography><strong>{t('MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minMaintenanceCost)}</Typography>
-                    <Typography><strong>{t('MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxMaintenanceCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minMaintenanceCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxMaintenanceCost)}</Typography>
                     {viewingConfig.defaultMaintenanceCost && (
-                      <Typography><strong>{t('DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultMaintenanceCost)}</Typography>
+                      <Typography><strong>{t('facilityManagement.DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultMaintenanceCost)}</Typography>
                     )}
                   </Grid>
                   
                   <Grid size={{ xs: 12, sm: 4 }}>
                     <Typography variant="subtitle2" gutterBottom>
-                      {t('OPERATION_COST')}
+                      {t('facilityManagement.OPERATION_COST')}
                     </Typography>
-                    <Typography><strong>{t('MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minOperationCost)}</Typography>
-                    <Typography><strong>{t('MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxOperationCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MIN')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.minOperationCost)}</Typography>
+                    <Typography><strong>{t('facilityManagement.MAX')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.maxOperationCost)}</Typography>
                     {viewingConfig.defaultOperationCost && (
-                      <Typography><strong>{t('DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultOperationCost)}</Typography>
+                      <Typography><strong>{t('facilityManagement.DEFAULT')}:</strong> {FacilityConfigService.formatCurrency(viewingConfig.defaultOperationCost)}</Typography>
                     )}
                   </Grid>
                 </Grid>
@@ -490,7 +490,7 @@ const FacilityManagementPage: React.FC = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseConfigDetails}>
-                {t('CLOSE')}
+                {t('facilityManagement.CLOSE')}
               </Button>
               {viewingConfig && (
                 <Button 
@@ -500,7 +500,7 @@ const FacilityManagementPage: React.FC = () => {
                     handleEditConfig(viewingConfig);
                   }}
                 >
-                  {t('EDIT')}
+                  {t('facilityManagement.EDIT')}
                 </Button>
               )}
             </DialogActions>

@@ -145,7 +145,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
   onStatisticsUpdate,
   isVisible,
 }) => {
-  const { t } = useTranslation('map');
+  const { t } = useTranslation();
   const [tileStates, setTileStates] = useState<ActivityTileState[]>([]);
   const [statistics, setStatistics] = useState<TileStatistics | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -301,12 +301,12 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             <Box display="flex" alignItems="center" gap={1}>
               <TimelineIcon />
               <Typography variant="h6">
-                {t('ACTIVITY_TILE_STATES')}
+                {t('map.ACTIVITY_TILE_STATES')}
               </Typography>
             </Box>
           }
           action={
-            <Tooltip title={t('REFRESH_STATES')}>
+            <Tooltip title={t('map.REFRESH_STATES')}>
               <IconButton 
                 onClick={loadActivityTileStates}
                 disabled={!activityId || isLoading}
@@ -322,7 +322,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             {/* Activity Status */}
             {!activityId ? (
               <Alert severity="info">
-                {t('SELECT_ACTIVITY_TO_MANAGE_STATES')}
+                {t('map.SELECT_ACTIVITY_TO_MANAGE_STATES')}
               </Alert>
             ) : !isInitialized ? (
               <Alert 
@@ -334,11 +334,11 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                     onClick={handleInitializeTileStates}
                     disabled={isLoading}
                   >
-                    {t('INITIALIZE')}
+                    {t('map.INITIALIZE')}
                   </Button>
                 }
               >
-                {t('ACTIVITY_STATES_NOT_INITIALIZED')}
+                {t('map.ACTIVITY_STATES_NOT_INITIALIZED')}
               </Alert>
             ) : (
               <Alert severity="success">
@@ -353,7 +353,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             {statistics && (
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('QUICK_STATISTICS')}
+                  {t('map.QUICK_STATISTICS')}
                 </Typography>
                 <Grid container spacing={2}>
                   <Grid size={{ xs: 6 }}>
@@ -361,7 +361,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                       <MoneyIcon fontSize="small" />
                       <Box>
                         <Typography variant="body2" color="textSecondary">
-                          {t('AVG_PRICE')}
+                          {t('map.AVG_PRICE')}
                         </Typography>
                         <Typography variant="body1" fontWeight="bold">
                           ${statistics.averagePrice?.toFixed(2)}
@@ -374,7 +374,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                       <PeopleIcon fontSize="small" />
                       <Box>
                         <Typography variant="body2" color="textSecondary">
-                          {t('TOTAL_POPULATION')}
+                          {t('map.TOTAL_POPULATION')}
                         </Typography>
                         <Typography variant="body1" fontWeight="bold">
                           {statistics.totalPopulation?.toLocaleString() || '0'}
@@ -390,11 +390,11 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             {selectedTileState && (
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('SELECTED_TILE_STATE')}
+                  {t('map.SELECTED_TILE_STATE')}
                 </Typography>
                 <Stack spacing={2}>
                   <TextField
-                    label={t('CURRENT_PRICE')}
+                    label={t('map.CURRENT_PRICE')}
                     type="number"
                     value={selectedTileState.currentPrice}
                     onChange={(e) => {
@@ -409,7 +409,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                     size="small"
                   />
                   <TextField
-                    label={t('CURRENT_POPULATION')}
+                    label={t('map.CURRENT_POPULATION')}
                     type="number"
                     value={selectedTileState.currentPopulation}
                     onChange={(e) => {
@@ -422,7 +422,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                   />
                   {selectedTileState.lastUpdated && (
                     <Typography variant="caption" color="textSecondary">
-                      {t('LAST_UPDATED')}: {new Date(selectedTileState.lastUpdated).toLocaleString()}
+                      {t('map.LAST_UPDATED')}: {new Date(selectedTileState.lastUpdated).toLocaleString()}
                     </Typography>
                   )}
                 </Stack>
@@ -435,7 +435,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             {isInitialized && (
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('SIMULATION_CONTROLS')}
+                  {t('map.SIMULATION_CONTROLS')}
                 </Typography>
                 <Stack spacing={2}>
                   <Button
@@ -445,7 +445,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                     disabled={isLoading}
                     fullWidth
                   >
-                    {t('RUN_SIMULATION')}
+                    {t('map.RUN_SIMULATION')}
                   </Button>
                   
                   <Button
@@ -455,7 +455,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                     disabled={isLoading}
                     fullWidth
                   >
-                    {t('RESET_TO_TEMPLATE')}
+                    {t('map.RESET_TO_TEMPLATE')}
                   </Button>
 
                   <FormControlLabel
@@ -465,7 +465,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                         onChange={(e) => setAutoUpdateStats(e.target.checked)}
                       />
                     }
-                    label={t('AUTO_UPDATE_STATISTICS')}
+                    label={t('map.AUTO_UPDATE_STATISTICS')}
                   />
                 </Stack>
               </Box>
@@ -485,7 +485,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
           <Box display="flex" alignItems="center" gap={1}>
             <AnalyticsIcon />
             <Typography variant="h6">
-              {t('RUN_MARKET_SIMULATION')}
+              {t('map.RUN_MARKET_SIMULATION')}
             </Typography>
           </Box>
         </DialogTitle>
@@ -493,11 +493,11 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
         <DialogContent>
           <Stack spacing={3}>
             <FormControl fullWidth>
-              <InputLabel>{t('SIMULATION_SCENARIO')}</InputLabel>
+              <InputLabel>{t('map.SIMULATION_SCENARIO')}</InputLabel>
               <Select
                 value={selectedScenario}
                 onChange={(e) => setSelectedScenario(e.target.value)}
-                label={t('SIMULATION_SCENARIO')}
+                label={t('map.SIMULATION_SCENARIO')}
               >
                 {simulationScenarios.map((scenario) => (
                   <MenuItem key={scenario.id} value={scenario.id}>
@@ -515,10 +515,10 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             </FormControl>
 
             <TextField
-              label={t('CUSTOM_CHANGE_REASON')}
+              label={t('map.CUSTOM_CHANGE_REASON')}
               value={customChangeReason}
               onChange={(e) => setCustomChangeReason(e.target.value)}
-              placeholder={t('OPTIONAL_CUSTOM_REASON')}
+              placeholder={t('map.OPTIONAL_CUSTOM_REASON')}
               multiline
               rows={2}
               fullWidth
@@ -536,7 +536,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
         
         <DialogActions>
           <Button onClick={() => setSimulationDialogOpen(false)}>
-            {t('CANCEL')}
+            {t('map.CANCEL')}
           </Button>
           <Button
             variant="contained"
@@ -544,7 +544,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
             disabled={!selectedScenario || isLoading}
             startIcon={<PlayArrowIcon />}
           >
-            {t('RUN_SIMULATION')}
+            {t('map.RUN_SIMULATION')}
           </Button>
         </DialogActions>
       </Dialog>

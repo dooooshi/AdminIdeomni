@@ -86,7 +86,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
   onRemoveUsers,
   onUserHistoryView,
 }) => {
-  const { t } = useTranslation('activityManagement');
+  const { t } = useTranslation();
   const theme = useTheme();
 
   // State management
@@ -159,7 +159,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
       setParticipants(data);
     } catch (err) {
       console.error('Failed to load participants:', err);
-      setError(err instanceof Error ? err.message : t('PARTICIPANTS_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.PARTICIPANTS_LOAD_ERROR'));
       // Set empty data structure to prevent errors
       setParticipants({
         data: [],
@@ -268,7 +268,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         sendNotification: true,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('STATUS_UPDATE_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.STATUS_UPDATE_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -301,7 +301,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         sendNotification: true,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('BULK_STATUS_UPDATE_ERROR'));
+      setError(err instanceof Error ? err.message : t('activityManagement.BULK_STATUS_UPDATE_ERROR'));
     } finally {
       setOperationLoading(false);
     }
@@ -331,7 +331,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>{t('LOADING_PARTICIPANTS')}</Typography>
+        <Typography sx={{ ml: 2 }}>{t('activityManagement.LOADING_PARTICIPANTS')}</Typography>
       </Box>
     );
   }
@@ -342,7 +342,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" component="h3">
-            {t('ACTIVITY_PARTICIPANTS')} - {activity.name}
+            {t('activityManagement.ACTIVITY_PARTICIPANTS')} - {activity.name}
           </Typography>
           <Stack direction="row" spacing={2}>
             <Button
@@ -351,14 +351,14 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
               onClick={loadParticipants}
               disabled={loading}
             >
-              {t('REFRESH')}
+              {t('activityManagement.REFRESH')}
             </Button>
             <Button
               variant="contained"
               startIcon={<PersonAddIcon />}
               onClick={onAddUsers}
             >
-              {t('ADD_USERS')}
+              {t('activityManagement.ADD_USERS')}
             </Button>
             {selectedParticipants.length > 0 && (
               <>
@@ -368,14 +368,14 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   startIcon={<PersonRemoveIcon />}
                   onClick={() => onRemoveUsers(selectedParticipants)}
                 >
-                  {t('REMOVE_SELECTED')} ({selectedParticipants.length})
+                  {t('activityManagement.REMOVE_SELECTED')} ({selectedParticipants.length})
                 </Button>
                 <Button
                   variant="outlined"
                   startIcon={<EditIcon />}
                   onClick={() => setBulkStatusDialog({ ...bulkStatusDialog, open: true })}
                 >
-                  {t('UPDATE_STATUS')}
+                  {t('activityManagement.UPDATE_STATUS')}
                 </Button>
               </>
             )}
@@ -392,7 +392,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     {participants.statistics.totalParticipants}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('TOTAL_PARTICIPANTS')}
+                    {t('activityManagement.TOTAL_PARTICIPANTS')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -404,7 +404,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     {participants.statistics.enrolled}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('ENROLLED')}
+                    {t('activityManagement.ENROLLED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -416,7 +416,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     {participants.statistics.completed}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('COMPLETED')}
+                    {t('activityManagement.COMPLETED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -428,7 +428,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     {participants.statistics.cancelled}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('CANCELLED')}
+                    {t('activityManagement.CANCELLED')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -440,7 +440,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     {participants.statistics.noShow}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('NO_SHOW')}
+                    {t('activityManagement.NO_SHOW')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -461,31 +461,31 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         <CardContent>
           <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <FilterListIcon />
-            {t('FILTERS')}
+            {t('activityManagement.FILTERS')}
           </Typography>
           <Grid container spacing={2} alignItems="center">
             <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 fullWidth
-                label={t('SEARCH_PARTICIPANTS')}
+                label={t('activityManagement.SEARCH_PARTICIPANTS')}
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 InputProps={{
                   startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
-                placeholder={t('SEARCH_BY_NAME_EMAIL')}
+                placeholder={t('activityManagement.SEARCH_BY_NAME_EMAIL')}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('STATUS')}</InputLabel>
+                <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
                 <Select
                   value={filters.status}
                   onChange={(e) => handleFilterChange('status', e.target.value)}
-                  label={t('STATUS')}
+                  label={t('activityManagement.STATUS')}
                   sx={{ minWidth: 140 }}
                 >
-                  <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
+                  <MenuItem value="">{t('activityManagement.ALL_STATUSES')}</MenuItem>
                   {Object.values(UserActivityStatus).map((status) => (
                     <MenuItem key={status} value={status}>
                       {UserActivityService.getStatusDisplayName(status)}
@@ -496,17 +496,17 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             </Grid>
             <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('USER_TYPE')}</InputLabel>
+                <InputLabel>{t('activityManagement.USER_TYPE')}</InputLabel>
                 <Select
                   value={filters.userType}
                   onChange={(e) => handleFilterChange('userType', e.target.value)}
-                  label={t('USER_TYPE')}
+                  label={t('activityManagement.USER_TYPE')}
                   sx={{ minWidth: 150 }}
                 >
-                  <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
-                  <MenuItem value={1}>{t('MANAGER')}</MenuItem>
-                  <MenuItem value={2}>{t('WORKER')}</MenuItem>
-                  <MenuItem value={3}>{t('STUDENT')}</MenuItem>
+                  <MenuItem value="">{t('activityManagement.ALL_TYPES')}</MenuItem>
+                  <MenuItem value={1}>{t('activityManagement.MANAGER')}</MenuItem>
+                  <MenuItem value={2}>{t('activityManagement.WORKER')}</MenuItem>
+                  <MenuItem value={3}>{t('activityManagement.STUDENT')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -518,7 +518,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     onChange={(e) => handleFilterChange('includeInactive', e.target.checked)}
                   />
                 }
-                label={t('INCLUDE_INACTIVE_USERS')}
+                label={t('activityManagement.INCLUDE_INACTIVE_USERS')}
               />
             </Grid>
           </Grid>
@@ -537,13 +537,13 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   onChange={handleSelectAll}
                 />
               </TableCell>
-              <TableCell>{t('USER')}</TableCell>
-              <TableCell>{t('USER_TYPE')}</TableCell>
-              <TableCell>{t('STATUS')}</TableCell>
-              <TableCell>{t('ENROLLED_AT')}</TableCell>
-              <TableCell>{t('UPDATED_AT')}</TableCell>
-              <TableCell>{t('ADDED_BY')}</TableCell>
-              <TableCell>{t('ACTIONS')}</TableCell>
+              <TableCell>{t('activityManagement.USER')}</TableCell>
+              <TableCell>{t('activityManagement.USER_TYPE')}</TableCell>
+              <TableCell>{t('activityManagement.STATUS')}</TableCell>
+              <TableCell>{t('activityManagement.ENROLLED_AT')}</TableCell>
+              <TableCell>{t('activityManagement.UPDATED_AT')}</TableCell>
+              <TableCell>{t('activityManagement.ADDED_BY')}</TableCell>
+              <TableCell>{t('activityManagement.ACTIONS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -553,17 +553,17 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   <Stack spacing={2} alignItems="center">
                     <GroupIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
                     <Typography variant="h6" color="text.secondary">
-                      {t('NO_PARTICIPANTS_FOUND')}
+                      {t('activityManagement.NO_PARTICIPANTS_FOUND')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('NO_PARTICIPANTS_MESSAGE')}
+                      {t('activityManagement.NO_PARTICIPANTS_MESSAGE')}
                     </Typography>
                     <Button
                       variant="contained"
                       startIcon={<PersonAddIcon />}
                       onClick={onAddUsers}
                     >
-                      {t('ADD_FIRST_PARTICIPANTS')}
+                      {t('activityManagement.ADD_FIRST_PARTICIPANTS')}
                     </Button>
                   </Stack>
                 </TableCell>
@@ -623,13 +623,13 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                       </Typography>
                     ) : (
                       <Typography variant="body2" color="text.secondary">
-                        {t('SYSTEM')}
+                        {t('activityManagement.SYSTEM')}
                       </Typography>
                     )}
                   </TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
-                      <Tooltip title={t('UPDATE_STATUS')}>
+                      <Tooltip title={t('activityManagement.UPDATE_STATUS')}>
                         <IconButton
                           size="small"
                           onClick={() => setStatusUpdateDialog({
@@ -643,7 +643,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('VIEW_USER_HISTORY')}>
+                      <Tooltip title={t('activityManagement.VIEW_USER_HISTORY')}>
                         <IconButton
                           size="small"
                           onClick={() => onUserHistoryView(participant.user.id)}
@@ -651,7 +651,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                           <HistoryIcon />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('SEND_EMAIL')}>
+                      <Tooltip title={t('activityManagement.SEND_EMAIL')}>
                         <IconButton
                           size="small"
                           onClick={() => window.open(`mailto:${participant.user.email}`, '_blank')}
@@ -688,19 +688,19 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>{t('UPDATE_PARTICIPANT_STATUS')}</DialogTitle>
+        <DialogTitle>{t('activityManagement.UPDATE_PARTICIPANT_STATUS')}</DialogTitle>
         <DialogContent>
           {statusUpdateDialog.participant && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" gutterBottom>
-                <strong>{t('USER')}:</strong> {UserActivityService.formatUserDisplayName(statusUpdateDialog.participant.user)}
+                <strong>{t('activityManagement.USER')}:</strong> {UserActivityService.formatUserDisplayName(statusUpdateDialog.participant.user)}
               </Typography>
               <Typography variant="body2" color="text.secondary" gutterBottom>
                 {statusUpdateDialog.participant.user.email}
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 <Typography variant="body2">
-                  <strong>{t('CURRENT_STATUS')}:</strong>
+                  <strong>{t('activityManagement.CURRENT_STATUS')}:</strong>
                 </Typography>
                 <Chip
                   label={UserActivityService.getStatusDisplayName(statusUpdateDialog.participant.status)}
@@ -714,14 +714,14 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
           <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('NEW_STATUS')}</InputLabel>
+                <InputLabel>{t('activityManagement.NEW_STATUS')}</InputLabel>
                 <Select
                   value={statusUpdateDialog.newStatus}
                   onChange={(e) => setStatusUpdateDialog({
                     ...statusUpdateDialog,
                     newStatus: e.target.value as UserActivityStatus
                   })}
-                  label={t('NEW_STATUS')}
+                  label={t('activityManagement.NEW_STATUS')}
                 >
                   {Object.values(UserActivityStatus).map((status) => (
                     <MenuItem key={status} value={status}>
@@ -734,7 +734,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={statusUpdateDialog.reason}
@@ -742,7 +742,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   ...statusUpdateDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.REASON_PLACEHOLDER')}
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
@@ -756,7 +756,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     })}
                   />
                 }
-                label={t('SEND_EMAIL_NOTIFICATION')}
+                label={t('activityManagement.SEND_EMAIL_NOTIFICATION')}
               />
             </Grid>
           </Grid>
@@ -766,14 +766,14 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             onClick={() => setStatusUpdateDialog({ ...statusUpdateDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleStatusUpdate}
             variant="contained"
             disabled={operationLoading}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('UPDATE_STATUS')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.UPDATE_STATUS')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -786,20 +786,20 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
         fullWidth
       >
         <DialogTitle>
-          {t('BULK_UPDATE_STATUS')} ({selectedParticipants.length} {t('PARTICIPANTS')})
+          {t('activityManagement.BULK_UPDATE_STATUS')} ({selectedParticipants.length} {t('activityManagement.PARTICIPANTS')})
         </DialogTitle>
         <DialogContent>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel>{t('NEW_STATUS')}</InputLabel>
+                <InputLabel>{t('activityManagement.NEW_STATUS')}</InputLabel>
                 <Select
                   value={bulkStatusDialog.status}
                   onChange={(e) => setBulkStatusDialog({
                     ...bulkStatusDialog,
                     status: e.target.value as UserActivityStatus
                   })}
-                  label={t('NEW_STATUS')}
+                  label={t('activityManagement.NEW_STATUS')}
                 >
                   {Object.values(UserActivityStatus).map((status) => (
                     <MenuItem key={status} value={status}>
@@ -812,7 +812,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label={t('REASON')}
+                label={t('activityManagement.REASON')}
                 multiline
                 rows={3}
                 value={bulkStatusDialog.reason}
@@ -820,7 +820,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                   ...bulkStatusDialog,
                   reason: e.target.value
                 })}
-                placeholder={t('BULK_REASON_PLACEHOLDER')}
+                placeholder={t('activityManagement.BULK_REASON_PLACEHOLDER')}
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
@@ -834,7 +834,7 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
                     })}
                   />
                 }
-                label={t('SEND_EMAIL_NOTIFICATION')}
+                label={t('activityManagement.SEND_EMAIL_NOTIFICATION')}
               />
             </Grid>
           </Grid>
@@ -844,14 +844,14 @@ const ActivityParticipantsList: React.FC<ActivityParticipantsListProps> = ({
             onClick={() => setBulkStatusDialog({ ...bulkStatusDialog, open: false })}
             disabled={operationLoading}
           >
-            {t('CANCEL')}
+            {t('activityManagement.CANCEL')}
           </Button>
           <Button
             onClick={handleBulkStatusUpdate}
             variant="contained"
             disabled={operationLoading}
           >
-            {operationLoading ? <CircularProgress size={20} /> : t('UPDATE_ALL')}
+            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.UPDATE_ALL')}
           </Button>
         </DialogActions>
       </Dialog>
