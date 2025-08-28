@@ -64,7 +64,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({
   const statusColor = StudentFacilityService.getStatusColor(facility.status);
   const statusText = StudentFacilityService.getStatusText(facility.status);
   const facilityIcon = StudentFacilityService.getFacilityIcon(facility.facilityType);
-  const facilityName = StudentFacilityService.getFacilityTypeName(facility.facilityType);
+  const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`);
   const totalInvestment = StudentFacilityService.calculateTotalInvestment(facility);
   const needsAttention = StudentFacilityService.needsAttention(facility);
 

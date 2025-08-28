@@ -21,9 +21,11 @@ import {
   AddOutlined,
   RefreshOutlined,
   ListAltOutlined,
+  ViewModuleOutlined,
+  TableRowsOutlined,
 } from '@mui/icons-material';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { FacilityCard, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
+import { FacilityCard, FacilityTable, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type { 
@@ -43,6 +45,7 @@ const StudentFacilitiesPage: React.FC = () => {
   const [summary, setSummary] = useState<TeamFacilitySummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'card' | 'table'>('table');
   
   // Filters and search
   const [searchTerm, setSearchTerm] = useState('');
@@ -167,7 +170,7 @@ const StudentFacilitiesPage: React.FC = () => {
     if (!searchTerm) return true;
     
     const searchLower = searchTerm.toLowerCase();
-    const facilityName = StudentFacilityService.getFacilityTypeName(facility.facilityType).toLowerCase();
+    const facilityName = t(`facilityManagement:FACILITY_TYPE_${facility.facilityType}`).toLowerCase();
     const description = facility.description?.toLowerCase() || '';
     
     return facilityName.includes(searchLower) || 
@@ -210,6 +213,31 @@ const StudentFacilitiesPage: React.FC = () => {
         </Typography>
         
         <Stack direction="row" spacing={2}>
+          <Button
+            variant={viewMode === 'card' ? 'contained' : 'outlined'}
+            startIcon={<ViewModuleOutlined />}
+            onClick={() => setViewMode('card')}
+            sx={{ 
+              borderColor: 'grey.300',
+              color: viewMode === 'card' ? undefined : 'text.secondary',
+              '&:hover': { borderColor: 'grey.400' }
+            }}
+          >
+            {t('common:CARD_VIEW')}
+          </Button>
+          <Button
+            variant={viewMode === 'table' ? 'contained' : 'outlined'}
+            startIcon={<TableRowsOutlined />}
+            onClick={() => setViewMode('table')}
+            sx={{ 
+              borderColor: 'grey.300',
+              color: viewMode === 'table' ? undefined : 'text.secondary',
+              '&:hover': { borderColor: 'grey.400' }
+            }}
+          >
+            {t('common:TABLE_VIEW')}
+          </Button>
+          <Divider orientation="vertical" flexItem />
           <Button
             variant="outlined"
             startIcon={<RefreshOutlined />}
@@ -289,7 +317,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     <MenuItem value="ALL">{t('facilityManagement:ALL_TYPES')}</MenuItem>
                     {FacilityType && Object.values(FacilityType) ? Object.values(FacilityType).map((type) => (
                       <MenuItem key={type} value={type}>
-                        {StudentFacilityService.getFacilityTypeName(type)}
+                        {t(`facilityManagement:FACILITY_TYPE_${type}`)}
                       </MenuItem>
                     )) : null}
                   </TextField>
@@ -335,7 +363,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     )}
                     {typeFilter !== 'ALL' && (
                       <Chip
-                        label={StudentFacilityService.getFacilityTypeName(typeFilter as FacilityType)}
+                        label={t(`facilityManagement:FACILITY_TYPE_${typeFilter}`)}
                         size="small"
                         onDelete={() => setTypeFilter('ALL')}
                       />
@@ -363,18 +391,28 @@ const StudentFacilitiesPage: React.FC = () => {
                 </Typography>
               </Stack>
               
-              <Grid container spacing={3}>
-                {filteredFacilities && filteredFacilities.length > 0 ? filteredFacilities.map((facility) => (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={facility.id}>
-                    <FacilityCard
-                      facility={facility}
-                      onClick={handleFacilityClick}
-                      onUpgrade={handleUpgradeClick}
-                      onViewDetails={handleFacilityClick}
-                    />
-                  </Grid>
-                )) : null}
-              </Grid>
+              {viewMode === 'card' ? (
+                <Grid container spacing={3}>
+                  {filteredFacilities && filteredFacilities.length > 0 ? filteredFacilities.map((facility) => (
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={facility.id}>
+                      <FacilityCard
+                        facility={facility}
+                        onClick={handleFacilityClick}
+                        onUpgrade={handleUpgradeClick}
+                        onViewDetails={handleFacilityClick}
+                      />
+                    </Grid>
+                  )) : null}
+                </Grid>
+              ) : (
+                <FacilityTable
+                  facilities={filteredFacilities || []}
+                  onClick={handleFacilityClick}
+                  onUpgrade={handleUpgradeClick}
+                  onViewDetails={handleFacilityClick}
+                  showActions={true}
+                />
+              )}
             </div>
           ) : (
             <Card variant="outlined">

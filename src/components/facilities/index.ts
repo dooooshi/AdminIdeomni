@@ -1,5 +1,6 @@
 // Core Facility Components for Student Building System
 export { default as FacilityCard } from './FacilityCard';
+export { default as FacilityTable } from './FacilityTable';
 export { default as FacilityTypeSelector } from './FacilityTypeSelector';
 export { default as FacilityPortfolioSummary } from './FacilityPortfolioSummary';
 export { default as BuildFacilityModal } from './BuildFacilityModal';

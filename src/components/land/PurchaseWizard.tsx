@@ -40,6 +40,7 @@ import {
   Balance as BalanceIcon
 } from '@mui/icons-material';
 import { styled, useTheme } from '@mui/material/styles';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import { AvailableTile, TeamLandSummary, PurchaseValidation } from '@/types/land';
 
@@ -156,6 +157,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
   onPurchaseRecommendation
 }) => {
   const theme = useTheme();
+  const { t } = useTranslation('common');
   
   // Wizard state
   const [activeStep, setActiveStep] = useState(0);
@@ -479,7 +481,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
             
             <Box>
               <Typography variant="subtitle2" gutterBottom>
-                Preferred Land Type (Optional)
+                {t('PREFERRED_LAND_TYPE_OPTIONAL')}
               </Typography>
               <Stack direction="row" spacing={1}>
                 {['PLAIN', 'COASTAL', 'MARINE'].map(landType => (
