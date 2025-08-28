@@ -1315,6 +1315,9 @@ export const enTranslations = {
   'teamManagement.TEAM_RESOURCES': 'Team Resources',
   'teamManagement.LAST_UPDATED': 'Last updated',
   'teamManagement.TEAM_DETAILS': 'Team Details',
+  'teamManagement.CARBON_CREDITS': 'Carbon Credits',
+  'teamManagement.ALL_RESOURCES_AVAILABLE': 'All resources available',
+  'teamManagement.LIMITED_RESOURCES_AVAILABLE': 'Limited resources available',
   
   // UserManagement namespace
   'userManagement.USER_MANAGEMENT': 'User Management',

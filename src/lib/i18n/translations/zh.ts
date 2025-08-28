@@ -1258,6 +1258,9 @@ export const zhTranslations = {
   'teamManagement.TEAM_RESOURCES': '团队资源',
   'teamManagement.LAST_UPDATED': '最后更新',
   'teamManagement.TEAM_DETAILS': '团队详情',
+  'teamManagement.CARBON_CREDITS': '碳排放指数',
+  'teamManagement.ALL_RESOURCES_AVAILABLE': '所有资源可用',
+  'teamManagement.LIMITED_RESOURCES_AVAILABLE': '有限资源可用',
   
   // UserManagement namespace
   'userManagement.USER_MANAGEMENT': '用户管理',
