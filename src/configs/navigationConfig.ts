@@ -64,6 +64,27 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		]
 	},
 	{
+		id: 'infrastructure',
+		title: 'Infrastructure',
+		subtitle: 'Infrastructure management and monitoring',
+		type: 'group',
+		icon: 'heroicons-outline:bolt',
+		translate: 'INFRASTRUCTURE',
+		subtitleTranslate: 'INFRASTRUCTURE_SUBTITLE',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'infrastructure.dashboard',
+				title: 'Infrastructure Dashboard',
+				type: 'item',
+				icon: 'heroicons-outline:chart-pie',
+				url: '/infrastructure',
+				translate: 'INFRASTRUCTURE_DASHBOARD',
+				auth: ['admin']
+			}
+		]
+	},
+	{
 		id: 'map',
 		title: 'Map',
 		subtitle: 'Map applications and tools',
@@ -121,6 +142,27 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 				translate: 'FACILITY_MANAGEMENT',
 				auth: ['admin']
 			},
+		]
+	},
+	{
+		id: 'infrastructure',
+		title: 'Infrastructure',
+		subtitle: 'Infrastructure management and monitoring',
+		type: 'group',
+		icon: 'heroicons-outline:bolt',
+		translate: 'INFRASTRUCTURE',
+		subtitleTranslate: 'INFRASTRUCTURE_SUBTITLE',
+		auth: ['admin'],
+		children: [
+			{
+				id: 'infrastructure.dashboard',
+				title: 'Infrastructure Dashboard',
+				type: 'item',
+				icon: 'heroicons-outline:chart-pie',
+				url: '/infrastructure',
+				translate: 'INFRASTRUCTURE_DASHBOARD',
+				auth: ['admin']
+			}
 		]
 	},
 	{
@@ -422,6 +464,29 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:building-office-2',
 					url: '/land-management/student/facilities',
 					translate: 'STUDENT_FACILITIES',
+					auth: ['user']
+				}
+			]
+		});
+
+		// Add Infrastructure for Students (userType: 3)
+		navigation.push({
+			id: 'infrastructure',
+			title: 'Infrastructure',
+			subtitle: 'Manage infrastructure connections',
+			type: 'group',
+			icon: 'heroicons-outline:bolt',
+			translate: 'INFRASTRUCTURE',
+			subtitleTranslate: 'INFRASTRUCTURE_MANAGEMENT_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'infrastructure.dashboard',
+					title: 'Infrastructure Dashboard',
+					type: 'item',
+					icon: 'heroicons-outline:chart-pie',
+					url: '/infrastructure',
+					translate: 'INFRASTRUCTURE_DASHBOARD',
 					auth: ['user']
 				}
 			]
