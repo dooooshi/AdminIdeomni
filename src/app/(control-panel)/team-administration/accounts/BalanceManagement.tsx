@@ -82,7 +82,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
     const errors: string[] = [];
 
     if (!goldValue && !carbonValue) {
-      errors.push(t('teamAccounts:validation.noChanges'));
+      errors.push(t('teamAccounts.validation.noChanges'));
       setValidationErrors(errors);
       return false;
     }
@@ -91,19 +91,19 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
     const carbonNum = carbonValue ? parseFloat(carbonValue) : 0;
 
     if (goldValue && (isNaN(goldNum) || !isFinite(goldNum))) {
-      errors.push(t('teamAccounts:validation.invalidGold'));
+      errors.push(t('teamAccounts.validation.invalidGold'));
     }
 
     if (carbonValue && (isNaN(carbonNum) || !isFinite(carbonNum))) {
-      errors.push(t('teamAccounts:validation.invalidCarbon'));
+      errors.push(t('teamAccounts.validation.invalidCarbon'));
     }
 
     if (operationMode === 'absolute') {
       if (goldValue && goldNum < 0) {
-        errors.push(t('teamAccounts:validation.negativeGold'));
+        errors.push(t('teamAccounts.validation.negativeGold'));
       }
       if (carbonValue && carbonNum < 0) {
-        errors.push(t('teamAccounts:validation.negativeCarbon'));
+        errors.push(t('teamAccounts.validation.negativeCarbon'));
       }
     } else if (operationMode === 'delta' && teamAccount) {
       // Validate delta changes won't result in negative balances
@@ -190,7 +190,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
       onClose();
     } catch (error: any) {
       console.error('Failed to update balances:', error);
-      setValidationErrors([error.data || t('teamAccounts:updateFailed')]);
+      setValidationErrors([error.data || t('teamAccounts.updateFailed')]);
     }
   };
 
@@ -227,7 +227,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
           </IdeomniSvgIcon>
           <Box>
             <Typography variant="h6">
-              {t('teamAccounts:manageBalances')}
+              {t('teamAccounts.manageBalances')}
             </Typography>
             {teamName && (
               <Typography variant="body2" color="textSecondary">
@@ -244,12 +244,12 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
           <Card variant="outlined">
             <CardContent className="p-4">
               <Typography variant="subtitle2" className="mb-3">
-                {t('teamAccounts:currentBalances')}
+                {t('teamAccounts.currentBalances')}
               </Typography>
               <Box className="grid grid-cols-2 gap-4">
                 <Box className="text-center">
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts:gold')}
+                    {t('teamAccounts.gold')}
                   </Typography>
                   <Typography 
                     variant="h6" 
@@ -260,7 +260,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
                 </Box>
                 <Box className="text-center">
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts:carbon')}
+                    {t('teamAccounts.carbon')}
                   </Typography>
                   <Typography 
                     variant="h6" 
@@ -277,7 +277,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
         {/* Operation Mode Selection */}
         <Box>
           <FormLabel component="legend" className="mb-3">
-            {t('teamAccounts:operationMode')}
+            {t('teamAccounts.operationMode')}
           </FormLabel>
           <ButtonGroup variant="outlined" fullWidth>
             <Button
@@ -285,20 +285,20 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
               onClick={() => setOperationMode('delta')}
               startIcon={<IdeomniSvgIcon>heroicons-outline:plus-minus</IdeomniSvgIcon>}
             >
-              {t('teamAccounts:deltaMode')}
+              {t('teamAccounts.deltaMode')}
             </Button>
             <Button
               variant={operationMode === 'absolute' ? 'contained' : 'outlined'}
               onClick={() => setOperationMode('absolute')}
               startIcon={<IdeomniSvgIcon>heroicons-outline:equals</IdeomniSvgIcon>}
             >
-              {t('teamAccounts:absoluteMode')}
+              {t('teamAccounts.absoluteMode')}
             </Button>
           </ButtonGroup>
           <Typography variant="caption" color="textSecondary" className="mt-2 block">
             {operationMode === 'delta' 
-              ? t('teamAccounts:deltaModeDescription')
-              : t('teamAccounts:absoluteModeDescription')
+              ? t('teamAccounts.deltaModeDescription')
+              : t('teamAccounts.absoluteModeDescription')
             }
           </Typography>
         </Box>
@@ -307,7 +307,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
         <Box className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormControl>
             <TextField
-              label={operationMode === 'delta' ? t('teamAccounts:goldChange') : t('teamAccounts:newGoldAmount')}
+              label={operationMode === 'delta' ? t('teamAccounts.goldChange') : t('teamAccounts.newGoldAmount')}
               type="number"
               value={goldValue}
               onChange={(e) => setGoldValue(e.target.value)}
@@ -323,15 +323,15 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
               }}
               helperText={
                 operationMode === 'delta' 
-                  ? t('teamAccounts:deltaHelp')
-                  : t('teamAccounts:absoluteHelp')
+                  ? t('teamAccounts.deltaHelp')
+                  : t('teamAccounts.absoluteHelp')
               }
             />
           </FormControl>
 
           <FormControl>
             <TextField
-              label={operationMode === 'delta' ? t('teamAccounts:carbonChange') : t('teamAccounts:newCarbonAmount')}
+              label={operationMode === 'delta' ? t('teamAccounts.carbonChange') : t('teamAccounts.newCarbonAmount')}
               type="number"
               value={carbonValue}
               onChange={(e) => setCarbonValue(e.target.value)}
@@ -347,8 +347,8 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
               }}
               helperText={
                 operationMode === 'delta' 
-                  ? t('teamAccounts:deltaHelp')
-                  : t('teamAccounts:absoluteHelp')
+                  ? t('teamAccounts.deltaHelp')
+                  : t('teamAccounts.absoluteHelp')
               }
             />
           </FormControl>
@@ -360,12 +360,12 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
             <CardContent className="p-4">
               <Typography variant="subtitle2" className="mb-3 flex items-center gap-2">
                 <IdeomniSvgIcon>heroicons-outline:eye</IdeomniSvgIcon>
-                {t('teamAccounts:preview')}
+                {t('teamAccounts.preview')}
               </Typography>
               <Box className="grid grid-cols-2 gap-4">
                 <Box>
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts:gold')}
+                    {t('teamAccounts.gold')}
                   </Typography>
                   <Box className="flex items-center gap-2">
                     <Typography variant="body2" className="font-mono">
@@ -382,7 +382,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
                 </Box>
                 <Box>
                   <Typography variant="caption" color="textSecondary">
-                    {t('teamAccounts:carbon')}
+                    {t('teamAccounts.carbon')}
                   </Typography>
                   <Box className="flex items-center gap-2">
                     <Typography variant="body2" className="font-mono">
@@ -406,7 +406,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
         {validationErrors.length > 0 && (
           <Alert severity="error">
             <Typography variant="subtitle2" className="mb-2">
-              {t('teamAccounts:validationErrors')}:
+              {t('teamAccounts.validationErrors')}:
             </Typography>
             <ul className="list-disc list-inside space-y-1">
               {validationErrors.map((error, index) => (
@@ -422,7 +422,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
           onClick={onClose}
           disabled={isLoading}
         >
-          {t('common:cancel')}
+          {t('common.cancel')}
         </Button>
         <Button
           variant="contained"
@@ -436,7 +436,7 @@ function BalanceManagement({ teamId, teamName, open, onClose }: BalanceManagemen
             <IdeomniSvgIcon>heroicons-outline:check</IdeomniSvgIcon>
           )}
         >
-          {isLoading ? t('common:saving') : t('teamAccounts:updateBalances')}
+          {isLoading ? t('common.saving') : t('teamAccounts.updateBalances')}
         </Button>
       </DialogActions>
     </Dialog>

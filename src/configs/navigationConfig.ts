@@ -460,34 +460,30 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				{
 					id: 'land-management.student-facilities',
 					title: 'Facilities',
-					type: 'item',
+					type: 'collapse',
 					icon: 'heroicons-outline:building-office-2',
-					url: '/land-management/student/facilities',
 					translate: 'STUDENT_FACILITIES',
-					auth: ['user']
-				}
-			]
-		});
-
-		// Add Infrastructure for Students (userType: 3)
-		navigation.push({
-			id: 'infrastructure',
-			title: 'Infrastructure',
-			subtitle: 'Manage infrastructure connections',
-			type: 'group',
-			icon: 'heroicons-outline:bolt',
-			translate: 'INFRASTRUCTURE',
-			subtitleTranslate: 'INFRASTRUCTURE_MANAGEMENT_SUBTITLE',
-			auth: ['user'],
-			children: [
-				{
-					id: 'infrastructure.dashboard',
-					title: 'Infrastructure Dashboard',
-					type: 'item',
-					icon: 'heroicons-outline:chart-pie',
-					url: '/infrastructure',
-					translate: 'INFRASTRUCTURE_DASHBOARD',
-					auth: ['user']
+					auth: ['user'],
+					children: [
+						{
+							id: 'land-management.student-facilities.main',
+							title: 'Facility Management',
+							type: 'item',
+							icon: 'heroicons-outline:building-office-2',
+							url: '/land-management/student/facilities',
+							translate: 'FACILITY_MANAGEMENT',
+							auth: ['user']
+						},
+						{
+							id: 'land-management.student-facilities.infrastructure',
+							title: 'Infrastructure Dashboard',
+							type: 'item',
+							icon: 'heroicons-outline:bolt',
+							url: '/infrastructure',
+							translate: 'INFRASTRUCTURE_DASHBOARD',
+							auth: ['user']
+						}
+					]
 				}
 			]
 		});

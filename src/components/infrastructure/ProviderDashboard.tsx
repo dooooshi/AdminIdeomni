@@ -6,11 +6,11 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   LinearProgress,
   Alert,
   Chip,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   WaterDrop as WaterIcon,
   PowerSettingsNew as PowerIcon,

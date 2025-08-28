@@ -69,10 +69,10 @@ function TeamAccountsPage({}: TeamAccountsPageProps) {
             <Box className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <Box>
                 <Typography variant="h4" className="font-semibold mb-2">
-                  {t('teamAccounts:teamAccounts')}
+                  {t('teamAccounts.teamAccounts')}
                 </Typography>
                 <Typography variant="body1" color="textSecondary">
-                  {t('teamAdministration:MANAGE_TEAM_ACCOUNTS_DESCRIPTION')}
+                  {t('teamAdministration.MANAGE_TEAM_ACCOUNTS_DESCRIPTION')}
                 </Typography>
               </Box>
             </Box>

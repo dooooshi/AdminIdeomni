@@ -39,7 +39,7 @@ import {
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import infrastructureService, {
   TeamFacility,
-  ProviderInfo,
+  DetailedProviderInfo,
   ServiceProvider,
 } from '@/lib/services/infrastructureService';
 
@@ -59,9 +59,15 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
   const [searchType, setSearchType] = useState<'connections' | 'services'>('connections');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [providers, setProviders] = useState<any>(null);
+  const [providers, setProviders] = useState<{
+    consumerFacility: any;
+    waterProviders?: DetailedProviderInfo[];
+    powerProviders?: DetailedProviderInfo[];
+    baseStations?: ServiceProvider[];
+    fireStations?: ServiceProvider[];
+  } | null>(null);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<any>(null);
+  const [selectedProvider, setSelectedProvider] = useState<DetailedProviderInfo | ServiceProvider | null>(null);
   const [proposedPrice, setProposedPrice] = useState('');
 
   // Filter facilities that need infrastructure
@@ -223,7 +229,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {providers.waterProviders.map((provider: ProviderInfo) => (
+                    {providers.waterProviders.map((provider: DetailedProviderInfo) => (
                       <TableRow key={provider.providerId}>
                         <TableCell>{provider.providerTeamName}</TableCell>
                         <TableCell>{provider.facilityLevel}</TableCell>
@@ -271,7 +277,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {providers.powerProviders.map((provider: ProviderInfo) => (
+                    {providers.powerProviders.map((provider: DetailedProviderInfo) => (
                       <TableRow key={provider.providerId}>
                         <TableCell>{provider.providerTeamName}</TableCell>
                         <TableCell>{provider.facilityLevel}</TableCell>

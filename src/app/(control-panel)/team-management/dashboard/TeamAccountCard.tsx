@@ -99,7 +99,7 @@ function TeamAccountCard({
               </IdeomniSvgIcon>
             </div>
             <Typography variant="body2" className="text-gray-600 dark:text-gray-400 mb-4">
-              {error ? t('teamAccounts:failedToLoadAccount') : t('teamAccounts:noAccountFound')}
+              {error ? t('teamAccounts.failedToLoadAccount') : t('teamAccounts.noAccountFound')}
             </Typography>
             <Button
               variant="text"
@@ -108,7 +108,7 @@ function TeamAccountCard({
               disabled={isRefreshing}
               className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
-              {t('common:TRY_AGAIN')}
+              {t('common.TRY_AGAIN')}
             </Button>
           </div>
         </CardContent>
@@ -127,7 +127,7 @@ function TeamAccountCard({
               </IdeomniSvgIcon>
             </div>
             <Typography variant="body2" className="text-gray-600 dark:text-gray-400">
-              {t('teamAccounts:noTeamAccount')}
+              {t('teamAccounts.noTeamAccount')}
             </Typography>
           </div>
         </CardContent>
@@ -147,9 +147,9 @@ function TeamAccountCard({
           {/* Header */}
           <Box className="flex items-center justify-between mb-8">
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
-              {t('teamManagement:TEAM_RESOURCES')}
+              {t('teamManagement.TEAM_RESOURCES')}
             </Typography>
-            <Tooltip title={t('common:refresh')}>
+            <Tooltip title={t('common.refresh')}>
               <IconButton
                 size="small"
                 onClick={handleRefresh}
@@ -168,7 +168,7 @@ function TeamAccountCard({
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:GOLD_BALANCE')}
+                  {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {teamAccount.gold.toLocaleString()}
@@ -176,7 +176,7 @@ function TeamAccountCard({
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-slate-400 uppercase tracking-wider text-xs font-medium mb-2 block">
-                  {t('teamManagement:CARBON_CREDITS')}
+                  {t('teamManagement.CARBON_CREDITS')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
                   {teamAccount.carbon.toLocaleString()}
@@ -198,10 +198,10 @@ function TeamAccountCard({
                 }`} />
                 <Typography variant="body2" color="text.secondary">
                   {teamAccount.gold > 0 && teamAccount.carbon > 0 
-                    ? t('teamManagement:ALL_RESOURCES_AVAILABLE')
+                    ? t('teamManagement.ALL_RESOURCES_AVAILABLE')
                     : teamAccount.gold === 0 && teamAccount.carbon === 0
-                    ? t('teamManagement:NO_RESOURCES_AVAILABLE')
-                    : t('teamManagement:LIMITED_RESOURCES_AVAILABLE')
+                    ? t('teamManagement.NO_RESOURCES_AVAILABLE')
+                    : t('teamManagement.LIMITED_RESOURCES_AVAILABLE')
                   }
                 </Typography>
               </div>
@@ -214,7 +214,7 @@ function TeamAccountCard({
               <div className="space-y-4">
                 <div>
                   <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    {t('teamManagement:TEAM_NAME')}
+                    {t('teamManagement.TEAM_NAME')}
                   </Typography>
                   <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                     {teamAccount.team.name}
@@ -224,7 +224,7 @@ function TeamAccountCard({
                 {teamAccount.team.leader && (
                   <div>
                     <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                      {t('teamManagement:TEAM_LEADER')}
+                      {t('teamManagement.TEAM_LEADER')}
                     </Typography>
                     <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                       {teamAccount.team.leader.firstName && teamAccount.team.leader.lastName
@@ -242,7 +242,7 @@ function TeamAccountCard({
           {!compact && (
             <Box className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
               <Typography variant="caption" className="text-gray-500 dark:text-gray-400">
-                {t('teamManagement:LAST_UPDATED')} {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
+                {t('teamManagement.LAST_UPDATED')} {TeamAccountService.formatDateTime(teamAccount.updatedAt, i18n.language)}
               </Typography>
             </Box>
           )}

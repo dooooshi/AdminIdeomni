@@ -111,11 +111,11 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
           severity="error" 
           action={
             <Button color="inherit" size="small" onClick={() => refetch()}>
-              {t('common:retry')}
+              {t('common.retry')}
             </Button>
           }
         >
-          {t('teamAccounts:failedToLoadAccounts')}
+          {t('teamAccounts.failedToLoadAccounts')}
         </Alert>
       </motion.div>
     );
@@ -134,13 +134,13 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
           <CardContent className="p-6">
             <Box className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <Typography variant="h5" className="font-semibold">
-                {t('teamAccounts:teamAccounts')}
+                {t('teamAccounts.teamAccounts')}
               </Typography>
               
               {/* Search */}
               <TextField
                 size="small"
-                placeholder={t('teamAccounts:searchTeams')}
+                placeholder={t('teamAccounts.searchTeams')}
                 value={searchTerm}
                 onChange={handleSearchChange}
                 InputProps={{
@@ -176,12 +176,12 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('teamAccounts:teamName')}</TableCell>
-                  <TableCell>{t('teamAccounts:teamLeader')}</TableCell>
-                  <TableCell align="center">{t('teamAccounts:members')}</TableCell>
-                  <TableCell align="right">{t('teamAccounts:gold')}</TableCell>
-                  <TableCell align="right">{t('teamAccounts:carbon')}</TableCell>
-                  <TableCell align="center">{t('common:actions')}</TableCell>
+                  <TableCell>{t('teamAccounts.teamName')}</TableCell>
+                  <TableCell>{t('teamAccounts.teamLeader')}</TableCell>
+                  <TableCell align="center">{t('teamAccounts.members')}</TableCell>
+                  <TableCell align="right">{t('teamAccounts.gold')}</TableCell>
+                  <TableCell align="right">{t('teamAccounts.carbon')}</TableCell>
+                  <TableCell align="center">{t('common.actions')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -206,12 +206,12 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
                           heroicons-outline:currency-dollar
                         </IdeomniSvgIcon>
                         <Typography variant="h6" color="textSecondary" className="mb-2">
-                          {searchTerm ? t('teamAccounts:noAccountsFound') : t('teamAccounts:noAccountsYet')}
+                          {searchTerm ? t('teamAccounts.noAccountsFound') : t('teamAccounts.noAccountsYet')}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                           {searchTerm 
-                            ? t('teamAccounts:tryDifferentSearch')
-                            : t('teamAccounts:accountsWillAppearHere')
+                            ? t('teamAccounts.tryDifferentSearch')
+                            : t('teamAccounts.accountsWillAppearHere')
                           }
                         </Typography>
                       </Box>
@@ -289,7 +289,7 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
                             handleEditBalances(account);
                           }}
                         >
-                          {t('teamAccounts:editBalances')}
+                          {t('teamAccounts.editBalances')}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -309,9 +309,9 @@ function AccountsOverview({ onSelectTeam, onEditBalances }: AccountsOverviewProp
               rowsPerPage={pageSize}
               onRowsPerPageChange={handlePageSizeChange}
               rowsPerPageOptions={[10, 20, 50, 100]}
-              labelRowsPerPage={t('common:itemsPerPage')}
+              labelRowsPerPage={t('common.itemsPerPage')}
               labelDisplayedRows={({ from, to, count }) =>
-                `${from}-${to} ${t('common:of')} ${count !== -1 ? count : `${t('common:moreThan')} ${to}`}`
+                `${from}-${to} ${t('common.of')} ${count !== -1 ? count : `${t('common.moreThan')} ${to}`}`
               }
             />
           )}

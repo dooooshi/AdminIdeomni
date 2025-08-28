@@ -17,7 +17,6 @@ import {
   Alert,
   Button,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import {
   Dashboard as DashboardIcon,
   PowerSettingsNew as PowerIcon,
@@ -155,56 +154,92 @@ const InfrastructurePage: React.FC = () => {
 
           {/* Summary Statistics */}
           {teamFacilitiesStatus && (
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ bgcolor: 'background.paper', height: '100%' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>
-                      {t('TOTAL_FACILITIES')}
-                    </Typography>
-                    <Typography variant="h5" fontWeight="bold">
-                      {teamFacilitiesStatus.summary.totalFacilities}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ bgcolor: 'success.light', color: 'success.contrastText', height: '100%' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="body2" gutterBottom sx={{ opacity: 0.9 }}>
-                      {t('FULLY_OPERATIONAL')}
-                    </Typography>
-                    <Typography variant="h5" fontWeight="bold">
-                      {teamFacilitiesStatus.summary.fullyOperational}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ bgcolor: 'warning.light', color: 'warning.contrastText', height: '100%' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="body2" gutterBottom sx={{ opacity: 0.9 }}>
-                      {t('PARTIALLY_OPERATIONAL')}
-                    </Typography>
-                    <Typography variant="h5" fontWeight="bold">
-                      {teamFacilitiesStatus.summary.partiallyOperational}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ bgcolor: 'error.light', color: 'error.contrastText', height: '100%' }}>
-                  <CardContent sx={{ p: 2 }}>
-                    <Typography variant="body2" gutterBottom sx={{ opacity: 0.9 }}>
-                      {t('NON_OPERATIONAL')}
-                    </Typography>
-                    <Typography variant="h5" fontWeight="bold">
-                      {teamFacilitiesStatus.summary.nonOperational}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 2 }}>
+              <Card sx={{ 
+                flex: '1 1 200px', 
+                minWidth: 150,
+                border: '1px solid',
+                borderColor: 'divider',
+                boxShadow: 1
+              }}>
+                <CardContent sx={{ textAlign: 'center', py: 2, px: 3 }}>
+                  <Typography 
+                    variant="overline" 
+                    color="text.secondary" 
+                    display="block"
+                    sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5 }}
+                  >
+                    {t('TOTAL_FACILITIES')}
+                  </Typography>
+                  <Typography variant="h3" fontWeight={600} color="primary.main">
+                    {teamFacilitiesStatus.summary.totalFacilities}
+                  </Typography>
+                </CardContent>
+              </Card>
+
+              <Card sx={{ 
+                flex: '1 1 200px', 
+                minWidth: 150,
+                bgcolor: 'success.main',
+                color: 'white',
+                boxShadow: 1
+              }}>
+                <CardContent sx={{ textAlign: 'center', py: 2, px: 3 }}>
+                  <Typography 
+                    variant="overline" 
+                    display="block"
+                    sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
+                  >
+                    {t('FULLY_OPERATIONAL')}
+                  </Typography>
+                  <Typography variant="h3" fontWeight={600}>
+                    {teamFacilitiesStatus.summary.fullyOperational}
+                  </Typography>
+                </CardContent>
+              </Card>
+
+              <Card sx={{ 
+                flex: '1 1 200px', 
+                minWidth: 150,
+                bgcolor: 'warning.main',
+                color: 'white',
+                boxShadow: 1
+              }}>
+                <CardContent sx={{ textAlign: 'center', py: 2, px: 3 }}>
+                  <Typography 
+                    variant="overline" 
+                    display="block"
+                    sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
+                  >
+                    {t('PARTIALLY_OPERATIONAL')}
+                  </Typography>
+                  <Typography variant="h3" fontWeight={600}>
+                    {teamFacilitiesStatus.summary.partiallyOperational}
+                  </Typography>
+                </CardContent>
+              </Card>
+
+              <Card sx={{ 
+                flex: '1 1 200px', 
+                minWidth: 150,
+                bgcolor: 'error.main',
+                color: 'white',
+                boxShadow: 1
+              }}>
+                <CardContent sx={{ textAlign: 'center', py: 2, px: 3 }}>
+                  <Typography 
+                    variant="overline" 
+                    display="block"
+                    sx={{ fontSize: '0.7rem', letterSpacing: 1, mb: 0.5, opacity: 0.95 }}
+                  >
+                    {t('NON_OPERATIONAL')}
+                  </Typography>
+                  <Typography variant="h3" fontWeight={600}>
+                    {teamFacilitiesStatus.summary.nonOperational}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Box>
           )}
         </Box>
       }

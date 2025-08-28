@@ -127,7 +127,7 @@ export interface TeamFacilitiesStatus {
   };
 }
 
-export interface ProviderInfo {
+export interface DetailedProviderInfo {
   providerId: string;
   providerTeamId: string;
   providerTeamName: string;
@@ -159,65 +159,155 @@ export interface ServiceProvider {
 }
 
 export interface ConnectionRequest {
-  requestId: string;
+  id: string;
   connectionType: InfrastructureType;
   consumerTeam: {
-    teamId: string;
-    teamName: string;
+    id: string;
+    name: string;
   };
   consumerFacility: {
-    facilityId: string;
-    type: string;
-    location: Coordinates;
+    id: string;
+    facilityType: string;
+    level: number;
+    status?: string;
+    buildGoldCost?: string;
+    buildCarbonCost?: string;
+    totalUpgradeCost?: string;
+    productionRate?: string;
+    capacity?: number;
+    efficiency?: string;
+    tileId?: number;
+    teamId?: string;
   };
-  providerTeam?: {
-    teamId: string;
-    teamName: string;
+  providerTeam: {
+    id: string;
+    name: string;
   };
-  providerFacility?: {
-    facilityId: string;
-    type: string;
-    location: Coordinates;
+  providerFacility: {
+    id: string;
+    facilityType: string;
+    level: number;
+    status?: string;
+    buildGoldCost?: string;
+    buildCarbonCost?: string;
+    totalUpgradeCost?: string;
+    productionRate?: string;
+    capacity?: number;
+    efficiency?: string;
+    tileId?: number;
+    teamId?: string;
   };
+  consumerTeamId?: string;
+  providerTeamId?: string;
+  consumerFacilityId?: string;
+  providerFacilityId?: string;
+  proposedPath?: Coordinates[];
   distance: number;
   operationPointsNeeded: number;
-  proposedUnitPrice?: number;
-  status: RequestStatus;
+  proposedUnitPrice?: string;
+  status: RequestStatus | string;
+  respondedAt?: string;
+  responseReason?: string | null;
+  activityId?: string;
   createdAt: string;
+  updatedAt?: string;
+  consumerTeamName?: string;
+  providerTeamName?: string;
 }
 
 export interface Connection {
-  connectionId: string;
+  id: string;
   connectionType: InfrastructureType;
+  providerTeam: {
+    id: string;
+    name: string;
+  };
+  consumerTeam: {
+    id: string;
+    name: string;
+  };
   providerFacility: {
-    facilityId: string;
-    type: string;
+    id: string;
+    facilityType: string;
     level: number;
+    status?: string;
+    buildGoldCost?: string;
+    buildCarbonCost?: string;
+    totalUpgradeCost?: string;
+    constructionStarted?: string;
+    constructionCompleted?: string;
+    productionRate?: string;
+    capacity?: number;
+    efficiency?: string;
+    activityId?: string;
+    tileId?: number;
+    teamId?: string;
+    builtBy?: string;
+    isActive?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   };
   consumerFacility: {
-    facilityId: string;
-    teamName: string;
-    type: string;
+    id: string;
+    facilityType: string;
+    level: number;
+    status?: string;
+    buildGoldCost?: string;
+    buildCarbonCost?: string;
+    totalUpgradeCost?: string;
+    constructionStarted?: string;
+    constructionCompleted?: string;
+    productionRate?: string;
+    capacity?: number;
+    efficiency?: string;
+    activityId?: string;
+    tileId?: number;
+    teamId?: string;
+    builtBy?: string;
+    isActive?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
   };
+  providerTeamId?: string;
+  consumerTeamId?: string;
+  providerFacilityId?: string;
+  consumerFacilityId?: string;
+  connectionPath?: Coordinates[];
+  distance?: number;
   operationPointsCost: number;
-  unitPrice: number;
-  status: ConnectionStatus;
+  unitPrice: string | number;
+  status: ConnectionStatus | string;
   connectedAt: string;
+  disconnectedAt?: string | null;
+  disconnectedBy?: string | null;
+  disconnectionReason?: string | null;
+  activityId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  consumerTeamName?: string;
+  providerTeamName?: string;
 }
 
 export interface ServiceSubscription {
-  subscriptionId: string;
-  serviceType: InfrastructureType;
-  consumerFacility: {
+  id: string; // Changed from subscriptionId
+  serviceType: string; // Can be 'BASE_STATION' or 'FIRE_STATION'
+  // For consumer view
+  providerTeamId?: string;
+  providerTeamName?: string;
+  providerFacility?: string;
+  // For provider view
+  consumerFacility?: {
     facilityId: string;
+    teamId: string;
     teamName: string;
-    type: string;
-    location: Coordinates;
+    facilityType: string;
+    location?: Coordinates;
   };
   annualFee: number;
-  status: SubscriptionStatus;
-  activatedAt?: string;
-  nextBillingDate?: string;
+  status: SubscriptionStatus | string;
+  requestedAt?: string;
+  activatedAt?: string | null;
+  nextBillingDate?: string | null;
 }
 
 export interface ProviderCapacity {
@@ -322,8 +412,8 @@ class InfrastructureService {
     sortBy?: 'distance' | 'price' | 'capacity'
   ): Promise<{
     consumerFacility: any;
-    waterProviders?: ProviderInfo[];
-    powerProviders?: ProviderInfo[];
+    waterProviders?: DetailedProviderInfo[];
+    powerProviders?: DetailedProviderInfo[];
   }> {
     const params = { type, maxDistance, sortBy };
     const response = await apiClient.get(`/infrastructure/discovery/available/connections/${facilityId}`, { params });
@@ -379,12 +469,9 @@ class InfrastructureService {
     // Handle both response formats
     const data = response.data.data;
     if (Array.isArray(data)) {
-      // If data is directly an array, wrap it
+      // If data is directly an array, use it as is
       return { 
-        requests: data.map(req => ({
-          ...req,
-          requestId: req.id, // Map id to requestId for compatibility
-        })), 
+        requests: data, 
         pagination: null 
       };
     }
@@ -403,12 +490,9 @@ class InfrastructureService {
     // Handle both response formats
     const data = response.data.data;
     if (Array.isArray(data)) {
-      // If data is directly an array, wrap it
+      // If data is directly an array, use it as is
       return { 
-        requests: data.map(req => ({
-          ...req,
-          requestId: req.id, // Map id to requestId for compatibility
-        })), 
+        requests: data, 
         pagination: null 
       };
     }
@@ -448,12 +532,9 @@ class InfrastructureService {
     // Handle both response formats
     const data = response.data.data;
     if (Array.isArray(data)) {
-      // If data is directly an array, wrap it
+      // If data is directly an array, use it as is
       return { 
-        connections: data.map(conn => ({
-          ...conn,
-          connectionId: conn.id || conn.connectionId, // Map id to connectionId for compatibility
-        })), 
+        connections: data, 
         summary: null 
       };
     }
@@ -471,12 +552,9 @@ class InfrastructureService {
     // Handle both response formats
     const data = response.data.data;
     if (Array.isArray(data)) {
-      // If data is directly an array, wrap it
+      // If data is directly an array, use it as is
       return { 
-        connections: data.map(conn => ({
-          ...conn,
-          connectionId: conn.id || conn.connectionId, // Map id to connectionId for compatibility
-        })), 
+        connections: data, 
         summary: null 
       };
     }

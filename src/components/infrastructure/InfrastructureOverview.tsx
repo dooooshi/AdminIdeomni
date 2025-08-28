@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Chip,
   IconButton,
   Table,
@@ -22,6 +21,7 @@ import {
   LinearProgress,
   Button,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   WaterDrop as WaterIcon,
   PowerSettingsNew as PowerIcon,
@@ -287,7 +287,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
             <Alert severity="error">{error}</Alert>
           ) : (
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12 }}>
+              <Grid size={12}>
                 <Typography variant="body2" color="text.secondary">
                   {t('FACILITY_ID')}: {facilityDetails.facilityId}
                 </Typography>
@@ -346,7 +346,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                 )}
               </Grid>
 
-              <Grid size={{ xs: 12 }}>
+              <Grid size={12}>
                 {facilityDetails.missingInfrastructure.length > 0 && (
                   <Alert severity="error">
                     {t('MISSING_INFRASTRUCTURE')}: {facilityDetails.missingInfrastructure.map(i => t(i)).join(', ')}

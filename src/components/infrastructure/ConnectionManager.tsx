@@ -136,7 +136,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     setLoading(true);
     try {
       await infrastructureService.acceptConnectionRequest(
-        selectedRequest.requestId || selectedRequest.id,
+        selectedRequest.id,
         parseFloat(unitPrice)
       );
       setAcceptDialogOpen(false);
@@ -157,7 +157,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     setLoading(true);
     try {
       await infrastructureService.rejectConnectionRequest(
-        selectedRequest.requestId || selectedRequest.id,
+        selectedRequest.id,
         reason
       );
       setRejectDialogOpen(false);
@@ -178,7 +178,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     setLoading(true);
     try {
       await infrastructureService.cancelConnectionRequest(
-        selectedRequest.requestId || selectedRequest.id,
+        selectedRequest.id,
         reason
       );
       setCancelDialogOpen(false);
@@ -199,7 +199,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     setLoading(true);
     try {
       await infrastructureService.disconnectConnection(
-        selectedConnection.connectionId || selectedConnection.id,
+        selectedConnection.id,
         reason
       );
       setDisconnectDialogOpen(false);
@@ -281,21 +281,28 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {consumerConnections.map((connection, index) => (
-                    <TableRow key={`consumer-conn-${connection.connectionId || connection.id}-${index}`}>
+                  {consumerConnections.map((connection) => (
+                    <TableRow key={`consumer-conn-${connection.id}`}>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(connection.connectionType)}
                           {t(connection.connectionType)}
                         </Box>
                       </TableCell>
-                      <TableCell>{connection.providerFacility?.type || connection.providerFacility?.facilityType || '-'}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography variant="body2">{connection.providerTeam?.name || '-'}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {connection.providerFacility?.facilityType || '-'} (Level {connection.providerFacility?.level || 0})
+                          </Typography>
+                        </Box>
+                      </TableCell>
                       <TableCell>${connection.unitPrice || '0'}</TableCell>
                       <TableCell>{(connection.operationPointsCost || 1) - 1}</TableCell>
                       <TableCell>
                         <Chip
                           label={t(connection.status)}
-                          color={getStatusColor(connection.status)}
+                          color={getStatusColor(connection.status as ConnectionStatus)}
                           size="small"
                         />
                       </TableCell>
@@ -341,15 +348,22 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {consumerRequests.map((request, index) => (
-                    <TableRow key={`consumer-req-${request.requestId || request.id}-${index}`}>
+                  {consumerRequests.map((request) => (
+                    <TableRow key={`consumer-req-${request.id}`}>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(request.connectionType)}
                           {t(request.connectionType)}
                         </Box>
                       </TableCell>
-                      <TableCell>{request.providerTeam?.teamName || request.providerFacility?.facilityType || '-'}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography variant="body2">{request.providerTeam?.name || '-'}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {request.providerFacility?.facilityType || '-'} (Level {request.providerFacility?.level || 0})
+                          </Typography>
+                        </Box>
+                      </TableCell>
                       <TableCell>
                         {request.proposedUnitPrice ? `$${request.proposedUnitPrice}` : '-'}
                       </TableCell>
@@ -357,7 +371,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Chip
                           label={t(request.status)}
-                          color={getStatusColor(request.status)}
+                          color={getStatusColor(request.status as RequestStatus)}
                           size="small"
                         />
                       </TableCell>
@@ -417,21 +431,28 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {providerConnections.map((connection, index) => (
-                    <TableRow key={`provider-conn-${connection.connectionId || connection.id}-${index}`}>
+                  {providerConnections.map((connection) => (
+                    <TableRow key={`provider-conn-${connection.id}`}>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(connection.connectionType)}
                           {t(connection.connectionType)}
                         </Box>
                       </TableCell>
-                      <TableCell>{connection.consumerFacility?.teamName || connection.consumerTeam?.name || '-'}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography variant="body2">{connection.consumerTeam?.name || '-'}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {connection.consumerFacility?.facilityType || '-'} (Level {connection.consumerFacility?.level || 0})
+                          </Typography>
+                        </Box>
+                      </TableCell>
                       <TableCell>${connection.unitPrice || '0'}</TableCell>
                       <TableCell>{connection.operationPointsCost || '0'}</TableCell>
                       <TableCell>
                         <Chip
                           label={t(connection.status)}
-                          color={getStatusColor(connection.status)}
+                          color={getStatusColor(connection.status as ConnectionStatus)}
                           size="small"
                         />
                       </TableCell>
@@ -477,15 +498,22 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {providerRequests.map((request, index) => (
-                    <TableRow key={`provider-req-${request.requestId || request.id}-${index}`}>
+                  {providerRequests.map((request) => (
+                    <TableRow key={`provider-req-${request.id}`}>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getConnectionTypeIcon(request.connectionType)}
                           {t(request.connectionType)}
                         </Box>
                       </TableCell>
-                      <TableCell>{request.consumerTeam?.teamName || request.consumerFacility?.facilityType || '-'}</TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography variant="body2">{request.consumerTeam?.name || '-'}</Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {request.consumerFacility?.facilityType || '-'} (Level {request.consumerFacility?.level || 0})
+                          </Typography>
+                        </Box>
+                      </TableCell>
                       <TableCell>{request.distance}</TableCell>
                       <TableCell>{request.operationPointsNeeded}</TableCell>
                       <TableCell>
@@ -494,7 +522,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                       <TableCell>
                         <Chip
                           label={t(request.status)}
-                          color={getStatusColor(request.status)}
+                          color={getStatusColor(request.status as RequestStatus)}
                           size="small"
                         />
                       </TableCell>

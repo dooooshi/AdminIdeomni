@@ -110,11 +110,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
           severity="error" 
           action={
             <Button color="inherit" size="small" onClick={() => refetch()}>
-              {t('common:retry')}
+              {t('common.retry')}
             </Button>
           }
         >
-          {t('teamAccounts:failedToLoadStatistics')}
+          {t('teamAccounts.failedToLoadStatistics')}
         </Alert>
       </motion.div>
     );
@@ -154,7 +154,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         className={className}
       >
         <Alert severity="info">
-          {t('teamAccounts:noStatisticsAvailable')}
+          {t('teamAccounts.noStatisticsAvailable')}
         </Alert>
       </motion.div>
     );
@@ -172,11 +172,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <motion.div variants={item}>
             <StatisticCard
-              title={t('teamAccounts:totalTeams')}
+              title={t('teamAccounts.totalTeams')}
               value={summary.totalTeamsWithAccounts}
               icon="heroicons-outline:user-group"
               color="text-blue-600"
-              subtitle={t('teamAccounts:teamsWithAccounts')}
+              subtitle={t('teamAccounts.teamsWithAccounts')}
             />
           </motion.div>
         </Grid>
@@ -185,11 +185,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <motion.div variants={item}>
             <StatisticCard
-              title={t('teamAccounts:totalGold')}
+              title={t('teamAccounts.totalGold')}
               value={summary.totalGold}
               icon="heroicons-solid:currency-dollar"
               color="text-yellow-600"
-              subtitle={t('teamAccounts:acrossAllTeams')}
+              subtitle={t('teamAccounts.acrossAllTeams')}
             />
           </motion.div>
         </Grid>
@@ -198,11 +198,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <motion.div variants={item}>
             <StatisticCard
-              title={t('teamAccounts:totalCarbon')}
+              title={t('teamAccounts.totalCarbon')}
               value={summary.totalCarbon}
               icon="heroicons-solid:leaf"
               color="text-green-600"
-              subtitle={t('teamAccounts:acrossAllTeams')}
+              subtitle={t('teamAccounts.acrossAllTeams')}
             />
           </motion.div>
         </Grid>
@@ -211,11 +211,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
           <motion.div variants={item}>
             <StatisticCard
-              title={t('teamAccounts:goldToCarbonRatio')}
+              title={t('teamAccounts.goldToCarbonRatio')}
               value={summary.totalCarbon > 0 ? (summary.totalGold / summary.totalCarbon).toFixed(2) : '∞'}
               icon="heroicons-outline:scale"
               color="text-purple-600"
-              subtitle={t('teamAccounts:resourceBalance')}
+              subtitle={t('teamAccounts.resourceBalance')}
             />
           </motion.div>
         </Grid>
@@ -233,7 +233,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                   </Box>
                   <Box className="flex-1">
                     <Typography variant="h6" className="font-semibold mb-1">
-                      {t('teamAccounts:averageGold')}
+                      {t('teamAccounts.averageGold')}
                     </Typography>
                     <Typography variant="h4" className="font-bold text-yellow-600">
                       {TeamAccountService.formatResourceAmount(summary.averageGold)}
@@ -244,7 +244,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                 <Box className="space-y-2">
                   <Box className="flex justify-between items-center">
                     <Typography variant="body2" color="textSecondary">
-                      {t('teamAccounts:highestPossible')}
+                      {t('teamAccounts.highestPossible')}
                     </Typography>
                     <Typography variant="body2" className="font-mono">
                       {summary.totalGold > 0 ? TeamAccountService.formatResourceAmount(summary.totalGold) : '0'}
@@ -252,11 +252,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                   </Box>
                   <Box className="flex justify-between items-center">
                     <Typography variant="body2" color="textSecondary">
-                      {t('teamAccounts:distribution')}
+                      {t('teamAccounts.distribution')}
                     </Typography>
                     <Chip
                       size="small"
-                      label={summary.totalTeamsWithAccounts > 0 ? t('teamAccounts:distributed') : t('teamAccounts:noDistribution')}
+                      label={summary.totalTeamsWithAccounts > 0 ? t('teamAccounts.distributed') : t('teamAccounts.noDistribution')}
                       color={summary.averageGold > 0 ? 'success' : 'default'}
                       variant="outlined"
                     />
@@ -280,7 +280,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                   </Box>
                   <Box className="flex-1">
                     <Typography variant="h6" className="font-semibold mb-1">
-                      {t('teamAccounts:averageCarbon')}
+                      {t('teamAccounts.averageCarbon')}
                     </Typography>
                     <Typography variant="h4" className="font-bold text-green-600">
                       {TeamAccountService.formatResourceAmount(summary.averageCarbon)}
@@ -291,7 +291,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                 <Box className="space-y-2">
                   <Box className="flex justify-between items-center">
                     <Typography variant="body2" color="textSecondary">
-                      {t('teamAccounts:highestPossible')}
+                      {t('teamAccounts.highestPossible')}
                     </Typography>
                     <Typography variant="body2" className="font-mono">
                       {summary.totalCarbon > 0 ? TeamAccountService.formatResourceAmount(summary.totalCarbon) : '0'}
@@ -299,11 +299,11 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                   </Box>
                   <Box className="flex justify-between items-center">
                     <Typography variant="body2" color="textSecondary">
-                      {t('teamAccounts:distribution')}
+                      {t('teamAccounts.distribution')}
                     </Typography>
                     <Chip
                       size="small"
-                      label={summary.totalTeamsWithAccounts > 0 ? t('teamAccounts:distributed') : t('teamAccounts:noDistribution')}
+                      label={summary.totalTeamsWithAccounts > 0 ? t('teamAccounts.distributed') : t('teamAccounts.noDistribution')}
                       color={summary.averageCarbon > 0 ? 'success' : 'default'}
                       variant="outlined"
                     />
@@ -320,7 +320,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
             <Card>
               <CardContent className="p-6">
                 <Typography variant="h6" className="font-semibold mb-4">
-                  {t('teamAccounts:resourceSummary')}
+                  {t('teamAccounts.resourceSummary')}
                 </Typography>
                 
                 <Grid container spacing={4}>
@@ -330,7 +330,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                         {summary.totalTeamsWithAccounts}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        {t('teamAccounts:activeTeamAccounts')}
+                        {t('teamAccounts.activeTeamAccounts')}
                       </Typography>
                     </Box>
                   </Grid>
@@ -341,7 +341,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                         {TeamAccountService.formatResourceAmount(summary.totalGold + summary.totalCarbon)}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        {t('teamAccounts:totalResources')}
+                        {t('teamAccounts.totalResources')}
                       </Typography>
                     </Box>
                   </Grid>
@@ -357,7 +357,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                         }
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        {t('teamAccounts:avgResourcesPerTeam')}
+                        {t('teamAccounts.avgResourcesPerTeam')}
                       </Typography>
                     </Box>
                   </Grid>

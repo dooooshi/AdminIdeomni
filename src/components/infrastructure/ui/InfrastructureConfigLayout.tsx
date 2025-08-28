@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, Card, CardHeader, CardContent } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { InfrastructureConfigList, InfrastructureConfigStatistics } from '..';
 
 interface InfrastructureConfigLayoutProps {
@@ -9,6 +10,7 @@ interface InfrastructureConfigLayoutProps {
 
 const InfrastructureConfigLayout: React.FC<InfrastructureConfigLayoutProps> = ({ templateId }) => {
   const theme = useTheme();
+  const { t } = useTranslation('infrastructure');
 
   return (
     <Box
@@ -32,7 +34,7 @@ const InfrastructureConfigLayout: React.FC<InfrastructureConfigLayoutProps> = ({
         <CardHeader
           title={
             <Typography variant="h6" fontWeight={600}>
-              {templateId ? 'Infrastructure Configuration' : 'All Infrastructure Configurations'}
+              {templateId ? t('INFRASTRUCTURE_CONFIG') : t('ALL_INFRASTRUCTURE_CONFIGS')}
             </Typography>
           }
           sx={{ borderBottom: '1px solid', borderColor: 'divider', py: 2 }}
