@@ -32,6 +32,8 @@ import {
   MonetizationOnOutlined,
   CheckCircleOutlined,
   WarningAmberOutlined,
+  MonetizationOn,
+  Co2,
 } from '@mui/icons-material';
 import { FacilityTypeSelector } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
@@ -462,7 +464,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                           {t('facilityManagement:REQUIRED_GOLD')}
                         </Typography>
                         <Typography variant="body1" fontWeight="medium">
-                          {RESOURCE_ICONS.GOLD_EMOJI} {validation.goldCost}
+                          <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
                         </Typography>
                       </Grid>
                       <Grid item xs={6}>
@@ -470,7 +472,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                           {t('facilityManagement:REQUIRED_CARBON')}
                         </Typography>
                         <Typography variant="body1" fontWeight="medium">
-                          {RESOURCE_ICONS.CARBON_EMOJI} {validation.carbonCost}
+                          <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -507,7 +509,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         {t('facilityManagement:GOLD_COST')}
                       </Typography>
                       <Typography variant="h6" color="warning.main">
-                        {RESOURCE_ICONS.GOLD_EMOJI} {validation.goldCost}
+                        <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
                       </Typography>
                     </Grid>
                     <Grid item xs={4}>
@@ -515,15 +517,16 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         {t('facilityManagement:CARBON_COST')}
                       </Typography>
                       <Typography variant="h6" color="error.main">
-                        {RESOURCE_ICONS.CARBON_EMOJI} {validation.carbonCost}
+                        <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
                       </Typography>
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="caption" color="text.secondary">
                         {t('facilityManagement:TOTAL_COST')}
                       </Typography>
-                      <Typography variant="h6" color="primary.main">
-                        💰 {validation.totalCost}
+                      <Typography variant="h6" color="primary.main" className="flex items-center gap-2">
+                        <MonetizationOn sx={{ fontSize: 20 }} className="text-yellow-600" />
+                        {validation.totalCost}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -567,7 +570,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                           type="number"
                           value={maxGoldCost}
                           onChange={(e) => setMaxGoldCost(e.target.value === '' ? '' : Number(e.target.value))}
-                          InputProps={{ startAdornment: RESOURCE_ICONS.GOLD_EMOJI }}
+                          InputProps={{ startAdornment: <MonetizationOn fontSize="small" /> }}
                           size="small"
                         />
                       </Grid>
@@ -578,7 +581,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                           type="number"
                           value={maxCarbonCost}
                           onChange={(e) => setMaxCarbonCost(e.target.value === '' ? '' : Number(e.target.value))}
-                          InputProps={{ startAdornment: RESOURCE_ICONS.CARBON_EMOJI }}
+                          InputProps={{ startAdornment: <Co2 fontSize="small" /> }}
                           size="small"
                         />
                       </Grid>
@@ -626,7 +629,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         {t('facilityManagement:GOLD_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium" color="warning.main">
-                        {RESOURCE_ICONS.GOLD_EMOJI} {validation.goldCost}
+                        <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -634,7 +637,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         {t('facilityManagement:CARBON_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium" color="error.main">
-                        {RESOURCE_ICONS.CARBON_EMOJI} {validation.carbonCost}
+                        <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -663,7 +666,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                 >
                   <Typography variant="body2">
                     {t('facilityManagement:CURRENT_BALANCE')}: {' '}
-                    {RESOURCE_ICONS.GOLD_EMOJI} {teamBalance.gold} | {RESOURCE_ICONS.CARBON_EMOJI} {teamBalance.carbon}
+                    <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {teamBalance.gold} | <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {teamBalance.carbon}
                   </Typography>
                   {teamBalance.gold < validation.goldCost && (
                     <Typography variant="caption" color="error">

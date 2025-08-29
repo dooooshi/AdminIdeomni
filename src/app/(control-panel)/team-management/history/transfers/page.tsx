@@ -22,6 +22,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -348,15 +349,11 @@ function TransferHistoryPage() {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <IdeomniSvgIcon 
-                                size={16} 
-                                className={transfer.resourceType === TeamResourceType.GOLD ? 'text-yellow-600' : 'text-green-600'}
-                              >
-                                {transfer.resourceType === TeamResourceType.GOLD 
-                                  ? 'heroicons-solid:currency-dollar' 
-                                  : 'heroicons-solid:leaf'
-                                }
-                              </IdeomniSvgIcon>
+                              {transfer.resourceType === TeamResourceType.GOLD ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
                               <Typography variant="body2">
                                 {transfer.resourceType}
                               </Typography>
@@ -365,12 +362,17 @@ function TransferHistoryPage() {
                           <TableCell>
                             <Typography 
                               variant="body2" 
-                              className={`font-medium ${
+                              className={`font-medium flex items-center gap-1 ${
                                 transfer.operationType === 'TRANSFER_OUT' ? 'text-red-600' : 'text-green-600'
                               }`}
                             >
                               {transfer.operationType === 'TRANSFER_OUT' ? '-' : '+'}
-                              {TeamTransferService.formatTransferAmount(transfer.amount, transfer.resourceType)}
+                              {transfer.resourceType === 'GOLD' ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
+                              {TeamTransferService.formatTransferAmount(transfer.amount)}
                             </Typography>
                           </TableCell>
                           <TableCell>

@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import {
   CloseOutlined,
+  MonetizationOn,
+  Co2,
 } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
@@ -371,9 +373,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                 ) : upgradeCalculation ? (
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: '100%' }}>
                     <Stack direction="row" alignItems="center" spacing={1}>
-                      <Typography variant="body2">
-                        {RESOURCE_ICONS.GOLD_EMOJI}
-                      </Typography>
+                      <MonetizationOn color="warning" />
                       <Typography 
                         variant="body1" 
                         fontWeight={500}
@@ -388,9 +388,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                     </Stack>
                     
                     <Stack direction="row" alignItems="center" spacing={1}>
-                      <Typography variant="body2">
-                        {RESOURCE_ICONS.CARBON_EMOJI}
-                      </Typography>
+                      <Co2 color="success" />
                       <Typography 
                         variant="body1" 
                         fontWeight={500}
@@ -445,9 +443,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                 </Typography>
                 <Stack direction="row" spacing={3}>
                   <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography variant="body2">
-                      {RESOURCE_ICONS.GOLD_EMOJI}
-                    </Typography>
+                    <MonetizationOn fontSize="small" color="warning" />
                     <Typography 
                       variant="body2"
                       sx={{ 
@@ -464,9 +460,7 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                     </Typography>
                   </Stack>
                   <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography variant="body2">
-                      {RESOURCE_ICONS.CARBON_EMOJI}
-                    </Typography>
+                    <Co2 fontSize="small" color="success" />
                     <Typography 
                       variant="body2"
                       sx={{ 

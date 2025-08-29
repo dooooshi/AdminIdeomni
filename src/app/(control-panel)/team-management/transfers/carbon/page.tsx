@@ -16,6 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { Co2 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -154,15 +155,17 @@ function CarbonTransferPage() {
         <div className="max-w-2xl mx-auto px-6 py-16">
           <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
             <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center justify-center">
-              <IdeomniSvgIcon size={24} className="text-green-600">
-                heroicons-outline:leaf
-              </IdeomniSvgIcon>
+              <Co2 className="text-green-600" sx={{ fontSize: 24 }} />
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement.INSUFFICIENT_BALANCE_ERROR')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement.NO_CARBON_TO_TRANSFER_MESSAGE', { balance: TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON) })}
+              <span className="inline-flex items-center justify-center gap-1">
+                {t('teamManagement.NO_CARBON_TO_TRANSFER_MESSAGE', { balance: '' })}
+                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
+              </span>
             </Typography>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
@@ -226,16 +229,15 @@ function CarbonTransferPage() {
           <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center justify-center">
-                <IdeomniSvgIcon size={20} className="text-green-600">
-                  heroicons-solid:leaf
-                </IdeomniSvgIcon>
+                <Co2 className="text-green-600" sx={{ fontSize: 20 }} />
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
                   {t('teamManagement.AVAILABLE_BALANCE')}
                 </Typography>
-                <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1">
-                  {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1 flex items-center gap-2">
+                  <Co2 className="text-green-600" sx={{ fontSize: 24 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
             </div>
@@ -312,12 +314,14 @@ function CarbonTransferPage() {
                   onChange={(e) => handleAmountChange(e.target.value)}
                   InputProps={{
                     startAdornment: (
-                      <IdeomniSvgIcon size={20} className="text-green-600 mr-2">
-                        heroicons-solid:leaf
-                      </IdeomniSvgIcon>
+                      <Co2 className="text-green-600 mr-2" sx={{ fontSize: 20 }} />
                     ),
                   }}
-                  helperText={`${t('teamManagement.AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}`}
+                  helperText={
+                    <span className="inline-flex items-center gap-1">
+                      {t('teamManagement.AVAILABLE_BALANCE')}: <Co2 sx={{ fontSize: 14 }} className="text-green-600" /> {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
+                    </span>
+                  }
                 />
               </div>
 
@@ -426,8 +430,9 @@ function CarbonTransferPage() {
                 <Typography variant="body2" color="text.secondary">
                   {t('teamManagement.AMOUNT')}:
                 </Typography>
-                <Typography variant="body2" className="font-medium text-green-600">
-                  {TeamTransferService.formatTransferAmount(confirmationData.amount, TeamResourceType.CARBON)}
+                <Typography variant="body2" className="font-medium text-green-600 flex items-center gap-1">
+                  <Co2 sx={{ fontSize: 16 }} />
+                  {TeamTransferService.formatTransferAmount(confirmationData.amount)}
                 </Typography>
               </div>
               {formState.description && (
@@ -445,16 +450,18 @@ function CarbonTransferPage() {
                   <Typography variant="body2" color="text.secondary">
                     {t('teamManagement.CURRENT_BALANCE')}:
                   </Typography>
-                  <Typography variant="body2">
-                    {TeamTransferService.formatTransferAmount(confirmationData.currentBalance, TeamResourceType.CARBON)}
+                  <Typography variant="body2" className="flex items-center gap-1">
+                    <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                    {TeamTransferService.formatTransferAmount(confirmationData.currentBalance)}
                   </Typography>
                 </div>
                 <div className="flex justify-between">
                   <Typography variant="body2" color="text.secondary">
                     {t('teamManagement.BALANCE_AFTER_TRANSFER')}:
                   </Typography>
-                  <Typography variant="body2" className="font-medium">
-                    {TeamTransferService.formatTransferAmount(confirmationData.balanceAfter, TeamResourceType.CARBON)}
+                  <Typography variant="body2" className="font-medium flex items-center gap-1">
+                    <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                    {TeamTransferService.formatTransferAmount(confirmationData.balanceAfter)}
                   </Typography>
                 </div>
               </div>

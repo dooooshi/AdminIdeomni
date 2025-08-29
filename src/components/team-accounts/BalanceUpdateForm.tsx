@@ -13,7 +13,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import { UpdateBalancesRequest, SetBalancesRequest } from '@/types/teamAccount';
 import TeamAccountService from '@/lib/services/teamAccountService';
 import ResourceDisplay from './ResourceDisplay';
@@ -228,9 +228,7 @@ function BalanceUpdateForm({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IdeomniSvgIcon className="text-yellow-600">
-                      heroicons-solid:currency-dollar
-                    </IdeomniSvgIcon>
+                    <MonetizationOn className="text-yellow-600" />
                   </InputAdornment>
                 )
               }}
@@ -252,9 +250,7 @@ function BalanceUpdateForm({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IdeomniSvgIcon className="text-green-600">
-                      heroicons-solid:leaf
-                    </IdeomniSvgIcon>
+                    <Co2 className="text-green-600" />
                   </InputAdornment>
                 )
               }}

@@ -19,6 +19,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -141,16 +142,18 @@ function BalanceHistoryPage() {
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <MonetizationOn className="text-yellow-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold)}
                 </Typography>
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.CARBON_BALANCE')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <Co2 className="text-green-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
             </div>
@@ -236,9 +239,7 @@ function BalanceHistoryPage() {
                           </Typography>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
-                          <IdeomniSvgIcon size={20} className="text-yellow-500">
-                            heroicons-outline:currency-dollar
-                          </IdeomniSvgIcon>
+                          <MonetizationOn sx={{ fontSize: 20 }} className="text-yellow-500" />
                         </div>
                       </div>
                     </CardContent>
@@ -257,9 +258,7 @@ function BalanceHistoryPage() {
                           </Typography>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
-                          <IdeomniSvgIcon size={20} className="text-green-500">
-                            heroicons-outline:leaf
-                          </IdeomniSvgIcon>
+                          <Co2 sx={{ fontSize: 20 }} className="text-green-500" />
                         </div>
                       </div>
                     </CardContent>
@@ -272,10 +271,10 @@ function BalanceHistoryPage() {
                         {t('teamManagement.LARGEST_INCREASES')}
                       </Typography>
                       <Typography variant="body2" className="text-yellow-600 mb-1">
-                        {t('teamManagement.GOLD')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease, TeamResourceType.GOLD)}
+                        <span className="inline-flex items-center gap-1">{t('teamManagement.GOLD')}: +<MonetizationOn sx={{ fontSize: 14 }} className="text-yellow-600" />{TeamTransferService.formatTransferAmount(balanceSummary.largestGoldIncrease)}</span>
                       </Typography>
                       <Typography variant="body2" className="text-green-600">
-                        {t('teamManagement.CARBON')}: +{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease, TeamResourceType.CARBON)}
+                        <span className="inline-flex items-center gap-1">{t('teamManagement.CARBON')}: +<Co2 sx={{ fontSize: 14 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(balanceSummary.largestCarbonIncrease)}</span>
                       </Typography>
                     </CardContent>
                   </Card>
@@ -317,37 +316,41 @@ function BalanceHistoryPage() {
                             </Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body2" className="font-medium text-yellow-600">
-                              {TeamTransferService.formatTransferAmount(balance.goldBalance, TeamResourceType.GOLD)}
+                            <Typography variant="body2" className="font-medium text-yellow-600 flex items-center gap-1">
+                              <MonetizationOn sx={{ fontSize: 16 }} />
+                              {TeamTransferService.formatTransferAmount(balance.goldBalance)}
                             </Typography>
                           </TableCell>
                           <TableCell>
                             <Typography 
                               variant="body2" 
-                              className={`font-medium ${
+                              className={`font-medium flex items-center gap-1 ${
                                 balance.goldChange > 0 ? 'text-green-600' : 
                                 balance.goldChange < 0 ? 'text-red-600' : 'text-gray-500'
                               }`}
                             >
                               {balance.goldChange > 0 ? '+' : ''}
-                              {balance.goldChange === 0 ? '0' : TeamTransferService.formatTransferAmount(balance.goldChange, TeamResourceType.GOLD)}
+                              {balance.goldChange !== 0 && <MonetizationOn sx={{ fontSize: 14 }} className="text-yellow-600" />}
+                              {balance.goldChange === 0 ? '0' : TeamTransferService.formatTransferAmount(balance.goldChange)}
                             </Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body2" className="font-medium text-green-600">
-                              {TeamTransferService.formatTransferAmount(balance.carbonBalance, TeamResourceType.CARBON)}
+                            <Typography variant="body2" className="font-medium text-green-600 flex items-center gap-1">
+                              <Co2 sx={{ fontSize: 16 }} />
+                              {TeamTransferService.formatTransferAmount(balance.carbonBalance)}
                             </Typography>
                           </TableCell>
                           <TableCell>
                             <Typography 
                               variant="body2" 
-                              className={`font-medium ${
+                              className={`font-medium flex items-center gap-1 ${
                                 balance.carbonChange > 0 ? 'text-green-600' : 
                                 balance.carbonChange < 0 ? 'text-red-600' : 'text-gray-500'
                               }`}
                             >
                               {balance.carbonChange > 0 ? '+' : ''}
-                              {balance.carbonChange === 0 ? '0' : TeamTransferService.formatTransferAmount(balance.carbonChange, TeamResourceType.CARBON)}
+                              {balance.carbonChange !== 0 && <Co2 sx={{ fontSize: 14 }} className="text-green-600" />}
+                              {balance.carbonChange === 0 ? '0' : TeamTransferService.formatTransferAmount(balance.carbonChange)}
                             </Typography>
                           </TableCell>
                           <TableCell>

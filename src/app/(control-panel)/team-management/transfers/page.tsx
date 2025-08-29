@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn, Co2, ReportProblemOutlined, SendOutlined, ArrowForwardOutlined, TrendingUpOutlined, TrendingDownOutlined, AccessTimeOutlined, HomeOutlined, SearchOutlined } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentUserTeamAccountQuery, useGetTransferHistoryQuery } from '../TeamAccountApi';
@@ -47,9 +48,7 @@ function TransferHubPage() {
         <div className="max-w-2xl mx-auto px-6 py-16">
           <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
             <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center justify-center">
-              <IdeomniSvgIcon size={24} className="text-red-500 dark:text-red-400">
-                heroicons-outline:exclamation-triangle
-              </IdeomniSvgIcon>
+              <ReportProblemOutlined className="text-red-500 dark:text-red-400" sx={{ fontSize: 24 }} />
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement.NOT_IN_TEAM_YET')}
@@ -99,16 +98,18 @@ function TransferHubPage() {
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.GOLD')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <MonetizationOn className="text-yellow-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold)}
                 </Typography>
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.CARBON')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <Co2 className="text-green-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
             </div>
@@ -126,9 +127,7 @@ function TransferHubPage() {
                   <CardContent className="flex-1 p-8">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-center justify-center">
-                        <IdeomniSvgIcon size={20} className="text-yellow-600">
-                          heroicons-solid:currency-dollar
-                        </IdeomniSvgIcon>
+                        <MonetizationOn className="text-yellow-600" sx={{ fontSize: 20 }} />
                       </div>
                       <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
                         {t('teamManagement.GOLD_TRANSFERS')}
@@ -138,7 +137,7 @@ function TransferHubPage() {
                       {t('teamManagement.TRANSFER_GOLD_SUBTITLE')}
                     </Typography>
                     <Typography variant="body2" className="mb-2">
-                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> <MonetizationOn sx={{ fontSize: 16, mx: 0.5 }} className="text-yellow-600" /> {TeamTransferService.formatTransferAmount(teamAccount.gold)}
                     </Typography>
                   </CardContent>
                   <CardActions className="p-8 pt-0">
@@ -148,7 +147,7 @@ function TransferHubPage() {
                       disabled={teamAccount.gold <= 0}
                       onClick={() => router.push('/team-management/transfers/gold')}
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                      startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+                      startIcon={<SendOutlined />}
                     >
                       {t('teamManagement.TRANSFER_GOLD')}
                     </Button>
@@ -162,9 +161,7 @@ function TransferHubPage() {
                   <CardContent className="flex-1 p-8">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center justify-center">
-                        <IdeomniSvgIcon size={20} className="text-green-600">
-                          heroicons-solid:leaf
-                        </IdeomniSvgIcon>
+                        <Co2 className="text-green-600" sx={{ fontSize: 20 }} />
                       </div>
                       <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
                         {t('teamManagement.CARBON_TRANSFERS')}
@@ -174,7 +171,7 @@ function TransferHubPage() {
                       {t('teamManagement.TRANSFER_CARBON_SUBTITLE')}
                     </Typography>
                     <Typography variant="body2" className="mb-2">
-                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> <Co2 sx={{ fontSize: 16, mx: 0.5 }} className="text-green-600" /> {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                     </Typography>
                   </CardContent>
                   <CardActions className="p-8 pt-0">
@@ -184,7 +181,7 @@ function TransferHubPage() {
                       disabled={teamAccount.carbon <= 0}
                       onClick={() => router.push('/team-management/transfers/carbon')}
                       className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                      startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
+                      startIcon={<SendOutlined />}
                     >
                       {t('teamManagement.TRANSFER_CARBON')}
                     </Button>
@@ -206,7 +203,7 @@ function TransferHubPage() {
                   size="small"
                   onClick={() => router.push('/team-management/history/transfers')}
                   className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                  endIcon={<IdeomniSvgIcon>heroicons-outline:arrow-right</IdeomniSvgIcon>}
+                  endIcon={<ArrowForwardOutlined />}
                 >
                   {t('teamManagement.VIEW_HISTORY')}
                 </Button>
@@ -216,15 +213,17 @@ function TransferHubPage() {
                   <div key={transfer.id} className={`flex items-center justify-between py-4 ${index !== 2 && index !== recentTransfers.data.length - 1 ? 'border-b border-gray-100 dark:border-gray-800' : ''}`}>
                     <div className="flex items-center gap-4">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center ${transfer.operationType === 'TRANSFER_OUT' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-green-50 dark:bg-green-900/20'}`}>
-                        <IdeomniSvgIcon 
-                          size={16} 
-                          className={transfer.operationType === 'TRANSFER_OUT' ? 'text-red-500' : 'text-green-500'}
-                        >
-                          {transfer.operationType === 'TRANSFER_OUT' 
-                            ? 'heroicons-outline:arrow-up-right' 
-                            : 'heroicons-outline:arrow-down-left'
-                          }
-                        </IdeomniSvgIcon>
+                        {transfer.operationType === 'TRANSFER_OUT' ? (
+                          <TrendingUpOutlined 
+                            sx={{ fontSize: 16 }}
+                            className="text-red-500"
+                          />
+                        ) : (
+                          <TrendingDownOutlined 
+                            sx={{ fontSize: 16 }}
+                            className="text-green-500"
+                          />
+                        )}
                       </div>
                       <div>
                         <Typography variant="body2" className="font-medium text-gray-900 dark:text-white">
@@ -233,18 +232,28 @@ function TransferHubPage() {
                             : `${t('teamManagement.FROM')} ${transfer.sourceTeam?.name || t('common.UNKNOWN_TEAM')}`
                           }
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {TeamTransferService.formatTransferAmount(transfer.amount, transfer.resourceType)} • {new Date(transfer.createdAt).toLocaleDateString()}
+                        <Typography variant="caption" color="text.secondary" className="flex items-center gap-1">
+                          {transfer.resourceType === TeamResourceType.GOLD ? (
+                            <MonetizationOn sx={{ fontSize: 14 }} className="text-yellow-600" />
+                          ) : (
+                            <Co2 sx={{ fontSize: 14 }} className="text-green-600" />
+                          )}
+                          {TeamTransferService.formatTransferAmount(transfer.amount)} • {new Date(transfer.createdAt).toLocaleDateString()}
                         </Typography>
                       </div>
                     </div>
                     <div className="text-right">
                       <Typography 
                         variant="body2" 
-                        className={`font-medium ${transfer.operationType === 'TRANSFER_OUT' ? 'text-red-600' : 'text-green-600'}`}
+                        className={`font-medium flex items-center gap-1 ${transfer.operationType === 'TRANSFER_OUT' ? 'text-red-600' : 'text-green-600'}`}
                       >
                         {transfer.operationType === 'TRANSFER_OUT' ? '-' : '+'}
-                        {TeamTransferService.formatTransferAmount(transfer.amount, transfer.resourceType)}
+                        {transfer.resourceType === TeamResourceType.GOLD ? (
+                          <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                        ) : (
+                          <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                        )}
+                        {TeamTransferService.formatTransferAmount(transfer.amount)}
                       </Typography>
                     </div>
                   </div>
@@ -263,7 +272,7 @@ function TransferHubPage() {
                 variant="outlined"
                 onClick={() => router.push('/team-management/history')}
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:clock</IdeomniSvgIcon>}
+                startIcon={<AccessTimeOutlined />}
               >
                 <div className="text-left">
                   <div className="font-medium">{t('teamManagement.VIEW_ACCOUNT_HISTORY')}</div>
@@ -273,7 +282,7 @@ function TransferHubPage() {
                 variant="outlined"
                 onClick={() => router.push('/team-management/dashboard')}
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:home</IdeomniSvgIcon>}
+                startIcon={<HomeOutlined />}
               >
                 <div className="text-left">
                   <div className="font-medium">{t('teamManagement.TEAM_DASHBOARD')}</div>
@@ -283,7 +292,7 @@ function TransferHubPage() {
                 variant="outlined"
                 onClick={() => router.push('/team-management/browse')}
                 className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:magnifying-glass</IdeomniSvgIcon>}
+                startIcon={<SearchOutlined />}
               >
                 <div className="text-left">
                   <div className="font-medium">{t('teamManagement.BROWSE_OTHER_TEAMS')}</div>

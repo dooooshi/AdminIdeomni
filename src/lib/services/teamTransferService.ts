@@ -359,9 +359,17 @@ export class TeamTransferService {
   // ===============================
 
   /**
-   * Format transfer amount for display
+   * Format transfer amount for display (without icons)
+   * Use with Material-UI icons in components
    */
-  static formatTransferAmount(amount: number, resourceType: TeamResourceType): string {
+  static formatTransferAmount(amount: number, resourceType?: TeamResourceType): string {
+    return amount.toFixed(3).replace(/\.?0+$/, ''); // Remove trailing zeros
+  }
+
+  /**
+   * Format transfer amount for display with emoji (legacy)
+   */
+  static formatTransferAmountWithEmoji(amount: number, resourceType: TeamResourceType): string {
     const formatted = amount.toFixed(3).replace(/\.?0+$/, ''); // Remove trailing zeros
     const symbol = resourceType === TeamResourceType.GOLD ? '🪙' : '🌿';
     return `${formatted} ${symbol}`;

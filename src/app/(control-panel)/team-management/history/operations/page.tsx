@@ -22,6 +22,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -275,15 +276,11 @@ function AllOperationsPage() {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <IdeomniSvgIcon 
-                                size={16} 
-                                className={operation.resourceType === TeamResourceType.GOLD ? 'text-yellow-600' : 'text-green-600'}
-                              >
-                                {operation.resourceType === TeamResourceType.GOLD 
-                                  ? 'heroicons-solid:currency-dollar' 
-                                  : 'heroicons-solid:leaf'
-                                }
-                              </IdeomniSvgIcon>
+                              {operation.resourceType === TeamResourceType.GOLD ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
                               <Typography variant="body2">
                                 {operation.resourceType}
                               </Typography>
@@ -297,7 +294,12 @@ function AllOperationsPage() {
                               }`}
                             >
                               {operation.operationType === TeamOperationType.TRANSFER_OUT ? '-' : '+'}
-                              {TeamTransferService.formatTransferAmount(operation.amount, operation.resourceType)}
+                              {operation.resourceType === TeamResourceType.GOLD ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
+                              {TeamTransferService.formatTransferAmount(operation.amount)}
                             </Typography>
                           </TableCell>
                           <TableCell>
@@ -316,13 +318,23 @@ function AllOperationsPage() {
                             )}
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body2">
-                              {TeamTransferService.formatTransferAmount(operation.balanceBefore, operation.resourceType)}
+                            <Typography variant="body2" className="flex items-center gap-1">
+                              {operation.resourceType === TeamResourceType.GOLD ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
+                              {TeamTransferService.formatTransferAmount(operation.balanceBefore)}
                             </Typography>
                           </TableCell>
                           <TableCell>
-                            <Typography variant="body2" className="font-medium">
-                              {TeamTransferService.formatTransferAmount(operation.balanceAfter, operation.resourceType)}
+                            <Typography variant="body2" className="font-medium flex items-center gap-1">
+                              {operation.resourceType === TeamResourceType.GOLD ? (
+                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                              ) : (
+                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              )}
+                              {TeamTransferService.formatTransferAmount(operation.balanceAfter)}
                             </Typography>
                           </TableCell>
                           <TableCell>

@@ -16,7 +16,7 @@ import {
   InputAdornment,
   Badge,
 } from '@mui/material';
-import { SearchOutlined } from '@mui/icons-material';
+import { SearchOutlined, MonetizationOn, Co2 } from '@mui/icons-material';
 import type { LandType, FacilityCategory } from '@/types/facilities';
 import { FacilityType } from '@/types/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
@@ -329,13 +329,15 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = ({
                       </Typography>
                       <Box display="flex" gap={1} flexWrap="wrap" mt={0.5}>
                         <Chip
-                          label={`${RESOURCE_ICONS.GOLD_EMOJI} ${facility.cost.gold}`}
+                          icon={<MonetizationOn />}
+                          label={facility.cost.gold}
                           size="small"
                           variant="outlined"
                           color="warning"
                         />
                         <Chip
-                          label={`${RESOURCE_ICONS.CARBON_EMOJI} ${facility.cost.carbon}`}
+                          icon={<Co2 />}
+                          label={facility.cost.carbon}
                           size="small"
                           variant="outlined"
                           color="error"

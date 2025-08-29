@@ -4,9 +4,10 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import TeamAccountService from '@/lib/services/teamAccountService';
+import { getResourceMuiIcon } from '@/constants/resourceIcons';
 
 interface ResourceDisplayProps {
   gold: number;
@@ -60,21 +61,20 @@ function ResourceDisplay({
 
   const ResourceItem = ({ 
     amount, 
-    type, 
-    icon 
+    type 
   }: { 
     amount: number; 
     type: 'gold' | 'carbon'; 
-    icon: string; 
   }) => {
     const color = TeamAccountService.getResourceColor(amount, type);
     const formattedAmount = TeamAccountService.formatResourceAmount(amount);
     const label = t(`teamAccounts.${type.toUpperCase()}`);
+    const IconComponent = type === 'gold' ? MonetizationOn : Co2;
 
     if (variant === 'chip') {
       return (
         <Chip
-          icon={showIcons ? <IdeomniSvgIcon className={`${classes.icon} ${color}`}>{icon}</IdeomniSvgIcon> : undefined}
+          icon={showIcons ? <IconComponent className={`${classes.icon} ${color}`} /> : undefined}
           label={
             <Box className="flex items-center gap-1">
               {showLabels && (
@@ -97,9 +97,7 @@ function ResourceDisplay({
       return (
         <Box className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg text-center">
           {showIcons && (
-            <IdeomniSvgIcon className={`${classes.icon} ${color} mb-2`}>
-              {icon}
-            </IdeomniSvgIcon>
+            <IconComponent className={`${classes.icon} ${color} mb-2`} />
           )}
           {showLabels && (
             <Typography variant="caption" color="textSecondary" className={`block ${classes.label}`}>
@@ -119,9 +117,7 @@ function ResourceDisplay({
     return (
       <Box className={`flex ${containerClass} ${classes.container}`}>
         {showIcons && (
-          <IdeomniSvgIcon className={`${classes.icon} ${color}`}>
-            {icon}
-          </IdeomniSvgIcon>
+          <IconComponent className={`${classes.icon} ${color}`} />
         )}
         <Box className={layout === 'vertical' ? 'text-center' : 'flex-1'}>
           {showLabels && (
@@ -146,12 +142,10 @@ function ResourceDisplay({
       <ResourceItem 
         amount={gold} 
         type="gold" 
-        icon="heroicons-solid:currency-dollar" 
       />
       <ResourceItem 
         amount={carbon} 
         type="carbon" 
-        icon="heroicons-solid:leaf" 
       />
     </Box>
   );

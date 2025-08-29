@@ -12,6 +12,7 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn, Co2 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -123,16 +124,18 @@ function HistoryOverviewPage() {
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <MonetizationOn className="text-yellow-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold)}
                 </Typography>
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.CARBON_BALANCE')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {TeamTransferService.formatTransferAmount(teamAccount.carbon, TeamResourceType.CARBON)}
+                <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
+                  <Co2 className="text-green-600" sx={{ fontSize: 28 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
             </div>
@@ -179,21 +182,19 @@ function HistoryOverviewPage() {
                           </Typography>
                           <div className="flex items-center gap-3 mt-2">
                             <Typography variant="body2" className="text-green-600">
-                              +{TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn, TeamResourceType.GOLD)}
+                              +<MonetizationOn sx={{ fontSize: 14, mx: 0.5 }} className="text-yellow-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn)}
                             </Typography>
                             <Typography variant="body2" className="text-red-600">
-                              -{TeamTransferService.formatTransferAmount(operationSummary.totalGoldOut, TeamResourceType.GOLD)}
+                              -<MonetizationOn sx={{ fontSize: 14, mx: 0.5 }} className="text-yellow-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalGoldOut)}
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                             {t('teamManagement.NET')}: {operationSummary.totalGoldIn - operationSummary.totalGoldOut >= 0 ? '+' : ''}
-                            {TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn - operationSummary.totalGoldOut, TeamResourceType.GOLD)}
+                            <MonetizationOn sx={{ fontSize: 16, mr: 0.5 }} className="text-yellow-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalGoldIn - operationSummary.totalGoldOut)}
                           </Typography>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center">
-                          <IdeomniSvgIcon size={20} className="text-yellow-500">
-                            heroicons-outline:currency-dollar
-                          </IdeomniSvgIcon>
+                          <MonetizationOn sx={{ fontSize: 20 }} className="text-yellow-500" />
                         </div>
                       </div>
                     </CardContent>
@@ -211,21 +212,19 @@ function HistoryOverviewPage() {
                           </Typography>
                           <div className="flex items-center gap-3 mt-2">
                             <Typography variant="body2" className="text-green-600">
-                              +{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn, TeamResourceType.CARBON)}
+                              +<Co2 sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn)}
                             </Typography>
                             <Typography variant="body2" className="text-red-600">
-                              -{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonOut, TeamResourceType.CARBON)}
+                              -<Co2 sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonOut)}
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                             {t('teamManagement.NET')}: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
-                            {TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut, TeamResourceType.CARBON)}
+                            <Co2 sx={{ fontSize: 16, mr: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut)}
                           </Typography>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
-                          <IdeomniSvgIcon size={20} className="text-green-500">
-                            heroicons-outline:leaf
-                          </IdeomniSvgIcon>
+                          <Co2 sx={{ fontSize: 20 }} className="text-green-500" />
                         </div>
                       </div>
                     </CardContent>
@@ -317,10 +316,15 @@ function HistoryOverviewPage() {
                         <div className="text-right">
                           <Typography 
                             variant="body2" 
-                            className={`font-medium ${operation.operationType === TeamOperationType.TRANSFER_OUT ? 'text-red-600' : 'text-green-600'}`}
+                            className={`font-medium flex items-center gap-1 ${operation.operationType === TeamOperationType.TRANSFER_OUT ? 'text-red-600' : 'text-green-600'}`}
                           >
                             {operation.operationType === TeamOperationType.TRANSFER_OUT ? '-' : '+'}
-                            {TeamTransferService.formatTransferAmount(operation.amount, operation.resourceType)}
+                            {operation.resourceType === TeamResourceType.GOLD ? (
+                              <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                            ) : (
+                              <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                            )}
+                            {TeamTransferService.formatTransferAmount(operation.amount)}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
                             {operation.resourceType}
@@ -412,12 +416,14 @@ function HistoryOverviewPage() {
                             </Typography>
                           </div>
                           <div className="text-right">
-                            <Typography variant="caption" className="text-yellow-600">
-                              {TeamTransferService.formatTransferAmount(partner.totalGoldExchanged, TeamResourceType.GOLD)}
+                            <Typography variant="caption" className="text-yellow-600 flex items-center gap-1 justify-end">
+                              <MonetizationOn sx={{ fontSize: 12 }} />
+                              {TeamTransferService.formatTransferAmount(partner.totalGoldExchanged)}
                             </Typography>
                             <br />
-                            <Typography variant="caption" className="text-green-600">
-                              {TeamTransferService.formatTransferAmount(partner.totalCarbonExchanged, TeamResourceType.CARBON)}
+                            <Typography variant="caption" className="text-green-600 flex items-center gap-1 justify-end">
+                              <Co2 sx={{ fontSize: 12 }} />
+                              {TeamTransferService.formatTransferAmount(partner.totalCarbonExchanged)}
                             </Typography>
                           </div>
                         </div>

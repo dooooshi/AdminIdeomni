@@ -16,6 +16,7 @@ import DialogActions from '@mui/material/DialogActions';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { MonetizationOn } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
@@ -154,15 +155,17 @@ function GoldTransferPage() {
         <div className="max-w-2xl mx-auto px-6 py-16">
           <Paper className="p-16 text-center border border-gray-100 dark:border-gray-800 shadow-none">
             <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-center justify-center">
-              <IdeomniSvgIcon size={24} className="text-yellow-600">
-                heroicons-outline:currency-dollar
-              </IdeomniSvgIcon>
+              <MonetizationOn className="text-yellow-600" sx={{ fontSize: 24 }} />
             </div>
             <Typography variant="h5" className="font-medium mb-3 text-gray-900 dark:text-white">
               {t('teamManagement.INSUFFICIENT_BALANCE_ERROR')}
             </Typography>
             <Typography color="text.secondary" className="mb-8 max-w-sm mx-auto">
-              {t('teamManagement.NO_GOLD_TO_TRANSFER_MESSAGE', { balance: TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD) })}
+              <span className="inline-flex items-center justify-center gap-1">
+                {t('teamManagement.NO_GOLD_TO_TRANSFER_MESSAGE', { balance: '' })}
+                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                {TeamTransferService.formatTransferAmount(teamAccount.gold)}
+              </span>
             </Typography>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
@@ -226,16 +229,15 @@ function GoldTransferPage() {
           <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 flex items-center justify-center">
-                <IdeomniSvgIcon size={20} className="text-yellow-600">
-                  heroicons-solid:currency-dollar
-                </IdeomniSvgIcon>
+                <MonetizationOn className="text-yellow-600" sx={{ fontSize: 20 }} />
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
                   {t('teamManagement.AVAILABLE_BALANCE')}
                 </Typography>
-                <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1">
-                  {TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}
+                <Typography variant="h5" className="font-light text-gray-900 dark:text-white mt-1 flex items-center gap-2">
+                  <MonetizationOn className="text-yellow-600" sx={{ fontSize: 24 }} />
+                  {TeamTransferService.formatTransferAmount(teamAccount.gold)}
                 </Typography>
               </div>
             </div>
@@ -312,12 +314,14 @@ function GoldTransferPage() {
                   onChange={(e) => handleAmountChange(e.target.value)}
                   InputProps={{
                     startAdornment: (
-                      <IdeomniSvgIcon size={20} className="text-yellow-600 mr-2">
-                        heroicons-solid:currency-dollar
-                      </IdeomniSvgIcon>
+                      <MonetizationOn className="text-yellow-600 mr-2" sx={{ fontSize: 20 }} />
                     ),
                   }}
-                  helperText={`${t('teamManagement.AVAILABLE_BALANCE')}: ${TeamTransferService.formatTransferAmount(teamAccount.gold, TeamResourceType.GOLD)}`}
+                  helperText={
+                    <span className="inline-flex items-center gap-1">
+                      {t('teamManagement.AVAILABLE_BALANCE')}: <MonetizationOn sx={{ fontSize: 14 }} className="text-yellow-600" /> {TeamTransferService.formatTransferAmount(teamAccount.gold)}
+                    </span>
+                  }
                 />
               </div>
 
@@ -426,8 +430,9 @@ function GoldTransferPage() {
                 <Typography variant="body2" color="text.secondary">
                   {t('teamManagement.AMOUNT')}:
                 </Typography>
-                <Typography variant="body2" className="font-medium text-yellow-600">
-                  {TeamTransferService.formatTransferAmount(confirmationData.amount, TeamResourceType.GOLD)}
+                <Typography variant="body2" className="font-medium text-yellow-600 flex items-center gap-1">
+                  <MonetizationOn sx={{ fontSize: 16 }} />
+                  {TeamTransferService.formatTransferAmount(confirmationData.amount)}
                 </Typography>
               </div>
               {formState.description && (
@@ -445,16 +450,18 @@ function GoldTransferPage() {
                   <Typography variant="body2" color="text.secondary">
                     {t('teamManagement.CURRENT_BALANCE')}:
                   </Typography>
-                  <Typography variant="body2">
-                    {TeamTransferService.formatTransferAmount(confirmationData.currentBalance, TeamResourceType.GOLD)}
+                  <Typography variant="body2" className="flex items-center gap-1">
+                    <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                    {TeamTransferService.formatTransferAmount(confirmationData.currentBalance)}
                   </Typography>
                 </div>
                 <div className="flex justify-between">
                   <Typography variant="body2" color="text.secondary">
                     {t('teamManagement.BALANCE_AFTER_TRANSFER')}:
                   </Typography>
-                  <Typography variant="body2" className="font-medium">
-                    {TeamTransferService.formatTransferAmount(confirmationData.balanceAfter, TeamResourceType.GOLD)}
+                  <Typography variant="body2" className="font-medium flex items-center gap-1">
+                    <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                    {TeamTransferService.formatTransferAmount(confirmationData.balanceAfter)}
                   </Typography>
                 </div>
               </div>
