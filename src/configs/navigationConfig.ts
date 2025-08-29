@@ -61,6 +61,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				translate: 'FACILITY_MANAGEMENT',
 				auth: ['admin']
 			},
+			{
+				id: 'admin-management.raw-materials',
+				title: 'Raw Materials',
+				type: 'item',
+				icon: 'heroicons-outline:cube',
+				url: '/raw-materials',
+				translate: 'RAW_MATERIALS',
+				auth: ['admin']
+			},
 		]
 	},
 	{
@@ -140,6 +149,15 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 				icon: 'heroicons-outline:building-office-2',
 				url: '/facility-management',
 				translate: 'FACILITY_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
+				id: 'admin-management.raw-materials',
+				title: 'Raw Materials',
+				type: 'item',
+				icon: 'heroicons-outline:cube',
+				url: '/raw-materials',
+				translate: 'RAW_MATERIALS',
 				auth: ['admin']
 			},
 		]
