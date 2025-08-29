@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
-  Tabs,
-  Tab,
   Card,
   CardContent,
   Typography,
@@ -17,69 +15,28 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Grid,
   FormControlLabel,
   Switch,
   Chip,
   IconButton,
-  Tooltip,
 } from '@mui/material';
 import {
   People as PeopleIcon,
-  Analytics as AnalyticsIcon,
-  GetApp as GetAppIcon,
   Dashboard as DashboardIcon,
   VpnKey as VpnKeyIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
-import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
 import {
   UserList,
   UserForm,
-  UserStatistics,
   AdminUserDetailsDto,
 } from '@/components/user-management';
 import UserService from '@/lib/services/userService';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`user-management-tabpanel-${index}`}
-      aria-labelledby={`user-management-tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `user-management-tab-${index}`,
-    'aria-controls': `user-management-tabpanel-${index}`,
-  };
-}
-
 const UserManagementPage: React.FC = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const [tabValue, setTabValue] = useState(0);
   const [userFormOpen, setUserFormOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<AdminUserDetailsDto | null>(null);
   const [viewingUser, setViewingUser] = useState<AdminUserDetailsDto | null>(null);
@@ -94,10 +51,6 @@ const UserManagementPage: React.FC = () => {
     requireChange: true,
     sendEmail: false,
   });
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
 
   const handleCreateUser = () => {
     setEditingUser(null);
@@ -152,10 +105,6 @@ const UserManagementPage: React.FC = () => {
   const handleClosePasswordReset = () => {
     setPasswordResetOpen(false);
     setResetPasswordUser(null);
-  };
-
-  const refreshData = () => {
-    setRefreshTrigger(prev => prev + 1);
   };
 
   const formatDate = (dateString: string | Date) => {
@@ -213,79 +162,15 @@ const UserManagementPage: React.FC = () => {
         <div className="flex flex-col w-full px-24 sm:px-32 pb-24">
           {/* Main Content */}
           <Card>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs 
-                value={tabValue} 
-                onChange={handleTabChange} 
-                aria-label="user management tabs"
-                variant="scrollable"
-                scrollButtons="auto"
-              >
-                <Tab 
-                  icon={<PeopleIcon />} 
-                  label={t('userManagement.USERS')} 
-                  {...a11yProps(0)} 
-                  iconPosition="start"
-                />
-                <Tab 
-                  icon={<AnalyticsIcon />} 
-                  label={t('userManagement.USER_ANALYTICS')} 
-                  {...a11yProps(1)} 
-                  iconPosition="start"
-                />
-                <Tab 
-                  icon={<GetAppIcon />} 
-                  label={t('userManagement.DATA_EXPORT')} 
-                  {...a11yProps(2)} 
-                  iconPosition="start"
-                />
-              </Tabs>
-            </Box>
-
-            <CardContent sx={{ p: 0 }}>
-              {/* Users Management Tab */}
-              <TabPanel value={tabValue} index={0}>
-                <Box sx={{ p: 3 }}>
-                  <UserList
-                    key={refreshTrigger}
-                    onCreateUser={handleCreateUser}
-                    onEditUser={handleEditUser}
-                    onViewUser={handleViewUser}
-                    onResetPassword={handleResetPassword}
-                    refreshTrigger={refreshTrigger}
-                  />
-                </Box>
-              </TabPanel>
-
-              {/* User Analytics Tab */}
-              <TabPanel value={tabValue} index={1}>
-                <Box sx={{ p: 3 }}>
-                  <UserStatistics
-                    refreshTrigger={refreshTrigger}
-                    onRefresh={refreshData}
-                  />
-                </Box>
-              </TabPanel>
-
-              {/* Data Export Tab */}
-              <TabPanel value={tabValue} index={2}>
-                <Box sx={{ p: 3 }}>
-                  <Card>
-                    <CardContent sx={{ textAlign: 'center', py: 8 }}>
-                      <GetAppIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-                      <Typography variant="h6" gutterBottom>
-                        {t('userManagement.DATA_EXPORT')}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                        Export user data in various formats for reporting and analysis
-                      </Typography>
-                      <Alert severity="info" sx={{ mt: 2 }}>
-                        Data export functionality will be available in the next update.
-                      </Alert>
-                    </CardContent>
-                  </Card>
-                </Box>
-              </TabPanel>
+            <CardContent sx={{ p: 3 }}>
+              <UserList
+                key={refreshTrigger}
+                onCreateUser={handleCreateUser}
+                onEditUser={handleEditUser}
+                onViewUser={handleViewUser}
+                onResetPassword={handleResetPassword}
+                refreshTrigger={refreshTrigger}
+              />
             </CardContent>
           </Card>
 

@@ -326,7 +326,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
             <TableHead>
               <TableRow>
                 <TableCell>{t('landManagement.PURCHASE_DATE')}</TableCell>
-                <TableCell>{t('landManagement:TILE_ID')}</TableCell>
+                <TableCell>{t('landManagement.TILE_ID')}</TableCell>
                 <TableCell align="right">{t('landManagement.OWNED_AREA')}</TableCell>
                 <TableCell align="right">{t('landManagement.GOLD_COST')}</TableCell>
                 <TableCell align="right">{t('landManagement.CARBON_COST')}</TableCell>
@@ -352,7 +352,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                       {t('landManagement.NO_PURCHASES_FOUND')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Start investing in land to see your portfolio here
+                      {t('landManagement.START_INVESTING_PORTFOLIO')}
                     </Typography>
                   </TableCell>
                 </TableRow>

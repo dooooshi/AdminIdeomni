@@ -105,7 +105,7 @@ const ActivityManagementPage: React.FC = () => {
           <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
             <Link color="inherit" href="/" underline="hover">
               <DashboardIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Dashboard
+              {t('DASHBOARDS', { ns: 'navigation' })}
             </Link>
             <Typography color="text.primary" sx={{ display: 'flex', alignItems: 'center' }}>
               <EventIcon sx={{ mr: 0.5 }} fontSize="inherit" />
