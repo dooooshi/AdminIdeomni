@@ -411,15 +411,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							url: '/team-management/history/transfers',
 							translate: 'TRANSFER_HISTORY',
 							auth: ['user']
-						},
-						{
-							id: 'team-management.history.balances',
-							title: 'Balance History',
-							type: 'item',
-							icon: 'heroicons-outline:scale',
-							url: '/team-management/history/balances',
-							translate: 'BALANCE_HISTORY',
-							auth: ['user']
 						}
 					]
 				}

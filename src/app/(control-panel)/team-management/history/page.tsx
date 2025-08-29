@@ -380,15 +380,6 @@ function HistoryOverviewPage() {
                     <Button
                       fullWidth
                       variant="outlined"
-                      onClick={() => router.push('/team-management/history/balances')}
-                      className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start"
-                      startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
-                    >
-                      {t('teamManagement.BALANCE_HISTORY')}
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="outlined"
                       onClick={() => router.push('/team-management/transfers')}
                       className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 justify-start"
                       startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}

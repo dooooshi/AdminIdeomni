@@ -162,7 +162,7 @@ function AllOperationsPage() {
                       <MenuItem value="all">{t('teamManagement.ALL_TYPES')}</MenuItem>
                       {Object.values(TeamOperationType).map((type) => (
                         <MenuItem key={type} value={type}>
-                          {TeamTransferService.getOperationTypeDisplayName(type)}
+                          {t(`teamManagement.${type.replace('TRANSFER_OUT', 'OUTGOING_TRANSFER').replace('TRANSFER_IN', 'INCOMING_TRANSFER')}`)}
                         </MenuItem>
                       ))}
                     </Select>
@@ -260,7 +260,7 @@ function AllOperationsPage() {
                           <TableCell>
                             <Chip
                               size="small"
-                              label={TeamTransferService.getOperationTypeDisplayName(operation.operationType)}
+                              label={t(`teamManagement.${operation.operationType.replace('TRANSFER_OUT', 'OUTGOING_TRANSFER').replace('TRANSFER_IN', 'INCOMING_TRANSFER')}`)}
                               className={TeamTransferService.getOperationTypeColor(operation.operationType)}
                               icon={
                                 <IdeomniSvgIcon size={16}>
@@ -398,14 +398,6 @@ function AllOperationsPage() {
                 startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-path</IdeomniSvgIcon>}
               >
                 {t('teamManagement.TRANSFER_HISTORY')}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/history/balances')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.BALANCE_HISTORY')}
               </Button>
               <Button
                 variant="outlined"

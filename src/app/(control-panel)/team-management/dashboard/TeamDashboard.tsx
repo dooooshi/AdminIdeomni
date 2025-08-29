@@ -203,17 +203,6 @@ function TeamDashboard() {
                 <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
                   {t('teamManagement.TEAM_MEMBERS')}
                 </Typography>
-                {isLeader && (
-                  <Button
-                    variant="text"
-                    size="small"
-                    onClick={() => {/* TODO: Open invite dialog */}}
-                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                    endIcon={<IdeomniSvgIcon size={16}>heroicons-outline:plus</IdeomniSvgIcon>}
-                  >
-                    {t('teamManagement.INVITE_MEMBERS')}
-                  </Button>
-                )}
               </div>
               
               <div className="space-y-2">
