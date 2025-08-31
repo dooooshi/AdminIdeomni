@@ -23,7 +23,7 @@ import {
   ListAltOutlined,
 } from '@mui/icons-material';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { FacilityTable, BuildFacilityModal, UpgradeFacilityModal } from '@/components/facilities';
+import { FacilityTable, BuildFacilityModalSimplified, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type { 
@@ -416,7 +416,7 @@ const StudentFacilitiesPage: React.FC = () => {
         </div>
 
         {/* Build Facility Modal */}
-        <BuildFacilityModal
+        <BuildFacilityModalSimplified
           open={buildModalOpen}
           onClose={handleCloseBuildModal}
           onSuccess={handleFacilityBuilt}

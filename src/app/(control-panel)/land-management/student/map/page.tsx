@@ -591,7 +591,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                     {t('land.INVESTMENT_ANALYSIS')}
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 4 }}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('land.GOLD_COST')}
                       </Typography>
@@ -599,20 +599,12 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
                         {LandService.formatCurrency(purchaseValidation.goldCost || 0, 'gold')}
                       </Typography>
                     </Grid>
-                    <Grid size={{ xs: 4 }}>
+                    <Grid size={{ xs: 6 }}>
                       <Typography variant="body2" color="text.secondary">
                         {t('land.CARBON_COST')}
                       </Typography>
                       <Typography variant="body1">
                         {LandService.formatCurrency(purchaseValidation.carbonCost || 0, 'carbon')}
-                      </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 4 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('land.TOTAL_INVESTMENT')}
-                      </Typography>
-                      <Typography variant="h6" color="primary.main">
-                        {LandService.formatCurrency(purchaseValidation.totalCost || 0)}
                       </Typography>
                     </Grid>
                   </Grid>

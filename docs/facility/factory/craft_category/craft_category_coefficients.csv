@@ -1,0 +1,29 @@
+Category,Category_EN,Level,Level_EN,Fixed_Water_Cost,Fixed_Power_Cost,Fixed_Gold_Cost,Variable_Water_Percent,Variable_Power_Percent,Variable_Gold_Percent,Yield_Percentage
+机械制造,Mechanical Manufacturing,1,Level 1,18,40,64,2.2,2.8,5,88
+机械制造,Mechanical Manufacturing,2,Level 2,24,64,72,3.6,6.8,9.6,93
+机械制造,Mechanical Manufacturing,3,Level 3,30,96,76,4.8,12,13.2,97
+机械制造,Mechanical Manufacturing,4,Level 4,36,132,76,5.6,18.4,16,99
+材料加工,Materials Processing,1,Level 1,18,48,36,2.5,4.5,3,85
+材料加工,Materials Processing,2,Level 2,24,72,40,4.4,10.4,5.2,92
+材料加工,Materials Processing,3,Level 3,30,96,44,6,16.8,7.2,96
+材料加工,Materials Processing,4,Level 4,36,120,44,7.2,24,8.8,99
+生物化学,Biochemical,1,Level 1,22,36,44,4.6,2.2,3.2,70
+生物化学,Biochemical,2,Level 2,28,52,48,8.4,5.2,6.4,85
+生物化学,Biochemical,3,Level 3,34,76,52,11.4,9.6,9,93
+生物化学,Biochemical,4,Level 4,40,100,52,14.4,15.2,10.4,97
+电子器械,Electronic Equipment Processing,1,Level 1,24,80,72,1,6,3,65
+电子器械,Electronic Equipment Processing,2,Level 2,30,120,80,1.6,13.2,5.2,82
+电子器械,Electronic Equipment Processing,3,Level 3,36,180,84,1.8,21.6,6.6,93
+电子器械,Electronic Equipment Processing,4,Level 4,42,240,84,2,31.2,6.8,98
+能源利用,Energy Utilization,1,Level 1,20,60,30,2,6,2,82
+能源利用,Energy Utilization,2,Level 2,26,90,34,3.6,12.8,3.6,88
+能源利用,Energy Utilization,3,Level 3,32,130,36,4.8,20.4,4.8,95
+能源利用,Energy Utilization,4,Level 4,38,170,36,6,28.8,5.2,98
+裁剪纺织,Cutting and Textile,1,Level 1,16,20,56,4.8,1.4,3.8,82
+裁剪纺织,Cutting and Textile,2,Level 2,20,26,64,8.8,3.6,7.6,88
+裁剪纺织,Cutting and Textile,3,Level 3,24,34,72,12.6,6,11.4,94
+裁剪纺织,Cutting and Textile,4,Level 4,28,44,76,16,9.6,14.4,98
+食品加工,Food Processing,1,Level 1,20,30,40,4.5,2,3.5,80
+食品加工,Food Processing,2,Level 2,28,40,48,8.4,4.8,6.8,88
+食品加工,Food Processing,3,Level 3,36,54,54,11.4,8.4,10.2,95
+食品加工,Food Processing,4,Level 4,44,72,54,14.4,13.6,12,98

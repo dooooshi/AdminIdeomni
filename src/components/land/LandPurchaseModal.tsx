@@ -189,7 +189,6 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   if (!tile) return null;
 
   const canPurchase = validation?.canPurchase && !purchasing && !validating;
-  const totalCost = validation ? (validation.goldCost || 0) + (validation.carbonCost || 0) : 0;
 
   return (
     <StyledDialog open={open} onClose={handleClose}>
@@ -297,21 +296,6 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {LandService.formatCurrency(validation.carbonCost || 0, 'carbon')}
-                  </Typography>
-                </Box>
-                <Box 
-                  display="flex" 
-                  justifyContent="space-between" 
-                  alignItems="center" 
-                  pt={1.5} 
-                  borderTop="1px solid" 
-                  borderColor="grey.100"
-                >
-                  <Typography variant="body1" fontWeight={400}>
-                    Total
-                  </Typography>
-                  <Typography variant="body1" fontWeight={500}>
-                    {LandService.formatCurrency(totalCost)}
                   </Typography>
                 </Box>
               </Stack>

@@ -37,6 +37,7 @@ import {
   TrendingUp as TrendingUpIcon,
   Refresh as RefreshIcon,
   Factory as FactoryIcon,
+  Storage as StorageIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
@@ -67,6 +68,8 @@ import {
   InfrastructureConfigStatistics,
   InfrastructureConfigLayout
 } from '@/components/infrastructure';
+// Import facility space configuration components
+import { FacilitySpaceConfigTab } from '@/components/facility-space-config';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -493,6 +496,13 @@ const MapTemplateManagementPage: React.FC = () => {
                 {...a11yProps(4)}
                 disabled={!selectedTemplate}
               />
+              <Tab 
+                label={t('mapTemplate.SPACE_CONFIG')} 
+                icon={<StorageIcon />} 
+                iconPosition="start"
+                {...a11yProps(5)}
+                disabled={!selectedTemplate}
+              />
             </Tabs>
           </Box>
 
@@ -583,6 +593,21 @@ const MapTemplateManagementPage: React.FC = () => {
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info" variant="outlined">
                     {t('mapTemplate.SELECT_TEMPLATE_FOR_INFRASTRUCTURE_CONFIG')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Facility Space Configuration Tab */}
+            <TabPanel value={tabValue} index={5}>
+              {selectedTemplate ? (
+                <Box sx={{ p: 3 }}>
+                  <FacilitySpaceConfigTab templateId={selectedTemplate.id} />
+                </Box>
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info" variant="outlined">
+                    {t('mapTemplate.SELECT_TEMPLATE_FOR_SPACE_CONFIG')}
                   </Alert>
                 </Box>
               )}

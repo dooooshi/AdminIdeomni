@@ -107,342 +107,264 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: 2,
-          backgroundImage: theme.palette.mode === 'dark'
-            ? 'linear-gradient(135deg, #37474f 0%, #455a64 100%)'
-            : 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+          borderRadius: 0,
+          boxShadow: 'none',
+          border: `1px solid ${theme.palette.divider}`,
+          backgroundColor: theme.palette.background.paper,
         }
       }}
     >
-      <DialogTitle sx={{ 
-        bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-        borderBottom: `1px solid ${theme.palette.divider}`,
-      }}>
+      <DialogTitle 
+        sx={{ 
+          px: 3,
+          py: 2,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          backgroundColor: theme.palette.background.paper,
+        }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ 
-              bgcolor: theme.palette.mode === 'dark' 
-                ? alpha(theme.palette.primary.main, 0.3)
-                : theme.palette.primary.main,
-              width: 45, 
-              height: 45 
-            }}>
-              {getOriginIcon(material.origin)}
-            </Avatar>
-            <Box>
-              <Typography variant="h5" fontWeight="bold">
-                {t('rawMaterial.details')}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                #{material.materialNumber} • {locale === 'zh' ? material.nameZh : material.nameEn}
-              </Typography>
-            </Box>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 400, color: theme.palette.text.primary }}>
+              {locale === 'zh' ? material.nameZh : material.nameEn}
+            </Typography>
+            <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mt: 0.5 }}>
+              #{material.materialNumber} • {t(`rawMaterial.origin.${material.origin}`)}
+            </Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {material.isDeleted && (
-              <Chip label={t('common.deleted')} color="error" size="small" />
-            )}
-            {!material.isDeleted && !material.isActive && (
-              <Chip label={t('common.inactive')} color="default" size="small" />
-            )}
-            <IconButton onClick={onClose} size="small">
-              <CloseIcon />
-            </IconButton>
-          </Box>
+          <IconButton 
+            onClick={onClose} 
+            size="small"
+            sx={{ 
+              color: theme.palette.text.secondary,
+              '&:hover': { 
+                backgroundColor: alpha(theme.palette.text.secondary, 0.1)
+              }
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent dividers>
-        <Grid container spacing={3}>
-          {/* Header Section */}
-          <Grid item xs={12}>
-            <Paper elevation={0} sx={{ 
-              p: 2, 
-              bgcolor: theme.palette.mode === 'dark' 
-                ? alpha(theme.palette.primary.main, 0.08)
-                : alpha(theme.palette.primary.main, 0.04),
-              border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-            }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <Typography variant="h4" gutterBottom>
-                    #{material.materialNumber}
+      <DialogContent sx={{ p: 3 }}>
+        {/* Overview Section */}
+        <Box sx={{ mb: 4 }}>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={8}>
+              <Stack spacing={2}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    {t('rawMaterial.totalCost')}
                   </Typography>
-                  <Typography variant="h5" gutterBottom>
-                    {locale === 'zh' ? material.nameZh : material.nameEn}
+                  <Typography variant="h4" sx={{ fontWeight: 300 }}>
+                    {material.totalCost}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {locale === 'zh' ? material.nameEn : material.nameZh}
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    {t('rawMaterial.goldCost')}
                   </Typography>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <Box sx={{ color: getOriginColor(material.origin), display: 'flex' }}>
-                      {getOriginIcon(material.origin)}
-                    </Box>
-                    <Typography variant="h6">
-                      {t(`rawMaterial.origin.${material.origin}`)}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-
-          {/* Economic Data */}
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom color="primary">
-              {t('rawMaterial.economicData')}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <MoneyIcon color="primary" />
-                <Typography variant="subtitle2">{t('rawMaterial.totalCost')}</Typography>
-              </Box>
-              <Typography variant="h4">{material.totalCost}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {t('rawMaterial.units')}
-              </Typography>
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <MoneyIcon color="warning" />
-                <Typography variant="subtitle2">{t('rawMaterial.goldCost')}</Typography>
-              </Box>
-              <Typography variant="h4">{material.goldCost}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {((material.goldCost / material.totalCost) * 100).toFixed(1)}% {t('rawMaterial.ofTotal')}
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Resource Requirements */}
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom color="primary">
-              {t('rawMaterial.resourceRequirements')}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <WaterIcon color="primary" />
-                <Typography variant="subtitle2">{t('rawMaterial.waterRequired')}</Typography>
-              </Box>
-              <Typography variant="h4">{material.waterRequired}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {t('rawMaterial.units')}
-              </Typography>
-            </Paper>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <BoltIcon color="warning" />
-                <Typography variant="subtitle2">{t('rawMaterial.powerRequired')}</Typography>
-              </Box>
-              <Typography variant="h4">{material.powerRequired}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {t('rawMaterial.units')}
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Environmental Impact */}
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom color="primary">
-              {t('rawMaterial.environmentalImpact')}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <EcoIcon color="success" />
-                <Typography variant="subtitle2">{t('rawMaterial.carbonEmission')}</Typography>
-              </Box>
-              <Typography variant="h4">{material.carbonEmission}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {t('rawMaterial.carbonUnits')}
-              </Typography>
-            </Paper>
-          </Grid>
-
-
-          {/* Resource Breakdown */}
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom color="primary">
-              {t('rawMaterial.resourceBreakdown')}
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Grid container spacing={2}>
-                <Grid item xs={6} md={3}>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('rawMaterial.waterCost')}
+                  <Typography variant="h5" sx={{ fontWeight: 300 }}>
+                    {material.goldCost} ({((material.goldCost / material.totalCost) * 100).toFixed(0)}%)
                   </Typography>
+                </Box>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: { xs: 'left', md: 'right' } }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  {t('rawMaterial.origin')}
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: { xs: 'flex-start', md: 'flex-end' } }}>
+                  {getOriginIcon(material.origin)}
                   <Typography variant="body1">
-                    {((material.waterRequired / material.totalCost) * 100).toFixed(1)}%
+                    {t(`rawMaterial.origin.${material.origin}`)}
                   </Typography>
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('rawMaterial.powerCost')}
-                  </Typography>
-                  <Typography variant="body1">
-                    {((material.powerRequired / material.totalCost) * 100).toFixed(1)}%
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('rawMaterial.goldRatio')}
-                  </Typography>
-                  <Typography variant="body1">
-                    {((material.goldCost / material.totalCost) * 100).toFixed(1)}%
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} md={3}>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('rawMaterial.carbonPerCost')}
-                  </Typography>
-                  <Typography variant="body1">
-                    {(material.carbonEmission / material.totalCost).toFixed(4)}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Paper>
+                </Box>
+              </Box>
+            </Grid>
           </Grid>
+        </Box>
 
-          {/* Metadata */}
-          <Grid item xs={12}>
-            <Typography variant="subtitle1" gutterBottom color="primary">
-              {t('rawMaterial.metadata')}
+        <Divider sx={{ my: 3 }} />
+
+        {/* Resource Details */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2, fontWeight: 500 }}>
+            {t('rawMaterial.resourceRequirements')}
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.waterRequired')}
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                  {material.waterRequired}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.powerRequired')}
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 300 }}>
+                  {material.powerRequired}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Environmental Impact */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2, fontWeight: 500 }}>
+            {t('rawMaterial.environmentalImpact')}
+          </Typography>
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+              {t('rawMaterial.carbonEmission')}
             </Typography>
-            <Divider sx={{ mb: 2 }} />
-          </Grid>
+            <Typography variant="h6" sx={{ fontWeight: 300 }}>
+              {material.carbonEmission} {t('rawMaterial.carbonUnits')}
+            </Typography>
+          </Box>
+        </Box>
 
-          <Grid item xs={12}>
-            <Paper elevation={0} sx={{ 
-              p: 2,
-              bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-              border: `1px solid ${theme.palette.divider}`,
-            }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                    <TimeIcon fontSize="small" />
-                    <Typography variant="caption" color="text.secondary">
-                      {t('rawMaterial.createdAt')}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2">
-                    {new Date(material.createdAt).toLocaleString(locale)}
+        <Divider sx={{ my: 3 }} />
+
+        {/* Resource Breakdown */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2, fontWeight: 500 }}>
+            {t('rawMaterial.resourceBreakdown')}
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={6} sm={3}>
+              <Box sx={{ textAlign: 'center', py: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.waterCost')}
+                </Typography>
+                <Typography variant="body1">
+                  {((material.waterRequired / material.totalCost) * 100).toFixed(1)}%
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Box sx={{ textAlign: 'center', py: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.powerCost')}
+                </Typography>
+                <Typography variant="body1">
+                  {((material.powerRequired / material.totalCost) * 100).toFixed(1)}%
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Box sx={{ textAlign: 'center', py: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.goldRatio')}
+                </Typography>
+                <Typography variant="body1">
+                  {((material.goldCost / material.totalCost) * 100).toFixed(1)}%
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Box sx={{ textAlign: 'center', py: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.carbonPerCost')}
+                </Typography>
+                <Typography variant="body1">
+                  {(material.carbonEmission / material.totalCost).toFixed(4)}
+                </Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Metadata */}
+        <Box>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2, fontWeight: 500 }}>
+            {t('rawMaterial.metadata')}
+          </Typography>
+          <Stack spacing={2}>
+            <Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                {t('rawMaterial.createdAt')}
+              </Typography>
+              <Typography variant="body1">
+                {new Date(material.createdAt).toLocaleString(locale)}
+                {material.createdBy && (
+                  <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                    · {material.createdBy}
                   </Typography>
-                  {material.createdBy && (
-                    <Typography variant="caption" color="text.secondary">
-                      {t('common.by')}: {material.createdBy}
-                    </Typography>
-                  )}
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                    <TimeIcon fontSize="small" />
-                    <Typography variant="caption" color="text.secondary">
-                      {t('rawMaterial.updatedAt')}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2">
-                    {new Date(material.updatedAt).toLocaleString(locale)}
-                  </Typography>
-                  {material.lastModifiedBy && (
-                    <Typography variant="caption" color="text.secondary">
-                      {t('common.by')}: {material.lastModifiedBy}
-                    </Typography>
-                  )}
-                </Grid>
-                {material.isDeleted && material.deletedAt && (
-                  <>
-                    <Grid item xs={12} md={6}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                        <TimeIcon fontSize="small" color="error" />
-                        <Typography variant="caption" color="error">
-                          {t('rawMaterial.deletedAt')}
-                        </Typography>
-                      </Box>
-                      <Typography variant="body2">
-                        {new Date(material.deletedAt).toLocaleString(locale)}
-                      </Typography>
-                      {material.deletedBy && (
-                        <Typography variant="caption" color="text.secondary">
-                          {t('common.by')}: {material.deletedBy}
-                        </Typography>
-                      )}
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      {material.deletionReason && (
-                        <>
-                          <Typography variant="caption" color="error">
-                            {t('rawMaterial.deletionReason')}
-                          </Typography>
-                          <Typography variant="body2">
-                            {material.deletionReason}
-                          </Typography>
-                        </>
-                      )}
-                    </Grid>
-                  </>
                 )}
-              </Grid>
-            </Paper>
-          </Grid>
-        </Grid>
+              </Typography>
+            </Box>
+            
+            <Box>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                {t('rawMaterial.updatedAt')}
+              </Typography>
+              <Typography variant="body1">
+                {new Date(material.updatedAt).toLocaleString(locale)}
+                {material.lastModifiedBy && (
+                  <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                    · {material.lastModifiedBy}
+                  </Typography>
+                )}
+              </Typography>
+            </Box>
+            
+            {material.isDeleted && material.deletedAt && (
+              <Box>
+                <Typography variant="body2" color="error" sx={{ mb: 0.5 }}>
+                  {t('rawMaterial.deletedAt')}
+                </Typography>
+                <Typography variant="body1" color="error">
+                  {new Date(material.deletedAt).toLocaleString(locale)}
+                  {material.deletedBy && (
+                    <Typography component="span" variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                      · {material.deletedBy}
+                    </Typography>
+                  )}
+                </Typography>
+                {material.deletionReason && (
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1, fontStyle: 'italic' }}>
+                    "{material.deletionReason}"
+                  </Typography>
+                )}
+              </Box>
+            )}
+          </Stack>
+        </Box>
       </DialogContent>
-      <DialogActions sx={{ 
-        p: 3, 
-        bgcolor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
-        borderTop: `1px solid ${theme.palette.divider}`,
-      }}>
+      <DialogActions 
+        sx={{ 
+          px: 3,
+          py: 2,
+          borderTop: `1px solid ${theme.palette.divider}`,
+          gap: 1,
+          justifyContent: 'flex-end',
+        }}
+      >
         {isSuperAdmin && onViewHistory && (
           <Button
             onClick={() => onViewHistory(material)}
             startIcon={<HistoryIcon />}
-            sx={{ minWidth: 120 }}
+            variant="text"
+            size="small"
+            sx={{ 
+              color: theme.palette.text.secondary,
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.text.secondary, 0.1),
+              }
+            }}
           >
             {t('rawMaterial.viewHistory')}
           </Button>
@@ -451,8 +373,15 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
           <Button
             onClick={() => onEdit(material)}
             startIcon={<EditIcon />}
-            variant="outlined"
-            sx={{ minWidth: 100 }}
+            variant="text"
+            size="small"
+            sx={{ 
+              color: theme.palette.text.secondary,
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: alpha(theme.palette.text.secondary, 0.1),
+              }
+            }}
           >
             {t('common.edit')}
           </Button>
@@ -460,11 +389,16 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
         <Button 
           onClick={onClose} 
           variant="contained"
+          size="small"
           sx={{ 
-            minWidth: 100,
-            backgroundImage: theme.palette.mode === 'dark'
-              ? 'linear-gradient(45deg, #37474f 30%, #455a64 90%)'
-              : 'linear-gradient(45deg, #9e9e9e 30%, #757575 90%)',
+            backgroundColor: theme.palette.text.primary,
+            color: theme.palette.background.paper,
+            textTransform: 'none',
+            boxShadow: 'none',
+            '&:hover': {
+              backgroundColor: alpha(theme.palette.text.primary, 0.8),
+              boxShadow: 'none',
+            }
           }}
         >
           {t('common.close')}

@@ -62,6 +62,15 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 				auth: ['admin']
 			},
 			{
+				id: 'admin-management.craft-category-management',
+				title: 'Craft Category Management',
+				type: 'item',
+				icon: 'heroicons-outline:cog-6-tooth',
+				url: '/craft-category-management',
+				translate: 'CRAFT_CATEGORY_MANAGEMENT',
+				auth: ['admin']
+			},
+			{
 				id: 'admin-management.raw-materials',
 				title: 'Raw Materials',
 				type: 'item',

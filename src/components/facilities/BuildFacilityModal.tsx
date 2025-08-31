@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { RESOURCE_ICONS } from '@/constants/resourceIcons';
 import {
   Dialog,
@@ -65,6 +65,149 @@ interface BuildFacilityModalProps {
 }
 
 const STEPS = ['SELECT_TILE', 'SELECT_FACILITY', 'CONFIGURE_BUILD', 'CONFIRM_BUILD'];
+
+// Separate ValidationResults component with completely static layout
+const ValidationResults = memo(({ 
+  validation, 
+  loading, 
+  selectedFacilityType,
+  t 
+}: {
+  validation: BuildValidationResponse | null;
+  loading: boolean;
+  selectedFacilityType: FacilityType | undefined;
+  t: any;
+}) => {
+  // Determine what to show but keep layout static
+  const showLoading = loading && selectedFacilityType;
+  const showValidation = !loading && validation && selectedFacilityType;
+  const showPlaceholder = !selectedFacilityType || (!loading && !validation);
+  
+  const borderColor = showValidation 
+    ? (validation.canBuild ? 'success.main' : 'error.main')
+    : 'divider';
+  const bgColor = showValidation
+    ? (validation.canBuild ? 'success.50' : 'error.50')
+    : 'background.paper';
+
+  return (
+    <Box sx={{ mt: 2, height: 120, position: 'relative' }}>
+      <Paper 
+        sx={{ 
+          p: 2, 
+          height: '100%',
+          border: '1px solid',
+          borderColor,
+          bgcolor: bgColor,
+          transition: 'border-color 0.3s, background-color 0.3s',
+          overflow: 'hidden',
+        }}
+      >
+        {/* All three states rendered but with visibility control */}
+        
+        {/* Placeholder state */}
+        <Box 
+          sx={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: showPlaceholder ? 1 : 0,
+            visibility: showPlaceholder ? 'visible' : 'hidden',
+            transition: 'opacity 0.2s',
+            p: 2,
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            {t('facilityManagement.SELECT_FACILITY_TO_VIEW_COSTS')}
+          </Typography>
+        </Box>
+
+        {/* Loading state */}
+        <Box 
+          sx={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: showLoading ? 1 : 0,
+            visibility: showLoading ? 'visible' : 'hidden',
+            transition: 'opacity 0.2s',
+            p: 2,
+          }}
+        >
+          <CircularProgress size={24} />
+          <Typography variant="body2" ml={2}>
+            {t('facilityManagement.VALIDATING')}
+          </Typography>
+        </Box>
+
+        {/* Validation results */}
+        <Box 
+          sx={{ 
+            position: 'absolute',
+            top: 16,
+            left: 16,
+            right: 16,
+            bottom: 16,
+            opacity: showValidation ? 1 : 0,
+            visibility: showValidation ? 'visible' : 'hidden',
+            transition: 'opacity 0.2s',
+          }}
+        >
+          <Box display="flex" alignItems="center" gap={1} mb={1}>
+            <Box sx={{ width: 20, height: 20 }}>
+              {validation?.canBuild ? (
+                <CheckCircleOutlined color="success" sx={{ fontSize: 20 }} />
+              ) : validation && !validation.canBuild ? (
+                <WarningAmberOutlined color="error" sx={{ fontSize: 20 }} />
+              ) : null}
+            </Box>
+            <Typography variant="caption" fontWeight="bold" sx={{ lineHeight: 1.2 }}>
+              {validation?.canBuild 
+                ? t('facilityManagement.BUILD_VALIDATION_PASSED')
+                : validation 
+                  ? t('facilityManagement.BUILD_VALIDATION_FAILED')
+                  : ''
+              }
+            </Typography>
+          </Box>
+
+          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.7rem', lineHeight: 1.2 }}>
+                {t('facilityManagement.REQUIRED_GOLD')}
+              </Typography>
+              <Typography variant="h6" color={validation?.canBuild ? "warning.main" : "text.disabled"} sx={{ display: 'flex', alignItems: 'center', lineHeight: 1.4 }}>
+                <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} />
+                {validation?.goldCost || 0}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.7rem', lineHeight: 1.2 }}>
+                {t('facilityManagement.REQUIRED_CARBON')}
+              </Typography>
+              <Typography variant="h6" color={validation?.canBuild ? "error.main" : "text.disabled"} sx={{ display: 'flex', alignItems: 'center', lineHeight: 1.4 }}>
+                <Co2 fontSize="small" sx={{ mr: 0.5 }} />
+                {validation?.carbonCost || 0}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Paper>
+    </Box>
+  );
+});
+
+ValidationResults.displayName = 'ValidationResults';
 
 const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
   open,
@@ -150,13 +293,8 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
     }
   }, [open, selectedTileId]);
 
-  // Validate build when facility type changes
-  useEffect(() => {
-    if (selectedFacilityType && selectedTile) {
-      setBuildRequest(prev => ({ ...prev, tileId: selectedTile.tileId, facilityType: selectedFacilityType }));
-      validateBuild(selectedTile.tileId, selectedFacilityType);
-    }
-  }, [selectedFacilityType, selectedTile]);
+  // Use a ref to track validation timeout
+  const validationTimeoutRef = React.useRef<NodeJS.Timeout>();
 
   const validateBuild = async (tileId: number, facilityType: FacilityType) => {
     try {
@@ -164,13 +302,6 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
       setError(null);
       
       const validationResult = await StudentFacilityService.validateBuildCapability(tileId, facilityType);
-      
-      // Debug: Log the validation result
-      console.log('🔍 Raw validation result:', validationResult);
-      console.log('🔍 canBuild value:', validationResult.canBuild);
-      console.log('🔍 canBuild type:', typeof validationResult.canBuild);
-      console.log('🔍 canBuild === true:', validationResult.canBuild === true);
-      console.log('🔍 Boolean(canBuild):', Boolean(validationResult.canBuild));
       
       setValidation(validationResult);
 
@@ -189,10 +320,29 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
     }
   };
 
-  const handleFacilityTypeSelect = (type: FacilityType) => {
+  const handleFacilityTypeSelect = useCallback((type: FacilityType) => {
+    // Only update state if actually changing
+    if (type === selectedFacilityType) return;
+    
     setSelectedFacilityType(type);
     setBuildRequest(prev => ({ ...prev, facilityType: type }));
-  };
+    
+    // Clear any existing validation timeout
+    if (validationTimeoutRef.current) {
+      clearTimeout(validationTimeoutRef.current);
+    }
+    
+    // Don't reset validation to prevent layout changes
+    // Just set loading state
+    setLoading(true);
+    
+    // Debounce validation with a slight delay to prevent rapid updates
+    validationTimeoutRef.current = setTimeout(() => {
+      if (selectedTile) {
+        validateBuild(selectedTile.tileId, type);
+      }
+    }, 200);
+  }, [selectedFacilityType, selectedTile]);
 
   const handleNext = () => {
     if (activeStep === 0 && selectedTile) {
@@ -425,68 +575,22 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                 {t('facilityManagement:SELECT_FACILITY_DESCRIPTION')}
               </Typography>
 
-              {loading ? (
-                <Box display="flex" justifyContent="center" py={4}>
-                  <CircularProgress />
-                </Box>
-              ) : (
-                <FacilityTypeSelector
-                  selectedType={selectedFacilityType}
-                  onTypeSelect={handleFacilityTypeSelect}
-                  compatibleLandTypes={selectedTile ? [selectedTile.landType] : ['PLAIN']}
-                  showOnlyCompatible={true}
-                  showBuildableOnly={true}
-                  selectedTileId={selectedTile?.tileId}
-                />
-              )}
+              <FacilityTypeSelector
+                selectedType={selectedFacilityType}
+                onTypeSelect={handleFacilityTypeSelect}
+                compatibleLandTypes={selectedTile ? [selectedTile.landType] : ['PLAIN']}
+                showOnlyCompatible={true}
+                showBuildableOnly={true}
+                selectedTileId={selectedTile?.tileId}
+              />
 
-              {/* Validation Results */}
-              {validation && selectedFacilityType && (
-                <Paper sx={{ p: 2, mt: 2, border: validation.canBuild ? '1px solid green' : '1px solid red' }}>
-                  <Box display="flex" alignItems="center" gap={1} mb={1}>
-                    {validation.canBuild ? (
-                      <CheckCircleOutlined color="success" />
-                    ) : (
-                      <WarningAmberOutlined color="error" />
-                    )}
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {validation.canBuild 
-                        ? t('facilityManagement:BUILD_VALIDATION_PASSED')
-                        : t('facilityManagement:BUILD_VALIDATION_FAILED')
-                      }
-                    </Typography>
-                  </Box>
-
-                  {validation.canBuild ? (
-                    <Grid container spacing={2}>
-                      <Grid item xs={6}>
-                        <Typography variant="caption" color="text.secondary">
-                          {t('facilityManagement:REQUIRED_GOLD')}
-                        </Typography>
-                        <Typography variant="body1" fontWeight="medium">
-                          <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography variant="caption" color="text.secondary">
-                          {t('facilityManagement:REQUIRED_CARBON')}
-                        </Typography>
-                        <Typography variant="body1" fontWeight="medium">
-                          <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    <Box>
-                      {validation.errors && validation.errors.length > 0 ? validation.errors.map((error, index) => (
-                        <Alert key={index} severity="error" sx={{ mt: 1 }}>
-                          {error}
-                        </Alert>
-                      )) : null}
-                    </Box>
-                  )}
-                </Paper>
-              )}
+              {/* Always render ValidationResults with static layout */}
+              <ValidationResults
+                validation={validation}
+                loading={loading}
+                selectedFacilityType={selectedFacilityType}
+                t={t}
+              />
             </Box>
           )}
 
@@ -613,7 +717,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
                         {StudentFacilityService.getFacilityIcon(selectedFacilityType)} {' '}
-                        {StudentFacilityService.getFacilityTypeName(selectedFacilityType)}
+                        {t(`facilityManagement.FACILITY_TYPE_${selectedFacilityType}`)}
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>

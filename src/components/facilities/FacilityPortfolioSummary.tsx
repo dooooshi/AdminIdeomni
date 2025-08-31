@@ -162,7 +162,7 @@ const FacilityPortfolioSummary: React.FC<FacilityPortfolioSummaryProps> = ({
                   {topFacilityTypes.map(({ type, count }, index) => {
                     const percentage = (summary.totalFacilities || 0) > 0 ? (count / (summary.totalFacilities || 1)) * 100 : 0;
                     const icon = StudentFacilityService.getFacilityIcon(type);
-                    const name = StudentFacilityService.getFacilityTypeName(type);
+                    const name = t(`facilityManagement:FACILITY_TYPE_${type}`);
 
                     return (
                       <ListItem key={type} divider={index < topFacilityTypes.length - 1}>
