@@ -493,6 +493,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							auth: ['user']
 						},
 						{
+							id: 'land-management.student-facilities.space',
+							title: 'Facility Space Status',
+							type: 'item',
+							icon: 'heroicons-outline:archive-box',
+							url: '/student-facility-space',
+							translate: 'FACILITY_SPACE_STATUS',
+							auth: ['user']
+						},
+						{
 							id: 'land-management.student-facilities.infrastructure',
 							title: 'Infrastructure Dashboard',
 							type: 'item',
