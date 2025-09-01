@@ -286,6 +286,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                             />
                           </Box>
                         }
+                        secondaryTypographyProps={{ component: 'div' }}
                         secondary={
                           <Box sx={{ mt: 1 }}>
                             <Typography variant="body2" color="textSecondary">
@@ -357,6 +358,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                               />
                             </Box>
                           }
+                          secondaryTypographyProps={{ component: 'div' }}
                           secondary={
                             <Box sx={{ mt: 0.5 }}>
                               <Box

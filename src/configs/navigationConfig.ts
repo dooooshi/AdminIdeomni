@@ -514,6 +514,38 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				}
 			]
 		});
+		
+		// Add Production & Resources for Students
+		navigation.push({
+			id: 'production-resources',
+			title: 'Production & Resources',
+			subtitle: 'Manage raw material production and resource consumption',
+			type: 'group',
+			icon: 'heroicons-outline:beaker',
+			translate: 'PRODUCTION_RESOURCES',
+			translateSubtitle: 'PRODUCTION_RESOURCES_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'production-resources.production',
+					title: 'Raw Material Production',
+					type: 'item',
+					icon: 'heroicons-outline:cube',
+					url: '/student-production',
+					translate: 'RAW_MATERIAL_PRODUCTION',
+					auth: ['user']
+				},
+				{
+					id: 'production-resources.resources',
+					title: 'Resource Consumption',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar',
+					url: '/student-resources',
+					translate: 'RESOURCE_CONSUMPTION',
+					auth: ['user']
+				}
+			]
+		});
 	}
 	
 	// Add Team Administration for Managers (userType: 1)
