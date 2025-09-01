@@ -12,14 +12,11 @@ import {
   Alert,
   CircularProgress,
   Divider,
-  Grid,
-  Chip,
   IconButton,
-  Paper,
-  Slider,
-  Stack,
   Fade,
-  Grow
+  Collapse,
+  LinearProgress,
+  Chip
 } from '@mui/material';
 import {
   Close as CloseIcon,
@@ -27,10 +24,10 @@ import {
   Water as WaterIcon,
   Power as PowerIcon,
   AttachMoney as MoneyIcon,
-  Nature as NatureIcon,
+  Nature as EcoIcon,
   Add as AddIcon,
   Remove as RemoveIcon,
-  CheckCircle as CheckIcon
+  CheckCircleOutline as CheckIcon
 } from '@mui/icons-material';
 import { RawMaterial, ProductionEstimate } from '@/types/rawMaterialProduction';
 import rawMaterialProductionService from '@/lib/services/rawMaterialProductionService';
@@ -45,7 +42,7 @@ interface ProductionModalProps {
   onSuccess?: (result: any) => void;
 }
 
-const QUICK_QUANTITIES = [1, 10, 50, 100, 500];
+const PRESET_AMOUNTS = [10, 50, 100, 500];
 
 const ProductionModal: React.FC<ProductionModalProps> = ({
   open,
@@ -56,7 +53,7 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
   onSuccess
 }) => {
   const { t } = useTranslation();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(10);
   const [loading, setLoading] = useState(false);
   const [estimate, setEstimate] = useState<ProductionEstimate | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,12 +62,12 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
 
   useEffect(() => {
     if (open && material) {
-      setQuantity(1);
+      setQuantity(10);
       setEstimate(null);
       setError(null);
       setShowSuccess(false);
       if (facilityId) {
-        loadEstimate(1);
+        loadEstimate(10);
       }
     }
   }, [open, material]);
@@ -94,7 +91,7 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
       }, material);
       setEstimate(result);
     } catch (err: any) {
-      setError(err.message || 'Failed to estimate production');
+      setError(err.message || t('production.failed'));
     } finally {
       setLoading(false);
     }
@@ -106,12 +103,6 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
     if (qty > 0) {
       loadEstimate(qty);
     }
-  };
-
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    const qty = newValue as number;
-    setQuantity(qty);
-    loadEstimate(qty);
   };
 
   const adjustQuantity = (delta: number) => {
@@ -139,10 +130,10 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
           onClose();
         }, 1500);
       } else {
-        setError(result.message || 'Production failed');
+        setError(result.message || t('production.failed'));
       }
     } catch (err: any) {
-      setError(err.message || 'Production failed');
+      setError(err.message || t('production.failed'));
     } finally {
       setProducing(false);
     }
@@ -159,353 +150,425 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
     <Dialog 
       open={open} 
       onClose={onClose} 
-      maxWidth="md" 
+      maxWidth="sm" 
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: 2,
-          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          p: 0.5
+          borderRadius: 3,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+          overflow: 'hidden'
         }
       }}
     >
-      <Box sx={{ bgcolor: 'background.paper', borderRadius: 1.5 }}>
-        {/* Header */}
-        <Box 
-          sx={{ 
-            p: 3,
-            background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-            borderBottom: 1,
-            borderColor: 'divider'
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <Chip
-                  label={`#${material.materialNumber}`}
-                  size="small"
-                  sx={{ 
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
-                    fontWeight: 'bold'
-                  }}
-                />
-                {material.origin && (
-                  <Chip label={material.origin} size="small" variant="outlined" />
-                )}
-              </Box>
-              <Typography variant="h5" fontWeight="bold">
-                {material.name}
-              </Typography>
-            </Box>
-            <IconButton onClick={onClose} size="small">
-              <CloseIcon />
-            </IconButton>
+      {/* Minimalist Header */}
+      <Box 
+        sx={{ 
+          px: 4,
+          py: 3,
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper'
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box>
+            <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: 1.5, fontSize: '0.7rem' }}>
+              {t('production.material').toUpperCase()} #{material.materialNumber}
+            </Typography>
+            <Typography variant="h5" sx={{ fontWeight: 300, mt: 0.5 }}>
+              {material.name}
+            </Typography>
           </Box>
+          <IconButton 
+            onClick={onClose} 
+            size="small"
+            sx={{ 
+              color: 'text.secondary',
+              '&:hover': { 
+                bgcolor: 'action.hover' 
+              }
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </Box>
+      </Box>
 
-        <DialogContent sx={{ p: 3 }}>
-          <Grid container spacing={3}>
-            {/* Facility Selection */}
-            <Grid item xs={12}>
-              <Paper 
-                elevation={0} 
+      {/* Loading Progress */}
+      {loading && (
+        <LinearProgress 
+          sx={{ 
+            height: 1,
+            bgcolor: 'transparent'
+          }} 
+        />
+      )}
+
+      <DialogContent sx={{ px: 4, py: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          
+          {/* Facility Selection - Simplified */}
+          <Box>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: 'text.secondary',
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+                mb: 1.5,
+                display: 'block'
+              }}
+            >
+              {t('production.productionFacility')}
+            </Typography>
+            <FacilitySelector
+              value={facilityId}
+              onChange={onFacilityChange}
+              facilityType={material?.origin}
+              disabled={producing}
+            />
+          </Box>
+
+          {/* Quantity Control - Minimalist Design */}
+          <Box>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: 'text.secondary',
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+                mb: 2,
+                display: 'block'
+              }}
+            >
+              {t('production.quantity')}
+            </Typography>
+            
+            {/* Main Quantity Controls */}
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2,
+                mb: 3
+              }}
+            >
+              <IconButton 
+                onClick={() => adjustQuantity(-1)}
+                disabled={quantity <= 1 || producing}
+                size="large"
                 sx={{ 
-                  p: 2, 
-                  bgcolor: 'warning.light',
-                  bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 193, 7, 0.1)' : 'rgba(255, 193, 7, 0.08)',
-                  border: 1,
-                  borderColor: 'warning.main',
-                  borderRadius: 2
-                }}
-              >
-                <FacilitySelector
-                  value={facilityId}
-                  onChange={onFacilityChange}
-                  facilityType={material?.origin}
-                  disabled={producing}
-                />
-              </Paper>
-            </Grid>
-
-            {/* Quantity Section */}
-            <Grid item xs={12}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 3, 
-                  bgcolor: 'background.default',
-                  border: 1,
-                  borderColor: 'divider',
-                  borderRadius: 2
-                }}
-              >
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  {t('production.quantity')}
-                </Typography>
-                
-                {/* Quantity Input with Buttons */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                  <IconButton 
-                    onClick={() => adjustQuantity(-10)}
-                    disabled={quantity <= 1 || producing}
-                    color="primary"
-                    sx={{ border: 1, borderColor: 'divider' }}
-                  >
-                    <RemoveIcon />
-                  </IconButton>
-                  
-                  <TextField
-                    value={quantity}
-                    onChange={(e) => handleQuantityChange(e.target.value)}
-                    type="number"
-                    inputProps={{ 
-                      min: 1,
-                      style: { textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold' }
-                    }}
-                    disabled={producing}
-                    sx={{ 
-                      width: 150,
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': {
-                          borderColor: 'primary.main',
-                          borderWidth: 2
-                        }
-                      }
-                    }}
-                  />
-                  
-                  <IconButton 
-                    onClick={() => adjustQuantity(10)}
-                    disabled={producing}
-                    color="primary"
-                    sx={{ border: 1, borderColor: 'divider' }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Box>
-
-                {/* Slider */}
-                <Box sx={{ px: 2, mb: 2 }}>
-                  <Slider
-                    value={quantity}
-                    onChange={handleSliderChange}
-                    min={1}
-                    max={1000}
-                    disabled={producing}
-                    sx={{
-                      '& .MuiSlider-thumb': {
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      },
-                      '& .MuiSlider-track': {
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      }
-                    }}
-                  />
-                </Box>
-
-                {/* Quick Select Buttons */}
-                <Stack direction="row" spacing={1}>
-                  {QUICK_QUANTITIES.map((qty) => (
-                    <Chip
-                      key={qty}
-                      label={qty}
-                      onClick={() => {
-                        setQuantity(qty);
-                        loadEstimate(qty);
-                      }}
-                      variant={quantity === qty ? "filled" : "outlined"}
-                      color="primary"
-                      clickable
-                      disabled={producing}
-                    />
-                  ))}
-                </Stack>
-              </Paper>
-            </Grid>
-
-            {/* Resource Requirements */}
-            <Grid item xs={12} md={6}>
-              <Paper 
-                elevation={0} 
-                sx={{ 
-                  p: 2, 
-                  bgcolor: 'background.default',
-                  border: 1,
+                  border: '1px solid',
                   borderColor: 'divider',
                   borderRadius: 2,
-                  height: '100%'
+                  '&:hover': {
+                    borderColor: 'text.primary',
+                    bgcolor: 'action.hover'
+                  }
                 }}
               >
-                <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                  {t('production.requirements')}
-                </Typography>
-                <Stack spacing={2}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <WaterIcon color="primary" />
-                      <Typography variant="body2">{t('production.water')}</Typography>
-                    </Box>
-                    <Typography variant="body1" fontWeight="bold">
+                <RemoveIcon />
+              </IconButton>
+              
+              <TextField
+                value={quantity}
+                onChange={(e) => handleQuantityChange(e.target.value)}
+                type="number"
+                inputProps={{ 
+                  min: 1,
+                  style: { 
+                    textAlign: 'center', 
+                    fontSize: '2rem', 
+                    fontWeight: 200 
+                  }
+                }}
+                disabled={producing}
+                sx={{ 
+                  width: 160,
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'divider',
+                      borderRadius: 2
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'text.primary'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'text.primary',
+                      borderWidth: 1
+                    }
+                  }
+                }}
+              />
+              
+              <IconButton 
+                onClick={() => adjustQuantity(1)}
+                disabled={producing}
+                size="large"
+                sx={{ 
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 2,
+                  '&:hover': {
+                    borderColor: 'text.primary',
+                    bgcolor: 'action.hover'
+                  }
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Box>
+
+            {/* Preset Amounts */}
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              {PRESET_AMOUNTS.map((amount) => (
+                <Button
+                  key={amount}
+                  onClick={() => {
+                    setQuantity(amount);
+                    loadEstimate(amount);
+                  }}
+                  variant={quantity === amount ? "contained" : "outlined"}
+                  size="small"
+                  disabled={producing}
+                  sx={{ 
+                    minWidth: 60,
+                    borderRadius: 2,
+                    borderColor: 'divider',
+                    color: quantity === amount ? 'white' : 'text.primary',
+                    bgcolor: quantity === amount ? 'text.primary' : 'transparent',
+                    '&:hover': {
+                      borderColor: 'text.primary',
+                      bgcolor: quantity === amount ? 'text.secondary' : 'action.hover'
+                    }
+                  }}
+                >
+                  {amount}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Expected Cost Display - Prominent */}
+          {estimate && (
+            <Box 
+              sx={{ 
+                p: 3,
+                borderRadius: 2,
+                bgcolor: 'primary.main',
+                color: 'primary.contrastText',
+                textAlign: 'center'
+              }}
+            >
+              <Typography variant="caption" sx={{ opacity: 0.9, textTransform: 'uppercase', letterSpacing: 1 }}>
+                {t('production.expectedCost')}
+              </Typography>
+              <Typography variant="h3" sx={{ fontWeight: 300, mt: 1 }}>
+                ${estimate.costs.totalCost.toFixed(2)}
+              </Typography>
+              <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
+                {t('production.quantity')}: {quantity} × ${estimate.costs.costPerUnit?.toFixed(2) || '0.00'} = ${estimate.costs.totalCost.toFixed(2)}
+              </Typography>
+            </Box>
+          )}
+
+          {/* Resources & Costs - Clean Grid Layout */}
+          {estimate && (
+            <Box>
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: 'text.secondary',
+                  textTransform: 'uppercase',
+                  letterSpacing: 1,
+                  mb: 2,
+                  display: 'block'
+                }}
+              >
+                {t('production.requirementsCosts')}
+              </Typography>
+              
+              <Box 
+                sx={{ 
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 3,
+                  p: 3,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 2,
+                  bgcolor: 'grey.50'
+                }}
+              >
+                {/* Resources */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>{t('production.requirements')}</Typography>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <WaterIcon sx={{ fontSize: 18, color: 'info.main' }} />
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.water')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {waterRequired.toLocaleString()}
                     </Typography>
                   </Box>
                   
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <PowerIcon color="warning" />
-                      <Typography variant="body2">{t('production.power')}</Typography>
-                    </Box>
-                    <Typography variant="body1" fontWeight="bold">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <PowerIcon sx={{ fontSize: 18, color: 'warning.main' }} />
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.power')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {powerRequired.toLocaleString()}
                     </Typography>
                   </Box>
                   
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <MoneyIcon color="success" />
-                      <Typography variant="body2">{t('production.gold')}</Typography>
-                    </Box>
-                    <Typography variant="body1" fontWeight="bold">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <MoneyIcon sx={{ fontSize: 18, color: 'success.main' }} />
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.gold')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {goldRequired.toLocaleString()}
                     </Typography>
                   </Box>
+                </Box>
+
+                {/* Cost Breakdown */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="subtitle2" sx={{ mb: 1 }}>{t('production.costBreakdown')}</Typography>
                   
-                  <Divider />
-                  
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <NatureIcon color="action" />
-                      <Typography variant="body2" color="text.secondary">
-                        {t('production.carbonEmission')}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      {carbonEmission.toFixed(2)}
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.waterCost')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      ${estimate.costs.waterCost?.toFixed(2) || '0.00'}
                     </Typography>
                   </Box>
-                </Stack>
-              </Paper>
-            </Grid>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.powerCost')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      ${estimate.costs.powerCost?.toFixed(2) || '0.00'}
+                    </Typography>
+                  </Box>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Typography variant="body2" sx={{ flex: 1, color: 'text.secondary' }}>
+                      {t('production.materialCost')}
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      ${estimate.costs.materialBaseCost?.toFixed(2) || '0.00'}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
 
-            {/* Cost Summary */}
-            <Grid item xs={12} md={6}>
-              <Paper 
-                elevation={0} 
+              {/* Carbon Footprint - Subtle */}
+              <Box 
                 sx={{ 
-                  p: 2, 
-                  background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-                  border: 1,
-                  borderColor: 'primary.main',
-                  borderRadius: 2,
-                  height: '100%'
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  mt: 2,
+                  color: 'text.secondary'
                 }}
               >
-                <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                  {t('production.costBreakdown')}
+                <EcoIcon sx={{ fontSize: 16 }} />
+                <Typography variant="caption">
+                  {t('production.carbonEmission')}: {carbonEmission.toFixed(2)} {t('production.units')}
                 </Typography>
-                
-                {loading ? (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-                    <CircularProgress size={30} />
-                  </Box>
-                ) : estimate ? (
-                  <Stack spacing={2}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('production.quantity')}:
-                      </Typography>
-                      <Typography variant="body2" fontWeight="medium">
-                        {quantity}
-                      </Typography>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('production.costPerUnit')}:
-                      </Typography>
-                      <Typography variant="body2" fontWeight="medium">
-                        ${estimate.costs.costPerUnit?.toFixed(2) || '0.00'}
-                      </Typography>
-                    </Box>
-                    
-                    <Divider />
-                    
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        {t('production.totalCost')}:
-                      </Typography>
-                      <Typography 
-                        variant="h5" 
-                        fontWeight="bold"
-                        sx={{
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          backgroundClip: 'text',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent'
-                        }}
-                      >
-                        ${estimate.costs.totalCost.toFixed(2)}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                ) : null}
-              </Paper>
-            </Grid>
-
-            {/* Success Message */}
-            <Fade in={showSuccess}>
-              <Grid item xs={12}>
-                <Alert severity="success" icon={<CheckIcon />}>
-                  {t('production.success')}
-                </Alert>
-              </Grid>
-            </Fade>
-
-            {/* Error Display */}
-            {error && (
-              <Grow in={!!error}>
-                <Grid item xs={12}>
-                  <Alert severity="error" onClose={() => setError(null)}>
-                    {error}
-                  </Alert>
-                </Grid>
-              </Grow>
-            )}
-
-            {/* Action Buttons */}
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                <Button 
-                  onClick={onClose} 
-                  disabled={producing}
-                  size="large"
-                  sx={{ minWidth: 120 }}
-                >
-                  {t('common.cancel')}
-                </Button>
-                <Button
-                  onClick={handleProduce}
-                  variant="contained"
-                  disabled={!estimate || producing || quantity <= 0 || !facilityId}
-                  size="large"
-                  sx={{ 
-                    minWidth: 150,
-                    background: producing ? undefined : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #5a67d8 0%, #6b4ca0 100%)'
-                    }
-                  }}
-                  startIcon={producing ? <CircularProgress size={20} color="inherit" /> : <FactoryIcon />}
-                >
-                  {producing ? t('production.producing') : t('production.produce')}
-                </Button>
               </Box>
-            </Grid>
-          </Grid>
-        </DialogContent>
-      </Box>
+            </Box>
+          )}
+
+          {/* Success Message */}
+          <Collapse in={showSuccess}>
+            <Alert 
+              severity="success" 
+              icon={<CheckIcon />}
+              sx={{ 
+                borderRadius: 2,
+                bgcolor: 'success.light',
+                '& .MuiAlert-icon': {
+                  color: 'success.main'
+                }
+              }}
+            >
+              {t('production.successMessage')}
+            </Alert>
+          </Collapse>
+
+          {/* Error Display */}
+          <Collapse in={!!error}>
+            <Alert 
+              severity="error" 
+              onClose={() => setError(null)}
+              sx={{ 
+                borderRadius: 2,
+                bgcolor: 'error.light',
+                '& .MuiAlert-icon': {
+                  color: 'error.main'
+                }
+              }}
+            >
+              {error}
+            </Alert>
+          </Collapse>
+
+          {/* Action Buttons - Clean and Simple */}
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              gap: 2, 
+              justifyContent: 'flex-end',
+              pt: 2
+            }}
+          >
+            <Button 
+              onClick={onClose} 
+              disabled={producing}
+              size="large"
+              sx={{ 
+                px: 4,
+                color: 'text.secondary',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                }
+              }}
+            >
+              {t('common.cancel')}
+            </Button>
+            <Button
+              onClick={handleProduce}
+              variant="contained"
+              disabled={!estimate || producing || quantity <= 0 || !facilityId}
+              size="large"
+              sx={{ 
+                px: 4,
+                bgcolor: 'text.primary',
+                color: 'background.paper',
+                borderRadius: 2,
+                boxShadow: 'none',
+                '&:hover': {
+                  bgcolor: 'text.secondary',
+                  boxShadow: 'none'
+                },
+                '&.Mui-disabled': {
+                  bgcolor: 'action.disabledBackground'
+                }
+              }}
+              startIcon={producing ? <CircularProgress size={18} color="inherit" /> : <FactoryIcon />}
+            >
+              {producing ? t('production.processing') : t('production.produce')}
+            </Button>
+          </Box>
+        </Box>
+      </DialogContent>
     </Dialog>
   );
 };

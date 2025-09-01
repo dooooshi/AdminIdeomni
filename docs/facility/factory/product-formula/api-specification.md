@@ -31,10 +31,59 @@ All responses follow the standardized format:
 
 ## User Endpoints
 
-### 1. Create Product Formula
-**POST** `/api/user/product-formulas`
+### 0. Check Formula Creation Requirements
+**POST** `/api/user/team/product-formulas/check-requirements`
 
-**Description**: Create a new product formula with material requirements and craft categories
+**Description**: Validate that team meets requirements for formula creation (factory capabilities and material existence)
+
+**Request Body**:
+```json
+{
+  "craftCategories": [
+    {"craftCategoryId": 11}
+  ],
+  "materials": [
+    {"rawMaterialId": 85, "quantity": 5.0}
+  ]
+}
+```
+
+**Response (200 OK)**:
+```json
+{
+  "success": true,
+  "businessCode": 0,
+  "message": "Formula creation requirements met",
+  "data": {
+    "canCreate": true,
+    "factoryValidation": {
+      "valid": true,
+      "maxFactoryLevel": 3,
+      "requiredLevel": 3,
+      "validatedFactoryId": "facility_123"
+    },
+    "materialValidation": {
+      "allMaterialsExist": true,
+      "materials": [
+        {
+          "rawMaterialId": 85,
+          "nameEn": "Copper",
+          "exists": true,
+          "availableQuantity": 250.5,
+          "minimumRequired": 0.01,
+          "storageLocations": ["Main Warehouse", "Factory Storage"]
+        }
+      ],
+      "note": "Formula creation requires minimum 0.01 units of each material"
+    }
+  }
+}
+```
+
+### 1. Create Product Formula
+**POST** `/api/user/team/product-formulas`
+
+**Description**: Create a new product formula with material requirements and craft categories for the authenticated team
 
 **Authentication**: User authentication required
 
@@ -79,7 +128,8 @@ All responses follow the standardized format:
   - ❌ Invalid: [MECHANICAL_MANUFACTURING_LEVEL_1, MECHANICAL_MANUFACTURING_LEVEL_2]
 - `materials`: Required array, min 1 item, max 99 items
 - `materials[].rawMaterialId`: Required, must exist in database
-- `materials[].quantity`: Required, min 0.001, max 999.999
+- `materials[].quantity`: Required, min 0.001, max 999.999 (for formula definition)
+- **Material Existence**: Team must have at least 0.01 units of each material in facility storage
 - **Raw Material Origin**: Each raw material belongs to one of 7 origin facility types
   - ✅ Valid: Copper (MINE), Wheat (FARM), Cotton (FARM), Eggs (RANCH)
   - ❌ Invalid: Materials with invalid or missing origin facility types
@@ -94,6 +144,8 @@ All responses follow the standardized format:
     "id": 1,
     "formulaNumber": 1,
     "productDescription": "Advanced mobile communication device",
+    "activityId": "clxx1234567890abcdef",
+    "teamId": "clxx1234567890abcdef01",
     "totalMaterialCost": 245.00,
     "totalSetupWaterCost": 62,
     "totalSetupPowerCost": 300,
@@ -103,22 +155,56 @@ All responses follow the standardized format:
     "totalGoldPercent": 8.8,
     "totalPercent": 50.0,
     "productFormulaCarbonEmission": 125.5,
-    "craftCategories": [...],
-    "materials": [...]
+    "craftCategories": [
+      {
+        "id": 1,
+        "craftCategoryId": 11,
+        "craftCategory": {
+          "id": 11,
+          "categoryType": "ELECTRONIC_EQUIPMENT",
+          "technologyLevel": "LEVEL_3",
+          "yieldPercentage": 93,
+          "fixedWaterCost": 42,
+          "fixedPowerCost": 240,
+          "fixedGoldCost": 84,
+          "variableWaterPercent": 2,
+          "variablePowerPercent": 31.2,
+          "variableGoldPercent": 6.8
+        }
+      }
+    ],
+    "materials": [
+      {
+        "id": 1,
+        "rawMaterialId": 85,
+        "quantity": 5.0,
+        "materialCost": 120.00,
+        "rawMaterial": {
+          "id": 85,
+          "nameEn": "Copper",
+          "nameZh": "铜",
+          "totalCost": 24,
+          "carbonEmission": 2.5,
+          "origin": "MINE"
+        }
+      }
+    ],
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
   }
 }
 ```
 
 **Error Responses**:
-- 400: Validation error (invalid input)
+- 400: Validation error (invalid input, missing materials, insufficient factory level)
 - 401: Unauthorized
 - 403: Forbidden (team access only)
 - 409: Conflict (duplicate formula number)
 
-### 2. Get Product Formulas (User)
-**GET** `/api/user/product-formulas`
+### 2. Get Team Product Formulas
+**GET** `/api/user/team/product-formulas`
 
-**Description**: Retrieve available product formulas
+**Description**: Retrieve product formulas for the authenticated team
 
 **Authentication**: User authentication required
 
@@ -156,7 +242,7 @@ All responses follow the standardized format:
 ```
 
 ### 3. Get Formula Details
-**GET** `/api/user/product-formulas/:id`
+**GET** `/api/user/team/product-formulas/:id`
 
 **Description**: Get detailed information about a specific formula
 
@@ -274,6 +360,8 @@ class CraftCategoryDto {
 | 1009 | Calculation error |
 | 1010 | Export failed |
 | 1015 | Raw material origin validation failed |
+| 1016 | Material not in team inventory (minimum 0.01 units required) |
+| 1017 | Factory level insufficient for selected craft categories |
 
 ## Rate Limiting
 
