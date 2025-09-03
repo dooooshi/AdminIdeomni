@@ -536,6 +536,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					auth: ['user']
 				},
 				{
+					id: 'production-resources.product-formula',
+					title: 'Product Formulas',
+					type: 'item',
+					icon: 'heroicons-outline:beaker',
+					url: '/student-product-formula',
+					translate: 'PRODUCT_FORMULAS',
+					auth: ['user']
+				},
+				{
 					id: 'production-resources.resources',
 					title: 'Resource Consumption',
 					type: 'item',

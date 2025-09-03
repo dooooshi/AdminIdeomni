@@ -26,6 +26,11 @@ Accept-Language: en | zh (optional)
 | includeDetails | boolean | No | Include detailed cost information (default: true) |
 
 #### Response (200 OK)
+
+**Note**: The `name` field for craft categories and raw materials returns localized content based on the request's `Accept-Language` or `X-Lang` header:
+- For `en`: Returns English names (e.g., "Electronic Equipment Processing - Level 3")
+- For `zh` (default): Returns Chinese names (e.g., "电子器械 - 3级")
+
 ```json
 {
   "success": true,
@@ -52,8 +57,7 @@ Accept-Language: en | zh (optional)
         "id": 11,
         "categoryType": "ELECTRONIC_EQUIPMENT",
         "technologyLevel": "LEVEL_3",
-        "nameEn": "Electronic Equipment Processing - Level 3",
-        "nameZh": "电子器械 - 3级",
+        "name": "Electronic Equipment Processing - Level 3",
         "requiredFactoryLevel": 3,
         "fixedWaterCost": 42,
         "fixedPowerCost": 240,
@@ -73,8 +77,7 @@ Accept-Language: en | zh (optional)
         "id": 8,
         "categoryType": "MECHANICAL_MANUFACTURING",
         "technologyLevel": "LEVEL_2",
-        "nameEn": "Mechanical Manufacturing - Level 2",
-        "nameZh": "机械制造 - 2级",
+        "name": "Mechanical Manufacturing - Level 2",
         "requiredFactoryLevel": 2,
         "fixedWaterCost": 24,
         "fixedPowerCost": 64,
@@ -111,10 +114,10 @@ Accept-Language: en | zh (optional)
 }
 ```
 
-### 2. Get Team's Material Inventory
-**GET** `/api/user/team/material-inventory`
+### 2. Get Team's Available Raw Materials
+**GET** `/api/user/team/available-raw-materials`
 
-**Description**: Retrieves actual raw materials currently stored in team's facilities (warehouses, factories, production facilities). This shows what materials the team has in stock, not what they can produce.
+**Description**: Retrieves raw materials that can be produced by team's material production facilities (farms, mines, quarries, etc.) or purchased from market
 
 **Authentication**: User JWT authentication required
 
@@ -128,150 +131,137 @@ Accept-Language: en | zh (optional)
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | origin | string | No | Filter by origin (FARM, RANCH, MINE, QUARRY, FOREST, FISHERY, SHOPS) |
-| facilityId | string | No | Filter by specific facility |
-| minQuantity | number | No | Only show materials with quantity >= this value |
-| includeZeroQuantity | boolean | No | Include materials with zero quantity (default: false) |
+| facilityType | string | No | Filter by facility type |
+| includeMarket | boolean | No | Include market-available materials (default: true) |
+| includeInfrastructure | boolean | No | Include infrastructure connection status (default: true) |
 
 #### Response (200 OK)
 ```json
 {
   "success": true,
   "businessCode": 0,
-  "message": "Material inventory retrieved successfully",
+  "message": "Available raw materials retrieved successfully",
   "data": {
-    "materials": [
+    "productionFacilities": [
       {
-        "rawMaterialId": 85,
+        "id": "facility_201",
+        "facilityType": "MINE",
+        "name": "Iron Mine",
+        "level": 2,
+        "tile": {
+          "coordinates": {
+            "q": 3,
+            "r": -2
+          }
+        },
+        "status": "ACTIVE",
+        "infrastructure": {
+          "hasWater": true,
+          "hasPower": true,
+          "waterProviderId": "facility_water_1",
+          "powerProviderId": "facility_power_1"
+        },
+        "capacity": {
+          "totalSpace": 1000,
+          "usedSpace": 300,
+          "availableSpace": 700
+        }
+      },
+      {
+        "id": "facility_202",
+        "facilityType": "FARM",
+        "name": "Wheat Farm",
+        "level": 1,
+        "tile": {
+          "coordinates": {
+            "q": 2,
+            "r": 0
+          }
+        },
+        "status": "ACTIVE",
+        "infrastructure": {
+          "hasWater": true,
+          "hasPower": true,
+          "waterProviderId": "facility_water_1",
+          "powerProviderId": "facility_power_1"
+        },
+        "capacity": {
+          "totalSpace": 800,
+          "usedSpace": 400,
+          "availableSpace": 400
+        }
+      }
+    ],
+    "availableMaterials": [
+      {
+        "id": 85,
         "materialNumber": 501,
-        "nameEn": "Iron Ore",
-        "nameZh": "铁矿石",
+        "name": "Iron Ore",
         "origin": "MINE",
-        "unitCost": 24,
+        "waterRequired": 10,
+        "powerRequired": 15,
+        "totalCost": 24,
         "carbonEmission": 2.5,
-        "totalQuantity": 250.5,
-        "totalValue": 6012.00,
-        "totalSpaceUsed": 125.25,
-        "source": "MIXED",
-        "locations": [
+        "canProduce": true,
+        "productionFacilities": [
           {
-            "facilityId": "facility_123",
-            "facilityName": "Main Warehouse",
-            "facilityType": "WAREHOUSE",
-            "quantity": 150.5,
-            "spaceUsed": 75.25,
-            "value": 3612.00,
-            "acquisitionSource": "SELF_PRODUCED",
-            "lastUpdated": "2024-01-15T08:00:00Z"
-          },
-          {
-            "facilityId": "facility_456",
-            "facilityName": "Factory Storage",
-            "facilityType": "FACTORY",
-            "quantity": 100.0,
-            "spaceUsed": 50.0,
-            "value": 2400.00,
-            "acquisitionSource": "PURCHASED",
-            "purchasedFrom": "team_789",
-            "lastUpdated": "2024-01-14T15:30:00Z"
+            "facilityId": "facility_201",
+            "facilityName": "Iron Mine",
+            "canProduceNow": true,
+            "requiredSpace": 2.5
           }
         ]
       },
       {
-        "rawMaterialId": 12,
+        "id": 12,
         "materialNumber": 101,
-        "nameEn": "Wheat",
-        "nameZh": "小麦",
+        "name": "Wheat",
         "origin": "FARM",
-        "unitCost": 8,
+        "waterRequired": 5,
+        "powerRequired": 3,
+        "totalCost": 8,
         "carbonEmission": 0.5,
-        "totalQuantity": 500.0,
-        "totalValue": 4000.00,
-        "totalSpaceUsed": 250.0,
-        "source": "SELF_PRODUCED",
-        "locations": [
+        "canProduce": true,
+        "productionFacilities": [
           {
             "facilityId": "facility_202",
             "facilityName": "Wheat Farm",
-            "facilityType": "FARM",
-            "quantity": 300.0,
-            "spaceUsed": 150.0,
-            "value": 2400.00,
-            "acquisitionSource": "SELF_PRODUCED",
-            "lastUpdated": "2024-01-15T06:00:00Z"
-          },
-          {
-            "facilityId": "facility_123",
-            "facilityName": "Main Warehouse",
-            "facilityType": "WAREHOUSE",
-            "quantity": 200.0,
-            "spaceUsed": 100.0,
-            "value": 1600.00,
-            "acquisitionSource": "SELF_PRODUCED",
-            "lastUpdated": "2024-01-14T12:00:00Z"
+            "canProduceNow": true,
+            "requiredSpace": 0.5
           }
         ]
       },
       {
-        "rawMaterialId": 88,
+        "id": 88,
         "materialNumber": 601,
-        "nameEn": "Silicon",
-        "nameZh": "硅",
+        "name": "Silicon",
         "origin": "QUARRY",
-        "unitCost": 24,
+        "waterRequired": 8,
+        "powerRequired": 12,
+        "totalCost": 24,
         "carbonEmission": 1.8,
-        "totalQuantity": 75.5,
-        "totalValue": 1812.00,
-        "totalSpaceUsed": 37.75,
-        "source": "PURCHASED",
-        "locations": [
-          {
-            "facilityId": "facility_456",
-            "facilityName": "Factory Storage",
-            "facilityType": "FACTORY",
-            "quantity": 75.5,
-            "spaceUsed": 37.75,
-            "value": 1812.00,
-            "acquisitionSource": "MARKET_PURCHASE",
-            "lastUpdated": "2024-01-13T10:00:00Z"
-          }
-        ]
+        "canProduce": false,
+        "productionFacilities": [],
+        "marketAvailable": true,
+        "note": "No QUARRY facility - available from market only"
       }
     ],
     "summary": {
+      "totalFacilities": 4,
+      "activeFacilities": 4,
+      "facilityTypes": ["MINE", "FARM", "RANCH", "FOREST"],
       "totalMaterialTypes": 25,
-      "materialsInStock": 18,
-      "materialsOutOfStock": 7,
-      "totalInventoryValue": 11824.00,
-      "totalSpaceUsed": 413.0,
-      "storageLocations": [
-        {
-          "facilityId": "facility_123",
-          "facilityName": "Main Warehouse",
-          "facilityType": "WAREHOUSE",
-          "totalSpace": 2000,
-          "usedSpace": 413.0,
-          "availableSpace": 1587.0,
-          "materialTypes": 12
-        },
-        {
-          "facilityId": "facility_456",
-          "facilityName": "Factory Storage",
-          "facilityType": "FACTORY",
-          "totalSpace": 1000,
-          "usedSpace": 237.75,
-          "availableSpace": 762.25,
-          "materialTypes": 8
-        }
-      ],
-      "sourceBreakdown": {
-        "selfProduced": 8500.00,
-        "purchasedFromTeams": 2400.00,
-        "marketPurchase": 924.00
+      "selfProducible": 18,
+      "marketOnly": 7,
+      "infrastructureStatus": {
+        "allConnected": true,
+        "missingWater": 0,
+        "missingPower": 0
       }
     }
   },
   "timestamp": "2024-01-15T10:30:00Z",
-  "path": "/api/user/team/material-inventory"
+  "path": "/api/user/team/available-raw-materials"
 }
 ```
 
@@ -382,190 +372,6 @@ Accept-Language: en | zh (optional)
 }
 ```
 
-### 4. Check Formula Production Feasibility
-**POST** `/api/user/team/product-formulas/check-feasibility`
-
-**Description**: Checks if the team has sufficient materials in inventory to produce a specific quantity using a formula
-
-**Authentication**: User JWT authentication required
-
-#### Request Body
-```json
-{
-  "formulaId": 1,
-  "quantity": 100
-}
-```
-
-#### Response (200 OK) - Feasible
-```json
-{
-  "success": true,
-  "businessCode": 0,
-  "message": "Production is feasible",
-  "data": {
-    "feasible": true,
-    "quantity": 100,
-    "formulaId": 1,
-    "materialRequirements": [
-      {
-        "rawMaterialId": 85,
-        "nameEn": "Iron Ore",
-        "nameZh": "铁矿石",
-        "requiredQuantity": 500.0,
-        "availableQuantity": 250.5,
-        "sufficient": false,
-        "shortage": 249.5,
-        "locations": [
-          {
-            "facilityId": "facility_123",
-            "facilityName": "Main Warehouse",
-            "availableQuantity": 150.5
-          },
-          {
-            "facilityId": "facility_456",
-            "facilityName": "Factory Storage",
-            "availableQuantity": 100.0
-          }
-        ]
-      },
-      {
-        "rawMaterialId": 88,
-        "nameEn": "Silicon",
-        "nameZh": "硅",
-        "requiredQuantity": 350.0,
-        "availableQuantity": 75.5,
-        "sufficient": false,
-        "shortage": 274.5
-      }
-    ],
-    "maxProducibleQuantity": 21,
-    "missingMaterials": [
-      {
-        "rawMaterialId": 85,
-        "shortage": 249.5,
-        "estimatedCost": 5988.00
-      },
-      {
-        "rawMaterialId": 88,
-        "shortage": 274.5,
-        "estimatedCost": 6588.00
-      }
-    ],
-    "totalShortageValue": 12576.00
-  },
-  "timestamp": "2024-01-15T10:30:00Z",
-  "path": "/api/user/team/product-formulas/check-feasibility"
-}
-```
-
-### 5. Transfer Materials Between Facilities
-**POST** `/api/user/team/material-transfer`
-
-**Description**: Transfer raw materials between team's facilities (warehouses, factories, production facilities)
-
-**Authentication**: User JWT authentication required
-
-#### Request Body
-```json
-{
-  "fromFacilityId": "facility_123",
-  "toFacilityId": "facility_456",
-  "transfers": [
-    {
-      "rawMaterialId": 85,
-      "quantity": 50.0
-    },
-    {
-      "rawMaterialId": 88,
-      "quantity": 25.5
-    }
-  ],
-  "reason": "Preparing materials for production"
-}
-```
-
-#### Response (200 OK)
-```json
-{
-  "success": true,
-  "businessCode": 0,
-  "message": "Materials transferred successfully",
-  "data": {
-    "transferId": "transfer_abc123",
-    "fromFacility": {
-      "id": "facility_123",
-      "name": "Main Warehouse",
-      "availableSpaceBefore": 1587.0,
-      "availableSpaceAfter": 1624.75
-    },
-    "toFacility": {
-      "id": "facility_456",
-      "name": "Factory Storage",
-      "availableSpaceBefore": 762.25,
-      "availableSpaceAfter": 724.50
-    },
-    "transferredMaterials": [
-      {
-        "rawMaterialId": 85,
-        "nameEn": "Iron Ore",
-        "quantity": 50.0,
-        "spaceReleased": 25.0,
-        "spaceOccupied": 25.0,
-        "value": 1200.00
-      },
-      {
-        "rawMaterialId": 88,
-        "nameEn": "Silicon",
-        "quantity": 25.5,
-        "spaceReleased": 12.75,
-        "spaceOccupied": 12.75,
-        "value": 612.00
-      }
-    ],
-    "totalValue": 1812.00,
-    "totalSpaceTransferred": 37.75,
-    "timestamp": "2024-01-15T10:30:00Z"
-  },
-  "timestamp": "2024-01-15T10:30:00Z",
-  "path": "/api/user/team/material-transfer"
-}
-```
-
-#### Error Response (400) - Insufficient Materials
-```json
-{
-  "success": false,
-  "businessCode": 3001,
-  "message": "Insufficient materials in source facility",
-  "errors": [
-    {
-      "rawMaterialId": 85,
-      "requested": 50.0,
-      "available": 30.0
-    }
-  ],
-  "timestamp": "2024-01-15T10:30:00Z",
-  "path": "/api/user/team/material-transfer"
-}
-```
-
-#### Error Response (400) - Insufficient Space
-```json
-{
-  "success": false,
-  "businessCode": 3002,
-  "message": "Insufficient space in destination facility",
-  "data": {
-    "requiredSpace": 37.75,
-    "availableSpace": 20.0,
-    "shortage": 17.75
-  },
-  "timestamp": "2024-01-15T10:30:00Z",
-  "path": "/api/user/team/material-transfer"
-}
-```
-
 ## Error Responses
 
 ### 404 Not Found - No Facilities
@@ -600,10 +406,8 @@ export class TeamResourcesService {
   constructor(
     private readonly facilityRepository: FacilityRepository,
     private readonly craftCategoryRepository: CraftCategoryRepository,
-    private readonly facilityInventoryRepository: FacilitySpaceInventoryRepository,
     private readonly rawMaterialRepository: RawMaterialRepository,
     private readonly teamRepository: TeamRepository,
-    private readonly prisma: PrismaService,
   ) {}
 
   async getAvailableCraftCategories(teamId: string, filters?: CraftFilters) {
@@ -619,97 +423,22 @@ export class TeamResourcesService {
     return this.formatCraftResponse(craftCategories, factories, filters);
   }
 
-  async getMaterialInventory(teamId: string, filters?: InventoryFilters) {
-    // 1. Get all team facilities with storage capability
-    const facilities = await this.facilityRepository.findTeamStorageFacilities(teamId);
+  async getAvailableRawMaterials(teamId: string, filters?: MaterialFilters) {
+    // 1. Get team's production facilities
+    const facilities = await this.facilityRepository.findTeamProductionFacilities(teamId);
     
-    // 2. Get material inventory from all facilities
-    const inventoryItems = await this.facilityInventoryRepository.findByFacilities(
-      facilities.map(f => f.id),
-      filters
+    // 2. Get materials produced by these facilities
+    const materials = await this.rawMaterialRepository.findByFacilities(
+      facilities.map(f => f.id)
     );
     
-    // 3. Aggregate materials across locations
-    const aggregatedMaterials = this.aggregateMaterialsByType(inventoryItems);
+    // 3. Include market-available materials if requested
+    if (filters?.includeMarket) {
+      const marketMaterials = await this.rawMaterialRepository.findMarketAvailable();
+      materials.push(...marketMaterials);
+    }
     
-    // 4. Calculate summary statistics
-    return this.formatInventoryResponse(aggregatedMaterials, facilities, filters);
-  }
-
-  async checkProductionFeasibility(
-    teamId: string, 
-    formulaId: number, 
-    quantity: number
-  ): Promise<FeasibilityResult> {
-    // 1. Get formula requirements
-    const formula = await this.productFormulaRepository.findById(formulaId);
-    
-    // 2. Get team's current material inventory
-    const inventory = await this.getMaterialInventory(teamId);
-    
-    // 3. Check each material requirement against inventory
-    const requirements = formula.materials.map(mat => {
-      const available = inventory.materials.find(m => m.rawMaterialId === mat.rawMaterialId);
-      const requiredQty = mat.quantity * quantity;
-      const availableQty = available?.totalQuantity || 0;
-      
-      return {
-        rawMaterialId: mat.rawMaterialId,
-        requiredQuantity: requiredQty,
-        availableQuantity: availableQty,
-        sufficient: availableQty >= requiredQty,
-        shortage: Math.max(0, requiredQty - availableQty)
-      };
-    });
-    
-    // 4. Calculate max producible quantity
-    const maxQuantity = this.calculateMaxProducibleQuantity(formula, inventory);
-    
-    return {
-      feasible: requirements.every(r => r.sufficient),
-      materialRequirements: requirements,
-      maxProducibleQuantity: maxQuantity
-    };
-  }
-
-  async transferMaterials(
-    teamId: string,
-    fromFacilityId: string,
-    toFacilityId: string,
-    transfers: MaterialTransfer[]
-  ): Promise<TransferResult> {
-    return this.prisma.executeTransaction(async (tx) => {
-      // 1. Verify facilities belong to team
-      await this.verifyFacilityOwnership(teamId, [fromFacilityId, toFacilityId], tx);
-      
-      // 2. Check source facility has materials
-      await this.verifyMaterialAvailability(fromFacilityId, transfers, tx);
-      
-      // 3. Check destination facility has space
-      await this.verifySpaceAvailability(toFacilityId, transfers, tx);
-      
-      // 4. Execute transfers
-      for (const transfer of transfers) {
-        // Remove from source
-        await this.facilityInventoryRepository.decrementQuantity(
-          fromFacilityId,
-          transfer.rawMaterialId,
-          transfer.quantity,
-          tx
-        );
-        
-        // Add to destination
-        await this.facilityInventoryRepository.incrementQuantity(
-          toFacilityId,
-          transfer.rawMaterialId,
-          transfer.quantity,
-          tx
-        );
-      }
-      
-      // 5. Return transfer result
-      return this.formatTransferResult(transfers, fromFacilityId, toFacilityId);
-    });
+    return this.formatMaterialResponse(materials, facilities, filters);
   }
 }
 ```

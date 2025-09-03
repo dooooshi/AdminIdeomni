@@ -88,6 +88,11 @@ The system automatically calculates and stores:
 - All cost components based on the formula rules
 
 ### Success Response (201 Created)
+
+**Note**: The `name` field in `craftCategory` and `rawMaterial` objects returns localized content based on the request's `Accept-Language` or `X-Lang` header:
+- For `en`: Returns English names (e.g., "Electronic Equipment Processing - Level 3")
+- For `zh` (default): Returns Chinese names (e.g., "电子器械 - 3级")
+
 ```json
 {
   "success": true,
@@ -114,6 +119,7 @@ The system automatically calculates and stores:
         "craftCategoryId": 11,
         "craftCategory": {
           "id": 11,
+          "name": "Electronic Equipment Processing - Level 3",
           "categoryType": "ELECTRONIC_EQUIPMENT",
           "technologyLevel": "LEVEL_3",
           "yieldPercentage": 93,
@@ -130,6 +136,7 @@ The system automatically calculates and stores:
         "craftCategoryId": 2,
         "craftCategory": {
           "id": 2,
+          "name": "Mechanical Manufacturing - Level 2",
           "categoryType": "MECHANICAL_MANUFACTURING",
           "technologyLevel": "LEVEL_2",
           "yieldPercentage": 92,
@@ -150,8 +157,7 @@ The system automatically calculates and stores:
         "materialCost": 120.00,
         "rawMaterial": {
           "id": 85,
-          "nameEn": "Copper",
-          "nameZh": "铜",
+          "name": "Copper",
           "totalCost": 24,
           "carbonEmission": 2.5,
           "origin": "MINE"
@@ -164,8 +170,7 @@ The system automatically calculates and stores:
         "materialCost": 84.00,
         "rawMaterial": {
           "id": 88,
-          "nameEn": "Silicon",
-          "nameZh": "硅",
+          "name": "Silicon",
           "totalCost": 24,
           "carbonEmission": 1.8,
           "origin": "QUARRY"
@@ -178,8 +183,7 @@ The system automatically calculates and stores:
         "materialCost": 41.00,
         "rawMaterial": {
           "id": 95,
-          "nameEn": "Lithium",
-          "nameZh": "锂",
+          "name": "Lithium",
           "totalCost": 18.22,
           "carbonEmission": 3.2,
           "origin": "MINE"

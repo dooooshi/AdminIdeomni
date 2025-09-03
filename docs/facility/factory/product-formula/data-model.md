@@ -29,11 +29,6 @@ model ProductFormula {
   teamId                String                      // Team that owns this formula (from auth context)
   team                  Team                        @relation(fields: [teamId], references: [id])
   
-  // Factory Capability Tracking (for validation)
-  minFactoryLevel       Int                         @default(1) // Minimum factory level required
-  validatedFactoryId    String?                     // Factory that validated the formula creation
-  validatedFactory      TileFacilityInstance?       @relation(fields: [validatedFactoryId], references: [id])
-  
   // Cost Components (Calculated)
   totalMaterialCost     Decimal                     @db.Decimal(10, 2) // Sum of material costs (A in the formula)
   
@@ -66,7 +61,6 @@ model ProductFormula {
   materials             ProductFormulaMaterial[]    // Material requirements
   craftCategories       ProductFormulaCraftCategory[] // Craft categories for production
   costCalculations     ProductionCostCalculation[] // Production cost calculations
-  inventoryChecks      FormulaInventoryCheck[]     // Material availability checks
   
   // Indexes
   @@index([activityId])
@@ -122,10 +116,6 @@ model ProductFormulaMaterial {
   // Cost Calculation
   materialCost          Decimal                     @db.Decimal(10, 2) // quantity × material unit cost
   
-  // Material Source Tracking
-  acquisitionSource     String?                     @default("UNKNOWN") // 'SELF_PRODUCED' | 'PURCHASED' | 'MARKET' | 'UNKNOWN'
-  sourceValidated       Boolean                     @default(false) // Whether source was validated at creation
-  
   // Metadata
   isOptional            Boolean                     @default(false) // Optional material flag
   
@@ -139,37 +129,6 @@ model ProductFormulaMaterial {
   @@map("product_formula_materials")
 }
 
-
-// Formula Inventory Check (tracks material availability at creation time)
-model FormulaInventoryCheck {
-  id                    Int                         @id @default(autoincrement())
-  
-  // Relations
-  productFormulaId      Int
-  productFormula        ProductFormula              @relation(fields: [productFormulaId], references: [id], onDelete: Cascade)
-  
-  // Check Information
-  checkType             String                      // 'CREATION' | 'PRODUCTION' | 'FEASIBILITY'
-  requestedQuantity     Int                         // Quantity requested for production
-  
-  // Material Availability
-  allMaterialsAvailable Boolean                     // Whether all materials were available
-  missingMaterials      Json?                       // Array of missing material details
-  totalShortageValue    Decimal?                    @db.Decimal(10, 2) // Total cost of missing materials
-  maxProducibleQuantity Int?                        // Maximum quantity that could be produced
-  
-  // Inventory Source
-  inventorySource       String?                     // 'WAREHOUSE' | 'FACTORY' | 'MIXED'
-  
-  // Metadata
-  checkedAt             DateTime                    @default(now())
-  checkedBy             String?                     // User who performed the check
-  
-  // Indexes
-  @@index([productFormulaId])
-  @@index([checkedAt])
-  @@map("formula_inventory_checks")
-}
 
 // Production Cost Calculation (for actual production batches)
 model ProductionCostCalculation {
@@ -306,10 +265,6 @@ function calculateProductFormulaCarbonEmission(materials: FormulaMaterial[], tot
 2. **ProductFormula → Team** (Many-to-One)
    - Each formula is owned by a specific team
    - Teams create and manage their own formulas
-
-3. **ProductFormula → TileFacilityInstance** (Many-to-One, Optional)
-   - Tracks which factory validated the formula creation
-   - Ensures factory capability requirements are met
 
 3. **ProductFormula → ProductFormulaCraftCategory → CraftCategory** (Many-to-Many)
    - Each formula can use multiple craft categories
@@ -511,7 +466,7 @@ HAVING ABS(pf.total_material_cost - SUM(pfm.quantity * rm.total_cost)) > 0.01;
 ```typescript
 interface ProductFormulaRepository {
   // CRUD Operations
-  create(data: CreateProductFormulaDto, context: FormulaContext): Promise<ProductFormula> // Includes factory validation
+  create(data: CreateProductFormulaDto): Promise<ProductFormula> // formulaNumber auto-generated
   findById(id: number): Promise<ProductFormula>
   findByNumber(number: number, activityId: string): Promise<ProductFormula> // For system-generated numbers
   findAll(filters?: ProductFormulaFilters): Promise<ProductFormula[]>
@@ -528,10 +483,6 @@ interface ProductFormulaRepository {
   // Cost Calculations
   calculateProductionCost(formulaId: number, quantity: number): Promise<CostBreakdown>
   calculateCarbonFootprint(formulaId: number): Promise<number>
-  
-  // Inventory and Feasibility
-  checkMaterialAvailability(formulaId: number, teamId: string, quantity: number): Promise<InventoryCheck>
-  validateFactoryCapabilities(teamId: string, craftCategories: number[]): Promise<FactoryValidation>
   
   // Search and Filter
   searchByName(query: string): Promise<ProductFormula[]>
