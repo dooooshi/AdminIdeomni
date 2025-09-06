@@ -401,7 +401,7 @@ function TransferHistoryPage() {
                             {t('teamManagement.NO_TRANSFERS_FOUND')}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Try adjusting your filters or make your first transfer
+                            {t('teamManagement.TRY_ADJUSTING_FILTERS')}
                           </Typography>
                         </TableCell>
                       </TableRow>

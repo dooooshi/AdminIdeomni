@@ -294,7 +294,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{connection.providerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {connection.providerFacility?.facilityType || '-'} (Level {connection.providerFacility?.level || 0})
+                            {connection.providerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {connection.providerFacility?.level || 0})
                           </Typography>
                         </Box>
                       </TableCell>
@@ -361,7 +361,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{request.providerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {request.providerFacility?.facilityType || '-'} (Level {request.providerFacility?.level || 0})
+                            {request.providerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {request.providerFacility?.level || 0})
                           </Typography>
                         </Box>
                       </TableCell>
@@ -442,7 +442,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{connection.consumerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {connection.consumerFacility?.facilityType || '-'} (Level {connection.consumerFacility?.level || 0})
+                            {connection.consumerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {connection.consumerFacility?.level || 0})
                           </Typography>
                         </Box>
                       </TableCell>
@@ -509,7 +509,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{request.consumerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {request.consumerFacility?.facilityType || '-'} (Level {request.consumerFacility?.level || 0})
+                            {request.consumerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {request.consumerFacility?.level || 0})
                           </Typography>
                         </Box>
                       </TableCell>
@@ -569,16 +569,17 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
       <Dialog open={acceptDialogOpen} onClose={() => setAcceptDialogOpen(false)}>
         <DialogTitle>{t('infrastructure.ACCEPT_CONNECTION_REQUEST')}</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={t('infrastructure.UNIT_PRICE')}
-            type="number"
-            fullWidth
-            variant="outlined"
-            value={unitPrice}
-            onChange={(e) => setUnitPrice(e.target.value)}
-          />
+          <Typography variant="body1" gutterBottom>
+            {t('infrastructure.ACCEPT_CONNECTION_CONFIRMATION')}
+          </Typography>
+          <Box sx={{ mt: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              {t('infrastructure.UNIT_PRICE')}: 
+            </Typography>
+            <Typography variant="h6">
+              ${unitPrice || selectedRequest?.proposedUnitPrice || '0'}
+            </Typography>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {
@@ -586,7 +587,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             setSelectedRequest(null);
             setUnitPrice('');
           }}>{t('infrastructure.CANCEL')}</Button>
-          <Button onClick={handleAcceptRequest} variant="contained" disabled={!unitPrice || loading}>
+          <Button onClick={handleAcceptRequest} variant="contained" disabled={loading}>
             {t('infrastructure.ACCEPT')}
           </Button>
         </DialogActions>

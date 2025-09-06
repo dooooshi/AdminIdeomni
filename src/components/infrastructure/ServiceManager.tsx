@@ -681,24 +681,23 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
           <Typography variant="body2" gutterBottom>
             {t('infrastructure.SERVICE_TYPE')}: {selectedRequest && t(selectedRequest.serviceType)}
           </Typography>
-          <TextField
-            autoFocus
-            margin="dense"
-            label={t('infrastructure.ANNUAL_FEE')}
-            type="number"
-            fullWidth
-            variant="outlined"
-            value={annualFee}
-            onChange={(e) => setAnnualFee(e.target.value)}
-            InputProps={{ inputProps: { min: 0 } }}
-            sx={{ mt: 2 }}
-          />
+          <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
+            {t('infrastructure.ACCEPT_SERVICE_CONFIRMATION')}
+          </Typography>
+          <Box sx={{ mt: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              {t('infrastructure.ANNUAL_FEE')}: 
+            </Typography>
+            <Typography variant="h6">
+              ${annualFee || selectedRequest?.annualFee || '0'}
+            </Typography>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAcceptDialogOpen(false)}>
             {t('infrastructure.CANCEL')}
           </Button>
-          <Button onClick={handleAcceptRequest} color="success" disabled={!annualFee || loading}>
+          <Button onClick={handleAcceptRequest} color="success" disabled={loading}>
             {t('infrastructure.ACCEPT')}
           </Button>
         </DialogActions>

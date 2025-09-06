@@ -287,20 +287,28 @@ function AllOperationsPage() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Typography 
-                              variant="body2" 
-                              className={`font-medium ${
-                                operation.operationType === TeamOperationType.TRANSFER_OUT ? 'text-red-600' : 'text-green-600'
-                              }`}
-                            >
-                              {operation.operationType === TeamOperationType.TRANSFER_OUT ? '-' : '+'}
-                              {operation.resourceType === TeamResourceType.GOLD ? (
-                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
-                              ) : (
-                                <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
-                              )}
-                              {TeamTransferService.formatTransferAmount(operation.amount)}
-                            </Typography>
+                            {(() => {
+                              const balanceChange = operation.balanceAfter - operation.balanceBefore;
+                              const isNegative = balanceChange < 0;
+                              const displayAmount = Math.abs(balanceChange);
+                              
+                              return (
+                                <Typography 
+                                  variant="body2" 
+                                  className={`font-medium flex items-center gap-1 ${
+                                    isNegative ? 'text-red-600' : 'text-green-600'
+                                  }`}
+                                >
+                                  {isNegative ? '-' : '+'}
+                                  {operation.resourceType === TeamResourceType.GOLD ? (
+                                    <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                                  ) : (
+                                    <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                                  )}
+                                  {TeamTransferService.formatTransferAmount(displayAmount)}
+                                </Typography>
+                              );
+                            })()}
                           </TableCell>
                           <TableCell>
                             {operation.targetTeam ? (

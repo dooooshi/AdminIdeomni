@@ -23,6 +23,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const handleClick = () => {
     const newLang = i18n.language === 'en-US' ? 'zh-CN' : 'en-US';
     i18n.changeLanguage(newLang);
+    // Explicitly save to localStorage to ensure persistence
+    localStorage.setItem('language', newLang);
   };
 
   if (variant === 'icon') {

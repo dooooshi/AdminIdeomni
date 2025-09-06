@@ -16,7 +16,9 @@ import {
   Fade,
   Collapse,
   LinearProgress,
-  Chip
+  Chip,
+  useTheme,
+  alpha
 } from '@mui/material';
 import {
   Close as CloseIcon,
@@ -32,6 +34,7 @@ import {
 import { RawMaterial, ProductionEstimate } from '@/types/rawMaterialProduction';
 import rawMaterialProductionService from '@/lib/services/rawMaterialProductionService';
 import FacilitySelector from './FacilitySelector';
+import apiClient from '@/lib/http/api-client';
 
 interface ProductionModalProps {
   open: boolean;
@@ -53,12 +56,14 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
   onSuccess
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const [quantity, setQuantity] = useState(10);
   const [loading, setLoading] = useState(false);
   const [estimate, setEstimate] = useState<ProductionEstimate | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [producing, setProducing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [facilityData, setFacilityData] = useState<any>(null);
 
   useEffect(() => {
     if (open && material) {
@@ -73,10 +78,31 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
   }, [open, material]);
 
   useEffect(() => {
-    if (facilityId && material && quantity > 0) {
-      loadEstimate(quantity);
+    if (facilityId && material) {
+      loadFacilityData();
     }
   }, [facilityId]);
+
+  useEffect(() => {
+    if (facilityData && material && quantity > 0) {
+      loadEstimate(quantity);
+    }
+  }, [facilityData, quantity]);
+
+  const loadFacilityData = async () => {
+    if (!facilityId) return;
+    
+    try {
+      const response = await apiClient.get('/user/facilities/material-production', {
+        params: { facilityType: material?.origin }
+      });
+      const facilities = response.data?.data?.facilities || [];
+      const facility = facilities.find((f: any) => f.id === facilityId);
+      setFacilityData(facility);
+    } catch (error) {
+      console.error('Failed to load facility data:', error);
+    }
+  };
 
   const loadEstimate = async (qty: number) => {
     if (!material || qty <= 0 || !facilityId) return;
@@ -88,7 +114,7 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
         facilityId,
         rawMaterialId: material.id,
         quantity: qty
-      }, material);
+      }, material, facilityData);
       setEstimate(result);
     } catch (err: any) {
       setError(err.message || t('production.failed'));
@@ -100,15 +126,11 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
   const handleQuantityChange = (value: string) => {
     const qty = parseInt(value) || 0;
     setQuantity(qty);
-    if (qty > 0) {
-      loadEstimate(qty);
-    }
   };
 
   const adjustQuantity = (delta: number) => {
     const newQty = Math.max(1, quantity + delta);
     setQuantity(newQty);
-    loadEstimate(newQty);
   };
 
   const handleProduce = async () => {
@@ -155,27 +177,41 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
       PaperProps={{
         sx: {
           borderRadius: 3,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-          overflow: 'hidden'
+          boxShadow: theme.palette.mode === 'dark' 
+            ? '0 10px 40px rgba(0,0,0,0.5)' 
+            : '0 10px 40px rgba(0,0,0,0.1)',
+          overflow: 'hidden',
+          bgcolor: theme.palette.mode === 'dark' 
+            ? 'background.paper'
+            : 'background.paper'
         }
       }}
     >
-      {/* Minimalist Header */}
+      {/* Gradient Header */}
       <Box 
         sx={{ 
           px: 4,
           py: 3,
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-          bgcolor: 'background.paper'
+          background: theme.palette.mode === 'dark'
+            ? `linear-gradient(135deg, ${alpha(theme.palette.primary.dark, 0.9)} 0%, ${alpha(theme.palette.primary.main, 0.8)} 100%)`
+            : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+          color: 'primary.contrastText'
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box>
-            <Typography variant="overline" sx={{ color: 'text.secondary', letterSpacing: 1.5, fontSize: '0.7rem' }}>
+            <Typography 
+              variant="overline" 
+              sx={{ 
+                color: alpha(theme.palette.primary.contrastText, 0.8), 
+                letterSpacing: 1.5, 
+                fontSize: '0.7rem',
+                fontWeight: 600
+              }}
+            >
               {t('production.material').toUpperCase()} #{material.materialNumber}
             </Typography>
-            <Typography variant="h5" sx={{ fontWeight: 300, mt: 0.5 }}>
+            <Typography variant="h5" sx={{ fontWeight: 400, mt: 0.5, color: 'inherit' }}>
               {material.name}
             </Typography>
           </Box>
@@ -183,9 +219,9 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
             onClick={onClose} 
             size="small"
             sx={{ 
-              color: 'text.secondary',
+              color: 'primary.contrastText',
               '&:hover': { 
-                bgcolor: 'action.hover' 
+                bgcolor: alpha(theme.palette.primary.contrastText, 0.1)
               }
             }}
           >
@@ -258,12 +294,18 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                 disabled={quantity <= 1 || producing}
                 size="large"
                 sx={{ 
-                  border: '1px solid',
-                  borderColor: 'divider',
+                  border: '2px solid',
+                  borderColor: theme.palette.mode === 'dark' 
+                    ? alpha(theme.palette.primary.main, 0.3)
+                    : theme.palette.primary.light,
                   borderRadius: 2,
+                  color: theme.palette.primary.main,
                   '&:hover': {
-                    borderColor: 'text.primary',
-                    bgcolor: 'action.hover'
+                    borderColor: theme.palette.primary.main,
+                    bgcolor: alpha(theme.palette.primary.main, 0.08)
+                  },
+                  '&.Mui-disabled': {
+                    borderColor: theme.palette.action.disabledBackground
                   }
                 }}
               >
@@ -279,7 +321,10 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   style: { 
                     textAlign: 'center', 
                     fontSize: '2rem', 
-                    fontWeight: 200 
+                    fontWeight: 300,
+                    color: theme.palette.mode === 'dark' 
+                      ? theme.palette.primary.light
+                      : theme.palette.primary.dark
                   }
                 }}
                 disabled={producing}
@@ -287,15 +332,18 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   width: 160,
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                      borderColor: 'divider',
-                      borderRadius: 2
+                      borderColor: theme.palette.mode === 'dark'
+                        ? alpha(theme.palette.primary.main, 0.3)
+                        : theme.palette.primary.light,
+                      borderRadius: 2,
+                      borderWidth: 2
                     },
                     '&:hover fieldset': {
-                      borderColor: 'text.primary'
+                      borderColor: theme.palette.primary.main
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: 'text.primary',
-                      borderWidth: 1
+                      borderColor: theme.palette.primary.main,
+                      borderWidth: 2
                     }
                   }
                 }}
@@ -306,12 +354,18 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                 disabled={producing}
                 size="large"
                 sx={{ 
-                  border: '1px solid',
-                  borderColor: 'divider',
+                  border: '2px solid',
+                  borderColor: theme.palette.mode === 'dark' 
+                    ? alpha(theme.palette.primary.main, 0.3)
+                    : theme.palette.primary.light,
                   borderRadius: 2,
+                  color: theme.palette.primary.main,
                   '&:hover': {
-                    borderColor: 'text.primary',
-                    bgcolor: 'action.hover'
+                    borderColor: theme.palette.primary.main,
+                    bgcolor: alpha(theme.palette.primary.main, 0.08)
+                  },
+                  '&.Mui-disabled': {
+                    borderColor: theme.palette.action.disabledBackground
                   }
                 }}
               >
@@ -326,7 +380,6 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   key={amount}
                   onClick={() => {
                     setQuantity(amount);
-                    loadEstimate(amount);
                   }}
                   variant={quantity === amount ? "contained" : "outlined"}
                   size="small"
@@ -334,12 +387,22 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   sx={{ 
                     minWidth: 60,
                     borderRadius: 2,
-                    borderColor: 'divider',
-                    color: quantity === amount ? 'white' : 'text.primary',
-                    bgcolor: quantity === amount ? 'text.primary' : 'transparent',
+                    borderColor: quantity === amount 
+                      ? 'transparent'
+                      : theme.palette.mode === 'dark' 
+                        ? alpha(theme.palette.primary.main, 0.3)
+                        : theme.palette.primary.light,
+                    color: quantity === amount 
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.primary.main,
+                    bgcolor: quantity === amount 
+                      ? theme.palette.primary.main
+                      : 'transparent',
                     '&:hover': {
-                      borderColor: 'text.primary',
-                      bgcolor: quantity === amount ? 'text.secondary' : 'action.hover'
+                      borderColor: theme.palette.primary.main,
+                      bgcolor: quantity === amount 
+                        ? theme.palette.primary.dark
+                        : alpha(theme.palette.primary.main, 0.08)
                     }
                   }}
                 >
@@ -349,24 +412,49 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
             </Box>
           </Box>
 
-          {/* Expected Cost Display - Prominent */}
+          {/* Expected Cost Display - Prominent with Gradient */}
           {estimate && (
             <Box 
               sx={{ 
                 p: 3,
-                borderRadius: 2,
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText',
+                borderRadius: 3,
+                background: theme.palette.mode === 'dark'
+                  ? `linear-gradient(135deg, ${alpha(theme.palette.success.dark, 0.2)} 0%, ${alpha(theme.palette.success.main, 0.15)} 100%)`
+                  : `linear-gradient(135deg, ${alpha(theme.palette.success.light, 0.3)} 0%, ${alpha(theme.palette.success.main, 0.15)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`,
                 textAlign: 'center'
               }}
             >
-              <Typography variant="caption" sx={{ opacity: 0.9, textTransform: 'uppercase', letterSpacing: 1 }}>
+              <Typography 
+                variant="caption" 
+                sx={{ 
+                  color: theme.palette.success.dark,
+                  textTransform: 'uppercase', 
+                  letterSpacing: 1,
+                  fontWeight: 600
+                }}
+              >
                 {t('production.expectedCost')}
               </Typography>
-              <Typography variant="h3" sx={{ fontWeight: 300, mt: 1 }}>
+              <Typography 
+                variant="h3" 
+                sx={{ 
+                  fontWeight: 300, 
+                  mt: 1,
+                  color: theme.palette.mode === 'dark'
+                    ? theme.palette.success.light
+                    : theme.palette.success.dark
+                }}
+              >
                 ${estimate.costs.totalCost.toFixed(2)}
               </Typography>
-              <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  mt: 1, 
+                  color: theme.palette.text.secondary
+                }}
+              >
                 {t('production.quantity')}: {quantity} × ${estimate.costs.costPerUnit?.toFixed(2) || '0.00'} = ${estimate.costs.totalCost.toFixed(2)}
               </Typography>
             </Box>
@@ -395,9 +483,13 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   gap: 3,
                   p: 3,
                   border: '1px solid',
-                  borderColor: 'divider',
+                  borderColor: theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.divider, 0.3)
+                    : theme.palette.divider,
                   borderRadius: 2,
-                  bgcolor: 'grey.50'
+                  bgcolor: theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.background.paper, 0.5)
+                    : alpha(theme.palette.grey[100], 0.5)
                 }}
               >
                 {/* Resources */}
@@ -493,9 +585,14 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
               icon={<CheckIcon />}
               sx={{ 
                 borderRadius: 2,
-                bgcolor: 'success.light',
+                bgcolor: theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.success.main, 0.15)
+                  : alpha(theme.palette.success.light, 0.3),
+                color: theme.palette.mode === 'dark'
+                  ? theme.palette.success.light
+                  : theme.palette.success.dark,
                 '& .MuiAlert-icon': {
-                  color: 'success.main'
+                  color: theme.palette.success.main
                 }
               }}
             >
@@ -510,9 +607,14 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
               onClose={() => setError(null)}
               sx={{ 
                 borderRadius: 2,
-                bgcolor: 'error.light',
+                bgcolor: theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.error.main, 0.15)
+                  : alpha(theme.palette.error.light, 0.3),
+                color: theme.palette.mode === 'dark'
+                  ? theme.palette.error.light
+                  : theme.palette.error.dark,
                 '& .MuiAlert-icon': {
-                  color: 'error.main'
+                  color: theme.palette.error.main
                 }
               }}
             >
@@ -535,9 +637,11 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
               size="large"
               sx={{ 
                 px: 4,
-                color: 'text.secondary',
+                color: theme.palette.text.secondary,
+                borderRadius: 2,
                 '&:hover': {
-                  bgcolor: 'action.hover'
+                  bgcolor: alpha(theme.palette.action.hover, 0.08),
+                  color: theme.palette.text.primary
                 }
               }}
             >
@@ -550,16 +654,25 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
               size="large"
               sx={{ 
                 px: 4,
-                bgcolor: 'text.primary',
-                color: 'background.paper',
+                background: theme.palette.mode === 'dark'
+                  ? `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`
+                  : `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+                color: theme.palette.primary.contrastText,
                 borderRadius: 2,
-                boxShadow: 'none',
+                boxShadow: theme.palette.mode === 'dark'
+                  ? `0 4px 12px ${alpha(theme.palette.primary.main, 0.3)}`
+                  : `0 4px 12px ${alpha(theme.palette.primary.main, 0.2)}`,
                 '&:hover': {
-                  bgcolor: 'text.secondary',
-                  boxShadow: 'none'
+                  background: theme.palette.mode === 'dark'
+                    ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.darker || theme.palette.primary.dark} 100%)`
+                    : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+                  boxShadow: theme.palette.mode === 'dark'
+                    ? `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`
+                    : `0 6px 16px ${alpha(theme.palette.primary.main, 0.3)}`
                 },
                 '&.Mui-disabled': {
-                  bgcolor: 'action.disabledBackground'
+                  background: theme.palette.action.disabledBackground,
+                  color: theme.palette.action.disabled
                 }
               }}
               startIcon={producing ? <CircularProgress size={18} color="inherit" /> : <FactoryIcon />}

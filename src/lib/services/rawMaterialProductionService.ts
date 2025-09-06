@@ -58,7 +58,8 @@ export class RawMaterialProductionService {
 
   async estimateProduction(
     request: ProductionRequest, 
-    material?: RawMaterial
+    material?: RawMaterial,
+    facilityData?: any
   ): Promise<ProductionEstimate> {
     try {
       // Use provided material data or fetch if not provided
@@ -70,10 +71,14 @@ export class RawMaterialProductionService {
       const powerNeeded = (material.requirements?.power || material.powerRequired || 0) * request.quantity;
       const spaceNeeded = material.carbonEmission * request.quantity;
       
-      // Simple local calculation - no API calls needed
-      // The backend will validate everything when actually producing
+      // Calculate costs with infrastructure pricing if available
+      const waterUnitPrice = facilityData?.infrastructure?.waterUnitPrice || 0;
+      const powerUnitPrice = facilityData?.infrastructure?.powerUnitPrice || 0;
+      
+      const waterCost = waterNeeded * waterUnitPrice;
+      const powerCost = powerNeeded * powerUnitPrice;
       const goldCost = (material.requirements?.gold || material.goldCost || 0) * request.quantity;
-      const totalCost = material.totalCost * request.quantity;
+      const totalCost = material.totalCost * request.quantity + waterCost + powerCost;
       
       // Just return a simple estimate without validation
       // Backend will handle all validation
@@ -84,15 +89,15 @@ export class RawMaterialProductionService {
           water: {
             needed: waterNeeded,
             available: true,
-            unitPrice: 0,
-            totalCost: 0,
+            unitPrice: waterUnitPrice,
+            totalCost: waterCost,
             provider: undefined
           },
           power: {
             needed: powerNeeded,
             available: true,
-            unitPrice: 0,
-            totalCost: 0,
+            unitPrice: powerUnitPrice,
+            totalCost: powerCost,
             provider: undefined
           },
           space: {
@@ -107,8 +112,8 @@ export class RawMaterialProductionService {
           }
         },
         costs: {
-          waterCost: 0, // Simplified - just show total cost
-          powerCost: 0, // Simplified - just show total cost
+          waterCost,
+          powerCost,
           materialBaseCost: goldCost,
           totalCost,
           costPerUnit: totalCost / request.quantity

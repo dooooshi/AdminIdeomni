@@ -18,7 +18,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'zh-CN',
+    // lng is not set to allow LanguageDetector to load from localStorage
     fallbackLng: 'en-US',
     
     interpolation: {

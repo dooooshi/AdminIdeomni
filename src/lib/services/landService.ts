@@ -387,14 +387,8 @@ export class LandService {
       maximumFractionDigits: 2,
     }).format(safeAmount);
 
-    switch (currency) {
-      case 'gold':
-        return `${formattedAmount} Gold`;
-      case 'carbon':
-        return `${formattedAmount} Carbon`;
-      default:
-        return formattedAmount;
-    }
+    // Return just the formatted amount without currency suffix
+    return formattedAmount;
   }
 
   /**

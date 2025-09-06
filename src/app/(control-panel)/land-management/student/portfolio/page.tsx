@@ -18,7 +18,6 @@ import {
   CircularProgress,
   Button,
   Divider,
-  Stack,
   IconButton,
   Tooltip,
   Table,
@@ -41,7 +40,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   Refresh as RefreshIcon,
-  Download as DownloadIcon,
   Landscape as LandscapeIcon,
   AttachMoney as MoneyIcon,
   Timeline as TimelineIcon,
@@ -325,26 +323,23 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('landManagement.PURCHASE_DATE')}</TableCell>
-                <TableCell>{t('landManagement.TILE_ID')}</TableCell>
-                <TableCell align="right">{t('landManagement.OWNED_AREA')}</TableCell>
-                <TableCell align="right">{t('landManagement.GOLD_COST')}</TableCell>
-                <TableCell align="right">{t('landManagement.CARBON_COST')}</TableCell>
-                <TableCell align="right">{t('landManagement.TOTAL_COST')}</TableCell>
-                <TableCell align="center">{t('landManagement.STATUS')}</TableCell>
-                <TableCell>{t('landManagement.DESCRIPTION')}</TableCell>
+                <TableCell align="center">{t('landManagement.PURCHASE_DATE')}</TableCell>
+                <TableCell align="center">{t('landManagement.TILE_ID')}</TableCell>
+                <TableCell align="center">{t('landManagement.OWNED_AREA')}</TableCell>
+                <TableCell align="center">{t('landManagement.GOLD_COST')}</TableCell>
+                <TableCell align="center">{t('landManagement.CARBON_COST')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {historyLoading ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center">
+                  <TableCell colSpan={5} align="center">
                     <CircularProgress size={24} />
                   </TableCell>
                 </TableRow>
               ) : purchaseHistory.data.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center" className="py-16">
+                  <TableCell colSpan={5} align="center" className="py-16">
                     <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center">
                       <AssessmentIcon className="text-gray-400 dark:text-gray-500" />
                     </div>
@@ -359,7 +354,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
               ) : (
                 purchaseHistory.data.map((purchase) => (
                   <TableRow key={purchase.id} hover>
-                    <TableCell>
+                    <TableCell align="center">
                       <Typography variant="body2">
                         {format(new Date(purchase.purchaseDate), 'MMM dd, yyyy')}
                       </Typography>
@@ -367,56 +362,27 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
                         {format(new Date(purchase.purchaseDate), 'HH:mm')}
                       </Typography>
                     </TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center" gap={1}>
+                    <TableCell align="center">
+                      <Box display="flex" alignItems="center" justifyContent="center" gap={1}>
                         <LocationIcon fontSize="small" color="action" />
                         <Typography variant="body2">
                           {purchase.tileId}
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Typography variant="body2">
                         {LandService.formatArea(purchase.purchasedArea)}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Typography variant="body2">
                         {LandService.formatCurrency(purchase.goldCost, 'gold')}
                       </Typography>
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       <Typography variant="body2">
                         {LandService.formatCurrency(purchase.carbonCost, 'carbon')}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Typography variant="body2" fontWeight="medium">
-                        {LandService.formatCurrency(purchase.goldCost + purchase.carbonCost)}
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        label={purchase.status}
-                        size="small"
-                        sx={{
-                          bgcolor: LandService.getPurchaseStatusColor(purchase.status),
-                          color: 'white'
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Typography 
-                        variant="body2" 
-                        color="text.secondary"
-                        sx={{
-                          maxWidth: 200,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}
-                      >
-                        {purchase.description || '-'}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -490,18 +456,11 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
               {t('landManagement.PORTFOLIO_DESCRIPTION')}
             </Typography>
           </div>
-          <Stack direction="row" spacing={2}>
-            <Tooltip title={t('common.EXPORT_DATA')}>
-              <IconButton className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
-                <DownloadIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('common.REFRESH_DATA')}>
-              <IconButton onClick={handleRefresh} className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
-          </Stack>
+          <Tooltip title={t('common.REFRESH_DATA')}>
+            <IconButton onClick={handleRefresh} className="border border-gray-200 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white shadow-none">
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
         </div>
 
         {/* Team Summary Cards */}

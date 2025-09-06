@@ -69,6 +69,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<DetailedProviderInfo | ServiceProvider | null>(null);
   const [proposedPrice, setProposedPrice] = useState('');
+  const [priceError, setPriceError] = useState<string | null>(null);
 
   // Filter facilities that need infrastructure
   const consumerFacilities = facilities.filter(f => 
@@ -96,8 +97,41 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
     }
   };
 
+  const validatePrice = (price: string): boolean => {
+    if (!price) return true; // Empty is valid (will use default)
+    
+    const priceValue = parseFloat(price);
+    if (isNaN(priceValue) || priceValue < 0) {
+      setPriceError(t('infrastructure.PRICE_MUST_BE_POSITIVE'));
+      return false;
+    }
+    
+    // For connections, check if price is at least the unit price
+    if (searchType === 'connections' && selectedProvider && 'unitPrice' in selectedProvider) {
+      if (priceValue < selectedProvider.unitPrice) {
+        setPriceError(t('infrastructure.PRICE_MUST_BE_HIGHER_THAN_UNIT', { unitPrice: selectedProvider.unitPrice }));
+        return false;
+      }
+    }
+    
+    setPriceError(null);
+    return true;
+  };
+
+  const handlePriceChange = (value: string) => {
+    setProposedPrice(value);
+    if (value) {
+      validatePrice(value);
+    } else {
+      setPriceError(null);
+    }
+  };
+
   const handleRequestConnection = async () => {
     if (!selectedProvider) return;
+    
+    // Validate price before submitting
+    if (!validatePrice(proposedPrice)) return;
     
     setLoading(true);
     try {
@@ -110,6 +144,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       setRequestDialogOpen(false);
       setSelectedProvider(null);
       setProposedPrice('');
+      setPriceError(null);
       onRequestConnection();
     } catch (err: any) {
       setError(err.message || t('infrastructure.ERROR_REQUESTING_CONNECTION'));
@@ -121,6 +156,9 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
   const handleSubscribeService = async () => {
     if (!selectedProvider) return;
     
+    // Validate price before submitting
+    if (!validatePrice(proposedPrice)) return;
+    
     setLoading(true);
     try {
       await infrastructureService.subscribeToService(
@@ -131,6 +169,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       setRequestDialogOpen(false);
       setSelectedProvider(null);
       setProposedPrice('');
+      setPriceError(null);
       onSubscribeService();
     } catch (err: any) {
       setError(err.message || t('infrastructure.ERROR_SUBSCRIBING'));
@@ -192,6 +231,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               onClick={handleSearch}
               disabled={!selectedFacility || loading}
               startIcon={<SearchIcon />}
+              sx={{ minWidth: 120 }}
             >
               {t('infrastructure.SEARCH')}
             </Button>
@@ -210,6 +250,14 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       {/* Results for Water/Power Providers */}
       {providers && searchType === 'connections' && (
         <Box>
+          {/* Show no providers message if both water and power providers are empty */}
+          {(!providers.waterProviders || providers.waterProviders.length === 0) && 
+           (!providers.powerProviders || providers.powerProviders.length === 0) && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              {t('infrastructure.NO_PROVIDERS_FOUND_FOR_FACILITY')}
+            </Alert>
+          )}
+          
           {providers.waterProviders && providers.waterProviders.length > 0 && (
             <>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -219,25 +267,32 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
-                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
-                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
-                      <TableCell>{t('infrastructure.OP_COST')}</TableCell>
-                      <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
-                      <TableCell>{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
-                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LOCATION')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.OP_COST')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.UNIT_PRICE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {providers.waterProviders.map((provider: DetailedProviderInfo) => (
                       <TableRow key={provider.providerId}>
-                        <TableCell>{provider.providerTeamName}</TableCell>
-                        <TableCell>{provider.facilityLevel}</TableCell>
-                        <TableCell>{provider.distance}</TableCell>
-                        <TableCell>{provider.operationPointsCost}</TableCell>
-                        <TableCell>${provider.unitPrice}</TableCell>
-                        <TableCell>{provider.availableCapacity}</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{provider.providerTeamName}</TableCell>
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" />
+                            ({provider.location.q}, {provider.location.r})
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">{provider.facilityLevel}</TableCell>
+                        <TableCell align="center">{provider.distance}</TableCell>
+                        <TableCell align="center">{provider.operationPointsCost}</TableCell>
+                        <TableCell align="center">${provider.unitPrice}</TableCell>
+                        <TableCell align="center">{provider.availableCapacity}</TableCell>
+                        <TableCell align="center">
                           <Button
                             size="small"
                             variant="contained"
@@ -267,25 +322,32 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
-                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
-                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
-                      <TableCell>{t('infrastructure.OP_COST')}</TableCell>
-                      <TableCell>{t('infrastructure.UNIT_PRICE')}</TableCell>
-                      <TableCell>{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
-                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LOCATION')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.OP_COST')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.UNIT_PRICE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.AVAILABLE_CAPACITY')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {providers.powerProviders.map((provider: DetailedProviderInfo) => (
                       <TableRow key={provider.providerId}>
-                        <TableCell>{provider.providerTeamName}</TableCell>
-                        <TableCell>{provider.facilityLevel}</TableCell>
-                        <TableCell>{provider.distance}</TableCell>
-                        <TableCell>{provider.operationPointsCost}</TableCell>
-                        <TableCell>${provider.unitPrice}</TableCell>
-                        <TableCell>{provider.availableCapacity}</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{provider.providerTeamName}</TableCell>
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" />
+                            ({provider.location.q}, {provider.location.r})
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">{provider.facilityLevel}</TableCell>
+                        <TableCell align="center">{provider.distance}</TableCell>
+                        <TableCell align="center">{provider.operationPointsCost}</TableCell>
+                        <TableCell align="center">${provider.unitPrice}</TableCell>
+                        <TableCell align="center">{provider.availableCapacity}</TableCell>
+                        <TableCell align="center">
                           <Button
                             size="small"
                             variant="contained"
@@ -311,6 +373,14 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       {/* Results for Base/Fire Station Services */}
       {providers && searchType === 'services' && (
         <Box>
+          {/* Show no services message if both base and fire stations are empty */}
+          {(!providers.baseStations || providers.baseStations.length === 0) && 
+           (!providers.fireStations || providers.fireStations.length === 0) && (
+            <Alert severity="info" sx={{ mb: 2 }}>
+              {t('infrastructure.NO_SERVICES_FOUND_FOR_FACILITY')}
+            </Alert>
+          )}
+          
           {providers.baseStations && providers.baseStations.length > 0 && (
             <>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -320,29 +390,36 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
-                      <TableCell>{t('infrastructure.LEVEL')}</TableCell>
-                      <TableCell>{t('infrastructure.DISTANCE')}</TableCell>
-                      <TableCell>{t('infrastructure.IN_RANGE')}</TableCell>
-                      <TableCell>{t('infrastructure.ANNUAL_FEE')}</TableCell>
-                      <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LOCATION')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.IN_RANGE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ANNUAL_FEE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ACTIONS')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {providers.baseStations.map((service: ServiceProvider) => (
                       <TableRow key={service.serviceId}>
-                        <TableCell>{service.providerTeamName}</TableCell>
-                        <TableCell>{service.facilityLevel}</TableCell>
-                        <TableCell>{service.distance}</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{service.providerTeamName}</TableCell>
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" />
+                            ({service.location.q}, {service.location.r})
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">{service.facilityLevel}</TableCell>
+                        <TableCell align="center">{service.distance}</TableCell>
+                        <TableCell align="center">
                           <Chip
                             label={service.inRange ? t('infrastructure.YES') : t('infrastructure.NO')}
                             color={service.inRange ? 'success' : 'error'}
                             size="small"
                           />
                         </TableCell>
-                        <TableCell>${service.annualFee}</TableCell>
-                        <TableCell>
+                        <TableCell align="center">${service.annualFee}</TableCell>
+                        <TableCell align="center">
                           <Button
                             size="small"
                             variant="contained"
@@ -366,11 +443,25 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
       )}
 
       {/* Request/Subscribe Dialog */}
-      <Dialog open={requestDialogOpen} onClose={() => setRequestDialogOpen(false)}>
+      <Dialog open={requestDialogOpen} onClose={() => {
+        setRequestDialogOpen(false);
+        setPriceError(null);
+        setProposedPrice('');
+      }}>
         <DialogTitle>
           {searchType === 'connections' ? t('infrastructure.REQUEST_CONNECTION') : t('infrastructure.SUBSCRIBE_TO_SERVICE')}
         </DialogTitle>
         <DialogContent>
+          {searchType === 'connections' && selectedProvider && 'unitPrice' in selectedProvider && (
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {t('infrastructure.CURRENT_UNIT_PRICE')}: ${selectedProvider.unitPrice}
+            </Typography>
+          )}
+          {searchType === 'services' && selectedProvider && 'annualFee' in selectedProvider && (
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {t('infrastructure.CURRENT_ANNUAL_FEE')}: ${selectedProvider.annualFee}
+            </Typography>
+          )}
           <TextField
             autoFocus
             margin="dense"
@@ -379,16 +470,22 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
             fullWidth
             variant="outlined"
             value={proposedPrice}
-            onChange={(e) => setProposedPrice(e.target.value)}
-            helperText={t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT')}
+            onChange={(e) => handlePriceChange(e.target.value)}
+            error={!!priceError}
+            helperText={priceError || t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT')}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setRequestDialogOpen(false)}>{t('infrastructure.CANCEL')}</Button>
+          <Button onClick={() => {
+            setRequestDialogOpen(false);
+            setPriceError(null);
+            setProposedPrice('');
+          }}>{t('infrastructure.CANCEL')}</Button>
           <Button
             onClick={searchType === 'connections' ? handleRequestConnection : handleSubscribeService}
             variant="contained"
             startIcon={<SendIcon />}
+            disabled={!!priceError}
           >
             {searchType === 'connections' ? t('infrastructure.SEND_REQUEST') : t('infrastructure.SUBSCRIBE')}
           </Button>

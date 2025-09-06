@@ -11,6 +11,7 @@ import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetTeamDetailsQuery, useJoinTeamMutation } from '../../TeamApi';
+import { useGetCurrentUserTeamAccountQuery } from '../../TeamAccountApi';
 
 interface TeamDetailsViewProps {
   teamId: string;
@@ -25,6 +26,9 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
   
   const { data: team, isLoading, error } = useGetTeamDetailsQuery(teamId);
   const [joinTeam, { isLoading: isJoining }] = useJoinTeamMutation();
+  
+  // Check if user already belongs to a team
+  const { data: currentTeamAccount } = useGetCurrentUserTeamAccountQuery();
 
   const container = {
     show: {
@@ -60,7 +64,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
   }
 
   const activeMembers = team.members.filter(m => m.status === 'ACTIVE');
-  const canJoin = team.isOpen && activeMembers.length < team.maxMembers;
+  const canJoin = team.isOpen && activeMembers.length < team.maxMembers && !currentTeamAccount;
 
   const handleJoinTeam = async () => {
     try {
@@ -114,7 +118,7 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
               </Typography>
             </div>
             
-            {canJoin && (
+            {canJoin && !currentTeamAccount && (
               <Button
                 variant="contained"
                 size="large"
@@ -283,8 +287,8 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
             </Paper>
           </motion.div>
 
-          {/* Join Team CTA */}
-          {canJoin && (
+          {/* Join Team CTA - Only show if user doesn't have a team */}
+          {canJoin && !currentTeamAccount && (
             <motion.div variants={item}>
               <Paper className="p-6 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 text-center">
                 <IdeomniSvgIcon size={48} className="text-primary-600 mx-auto mb-3">
@@ -309,28 +313,40 @@ function TeamDetailsView({ teamId }: TeamDetailsViewProps) {
             </motion.div>
           )}
 
-          {/* Team Not Available */}
-          {!canJoin && (
+          {/* Team Not Available or User Already Has Team */}
+          {(!canJoin || currentTeamAccount) && (
             <motion.div variants={item}>
               <Paper className="p-6 bg-gray-50 dark:bg-gray-800 text-center">
                 <IdeomniSvgIcon size={48} className="text-gray-400 mx-auto mb-3">
-                  {team.isOpen ? 'heroicons-outline:users' : 'heroicons-outline:lock-closed'}
+                  {currentTeamAccount 
+                    ? 'heroicons-outline:check-circle' 
+                    : team.isOpen 
+                    ? 'heroicons-outline:users' 
+                    : 'heroicons-outline:lock-closed'}
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  {team.isOpen ? t('teamManagement.TEAM_IS_FULL') : t('teamManagement.TEAM_IS_CLOSED')}
+                  {currentTeamAccount 
+                    ? t('teamManagement.ALREADY_IN_TEAM')
+                    : team.isOpen 
+                    ? t('teamManagement.TEAM_IS_FULL') 
+                    : t('teamManagement.TEAM_IS_CLOSED')}
                 </Typography>
                 <Typography color="text.secondary" className="mb-4">
-                  {team.isOpen 
+                  {currentTeamAccount
+                    ? t('teamManagement.ALREADY_IN_TEAM_MESSAGE')
+                    : team.isOpen 
                     ? t('teamManagement.TEAM_FULL_MESSAGE')
                     : t('teamManagement.TEAM_CLOSED_MESSAGE')
                   }
                 </Typography>
                 <Button
                   variant="outlined"
-                  onClick={() => router.push('/team-management/browse')}
-                  startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
+                  onClick={() => router.push(currentTeamAccount ? '/team-management/dashboard' : '/team-management/browse')}
+                  startIcon={<IdeomniSvgIcon>
+                    {currentTeamAccount ? 'heroicons-outline:home' : 'heroicons-outline:search'}
+                  </IdeomniSvgIcon>}
                 >
-                  {t('teamManagement.BROWSE_OTHER_TEAMS')}
+                  {currentTeamAccount ? t('teamManagement.GO_TO_YOUR_TEAM') : t('teamManagement.BROWSE_OTHER_TEAMS')}
                 </Button>
               </Paper>
             </motion.div>

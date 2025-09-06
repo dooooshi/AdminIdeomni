@@ -21,7 +21,9 @@ import {
   Terrain as MineIcon,
   Water as FisheryIcon,
   Pets as RanchIcon,
-  Landscape as QuarryIcon
+  Landscape as QuarryIcon,
+  Water as WaterIcon,
+  Bolt as PowerIcon
 } from '@mui/icons-material';
 import apiClient from '@/lib/http/api-client';
 
@@ -44,6 +46,16 @@ interface Facility {
     totalSpace: number;
     usedSpace: number;
     availableSpace: number;
+    rawMaterialSpace?: number;
+    productSpace?: number;
+  };
+  infrastructure?: {
+    hasWater: boolean;
+    hasPower: boolean;
+    waterProviderId?: string;
+    powerProviderId?: string;
+    waterUnitPrice?: number;
+    powerUnitPrice?: number;
   };
 }
 
@@ -167,6 +179,24 @@ const FacilitySelector: React.FC<FacilitySelectorProps> = ({
                       label={`${facility.capacity.availableSpace} space`} 
                       size="small" 
                       color="primary"
+                      variant="outlined"
+                    />
+                  )}
+                  {facility.infrastructure?.hasWater && (
+                    <Chip 
+                      icon={<WaterIcon sx={{ fontSize: 16 }} />}
+                      label={`$${facility.infrastructure.waterUnitPrice || 0}/u`} 
+                      size="small" 
+                      color="info"
+                      variant="outlined"
+                    />
+                  )}
+                  {facility.infrastructure?.hasPower && (
+                    <Chip 
+                      icon={<PowerIcon sx={{ fontSize: 16 }} />}
+                      label={`$${facility.infrastructure.powerUnitPrice || 0}/u`} 
+                      size="small" 
+                      color="warning"
                       variant="outlined"
                     />
                   )}

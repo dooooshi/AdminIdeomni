@@ -5,8 +5,6 @@ import { motion } from 'motion/react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -15,6 +13,7 @@ import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetAvailableTeamsQuery, useJoinTeamMutation } from '../TeamApi';
+import { useGetCurrentUserTeamAccountQuery } from '../TeamAccountApi';
 
 /**
  * Browse Teams Component - Minimalist Business Design
@@ -23,8 +22,6 @@ function BrowseTeams() {
   const { t } = useTranslation();
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [searchInput, setSearchInput] = useState('');
   
   const pageSize = 12;
   
@@ -32,18 +29,16 @@ function BrowseTeams() {
     data: teamsResponse, 
     isLoading, 
     error 
-  } = useGetAvailableTeamsQuery({ page, pageSize, search });
+  } = useGetAvailableTeamsQuery({ page, pageSize });
   
   const [joinTeam, { isLoading: isJoining }] = useJoinTeamMutation();
+  
+  // Check if user already belongs to a team
+  const { data: currentTeamAccount } = useGetCurrentUserTeamAccountQuery();
 
   const fadeIn = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { duration: 0.3 } }
-  };
-
-  const handleSearch = () => {
-    setSearch(searchInput);
-    setPage(1);
   };
 
   const handleJoinTeam = async (teamId: string) => {
@@ -78,34 +73,6 @@ function BrowseTeams() {
             </Typography>
           </div>
 
-          {/* Search */}
-          <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
-            <div className="flex gap-4">
-              <TextField
-                fullWidth
-                placeholder={t('teamManagement.SEARCH_TEAMS_PLACEHOLDER')}
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IdeomniSvgIcon className="text-gray-400">heroicons-outline:search</IdeomniSvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <Button
-                variant="outlined"
-                onClick={handleSearch}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.SEARCH')}
-              </Button>
-            </div>
-          </Paper>
-
           {/* Results Count */}
           {teamsResponse && (
             <Typography variant="body2" color="text.secondary">
@@ -139,16 +106,18 @@ function BrowseTeams() {
                 {t('teamManagement.NO_TEAMS_FOUND')}
               </Typography>
               <Typography color="text.secondary" className="mb-8 max-w-md mx-auto">
-                {search ? t('teamManagement.NO_TEAMS_ADJUST_SEARCH') : t('teamManagement.NO_TEAMS_AVAILABLE')}
+                {t('teamManagement.NO_TEAMS_AVAILABLE')}
               </Typography>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/dashboard')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
-              </Button>
+              {!currentTeamAccount && (
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push('/team-management/dashboard')}
+                  className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                  startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
+                >
+                  {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
+                </Button>
+              )}
             </Paper>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -222,7 +191,7 @@ function BrowseTeams() {
                       >
                         {t('teamManagement.VIEW_DETAILS')}
                       </Button>
-                      {team.isOpen && team.currentMembers < team.maxMembers && (
+                      {team.isOpen && team.currentMembers < team.maxMembers && !currentTeamAccount && (
                         <Button
                           variant="outlined"
                           size="small"
@@ -253,23 +222,25 @@ function BrowseTeams() {
             </div>
           )}
 
-          {/* Create Team CTA */}
-          <Paper className="p-8 text-center border border-gray-100 dark:border-gray-800 shadow-none">
-            <Typography variant="h6" className="font-medium mb-3 text-gray-900 dark:text-white">
-              {t('teamManagement.CANT_FIND_RIGHT_TEAM')}
-            </Typography>
-            <Typography color="text.secondary" className="mb-6 max-w-md mx-auto">
-              {t('teamManagement.CREATE_OWN_TEAM_MESSAGE')}
-            </Typography>
-            <Button
-              variant="outlined"
-              onClick={() => router.push('/team-management/dashboard')}
-              className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-              startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
-            >
-              {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
-            </Button>
-          </Paper>
+          {/* Create Team CTA - Only show if user doesn't have a team */}
+          {!currentTeamAccount && (
+            <Paper className="p-8 text-center border border-gray-100 dark:border-gray-800 shadow-none">
+              <Typography variant="h6" className="font-medium mb-3 text-gray-900 dark:text-white">
+                {t('teamManagement.CANT_FIND_RIGHT_TEAM')}
+              </Typography>
+              <Typography color="text.secondary" className="mb-6 max-w-md mx-auto">
+                {t('teamManagement.CREATE_OWN_TEAM_MESSAGE')}
+              </Typography>
+              <Button
+                variant="outlined"
+                onClick={() => router.push('/team-management/dashboard')}
+                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
+                startIcon={<IdeomniSvgIcon>heroicons-outline:plus</IdeomniSvgIcon>}
+              >
+                {t('teamManagement.CREATE_NEW_TEAM_BUTTON')}
+              </Button>
+            </Paper>
+          )}
         </motion.div>
       </div>
     </div>
