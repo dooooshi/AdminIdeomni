@@ -3491,6 +3491,12 @@ export const zhTranslations = {
   'resources.table.status': '状态',
   'resources.noTransactions': '未找到资源交易记录',
   'resources.totalTransactions': '总交易数',
+  'resources.consumption.title': '资源消耗',
+  'resources.consumption.subtitle': '监控和分析您的资源使用情况',
+  'resources.water.consumption': '水资源消耗',
+  'resources.power.consumption': '电力消耗',
+  'resources.type.water': '水',
+  'resources.type.power': '电力',
   
   // Common - Additional
   'common.all': '全部',

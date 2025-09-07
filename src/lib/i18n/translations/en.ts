@@ -3211,6 +3211,12 @@ export const enTranslations = {
   'resources.table.status': 'Status',
   'resources.noTransactions': 'No resource transactions found',
   'resources.totalTransactions': 'Total Transactions',
+  'resources.consumption.title': 'Resource Consumption',
+  'resources.consumption.subtitle': 'Monitor and analyze your resource usage',
+  'resources.water.consumption': 'Water Consumption',
+  'resources.power.consumption': 'Power Consumption',
+  'resources.type.water': 'Water',
+  'resources.type.power': 'Power',
   
   // Common - Additional
   'common.all': 'All',

@@ -29,6 +29,7 @@ import {
   AttachMoney as MoneyIcon
 } from '@mui/icons-material';
 import { format } from 'date-fns';
+import { zhCN, enUS } from 'date-fns/locale';
 import { ResourceTransaction, ResourceType, TransactionStatus } from '@/types/resourceConsumption';
 import resourceConsumptionService from '@/lib/services/resourceConsumptionService';
 
@@ -37,23 +38,20 @@ interface ResourceConsumptionHistoryProps {
   teamId?: string;
   activityId?: string;
   defaultPageSize?: number;
-  showSummary?: boolean;
 }
 
 const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
   facilityId,
   teamId,
   activityId,
-  defaultPageSize = 10,
-  showSummary = true
+  defaultPageSize = 10
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [transactions, setTransactions] = useState<ResourceTransaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(defaultPageSize);
   const [totalCount, setTotalCount] = useState(0);
-  const [summary, setSummary] = useState<any>(null);
   
   const [filters, setFilters] = useState({
     resourceType: 'all' as 'all' | ResourceType,
@@ -64,9 +62,6 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
 
   useEffect(() => {
     loadTransactions();
-    if (showSummary) {
-      loadSummary();
-    }
   }, [facilityId, teamId, activityId, page, rowsPerPage, filters]);
 
   const loadTransactions = async () => {
@@ -99,19 +94,6 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
     }
   };
 
-  const loadSummary = async () => {
-    try {
-      const startDate = getStartDate(filters.dateRange);
-      const summaryData = await resourceConsumptionService.getConsumptionSummary({
-        startDate: startDate?.toISOString(),
-        endDate: new Date().toISOString()
-      });
-      setSummary(summaryData);
-    } catch (error) {
-      console.error('Failed to load summary:', error);
-    }
-  };
-
   const getStartDate = (range: string): Date | undefined => {
     if (range === 'all') return undefined;
     
@@ -138,7 +120,11 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
 
   const formatDate = (date: Date | string) => {
     try {
-      return format(new Date(date), 'MMM dd, yyyy HH:mm');
+      const currentLocale = i18n.language;
+      const isChineseLocale = currentLocale?.startsWith('zh');
+      const dateLocale = isChineseLocale ? zhCN : enUS;
+      const dateFormat = isChineseLocale ? 'yyyy年MM月dd日 HH:mm' : 'MMM dd, yyyy HH:mm';
+      return format(new Date(date), dateFormat, { locale: dateLocale });
     } catch {
       return String(date);
     }
@@ -150,6 +136,12 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
     ) : (
       <PowerIcon fontSize="small" color="warning" />
     );
+  };
+
+  const getResourceTypeLabel = (type: ResourceType) => {
+    return type === ResourceType.WATER 
+      ? t('resources.type.water')
+      : t('resources.type.power');
   };
 
   const getStatusChip = (status: TransactionStatus) => {
@@ -214,101 +206,81 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
 
   return (
     <Box>
-      {showSummary && summary && (
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('resources.totalTransactions')}
-              </Typography>
-              <Typography variant="h4">
-                {summary.totalTransactions || 0}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('resources.totalCost')}
-              </Typography>
-              <Typography variant="h4">
-                ${(summary.totalCost || 0).toFixed(2)}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('resources.water.title')}
-              </Typography>
-              <Typography variant="h4">
-                ${(summary.byResourceType?.WATER?.amount || 0).toFixed(2)}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {summary.byResourceType?.WATER?.count || 0} {t('resources.transactions')}
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('resources.power.title')}
-              </Typography>
-              <Typography variant="h4">
-                ${(summary.byResourceType?.POWER?.amount || 0).toFixed(2)}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {summary.byResourceType?.POWER?.count || 0} {t('resources.transactions')}
-              </Typography>
-            </Paper>
-          </Grid>
-        </Grid>
-      )}
-
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={{ p: 3, overflow: 'visible' }}>
         <Box sx={{ mb: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6">
-            {t('resources.history.title')}
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Tooltip title={t('resources.export')}>
-              <IconButton onClick={handleExport}>
-                <ExportIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('common.refresh')}>
-              <IconButton onClick={loadTransactions} disabled={loading}>
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Typography variant="h6">
+              {t('resources.history.title')}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Tooltip title={t('resources.export')}>
+                <IconButton onClick={handleExport}>
+                  <ExportIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('common.refresh')}>
+                <IconButton onClick={loadTransactions} disabled={loading}>
+                  <RefreshIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
-        </Box>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
             <TextField
               select
-              fullWidth
               size="small"
               label={t('resources.filter.resource')}
               value={filters.resourceType}
               onChange={(e) => handleFilterChange('resourceType', e.target.value)}
+              sx={{ minWidth: 150 }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  },
+                  transformOrigin: {
+                    vertical: 'top',
+                    horizontal: 'left',
+                  },
+                  PaperProps: {
+                    style: {
+                      maxHeight: 300,
+                    },
+                  },
+                },
+              }}
             >
               <MenuItem value="all">{t('common.all')}</MenuItem>
               <MenuItem value={ResourceType.WATER}>{t('resources.water.title')}</MenuItem>
               <MenuItem value={ResourceType.POWER}>{t('resources.power.title')}</MenuItem>
             </TextField>
-          </Grid>
-          
-          <Grid item xs={12} sm={6} md={3}>
+            
             <TextField
               select
-              fullWidth
               size="small"
               label={t('resources.filter.purpose')}
               value={filters.purpose}
               onChange={(e) => handleFilterChange('purpose', e.target.value)}
+              sx={{ minWidth: 150 }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  },
+                  transformOrigin: {
+                    vertical: 'top',
+                    horizontal: 'left',
+                  },
+                  PaperProps: {
+                    style: {
+                      maxHeight: 300,
+                    },
+                  },
+                },
+              }}
             >
               <MenuItem value="all">{t('common.all')}</MenuItem>
               <MenuItem value="RAW_MATERIAL_PRODUCTION">
@@ -318,40 +290,69 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
                 {t('resources.purpose.manufacturing')}
               </MenuItem>
             </TextField>
-          </Grid>
-          
-          <Grid item xs={12} sm={6} md={3}>
+            
             <TextField
               select
-              fullWidth
               size="small"
               label={t('resources.filter.status')}
               value={filters.status}
               onChange={(e) => handleFilterChange('status', e.target.value)}
+              sx={{ minWidth: 150 }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  },
+                  transformOrigin: {
+                    vertical: 'top',
+                    horizontal: 'left',
+                  },
+                  PaperProps: {
+                    style: {
+                      maxHeight: 300,
+                    },
+                  },
+                },
+              }}
             >
               <MenuItem value="all">{t('common.all')}</MenuItem>
               <MenuItem value={TransactionStatus.SUCCESS}>{t('resources.status.success')}</MenuItem>
               <MenuItem value={TransactionStatus.FAILED}>{t('resources.status.failed')}</MenuItem>
             </TextField>
-          </Grid>
-          
-          <Grid item xs={12} sm={6} md={3}>
+            
             <TextField
               select
-              fullWidth
               size="small"
               label={t('resources.filter.dateRange')}
               value={filters.dateRange}
               onChange={(e) => handleFilterChange('dateRange', e.target.value)}
+              sx={{ minWidth: 150 }}
+              SelectProps={{
+                MenuProps: {
+                  anchorOrigin: {
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  },
+                  transformOrigin: {
+                    vertical: 'top',
+                    horizontal: 'left',
+                  },
+                  PaperProps: {
+                    style: {
+                      maxHeight: 300,
+                    },
+                  },
+                },
+              }}
             >
               <MenuItem value="7d">{t('resources.dateRange.7days')}</MenuItem>
               <MenuItem value="30d">{t('resources.dateRange.30days')}</MenuItem>
               <MenuItem value="90d">{t('resources.dateRange.90days')}</MenuItem>
               <MenuItem value="all">{t('resources.dateRange.all')}</MenuItem>
             </TextField>
-          </Grid>
-        </Grid>
-      </Box>
+          </Box>
+        </Box>
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
@@ -363,14 +364,14 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('resources.table.date')}</TableCell>
-                  <TableCell>{t('resources.table.resource')}</TableCell>
-                  <TableCell align="right">{t('resources.table.quantity')}</TableCell>
-                  <TableCell align="right">{t('resources.table.unitPrice')}</TableCell>
-                  <TableCell align="right">{t('resources.table.totalAmount')}</TableCell>
-                  <TableCell>{t('resources.table.purpose')}</TableCell>
-                  <TableCell>{t('resources.table.provider')}</TableCell>
-                  <TableCell>{t('resources.table.consumer')}</TableCell>
+                  <TableCell align="center">{t('resources.table.date')}</TableCell>
+                  <TableCell align="center">{t('resources.table.resource')}</TableCell>
+                  <TableCell align="center">{t('resources.table.quantity')}</TableCell>
+                  <TableCell align="center">{t('resources.table.unitPrice')}</TableCell>
+                  <TableCell align="center">{t('resources.table.totalAmount')}</TableCell>
+                  <TableCell align="center">{t('resources.table.purpose')}</TableCell>
+                  <TableCell align="center">{t('resources.table.provider')}</TableCell>
+                  <TableCell align="center">{t('resources.table.consumer')}</TableCell>
                   <TableCell align="center">{t('resources.table.status')}</TableCell>
                 </TableRow>
               </TableHead>
@@ -386,48 +387,48 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
                 ) : (
                   transactions.map((tx) => (
                     <TableRow key={tx.id} hover>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="body2">
                           {formatDate(tx.transactionDate)}
                         </Typography>
                       </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
                           {getResourceIcon(tx.resourceType)}
                           <Typography variant="body2">
-                            {tx.resourceType}
+                            {getResourceTypeLabel(tx.resourceType)}
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography variant="body2">
                           {tx.quantity.toFixed(0)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography variant="body2">
                           ${tx.unitPrice.toFixed(4)}
                         </Typography>
                       </TableCell>
-                      <TableCell align="right">
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 0.5 }}>
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
                           <MoneyIcon fontSize="small" color="success" />
                           <Typography variant="body2" fontWeight="medium">
                             ${tx.totalAmount.toFixed(2)}
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="caption">
                           {getPurposeLabel(tx.purpose)}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="caption" color="text.secondary">
                           {tx.metadata?.providerFacilityName || tx.providerFacilityId?.substring(0, 8) || '-'}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="caption" color="text.secondary">
                           {tx.metadata?.facilityName || tx.consumerFacilityId?.substring(0, 8) || '-'}
                         </Typography>
