@@ -82,27 +82,6 @@ const superAdminNavigationConfig: IdeomniNavItemType[] = [
 		]
 	},
 	{
-		id: 'infrastructure',
-		title: 'Infrastructure',
-		subtitle: 'Infrastructure management and monitoring',
-		type: 'group',
-		icon: 'heroicons-outline:bolt',
-		translate: 'INFRASTRUCTURE',
-		translateSubtitle: 'INFRASTRUCTURE_SUBTITLE',
-		auth: ['admin'],
-		children: [
-			{
-				id: 'infrastructure.dashboard',
-				title: 'Infrastructure Dashboard',
-				type: 'item',
-				icon: 'heroicons-outline:chart-pie',
-				url: '/infrastructure',
-				translate: 'INFRASTRUCTURE_DASHBOARD',
-				auth: ['admin']
-			}
-		]
-	},
-	{
 		id: 'map',
 		title: 'Map',
 		subtitle: 'Map applications and tools',
@@ -169,27 +148,6 @@ const limitedAdminNavigationConfig: IdeomniNavItemType[] = [
 				translate: 'RAW_MATERIALS',
 				auth: ['admin']
 			},
-		]
-	},
-	{
-		id: 'infrastructure',
-		title: 'Infrastructure',
-		subtitle: 'Infrastructure management and monitoring',
-		type: 'group',
-		icon: 'heroicons-outline:bolt',
-		translate: 'INFRASTRUCTURE',
-		translateSubtitle: 'INFRASTRUCTURE_SUBTITLE',
-		auth: ['admin'],
-		children: [
-			{
-				id: 'infrastructure.dashboard',
-				title: 'Infrastructure Dashboard',
-				type: 'item',
-				icon: 'heroicons-outline:chart-pie',
-				url: '/infrastructure',
-				translate: 'INFRASTRUCTURE_DASHBOARD',
-				auth: ['admin']
-			}
 		]
 	},
 	{
@@ -400,6 +358,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							icon: 'heroicons-outline:leaf',
 							url: '/team-management/transfers/carbon',
 							translate: 'TRANSFER_CARBON',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.transfers.transportation',
+							title: 'transportation.FACILITY_TRANSPORTATION',
+							type: 'item',
+							icon: 'heroicons-outline:truck',
+							url: '/team-management/transportation',
+							translate: 'transportation.FACILITY_TRANSPORTATION',
 							auth: ['user']
 						}
 					]

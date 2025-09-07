@@ -38,6 +38,7 @@ import {
   Refresh as RefreshIcon,
   Factory as FactoryIcon,
   Storage as StorageIcon,
+  LocalShipping as LocalShippingIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
@@ -70,6 +71,8 @@ import {
 } from '@/components/infrastructure';
 // Import facility space configuration components
 import { FacilitySpaceConfigTab } from '@/components/facility-space-config';
+// Import transportation configuration components
+import { TransportationConfigLayout } from '@/components/transportation';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -503,6 +506,13 @@ const MapTemplateManagementPage: React.FC = () => {
                 {...a11yProps(5)}
                 disabled={!selectedTemplate}
               />
+              <Tab 
+                label={t('mapTemplate.TRANSPORTATION_CONFIG')} 
+                icon={<LocalShippingIcon />} 
+                iconPosition="start"
+                {...a11yProps(6)}
+                disabled={!selectedTemplate}
+              />
             </Tabs>
           </Box>
 
@@ -608,6 +618,19 @@ const MapTemplateManagementPage: React.FC = () => {
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
                   <Alert severity="info" variant="outlined">
                     {t('mapTemplate.SELECT_TEMPLATE_FOR_SPACE_CONFIG')}
+                  </Alert>
+                </Box>
+              )}
+            </TabPanel>
+
+            {/* Transportation Configuration Tab */}
+            <TabPanel value={tabValue} index={6}>
+              {selectedTemplate ? (
+                <TransportationConfigLayout templateId={selectedTemplate.id} />
+              ) : (
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+                  <Alert severity="info" variant="outlined">
+                    {t('mapTemplate.SELECT_TEMPLATE_FOR_TRANSPORTATION_CONFIG')}
                   </Alert>
                 </Box>
               )}

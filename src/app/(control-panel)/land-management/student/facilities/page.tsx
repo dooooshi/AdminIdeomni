@@ -244,7 +244,7 @@ const StudentFacilitiesPage: React.FC = () => {
           <Card variant="outlined" sx={{ mb: 4 }}>
             <CardContent>
               <Grid container spacing={3} alignItems="end">
-                <Grid item xs={12} md={5}>
+                <Grid size={{ xs: 12, md: 5 }}>
                   <TextField
                     fullWidth
                     size="small"
@@ -261,7 +261,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     size="small"
@@ -277,7 +277,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     <MenuItem value="DAMAGED">{t('facilityManagement.DAMAGED')}</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <TextField
                     fullWidth
                     size="small"
@@ -294,7 +294,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     )) : null}
                   </TextField>
                 </Grid>
-                <Grid item xs={12} md={1}>
+                <Grid size={{ xs: 12, md: 1 }}>
                   <Button
                     fullWidth
                     variant="outlined"

@@ -167,9 +167,7 @@ export default function ProductProductionPage() {
         limit: 100,
         isActive: true
       });
-      if (response.data?.data) {
-        setFormulas(response.data.data);
-      } else if (response.items) {
+      if (response.items) {
         setFormulas(response.items);
       } else {
         setFormulas([]);
@@ -227,7 +225,7 @@ export default function ProductProductionPage() {
         formulaId: selectedFormula.id,
         quantity,
         costConfirmation: {
-          expectedCost: costData.costs?.finalCosts?.totalCost || costData.totalCost || 0,
+          expectedCost: costData.costs?.finalCosts?.totalCost || 0,
           acceptPrice: true
         }
       };
@@ -436,7 +434,7 @@ export default function ProductProductionPage() {
           const canProduce = selectedFactory?.productionCapability?.canProduce || false;
           
           return (
-            <Grid item xs={12} sm={6} md={4} key={formula.id}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={formula.id}>
               <Card
                 variant={isSelected ? 'elevation' : 'outlined'}
                 sx={{
@@ -501,7 +499,7 @@ export default function ProductProductionPage() {
         
         <Card sx={{ mt: 3, p: 3 }}>
           <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('productProduction.productionQuantity')}
               </Typography>
@@ -538,7 +536,7 @@ export default function ProductProductionPage() {
               </FormHelperText>
             </Grid>
             
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               {selectedFormula && (
                 <Paper variant="outlined" sx={{ p: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
