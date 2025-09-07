@@ -188,7 +188,7 @@ export default function ProductProductionPage() {
         setTotalHistoryCount(response.data.pagination?.total || 0);
       }
     } catch (error) {
-      console.error('Failed to load production history:', error);
+      // Error already handled by showing error state
     }
   };
 

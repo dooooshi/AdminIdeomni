@@ -136,7 +136,7 @@ export interface ApiResponse<T> {
   data: T;
   timestamp?: string;
   path?: string;
-  extra?: any;
+  extra?: Record<string, unknown>;
 }
 
 export interface CostCalculation {

@@ -49,9 +49,9 @@ export interface RawMaterialAuditLog {
   rawMaterialId: number;
   materialName: string;
   action: AuditAction;
-  changes?: Record<string, { old: any; new: any }>;
-  previousValues?: Record<string, any>;
-  newValues?: Record<string, any>;
+  changes?: Record<string, { old: unknown; new: unknown }>;
+  previousValues?: Record<string, unknown>;
+  newValues?: Record<string, unknown>;
   modifiedBy: string;
   adminEmail?: string;
   modifiedAt: string;

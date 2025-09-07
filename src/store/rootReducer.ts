@@ -2,9 +2,9 @@ import { combineSlices } from '@reduxjs/toolkit';
 import apiService from './apiService';
 import { navigationSlice } from '@/components/theme-layouts/components/navigation/store/navigationSlice';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export interface LazyLoadedSlices {}
+export interface LazyLoadedSlices {
+  // Define lazy loaded slices here as they are added
+}
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
