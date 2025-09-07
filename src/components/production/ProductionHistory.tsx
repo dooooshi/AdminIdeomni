@@ -28,8 +28,7 @@ import {
   Search as SearchIcon,
   Refresh as RefreshIcon,
   CheckCircle as SuccessIcon,
-  Error as ErrorIcon,
-  Info as InfoIcon
+  Error as ErrorIcon
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import { ProductionStatus, ProductionHistoryFilter } from '@/types/rawMaterialProduction';
@@ -54,7 +53,6 @@ const ProductionHistory: React.FC<ProductionHistoryProps> = ({
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<ProductionStatus | ''>('');
-  const [selectedProduction, setSelectedProduction] = useState<any>(null);
 
   useEffect(() => {
     loadHistory();
@@ -175,14 +173,14 @@ const ProductionHistory: React.FC<ProductionHistoryProps> = ({
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('production.productionNumber')}</TableCell>
-                  <TableCell>{t('production.material')}</TableCell>
-                  <TableCell align="right">{t('production.quantity')}</TableCell>
-                  <TableCell align="right">{t('production.totalCost')}</TableCell>
-                  <TableCell align="right">{t('production.spaceUsed')}</TableCell>
+                  <TableCell align="center">{t('production.productionNumber')}</TableCell>
+                  <TableCell align="center">{t('production.material')}</TableCell>
+                  <TableCell align="center">{t('production.quantity')}</TableCell>
+                  <TableCell align="center">{t('facilityManagement.FACILITY')}</TableCell>
+                  <TableCell align="center">{t('production.totalCost')}</TableCell>
+                  <TableCell align="center">{t('production.spaceUsed')}</TableCell>
                   <TableCell align="center">{t('production.status.label')}</TableCell>
-                  <TableCell>{t('production.producedAt')}</TableCell>
-                  <TableCell align="center">{t('common.actions')}</TableCell>
+                  <TableCell align="center">{t('production.producedAt')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -197,47 +195,49 @@ const ProductionHistory: React.FC<ProductionHistoryProps> = ({
                 ) : (
                   productions.map((production) => (
                     <TableRow key={production.id} hover>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="caption">
                           {production.productionNumber}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Box>
                           <Typography variant="body2">
                             {production.material.name}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            #{production.material.id}
+                            #{production.material.number}
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {production.material.quantity}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
+                        <Box>
+                          <Typography variant="body2">
+                            {production.facility?.name || '-'}
+                          </Typography>
+                          {production.facility && (
+                            <Typography variant="caption" color="text.secondary">
+                              {t('facilityManagement.LEVEL')} {production.facility.level}
+                            </Typography>
+                          )}
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
                         {production.totalCost}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {production.spaceUsed}
                       </TableCell>
                       <TableCell align="center">
                         {getStatusChip(production.status)}
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="caption">
                           {formatDate(production.producedAt)}
                         </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Tooltip title={t('common.details')}>
-                          <IconButton
-                            size="small"
-                            onClick={() => setSelectedProduction(production)}
-                          >
-                            <InfoIcon />
-                          </IconButton>
-                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))
