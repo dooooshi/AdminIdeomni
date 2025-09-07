@@ -294,9 +294,8 @@ const StudentFacilitiesPage: React.FC = () => {
                     )) : null}
                   </TextField>
                 </Grid>
-                <Grid size={{ xs: 12, md: 1 }}>
+                <Grid size={12}>
                   <Button
-                    fullWidth
                     variant="outlined"
                     size="small"
                     onClick={() => {

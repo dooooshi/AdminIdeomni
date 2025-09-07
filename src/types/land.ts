@@ -66,6 +66,16 @@ export interface AvailableTile {
   canPurchase: boolean;
 }
 
+export interface OwnedTileForBuilding {
+  tileId: number;
+  axialQ: number;
+  axialR: number;
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  teamOwnedArea: number;
+  usedArea: number;
+  availableArea: number;
+}
+
 export interface TileDetailsWithOwnership {
   tile: TileInfo;
   currentState: TileCurrentState;

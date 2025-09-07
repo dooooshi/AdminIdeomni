@@ -303,7 +303,7 @@ export default function TransportationPage() {
             </Typography>
             <Grid container spacing={2}>
               {facilities.map((facility) => (
-                <Grid size={{ xs: 12, md: 6 }} key={facility.id}>
+                <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={facility.id}>
                   <Card 
                     sx={{ 
                       cursor: 'pointer',
@@ -351,7 +351,7 @@ export default function TransportationPage() {
               {facilities
                 .filter(f => f.id !== sourceFacility?.id)
                 .map((facility) => (
-                  <Grid size={{ xs: 12, md: 6 }} key={facility.id}>
+                  <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={facility.id}>
                     <Card 
                       sx={{ 
                         cursor: 'pointer',

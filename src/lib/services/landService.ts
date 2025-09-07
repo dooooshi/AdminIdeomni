@@ -9,6 +9,7 @@ import {
   PurchaseCostCalculation,
   TeamLandSummary,
   AvailableTile,
+  OwnedTileForBuilding,
   TileDetailsWithOwnership,
   ActivityLandOverview,
   ManagerTileOwnership,
@@ -132,6 +133,34 @@ export class LandService {
       };
     } catch (error: any) {
       console.error('LandService.getAvailableTiles error:', error);
+      throw this.handleLandError(error);
+    }
+  }
+
+  /**
+   * Get team owned tiles for building facilities
+   * GET /user/land-purchase/owned-tiles-for-building
+   */
+  static async getOwnedTilesForBuilding(): Promise<{ data: OwnedTileForBuilding[]; count: number }> {
+    try {
+      const response = await apiClient.get<ApiResponse<{ success: boolean; data: OwnedTileForBuilding[]; count: number }>>(
+        `${this.STUDENT_BASE_PATH}/owned-tiles-for-building`
+      );
+      
+      // Handle the actual API response structure: response.data.data contains {success, data, count}
+      if (response.data && response.data.data) {
+        const innerData = response.data.data;
+        if (innerData.success && Array.isArray(innerData.data)) {
+          return {
+            data: innerData.data,
+            count: innerData.count || innerData.data.length
+          };
+        }
+      }
+      
+      return { data: [], count: 0 };
+    } catch (error: any) {
+      console.error('LandService.getOwnedTilesForBuilding error:', error);
       throw this.handleLandError(error);
     }
   }

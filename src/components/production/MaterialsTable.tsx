@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
@@ -70,10 +70,30 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
   const [selectedMaterial, setSelectedMaterial] = useState<RawMaterial | null>(null);
   const [selectedFacilityId, setSelectedFacilityId] = useState<string>('');
   const [selectedOrigin, setSelectedOrigin] = useState<string>('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Debounce search term
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+    
+    searchTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+      setPage(0); // Reset to first page when searching
+    }, 500);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchTerm]);
 
   useEffect(() => {
     loadMaterials();
-  }, [facilityType, selectedOrigin, page, rowsPerPage]);
+  }, [facilityType, selectedOrigin, page, rowsPerPage, debouncedSearchTerm]);
 
   const loadMaterials = async () => {
     setLoading(true);
@@ -82,7 +102,7 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
         origin: selectedOrigin || facilityType || undefined,
         page: page + 1,
         limit: rowsPerPage,
-        search: searchTerm || undefined
+        search: debouncedSearchTerm || undefined
       });
 
       if (response.data) {

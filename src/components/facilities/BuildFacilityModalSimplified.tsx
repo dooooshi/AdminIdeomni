@@ -37,7 +37,7 @@ import type {
   BuildValidationResponse,
   TileFacilityInstance,
 } from '@/types/facilities';
-import type { AvailableTile } from '@/types/land';
+import type { OwnedTileForBuilding } from '@/types/land';
 
 interface BuildFacilityModalSimplifiedProps {
   open: boolean;
@@ -67,8 +67,8 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
   const { t } = useTranslation();
 
   // State management
-  const [availableTiles, setAvailableTiles] = useState<AvailableTile[]>([]);
-  const [selectedTile, setSelectedTile] = useState<AvailableTile | null>(null);
+  const [availableTiles, setAvailableTiles] = useState<OwnedTileForBuilding[]>([]);
+  const [selectedTile, setSelectedTile] = useState<OwnedTileForBuilding | null>(null);
   const [selectedFacilityType, setSelectedFacilityType] = useState<FacilityType | undefined>();
   const [validation, setValidation] = useState<BuildValidationResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -81,15 +81,14 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
     try {
       setTilesLoading(true);
       setError(null);
-      const response = await LandService.getAvailableTiles();
+      const response = await LandService.getOwnedTilesForBuilding();
       
-      // Filter tiles to only show ones where team has ownership
-      const ownedTiles = response.data.filter(tile => tile.teamOwnedArea > 0);
-      setAvailableTiles(ownedTiles);
+      // All tiles returned already have team ownership
+      setAvailableTiles(response.data);
       
       // Auto-select tile if one was passed in props
       if (selectedTileId) {
-        const preSelectedTile = ownedTiles.find(tile => tile.tileId === selectedTileId);
+        const preSelectedTile = response.data.find(tile => tile.tileId === selectedTileId);
         if (preSelectedTile) {
           setSelectedTile(preSelectedTile);
         }
@@ -170,7 +169,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
   };
 
   const canBuild = validation?.canBuild && selectedTile && selectedFacilityType;
-  const showTileSelection = !selectedTileId && availableTiles.length > 1;
+  const showTileSelection = !selectedTileId && availableTiles.length > 0;
 
   return (
     <Dialog 
@@ -213,6 +212,13 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
               </Box>
             ) : (
               <Grid container spacing={1}>
+                {availableTiles.length === 0 && (
+                  <Grid item xs={12}>
+                    <Typography variant="body2" color="text.secondary" align="center">
+                      No owned tiles available for building
+                    </Typography>
+                  </Grid>
+                )}
                 {availableTiles.map((tile) => (
                   <Grid item xs={6} sm={4} md={3} key={tile.tileId}>
                     <Card

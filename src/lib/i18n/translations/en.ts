@@ -97,7 +97,7 @@ export const enTranslations = {
   'transportation.STEPS.REVIEW_TRANSFER': 'Review & Transfer',
   'transportation.TYPE': 'Type',
   'transportation.LOCATION': 'Location',
-  'transportation.ITEMS_COUNT': '{{count}} items',
+  'transportation.ITEMS_COUNT': '{{count}}',
   'transportation.SPACE_INFO': 'Space: {{available}}/{{total}}',
   'transportation.SELECT_ITEMS_FROM': 'Select items from {{facility}} inventory',
   'transportation.SELECT_ITEM': 'Select Item',

@@ -46,7 +46,7 @@ import type {
   BuildValidationResponse,
   TileFacilityInstance,
 } from '@/types/facilities';
-import type { AvailableTile } from '@/types/land';
+import type { OwnedTileForBuilding } from '@/types/land';
 
 interface BuildFacilityModalProps {
   open: boolean;
@@ -222,8 +222,8 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
   // State management
   const [activeStep, setActiveStep] = useState(0);
-  const [availableTiles, setAvailableTiles] = useState<AvailableTile[]>([]);
-  const [selectedTile, setSelectedTile] = useState<AvailableTile | null>(null);
+  const [availableTiles, setAvailableTiles] = useState<OwnedTileForBuilding[]>([]);
+  const [selectedTile, setSelectedTile] = useState<OwnedTileForBuilding | null>(null);
   const [selectedFacilityType, setSelectedFacilityType] = useState<FacilityType | undefined>();
   const [buildRequest, setBuildRequest] = useState<BuildFacilityRequest>({
     tileId: selectedTileId || 0,
@@ -246,15 +246,14 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
     try {
       setTilesLoading(true);
       setError(null);
-      const response = await LandService.getAvailableTiles();
+      const response = await LandService.getOwnedTilesForBuilding();
       
-      // Filter tiles to only show ones where team has ownership (teamOwnedArea > 0)
-      const ownedTiles = response.data.filter(tile => tile.teamOwnedArea > 0);
-      setAvailableTiles(ownedTiles);
+      // All tiles returned already have team ownership
+      setAvailableTiles(response.data);
       
       // Auto-select tile if one was passed in props and it has ownership
       if (selectedTileId) {
-        const preSelectedTile = ownedTiles.find(tile => tile.tileId === selectedTileId);
+        const preSelectedTile = response.data.find(tile => tile.tileId === selectedTileId);
         if (preSelectedTile) {
           setSelectedTile(preSelectedTile);
           setActiveStep(1); // Skip tile selection step
