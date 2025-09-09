@@ -87,10 +87,23 @@ export class TransportationService {
       limit?: number;
     }
   ): Promise<{ items: TransportationOrder[]; total: number }> {
-    const response = await apiClient.get<TransportationOrderListResponse>(
+    const response = await apiClient.get<any>(
       `${this.BASE_PATH}/history`,
       { params: filters }
     );
+    
+    // Handle the actual API response structure
+    const responseData = response.data;
+    
+    // Check if the response has the expected structure
+    if (responseData?.data?.transfers && responseData?.data?.pagination) {
+      return {
+        items: responseData.data.transfers || [],
+        total: responseData.data.pagination.total || 0
+      };
+    }
+    
+    // Fallback to legacy structure
     const data = this.extractResponseData<{ items: TransportationOrder[]; total: number }>(response);
     return {
       items: data.items || [],

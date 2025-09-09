@@ -78,7 +78,7 @@ export class RawMaterialProductionService {
       const waterCost = waterNeeded * waterUnitPrice;
       const powerCost = powerNeeded * powerUnitPrice;
       const goldCost = (material.requirements?.gold || material.goldCost || 0) * request.quantity;
-      const totalCost = material.totalCost * request.quantity + waterCost + powerCost;
+      const totalCost = goldCost + waterCost + powerCost;
       
       // Just return a simple estimate without validation
       // Backend will handle all validation

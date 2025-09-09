@@ -135,11 +135,16 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
     
     setLoading(true);
     try {
+      // Default to double the unit price if no price is specified
+      const finalPrice = proposedPrice 
+        ? parseFloat(proposedPrice) 
+        : selectedProvider.unitPrice * 2;
+      
       await infrastructureService.requestConnection(
         selectedFacility,
         selectedProvider.providerId,
         selectedProvider.type,
-        proposedPrice ? parseFloat(proposedPrice) : undefined
+        finalPrice
       );
       setRequestDialogOpen(false);
       setSelectedProvider(null);
@@ -472,7 +477,12 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
             value={proposedPrice}
             onChange={(e) => handlePriceChange(e.target.value)}
             error={!!priceError}
-            helperText={priceError || t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT')}
+            helperText={
+              priceError || 
+              (searchType === 'connections' && selectedProvider && 'unitPrice' in selectedProvider
+                ? `Leave blank for default (2x unit price = $${selectedProvider.unitPrice * 2})`
+                : t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT'))
+            }
           />
         </DialogContent>
         <DialogActions>

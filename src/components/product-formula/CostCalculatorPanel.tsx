@@ -98,14 +98,12 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
     label, 
     setupCost, 
     variablePercent, 
-    finalCost, 
     color 
   }: {
     icon: React.ReactNode;
     label: string;
     setupCost: number;
     variablePercent: number;
-    finalCost: number;
     color: string;
   }) => (
     <Paper sx={{ p: 2 }} variant="outlined">
@@ -115,24 +113,20 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
           <Typography variant="subtitle2">{label}</Typography>
         </Stack>
         <Grid container spacing={1}>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Typography variant="caption" color="text.secondary">
-              {t('productFormula.setup')}
+              {t('productFormula.setupCost')}
             </Typography>
-            <Typography variant="body2">{setupCost}</Typography>
+            <Typography variant="h6" color={color}>
+              {setupCost}
+            </Typography>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Typography variant="caption" color="text.secondary">
-              {t('productFormula.variable')}
+              {t('productFormula.percent')}
             </Typography>
-            <Typography variant="body2">{variablePercent}%</Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="caption" color="text.secondary">
-              {t('productFormula.final')}
-            </Typography>
-            <Typography variant="body2" fontWeight="bold" color={color}>
-              {finalCost}
+            <Typography variant="h6" color={color}>
+              {variablePercent}%
             </Typography>
           </Grid>
         </Grid>
@@ -142,134 +136,50 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
 
   return (
     <Box>
-      <Paper sx={{ p: 2, mb: 2 }}>
-        <Stack direction="row" alignItems="center" spacing={1} mb={2}>
-          <CalculateIcon color="primary" />
-          <Typography variant="h6">{t('productFormula.costCalculation')}</Typography>
-        </Stack>
+      <Stack direction="row" alignItems="center" spacing={1} mb={2}>
+        <CalculateIcon color="primary" />
+        <Typography variant="h6">{t('productFormula.costBreakdown')}</Typography>
+      </Stack>
 
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Stack spacing={2}>
-              <Paper sx={{ p: 2, bgcolor: 'grey.50' }} variant="outlined">
-                <Typography variant="subtitle2" gutterBottom>
-                  {t('productFormula.materialCost')}
-                </Typography>
-                <Typography variant="h5" color="primary">
-                  {costs.totalMaterialCost.toFixed(2)}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {t('productFormula.baseCostA')}
-                </Typography>
-              </Paper>
-
-              <Paper sx={{ p: 2, bgcolor: 'grey.50' }} variant="outlined">
-                <Typography variant="subtitle2" gutterBottom>
-                  {t('productFormula.totalPercent')}
-                </Typography>
-                <Stack spacing={1}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={Math.min(totalPercent, 100)}
-                    sx={{ height: 8, borderRadius: 1 }}
-                  />
-                  <Typography variant="h6" color="secondary">
-                    {totalPercent.toFixed(1)}%
-                  </Typography>
-                </Stack>
-              </Paper>
-            </Stack>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Stack spacing={2}>
-              <Paper sx={{ p: 2, bgcolor: 'green.50' }} variant="outlined">
-                <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                  <NatureIcon color="success" />
-                  <Typography variant="subtitle2">
-                    {t('productFormula.carbonEmission')}
-                  </Typography>
-                </Stack>
-                <Typography variant="h5" color="success.main">
-                  {costs.carbonEmission.toFixed(2)}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {t('productFormula.environmentalImpact')}
-                </Typography>
-              </Paper>
-            </Stack>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
+          <CostItem
+            icon={<WaterIcon color="primary" />}
+            label={t('productFormula.water')}
+            setupCost={costs.setupCosts.water}
+            variablePercent={costs.variablePercents.water}
+            color="primary.main"
+          />
         </Grid>
-
-        <Divider sx={{ my: 2 }} />
-
-        <Typography variant="subtitle2" gutterBottom>
-          {t('productFormula.resourceCosts')}
-        </Typography>
-        
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={4}>
-            <CostItem
-              icon={<WaterIcon color="primary" />}
-              label={t('productFormula.water')}
-              setupCost={costs.setupCosts.water}
-              variablePercent={costs.variablePercents.water}
-              finalCost={costs.waterCost}
-              color="primary.main"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <CostItem
-              icon={<PowerIcon color="warning" />}
-              label={t('productFormula.power')}
-              setupCost={costs.setupCosts.power}
-              variablePercent={costs.variablePercents.power}
-              finalCost={costs.powerCost}
-              color="warning.main"
-            />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <CostItem
-              icon={<MoneyIcon color="success" />}
-              label={t('productFormula.gold')}
-              setupCost={costs.setupCosts.gold}
-              variablePercent={costs.variablePercents.gold}
-              finalCost={costs.goldCost.toFixed(2)}
-              color="success.main"
-            />
-          </Grid>
+        <Grid item xs={12} md={4}>
+          <CostItem
+            icon={<PowerIcon color="warning" />}
+            label={t('productFormula.power')}
+            setupCost={costs.setupCosts.power}
+            variablePercent={costs.variablePercents.power}
+            color="warning.main"
+          />
         </Grid>
+        <Grid item xs={12} md={4}>
+          <CostItem
+            icon={<MoneyIcon color="success" />}
+            label={t('productFormula.gold')}
+            setupCost={costs.setupCosts.gold}
+            variablePercent={costs.variablePercents.gold}
+            color="success.main"
+          />
+        </Grid>
+      </Grid>
 
-        {(materials.length === 0 || craftCategories.length === 0) && (
-          <Box sx={{ mt: 2, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
-            <Typography variant="body2" color="warning.dark">
-              {materials.length === 0 && t('productFormula.noMaterialsWarning')}
-              {materials.length === 0 && craftCategories.length === 0 && ' '}
-              {craftCategories.length === 0 && t('productFormula.noCategoriesWarning')}
-            </Typography>
-          </Box>
-        )}
-      </Paper>
-
-      <Paper sx={{ p: 2, bgcolor: 'info.light' }}>
-        <Typography variant="subtitle2" gutterBottom>
-          {t('productFormula.formulaExplanation')}
-        </Typography>
-        <Stack spacing={1}>
-          <Typography variant="caption">
-            • {t('productFormula.waterFormula')}: {costs.setupCosts.water} + ({costs.totalMaterialCost.toFixed(2)} × {costs.variablePercents.water}%) = {costs.waterCost}
+      {(materials.length === 0 || craftCategories.length === 0) && (
+        <Box sx={{ mt: 2, p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 152, 0, 0.12)' : 'warning.light', borderRadius: 1 }}>
+          <Typography variant="body2" sx={{ color: (theme) => theme.palette.mode === 'dark' ? 'warning.light' : 'warning.dark' }}>
+            {materials.length === 0 && t('productFormula.noMaterialsWarning')}
+            {materials.length === 0 && craftCategories.length === 0 && ' '}
+            {craftCategories.length === 0 && t('productFormula.noCategoriesWarning')}
           </Typography>
-          <Typography variant="caption">
-            • {t('productFormula.powerFormula')}: {costs.setupCosts.power} + ({costs.totalMaterialCost.toFixed(2)} × {costs.variablePercents.power}%) = {costs.powerCost}
-          </Typography>
-          <Typography variant="caption">
-            • {t('productFormula.goldFormula')}: {costs.setupCosts.gold} + ({costs.totalMaterialCost.toFixed(2)} × {costs.variablePercents.gold}%) = {costs.goldCost.toFixed(2)}
-          </Typography>
-          <Typography variant="caption">
-            • {t('productFormula.carbonFormula')}: Σ(materials) × (1 + {totalPercent.toFixed(1)}%) = {costs.carbonEmission.toFixed(2)}
-          </Typography>
-        </Stack>
-      </Paper>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -15,7 +15,11 @@ import {
   StepLabel,
   Typography,
   Alert,
-  CircularProgress
+  CircularProgress,
+  Paper,
+  Stack,
+  Chip,
+  Divider
 } from '@mui/material';
 import {
   Save as SaveIcon,
@@ -206,26 +210,89 @@ const CreateFormulaModal: React.FC<CreateFormulaModalProps> = ({
               </Typography>
             </Box>
 
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('productFormula.description')}:
+            {description && (
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  {t('productFormula.description')}:
+                </Typography>
+                <Typography variant="body1">
+                  {description}
+                </Typography>
+              </Box>
+            )}
+
+            {/* Materials List */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" fontWeight="600" gutterBottom>
+                {t('productFormula.materials')} ({materials.length})
               </Typography>
-              <Typography variant="body1">
-                {description || t('productFormula.noDescription')}
-              </Typography>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                {materials.length > 0 ? (
+                  <Stack spacing={1}>
+                    {materials.map((material, index) => (
+                      <Box 
+                        key={index} 
+                        sx={{ 
+                          display: 'flex', 
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          p: 1,
+                          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
+                          borderRadius: 1
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {material.rawMaterial?.name || `Material ID: ${material.rawMaterialId}`}
+                        </Typography>
+                        <Chip 
+                          label={`Qty: ${material.quantity}`} 
+                          size="small" 
+                          color="primary"
+                          variant="outlined"
+                        />
+                      </Box>
+                    ))}
+                  </Stack>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    {t('productFormula.noMaterials')}
+                  </Typography>
+                )}
+              </Paper>
             </Box>
 
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('productFormula.materials')}: {materials.length}
+            {/* Craft Categories List */}
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="subtitle1" fontWeight="600" gutterBottom>
+                {t('productFormula.craftCategories')} ({craftCategories.length})
               </Typography>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                {craftCategories.length > 0 ? (
+                  <Stack spacing={1}>
+                    {craftCategories.map((category, index) => (
+                      <Box 
+                        key={index}
+                        sx={{ 
+                          p: 1,
+                          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50',
+                          borderRadius: 1
+                        }}
+                      >
+                        <Typography variant="body2">
+                          {category.craftCategory?.name || `Category ID: ${category.craftCategoryId}`}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Stack>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    {t('productFormula.noCraftCategories')}
+                  </Typography>
+                )}
+              </Paper>
             </Box>
 
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('productFormula.craftCategories')}: {craftCategories.length}
-              </Typography>
-            </Box>
+            <Divider sx={{ my: 2 }} />
 
             <CostCalculatorPanel
               materials={materials}

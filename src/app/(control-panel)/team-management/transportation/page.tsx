@@ -99,6 +99,10 @@ export default function TransportationPage() {
   }, []);
 
   useEffect(() => {
+    fetchTransferHistory();
+  }, [historyPage, historyRowsPerPage]);
+
+  useEffect(() => {
     if (sourceFacility) {
       fetchInventoryItems();
       setSelectedItem(null); // Reset selected item when source changes
@@ -209,7 +213,7 @@ export default function TransportationPage() {
   const fetchTransferHistory = async () => {
     try {
       const response = await TransportationService.getTransferHistory({
-        page: historyPage,
+        page: historyPage + 1, // API expects 1-based page index
         limit: historyRowsPerPage
       });
       setTransferHistory(response.items);
@@ -659,23 +663,23 @@ export default function TransportationPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transferHistory.map((order) => (
-                <TableRow key={order.id}>
+              {transferHistory.map((order: any) => (
+                <TableRow key={order.orderId || order.id}>
                   <TableCell>
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {new Date(order.timestamp || order.createdAt).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>{order.sourceFacilityId}</TableCell>
-                  <TableCell>{order.destFacilityId}</TableCell>
-                  <TableCell>{order.itemType}</TableCell>
-                  <TableCell align="right">{order.quantity}</TableCell>
+                  <TableCell>{order.sourceFacility || order.sourceFacilityId || '-'}</TableCell>
+                  <TableCell>{order.destFacility || order.destFacilityId || '-'}</TableCell>
+                  <TableCell>{order.itemName || order.itemType || '-'}</TableCell>
+                  <TableCell align="right">{order.quantity || 0}</TableCell>
                   <TableCell>
-                    <Chip size="small" label={order.tier} />
+                    <Chip size="small" label={order.tier || 'N/A'} />
                   </TableCell>
-                  <TableCell align="right">{t('transportation.TOTAL_GOLD_COST', { cost: order.totalGoldCost })}</TableCell>
+                  <TableCell align="right">{t('transportation.TOTAL_GOLD_COST', { cost: order.totalCost || order.totalGoldCost || 0 })}</TableCell>
                   <TableCell>
                     <Chip
                       size="small"
-                      label={order.status}
+                      label={order.status || 'UNKNOWN'}
                       color={order.status === 'COMPLETED' ? 'success' : 'default'}
                     />
                   </TableCell>

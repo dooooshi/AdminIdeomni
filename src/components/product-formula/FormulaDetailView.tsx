@@ -130,78 +130,109 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
 
           <Box>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              {t('productFormula.totalCosts')}
+              {t('productFormula.costSummary')}
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={6} sm={3}>
-                <Stack spacing={0.5}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <WaterIcon fontSize="small" color="primary" />
-                    <Typography variant="body2" color="text.secondary">
-                      {t('productFormula.water')}
-                    </Typography>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
+                  <Typography variant="subtitle2" gutterBottom color="text.secondary">
+                    {t('productFormula.setupCosts')}
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <WaterIcon fontSize="small" color="primary" />
+                        <Typography variant="body2">{t('productFormula.water')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalSetupWaterCost}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <PowerIcon fontSize="small" color="warning" />
+                        <Typography variant="body2">{t('productFormula.power')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalSetupPowerCost}
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <MoneyIcon fontSize="small" color="success" />
+                        <Typography variant="body2">{t('productFormula.gold')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalSetupGoldCost}
+                      </Typography>
+                    </Stack>
                   </Stack>
-                  <Typography variant="h6">
-                    {Math.ceil(formula.totalSetupWaterCost + 
-                      (formula.totalMaterialCost * formula.totalWaterPercent / 100))}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    +{formula.totalWaterPercent}%
-                  </Typography>
-                </Stack>
+                </Box>
               </Grid>
               
-              <Grid item xs={6} sm={3}>
-                <Stack spacing={0.5}>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
+                  <Typography variant="subtitle2" gutterBottom color="text.secondary">
+                    {t('productFormula.variablePercents')}
+                  </Typography>
+                  <Stack spacing={1}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <WaterIcon fontSize="small" color="primary" />
+                        <Typography variant="body2">{t('productFormula.water')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalWaterPercent}%
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <PowerIcon fontSize="small" color="warning" />
+                        <Typography variant="body2">{t('productFormula.power')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalPowerPercent}%
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <MoneyIcon fontSize="small" color="success" />
+                        <Typography variant="body2">{t('productFormula.gold')}</Typography>
+                      </Stack>
+                      <Typography variant="body2" fontWeight="medium">
+                        {formula.totalGoldPercent}%
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Grid>
+            </Grid>
+            
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid item xs={12} sm={6}>
+                <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
-                    <PowerIcon fontSize="small" color="warning" />
                     <Typography variant="body2" color="text.secondary">
-                      {t('productFormula.power')}
+                      {t('productFormula.materialCost')}:
+                    </Typography>
+                    <Typography variant="body2" fontWeight="medium" color="primary">
+                      {formula.totalMaterialCost?.toFixed(2)}
                     </Typography>
                   </Stack>
-                  <Typography variant="h6">
-                    {Math.ceil(formula.totalSetupPowerCost + 
-                      (formula.totalMaterialCost * formula.totalPowerPercent / 100))}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    +{formula.totalPowerPercent}%
-                  </Typography>
-                </Stack>
+                </Box>
               </Grid>
-              
-              <Grid item xs={6} sm={3}>
-                <Stack spacing={0.5}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <MoneyIcon fontSize="small" color="success" />
-                    <Typography variant="body2" color="text.secondary">
-                      {t('productFormula.gold')}
-                    </Typography>
-                  </Stack>
-                  <Typography variant="h6">
-                    {(formula.totalSetupGoldCost + 
-                      (formula.totalMaterialCost * formula.totalGoldPercent / 100)).toFixed(2)}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    +{formula.totalGoldPercent}%
-                  </Typography>
-                </Stack>
-              </Grid>
-              
-              <Grid item xs={6} sm={3}>
-                <Stack spacing={0.5}>
+              <Grid item xs={12} sm={6}>
+                <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(76, 175, 80, 0.08)' : 'green.50', borderRadius: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <NatureIcon fontSize="small" sx={{ color: 'green' }} />
                     <Typography variant="body2" color="text.secondary">
-                      {t('productFormula.carbonEmission')}
+                      {t('productFormula.carbonEmission')}:
+                    </Typography>
+                    <Typography variant="body2" fontWeight="medium" color="success.main">
+                      {formula.productFormulaCarbonEmission?.toFixed(3)}
                     </Typography>
                   </Stack>
-                  <Typography variant="h6">
-                    {formula.productFormulaCarbonEmission?.toFixed(2)}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {t('productFormula.totalPercent')}: {formula.totalPercent?.toFixed(1)}%
-                  </Typography>
-                </Stack>
+                </Box>
               </Grid>
             </Grid>
           </Box>

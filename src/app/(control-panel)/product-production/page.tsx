@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
@@ -115,8 +115,10 @@ export default function ProductProductionPage() {
   const [formulas, setFormulas] = useState<ProductFormula[]>([]);
   const [selectedFormula, setSelectedFormula] = useState<ProductFormula | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [debouncedQuantity, setDebouncedQuantity] = useState<number>(1);
   const [costData, setCostData] = useState<CostCalculationResponse['data'] | null>(null);
   const [productionHistory, setProductionHistory] = useState<ProductionHistoryItem[]>([]);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   
   // UI State
   const [activeStep, setActiveStep] = useState(0);
@@ -135,12 +137,32 @@ export default function ProductProductionPage() {
     loadProductionHistory();
   }, []);
 
-  // Calculate costs when inputs change
+  // Debounce quantity changes
   useEffect(() => {
-    if (selectedFactory && selectedFormula && quantity > 0) {
+    // Clear any existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    // Set a new timer to update the debounced quantity after 800ms
+    debounceTimerRef.current = setTimeout(() => {
+      setDebouncedQuantity(quantity);
+    }, 800);
+
+    // Cleanup function to clear timer on unmount or when quantity changes
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [quantity]);
+
+  // Calculate costs when inputs change (using debounced quantity)
+  useEffect(() => {
+    if (selectedFactory && selectedFormula && debouncedQuantity > 0) {
       calculateCosts();
     }
-  }, [selectedFactory, selectedFormula, quantity]);
+  }, [selectedFactory, selectedFormula, debouncedQuantity]);
 
   // Data Loading Functions
   const loadFactories = async () => {
@@ -193,14 +215,14 @@ export default function ProductProductionPage() {
   };
 
   const calculateCosts = async () => {
-    if (!selectedFactory || !selectedFormula || quantity <= 0) return;
+    if (!selectedFactory || !selectedFormula || debouncedQuantity <= 0) return;
 
     setCalculating(true);
     try {
       const request: CalculateCostRequest = {
         factoryId: selectedFactory.id,
         formulaId: selectedFormula.id,
-        quantity
+        quantity: debouncedQuantity
       };
       const response = await ProductProductionService.calculateCost(request);
       if (response.data) {
@@ -505,7 +527,15 @@ export default function ProductProductionPage() {
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                 <IconButton
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  onClick={() => {
+                    const newQuantity = Math.max(1, quantity - 1);
+                    setQuantity(newQuantity);
+                    // Immediately update debounced quantity for button clicks
+                    if (debounceTimerRef.current) {
+                      clearTimeout(debounceTimerRef.current);
+                    }
+                    setDebouncedQuantity(newQuantity);
+                  }}
                   disabled={quantity <= 1}
                 >
                   <RemoveIcon />
@@ -517,6 +547,13 @@ export default function ProductProductionPage() {
                     const val = parseInt(e.target.value) || 1;
                     setQuantity(Math.min(Math.max(1, val), 9999));
                   }}
+                  onBlur={() => {
+                    // Immediately update debounced quantity on blur
+                    if (debounceTimerRef.current) {
+                      clearTimeout(debounceTimerRef.current);
+                    }
+                    setDebouncedQuantity(quantity);
+                  }}
                   inputProps={{
                     min: 1,
                     max: 9999,
@@ -525,7 +562,15 @@ export default function ProductProductionPage() {
                   sx={{ mx: 2, width: 120 }}
                 />
                 <IconButton
-                  onClick={() => setQuantity(Math.min(9999, quantity + 1))}
+                  onClick={() => {
+                    const newQuantity = Math.min(9999, quantity + 1);
+                    setQuantity(newQuantity);
+                    // Immediately update debounced quantity for button clicks
+                    if (debounceTimerRef.current) {
+                      clearTimeout(debounceTimerRef.current);
+                    }
+                    setDebouncedQuantity(newQuantity);
+                  }}
                   disabled={quantity >= 9999}
                 >
                   <AddIcon />

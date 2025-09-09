@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
@@ -17,10 +17,7 @@ import {
   Tooltip,
   CircularProgress,
   TablePagination,
-  TextField,
-  InputAdornment,
   Stack,
-  Button,
   FormControl,
   InputLabel,
   Select,
@@ -31,7 +28,6 @@ import {
   Power as PowerIcon,
   AttachMoney as MoneyIcon,
   Nature as NatureIcon,
-  Search as SearchIcon,
   Refresh as RefreshIcon,
   Factory as FactoryIcon
 } from '@mui/icons-material';
@@ -55,7 +51,6 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
   const { t } = useTranslation();
   const [materials, setMaterials] = useState<RawMaterial[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pagination, setPagination] = useState<PaginationInfo>({
@@ -70,30 +65,10 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
   const [selectedMaterial, setSelectedMaterial] = useState<RawMaterial | null>(null);
   const [selectedFacilityId, setSelectedFacilityId] = useState<string>('');
   const [selectedOrigin, setSelectedOrigin] = useState<string>('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
-
-  // Debounce search term
-  useEffect(() => {
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-    
-    searchTimeoutRef.current = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-      setPage(0); // Reset to first page when searching
-    }, 500);
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchTerm]);
 
   useEffect(() => {
     loadMaterials();
-  }, [facilityType, selectedOrigin, page, rowsPerPage, debouncedSearchTerm]);
+  }, [facilityType, selectedOrigin, page, rowsPerPage]);
 
   const loadMaterials = async () => {
     setLoading(true);
@@ -101,8 +76,7 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
       const response = await rawMaterialProductionService.getRawMaterials({
         origin: selectedOrigin || facilityType || undefined,
         page: page + 1,
-        limit: rowsPerPage,
-        search: debouncedSearchTerm || undefined
+        limit: rowsPerPage
       });
 
       if (response.data) {
@@ -122,11 +96,6 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSearch = () => {
-    setPage(0);
-    loadMaterials();
   };
 
   const handleOriginChange = (event: any) => {
@@ -189,20 +158,6 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
                 <MenuItem value="FISHERY">{t('production.origins.fishery')}</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-              size="small"
-              placeholder={t('production.materials.search')}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
             <Tooltip title={t('common.refresh')}>
               <IconButton onClick={loadMaterials} disabled={loading}>
                 <RefreshIcon />

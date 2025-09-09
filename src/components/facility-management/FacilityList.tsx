@@ -414,7 +414,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'name'}
                     direction={filters.sortBy === 'name' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityManagement.name')}
+                    onClick={() => handleSort('name')}
                   >
                     {t('facilityManagement.NAME')}
                   </TableSortLabel>
@@ -423,7 +423,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'facilityType'}
                     direction={filters.sortBy === 'facilityType' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityManagement.facilityType')}
+                    onClick={() => handleSort('facilityType')}
                   >
                     {t('facilityManagement.TYPE')}
                   </TableSortLabel>
@@ -432,7 +432,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'category'}
                     direction={filters.sortBy === 'category' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityManagement.category')}
+                    onClick={() => handleSort('category')}
                   >
                     {t('facilityManagement.CATEGORY')}
                   </TableSortLabel>
@@ -444,7 +444,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
                   <TableSortLabel
                     active={filters.sortBy === 'createdAt'}
                     direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
-                    onClick={() => handleSort('facilityManagement.createdAt')}
+                    onClick={() => handleSort('createdAt')}
                   >
                     {t('facilityManagement.CREATED_AT')}
                   </TableSortLabel>
