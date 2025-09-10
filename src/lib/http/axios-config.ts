@@ -27,7 +27,12 @@ const API_BASE_URL = (() => {
   if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
     return '/api/proxy';
   }
-  // In production or server-side, use the direct API URL
+  // In production, use NEXT_PUBLIC_API_URL which should be '/api' for nginx proxy
+  // or a full URL if connecting directly
+  if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+    return process.env.NEXT_PUBLIC_API_URL || '/api';
+  }
+  // Server-side rendering or fallback
   return process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:2999/api';
 })();
 const ACCESS_TOKEN_KEY = 'ideomni_access_token';
@@ -137,6 +142,9 @@ class TokenManagerImpl implements TokenManager {
       const baseUrl = (() => {
         if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
           return '/api/proxy';
+        }
+        if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+          return process.env.NEXT_PUBLIC_API_URL || '/api';
         }
         return process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:2999/api';
       })();

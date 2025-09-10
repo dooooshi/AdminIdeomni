@@ -508,7 +508,7 @@ export class AdminTileStateService {
    * Get a specific activity by ID
    */
   static async getActivity(activityId: string): Promise<Activity> {
-    const response = await apiClient.get<any>(`/api/activities/${activityId}`);
+    const response = await apiClient.get<any>(`/activities/${activityId}`);
     return this.extractResponseData<Activity>(response);
   }
 
