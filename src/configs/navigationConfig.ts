@@ -434,13 +434,32 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					auth: ['user']
 				},
 				{
-					id: 'land-management.student-portfolio',
-					title: 'Team Land Management',
-					type: 'item',
+					id: 'land-management.team-land',
+					title: '土地管理',
+					type: 'collapse',
 					icon: 'heroicons-outline:chart-bar',
-					url: '/land-management/student/portfolio',
-					translate: 'TEAM_LAND_MANAGEMENT',
-					auth: ['user']
+					translate: 'LAND_MANAGEMENT_SUBMENU',
+					auth: ['user'],
+					children: [
+						{
+							id: 'land-management.team-land.status',
+							title: '土地状态',
+							type: 'item',
+							icon: 'heroicons-outline:home-modern',
+							url: '/land-management/student/land-status',
+							translate: 'LAND_STATUS',
+							auth: ['user']
+						},
+						{
+							id: 'land-management.team-land.history',
+							title: '土地交易历史',
+							type: 'item',
+							icon: 'heroicons-outline:clock',
+							url: '/land-management/student/history',
+							translate: 'LAND_TRANSACTION_HISTORY',
+							auth: ['user']
+						}
+					]
 				},
 				{
 					id: 'land-management.student-facilities',

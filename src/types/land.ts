@@ -150,6 +150,41 @@ export interface TeamLandSummary {
   lastPurchaseDate?: string;
 }
 
+// Team Land Status Types (for new API endpoint)
+export interface FacilityInstance {
+  id: string;
+  facilityType: 'MINE' | 'QUARRY' | 'FOREST' | 'FARM' | 'RANCH' | 'FISHERY' | 'FACTORY' | 'MALL' | 'WAREHOUSE' | 'WATER_PLANT' | 'POWER_PLANT' | 'BASE_STATION' | 'FIRE_STATION' | 'SCHOOL' | 'HOSPITAL' | 'PARK' | 'CINEMA';
+  level: number;
+  status: 'ACTIVE' | 'UNDER_CONSTRUCTION' | 'MAINTENANCE' | 'DAMAGED' | 'DECOMMISSIONED';
+  constructionDate: string;
+}
+
+export interface TileLandStatus {
+  tileId: number;
+  coordinates: { q: number; r: number };
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  ownedArea: number;
+  facilities: FacilityInstance[];
+}
+
+export interface TeamLandStatusSummary {
+  teamId: string;
+  teamName: string;
+  totalOwnedArea: number;
+  totalGoldSpent: number;
+  totalCarbonSpent: number;
+  tilesOwnedCount: number;
+  totalFacilities: number;
+}
+
+export interface TeamLandStatusResponse {
+  success: boolean;
+  data: {
+    summary: TeamLandStatusSummary;
+    tiles: TileLandStatus[];
+  };
+}
+
 // Manager Analytics Types
 export interface ActivityLandOverview {
   activityId: string;

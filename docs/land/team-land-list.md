@@ -9,7 +9,7 @@ Simple API for users to view their team's land ownership status and facilities b
 Retrieve comprehensive information about the team's land ownership and facilities.
 
 ```typescript
-GET /api/users/team/land-status
+GET /api/user/land-purchase/team/land-status
 ```
 
 **Response:**

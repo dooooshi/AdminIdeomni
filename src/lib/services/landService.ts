@@ -17,7 +17,8 @@ import {
   LandPurchaseAnalytics,
   LandStatusSummary,
   LandError,
-  LandErrorCodes
+  LandErrorCodes,
+  TeamLandStatusResponse
 } from '@/types/land';
 
 /**
@@ -238,6 +239,31 @@ export class LandService {
       return response.data.data;
     } catch (error: any) {
       console.error('LandService.getTeamLandSummary error:', error);
+      throw this.handleLandError(error);
+    }
+  }
+
+  /**
+   * Get team's land status with facilities
+   * GET /user/land-purchase/team/land-status
+   */
+  static async getTeamLandStatus(): Promise<TeamLandStatusResponse['data']> {
+    try {
+      const response = await apiClient.get<any>(
+        `${this.STUDENT_BASE_PATH}/team/land-status`
+      );
+      
+      // Handle the nested response structure: response.data.data.data
+      // The axios response gives us response.data, which contains { data: { success, data: {...} } }
+      if (response.data && response.data.data && response.data.data.data) {
+        return response.data.data.data;
+      } else if (response.data && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error('Invalid response structure from API');
+    } catch (error: any) {
+      console.error('LandService.getTeamLandStatus error:', error);
       throw this.handleLandError(error);
     }
   }
