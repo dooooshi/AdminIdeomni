@@ -254,6 +254,7 @@ export const enTranslations = {
   INFRASTRUCTURE: 'Infrastructure',
   INFRASTRUCTURE_SUBTITLE: 'Infrastructure management and monitoring',
   INFRASTRUCTURE_DASHBOARD: 'Infrastructure Dashboard',
+  INFRASTRUCTURE_HISTORY: 'Infrastructure History',
   INFRASTRUCTURE_MANAGEMENT_SUBTITLE: 'Manage infrastructure connections',
   
   // Navigation items - Common
@@ -3138,6 +3139,33 @@ export const enTranslations = {
   'infrastructure.ERROR_SEARCHING': 'Error searching for providers',
   'infrastructure.ERROR_REQUESTING_CONNECTION': 'Error requesting connection',
   'infrastructure.ERROR_SUBSCRIBING': 'Error subscribing to service',
+  
+  // Infrastructure History
+  'infrastructure.INFRASTRUCTURE_HISTORY': 'Infrastructure History',
+  'infrastructure.VIEW_CONNECTION_SERVICE_HISTORY': 'View connection and service history',
+  'infrastructure.CONNECTION_HISTORY': 'Connection History',
+  'infrastructure.SERVICE_HISTORY': 'Service History',
+  'infrastructure.FILTERS': 'Filters',
+  'infrastructure.ROLE': 'Role',
+  'infrastructure.ALL': 'All',
+  'infrastructure.DATE_FROM': 'Date From',
+  'infrastructure.DATE_TO': 'Date To',
+  'infrastructure.NO_HISTORY_RECORDS': 'No history records found',
+  'infrastructure.TIMESTAMP': 'Timestamp',
+  'infrastructure.OPERATION': 'Operation',
+  'infrastructure.PERFORMED_BY': 'Performed By',
+  'infrastructure.CONNECTION_REQUESTED': 'Connection Requested',
+  'infrastructure.CONNECTION_ACCEPTED': 'Connection Accepted',
+  'infrastructure.CONNECTION_REJECTED': 'Connection Rejected',
+  'infrastructure.CONNECTION_CANCELLED': 'Connection Cancelled',
+  'infrastructure.CONNECTION_DISCONNECTED': 'Connection Disconnected',
+  'infrastructure.SUBSCRIPTION_REQUESTED': 'Subscription Requested',
+  'infrastructure.SUBSCRIPTION_ACCEPTED': 'Subscription Accepted',
+  'infrastructure.SUBSCRIPTION_REJECTED': 'Subscription Rejected',
+  'infrastructure.SUBSCRIPTION_CANCELLED': 'Subscription Cancelled',
+  'infrastructure.ERROR_LOADING_HISTORY': 'Error loading history',
+  'infrastructure.ERROR_CANCELLING_REQUEST': 'Error cancelling request',
+  'infrastructure.UNKNOWN': 'Unknown',
   
   // Facility Space Configuration translations
   'facilitySpace.FACILITY_SPACE_CONFIGURATION': 'Facility Space Configuration',

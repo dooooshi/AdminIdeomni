@@ -516,10 +516,18 @@ class InfrastructureService {
   }
 
   async disconnectConnection(connectionId: string, reason?: string): Promise<any> {
-    const response = await apiClient.delete(`/infrastructure/connections/${connectionId}`, {
-      data: { reason },
-    });
-    return response.data.data;
+    // For DELETE requests, only include body if reason is provided
+    // If no reason, send DELETE without body to avoid Content-Type issues
+    if (reason && reason.trim()) {
+      const response = await apiClient.delete(`/infrastructure/connections/${connectionId}`, {
+        data: { reason: reason.trim() }
+      });
+      return response.data.data;
+    } else {
+      // Send DELETE without any body or Content-Type header
+      const response = await apiClient.delete(`/infrastructure/connections/${connectionId}`);
+      return response.data.data;
+    }
   }
 
   async getProviderConnections(
@@ -663,6 +671,49 @@ class InfrastructureService {
   async getInfluenceRange(facilityId: string): Promise<InfluenceRange> {
     const response = await apiClient.get(`/infrastructure/operations/influence-range/${facilityId}`);
     return response.data.data;
+  }
+
+  // History Methods
+  async getTeamInfrastructureHistory(params?: {
+    infrastructureType?: string;
+    serviceType?: string;
+    operationType?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    role?: 'PROVIDER' | 'CONSUMER';
+  }): Promise<any[]> {
+    try {
+      const response = await apiClient.get('/infrastructure/history/team', { params });
+      // Handle nested data structure from API response
+      const result = response.data?.data;
+      if (result && typeof result === 'object' && Array.isArray(result.data)) {
+        return result.data;
+      }
+      return Array.isArray(result) ? result : [];
+    } catch (error) {
+      console.error('Error fetching infrastructure history:', error);
+      return [];
+    }
+  }
+
+  async getConnectionLifecycle(connectionId: string): Promise<any[]> {
+    try {
+      const response = await apiClient.get(`/infrastructure/history/connection/${connectionId}`);
+      return response.data.data || [];
+    } catch (error) {
+      console.error('Error fetching connection lifecycle:', error);
+      return [];
+    }
+  }
+
+  async getTerminationDetails(connectionId: string): Promise<any> {
+    try {
+      const response = await apiClient.get(`/infrastructure/history/termination/${connectionId}`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error fetching termination details:', error);
+      return null;
+    }
   }
 }
 

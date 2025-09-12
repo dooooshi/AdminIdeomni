@@ -2863,6 +2863,7 @@ export const zhTranslations = {
   INFRASTRUCTURE: '基础设施',
   INFRASTRUCTURE_SUBTITLE: '基础设施管理和监控',
   INFRASTRUCTURE_DASHBOARD: '基础设施仪表板',
+  INFRASTRUCTURE_HISTORY: '基础设施历史记录',
   INFRASTRUCTURE_MANAGEMENT_SUBTITLE: '管理基础设施连接',
   
   // Navigation items - Common
@@ -3134,6 +3135,33 @@ export const zhTranslations = {
   'infrastructure.ERROR_SEARCHING': '搜索提供商时出错',
   'infrastructure.ERROR_REQUESTING_CONNECTION': '请求连接时出错',
   'infrastructure.ERROR_SUBSCRIBING': '订阅服务时出错',
+  
+  // Infrastructure History
+  'infrastructure.INFRASTRUCTURE_HISTORY': '基础设施历史记录',
+  'infrastructure.VIEW_CONNECTION_SERVICE_HISTORY': '查看连接和服务历史',
+  'infrastructure.CONNECTION_HISTORY': '连接历史',
+  'infrastructure.SERVICE_HISTORY': '服务历史',
+  'infrastructure.FILTERS': '筛选器',
+  'infrastructure.ROLE': '角色',
+  'infrastructure.ALL': '全部',
+  'infrastructure.DATE_FROM': '开始日期',
+  'infrastructure.DATE_TO': '结束日期',
+  'infrastructure.NO_HISTORY_RECORDS': '未找到历史记录',
+  'infrastructure.TIMESTAMP': '时间戳',
+  'infrastructure.OPERATION': '操作',
+  'infrastructure.PERFORMED_BY': '执行者',
+  'infrastructure.CONNECTION_REQUESTED': '请求连接',
+  'infrastructure.CONNECTION_ACCEPTED': '接受连接',
+  'infrastructure.CONNECTION_REJECTED': '拒绝连接',
+  'infrastructure.CONNECTION_CANCELLED': '取消连接',
+  'infrastructure.CONNECTION_DISCONNECTED': '断开连接',
+  'infrastructure.SUBSCRIPTION_REQUESTED': '请求订阅',
+  'infrastructure.SUBSCRIPTION_ACCEPTED': '接受订阅',
+  'infrastructure.SUBSCRIPTION_REJECTED': '拒绝订阅',
+  'infrastructure.SUBSCRIPTION_CANCELLED': '取消订阅',
+  'infrastructure.ERROR_LOADING_HISTORY': '加载历史记录时出错',
+  'infrastructure.ERROR_CANCELLING_REQUEST': '取消请求时出错',
+  'infrastructure.UNKNOWN': '未知',
   
   // Facility Types
   'infrastructure.MINE': '矿场',

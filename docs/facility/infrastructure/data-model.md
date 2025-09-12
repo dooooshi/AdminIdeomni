@@ -251,7 +251,7 @@ enum SubscriptionStatus {
 ```
 
 ### 5. InfrastructureOperationLog
-Audit log for all infrastructure operations.
+Enhanced audit log for all infrastructure operations with structured event tracking.
 
 ```prisma
 model InfrastructureOperationLog {
@@ -267,7 +267,7 @@ model InfrastructureOperationLog {
   // Operation details
   entityType            String                 // Connection, Service, Request, Subscription
   entityId              String                 // ID of the affected entity
-  details               Json                   // Detailed operation data
+  details               Json                   // Structured operation data with schemas
   
   // User tracking
   performedBy           String
@@ -277,12 +277,25 @@ model InfrastructureOperationLog {
   activityId            String
   activity              Activity               @relation(fields: [activityId], references: [id])
   
+  // Enhanced fields for better tracking (added via migration)
+  infrastructureType    InfrastructureType?    // WATER, POWER (for connections)
+  serviceType           ServiceType?           // BASE_STATION, FIRE_STATION (for services)
+  actorRole             String?                // "PROVIDER", "CONSUMER", "SYSTEM"
+  providerFacilityId    String?
+  consumerFacilityId    String?
+  
   // System fields
   timestamp             DateTime               @default(now())
+  
+  // Relationships
+  terminationDetail     ConnectionTerminationDetail? @relation("LogTerminationDetail")
   
   @@index([providerTeamId, timestamp])
   @@index([consumerTeamId, timestamp])
   @@index([activityId, operationType, timestamp])
+  @@index([entityType, entityId, timestamp])
+  @@index([infrastructureType, timestamp])
+  @@index([serviceType, timestamp])
   @@map("infrastructure_operation_logs")
 }
 
@@ -293,14 +306,52 @@ enum OperationType {
   CONNECTION_CANCELLED
   CONNECTION_DISCONNECTED
   
-  SERVICE_CREATED
-  SERVICE_FEE_UPDATED
-  SERVICE_DEACTIVATED
-  
   SUBSCRIPTION_REQUESTED
   SUBSCRIPTION_ACCEPTED
   SUBSCRIPTION_REJECTED
   SUBSCRIPTION_CANCELLED
+}
+```
+
+### 6. ConnectionTerminationDetail
+Detailed tracking for connection and subscription terminations.
+
+```prisma
+model ConnectionTerminationDetail {
+  id                    String                 @id @default(cuid())
+  
+  // Link to operation log
+  operationLogId        String                 @unique
+  operationLog          InfrastructureOperationLog @relation("LogTerminationDetail", fields: [operationLogId], references: [id])
+  
+  // Termination classification
+  terminationType       String                 // "VOLUNTARY", "FORCED", "SYSTEM"
+  initiatedBy           String                 // "PROVIDER", "CONSUMER", "SYSTEM"
+  terminationReason     String                 // Structured reason code
+  detailedReason        String?                // Additional explanation
+  
+  // Financial impact
+  penaltyAmount         Decimal?               @db.Decimal(65,3)
+  refundAmount          Decimal?               @db.Decimal(65,3)
+  outstandingBalance    Decimal?               @db.Decimal(65,3)
+  
+  // Connection/Service metrics at termination
+  connectionDuration    Int                    // Duration in days
+  totalResourcesUsed    Decimal?               @db.Decimal(65,3) // For water/power
+  totalServiceFeesPaid  Decimal?               @db.Decimal(65,3) // For services
+  
+  // Link to original connection/subscription
+  connectionId          String?                // For connection terminations
+  connection            InfrastructureConnection? @relation(fields: [connectionId], references: [id])
+  subscriptionId        String?                // For subscription terminations
+  subscription          InfrastructureServiceSubscription? @relation(fields: [subscriptionId], references: [id])
+  
+  createdAt             DateTime               @default(now())
+  
+  @@index([terminationType, terminationReason])
+  @@index([connectionId])
+  @@index([subscriptionId])
+  @@map("connection_termination_details")
 }
 ```
 

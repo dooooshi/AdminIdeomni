@@ -495,6 +495,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							url: '/infrastructure',
 							translate: 'INFRASTRUCTURE_DASHBOARD',
 							auth: ['user']
+						},
+						{
+							id: 'land-management.student-facilities.infrastructure-history',
+							title: '基础设施历史记录',
+							type: 'item',
+							icon: 'heroicons-outline:clock',
+							url: '/infrastructure/history',
+							translate: 'INFRASTRUCTURE_HISTORY',
+							auth: ['user']
 						}
 					]
 				}

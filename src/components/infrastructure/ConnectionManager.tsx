@@ -200,7 +200,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     try {
       await infrastructureService.disconnectConnection(
         selectedConnection.id,
-        reason
+        reason || undefined  // Pass undefined if reason is empty string
       );
       setDisconnectDialogOpen(false);
       setSelectedConnection(null);

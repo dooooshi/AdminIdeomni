@@ -33,6 +33,7 @@ import {
   Info as InfoIcon,
   LocationOn as LocationIcon,
   Business as BusinessIcon,
+  LinkOff as DisconnectIcon,
 } from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import infrastructureService, {
@@ -315,6 +316,18 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                     <Typography variant="body2">
                       {t('infrastructure.DISTANCE')}: {facilityDetails.infrastructureStatus.water.connectionDetails?.distance}
                     </Typography>
+                    <Button
+                      size="small"
+                      color="error"
+                      startIcon={<DisconnectIcon />}
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        // Navigate to connections tab with this facility selected
+                        window.location.href = '/infrastructure#connections';
+                      }}
+                    >
+                      {t('infrastructure.DISCONNECT')}
+                    </Button>
                   </Box>
                 ) : (
                   <Alert severity="warning" sx={{ mt: 1 }}>
@@ -338,6 +351,18 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                     <Typography variant="body2">
                       {t('infrastructure.DISTANCE')}: {facilityDetails.infrastructureStatus.power.connectionDetails?.distance}
                     </Typography>
+                    <Button
+                      size="small"
+                      color="error"
+                      startIcon={<DisconnectIcon />}
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        // Navigate to connections tab with this facility selected
+                        window.location.href = '/infrastructure#connections';
+                      }}
+                    >
+                      {t('infrastructure.DISCONNECT')}
+                    </Button>
                   </Box>
                 ) : (
                   <Alert severity="warning" sx={{ mt: 1 }}>
