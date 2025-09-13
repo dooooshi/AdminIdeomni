@@ -279,6 +279,9 @@ export const enTranslations = {
   TRANSFER_GOLD: 'Transfer Gold',
   TRANSFER_CARBON: 'Transfer Carbon',
   FACILITY_TRANSPORTATION: 'Facility Transportation',
+  TEAM_CONTRACTS: 'Team Contracts',
+  VIEW_CONTRACTS: 'View Contracts',
+  CREATE_CONTRACT: 'Create Contract',
   ACCOUNT_HISTORY: 'Account History',
   HISTORY_OVERVIEW: 'History Overview',
   ALL_OPERATIONS: 'All Operations',
@@ -3754,4 +3757,123 @@ export const enTranslations = {
   'productProduction.produced': 'Produced',
   'productProduction.cost': 'Cost',
   'productProduction.status': 'Status',
+  
+  // Contract Management namespace
+  'contract.CONTRACT_MANAGEMENT': 'Contract Management',
+  'contract.CONTRACTS': 'Contracts',
+  'contract.CONTRACT': 'Contract',
+  'contract.CREATE_CONTRACT': 'Create Contract',
+  'contract.VIEW_CONTRACTS': 'View Contracts',
+  'contract.CONTRACT_DETAILS': 'Contract Details',
+  'contract.CONTRACT_NUMBER': 'Contract Number',
+  'contract.CONTRACT_TITLE': 'Contract Title',
+  'contract.CONTRACT_CONTENT': 'Contract Content',
+  'contract.CONTRACT_STATUS': 'Contract Status',
+  'contract.PARTICIPATING_TEAMS': 'Participating Teams',
+  'contract.TEAM_APPROVAL_STATUS': 'Team Approval Status',
+  'contract.CONTRACT_HISTORY': 'Contract History',
+  'contract.OPERATION_HISTORY': 'Operation History',
+  
+  // Contract Status
+  'contract.STATUS_PENDING_APPROVAL': 'Pending Approval',
+  'contract.STATUS_SIGNED': 'Successfully Signed',
+  'contract.STATUS_REJECTED': 'Rejected',
+  'contract.WAITING_ALL_TEAMS_APPROVAL': 'Waiting for all teams to approve',
+  'contract.TEAM_CANCELLED_OR_REJECTED': 'Team cancelled or rejected',
+  'contract.SUCCESSFULLY_SIGNED': 'Successfully signed',
+  
+  // Contract Actions
+  'contract.APPROVE_CONTRACT': 'Approve Contract',
+  'contract.REJECT_CONTRACT': 'Reject Contract',
+  'contract.DELETE_CONTRACT': 'Delete Contract',
+  'contract.APPROVE': 'Approve',
+  'contract.REJECT': 'Reject',
+  'contract.APPROVED': 'Approved',
+  'contract.REJECTED': 'Rejected',
+  'contract.PENDING': 'Pending',
+  
+  // Contract Form
+  'contract.TITLE': 'Title',
+  'contract.CONTENT': 'Content',
+  'contract.SELECT_TEAMS': 'Select Teams',
+  'contract.SELECTED_TEAMS': 'Selected Teams',
+  'contract.AVAILABLE_TEAMS': 'Available Teams',
+  'contract.ADD_TEAM': 'Add Team',
+  'contract.REMOVE_TEAM': 'Remove Team',
+  'contract.TITLE_PLACEHOLDER': 'Enter contract title (10-200 characters)',
+  'contract.CONTENT_PLACEHOLDER': 'Enter contract content (50-10000 characters)',
+  'contract.MIN_TEAMS_REQUIRED': 'At least 2 teams required',
+  'contract.MAX_TEAMS_EXCEEDED': 'Maximum 10 teams allowed',
+  
+  // Contract List
+  'contract.NO_CONTRACTS': 'No contracts found',
+  'contract.FILTER_BY_STATUS': 'Filter by Status',
+  'contract.ALL_STATUSES': 'All Statuses',
+  'contract.CREATED_BY': 'Created By',
+  'contract.CREATED_AT': 'Created At',
+  'contract.SIGNED_AT': 'Signed At',
+  'contract.REJECTED_AT': 'Rejected At',
+  'contract.TEAM_COUNT': '{{count}} Teams',
+  'contract.YOUR_TEAM': 'Your Team',
+  
+  // Contract Details
+  'contract.CONTRACT_INFO': 'Contract Information',
+  'contract.TEAM_APPROVALS': 'Team Approvals',
+  'contract.APPROVAL_STATUS': 'Approval Status',
+  'contract.APPROVED_BY': 'Approved by',
+  'contract.APPROVED_AT': 'Approved at',
+  'contract.NOT_YET_APPROVED': 'Not yet approved',
+  'contract.WAITING_FOR_APPROVAL': 'Waiting for approval',
+  
+  // Contract History
+  'contract.OPERATION_TYPE': 'Operation Type',
+  'contract.OPERATION_CREATED': 'Created',
+  'contract.OPERATION_APPROVED': 'Approved',
+  'contract.OPERATION_REJECTED': 'Rejected',
+  'contract.OPERATION_DELETED': 'Deleted',
+  'contract.OPERATOR': 'Operator',
+  'contract.OPERATION_TIME': 'Operation Time',
+  'contract.OPERATION_DESCRIPTION': 'Description',
+  'contract.PREVIOUS_STATUS': 'Previous Status',
+  'contract.NEW_STATUS': 'New Status',
+  
+  // Contract Validation Messages
+  'contract.TITLE_TOO_SHORT': 'Title must be at least 10 characters',
+  'contract.TITLE_TOO_LONG': 'Title must not exceed 200 characters',
+  'contract.CONTENT_TOO_SHORT': 'Content must be at least 50 characters',
+  'contract.CONTENT_TOO_LONG': 'Content must not exceed 10000 characters',
+  'contract.TEAMS_REQUIRED': 'Please select at least one other team',
+  'contract.TOO_MANY_TEAMS': 'Maximum 10 teams allowed per contract',
+  
+  // Contract Success Messages
+  'contract.CONTRACT_CREATED': 'Contract created successfully',
+  'contract.CONTRACT_APPROVED': 'Contract approved successfully',
+  'contract.CONTRACT_REJECTED': 'Contract rejected successfully',
+  'contract.CONTRACT_DELETED': 'Contract deleted successfully',
+  'contract.ALL_TEAMS_APPROVED': 'All teams have approved. Contract is now signed.',
+  
+  // Contract Error Messages
+  'contract.CONTRACT_NOT_FOUND': 'Contract not found',
+  'contract.ACCESS_DENIED': 'You do not have permission to access this contract',
+  'contract.INVALID_STATUS': 'This operation is not allowed in the current contract status',
+  'contract.ALREADY_APPROVED': 'Your team has already approved this contract',
+  'contract.ALREADY_REJECTED': 'This contract has already been rejected',
+  'contract.TEAM_NOT_FOUND': 'One or more selected teams were not found',
+  'contract.TEAMS_NOT_IN_SAME_ACTIVITY': 'All teams must be in the same activity',
+  'contract.UNAUTHORIZED_ROLE': 'You must be a Student in a team to perform this action',
+  
+  // Contract Confirmation Dialogs
+  'contract.CONFIRM_APPROVE': 'Confirm Approval',
+  'contract.CONFIRM_APPROVE_MESSAGE': 'Are you sure you want to approve this contract for your team?',
+  'contract.CONFIRM_REJECT': 'Confirm Rejection',
+  'contract.CONFIRM_REJECT_MESSAGE': 'Are you sure you want to reject this contract? This action cannot be undone.',
+  'contract.CONFIRM_DELETE': 'Confirm Deletion',
+  'contract.CONFIRM_DELETE_MESSAGE': 'Are you sure you want to delete this contract? This action cannot be undone.',
+  
+  // Contract Preview
+  'contract.PREVIEW': 'Preview',
+  'contract.PREVIEW_CONTRACT': 'Preview Contract',
+  'contract.BACK_TO_EDIT': 'Back to Edit',
+  'contract.SUBMIT_CONTRACT': 'Submit Contract',
+  'contract.CREATING_CONTRACT': 'Creating Contract...',
 };

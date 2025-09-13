@@ -372,6 +372,34 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					]
 				},
 				{
+					id: 'team-management.contracts',
+					title: 'Team Contracts',
+					type: 'collapse',
+					icon: 'heroicons-outline:document-text',
+					translate: 'TEAM_CONTRACTS',
+					auth: ['user'],
+					children: [
+						{
+							id: 'team-management.contracts.list',
+							title: 'View Contracts',
+							type: 'item',
+							icon: 'heroicons-outline:document-duplicate',
+							url: '/contract-management',
+							translate: 'VIEW_CONTRACTS',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.contracts.create',
+							title: 'Create Contract',
+							type: 'item',
+							icon: 'heroicons-outline:document-plus',
+							url: '/contract-management/create',
+							translate: 'CREATE_CONTRACT',
+							auth: ['user']
+						}
+					]
+				},
+				{
 					id: 'team-management.history',
 					title: 'Account History',
 					type: 'collapse',

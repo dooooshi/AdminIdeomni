@@ -2887,6 +2887,9 @@ export const zhTranslations = {
   TRANSFER_HUB: '转账中心',
   TRANSFER_GOLD: '转移黄金',
   TRANSFER_CARBON: '转移碳排放',
+  TEAM_CONTRACTS: '团队合约',
+  VIEW_CONTRACTS: '查看合约',
+  CREATE_CONTRACT: '创建合约',
   ACCOUNT_HISTORY: '账户历史',
   HISTORY_OVERVIEW: '历史概览',
   ALL_OPERATIONS: '所有操作',
@@ -3766,4 +3769,123 @@ export const zhTranslations = {
   'common.all': '全部',
   'common.available': '可用',
   'common.unavailable': '不可用',
+  
+  // Contract Management namespace
+  'contract.CONTRACT_MANAGEMENT': '合约管理',
+  'contract.CONTRACTS': '合约',
+  'contract.CONTRACT': '合约',
+  'contract.CREATE_CONTRACT': '创建合约',
+  'contract.VIEW_CONTRACTS': '查看合约',
+  'contract.CONTRACT_DETAILS': '合约详情',
+  'contract.CONTRACT_NUMBER': '合约编号',
+  'contract.CONTRACT_TITLE': '合约标题',
+  'contract.CONTRACT_CONTENT': '合约内容',
+  'contract.CONTRACT_STATUS': '合约状态',
+  'contract.PARTICIPATING_TEAMS': '参与团队',
+  'contract.TEAM_APPROVAL_STATUS': '团队审批状态',
+  'contract.CONTRACT_HISTORY': '合约历史',
+  'contract.OPERATION_HISTORY': '操作历史',
+  
+  // Contract Status - Using exact Chinese status from requirements
+  'contract.STATUS_PENDING_APPROVAL': '等待全部队伍同意',
+  'contract.STATUS_SIGNED': '成功签署',
+  'contract.STATUS_REJECTED': '队伍取消或拒绝',
+  'contract.WAITING_ALL_TEAMS_APPROVAL': '等待全部队伍同意',
+  'contract.TEAM_CANCELLED_OR_REJECTED': '队伍取消或拒绝',
+  'contract.SUCCESSFULLY_SIGNED': '成功签署',
+  
+  // Contract Actions
+  'contract.APPROVE_CONTRACT': '批准合约',
+  'contract.REJECT_CONTRACT': '拒绝合约',
+  'contract.DELETE_CONTRACT': '删除合约',
+  'contract.APPROVE': '批准',
+  'contract.REJECT': '拒绝',
+  'contract.APPROVED': '已批准',
+  'contract.REJECTED': '已拒绝',
+  'contract.PENDING': '待处理',
+  
+  // Contract Form
+  'contract.TITLE': '标题',
+  'contract.CONTENT': '内容',
+  'contract.SELECT_TEAMS': '选择团队',
+  'contract.SELECTED_TEAMS': '已选团队',
+  'contract.AVAILABLE_TEAMS': '可选团队',
+  'contract.ADD_TEAM': '添加团队',
+  'contract.REMOVE_TEAM': '移除团队',
+  'contract.TITLE_PLACEHOLDER': '输入合约标题（10-200个字符）',
+  'contract.CONTENT_PLACEHOLDER': '输入合约内容（50-10000个字符）',
+  'contract.MIN_TEAMS_REQUIRED': '至少需要2个团队',
+  'contract.MAX_TEAMS_EXCEEDED': '最多允许10个团队',
+  
+  // Contract List
+  'contract.NO_CONTRACTS': '没有找到合约',
+  'contract.FILTER_BY_STATUS': '按状态筛选',
+  'contract.ALL_STATUSES': '所有状态',
+  'contract.CREATED_BY': '创建者',
+  'contract.CREATED_AT': '创建时间',
+  'contract.SIGNED_AT': '签署时间',
+  'contract.REJECTED_AT': '拒绝时间',
+  'contract.TEAM_COUNT': '{{count}} 个团队',
+  'contract.YOUR_TEAM': '您的团队',
+  
+  // Contract Details
+  'contract.CONTRACT_INFO': '合约信息',
+  'contract.TEAM_APPROVALS': '团队审批',
+  'contract.APPROVAL_STATUS': '审批状态',
+  'contract.APPROVED_BY': '批准人',
+  'contract.APPROVED_AT': '批准时间',
+  'contract.NOT_YET_APPROVED': '尚未批准',
+  'contract.WAITING_FOR_APPROVAL': '等待批准',
+  
+  // Contract History
+  'contract.OPERATION_TYPE': '操作类型',
+  'contract.OPERATION_CREATED': '创建',
+  'contract.OPERATION_APPROVED': '批准',
+  'contract.OPERATION_REJECTED': '拒绝',
+  'contract.OPERATION_DELETED': '删除',
+  'contract.OPERATOR': '操作者',
+  'contract.OPERATION_TIME': '操作时间',
+  'contract.OPERATION_DESCRIPTION': '描述',
+  'contract.PREVIOUS_STATUS': '之前状态',
+  'contract.NEW_STATUS': '新状态',
+  
+  // Contract Validation Messages
+  'contract.TITLE_TOO_SHORT': '标题至少需要10个字符',
+  'contract.TITLE_TOO_LONG': '标题不能超过200个字符',
+  'contract.CONTENT_TOO_SHORT': '内容至少需要50个字符',
+  'contract.CONTENT_TOO_LONG': '内容不能超过10000个字符',
+  'contract.TEAMS_REQUIRED': '请至少选择一个其他团队',
+  'contract.TOO_MANY_TEAMS': '每个合约最多允许10个团队',
+  
+  // Contract Success Messages
+  'contract.CONTRACT_CREATED': '合约创建成功',
+  'contract.CONTRACT_APPROVED': '合约批准成功',
+  'contract.CONTRACT_REJECTED': '合约拒绝成功',
+  'contract.CONTRACT_DELETED': '合约删除成功',
+  'contract.ALL_TEAMS_APPROVED': '所有团队已批准，合约现已签署。',
+  
+  // Contract Error Messages
+  'contract.CONTRACT_NOT_FOUND': '未找到合约',
+  'contract.ACCESS_DENIED': '您没有权限访问此合约',
+  'contract.INVALID_STATUS': '当前合约状态不允许此操作',
+  'contract.ALREADY_APPROVED': '您的团队已经批准了此合约',
+  'contract.ALREADY_REJECTED': '此合约已经被拒绝',
+  'contract.TEAM_NOT_FOUND': '未找到一个或多个选定的团队',
+  'contract.TEAMS_NOT_IN_SAME_ACTIVITY': '所有团队必须在同一活动中',
+  'contract.UNAUTHORIZED_ROLE': '您必须是团队中的学生才能执行此操作',
+  
+  // Contract Confirmation Dialogs
+  'contract.CONFIRM_APPROVE': '确认批准',
+  'contract.CONFIRM_APPROVE_MESSAGE': '您确定要为您的团队批准此合约吗？',
+  'contract.CONFIRM_REJECT': '确认拒绝',
+  'contract.CONFIRM_REJECT_MESSAGE': '您确定要拒绝此合约吗？此操作无法撤销。',
+  'contract.CONFIRM_DELETE': '确认删除',
+  'contract.CONFIRM_DELETE_MESSAGE': '您确定要删除此合约吗？此操作无法撤销。',
+  
+  // Contract Preview
+  'contract.PREVIEW': '预览',
+  'contract.PREVIEW_CONTRACT': '预览合约',
+  'contract.BACK_TO_EDIT': '返回编辑',
+  'contract.SUBMIT_CONTRACT': '提交合约',
+  'contract.CREATING_CONTRACT': '正在创建合约...',
 };
