@@ -176,10 +176,25 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                   <Typography variant="subtitle2" color="textSecondary" gutterBottom>
                     {t('contract.CONTRACT_CONTENT')}
                   </Typography>
-                  <Paper variant="outlined" sx={{ p: 2, bgcolor: 'grey.50' }}>
+                  <Paper 
+                    variant="outlined" 
+                    sx={{ 
+                      p: 2, 
+                      bgcolor: (theme) => theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.05)' 
+                        : 'grey.50',
+                      borderColor: (theme) => theme.palette.mode === 'dark'
+                        ? 'rgba(255, 255, 255, 0.12)'
+                        : 'rgba(0, 0, 0, 0.12)',
+                    }}
+                  >
                     <Typography 
                       variant="body1" 
-                      sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+                      sx={{ 
+                        whiteSpace: 'pre-wrap', 
+                        wordBreak: 'break-word',
+                        color: (theme) => theme.palette.text.primary
+                      }}
                     >
                       {contract.content}
                     </Typography>
@@ -208,7 +223,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                       {formatDate(contract.createdAt)}
                     </Typography>
                   </Grid>
-                  {contract.status === ContractStatus.SIGNED && (
+                  {(contract.status === 'SIGNED' || contract.status === ContractStatus.SIGNED) && (
                     <Grid size={{ xs: 12, sm: 6 }}>
                       <Typography variant="subtitle2" color="textSecondary">
                         {t('contract.SIGNED_AT')}
@@ -218,7 +233,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                       </Typography>
                     </Grid>
                   )}
-                  {contract.status === ContractStatus.REJECTED && (
+                  {(contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) && (
                     <Grid size={{ xs: 12, sm: 6 }}>
                       <Typography variant="subtitle2" color="textSecondary">
                         {t('contract.REJECTED_AT')}
@@ -246,6 +261,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
               <ContractTeamsList 
                 teams={contract.teams}
                 userTeamId={userTeamId}
+                contractStatus={contract.status}
               />
             </CardContent>
           </Card>
@@ -254,7 +270,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
         {/* Sidebar */}
         <Grid size={{ xs: 12, lg: 4 }}>
           {/* Actions */}
-          {userTeamId && contract.status === ContractStatus.PENDING_APPROVAL && (
+          {userTeamId && (contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
             <Card sx={{ mb: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>

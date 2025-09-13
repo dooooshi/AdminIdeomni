@@ -17,6 +17,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -26,7 +27,6 @@ import {
   TablePagination,
   Paper,
   Chip,
-  Stack,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -40,7 +40,9 @@ import {
   Visibility as ViewIcon,
   FilterList as FilterIcon,
   Close as CloseIcon,
-  Groups as TeamsIcon
+  Groups as TeamsIcon,
+  CheckCircle as ApproveIcon,
+  Cancel as RejectIcon
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import { contractService } from '@/lib/services/contractService';
@@ -68,6 +70,7 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [selectedContract, setSelectedContract] = useState<string | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Fetch contracts
   const fetchContracts = useCallback(async () => {
@@ -89,9 +92,9 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [page, rowsPerPage, statusFilter, t]);
+  }, [page, rowsPerPage, statusFilter, t, teamId]);
 
-  // Initial load and refresh on filter/page change
+  // Initial load and refresh on filter/page change or when teamId changes
   useEffect(() => {
     fetchContracts();
   }, [fetchContracts]);
@@ -139,6 +142,65 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
     } catch {
       return dateString;
     }
+  };
+
+  // Handle approve contract
+  const handleApprove = async (contractId: string) => {
+    if (!teamId) return;
+    
+    setActionLoading(contractId);
+    try {
+      await contractService.approveContract(contractId);
+      // Refresh the list after approval
+      await fetchContracts();
+    } catch (error: any) {
+      console.error('Failed to approve contract:', error);
+      // You might want to show an error notification here
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Handle reject contract
+  const handleReject = async (contractId: string) => {
+    if (!teamId) return;
+    
+    setActionLoading(contractId);
+    try {
+      await contractService.rejectContract(contractId);
+      // Refresh the list after rejection
+      await fetchContracts();
+    } catch (error: any) {
+      console.error('Failed to reject contract:', error);
+      // You might want to show an error notification here
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Check if user can take action on contract
+  const canTakeAction = (contract: ContractListItem): boolean => {
+    // Check if user has a team
+    if (!teamId) {
+      return false;
+    }
+    
+    // Check if contract is pending approval
+    // The API returns status as a string "PENDING_APPROVAL", not the enum value
+    if (contract.status !== 'PENDING_APPROVAL' && contract.status !== ContractStatus.PENDING_APPROVAL) {
+      return false;
+    }
+    
+    // Check if user's team is part of this contract
+    const userTeam = contract.teams?.find(t => t.teamId === teamId);
+    
+    if (!userTeam) {
+      // Team not in contract, can't take action
+      return false;
+    }
+    
+    // Check if team has already approved
+    return !userTeam.approved;
   };
 
   // Loading state
@@ -299,14 +361,40 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        <Tooltip title={t('common.view')}>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleViewDetails(contract.contractId)}
-                          >
-                            <ViewIcon />
-                          </IconButton>
-                        </Tooltip>
+                        <Stack direction="row" spacing={1} justifyContent="center">
+                          {canTakeAction(contract) && (
+                            <>
+                              <Tooltip title={t('contract.APPROVE')}>
+                                <IconButton
+                                  size="small"
+                                  color="success"
+                                  onClick={() => handleApprove(contract.contractId)}
+                                  disabled={actionLoading === contract.contractId}
+                                >
+                                  <ApproveIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title={t('contract.REJECT')}>
+                                <IconButton
+                                  size="small"
+                                  color="error"
+                                  onClick={() => handleReject(contract.contractId)}
+                                  disabled={actionLoading === contract.contractId}
+                                >
+                                  <RejectIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </>
+                          )}
+                          <Tooltip title={t('common.view')}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleViewDetails(contract.contractId)}
+                            >
+                              <ViewIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   ))

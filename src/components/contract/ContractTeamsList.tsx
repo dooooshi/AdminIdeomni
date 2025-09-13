@@ -16,7 +16,8 @@ import {
 import {
   Groups as TeamIcon,
   CheckCircle as ApprovedIcon,
-  Schedule as PendingIcon
+  Schedule as PendingIcon,
+  Cancel
 } from '@mui/icons-material';
 
 interface Team {
@@ -30,9 +31,10 @@ interface Team {
 interface ContractTeamsListProps {
   teams: Team[];
   userTeamId?: string;
+  contractStatus?: string; // To determine if contract is rejected
 }
 
-const ContractTeamsList: React.FC<ContractTeamsListProps> = ({ teams, userTeamId }) => {
+const ContractTeamsList: React.FC<ContractTeamsListProps> = ({ teams, userTeamId, contractStatus }) => {
   const { t } = useTranslation();
 
   // Format date
@@ -70,7 +72,13 @@ const ContractTeamsList: React.FC<ContractTeamsListProps> = ({ teams, userTeamId
             }}
           >
             <ListItemAvatar>
-              <Avatar sx={{ bgcolor: team.approved ? 'success.main' : 'grey.400' }}>
+              <Avatar sx={{ 
+                bgcolor: team.approved 
+                  ? 'success.main' 
+                  : (contractStatus === 'REJECTED')
+                    ? 'error.main'
+                    : 'grey.400' 
+              }}>
                 {team.teamName.charAt(0).toUpperCase()}
               </Avatar>
             </ListItemAvatar>
@@ -102,12 +110,22 @@ const ContractTeamsList: React.FC<ContractTeamsListProps> = ({ teams, userTeamId
                       </Typography>
                     </>
                   ) : (
-                    <>
-                      <PendingIcon fontSize="small" color="warning" />
-                      <Typography component="span" variant="body2" color="warning.main">
-                        {t('contract.WAITING_FOR_APPROVAL')}
-                      </Typography>
-                    </>
+                    // If contract is rejected, teams that didn't approve are considered as having rejected
+                    contractStatus === 'REJECTED' ? (
+                      <>
+                        <Cancel fontSize="small" color="error" />
+                        <Typography component="span" variant="body2" color="error.main">
+                          {t('contract.REJECTED')}
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <PendingIcon fontSize="small" color="warning" />
+                        <Typography component="span" variant="body2" color="warning.main">
+                          {t('contract.WAITING_FOR_APPROVAL')}
+                        </Typography>
+                      </>
+                    )
                   )}
                 </Box>
               }

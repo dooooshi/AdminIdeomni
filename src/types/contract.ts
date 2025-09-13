@@ -91,12 +91,14 @@ export interface ContractListItem {
   contractId: string;
   contractNumber: string;
   title: string;
-  status: ContractStatus;
+  status: ContractStatus | string; // API returns string like "PENDING_APPROVAL", "REJECTED", etc.
   teamCount: number;
   teams: {
     teamId: string;
     teamName: string;
     approved?: boolean;
+    approvedAt?: string | null;
+    joinedAt?: string;
   }[];
   createdBy?: {
     userId: string;

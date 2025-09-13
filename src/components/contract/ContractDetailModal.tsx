@@ -160,15 +160,16 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
   };
 
   // Get status icon
-  const getStatusIcon = (status: ContractStatus) => {
-    switch (status) {
-      case ContractStatus.SIGNED:
-        return <ApprovedIcon color="success" />;
-      case ContractStatus.REJECTED:
-        return <RejectedIcon color="error" />;
-      default:
-        return <PendingIcon color="warning" />;
+  const getStatusIcon = (status: ContractStatus | string) => {
+    const statusStr = String(status).toUpperCase();
+    
+    if (statusStr === 'SIGNED' || status === ContractStatus.SIGNED) {
+      return <ApprovedIcon color="success" />;
     }
+    if (statusStr === 'REJECTED' || status === ContractStatus.REJECTED) {
+      return <RejectedIcon color="error" />;
+    }
+    return <PendingIcon color="warning" />;
   };
 
   // Loading state
@@ -228,7 +229,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
         </Stack>
 
         {/* Approval Progress */}
-        {contract.status === ContractStatus.PENDING_APPROVAL && (
+        {(contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
           <Box mt={3}>
             <Stack direction="row" justifyContent="space-between" mb={1}>
               <Typography variant="body2" color="textSecondary">
@@ -268,12 +269,24 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                 <Typography variant="h6">{t('contract.CONTRACT_CONTENT')}</Typography>
               </Stack>
               <Paper 
-                variant="outlined" 
+                elevation={0}
                 sx={{ 
                   p: 3, 
-                  bgcolor: 'grey.50',
+                  bgcolor: (theme) => theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.03)' 
+                    : 'rgba(0, 0, 0, 0.02)',
                   borderRadius: 2,
-                  borderStyle: 'dashed'
+                  border: '1px solid',
+                  borderColor: (theme) => theme.palette.mode === 'dark'
+                    ? 'rgba(255, 255, 255, 0.08)'
+                    : 'rgba(0, 0, 0, 0.08)',
+                  background: (theme) => theme.palette.mode === 'dark'
+                    ? `linear-gradient(135deg, 
+                        rgba(255, 255, 255, 0.03) 0%, 
+                        rgba(255, 255, 255, 0.05) 100%)`
+                    : `linear-gradient(135deg, 
+                        rgba(0, 0, 0, 0.01) 0%, 
+                        rgba(0, 0, 0, 0.03) 100%)`,
                 }}
               >
                 <Typography 
@@ -281,7 +294,10 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                   sx={{ 
                     whiteSpace: 'pre-wrap', 
                     wordBreak: 'break-word',
-                    lineHeight: 1.8
+                    lineHeight: 1.8,
+                    color: (theme) => theme.palette.text.primary,
+                    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+                    fontSize: '0.95rem',
                   }}
                 >
                   {contract.content}
@@ -297,7 +313,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                 {t('contract.QUICK_INFO')}
               </Typography>
               <Stack spacing={2}>
-                {contract.status === ContractStatus.SIGNED && (
+                {(contract.status === 'SIGNED' || contract.status === ContractStatus.SIGNED) && (
                   <Stack direction="row" spacing={2}>
                     <Chip 
                       icon={<ApprovedIcon />} 
@@ -307,7 +323,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                     />
                   </Stack>
                 )}
-                {contract.status === ContractStatus.REJECTED && (
+                {(contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) && (
                   <Stack direction="row" spacing={2}>
                     <Chip 
                       icon={<RejectedIcon />} 
@@ -334,7 +350,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
           </Card>
 
           {/* Actions */}
-          {userTeamId && contract.status === ContractStatus.PENDING_APPROVAL && (
+          {userTeamId && (contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -370,7 +386,11 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                   >
                     <ListItemAvatar>
                       <Avatar sx={{ 
-                        bgcolor: team.approved ? 'success.main' : 'grey.400',
+                        bgcolor: team.approved 
+                          ? 'success.main' 
+                          : (contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED)
+                            ? 'error.main'
+                            : 'grey.400',
                         width: 48,
                         height: 48
                       }}>
@@ -404,13 +424,24 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                                 variant="outlined"
                               />
                             ) : (
-                              <Chip
-                                icon={<PendingIcon />}
-                                label={t('contract.WAITING_FOR_APPROVAL')}
-                                size="small"
-                                color="warning"
-                                variant="outlined"
-                              />
+                              // If contract is rejected, teams that didn't approve are considered as having rejected
+                              (contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) ? (
+                                <Chip
+                                  icon={<RejectedIcon />}
+                                  label={t('contract.REJECTED')}
+                                  size="small"
+                                  color="error"
+                                  variant="outlined"
+                                />
+                              ) : (
+                                <Chip
+                                  icon={<PendingIcon />}
+                                  label={t('contract.WAITING_FOR_APPROVAL')}
+                                  size="small"
+                                  color="warning"
+                                  variant="outlined"
+                                />
+                              )
                             )}
                             <Typography variant="body2" color="textSecondary" component="span">
                               {t('contract.JOINED_AT')}: {formatDate(team.joinedAt)}

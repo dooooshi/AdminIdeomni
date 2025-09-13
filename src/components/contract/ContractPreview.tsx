@@ -100,10 +100,26 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
         </Typography>
 
         {/* Content */}
-        <Paper variant="outlined" sx={{ p: 2, bgcolor: 'grey.50', my: 3 }}>
+        <Paper 
+          variant="outlined" 
+          sx={{ 
+            p: 2, 
+            bgcolor: (theme) => theme.palette.mode === 'dark' 
+              ? 'rgba(255, 255, 255, 0.05)' 
+              : 'grey.50',
+            borderColor: (theme) => theme.palette.mode === 'dark'
+              ? 'rgba(255, 255, 255, 0.12)'
+              : 'rgba(0, 0, 0, 0.12)',
+            my: 3 
+          }}
+        >
           <Typography 
             variant="body1" 
-            sx={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
+            sx={{ 
+              whiteSpace: 'pre-wrap', 
+              wordBreak: 'break-word',
+              color: (theme) => theme.palette.text.primary
+            }}
           >
             {content || t('contract.NO_CONTENT')}
           </Typography>

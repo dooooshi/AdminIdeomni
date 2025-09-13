@@ -46,8 +46,10 @@ const ContractActions: React.FC<ContractActionsProps> = ({
   });
 
   // Check if user can perform actions
-  const canApprove = contractService.canApprove(contract, userTeamId);
-  const canReject = contractService.canReject(contract, userTeamId);
+  // Handle both string status from API and enum values
+  const isPending = contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL;
+  const canApprove = isPending && contractService.canApprove(contract, userTeamId);
+  const canReject = isPending && contractService.canReject(contract, userTeamId);
 
   // Handle approve
   const handleApprove = async () => {

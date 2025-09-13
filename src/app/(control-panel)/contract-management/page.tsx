@@ -1,17 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ContractListTable from '@/components/contract/ContractListTable';
 import { useAuth } from '@/lib/auth/auth-context';
+import teamService from '@/lib/services/teamService';
 
 export default function ContractManagementPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, userType } = useAuth();
+  const [userTeamId, setUserTeamId] = useState<string | undefined>(undefined);
   
-  // Get user's team ID (if available)
-  const userTeamId = user?.teamId;
+  // Fetch user's team ID when component mounts
+  useEffect(() => {
+    const fetchUserTeam = async () => {
+      // Only fetch team for regular users, not admins
+      if (userType === 'user' && user) {
+        try {
+          const team = await teamService.getCurrentTeam();
+          if (team?.id) {
+            setUserTeamId(team.id);
+          }
+        } catch (error) {
+          // User might not have a team, which is fine
+          console.log('User does not have a team');
+        }
+      }
+    };
+    
+    fetchUserTeam();
+  }, [user, userType]);
 
   return (
     <Container maxWidth="xl">

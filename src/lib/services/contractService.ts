@@ -231,8 +231,9 @@ class ContractService {
    * Check if user can perform actions on contract
    */
   canApprove(contract: ContractDetailsResponse, userTeamId: string): boolean {
-    // Check if contract is in pending status
-    if (contract.status !== ContractStatus.PENDING_APPROVAL) {
+    // Check if contract is in pending status (handle both string and enum)
+    const isPending = contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL;
+    if (!isPending) {
       return false;
     }
 
@@ -247,8 +248,9 @@ class ContractService {
   }
 
   canReject(contract: ContractDetailsResponse, userTeamId: string): boolean {
-    // Check if contract is in pending status
-    if (contract.status !== ContractStatus.PENDING_APPROVAL) {
+    // Check if contract is in pending status (handle both string and enum)
+    const isPending = contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL;
+    if (!isPending) {
       return false;
     }
 
