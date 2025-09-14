@@ -36,7 +36,7 @@ export class MapTemplateService {
   /**
    * Helper method to extract data from nested API response structure
    */
-  private static extractResponseData<T>(response: any): T {
+  private static extractResponseData<T>(response: { data?: { data?: { data?: T } | T } | T }): T {
     // Handle nested response structure: { data: { data: { data: T } } }
     return response.data?.data?.data || response.data?.data || response.data;
   }
@@ -47,7 +47,7 @@ export class MapTemplateService {
    * Get all map templates with optional pagination and filtering
    */
   static async getMapTemplates(params?: GetMapTemplatesQueryParams): Promise<PaginatedResponse<MapTemplate>> {
-    const response = await apiClient.get<any>(
+    const response = await apiClient.get<ApiResponse<PaginatedResponse<MapTemplate>>>(
       this.BASE_PATH,
       { params }
     );
@@ -82,7 +82,7 @@ export class MapTemplateService {
       includeFacilityConfigs?: boolean;
     }
   ): Promise<EnhancedMapTemplate> {
-    const response = await apiClient.get<any>(
+    const response = await apiClient.get<ApiResponse<MapTemplate>>(
       `${this.BASE_PATH}/${id}`,
       { params: options }
     );

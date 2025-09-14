@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Typography from '@mui/material/Typography';
-import { memo } from 'react';
+import { memo, ReactElement } from 'react';
 import { hideMessage, selectIdeomniMessageOptions, selectIdeomniMessageState } from '@ideomni/core/IdeomniMessage/IdeomniMessageSlice';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import IdeomniSvgIcon from '../IdeomniSvgIcon';
@@ -72,18 +72,31 @@ const variantIcon = {
 	info: 'info'
 };
 
+interface MessageOptions {
+	variant: 'success' | 'error' | 'warning' | 'info';
+	anchorOrigin: {
+		vertical: 'top' | 'bottom';
+		horizontal: 'left' | 'center' | 'right';
+	};
+	autoHideDuration: number | null;
+	message: ReactElement | string;
+}
+
 /**
  * IdeomniMessage
  * The IdeomniMessage component holds a snackbar that is capable of displaying message with 4 different variant. It uses the @mui/material React packages to create the components.
  */
 function IdeomniMessage() {
 	const dispatch = useAppDispatch();
-	const state = useAppSelector(selectIdeomniMessageState);
-	const options = useAppSelector(selectIdeomniMessageOptions);
+	const state = useAppSelector(selectIdeomniMessageState) as boolean;
+	const options = useAppSelector(selectIdeomniMessageOptions) as MessageOptions;
 
 	return (
 		<StyledSnackbar
-			{...options}
+			variant={options?.variant}
+			anchorOrigin={options?.anchorOrigin}
+			autoHideDuration={options?.autoHideDuration}
+			message={options?.message}
 			open={state}
 			onClose={() => dispatch(hideMessage())}
 		>

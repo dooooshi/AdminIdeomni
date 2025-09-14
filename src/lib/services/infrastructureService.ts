@@ -591,6 +591,17 @@ class InfrastructureService {
     const params = { serviceType, status };
     const response = await apiClient.get('/infrastructure/services/subscriptions/provider', { params });
     const data = response.data.data;
+    
+    // Handle both response formats
+    if (Array.isArray(data)) {
+      // If data is directly an array of subscriptions
+      return { 
+        subscriptions: data, 
+        summary: null 
+      };
+    }
+    
+    // If data has the expected structure with subscriptions property
     return { 
       subscriptions: data?.subscriptions || [], 
       summary: data?.summary || null 
@@ -604,6 +615,17 @@ class InfrastructureService {
     const params = { serviceType, status };
     const response = await apiClient.get('/infrastructure/services/subscriptions/consumer', { params });
     const data = response.data.data;
+    
+    // Handle both response formats
+    if (Array.isArray(data)) {
+      // If data is directly an array of subscriptions
+      return { 
+        subscriptions: data, 
+        summary: null 
+      };
+    }
+    
+    // If data has the expected structure with subscriptions property
     return { 
       subscriptions: data?.subscriptions || [], 
       summary: data?.summary || null 

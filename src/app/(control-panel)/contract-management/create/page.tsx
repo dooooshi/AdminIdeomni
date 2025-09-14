@@ -11,7 +11,8 @@ export default function CreateContractPage() {
   const { user } = useAuth();
   
   // Get user's team ID (if available)
-  const userTeamId = user?.teamId;
+  // Note: Current user types don't have teamId, so this will always be undefined
+  const userTeamId: string | undefined = undefined;
 
   return (
     <Container maxWidth="lg">

@@ -91,15 +91,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
           infrastructureService.getConsumerConnections(),
           infrastructureService.getConsumerRequests(),
         ]);
-        console.log('Consumer connections raw data:', connectionsData);
-        console.log('Consumer requests raw data:', requestsData);
         
         // Extract connections safely
         const connections = connectionsData?.connections || connectionsData || [];
         const requests = requestsData?.requests || requestsData || [];
-        
-        console.log('Consumer connections processed:', connections);
-        console.log('Consumer requests processed:', requests);
         
         setConsumerConnections(Array.isArray(connections) ? connections : []);
         setConsumerRequests(Array.isArray(requests) ? requests : []);
@@ -109,15 +104,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
           infrastructureService.getProviderConnections(),
           infrastructureService.getProviderRequests(),
         ]);
-        console.log('Provider connections raw data:', connectionsData);
-        console.log('Provider requests raw data:', requestsData);
         
         // Extract connections safely
         const connections = connectionsData?.connections || connectionsData || [];
         const requests = requestsData?.requests || requestsData || [];
-        
-        console.log('Provider connections processed:', connections);
-        console.log('Provider requests processed:', requests);
         
         setProviderConnections(Array.isArray(connections) ? connections : []);
         setProviderRequests(Array.isArray(requests) ? requests : []);

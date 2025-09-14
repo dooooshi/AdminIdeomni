@@ -1,144 +1,58 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Chip,
-  IconButton,
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TablePagination,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Alert,
-  CircularProgress,
-  Tooltip,
-  Grid,
-  Autocomplete,
-  FormControlLabel,
-  Switch,
-  Divider,
-  Badge,
-  Avatar,
-  Checkbox,
-} from '@mui/material';
-import {
-  PersonAdd as PersonAddIcon,
-  PersonRemove as PersonRemoveIcon,
-  SwapHoriz as SwapHorizIcon,
-  Search as SearchIcon,
-  FilterList as FilterListIcon,
-  Refresh as RefreshIcon,
-  Person as PersonIcon,
-  History as HistoryIcon,
-  Email as EmailIcon,
-  Assignment as AssignmentIcon,
-  Warning as WarningIcon,
-  CheckCircle as CheckCircleIcon,
-  Error as ErrorIcon,
-  Schedule as ScheduleIcon,
-  Cancel as CancelIcon,
-  Clear as ClearIcon,
-} from '@mui/icons-material';
-import { useTheme } from '@mui/material/styles';
-import { format } from 'date-fns';
-import AdminUserActivityService, {
-  AdminUserActivitySearchParams,
-  UserWithActivityDto,
-  PaginationResult,
-  AssignUserToActivityRequest,
-  TransferUserActivityRequest,
-  BulkAssignUsersRequest,
-  AssignmentResult,
-  BulkOperationResult,
-  UserActivityStatistics,
-  USER_TYPES,
-  UserActivityStatus,
-} from '@/lib/services/adminUserActivityService';
-import { Activity } from '@/lib/services/activityService';
-import ActivityService from '@/lib/services/activityService';
 import EnhancedErrorDisplay from '@/components/common/EnhancedErrorDisplay';
-import { AdminUserActivityError } from '@/lib/errors/AdminUserActivityError';
-
-interface UserSearchAndAssignmentProps {
-  onDataChange: () => void;
-  statistics?: UserActivityStatistics | null;
-}
-
-interface SearchFilters {
-  q: string;
-  userType: number | '';
-  activityStatus: 'assigned' | 'unassigned' | 'all';
-  activityId: string;
-  enrollmentStatus: UserActivityStatus | '';
-  includeInactive: boolean;
-  sortBy: 'username' | 'email' | 'createdAt' | 'enrolledAt' | 'firstName' | 'lastName';
-  sortOrder: 'asc' | 'desc';
-}
+import { useUserSearch } from './hooks/useUserSearch';
+import UserFilters from './components/UserFilters';
+import UserTable from './components/UserTable';
+import AssignmentDialogs from './components/AssignmentDialogs';
+import {
+  UserSearchAndAssignmentProps,
+  AssignDialogState,
+  TransferDialogState,
+  BulkAssignDialogState,
+} from './types';
 
 const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
   onDataChange,
   statistics,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
-  // Helper function to get user type translation key
-  const getUserTypeTranslationKey = (userType: number): string => {
-    switch (userType) {
-      case 1: return 'MANAGER';
-      case 2: return 'WORKER'; 
-      case 3: return 'STUDENT';
-      default: return 'UNKNOWN';
-    }
-  };
-
-  // State management
-  const [users, setUsers] = useState<PaginationResult<UserWithActivityDto> | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(20);
-
-  // Search and filter state
-  const [filters, setFilters] = useState<SearchFilters>({
-    q: '',
-    userType: '',
-    activityStatus: 'all',
-    activityId: '',
-    enrollmentStatus: '',
-    includeInactive: false,
-    sortBy: 'username',
-    sortOrder: 'asc',
-  });
+  // Use the custom hook for all search logic
+  const {
+    users,
+    loading,
+    error,
+    setError,
+    selectedUsers,
+    page,
+    pageSize,
+    filters,
+    availableActivities,
+    loadingActivities,
+    operationLoading,
+    operationResult,
+    showResults,
+    setShowResults,
+    setOperationResult,
+    handleFilterChange,
+    handlePageChange,
+    handlePageSizeChange,
+    handleSelectUser,
+    handleSelectAll,
+    loadAvailableActivities,
+    loadUsers,
+    assignUser,
+    transferUser,
+    bulkAssignUsers,
+    removeUser,
+  } = useUserSearch(onDataChange);
 
   // Dialog states
-  const [assignDialog, setAssignDialog] = useState<{
-    open: boolean;
-    user: UserWithActivityDto | null;
-    selectedActivity: string;
-    reason: string;
-    forceAssignment: boolean;
-  }>({
+  const [assignDialog, setAssignDialog] = useState<AssignDialogState>({
     open: false,
     user: null,
     selectedActivity: '',
@@ -146,143 +60,33 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
     forceAssignment: false,
   });
 
-  const [transferDialog, setTransferDialog] = useState<{
-    open: boolean;
-    user: UserWithActivityDto | null;
-    newActivity: string;
-    reason: string;
-  }>({
+  const [transferDialog, setTransferDialog] = useState<TransferDialogState>({
     open: false,
     user: null,
     newActivity: '',
     reason: '',
   });
 
-  const [bulkAssignDialog, setBulkAssignDialog] = useState<{
-    open: boolean;
-    activityId: string;
-    reason: string;
-    forceAssignment: boolean;
-  }>({
+  const [bulkAssignDialog, setBulkAssignDialog] = useState<BulkAssignDialogState>({
     open: false,
     activityId: '',
     reason: '',
     forceAssignment: false,
   });
 
-  const [operationLoading, setOperationLoading] = useState(false);
-  const [operationResult, setOperationResult] = useState<BulkOperationResult | null>(null);
-  const [showResults, setShowResults] = useState(false);
 
-  // Available activities for selection
-  const [availableActivities, setAvailableActivities] = useState<Activity[]>([]);
-  const [loadingActivities, setLoadingActivities] = useState(false);
-
-  // Load available activities for selection
-  const loadAvailableActivities = useCallback(async () => {
-    try {
-      setLoadingActivities(true);
-      const response = await ActivityService.searchActivities({
-        pageSize: 100, // Load many activities for selection
-        isActive: true, // Only load active activities
-      });
-      setAvailableActivities(response.data);
-    } catch (error) {
-      console.error('Failed to load activities:', error);
-      setError('Failed to load activities for selection');
-    } finally {
-      setLoadingActivities(false);
-    }
-  }, []);
-
-  // Load users data
-  const loadUsers = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const params: AdminUserActivitySearchParams = {
-        page: page + 1, // Convert to 1-based pagination
-        pageSize,
-        q: filters.q || undefined,
-        userType: filters.userType || undefined,
-        activityStatus: filters.activityStatus === 'all' ? undefined : filters.activityStatus,
-        activityId: filters.activityId || undefined,
-        enrollmentStatus: filters.enrollmentStatus || undefined,
-        includeInactive: filters.includeInactive,
-        sortBy: filters.sortBy,
-        sortOrder: filters.sortOrder,
-      };
-
-      const data = await AdminUserActivityService.searchUsersWithActivityStatus(params);
-      setUsers(data);
-    } catch (err) {
-      console.error('Failed to load users:', err);
-      setError(err instanceof Error ? err.message : t('activityManagement.USERS_LOAD_ERROR'));
-    } finally {
-      setLoading(false);
-    }
-  }, [page, pageSize, filters, t]);
-
-  // Load data when dependencies change
-  useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
-
-  // Handle filter changes
-  const handleFilterChange = (field: keyof SearchFilters, value: any) => {
-    setFilters(prev => ({ ...prev, [field]: value }));
-    setPage(0);
-  };
-
-  // Handle pagination
-  const handlePageChange = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPageSize(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  // Handle selection
-  const handleSelectUser = (userId: string) => {
-    setSelectedUsers(prev => {
-      if (prev.includes(userId)) {
-        return prev.filter(id => id !== userId);
-      }
-      return [...prev, userId];
-    });
-  };
-
-  const handleSelectAll = () => {
-    if (!users?.data) return;
-    
-    if (selectedUsers.length === users.data.length) {
-      setSelectedUsers([]);
-    } else {
-      setSelectedUsers(users.data.map(u => u.user.id));
-    }
-  };
-
-  // Handle user assignment
+  // Dialog handlers
   const handleAssignUser = async () => {
     if (!assignDialog.user || !assignDialog.selectedActivity) return;
 
-    try {
-      setOperationLoading(true);
-      
-      const request: AssignUserToActivityRequest = {
-        userId: assignDialog.user.user.id,
-        activityId: assignDialog.selectedActivity,
-        reason: assignDialog.reason.trim() || undefined,
-        forceAssignment: assignDialog.forceAssignment,
-      };
+    const success = await assignUser(
+      assignDialog.user.user.id,
+      assignDialog.selectedActivity,
+      assignDialog.reason,
+      assignDialog.forceAssignment
+    );
 
-      await AdminUserActivityService.assignUserToActivity(request);
-      await loadUsers();
-      onDataChange();
-      
+    if (success) {
       setAssignDialog({
         open: false,
         user: null,
@@ -290,116 +94,56 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         reason: '',
         forceAssignment: false,
       });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('activityManagement.ASSIGNMENT_ERROR'));
-    } finally {
-      setOperationLoading(false);
     }
   };
 
-  // Handle user transfer
   const handleTransferUser = async () => {
     if (!transferDialog.user || !transferDialog.newActivity) return;
 
-    try {
-      setOperationLoading(true);
-      
-      const request: TransferUserActivityRequest = {
-        userId: transferDialog.user.user.id,
-        newActivityId: transferDialog.newActivity,
-        reason: transferDialog.reason.trim() || undefined,
-      };
+    const success = await transferUser(
+      transferDialog.user.user.id,
+      transferDialog.newActivity,
+      transferDialog.reason
+    );
 
-      await AdminUserActivityService.transferUserBetweenActivities(request);
-      await loadUsers();
-      onDataChange();
-      
+    if (success) {
       setTransferDialog({
         open: false,
         user: null,
         newActivity: '',
         reason: '',
       });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('activityManagement.TRANSFER_ERROR'));
-    } finally {
-      setOperationLoading(false);
     }
   };
 
-  // Handle bulk assignment
   const handleBulkAssign = async () => {
-    if (selectedUsers.length === 0 || !bulkAssignDialog.activityId) return;
+    if (!bulkAssignDialog.activityId) return;
 
-    try {
-      setOperationLoading(true);
-      
-      const request: BulkAssignUsersRequest = {
-        userIds: selectedUsers,
-        activityId: bulkAssignDialog.activityId,
-        reason: bulkAssignDialog.reason.trim() || undefined,
-        forceAssignment: bulkAssignDialog.forceAssignment,
-      };
+    const success = await bulkAssignUsers(
+      bulkAssignDialog.activityId,
+      bulkAssignDialog.reason,
+      bulkAssignDialog.forceAssignment
+    );
 
-      const result = await AdminUserActivityService.bulkAssignUsersToActivity(request);
-      setOperationResult(result);
-      setShowResults(true);
-      
-      await loadUsers();
-      onDataChange();
-      setSelectedUsers([]);
-      
+    if (success) {
       setBulkAssignDialog({
         open: false,
         activityId: '',
         reason: '',
         forceAssignment: false,
       });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('activityManagement.BULK_ASSIGNMENT_ERROR'));
-    } finally {
-      setOperationLoading(false);
     }
   };
 
-  // Handle remove user from activity
-  const handleRemoveUser = async (userWithActivity: UserWithActivityDto) => {
-    if (!userWithActivity.currentActivity) return;
-
-    try {
-      setOperationLoading(true);
-      await AdminUserActivityService.removeUserFromActivity(userWithActivity.user.id);
-      await loadUsers();
-      onDataChange();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('activityManagement.REMOVE_USER_ERROR'));
-    } finally {
-      setOperationLoading(false);
-    }
-  };
-
-  // Format display values
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'yyyy-MM-dd HH:mm');
-  };
-
-  const getStatusIcon = (status: UserActivityStatus) => {
-    switch (status) {
-      case UserActivityStatus.ENROLLED:
-        return <ScheduleIcon fontSize="small" />;
-      case UserActivityStatus.COMPLETED:
-        return <CheckCircleIcon fontSize="small" />;
-      case UserActivityStatus.CANCELLED:
-        return <CancelIcon fontSize="small" />;
-      case UserActivityStatus.NO_SHOW:
-        return <ErrorIcon fontSize="small" />;
-      default:
-        return null;
-    }
-  };
-
-  const canAssignUser = (userWithActivity: UserWithActivityDto) => {
-    return !userWithActivity.currentActivity;
+  const handleClearFilters = () => {
+    handleFilterChange('q', '');
+    handleFilterChange('userType', '');
+    handleFilterChange('activityStatus', 'all');
+    handleFilterChange('activityId', '');
+    handleFilterChange('enrollmentStatus', '');
+    handleFilterChange('includeInactive', false);
+    handleFilterChange('sortBy', 'username');
+    handleFilterChange('sortOrder', 'asc');
   };
 
   if (loading && !users) {
@@ -413,146 +157,19 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
 
   return (
     <Box>
-      {/* Search and Filter Section */}
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SearchIcon />
-            {t('activityManagement.ADVANCED_USER_SEARCH')}
-          </Typography>
-          
-          <Grid container spacing={2} alignItems="center">
-            {/* Search Query */}
-            <Grid item xs={12} md={4}>
-              <TextField
-                fullWidth
-                label={t('activityManagement.SEARCH_USERS')}
-                value={filters.q}
-                onChange={(e) => handleFilterChange('q', e.target.value)}
-                InputProps={{
-                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
-                }}
-                placeholder={t('activityManagement.SEARCH_BY_NAME_EMAIL_USERNAME')}
-              />
-            </Grid>
-
-            {/* User Type Filter */}
-            <Grid item xs={12} sm={6} md={2}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.USER_TYPE')}</InputLabel>
-                <Select
-                  value={filters.userType}
-                  onChange={(e) => handleFilterChange('userType', e.target.value)}
-                  label={t('activityManagement.USER_TYPE')}
-                  sx={{ minWidth: 150 }}
-                >
-                  <MenuItem value="">{t('activityManagement.ALL_TYPES')}</MenuItem>
-                  <MenuItem value={USER_TYPES.MANAGER}>{t('activityManagement.MANAGER')}</MenuItem>
-                  <MenuItem value={USER_TYPES.WORKER}>{t('activityManagement.WORKER')}</MenuItem>
-                  <MenuItem value={USER_TYPES.STUDENT}>{t('activityManagement.STUDENT')}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            {/* Activity Status Filter */}
-            <Grid item xs={12} sm={6} md={2}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.ACTIVITY_STATUS')}</InputLabel>
-                <Select
-                  value={filters.activityStatus}
-                  onChange={(e) => handleFilterChange('activityStatus', e.target.value)}
-                  label={t('activityManagement.ACTIVITY_STATUS')}
-                  sx={{ minWidth: 170 }}
-                >
-                  <MenuItem value="all">{t('activityManagement.ALL_USERS')}</MenuItem>
-                  <MenuItem value="assigned">{t('activityManagement.ASSIGNED_USERS')}</MenuItem>
-                  <MenuItem value="unassigned">{t('activityManagement.UNASSIGNED_USERS')}</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            {/* Enrollment Status Filter */}
-            <Grid item xs={12} sm={6} md={2}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
-                <Select
-                  value={filters.enrollmentStatus}
-                  onChange={(e) => handleFilterChange('enrollmentStatus', e.target.value)}
-                  label={t('activityManagement.STATUS')}
-                  sx={{ minWidth: 140 }}
-                >
-                  <MenuItem value="">{t('activityManagement.ALL_STATUSES')}</MenuItem>
-                  {Object.values(UserActivityStatus).map((status) => (
-                    <MenuItem key={status} value={status}>
-                      {t(status)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            {/* Include Inactive Toggle */}
-            <Grid item xs={12} sm={6} md={2}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={filters.includeInactive}
-                    onChange={(e) => handleFilterChange('includeInactive', e.target.checked)}
-                  />
-                }
-                label={t('activityManagement.INCLUDE_INACTIVE')}
-              />
-            </Grid>
-
-            {/* Actions */}
-            <Grid item xs={12} md={12} sx={{ mt: 2 }}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Button
-                  variant="outlined"
-                  startIcon={<RefreshIcon />}
-                  onClick={loadUsers}
-                  disabled={loading}
-                >
-                  {t('activityManagement.REFRESH')}
-                </Button>
-                
-                <Button
-                  variant="outlined"
-                  startIcon={<ClearIcon />}
-                  onClick={() => {
-                    setFilters({
-                      q: '',
-                      userType: '',
-                      activityStatus: 'all',
-                      activityId: '',
-                      enrollmentStatus: '',
-                      includeInactive: false,
-                      sortBy: 'username',
-                      sortOrder: 'asc',
-                    });
-                    setPage(0);
-                  }}
-                >
-                  {t('activityManagement.CLEAR_FILTERS')}
-                </Button>
-
-                {selectedUsers.length > 0 && (
-                  <Button
-                    variant="contained"
-                    startIcon={<PersonAddIcon />}
-                    onClick={() => {
-                      setBulkAssignDialog({ ...bulkAssignDialog, open: true });
-                      loadAvailableActivities();
-                    }}
-                  >
-                    {t('activityManagement.BULK_ASSIGN')} ({selectedUsers.length})
-                  </Button>
-                )}
-              </Stack>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      {/* User Filters Component */}
+      <UserFilters
+        filters={filters}
+        loading={loading}
+        selectedUsersCount={selectedUsers.length}
+        onFilterChange={handleFilterChange}
+        onRefresh={loadUsers}
+        onClearFilters={handleClearFilters}
+        onBulkAssign={() => {
+          setBulkAssignDialog({ ...bulkAssignDialog, open: true });
+          loadAvailableActivities();
+        }}
+      />
 
       {/* Enhanced Error Display */}
       {error && (
@@ -567,714 +184,60 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
         </Box>
       )}
 
-      {/* Users Table */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={users?.data.length > 0 && selectedUsers.length === users?.data.length}
-                  indeterminate={selectedUsers.length > 0 && selectedUsers.length < (users?.data.length || 0)}
-                  onChange={handleSelectAll}
-                />
-              </TableCell>
-              <TableCell>{t('activityManagement.USER')}</TableCell>
-              <TableCell>{t('activityManagement.USER_TYPE')}</TableCell>
-              <TableCell>{t('activityManagement.CURRENT_ACTIVITY')}</TableCell>
-              <TableCell>{t('activityManagement.CURRENT_TEAM')}</TableCell>
-              <TableCell>{t('activityManagement.STATUS')}</TableCell>
-              <TableCell>{t('activityManagement.ASSIGNED_AT')}</TableCell>
-              <TableCell>{t('activityManagement.ACTIONS')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users?.data.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={8} align="center" sx={{ py: 8 }}>
-                  <Stack spacing={2} alignItems="center">
-                    <PersonIcon sx={{ fontSize: 48, color: 'text.secondary' }} />
-                    <Typography variant="h6" color="text.secondary">
-                      {t('activityManagement.NO_USERS_FOUND')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('activityManagement.TRY_ADJUSTING_FILTERS')}
-                    </Typography>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ) : (
-              users?.data.map((userWithActivity) => (
-                <TableRow key={userWithActivity.user.id} hover>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.includes(userWithActivity.user.id)}
-                      onChange={() => handleSelectUser(userWithActivity.user.id)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar sx={{ width: 40, height: 40 }}>
-                        {AdminUserActivityService.formatUserDisplayName(userWithActivity.user)?.charAt(0)?.toUpperCase() || '?'}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="body2" fontWeight="medium">
-                          {AdminUserActivityService.formatUserDisplayName(userWithActivity.user) || t('activityManagement.UNKNOWN')}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.user.email || t('activityManagement.NO_EMAIL')}
-                        </Typography>
-                        {!userWithActivity.user.isActive && (
-                          <Chip
-                            label={t('activityManagement.ACTIVITY_STATUS_INACTIVE')}
-                            color="error"
-                            size="small"
-                            sx={{ ml: 1 }}
-                          />
-                        )}
-                      </Box>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      label={t(getUserTypeTranslationKey(userWithActivity.user.userType))}
-                      color={AdminUserActivityService.getUserTypeColor(userWithActivity.user.userType)}
-                      size="small"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    {userWithActivity.currentActivity ? (
-                      <Box>
-                        <Typography variant="body2" fontWeight="medium">
-                          {userWithActivity.currentActivity.name}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.currentActivity.activityType}
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Chip
-                        label={t('activityManagement.UNASSIGNED')}
-                        color="default"
-                        size="small"
-                        variant="outlined"
-                      />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {userWithActivity.currentTeam ? (
-                      <Box>
-                        <Typography variant="body2" fontWeight="medium">
-                          {userWithActivity.currentTeam.name}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.currentTeam.isLeader ? t('activityManagement.TEAM_LEADER') : t('activityManagement.TEAM_MEMBER')}
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Typography variant="body2" color="text.secondary">
-                        {t('activityManagement.NO_TEAM')}
-                      </Typography>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {userWithActivity.currentActivity ? (
-                      <Chip
-                        icon={getStatusIcon(userWithActivity.currentActivity.status)}
-                        label={t(userWithActivity.currentActivity.status)}
-                        color={AdminUserActivityService.getStatusColor(userWithActivity.currentActivity.status)}
-                        size="small"
-                      />
-                    ) : (
-                      <Typography variant="body2" color="text.secondary">
-                        {t('activityManagement.N_A')}
-                      </Typography>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {userWithActivity.currentActivity ? (
-                      <Typography variant="body2">
-                        {formatDate(userWithActivity.currentActivity.enrolledAt)}
-                      </Typography>
-                    ) : (
-                      <Typography variant="body2" color="text.secondary">
-                        {t('activityManagement.N_A')}
-                      </Typography>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Stack direction="row" spacing={1}>
-                      {canAssignUser(userWithActivity) ? (
-                        <Tooltip title={t('activityManagement.ASSIGN_TO_ACTIVITY')}>
-                          <IconButton
-                            size="small"
-                            onClick={() => {
-                              setAssignDialog({
-                                open: true,
-                                user: userWithActivity,
-                                selectedActivity: '',
-                                reason: '',
-                                forceAssignment: false,
-                              });
-                              loadAvailableActivities();
-                            }}
-                          >
-                            <PersonAddIcon />
-                          </IconButton>
-                        </Tooltip>
-                      ) : (
-                        <>
-                          <Tooltip title={t('activityManagement.TRANSFER_TO_ANOTHER_ACTIVITY')}>
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                setTransferDialog({
-                                  open: true,
-                                  user: userWithActivity,
-                                  newActivity: '',
-                                  reason: '',
-                                });
-                                loadAvailableActivities();
-                              }}
-                            >
-                              <SwapHorizIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title={t('activityManagement.REMOVE_FROM_ACTIVITY')}>
-                            <IconButton
-                              size="small"
-                              color="error"
-                              onClick={() => handleRemoveUser(userWithActivity)}
-                            >
-                              <PersonRemoveIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      )}
-                      <Tooltip title={t('activityManagement.VIEW_USER_HISTORY')}>
-                        <IconButton
-                          size="small"
-                          onClick={() => {/* TODO: Open user history */}}
-                        >
-                          <HistoryIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={t('activityManagement.SEND_EMAIL')}>
-                        <IconButton
-                          size="small"
-                          onClick={() => window.open(`mailto:${userWithActivity.user.email}`, '_blank')}
-                        >
-                          <EmailIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {/* User Table Component */}
+      <UserTable
+        users={users}
+        selectedUsers={selectedUsers}
+        page={page}
+        pageSize={pageSize}
+        onSelectUser={handleSelectUser}
+        onSelectAll={handleSelectAll}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        onAssignUser={(user) => {
+          setAssignDialog({
+            open: true,
+            user,
+            selectedActivity: '',
+            reason: '',
+            forceAssignment: false,
+          });
+          loadAvailableActivities();
+        }}
+        onTransferUser={(user) => {
+          setTransferDialog({
+            open: true,
+            user,
+            newActivity: '',
+            reason: '',
+          });
+          loadAvailableActivities();
+        }}
+        onRemoveUser={removeUser}
+      />
 
-      {/* Pagination */}
-      {users && users.total > 0 && (
-        <TablePagination
-          component="div"
-          count={users.total}
-          page={page}
-          onPageChange={handlePageChange}
-          rowsPerPage={pageSize}
-          onRowsPerPageChange={handlePageSizeChange}
-          rowsPerPageOptions={[10, 20, 50, 100]}
-        />
-      )}
-
-      {/* Assignment Dialog */}
-      <Dialog
-        open={assignDialog.open}
-        onClose={() => setAssignDialog({ ...assignDialog, open: false })}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>{t('activityManagement.ASSIGN_USER_TO_ACTIVITY')}</DialogTitle>
-        <DialogContent>
-          {assignDialog.user && (
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(assignDialog.user.user)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {assignDialog.user.user.email}
-              </Typography>
-            </Box>
-          )}
-          <Divider sx={{ mb: 3 }} />
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.SELECT_ACTIVITY')}</InputLabel>
-                <Select
-                  value={assignDialog.selectedActivity}
-                  onChange={(e) => setAssignDialog({
-                    ...assignDialog,
-                    selectedActivity: e.target.value
-                  })}
-                  label={t('activityManagement.SELECT_ACTIVITY')}
-                  disabled={loadingActivities}
-                >
-                  {loadingActivities ? (
-                    <MenuItem disabled>
-                      <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('activityManagement.LOADING_ACTIVITIES')}
-                    </MenuItem>
-                  ) : (
-                    availableActivities.map((activity) => (
-                      <MenuItem key={activity.id} value={activity.id}>
-                        <Tooltip 
-                          title={
-                            <Box>
-                              <Typography variant="body2" fontWeight="medium">{activity.name}</Typography>
-                              <Typography variant="caption">{activity.activityType}</Typography>
-                              <Typography variant="caption" display="block">
-                                {format(new Date(activity.startAt), 'yyyy-MM-dd')} - {format(new Date(activity.endAt), 'yyyy-MM-dd')}
-                              </Typography>
-                            </Box>
-                          }
-                          arrow
-                          placement="right"
-                        >
-                          <Box sx={{ width: '100%', minWidth: 0 }}>
-                            <Typography 
-                              variant="body2" 
-                              fontWeight="medium"
-                              sx={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '300px'
-                              }}
-                            >
-                              {activity.name}
-                            </Typography>
-                            <Typography 
-                              variant="caption" 
-                              color="text.secondary"
-                              sx={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                display: 'block',
-                                maxWidth: '300px'
-                              }}
-                            >
-                              {activity.activityType} • {format(new Date(activity.startAt), 'MM-dd')} - {format(new Date(activity.endAt), 'MM-dd')}
-                            </Typography>
-                          </Box>
-                        </Tooltip>
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label={t('activityManagement.REASON')}
-                multiline
-                rows={3}
-                value={assignDialog.reason}
-                onChange={(e) => setAssignDialog({
-                  ...assignDialog,
-                  reason: e.target.value
-                })}
-                placeholder={t('activityManagement.ASSIGNMENT_REASON_PLACEHOLDER')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={assignDialog.forceAssignment}
-                    onChange={(e) => setAssignDialog({
-                      ...assignDialog,
-                      forceAssignment: e.target.checked
-                    })}
-                  />
-                }
-                label={t('activityManagement.FORCE_ASSIGNMENT')}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setAssignDialog({ ...assignDialog, open: false })}
-            disabled={operationLoading}
-          >
-            {t('activityManagement.CANCEL')}
-          </Button>
-          <Button
-            onClick={handleAssignUser}
-            variant="contained"
-            disabled={operationLoading || !assignDialog.selectedActivity}
-          >
-            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.ASSIGN')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Transfer User to Another Activity Dialog */}
-      <Dialog
-        open={transferDialog.open}
-        onClose={() => setTransferDialog({ ...transferDialog, open: false })}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>{t('activityManagement.TRANSFER_USER_ACTIVITY')}</DialogTitle>
-        <DialogContent>
-          {transferDialog.user && (
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="body1" gutterBottom>
-                <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(transferDialog.user.user)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {transferDialog.user.user.email}
-              </Typography>
-              {transferDialog.user.currentActivity && (
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  <strong>{t('activityManagement.CURRENT_ACTIVITY')}:</strong> {transferDialog.user.currentActivity.name}
-                </Typography>
-              )}
-            </Box>
-          )}
-          <Divider sx={{ mb: 3 }} />
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.SELECT_NEW_ACTIVITY')}</InputLabel>
-                <Select
-                  value={transferDialog.newActivity}
-                  onChange={(e) => setTransferDialog({
-                    ...transferDialog,
-                    newActivity: e.target.value
-                  })}
-                  label={t('activityManagement.SELECT_NEW_ACTIVITY')}
-                  disabled={loadingActivities}
-                >
-                  {loadingActivities ? (
-                    <MenuItem disabled>
-                      <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('activityManagement.LOADING_ACTIVITIES')}
-                    </MenuItem>
-                  ) : (
-                    availableActivities
-                      .filter(activity => activity.id !== transferDialog.user?.currentActivity?.id) // Exclude current activity
-                      .map((activity) => (
-                        <MenuItem key={activity.id} value={activity.id}>
-                          <Tooltip 
-                            title={
-                              <Box>
-                                <Typography variant="body2" fontWeight="medium">{activity.name}</Typography>
-                                <Typography variant="caption">{activity.activityType}</Typography>
-                                <Typography variant="caption" display="block">
-                                  {format(new Date(activity.startAt), 'yyyy-MM-dd')} - {format(new Date(activity.endAt), 'yyyy-MM-dd')}
-                                </Typography>
-                              </Box>
-                            }
-                            arrow
-                            placement="right"
-                          >
-                            <Box sx={{ width: '100%', minWidth: 0 }}>
-                              <Typography 
-                                variant="body2" 
-                                fontWeight="medium"
-                                sx={{
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap',
-                                  maxWidth: '300px'
-                                }}
-                              >
-                                {activity.name}
-                              </Typography>
-                              <Typography 
-                                variant="caption" 
-                                color="text.secondary"
-                                sx={{
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap',
-                                  display: 'block',
-                                  maxWidth: '300px'
-                                }}
-                              >
-                                {activity.activityType} • {format(new Date(activity.startAt), 'MM-dd')} - {format(new Date(activity.endAt), 'MM-dd')}
-                              </Typography>
-                            </Box>
-                          </Tooltip>
-                        </MenuItem>
-                      ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label={t('activityManagement.REASON')}
-                multiline
-                rows={3}
-                value={transferDialog.reason}
-                onChange={(e) => setTransferDialog({
-                  ...transferDialog,
-                  reason: e.target.value
-                })}
-                placeholder={t('activityManagement.TRANSFER_REASON_PLACEHOLDER')}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setTransferDialog({ ...transferDialog, open: false })}
-            disabled={operationLoading}
-          >
-            {t('activityManagement.CANCEL')}
-          </Button>
-          <Button
-            onClick={handleTransferUser}
-            variant="contained"
-            disabled={operationLoading || !transferDialog.newActivity}
-          >
-            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.TRANSFER')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Bulk Assign Dialog */}
-      <Dialog
-        open={bulkAssignDialog.open}
-        onClose={() => setBulkAssignDialog({ ...bulkAssignDialog, open: false })}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>{t('activityManagement.BULK_ASSIGN_USERS')}</DialogTitle>
-        <DialogContent>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="body1" gutterBottom>
-              <strong>{t('activityManagement.SELECTED_USERS')}:</strong> {selectedUsers.length} {t('activityManagement.USERS')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('activityManagement.BULK_ASSIGN_DESCRIPTION')}
-            </Typography>
-          </Box>
-          <Divider sx={{ mb: 3 }} />
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>{t('activityManagement.SELECT_ACTIVITY')}</InputLabel>
-                <Select
-                  value={bulkAssignDialog.activityId}
-                  onChange={(e) => setBulkAssignDialog({
-                    ...bulkAssignDialog,
-                    activityId: e.target.value
-                  })}
-                  label={t('activityManagement.SELECT_ACTIVITY')}
-                  disabled={loadingActivities}
-                >
-                  {loadingActivities ? (
-                    <MenuItem disabled>
-                      <CircularProgress size={20} sx={{ mr: 1 }} />
-                      {t('activityManagement.LOADING_ACTIVITIES')}
-                    </MenuItem>
-                  ) : (
-                    availableActivities.map((activity) => (
-                      <MenuItem key={activity.id} value={activity.id}>
-                        <Tooltip 
-                          title={
-                            <Box>
-                              <Typography variant="body2" fontWeight="medium">{activity.name}</Typography>
-                              <Typography variant="caption">{activity.activityType}</Typography>
-                              <Typography variant="caption" display="block">
-                                {format(new Date(activity.startAt), 'yyyy-MM-dd')} - {format(new Date(activity.endAt), 'yyyy-MM-dd')}
-                              </Typography>
-                            </Box>
-                          }
-                          arrow
-                          placement="right"
-                        >
-                          <Box sx={{ width: '100%', minWidth: 0 }}>
-                            <Typography 
-                              variant="body2" 
-                              fontWeight="medium"
-                              sx={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '300px'
-                              }}
-                            >
-                              {activity.name}
-                            </Typography>
-                            <Typography 
-                              variant="caption" 
-                              color="text.secondary"
-                              sx={{
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                display: 'block',
-                                maxWidth: '300px'
-                              }}
-                            >
-                              {activity.activityType} • {format(new Date(activity.startAt), 'MM-dd')} - {format(new Date(activity.endAt), 'MM-dd')}
-                            </Typography>
-                          </Box>
-                        </Tooltip>
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label={t('activityManagement.REASON')}
-                multiline
-                rows={3}
-                value={bulkAssignDialog.reason}
-                onChange={(e) => setBulkAssignDialog({
-                  ...bulkAssignDialog,
-                  reason: e.target.value
-                })}
-                placeholder={t('activityManagement.BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={bulkAssignDialog.forceAssignment}
-                    onChange={(e) => setBulkAssignDialog({
-                      ...bulkAssignDialog,
-                      forceAssignment: e.target.checked
-                    })}
-                  />
-                }
-                label={t('activityManagement.FORCE_ASSIGNMENT')}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setBulkAssignDialog({ ...bulkAssignDialog, open: false })}
-            disabled={operationLoading}
-          >
-            {t('activityManagement.CANCEL')}
-          </Button>
-          <Button
-            onClick={handleBulkAssign}
-            variant="contained"
-            disabled={operationLoading || !bulkAssignDialog.activityId}
-          >
-            {operationLoading ? <CircularProgress size={20} /> : t('activityManagement.BULK_ASSIGN')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Bulk Operation Results Dialog */}
-      <Dialog
-        open={showResults && operationResult !== null}
-        onClose={() => {
+      {/* Assignment Dialogs Component */}
+      <AssignmentDialogs
+        assignDialog={assignDialog}
+        transferDialog={transferDialog}
+        bulkAssignDialog={bulkAssignDialog}
+        availableActivities={availableActivities}
+        loadingActivities={loadingActivities}
+        operationLoading={operationLoading}
+        selectedUsersCount={selectedUsers.length}
+        operationResult={operationResult}
+        showResults={showResults}
+        onAssignDialogChange={setAssignDialog}
+        onTransferDialogChange={setTransferDialog}
+        onBulkAssignDialogChange={setBulkAssignDialog}
+        onAssignUser={handleAssignUser}
+        onTransferUser={handleTransferUser}
+        onBulkAssign={handleBulkAssign}
+        onCloseResults={() => {
           setShowResults(false);
           setOperationResult(null);
         }}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>{t('activityManagement.BULK_OPERATION_RESULTS')}</DialogTitle>
-        <DialogContent>
-          {operationResult && (
-            <Box>
-              <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid item xs={4}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
-                    <Typography variant="h6" color="success.main">
-                      {operationResult.successCount}
-                    </Typography>
-                    <Typography variant="body2">
-                      {t('activityManagement.SUCCESSFUL')}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <ErrorIcon sx={{ fontSize: 40, color: 'error.main', mb: 1 }} />
-                    <Typography variant="h6" color="error.main">
-                      {operationResult.failedCount}
-                    </Typography>
-                    <Typography variant="body2">
-                      {t('activityManagement.FAILED')}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={4}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <WarningIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
-                    <Typography variant="h6" color="warning.main">
-                      {operationResult.totalCount - operationResult.successCount - operationResult.failedCount}
-                    </Typography>
-                    <Typography variant="body2">
-                      {t('activityManagement.SKIPPED')}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-
-              {operationResult.details?.filter(d => !d.success).length > 0 && (
-                <Box sx={{ mb: 3 }}>
-                  <Typography variant="h6" gutterBottom color="error.main">
-                    {t('activityManagement.FAILED_ASSIGNMENTS')}
-                  </Typography>
-                  {operationResult.details?.filter(d => !d.success).map((result, index) => (
-                    <Alert key={index} severity="error" sx={{ mb: 1 }}>
-                      <Typography variant="body2">
-                        <strong>{result.userId}:</strong> {result.error || 'Unknown error'}
-                      </Typography>
-                    </Alert>
-                  ))}
-                </Box>
-              )}
-
-              {operationResult.successCount > 0 && (
-                <Box>
-                  <Typography variant="h6" gutterBottom color="success.main">
-                    {t('activityManagement.SUCCESSFUL_ASSIGNMENTS')}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {operationResult.successCount} {t('activityManagement.USERS_SUCCESSFULLY_ASSIGNED')}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setShowResults(false);
-              setOperationResult(null);
-            }}
-            variant="contained"
-          >
-            {t('activityManagement.CLOSE')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      />
     </Box>
   );
 };

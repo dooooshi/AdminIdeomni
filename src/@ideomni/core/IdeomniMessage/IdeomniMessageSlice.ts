@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, WithSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, WithSlice, Slice } from '@reduxjs/toolkit';
 import { ReactElement } from 'react';
 import rootReducer from '@/store/rootReducer';
 

@@ -444,6 +444,65 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               </TableContainer>
             </>
           )}
+
+          {providers.fireStations && providers.fireStations.length > 0 && (
+            <>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <FireStationIcon /> {t('infrastructure.AVAILABLE_FIRE_STATIONS')}
+              </Typography>
+              <TableContainer component={Paper} sx={{ mb: 3 }}>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">{t('infrastructure.PROVIDER')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LOCATION')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.LEVEL')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.DISTANCE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.IN_RANGE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ANNUAL_FEE')}</TableCell>
+                      <TableCell align="center">{t('infrastructure.ACTIONS')}</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {providers.fireStations.map((service: ServiceProvider) => (
+                      <TableRow key={service.serviceId}>
+                        <TableCell align="center">{service.providerTeamName}</TableCell>
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" />
+                            ({service.location.q}, {service.location.r})
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">{service.facilityLevel}</TableCell>
+                        <TableCell align="center">{service.distance}</TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            label={service.inRange ? t('infrastructure.YES') : t('infrastructure.NO')}
+                            color={service.inRange ? 'success' : 'error'}
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="center">${service.annualFee}</TableCell>
+                        <TableCell align="center">
+                          <Button
+                            size="small"
+                            variant="contained"
+                            onClick={() => {
+                              setSelectedProvider(service);
+                              setRequestDialogOpen(true);
+                            }}
+                            disabled={!service.inRange}
+                          >
+                            {t('infrastructure.SUBSCRIBE')}
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+          )}
         </Box>
       )}
 

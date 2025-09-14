@@ -7,9 +7,8 @@ const nextConfig: NextConfig = {
 		ignoreDuringBuilds: process.env.NODE_ENV === 'production'
 	},
 	typescript: {
-		// Dangerously allow production builds to successfully complete even if
-		// your project has type errors.
-		ignoreBuildErrors: true
+		// Enable strict type checking - fail build on type errors
+		ignoreBuildErrors: false
 	},
 	// Optimize webpack for better HMR performance
 	webpack: (config, { dev, isServer }) => {

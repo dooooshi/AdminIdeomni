@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, WithSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, WithSlice, Slice } from '@reduxjs/toolkit';
 import { ReactElement } from 'react';
 import rootReducer from '@/store/rootReducer';
 
@@ -26,7 +26,10 @@ export const IdeomniDialogSlice = createSlice({
 			state.open = true;
 			state.children = action.payload.children;
 		},
-		closeDialog: () => initialState
+		closeDialog: (state) => {
+			state.open = false;
+			state.children = '';
+		}
 	},
 	selectors: {
 		selectIdeomniDialogState: (IdeomniDialog) => IdeomniDialog.open,

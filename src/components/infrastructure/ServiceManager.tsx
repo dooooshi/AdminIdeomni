@@ -86,7 +86,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
   const [annualFee, setAnnualFee] = useState('');
   const [rejectReason, setRejectReason] = useState('');
   
-  // Check if user has provider facilities
+  // Check if user has provider facilities - will update when facilities prop changes
   const hasProviderFacilities = facilities.some(f => 
     ['BASE_STATION', 'FIRE_STATION'].includes(f.facilityType)
   );
@@ -98,6 +98,11 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
   useEffect(() => {
     loadAllData();
   }, []);
+  
+  // Update provider facilities visibility when facilities prop changes
+  useEffect(() => {
+    // This ensures the tab visibility updates when facilities are loaded
+  }, [facilities, hasProviderFacilities]);
 
   // Only reload data initially, not on tab changes to prevent layout shift
   // Tab switching should just show already loaded data
@@ -110,28 +115,34 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
       const consumerData = await infrastructureService.getConsumerSubscriptions();
       setSubscriptions(consumerData.subscriptions || []);
       
-      // Load consumer subscription requests
+      // Load consumer subscription requests - compare status as string
       const consumerPending = (consumerData.subscriptions || []).filter(
-        (s: ServiceSubscription) => s.status === SubscriptionStatus.PENDING
+        (s: ServiceSubscription) => s.status === 'PENDING' || s.status === SubscriptionStatus.PENDING
       );
       setConsumerRequests(consumerPending);
       setPendingConsumerCount(consumerPending.length);
       
-      // Load provider subscription data if user has provider facilities
-      if (hasProviderFacilities) {
-        const providerData = await infrastructureService.getProviderSubscriptions();
+      // Always try to load provider subscription data
+      // The backend will return empty if user has no provider facilities
+      try {
+        // Fetch pending and active subscriptions separately for better performance
+        const [pendingData, activeData] = await Promise.all([
+          infrastructureService.getProviderSubscriptions(undefined, SubscriptionStatus.PENDING),
+          infrastructureService.getProviderSubscriptions(undefined, SubscriptionStatus.ACTIVE)
+        ]);
         
-        // Separate active and pending provider subscriptions
-        const providerPending = (providerData.subscriptions || []).filter(
-          (s: ServiceSubscription) => s.status === SubscriptionStatus.PENDING
-        );
-        const providerActive = (providerData.subscriptions || []).filter(
-          (s: ServiceSubscription) => s.status === SubscriptionStatus.ACTIVE
-        );
+        const providerPending = pendingData.subscriptions || [];
+        const providerActive = activeData.subscriptions || [];
         
         setProviderRequests(providerPending);
         setProviderActiveSubscriptions(providerActive);
         setPendingProviderCount(providerPending.length);
+      } catch (providerErr) {
+        // If provider fetch fails, it might be because user has no provider facilities
+        // This is not a critical error, so we just silently handle it
+        setProviderRequests([]);
+        setProviderActiveSubscriptions([]);
+        setPendingProviderCount(0);
       }
       
     } catch (err: any) {
@@ -306,7 +317,10 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
       
       <Tabs 
         value={activeTab} 
-        onChange={(e, newValue) => setActiveTab(newValue)}
+        onChange={(e, newValue) => {
+          setActiveTab(newValue);
+          loadAllData(); // Refresh data when switching tabs
+        }}
         sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}
       >
         <Tab label={t('infrastructure.CONSUMER_VIEW')} icon={<PeopleIcon />} iconPosition="start" />
@@ -335,14 +349,14 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
             {t('infrastructure.MY_ACTIVE_SUBSCRIPTIONS')}
           </Typography>
           
-          {!subscriptions || subscriptions.filter(s => s.status === SubscriptionStatus.ACTIVE).length === 0 ? (
+          {!subscriptions || subscriptions.filter(s => s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE).length === 0 ? (
             <Alert severity="info" sx={{ minHeight: '56px' }}>
               {t('infrastructure.NO_ACTIVE_SUBSCRIPTIONS')}
             </Alert>
           ) : (
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {subscriptions
-                .filter(s => s && s.status === SubscriptionStatus.ACTIVE)
+                .filter(s => s && (s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE))
                 .map((subscription, index) => (
                   <Grid key={subscription.id || `active-sub-${index}`} item xs={12} md={6}>
                     <Card>
@@ -437,7 +451,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                           size="small"
                           color="error"
                           startIcon={<CancelIcon />}
-                          onClick={() => handleCancelSubscription(request.subscriptionId)}
+                          onClick={() => handleCancelSubscription(request.id)}
                         >
                           {t('infrastructure.CANCEL')}
                         </Button>

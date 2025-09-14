@@ -64,7 +64,7 @@ import AdminTileStateService, {
 } from '@/lib/services/adminTileStateService';
 
 const ActivityTileStateManagementPage: React.FC = () => {
-  const { t } = useTranslation(['map', 'activity']);
+  const { t } = useTranslation();
   
   // Activities table state
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -248,9 +248,9 @@ const ActivityTileStateManagementPage: React.FC = () => {
       axialQ: state.tile.axialQ,
       axialR: state.tile.axialR,
       landType: state.tile.landType,
-      currentGoldPrice: state.currentGoldPrice || 500,
-      currentCarbonPrice: state.currentCarbonPrice || 50,
-      currentPopulation: state.currentPopulation || 500,
+      currentGoldPrice: state.newPrice || 500,
+      currentCarbonPrice: 50, // Default carbon price
+      currentPopulation: state.newPopulation || 500,
       transportationCostUnit: state.tile.transportationCostUnit,
       isModified: Boolean(state.changedAt),
     }));

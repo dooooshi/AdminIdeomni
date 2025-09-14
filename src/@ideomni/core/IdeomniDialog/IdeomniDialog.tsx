@@ -7,19 +7,26 @@ import { closeDialog, selectIdeomniDialogProps } from '@ideomni/core/IdeomniDial
  * This component renders a material UI ```Dialog``` component
  * with properties pulled from the redux store
  */
+interface DialogOptions {
+	open: boolean;
+	children: React.ReactElement | string;
+}
+
 function IdeomniDialog() {
 	const dispatch = useAppDispatch();
-	const options = useAppSelector(selectIdeomniDialogProps);
+	const options = useAppSelector(selectIdeomniDialogProps) as DialogOptions;
 
 	return (
 		<Dialog
+			open={options?.open || false}
 			onClose={() => dispatch(closeDialog())}
 			aria-labelledby="ideomni-dialog-title"
 			classes={{
 				paper: 'rounded-lg'
 			}}
-			{...options}
-		/>
+		>
+			{options?.children}
+		</Dialog>
 	);
 }
 
