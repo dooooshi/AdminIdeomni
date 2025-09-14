@@ -80,7 +80,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
     if (!assignDialog.user || !assignDialog.selectedActivity) return;
 
     const success = await assignUser(
-      assignDialog.user.user.id,
+      assignDialog.user.id,
       assignDialog.selectedActivity,
       assignDialog.reason,
       assignDialog.forceAssignment
@@ -101,7 +101,7 @@ const UserSearchAndAssignment: React.FC<UserSearchAndAssignmentProps> = ({
     if (!transferDialog.user || !transferDialog.newActivity) return;
 
     const success = await transferUser(
-      transferDialog.user.user.id,
+      transferDialog.user.id,
       transferDialog.newActivity,
       transferDialog.reason
     );

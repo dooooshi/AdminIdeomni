@@ -11,13 +11,13 @@ import {
   Typography,
   Alert,
   CircularProgress,
-  Grid,
   Card,
   CardContent,
   Stack,
   Chip,
   Divider,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   BuildOutlined,
   LocationOnOutlined,
@@ -30,12 +30,12 @@ import { FacilityTypeSelector } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { LandService } from '@/lib/services/landService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import type {
-  FacilityType,
+import {
   LandType,
-  BuildFacilityRequest,
-  BuildValidationResponse,
-  TileFacilityInstance,
+  type FacilityType,
+  type BuildFacilityRequest,
+  type BuildValidationResponse,
+  type TileFacilityInstance,
 } from '@/types/facilities';
 import type { OwnedTileForBuilding } from '@/types/land';
 
@@ -287,7 +287,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
               <FacilityTypeSelector
                 selectedType={selectedFacilityType}
                 onTypeSelect={handleFacilityTypeSelect}
-                compatibleLandTypes={selectedTile ? [selectedTile.landType] : ['PLAIN']}
+                compatibleLandTypes={selectedTile ? [selectedTile.landType as LandType] : [LandType.PLAIN]}
                 showOnlyCompatible={true}
                 showBuildableOnly={true}
                 selectedTileId={selectedTile?.tileId}

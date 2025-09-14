@@ -94,11 +94,11 @@ const SecondaryText = styled(Box)(({ theme }) => ({
   maxWidth: '300px',
 }));
 
-const FloatingIcon = styled(Box)<{ position: { x: number; y: number } }>(
-  ({ theme, position }) => ({
+const FloatingIcon = styled(Box)<{ coordinates: { x: number; y: number } }>(
+  ({ theme, coordinates }) => ({
     position: 'absolute',
-    left: position.x,
-    top: position.y,
+    left: coordinates.x,
+    top: coordinates.y,
     animation: `${sparkleAnimation} 1.5s ease-in-out`,
     '& .MuiSvgIcon-root': {
       fontSize: '1.2rem',
@@ -184,7 +184,7 @@ const PurchaseSuccessAnimation: React.FC<PurchaseSuccessAnimationProps> = ({
           
           {/* Floating icons */}
           {floatingIcons.map((icon) => (
-            <FloatingIcon key={icon.id} position={{ x: icon.x, y: icon.y }}>
+            <FloatingIcon key={icon.id} coordinates={{ x: icon.x, y: icon.y }}>
               {icon.icon}
             </FloatingIcon>
           ))}

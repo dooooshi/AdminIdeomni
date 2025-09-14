@@ -73,7 +73,6 @@ export const useUserSearch = (onDataChange: () => void) => {
         userType: filters.userType || undefined,
         activityStatus: filters.activityStatus === 'all' ? undefined : filters.activityStatus,
         activityId: filters.activityId || undefined,
-        enrollmentStatus: filters.enrollmentStatus || undefined,
         includeInactive: filters.includeInactive,
         sortBy: filters.sortBy,
         sortOrder: filters.sortOrder,
@@ -126,7 +125,7 @@ export const useUserSearch = (onDataChange: () => void) => {
     if (selectedUsers.length === users.data.length) {
       setSelectedUsers([]);
     } else {
-      setSelectedUsers(users.data.map(u => u.user.id));
+      setSelectedUsers(users.data.map(u => u.id));
     }
   };
 
@@ -216,7 +215,7 @@ export const useUserSearch = (onDataChange: () => void) => {
 
     try {
       setOperationLoading(true);
-      await AdminUserActivityService.removeUserFromActivity(userWithActivity.user.id);
+      await AdminUserActivityService.removeUserFromActivity(userWithActivity.id);
       await loadUsers();
       onDataChange();
       return true;

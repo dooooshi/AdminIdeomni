@@ -229,7 +229,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
         </Stack>
 
         {/* Approval Progress */}
-        {(contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
+        {contract.status === ContractStatus.PENDING_APPROVAL && (
           <Box mt={3}>
             <Stack direction="row" justifyContent="space-between" mb={1}>
               <Typography variant="body2" color="textSecondary">
@@ -313,7 +313,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                 {t('contract.QUICK_INFO')}
               </Typography>
               <Stack spacing={2}>
-                {(contract.status === 'SIGNED' || contract.status === ContractStatus.SIGNED) && (
+                {contract.status === ContractStatus.SIGNED && (
                   <Stack direction="row" spacing={2}>
                     <Chip 
                       icon={<ApprovedIcon />} 
@@ -323,7 +323,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                     />
                   </Stack>
                 )}
-                {(contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) && (
+                {contract.status === ContractStatus.REJECTED && (
                   <Stack direction="row" spacing={2}>
                     <Chip 
                       icon={<RejectedIcon />} 
@@ -336,7 +336,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                 <Stack direction="row" spacing={2}>
                   <Chip 
                     icon={<TeamsIcon />} 
-                    label={`${contract.teamCount} ${t('contract.TEAMS_INVOLVED')}`}
+                    label={`${contract.teams.length} ${t('contract.TEAMS_INVOLVED')}`}
                     variant="outlined"
                   />
                   <Chip 
@@ -350,7 +350,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
           </Card>
 
           {/* Actions */}
-          {userTeamId && (contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
+          {userTeamId && contract.status === ContractStatus.PENDING_APPROVAL && (
             <Card variant="outlined">
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -388,7 +388,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                       <Avatar sx={{ 
                         bgcolor: team.approved 
                           ? 'success.main' 
-                          : (contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED)
+                          : contract.status === ContractStatus.REJECTED
                             ? 'error.main'
                             : 'grey.400',
                         width: 48,
@@ -425,7 +425,7 @@ const ContractDetailModal: React.FC<ContractDetailModalProps> = ({
                               />
                             ) : (
                               // If contract is rejected, teams that didn't approve are considered as having rejected
-                              (contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) ? (
+                              contract.status === ContractStatus.REJECTED ? (
                                 <Chip
                                   icon={<RejectedIcon />}
                                   label={t('contract.REJECTED')}

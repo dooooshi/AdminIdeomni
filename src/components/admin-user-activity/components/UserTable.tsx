@@ -139,26 +139,26 @@ const UserTable: React.FC<UserTableProps> = ({
               </TableRow>
             ) : (
               users?.data.map((userWithActivity) => (
-                <TableRow key={userWithActivity.user.id} hover>
+                <TableRow key={userWithActivity.id} hover>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedUsers.includes(userWithActivity.user.id)}
-                      onChange={() => onSelectUser(userWithActivity.user.id)}
+                      checked={selectedUsers.includes(userWithActivity.id)}
+                      onChange={() => onSelectUser(userWithActivity.id)}
                     />
                   </TableCell>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar sx={{ width: 40, height: 40 }}>
-                        {AdminUserActivityService.formatUserDisplayName(userWithActivity.user)?.charAt(0)?.toUpperCase() || '?'}
+                        {AdminUserActivityService.formatUserDisplayName(userWithActivity)?.charAt(0)?.toUpperCase() || '?'}
                       </Avatar>
                       <Box>
                         <Typography variant="body2" fontWeight="medium">
-                          {AdminUserActivityService.formatUserDisplayName(userWithActivity.user) || t('activityManagement.UNKNOWN')}
+                          {AdminUserActivityService.formatUserDisplayName(userWithActivity) || t('activityManagement.UNKNOWN')}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {userWithActivity.user.email || t('activityManagement.NO_EMAIL')}
+                          {userWithActivity.email || t('activityManagement.NO_EMAIL')}
                         </Typography>
-                        {!userWithActivity.user.isActive && (
+                        {!userWithActivity.isActive && (
                           <Chip
                             label={t('activityManagement.ACTIVITY_STATUS_INACTIVE')}
                             color="error"
@@ -171,8 +171,8 @@ const UserTable: React.FC<UserTableProps> = ({
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={t(getUserTypeTranslationKey(userWithActivity.user.userType))}
-                      color={AdminUserActivityService.getUserTypeColor(userWithActivity.user.userType)}
+                      label={t(getUserTypeTranslationKey(userWithActivity.userType))}
+                      color={AdminUserActivityService.getUserTypeColor(userWithActivity.userType)}
                       size="small"
                     />
                   </TableCell>
@@ -279,7 +279,7 @@ const UserTable: React.FC<UserTableProps> = ({
                       <Tooltip title={t('activityManagement.SEND_EMAIL')}>
                         <IconButton
                           size="small"
-                          onClick={() => window.open(`mailto:${userWithActivity.user.email}`, '_blank')}
+                          onClick={() => window.open(`mailto:${userWithActivity.email}`, '_blank')}
                         >
                           <EmailIcon />
                         </IconButton>

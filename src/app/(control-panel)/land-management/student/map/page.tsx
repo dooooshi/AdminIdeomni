@@ -105,7 +105,9 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     fetcher: async () => {
       try {
         // Try to get all tiles first, fall back to available tiles
-        const result = await LandService.getAllTiles?.() || await LandService.getAvailableTiles();
+        const result = 'getAllTiles' in LandService && typeof LandService.getAllTiles === 'function'
+          ? await LandService.getAllTiles()
+          : await LandService.getAvailableTiles();
         return result.data;
       } catch (error) {
         // If getAllTiles doesn't exist, use getAvailableTiles
@@ -672,7 +674,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
           {tCommon('common.RETRY')}
         </Button>
       }>
-        {LandService.getErrorMessage(displayError)}
+        {typeof displayError === 'string' ? displayError : LandService.getErrorMessage(displayError as any)}
       </Alert>
     );
   }
@@ -683,9 +685,9 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
       pb: { xs: 10, sm: 3 }, // Extra bottom padding for mobile to avoid FAB overlap
     }}>
       <Box sx={{ mb: 3 }}>
-        <Typography 
-          variant={{ xs: 'h5', sm: 'h4' }} 
-          component="h1" 
+        <Typography
+          variant="h4"
+          component="h1"
           gutterBottom
           sx={{ 
             fontSize: { xs: '1.5rem', sm: '2.125rem' },
@@ -798,7 +800,6 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
             zoomLevel={zoomLevel}
             onZoomChange={setZoomLevel}
             selectedTileId={selectedTile?.tileId}
-            configurationMode={false}
             enableLandAnimations={animationsEnabled}
           />
         </TouchGestureHandler>
@@ -828,6 +829,11 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         onZoomOut={handleZoomOut}
         onResetZoom={handleResetZoom}
         onRefresh={handleRefresh}
+        bulkMode={false}
+        selectedTilesCount={0}
+        onBulkModeToggle={() => {}}
+        onClearSelection={() => {}}
+        onBulkPurchase={() => {}}
       />
     </Box>
   );

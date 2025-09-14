@@ -7,7 +7,6 @@ import {
   Typography,
   Chip,
   Box,
-  Grid,
   Paper,
   Divider,
   Alert,
@@ -20,6 +19,7 @@ import {
   TableRow,
   TablePagination
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Business as Building2,
   Bolt as Zap,
@@ -275,7 +275,7 @@ export default function InfrastructureHistoryViewer() {
                         <TableCell>
                           {log.performedByUser && (
                             <Typography variant="caption">
-                              {log.performedByUser.firstName} {log.performedByUser.lastName}
+                              {log.performedByUser.name}
                             </Typography>
                           )}
                         </TableCell>
@@ -332,7 +332,7 @@ export default function InfrastructureHistoryViewer() {
                     <Grid item xs={12} md={6}>
                       <Typography variant="body2" color="textSecondary">{t('infrastructure.history.detail.performedBy')}</Typography>
                       <Typography variant="body1">
-                        {selectedLog.performedByUser.firstName} {selectedLog.performedByUser.lastName} ({selectedLog.performedByUser.username})
+                        {selectedLog.performedByUser.name} ({selectedLog.performedByUser.email})
                       </Typography>
                     </Grid>
                   </>

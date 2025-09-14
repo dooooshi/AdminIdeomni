@@ -13,7 +13,6 @@ import {
   Alert,
   InputAdornment,
   Stack,
-  Grid,
   Chip,
   FormControl,
   FormLabel,
@@ -22,6 +21,7 @@ import {
   Radio,
   Paper,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,

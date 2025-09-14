@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Grid, Typography, Card, CardHeader, CardContent } from '@mui/material';
+import { Box, Typography, Card, CardHeader, CardContent } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import { alpha, useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { InfrastructureConfigList, InfrastructureConfigStatistics } from '..';

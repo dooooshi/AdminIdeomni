@@ -166,10 +166,10 @@ export default function TransportationPage() {
       // After extractResponseData, we get the whole response object
       const inventoryData = response.data || response;
       
-      if (inventoryData?.inventory) {
+      if ('inventory' in inventoryData && inventoryData?.inventory) {
         // Combine raw materials and products into a single list
         const allItems: InventoryItemForTransport[] = [];
-        
+
         // Add raw materials
         if (inventoryData.inventory.rawMaterials?.items) {
           inventoryData.inventory.rawMaterials.items.forEach((item) => {

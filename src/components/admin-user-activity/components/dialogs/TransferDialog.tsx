@@ -14,12 +14,12 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Grid,
   Typography,
   Divider,
   CircularProgress,
   Tooltip,
 } from '@mui/material';
+import Grid2 from '@mui/material/GridLegacy';
 import { format } from 'date-fns';
 import AdminUserActivityService from '@/lib/services/adminUserActivityService';
 import { Activity } from '@/lib/services/activityService';
@@ -102,10 +102,10 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
         {dialog.user && (
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" gutterBottom>
-              <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(dialog.user.user)}
+              <strong>{t('activityManagement.USER')}:</strong> {AdminUserActivityService.formatUserDisplayName(dialog.user)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {dialog.user.user.email}
+              {dialog.user.email}
             </Typography>
             {dialog.user.currentActivity && (
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
@@ -115,8 +115,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
           </Box>
         )}
         <Divider sx={{ mb: 3 }} />
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <Grid2 container spacing={2}>
+          <Grid2 item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.SELECT_NEW_ACTIVITY')}</InputLabel>
               <Select
@@ -140,8 +140,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
                 )}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 item xs={12}>
             <TextField
               fullWidth
               label={t('activityManagement.REASON')}
@@ -154,8 +154,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
               })}
               placeholder={t('activityManagement.TRANSFER_REASON_PLACEHOLDER')}
             />
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </DialogContent>
       <DialogActions>
         <Button

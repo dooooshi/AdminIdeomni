@@ -9,10 +9,10 @@ import {
   DialogActions,
   Button,
   TextField,
-  Grid,
   FormControl,
   InputLabel,
   Select,
+  SelectChangeEvent,
   MenuItem,
   Typography,
   Box,
@@ -23,6 +23,7 @@ import {
   Stack,
   Chip
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -135,11 +136,31 @@ const CraftCategoryForm: React.FC<CraftCategoryFormProps> = ({
     const value = event.target.value;
     setFormData(prev => ({
       ...prev,
-      [field]: field.includes('Cost') || field.includes('Percent') || field === 'yieldPercentage' 
-        ? parseFloat(value as string) || 0 
+      [field]: field.includes('Cost') || field.includes('Percent') || field === 'yieldPercentage'
+        ? parseFloat(value as string) || 0
         : value
     }));
-    
+
+    // Clear error for this field
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  // Handle select changes
+  const handleSelectChange = (field: keyof CreateCraftCategoryRequest) => (
+    event: SelectChangeEvent
+  ) => {
+    const value = event.target.value;
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+
     // Clear error for this field
     if (errors[field]) {
       setErrors(prev => {
@@ -264,7 +285,7 @@ const CraftCategoryForm: React.FC<CraftCategoryFormProps> = ({
                 <InputLabel>{t('craftCategory.CATEGORY_TYPE')}</InputLabel>
                 <Select
                   value={formData.categoryType}
-                  onChange={handleChange('categoryType')}
+                  onChange={handleSelectChange('categoryType')}
                   label={t('craftCategory.CATEGORY_TYPE')}
                 >
                   {Object.values(CraftCategoryType).map(type => (
@@ -281,7 +302,7 @@ const CraftCategoryForm: React.FC<CraftCategoryFormProps> = ({
                 <InputLabel>{t('craftCategory.TECHNOLOGY_LEVEL')}</InputLabel>
                 <Select
                   value={formData.technologyLevel}
-                  onChange={handleChange('technologyLevel')}
+                  onChange={handleSelectChange('technologyLevel')}
                   label={t('craftCategory.TECHNOLOGY_LEVEL')}
                 >
                   {Object.values(TechnologyLevel).map(level => (

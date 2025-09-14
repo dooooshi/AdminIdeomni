@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Chip,
   Button,
   Alert,
@@ -37,6 +36,7 @@ import {
   Stack,
   Skeleton,
 } from '@mui/material';
+import GridLegacy from '@mui/material/GridLegacy';
 import {
   CellTower as BaseStationIcon,
   LocalFireDepartment as FireStationIcon,
@@ -282,14 +282,14 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
         
         <Box sx={{ minHeight: '600px' }}>
           <Skeleton variant="text" width={150} height={24} sx={{ mb: 1 }} />
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid item xs={12} md={6}>
+          <GridLegacy container spacing={2} sx={{ mb: 3 }}>
+            <GridLegacy item xs={12} md={6}>
               <SkeletonCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </GridLegacy>
+            <GridLegacy item xs={12} md={6}>
               <SkeletonCard />
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
           
           <Skeleton variant="text" width={150} height={24} sx={{ mb: 1 }} />
           <Skeleton variant="rectangular" width="100%" height={200} />
@@ -354,11 +354,11 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
               {t('infrastructure.NO_ACTIVE_SUBSCRIPTIONS')}
             </Alert>
           ) : (
-            <Grid container spacing={2} sx={{ mb: 3 }}>
+            <GridLegacy container spacing={2} sx={{ mb: 3 }}>
               {subscriptions
                 .filter(s => s && (s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE))
                 .map((subscription, index) => (
-                  <Grid key={subscription.id || `active-sub-${index}`} item xs={12} md={6}>
+                  <GridLegacy key={subscription.id || `active-sub-${index}`} item xs={12} md={6}>
                     <Card>
                       <CardContent>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -401,9 +401,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                         </Button>
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </GridLegacy>
               ))}
-            </Grid>
+            </GridLegacy>
           )}
           
           <Typography variant="subtitle1" gutterBottom sx={{ mt: 3, mb: 1 }}>
@@ -476,9 +476,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
             {t('infrastructure.MY_SERVICE_FACILITIES')}
           </Typography>
           
-          <Grid container spacing={2} sx={{ mb: 3 }}>
+          <GridLegacy container spacing={2} sx={{ mb: 3 }}>
             {providerFacilities.map((facility) => (
-              <Grid key={facility.facilityId} item xs={12} md={6}>
+              <GridLegacy key={facility.facilityId} item xs={12} md={6}>
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -524,9 +524,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
+              </GridLegacy>
             ))}
-          </Grid>
+          </GridLegacy>
           
           {/* Active Provider Subscriptions */}
           <Typography variant="subtitle1" gutterBottom sx={{ mt: 3, mb: 1 }}>

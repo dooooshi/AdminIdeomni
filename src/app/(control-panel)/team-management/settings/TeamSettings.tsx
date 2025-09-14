@@ -71,7 +71,7 @@ function TeamSettings() {
     watch,
     reset
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       name: '',
       description: '',

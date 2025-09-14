@@ -15,9 +15,9 @@ import {
   Paper,
   Stack,
   IconButton,
-  Tooltip,
-  Grid
+  Tooltip
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   ArrowBack as BackIcon,
   Refresh as RefreshIcon,
@@ -147,7 +147,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
 
       <Grid container spacing={3}>
         {/* Main Content */}
-        <Grid size={{ xs: 12, lg: 8 }}>
+        <Grid item xs={12} lg={8}>
           {/* Contract Information */}
           <Card sx={{ mb: 3 }}>
             <CardContent>
@@ -206,7 +206,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                 {/* Metadata */}
                 <Grid container spacing={2}>
                   {contract.createdBy && (
-                    <Grid size={{ xs: 12, sm: 6 }}>
+                    <Grid item xs={12} sm={6}>
                       <Typography variant="subtitle2" color="textSecondary">
                         {t('contract.CREATED_BY')}
                       </Typography>
@@ -215,7 +215,7 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                       </Typography>
                     </Grid>
                   )}
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" color="textSecondary">
                       {t('contract.CREATED_AT')}
                     </Typography>
@@ -223,8 +223,8 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                       {formatDate(contract.createdAt)}
                     </Typography>
                   </Grid>
-                  {(contract.status === 'SIGNED' || contract.status === ContractStatus.SIGNED) && (
-                    <Grid size={{ xs: 12, sm: 6 }}>
+                  {contract.status === ContractStatus.SIGNED && (
+                    <Grid item xs={12} sm={6}>
                       <Typography variant="subtitle2" color="textSecondary">
                         {t('contract.SIGNED_AT')}
                       </Typography>
@@ -233,8 +233,8 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
                       </Typography>
                     </Grid>
                   )}
-                  {(contract.status === 'REJECTED' || contract.status === ContractStatus.REJECTED) && (
-                    <Grid size={{ xs: 12, sm: 6 }}>
+                  {contract.status === ContractStatus.REJECTED && (
+                    <Grid item xs={12} sm={6}>
                       <Typography variant="subtitle2" color="textSecondary">
                         {t('contract.REJECTED_AT')}
                       </Typography>
@@ -268,9 +268,9 @@ const ContractDetail: React.FC<ContractDetailProps> = ({ contractId, userTeamId 
         </Grid>
 
         {/* Sidebar */}
-        <Grid size={{ xs: 12, lg: 4 }}>
+        <Grid item xs={12} lg={4}>
           {/* Actions */}
-          {userTeamId && (contract.status === 'PENDING_APPROVAL' || contract.status === ContractStatus.PENDING_APPROVAL) && (
+          {userTeamId && contract.status === ContractStatus.PENDING_APPROVAL && (
             <Card sx={{ mb: 3 }}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>

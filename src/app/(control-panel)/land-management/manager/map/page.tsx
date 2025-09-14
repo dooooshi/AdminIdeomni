@@ -425,7 +425,6 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           zoomLevel={zoomLevel}
           onZoomChange={setZoomLevel}
           selectedTileId={selectedTile?.tileId}
-          configurationMode={false}
           enableLandAnimations={animationsEnabled}
         />
 

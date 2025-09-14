@@ -65,7 +65,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   onSuccess,
   activity,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mapTemplates, setMapTemplates] = useState<MapTemplate[]>([]);
@@ -74,7 +74,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   const isEditMode = Boolean(activity);
 
   // Get the appropriate date-fns locale
-  const dateLocale = 'zh-CN' ? zhCN : enUS;
+  const dateLocale = i18n.language === 'zh-CN' ? zhCN : enUS;
 
   // Load map templates when component mounts
   useEffect(() => {

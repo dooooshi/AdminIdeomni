@@ -21,7 +21,7 @@ import {
   Stack,
   Chip
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Add as AddIcon,
   Refresh as RefreshIcon,

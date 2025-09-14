@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Box, Container } from '@mui/material';
-import { PageTitle } from '@/components/PageTitle';
+import PageTitle from '@/components/PageTitle';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { CraftCategoryList, CraftCategoryForm } from '@/components/craft-category';
 import { CraftCategory } from '@/types/craftCategory';

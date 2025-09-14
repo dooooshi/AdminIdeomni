@@ -4,15 +4,14 @@ import React, { useMemo, memo, useCallback } from 'react';
 import { RESOURCE_ICONS } from '@/constants/resourceIcons';
 import {
   Box,
-  Grid,
   Card,
   CardContent,
   Typography,
   Avatar,
   Chip,
 } from '@mui/material';
-import type { LandType, FacilityCategory } from '@/types/facilities';
-import { FacilityType } from '@/types/facilities';
+import Grid from '@mui/material/GridLegacy';
+import { FacilityType, LandType, type FacilityCategory } from '@/types/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 
@@ -40,33 +39,33 @@ interface FacilityOption {
 
 const LAND_TYPE_COMPATIBILITY: Record<FacilityType, LandType[]> = {
   // Marine-only and coastal facilities
-  [FacilityType.FISHERY]: ['MARINE', 'COASTAL'],
-  [FacilityType.WATER_PLANT]: ['MARINE', 'PLAIN'],
-  [FacilityType.BASE_STATION]: ['MARINE', 'PLAIN'],
-  
+  [FacilityType.FISHERY]: [LandType.MARINE, LandType.COASTAL],
+  [FacilityType.WATER_PLANT]: [LandType.MARINE, LandType.PLAIN],
+  [FacilityType.BASE_STATION]: [LandType.MARINE, LandType.PLAIN],
+
   // Coastal and plain facilities
-  [FacilityType.FARM]: ['COASTAL', 'PLAIN'],
-  [FacilityType.FACTORY]: ['COASTAL', 'PLAIN'],
-  [FacilityType.MALL]: ['COASTAL', 'PLAIN'],
-  [FacilityType.WAREHOUSE]: ['COASTAL', 'PLAIN'],
-  [FacilityType.HOSPITAL]: ['COASTAL', 'PLAIN'],
-  
+  [FacilityType.FARM]: [LandType.COASTAL, LandType.PLAIN],
+  [FacilityType.FACTORY]: [LandType.COASTAL, LandType.PLAIN],
+  [FacilityType.MALL]: [LandType.COASTAL, LandType.PLAIN],
+  [FacilityType.WAREHOUSE]: [LandType.COASTAL, LandType.PLAIN],
+  [FacilityType.HOSPITAL]: [LandType.COASTAL, LandType.PLAIN],
+
   // Plain-only facilities
-  [FacilityType.MINE]: ['PLAIN'],
-  [FacilityType.QUARRY]: ['PLAIN'],
-  [FacilityType.FOREST]: ['PLAIN'],
-  [FacilityType.RANCH]: ['PLAIN'],
-  [FacilityType.POWER_PLANT]: ['PLAIN'],
-  [FacilityType.FIRE_STATION]: ['PLAIN'],
-  [FacilityType.SCHOOL]: ['PLAIN'],
-  [FacilityType.PARK]: ['PLAIN'],
-  [FacilityType.CINEMA]: ['PLAIN'],
+  [FacilityType.MINE]: [LandType.PLAIN],
+  [FacilityType.QUARRY]: [LandType.PLAIN],
+  [FacilityType.FOREST]: [LandType.PLAIN],
+  [FacilityType.RANCH]: [LandType.PLAIN],
+  [FacilityType.POWER_PLANT]: [LandType.PLAIN],
+  [FacilityType.FIRE_STATION]: [LandType.PLAIN],
+  [FacilityType.SCHOOL]: [LandType.PLAIN],
+  [FacilityType.PARK]: [LandType.PLAIN],
+  [FacilityType.CINEMA]: [LandType.PLAIN],
 };
 
 const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
   selectedType,
   onTypeSelect,
-  compatibleLandTypes = ['MARINE', 'COASTAL', 'PLAIN'],
+  compatibleLandTypes = [LandType.MARINE, LandType.COASTAL, LandType.PLAIN],
   showOnlyCompatible = false,
   showBuildableOnly = false,
   selectedTileId,
@@ -208,10 +207,7 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
             {t('facilityManagement:NO_FACILITIES_FOUND')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {searchTerm
-              ? t('facilityManagement:NO_SEARCH_RESULTS')
-              : t('facilityManagement:NO_COMPATIBLE_FACILITIES')
-            }
+            {t('facilityManagement:NO_COMPATIBLE_FACILITIES')}
           </Typography>
         </Box>
       )}

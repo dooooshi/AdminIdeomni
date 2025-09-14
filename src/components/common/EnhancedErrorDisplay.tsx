@@ -69,7 +69,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
   onClose,
   context
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const handleCopyError = async () => {
@@ -117,7 +117,7 @@ const ErrorReportDialog: React.FC<ErrorReportDialogProps> = ({
               <ListItem>
                 <ListItemIcon><InfoIcon fontSize="small" /></ListItemIcon>
                 <ListItemText
-                  primary={LocalizedErrorMessages.getErrorTypeDisplayName(error.type, t.language)}
+                  primary={LocalizedErrorMessages.getErrorTypeDisplayName(error.type, i18n.language)}
                   secondary={error.type}
                 />
               </ListItem>
@@ -207,7 +207,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
   compact = false,
   context
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const [showDetailedView, setShowDetailedView] = useState(showDetails);
   const [showReportDialog, setShowReportDialog] = useState(false);
@@ -215,7 +215,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
   // Process the error to ensure it's in our standard format
   const processedError = error instanceof AdminUserActivityError 
     ? error 
-    : ErrorHandler.processError(error, context, t.language);
+    : ErrorHandler.processError(error, context, i18n.language);
 
   // Get severity level for the alert
   const getSeverity = (errorType: ErrorType): 'error' | 'warning' | 'info' => {
@@ -292,7 +292,7 @@ const EnhancedErrorDisplay: React.FC<EnhancedErrorDisplayProps> = ({
         <AlertTitle>
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <Typography variant="subtitle1">
-              {LocalizedErrorMessages.getErrorTypeDisplayName(processedError.type, t.language)}
+              {LocalizedErrorMessages.getErrorTypeDisplayName(processedError.type, i18n.language)}
             </Typography>
             <Stack direction="row" spacing={1}>
               <Chip 

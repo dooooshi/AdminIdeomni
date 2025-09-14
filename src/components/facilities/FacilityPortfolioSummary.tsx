@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Avatar,
   LinearProgress,
   Chip,
@@ -17,6 +16,7 @@ import {
   ListItemText,
   Paper,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   TrendingUpOutlined,
   AccountBalanceWalletOutlined,

@@ -306,7 +306,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                       )) || []}
                     </Select>
                     {formik.touched.category && formik.errors.category && (
-                      <FormHelperText>{formik.errors.category}</FormHelperText>
+                      <FormHelperText>{String(formik.errors.category)}</FormHelperText>
                     )}
                   </FormControl>
                 </Grid>
@@ -332,7 +332,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                       )) || []}
                     </Select>
                     {formik.touched.facilityType && formik.errors.facilityType && (
-                      <FormHelperText>{formik.errors.facilityType}</FormHelperText>
+                      <FormHelperText>{String(formik.errors.facilityType)}</FormHelperText>
                     )}
                   </FormControl>
                 </Grid>
@@ -371,7 +371,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={Boolean(formik.touched.defaultCapacity && formik.errors.defaultCapacity)}
-                    helperText={formik.touched.defaultCapacity && formik.errors.defaultCapacity}
+                    helperText={formik.touched.defaultCapacity && formik.errors.defaultCapacity ? String(formik.errors.defaultCapacity) : ''}
                     required
                     inputProps={{ min: 1 }}
                     InputProps={{
@@ -390,7 +390,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={Boolean(formik.touched.defaultBuildCost && formik.errors.defaultBuildCost)}
-                    helperText={formik.touched.defaultBuildCost && formik.errors.defaultBuildCost}
+                    helperText={formik.touched.defaultBuildCost && formik.errors.defaultBuildCost ? String(formik.errors.defaultBuildCost) : ''}
                     required
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -409,7 +409,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={Boolean(formik.touched.defaultMaintenanceCost && formik.errors.defaultMaintenanceCost)}
-                    helperText={formik.touched.defaultMaintenanceCost && formik.errors.defaultMaintenanceCost}
+                    helperText={formik.touched.defaultMaintenanceCost && formik.errors.defaultMaintenanceCost ? String(formik.errors.defaultMaintenanceCost) : ''}
                     required
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -428,7 +428,7 @@ const FacilityConfigForm: React.FC<FacilityConfigFormProps> = ({
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={Boolean(formik.touched.defaultOperationCost && formik.errors.defaultOperationCost)}
-                    helperText={formik.touched.defaultOperationCost && formik.errors.defaultOperationCost}
+                    helperText={formik.touched.defaultOperationCost && formik.errors.defaultOperationCost ? String(formik.errors.defaultOperationCost) : ''}
                     required
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,

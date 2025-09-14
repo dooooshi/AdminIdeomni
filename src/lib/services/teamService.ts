@@ -1,84 +1,15 @@
 import apiClient from '@/lib/http/api-client';
-
-// Team Management Types
-export interface Team {
-  id?: string;
-  name: string;
-  description?: string;
-  maxMembers: number;
-  isOpen: boolean;
-  leaderId?: string;
-  currentMemberCount?: number;
-  status?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface TeamListItem {
-  id: string;
-  name: string;
-  description?: string;
-  maxMembers: number;
-  currentMemberCount: number;
-  isOpen: boolean;
-  leaderId: string;
-  leaderName?: string;
-  status: string;
-  createdAt: string;
-}
-
-export interface TeamMember {
-  id: string;
-  userId: string;
-  username: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  role: 'leader' | 'member';
-  joinedAt: string;
-  status: string;
-}
-
-export interface CreateTeamRequest {
-  name: string;
-  description?: string;
-  maxMembers: number;
-  isOpen?: boolean;
-}
-
-export interface UpdateTeamRequest {
-  name?: string;
-  description?: string;
-  maxMembers?: number;
-  isOpen?: boolean;
-}
-
-export interface InviteMembersRequest {
-  userIds: string[];
-  message?: string;
-}
-
-export interface TransferLeadershipRequest {
-  newLeaderId: string;
-}
-
-export interface InviteResponse {
-  successful: string[];
-  failed: Array<{
-    userId: string;
-    reason: string;
-  }>;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
-}
+import {
+  Team,
+  TeamListItem,
+  TeamMember,
+  CreateTeamRequest,
+  UpdateTeamRequest,
+  InviteMembersRequest,
+  TransferLeadershipRequest,
+  InviteResponse,
+  PaginatedResponse
+} from '@/types/team';
 
 export interface TeamListQuery {
   page?: number;

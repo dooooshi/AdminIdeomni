@@ -21,11 +21,11 @@ import {
   Switch,
   FormControlLabel,
   Chip,
-  Grid,
   Card,
   CardContent,
   Stack,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   BuildOutlined,
   LocationOnOutlined,
@@ -39,12 +39,12 @@ import { FacilityTypeSelector } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { LandService } from '@/lib/services/landService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import type {
-  FacilityType,
+import {
   LandType,
-  BuildFacilityRequest,
-  BuildValidationResponse,
-  TileFacilityInstance,
+  type FacilityType,
+  type BuildFacilityRequest,
+  type BuildValidationResponse,
+  type TileFacilityInstance,
 } from '@/types/facilities';
 import type { OwnedTileForBuilding } from '@/types/land';
 
@@ -293,7 +293,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
   }, [open, selectedTileId]);
 
   // Use a ref to track validation timeout
-  const validationTimeoutRef = React.useRef<NodeJS.Timeout>();
+  const validationTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const validateBuild = async (tileId: number, facilityType: FacilityType) => {
     try {
@@ -577,7 +577,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
               <FacilityTypeSelector
                 selectedType={selectedFacilityType}
                 onTypeSelect={handleFacilityTypeSelect}
-                compatibleLandTypes={selectedTile ? [selectedTile.landType] : ['PLAIN']}
+                compatibleLandTypes={selectedTile ? [selectedTile.landType as LandType] : [LandType.PLAIN]}
                 showOnlyCompatible={true}
                 showBuildableOnly={true}
                 selectedTileId={selectedTile?.tileId}

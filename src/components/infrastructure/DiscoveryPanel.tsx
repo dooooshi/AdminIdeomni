@@ -67,7 +67,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
     fireStations?: ServiceProvider[];
   } | null>(null);
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<DetailedProviderInfo | ServiceProvider | null>(null);
+  const [selectedProvider, setSelectedProvider] = useState<(DetailedProviderInfo | ServiceProvider) & { type?: 'WATER' | 'POWER' } | null>(null);
   const [proposedPrice, setProposedPrice] = useState('');
   const [priceError, setPriceError] = useState<string | null>(null);
 
@@ -136,14 +136,14 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
     setLoading(true);
     try {
       // Default to double the unit price if no price is specified
-      const finalPrice = proposedPrice 
-        ? parseFloat(proposedPrice) 
-        : selectedProvider.unitPrice * 2;
+      const finalPrice = proposedPrice
+        ? parseFloat(proposedPrice)
+        : 'unitPrice' in selectedProvider ? selectedProvider.unitPrice * 2 : 0;
       
       await infrastructureService.requestConnection(
         selectedFacility,
         selectedProvider.providerId,
-        selectedProvider.type,
+        selectedProvider.type || 'WATER', // Default to WATER if type is not set
         finalPrice
       );
       setRequestDialogOpen(false);
@@ -168,7 +168,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
     try {
       await infrastructureService.subscribeToService(
         selectedFacility,
-        selectedProvider.serviceId,
+        'serviceId' in selectedProvider ? selectedProvider.serviceId : '',
         proposedPrice ? parseFloat(proposedPrice) : undefined
       );
       setRequestDialogOpen(false);

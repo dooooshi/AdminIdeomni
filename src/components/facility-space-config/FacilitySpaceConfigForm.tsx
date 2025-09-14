@@ -21,7 +21,6 @@ import {
   Tooltip,
   FormHelperText,
   Stack,
-  Grid,
   Slider,
   Paper,
   Table,
@@ -33,6 +32,7 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,

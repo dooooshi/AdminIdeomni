@@ -82,7 +82,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
   onCreateActivity,
   onEditActivity,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
   const [activityData, setActivityData] = useState<ActivitySearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -99,7 +99,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
   const [pageSize, setPageSize] = useState(20);
   
   // Get the appropriate date-fns locale
-  const dateLocale = 'zh-CN' ? zhCN : enUS;
+  const dateLocale = i18n.language === 'zh-CN' ? zhCN : enUS;
   
   // Filters state
   const [filters, setFilters] = useState<ActivityListFilter>({
@@ -334,7 +334,7 @@ const ActivityList: React.FC<ActivityListProps> = ({
       return format(date, 'PPp', { locale: dateLocale });
     } catch (error) {
       // Fallback to basic formatting if locale formatting fails
-      return date.toLocaleDateString(languageId, {
+      return date.toLocaleDateString(i18n.language, {
         year: 'numeric',
         month: 'short',
         day: 'numeric',

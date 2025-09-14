@@ -46,7 +46,12 @@ const createSchema = (t: (key: string) => string) => yup.object({
   isOpen: yup.boolean().optional()
 });
 
-type FormData = yup.InferType<ReturnType<typeof createSchema>>;
+interface FormData {
+  name: string;
+  description?: string;
+  maxMembers: number;
+  isOpen?: boolean;
+}
 
 /**
  * Create Team Modal Component
@@ -64,7 +69,7 @@ function CreateTeamModal({ open, onClose, onSuccess }: CreateTeamModalProps) {
     watch,
     reset
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as any,
     defaultValues: {
       name: '',
       description: '',

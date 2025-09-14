@@ -12,9 +12,9 @@ import {
   Alert,
   CircularProgress,
   Divider,
-  InputAdornment,
-  Grid
+  InputAdornment
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {} from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import InfrastructureConfigService from '@/lib/services/infrastructureConfigService';
