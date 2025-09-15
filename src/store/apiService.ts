@@ -37,3 +37,12 @@ export const apiService = createApi({
 });
 
 export default apiService;
+
+/**
+ * Lazy load support for RTK Query API
+ */
+declare module '@/store/rootReducer' {
+	export interface LazyLoadedSlices {
+		[apiService.reducerPath]: ReturnType<typeof apiService.reducer>;
+	}
+}

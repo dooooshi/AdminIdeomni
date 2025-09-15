@@ -360,9 +360,9 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 <FormControl fullWidth size="small" sx={{ minWidth: 150 }}>
                   <InputLabel>{t('mapTemplate.STATUS')}</InputLabel>
                   <Select
-                    value={allowedFilter}
+                    value={allowedFilter === '' ? '' : allowedFilter.toString()}
                     label={t('mapTemplate.STATUS')}
-                    onChange={(e) => setAllowedFilter(e.target.value as boolean | '')}
+                    onChange={(e) => setAllowedFilter(e.target.value === '' ? '' : e.target.value === 'true')}
                     MenuProps={{
                       PaperProps: {
                         style: {
@@ -372,8 +372,8 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                     }}
                   >
                     <MenuItem value="" sx={{ minWidth: 150 }}>{t('mapTemplate.ALL')}</MenuItem>
-                    <MenuItem value={true} sx={{ minWidth: 150 }}>{t('mapTemplate.ALLOWED')}</MenuItem>
-                    <MenuItem value={false} sx={{ minWidth: 150 }}>{t('mapTemplate.NOT_ALLOWED')}</MenuItem>
+                    <MenuItem value="true" sx={{ minWidth: 150 }}>{t('mapTemplate.ALLOWED')}</MenuItem>
+                    <MenuItem value="false" sx={{ minWidth: 150 }}>{t('mapTemplate.NOT_ALLOWED')}</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

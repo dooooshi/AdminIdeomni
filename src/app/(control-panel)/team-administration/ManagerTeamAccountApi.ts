@@ -136,12 +136,7 @@ export type ManagerTeamAccountApiType = {
   [ManagerTeamAccountApi.reducerPath]: ReturnType<typeof ManagerTeamAccountApi.reducer>;
 };
 
-/**
- * Lazy load
- */
-declare module '@/store/rootReducer' {
-  export interface LazyLoadedSlices extends WithSlice<typeof ManagerTeamAccountApi> {}
-}
+// Note: LazyLoadedSlices extension is handled in the main apiService file
 
 // Selectors
 export const selectTeamAccounts = createSelector(

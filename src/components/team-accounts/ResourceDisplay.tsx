@@ -125,7 +125,7 @@ function ResourceDisplay({
               {label}
             </Typography>
           )}
-          <Typography variant={classes.text} className={`font-mono font-bold ${color}`}>
+          <Typography variant={size === 'large' ? 'h6' : size === 'medium' ? 'body1' : 'body2'} className={`font-mono font-bold ${color} ${classes.text}`}>
             {formattedAmount}
           </Typography>
         </Box>

@@ -96,7 +96,8 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
   onViewAuditLog,
   isSuperAdmin,
 }) => {
-  const { t, locale } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const theme = useTheme();
   const [materialData, setMaterialData] = useState<RawMaterialSearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -242,7 +243,23 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
   // Handle export
   const handleExport = async () => {
     try {
-      const blob = await RawMaterialService.exportRawMaterials(filters);
+      const params: RawMaterialSearchParams = {
+        page: 1,
+        limit: 10000,
+        sort: filters.sortBy,
+        order: filters.sortOrder,
+        isActive: filters.isActive,
+        isDeleted: filters.showDeleted,
+      };
+      
+      if (filters.search) params.search = filters.search;
+      if (filters.origin) params.origin = filters.origin as RawMaterialOrigin;
+      if (filters.minCost) params.minCost = parseFloat(filters.minCost);
+      if (filters.maxCost) params.maxCost = parseFloat(filters.maxCost);
+      if (filters.minCarbon) params.minCarbon = parseFloat(filters.minCarbon);
+      if (filters.maxCarbon) params.maxCarbon = parseFloat(filters.maxCarbon);
+      
+      const blob = await RawMaterialService.exportRawMaterials(params);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -292,7 +309,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.search')}
@@ -307,7 +324,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid size={{ xs: 12, md: 2 }}>
               <FormControl fullWidth>
                 <InputLabel>{t('rawMaterial.origin')}</InputLabel>
                 <Select
@@ -329,7 +346,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6} md={1.5}>
+            <Grid size={{ xs: 6, md: 1.5 }}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.minCost')}
@@ -338,7 +355,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('minCost', e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} md={1.5}>
+            <Grid size={{ xs: 6, md: 1.5 }}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.maxCost')}
@@ -347,7 +364,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('maxCost', e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} md={1.5}>
+            <Grid size={{ xs: 6, md: 1.5 }}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.minCarbon')}
@@ -356,7 +373,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('minCarbon', e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} md={1.5}>
+            <Grid size={{ xs: 6, md: 1.5 }}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.maxCarbon')}
@@ -365,7 +382,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('maxCarbon', e.target.value)}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid size={{ xs: 6, md: 2 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -376,7 +393,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 label={t('rawMaterial.activeOnly')}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid size={{ xs: 6, md: 2 }}>
               <FormControlLabel
                 control={
                   <Switch
@@ -387,7 +404,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 label={t('rawMaterial.showDeleted')}
               />
             </Grid>
-            <Grid item xs={12} md={8}>
+            <Grid size={{ xs: 12, md: 8 }}>
               <Stack direction="row" spacing={1}>
                 <Button
                   variant="outlined"

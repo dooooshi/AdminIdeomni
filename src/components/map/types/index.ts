@@ -37,6 +37,8 @@ export interface HexagonalMapProps {
 	// Activity tile state management mode
 	showEconomicData?: boolean;
 	activityMode?: boolean;
+	// Configuration mode for template editing
+	configurationMode?: boolean;
 	// Land type animations
 	enableLandAnimations?: boolean;
 }

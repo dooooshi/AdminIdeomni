@@ -23,7 +23,7 @@ import {
 import {
   Calculate as CalculateIcon,
   AttachMoney as MoneyIcon,
-  EcoOutlined as EcoIcon,
+  Forest as EcoIcon,
   TrendingUp as TrendingUpIcon,
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,

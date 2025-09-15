@@ -167,7 +167,10 @@ function MapContainer({ tiles, onTileClick, onExpand }: MapContainerProps) {
 				<HexagonalMap
 					ref={mapRef}
 					tiles={tiles}
-					onTileClick={onTileClick}
+					onTileClick={(tileId) => {
+						const tile = tiles.find(t => t.id === tileId);
+						if (tile) onTileClick(tile);
+					}}
 					zoomLevel={zoomLevel}
 					onZoomChange={handleZoomChange}
 				/>

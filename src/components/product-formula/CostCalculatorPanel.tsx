@@ -6,12 +6,12 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
   Stack,
   Divider,
   Chip,
   LinearProgress
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   Water as WaterIcon,
   Power as PowerIcon,
@@ -112,24 +112,24 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
           {icon}
           <Typography variant="subtitle2">{label}</Typography>
         </Stack>
-        <Grid container spacing={1}>
-          <Grid item xs={6}>
+        <Grid2 container spacing={1}>
+          <Grid2 size={6}>
             <Typography variant="caption" color="text.secondary">
               {t('productFormula.setupCost')}
             </Typography>
             <Typography variant="h6" color={color}>
               {setupCost}
             </Typography>
-          </Grid>
-          <Grid item xs={6}>
+          </Grid2>
+          <Grid2 size={6}>
             <Typography variant="caption" color="text.secondary">
               {t('productFormula.percent')}
             </Typography>
             <Typography variant="h6" color={color}>
               {variablePercent}%
             </Typography>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Stack>
     </Paper>
   );
@@ -141,8 +141,8 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
         <Typography variant="h6">{t('productFormula.costBreakdown')}</Typography>
       </Stack>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
+      <Grid2 container spacing={2}>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <CostItem
             icon={<WaterIcon color="primary" />}
             label={t('productFormula.water')}
@@ -150,8 +150,8 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
             variablePercent={costs.variablePercents.water}
             color="primary.main"
           />
-        </Grid>
-        <Grid item xs={12} md={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <CostItem
             icon={<PowerIcon color="warning" />}
             label={t('productFormula.power')}
@@ -159,8 +159,8 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
             variablePercent={costs.variablePercents.power}
             color="warning.main"
           />
-        </Grid>
-        <Grid item xs={12} md={4}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 4 }}>
           <CostItem
             icon={<MoneyIcon color="success" />}
             label={t('productFormula.gold')}
@@ -168,8 +168,8 @@ const CostCalculatorPanel: React.FC<CostCalculatorPanelProps> = ({
             variablePercent={costs.variablePercents.gold}
             color="success.main"
           />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {(materials.length === 0 || craftCategories.length === 0) && (
         <Box sx={{ mt: 2, p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 152, 0, 0.12)' : 'warning.light', borderRadius: 1 }}>

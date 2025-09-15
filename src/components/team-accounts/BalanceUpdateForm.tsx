@@ -13,7 +13,16 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { MonetizationOn, Co2 } from '@mui/icons-material';
+import { 
+  MonetizationOn, 
+  Co2, 
+  AddCircleOutline, 
+  Settings, 
+  Visibility, 
+  ArrowForward, 
+  Check,
+  RefreshOutlined
+} from '@mui/icons-material';
 import { UpdateBalancesRequest, SetBalancesRequest } from '@/types/teamAccount';
 import TeamAccountService from '@/lib/services/teamAccountService';
 import ResourceDisplay from './ResourceDisplay';
@@ -196,14 +205,14 @@ function BalanceUpdateForm({
             <Button
               variant={operationMode === 'delta' ? 'contained' : 'outlined'}
               onClick={() => setOperationMode('delta')}
-              startIcon={<IdeomniSvgIcon>heroicons-outline:plus-minus</IdeomniSvgIcon>}
+              startIcon={<AddCircleOutline />}
             >
               {t('teamAccounts.deltaMode')}
             </Button>
             <Button
               variant={operationMode === 'absolute' ? 'contained' : 'outlined'}
               onClick={() => setOperationMode('absolute')}
-              startIcon={<IdeomniSvgIcon>heroicons-outline:equals</IdeomniSvgIcon>}
+              startIcon={<Settings />}
             >
               {t('teamAccounts.absoluteMode')}
             </Button>
@@ -268,7 +277,7 @@ function BalanceUpdateForm({
           <Card variant="outlined" className="bg-blue-50 dark:bg-blue-900/20">
             <CardContent className="p-4">
               <Typography variant="subtitle2" className="mb-3 flex items-center gap-2">
-                <IdeomniSvgIcon>heroicons-outline:eye</IdeomniSvgIcon>
+                <Visibility />
                 {t('teamAccounts.preview')}
               </Typography>
               <Box className="grid grid-cols-2 gap-4">
@@ -280,7 +289,7 @@ function BalanceUpdateForm({
                     <Typography variant="body2" className="font-mono">
                       {TeamAccountService.formatResourceAmount(preview.currentGold)}
                     </Typography>
-                    <IdeomniSvgIcon className="text-sm">heroicons-outline:arrow-right</IdeomniSvgIcon>
+                    <ArrowForward className="text-sm" />
                     <Typography 
                       variant="body2" 
                       className={`font-mono font-bold ${TeamAccountService.getResourceColor(preview.newGold, 'gold')}`}
@@ -297,7 +306,7 @@ function BalanceUpdateForm({
                     <Typography variant="body2" className="font-mono">
                       {TeamAccountService.formatResourceAmount(preview.currentCarbon)}
                     </Typography>
-                    <IdeomniSvgIcon className="text-sm">heroicons-outline:arrow-right</IdeomniSvgIcon>
+                    <ArrowForward className="text-sm" />
                     <Typography 
                       variant="body2" 
                       className={`font-mono font-bold ${TeamAccountService.getResourceColor(preview.newCarbon, 'carbon')}`}
@@ -332,11 +341,9 @@ function BalanceUpdateForm({
             variant="contained"
             disabled={isLoading || validationErrors.length > 0 || (!goldValue && !carbonValue)}
             startIcon={isLoading ? (
-              <IdeomniSvgIcon className="animate-spin">
-                heroicons-outline:arrow-path
-              </IdeomniSvgIcon>
+              <RefreshOutlined className="animate-spin" />
             ) : (
-              <IdeomniSvgIcon>heroicons-outline:check</IdeomniSvgIcon>
+              <Check />
             )}
           >
             {isLoading ? t('common.saving') : t('teamAccounts.UPDATE_BALANCES')}

@@ -13,12 +13,12 @@ import {
   IconButton,
   Stack,
   Chip,
-  Grid,
   Card,
   CardContent,
   Alert,
   ListSubheader
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -198,7 +198,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
       {craftCategories.length > 0 && (
         <Grid container spacing={2}>
           {craftCategories.map((cc, index) => (
-            <Grid item xs={12} md={6} key={index}>
+            <Grid size={{ xs: 12, md: 6 }} key={index}>
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -222,7 +222,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
                         {t('productFormula.yield')}: {cc.craftCategory?.yieldPercentage}%
                       </Typography>
                       <Grid container spacing={1}>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <Typography variant="caption" color="text.secondary">
                             {t('productFormula.setupCosts')}:
                           </Typography>
@@ -247,7 +247,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
                             </Stack>
                           </Stack>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                           <Typography variant="caption" color="text.secondary">
                             {t('productFormula.variablePercents')}:
                           </Typography>

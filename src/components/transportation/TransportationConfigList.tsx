@@ -106,9 +106,9 @@ const TransportationConfigList: React.FC<TransportationConfigListProps> = ({ tem
   };
 
   const handleToggleActive = async () => {
-    if (config && templateId) {
+    if (config) {
       try {
-        await TransportationConfigService.toggleConfig(templateId, !config.isActive);
+        await TransportationConfigService.toggleConfig(config.id, !config.isActive);
         await fetchConfig();
       } catch (error) {
         console.error('Failed to toggle config:', error);

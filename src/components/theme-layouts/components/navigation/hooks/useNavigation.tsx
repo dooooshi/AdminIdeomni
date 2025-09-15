@@ -36,7 +36,6 @@ function useNavigation() {
 				hasPermission: Boolean(IdeomniUtils.hasPermission(item?.auth, userRole)),
 				...item,
 				...(item?.translate && item?.title ? { title: i18n.t(item?.translate) } : {}),
-				...(item?.subtitleTranslate && item?.subtitle ? { subtitle: i18n.t(item?.subtitleTranslate) } : {}),
 				...(item?.children ? { children: setAdditionalData(item?.children) } : {})
 			}));
 		}

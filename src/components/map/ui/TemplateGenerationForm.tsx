@@ -51,8 +51,13 @@ import {
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { GenerateMapTemplateDto, TemplateGenerationFormProps } from '../types';
+import { GenerateMapTemplateDto } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
+
+interface TemplateGenerationFormProps {
+  onGenerate: (data: GenerateMapTemplateDto) => void;
+  isLoading?: boolean;
+}
 
 interface FormErrors {
   [key: string]: string;
@@ -67,7 +72,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
 
   // Form state
   const [formData, setFormData] = useState<GenerateMapTemplateDto>({
-    templateName: '',
+    name: '',
     description: '',
     width: 15,
     height: 7,
@@ -81,6 +86,11 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showCustomPricing, setShowCustomPricing] = useState(false);
   const [estimatedTileCount, setEstimatedTileCount] = useState(0);
+  
+  // Additional form state not part of DTO
+  const [customPricing, setCustomPricing] = useState<Record<string, number> | undefined>();
+  const [customPopulation, setCustomPopulation] = useState<Record<string, number> | undefined>();
+  const [customTransportation, setCustomTransportation] = useState<Record<string, number> | undefined>();
 
   // Update tile count estimation when dimensions change
   useEffect(() => {
@@ -130,31 +140,25 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
   const handleCustomPricingToggle = useCallback((enabled: boolean) => {
     setShowCustomPricing(enabled);
     if (enabled) {
-      setFormData(prev => ({
-        ...prev,
-        customPricing: {
-          MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialGoldPrice,
-          COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialGoldPrice,
-          PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialGoldPrice,
-        },
-        customPopulation: {
-          MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialPopulation,
-          COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialPopulation,
-          PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialPopulation,
-        },
-        customTransportation: {
-          MARINE: MapTemplateService.getDefaultConfiguration('MARINE').transportationCostUnit,
-          COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').transportationCostUnit,
-          PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').transportationCostUnit,
-        },
-      }));
+      setCustomPricing({
+        MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialGoldPrice,
+        COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialGoldPrice,
+        PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialGoldPrice,
+      });
+      setCustomPopulation({
+        MARINE: MapTemplateService.getDefaultConfiguration('MARINE').initialPopulation,
+        COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').initialPopulation,
+        PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').initialPopulation,
+      });
+      setCustomTransportation({
+        MARINE: MapTemplateService.getDefaultConfiguration('MARINE').transportationCostUnit,
+        COASTAL: MapTemplateService.getDefaultConfiguration('COASTAL').transportationCostUnit,
+        PLAIN: MapTemplateService.getDefaultConfiguration('PLAIN').transportationCostUnit,
+      });
     } else {
-      setFormData(prev => ({
-        ...prev,
-        customPricing: undefined,
-        customPopulation: undefined,
-        customTransportation: undefined,
-      }));
+      setCustomPricing(undefined);
+      setCustomPopulation(undefined);
+      setCustomTransportation(undefined);
     }
   }, []);
 
@@ -169,12 +173,12 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
     const validationErrors = MapTemplateService.validateGenerationParameters(formData);
     const newErrors: FormErrors = {};
 
-    if (!formData.templateName.trim()) {
-      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_REQUIRED');
-    } else if (formData.templateName.length < 3) {
-      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_TOO_SHORT');
-    } else if (formData.templateName.length > 100) {
-      newErrors.templateName = t('map.VALIDATION_TEMPLATE_NAME_TOO_LONG');
+    if (!formData.name.trim()) {
+      newErrors.name = t('map.VALIDATION_TEMPLATE_NAME_REQUIRED');
+    } else if (formData.name.length < 3) {
+      newErrors.name = t('map.VALIDATION_TEMPLATE_NAME_TOO_SHORT');
+    } else if (formData.name.length > 100) {
+      newErrors.name = t('map.VALIDATION_TEMPLATE_NAME_TOO_LONG');
     }
 
     validationErrors.forEach(error => {
@@ -234,11 +238,11 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               <TextField
                 fullWidth
                 label={t('map.TEMPLATE_NAME')}
-                value={formData.templateName}
-                onChange={(e) => handleFieldChange('templateName', e.target.value)}
+                value={formData.name}
+                onChange={(e) => handleFieldChange('name', e.target.value)}
                 disabled={isLoading}
-                error={!!errors.templateName}
-                helperText={errors.templateName}
+                error={!!errors.name}
+                helperText={errors.name}
                 required
               />
             </Grid>
@@ -496,15 +500,12 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                               fullWidth
                               label={t('map.INITIAL_PRICE')}
                               type="number"
-                              value={formData.customPricing?.[landType] || ''}
+                              value={customPricing?.[landType] || ''}
                               onChange={(e) => {
                                 const value = parseFloat(e.target.value);
-                                setFormData(prev => ({
+                                setCustomPricing(prev => ({
                                   ...prev,
-                                  customPricing: {
-                                    ...prev.customPricing,
-                                    [landType]: value,
-                                  }
+                                  [landType]: value,
                                 }));
                               }}
                               disabled={isLoading}
@@ -524,15 +525,12 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                               fullWidth
                               label={t('map.INITIAL_POPULATION')}
                               type="number"
-                              value={formData.customPopulation?.[landType] || ''}
+                              value={customPopulation?.[landType] || ''}
                               onChange={(e) => {
                                 const value = parseInt(e.target.value);
-                                setFormData(prev => ({
+                                setCustomPopulation(prev => ({
                                   ...prev,
-                                  customPopulation: {
-                                    ...prev.customPopulation,
-                                    [landType]: value,
-                                  }
+                                  [landType]: value,
                                 }));
                               }}
                               disabled={isLoading}
@@ -552,15 +550,12 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                               fullWidth
                               label={t('map.TRANSPORTATION_COST')}
                               type="number"
-                              value={formData.customTransportation?.[landType] || ''}
+                              value={customTransportation?.[landType] || ''}
                               onChange={(e) => {
                                 const value = parseFloat(e.target.value);
-                                setFormData(prev => ({
+                                setCustomTransportation(prev => ({
                                   ...prev,
-                                  customTransportation: {
-                                    ...prev.customTransportation,
-                                    [landType]: value,
-                                  }
+                                  [landType]: value,
                                 }));
                               }}
                               disabled={isLoading}
@@ -612,7 +607,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
             <Button
               variant="contained"
               onClick={handleSubmit}
-              disabled={isLoading || !formData.templateName.trim()}
+              disabled={isLoading || !formData.name.trim()}
               startIcon={<AutoFixHighIcon />}
             >
               {isLoading ? t('map.GENERATING') : t('map.GENERATE_TEMPLATE')}

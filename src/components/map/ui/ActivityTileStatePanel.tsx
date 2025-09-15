@@ -32,7 +32,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondary,
   Collapse,
 } from '@mui/material';
 import {

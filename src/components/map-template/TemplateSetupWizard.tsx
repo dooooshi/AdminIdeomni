@@ -275,8 +275,8 @@ const TemplateSetupWizard: React.FC<TemplateSetupWizardProps> = ({
           initializeFacilityConfigs: true,
         });
 
-        // Apply difficulty preset if not normal
-        if (wizardData.difficultyPreset !== 'normal') {
+        // Apply difficulty preset if not normal or custom
+        if (wizardData.difficultyPreset !== 'normal' && wizardData.difficultyPreset !== 'custom') {
           await MapTemplateService.applyDifficultyPreset(
             template.id,
             wizardData.difficultyPreset

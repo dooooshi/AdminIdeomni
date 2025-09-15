@@ -163,7 +163,7 @@ const TileContextMenu: React.FC<TileContextMenuProps> = ({
             <ListItemText
               primary={t('land.PURCHASE_UNAVAILABLE')}
               secondary={
-                tile.isOwned 
+                tile.teamOwnedArea > 0 
                   ? t('land.ALREADY_OWNED_BY_TEAM')
                   : t('land.NOT_AVAILABLE_FOR_PURCHASE')
               }

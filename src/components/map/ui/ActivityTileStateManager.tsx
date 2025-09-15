@@ -55,9 +55,8 @@ import { motion, AnimatePresence } from 'motion/react';
 
 import { 
   ActivityTileState, 
-  TileStatistics, 
-  BulkUpdateTileStatesDto,
-  MarketSimulationEvent 
+  ActivityTileStatistics, 
+  BulkUpdateActivityTileStatesDto
 } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 
@@ -66,8 +65,8 @@ interface ActivityTileStateManagerProps {
   templateId: number | null;
   selectedTileId: number | null;
   onTileStateUpdate: (tileId: number, newState: Partial<ActivityTileState>) => void;
-  onBulkStateUpdate: (updates: BulkUpdateTileStatesDto) => void;
-  onStatisticsUpdate: (stats: TileStatistics) => void;
+  onBulkStateUpdate: (updates: BulkUpdateActivityTileStatesDto) => void;
+  onStatisticsUpdate: (stats: ActivityTileStatistics) => void;
   isVisible: boolean;
 }
 
@@ -147,7 +146,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
 }) => {
   const { t } = useTranslation();
   const [tileStates, setTileStates] = useState<ActivityTileState[]>([]);
-  const [statistics, setStatistics] = useState<TileStatistics | null>(null);
+  const [statistics, setStatistics] = useState<ActivityTileStatistics | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [simulationDialogOpen, setSimulationDialogOpen] = useState(false);
@@ -161,7 +160,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
 
     setIsLoading(true);
     try {
-      const states = await MapTemplateService.getActivityTileStates(activityId);
+      const states = await MapTemplateService.getActivityTileStatesByActivity(activityId);
       setTileStates(states);
       setIsInitialized(states.length > 0);
 
@@ -234,10 +233,10 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
           };
         });
 
-      const bulkUpdate: BulkUpdateTileStatesDto = {
+      const bulkUpdate: BulkUpdateActivityTileStatesDto = {
+        activityId,
         updates,
-        globalChangeReason: `${scenario.name} simulation event`,
-        updatedBy: 'admin', // In real app, get from auth context
+        changeReason: `${scenario.name} simulation event`
       };
 
       await MapTemplateService.bulkUpdateActivityTileStates(activityId, bulkUpdate);
@@ -377,7 +376,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                           {t('map.TOTAL_POPULATION')}
                         </Typography>
                         <Typography variant="body1" fontWeight="bold">
-                          {statistics.totalPopulation?.toLocaleString() || '0'}
+                          {(statistics.averagePopulation * statistics.totalTiles)?.toLocaleString() || '0'}
                         </Typography>
                       </Box>
                     </Box>
@@ -420,9 +419,9 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                     }}
                     size="small"
                   />
-                  {selectedTileState.lastUpdated && (
+                  {selectedTileState.lastModifiedAt && (
                     <Typography variant="caption" color="textSecondary">
-                      {t('map.LAST_UPDATED')}: {new Date(selectedTileState.lastUpdated).toLocaleString()}
+                      {t('map.LAST_UPDATED')}: {new Date(selectedTileState.lastModifiedAt).toLocaleString()}
                     </Typography>
                   )}
                 </Stack>

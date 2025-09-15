@@ -45,7 +45,7 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { motion, AnimatePresence } from 'motion/react';
 
-import { MapTemplate, MapTile, UpdateTileDto, MapConfigurationPanelProps } from '../types';
+import { MapTemplate, MapTile, UpdateTileDto } from '../types';
 import HexagonalMapAdmin from '../components/HexagonalMapAdmin';
 import TileConfigurationPanel from './TileConfigurationPanel';
 import MapTemplateService from '@/lib/services/mapTemplateService';

@@ -162,7 +162,7 @@ export class TeamService {
    * Check if user can join team
    */
   static canJoinTeam(team: TeamListItem): boolean {
-    return team.isOpen && team.currentMemberCount < team.maxMembers && team.status === 'active';
+    return team.isOpen && team.currentMembers < team.maxMembers;
   }
 
   /**
@@ -201,7 +201,8 @@ export class TeamService {
    * Check if team is full
    */
   static isTeamFull(team: Team | TeamListItem): boolean {
-    return (team.currentMemberCount || 0) >= team.maxMembers;
+    const currentCount = 'currentMembers' in team ? team.currentMembers : (team as Team).members?.length || 0;
+    return currentCount >= team.maxMembers;
   }
 
   /**
@@ -213,7 +214,7 @@ export class TeamService {
     percentage: number;
     available: number;
   } {
-    const current = team.currentMemberCount || 0;
+    const current = 'currentMembers' in team ? team.currentMembers : (team as Team).members?.length || 0;
     const max = team.maxMembers;
     const available = max - current;
     const percentage = max > 0 ? Math.round((current / max) * 100) : 0;

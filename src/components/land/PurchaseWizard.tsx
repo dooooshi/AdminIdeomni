@@ -270,13 +270,13 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
       if (strategicTiles.length > 0) {
         recs.push({
           type: 'strategic',
-          title: `${LandService.formatLandType(wizardData.priorityLandType)} Focus`,
+          title: `${LandService.formatLandType(wizardData.priorityLandType as 'MARINE' | 'PLAIN' | 'COASTAL')} Focus`,
           description: `Specialized investment in ${wizardData.priorityLandType.toLowerCase()} territories`,
           tiles: strategicTiles,
           totalCost: strategicTiles.reduce((sum, tile) => sum + tile.currentGoldPrice + tile.currentCarbonPrice, 0),
           expectedROI: 75,
           reasoning: [
-            `${LandService.formatLandType(wizardData.priorityLandType)} tiles show strong fundamentals`,
+            `${LandService.formatLandType(wizardData.priorityLandType as 'MARINE' | 'PLAIN' | 'COASTAL')} tiles show strong fundamentals`,
             'Aligned with your strategic preferences',
             'Potential for specialized synergies'
           ],
@@ -449,7 +449,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                   sx={{
                     cursor: 'pointer',
                     border: wizardData.strategy === strategy.value 
-                      ? `2px solid ${theme.palette[strategy.color as keyof typeof theme.palette].main}` 
+                      ? `2px solid ${(theme.palette[strategy.color as keyof typeof theme.palette] as any)?.main || theme.palette.primary.main}` 
                       : undefined,
                     transition: 'all 0.2s ease-in-out',
                     '&:hover': {
@@ -487,7 +487,7 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                 {['PLAIN', 'COASTAL', 'MARINE'].map(landType => (
                   <Chip
                     key={landType}
-                    label={LandService.formatLandType(landType)}
+                    label={LandService.formatLandType(landType as 'MARINE' | 'PLAIN' | 'COASTAL')}
                     onClick={() => setWizardData(prev => ({ 
                       ...prev, 
                       priorityLandType: prev.priorityLandType === landType ? null : landType 

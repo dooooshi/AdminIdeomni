@@ -664,7 +664,7 @@ const ProductionModal: React.FC<ProductionModalProps> = ({
                   : `0 4px 12px ${alpha(theme.palette.primary.main, 0.2)}`,
                 '&:hover': {
                   background: theme.palette.mode === 'dark'
-                    ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.darker || theme.palette.primary.dark} 100%)`
+                    ? `linear-gradient(135deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.dark} 100%)`
                     : `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
                   boxShadow: theme.palette.mode === 'dark'
                     ? `0 6px 16px ${alpha(theme.palette.primary.main, 0.4)}`

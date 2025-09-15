@@ -63,7 +63,7 @@ const ErrorSummary = styled(Box)(({ theme }) => ({
   padding: '12px',
 }));
 
-interface LandPurchaseModalProps {
+export interface LandPurchaseModalProps {
   open: boolean;
   onClose: () => void;
   tile: AvailableTile | null;

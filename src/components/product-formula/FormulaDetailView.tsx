@@ -10,7 +10,6 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
   Stack,
   Chip,
   Table,
@@ -23,6 +22,7 @@ import {
   CircularProgress,
   IconButton
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {
   Close as CloseIcon,
   Science as ScienceIcon,
@@ -133,7 +133,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
               {t('productFormula.costSummary')}
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
                   <Typography variant="subtitle2" gutterBottom color="text.secondary">
                     {t('productFormula.setupCosts')}
@@ -170,7 +170,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
                 </Box>
               </Grid>
               
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
                   <Typography variant="subtitle2" gutterBottom color="text.secondary">
                     {t('productFormula.variablePercents')}
@@ -209,7 +209,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
             </Grid>
             
             <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'grey.900' : 'grey.50', borderRadius: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body2" color="text.secondary">
@@ -221,7 +221,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
                   </Stack>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <Box sx={{ p: 2, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(76, 175, 80, 0.08)' : 'green.50', borderRadius: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <NatureIcon fontSize="small" sx={{ color: 'green' }} />
@@ -240,7 +240,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
           <Divider />
 
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Box>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                   {t('productFormula.materials')} ({formula.materials.length})
@@ -302,7 +302,7 @@ const FormulaDetailView: React.FC<FormulaDetailViewProps> = ({
               </Box>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Box>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                   {t('productFormula.craftCategories')} ({formula.craftCategories.length})

@@ -90,13 +90,13 @@ export const useProductProduction = (): UseProductProductionReturn => {
     setLoadingFormulas(true);
     setFormulasError(null);
     try {
-      const response = await productFormulaService.searchFormulas({ 
+      const response = await productFormulaService.searchProductFormulas({ 
         page: 1, 
         limit: 100,
         isActive: true 
       });
-      if (response.success && response.data?.items) {
-        setFormulas(response.data.items);
+      if (response.items) {
+        setFormulas(response.items);
       }
     } catch (error) {
       setFormulasError('Failed to load formulas');
@@ -140,7 +140,7 @@ export const useProductProduction = (): UseProductProductionReturn => {
     setProductionError(null);
     
     try {
-      const response = await productProductionService.startProduction({
+      const response = await productProductionService.executeProduction({
         factoryId: selectedFactory.id,
         formulaId: selectedFormula.id,
         quantity,
@@ -175,7 +175,7 @@ export const useProductProduction = (): UseProductProductionReturn => {
     setHistoryError(null);
     
     try {
-      const response = await productProductionService.getProductionHistory({
+      const response = await productProductionService.getHistory({
         page,
         limit,
         sort: 'timestamps.completed',

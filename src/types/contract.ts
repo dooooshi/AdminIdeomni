@@ -111,8 +111,8 @@ export interface ContractListItem {
   rejectedAt?: string | null;
 }
 
-// Contract details for full view
-export interface ContractDetails extends Contract {
+// Contract details for full view  
+export interface ContractDetails extends Omit<Contract, 'teams'> {
   teams: Array<{
     teamId: string;
     teamName: string;
@@ -121,12 +121,7 @@ export interface ContractDetails extends Contract {
     approvedBy?: string | null;
     joinedAt: string;
   }>;
-  createdByUser: {
-    userId: string;
-    username: string;
-    firstName?: string;
-    lastName?: string;
-  };
+  createdByUser: User; // Use the User interface to maintain type compatibility
 }
 
 // Request types

@@ -1,5 +1,6 @@
 import { Action, Middleware, ThunkAction, configureStore, createSelector } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import type { TypedUseSelectorHook } from 'react-redux';
 import apiService from 'src/store/apiService';
 import rootReducer from './rootReducer';
 import { dynamicMiddleware } from './middleware';
@@ -29,6 +30,7 @@ export type AppDispatch = AppStore['dispatch'];
 export type AppThunk<ThunkReturnType = void> = ThunkAction<ThunkReturnType, RootState, unknown, Action>;
 export type AppAction<R = Promise<void>> = Action<string> | ThunkAction<R, RootState, unknown, Action<string>>;
 
-export const createAppSelector = createSelector.withTypes<RootState>();
+// Export with explicit type to avoid type inference issues with reselect
+export const createAppSelector: any = createSelector.withTypes<RootState>();
 
 export default store;

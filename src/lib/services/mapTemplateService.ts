@@ -38,7 +38,15 @@ export class MapTemplateService {
    */
   private static extractResponseData<T>(response: { data?: { data?: { data?: T } | T } | T }): T {
     // Handle nested response structure: { data: { data: { data: T } } }
-    return response.data?.data?.data || response.data?.data || response.data;
+    const data = response.data;
+    if (data && typeof data === 'object' && 'data' in data) {
+      const innerData = (data as { data: unknown }).data;
+      if (innerData && typeof innerData === 'object' && 'data' in innerData) {
+        return (innerData as { data: T }).data;
+      }
+      return innerData as T;
+    }
+    return data as T;
   }
 
   // ==================== MAP TEMPLATE MANAGEMENT ====================
@@ -52,23 +60,32 @@ export class MapTemplateService {
       { params }
     );
     
-    // Handle nested response structure: { data: { data: { data: [...], meta: {...} } } }
-    if (response.data?.data?.data) {
-      return {
-        data: response.data.data.data,
-        meta: {
-          total: response.data.data.total || 0,
-          page: response.data.data.page || 1,
-          pageSize: response.data.data.pageSize || 20,
-          totalPages: response.data.data.totalPages || 1,
-          hasNext: response.data.data.hasNext || false,
-          hasPrev: response.data.data.hasPrevious || false,
-        }
-      };
+    // Handle nested response structure
+    const responseData = response.data?.data;
+    if (responseData) {
+      // Check if it already has the correct structure
+      if ('data' in responseData && 'meta' in responseData) {
+        return responseData as PaginatedResponse<MapTemplate>;
+      }
+      // Handle flat structure with properties at root level
+      if ('data' in responseData || Array.isArray(responseData)) {
+        const items = Array.isArray(responseData) ? responseData : (responseData as any).data || [];
+        return {
+          data: items,
+          meta: {
+            total: (responseData as any).total || items.length,
+            page: (responseData as any).page || 1,
+            pageSize: (responseData as any).pageSize || 20,
+            totalPages: (responseData as any).totalPages || 1,
+            hasNext: (responseData as any).hasNext || false,
+            hasPrev: (responseData as any).hasPrevious || (responseData as any).hasPrev || false,
+          }
+        };
+      }
     }
     
-    // Fallback for different response structures
-    return response.data?.data || { data: [], meta: { total: 0, page: 1, pageSize: 20, totalPages: 1, hasNext: false, hasPrev: false } };
+    // Fallback for empty response
+    return { data: [], meta: { total: 0, page: 1, pageSize: 20, totalPages: 1, hasNext: false, hasPrev: false } };
   }
 
   /**

@@ -182,7 +182,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
     setFixedGoldPrice('');
     setFixedCarbonPrice('');
     setFixedPopulation('');
-    setFixedTransportCost('mapTemplate.');
+    setFixedTransportCost('');
     setPresetScenario('custom');
   };
 

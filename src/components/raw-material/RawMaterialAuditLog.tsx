@@ -70,7 +70,8 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
   onClose,
   material,
 }) => {
-  const { t, locale } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const [auditData, setAuditData] = useState<AuditLogSearchResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -241,7 +242,7 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
         {/* Filters */}
         <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 fullWidth
                 size="small"
@@ -253,7 +254,7 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={t('rawMaterial.audit.startDate')}
@@ -271,7 +272,7 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={t('rawMaterial.audit.endDate')}
@@ -289,7 +290,7 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <Stack direction="row" spacing={1}>
                 <Button
                   variant="outlined"

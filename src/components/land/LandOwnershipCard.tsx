@@ -44,7 +44,7 @@ const ProgressContainer = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-interface LandOwnershipCardProps {
+export interface LandOwnershipCardProps {
   ownership: TileOwnershipDetail;
   showActions?: boolean;
   compact?: boolean;

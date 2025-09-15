@@ -25,7 +25,7 @@ import {
   ListItemIcon,
   Grid
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid2';
+import Grid2 from '@mui/material/Grid';
 import {
   Inventory as InventoryIcon,
   Water as WaterIcon,

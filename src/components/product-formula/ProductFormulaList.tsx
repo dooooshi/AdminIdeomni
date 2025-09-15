@@ -182,7 +182,7 @@ const ProductFormulaList: React.FC<ProductFormulaListProps> = ({
                     </TableCell>
                     <TableCell align="right">
                       <Typography variant="body2" color="text.secondary">
-                        {formula.productFormulaCarbonEmission?.toFixed(3) || formula.carbonEmission?.toFixed(3) || '0.000'}
+                        {formula.productFormulaCarbonEmission?.toFixed(3) || '0.000'}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">

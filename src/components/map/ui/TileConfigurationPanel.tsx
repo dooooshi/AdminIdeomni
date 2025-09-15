@@ -46,7 +46,7 @@ import {
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { MapTile, UpdateTileDto, TileConfigurationProps } from '../types';
+import { MapTile, UpdateTileDto } from '../types';
 import MapTemplateService from '@/lib/services/mapTemplateService';
 
 interface TileConfigurationPanelProps {
