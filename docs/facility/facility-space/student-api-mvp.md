@@ -48,6 +48,7 @@ This document specifies the MVP-level API endpoints for students to retrieve the
     "facilities": [
       {
         "facilityInstanceId": "facility789",
+        "inventoryId": "inv123abc",
         "facilityType": "WAREHOUSE",
         "facilityName": "Central Warehouse",
         "tileCoordinates": {
@@ -67,6 +68,7 @@ This document specifies the MVP-level API endpoints for students to retrieve the
       },
       {
         "facilityInstanceId": "facility790",
+        "inventoryId": "inv456def",
         "facilityType": "FACTORY",
         "facilityName": "Production Plant A",
         "tileCoordinates": {

@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useMemo } from 'react';
 import { Link, ListItemButton, ListItemButtonProps } from '@mui/material';
 import IdeomniNavBadge from '../../IdeomniNavBadge';
-import IdeomniSvgIcon from '../../../IdeomniSvgIcon';
+import IdeomniSvgIconExtended from '../../../IdeomniSvgIcon/IdeomniSvgIconExtended';
 import { IdeomniNavItemComponentProps } from '../../IdeomniNavItem';
 
 type ListItemButtonStyleProps = ListItemButtonProps & {
@@ -73,12 +73,12 @@ function IdeomniNavVerticalLink(props: IdeomniNavItemComponentProps) {
 				{...itemProps}
 			>
 				{item.icon && (
-					<IdeomniSvgIcon
+					<IdeomniSvgIconExtended
 						className={clsx('Ideomni-list-item-icon shrink-0', item.iconClass)}
 						color="action"
 					>
 						{item.icon}
-					</IdeomniSvgIcon>
+					</IdeomniSvgIconExtended>
 				)}
 
 				<ListItemText

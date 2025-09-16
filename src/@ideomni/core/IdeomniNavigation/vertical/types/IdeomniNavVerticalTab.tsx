@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { ListItemButton } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IdeomniNavBadge from '../../IdeomniNavBadge';
-import IdeomniSvgIcon from '../../../IdeomniSvgIcon';
+import IdeomniSvgIconExtended from '../../../IdeomniSvgIcon/IdeomniSvgIconExtended';
 import { IdeomniNavigationProps } from '../../IdeomniNavigation';
 import { IdeomniNavItemComponentProps } from '../../IdeomniNavItem';
 
@@ -105,12 +105,12 @@ function IdeomniNavVerticalTab(props: IdeomniNavVerticalTabProps) {
 						>
 							<div className="relative flex h-8 min-h-8 w-8 items-center justify-center">
 								{item.icon ? (
-									<IdeomniSvgIcon
+									<IdeomniSvgIconExtended
 										className={clsx('Ideomni-list-item-icon', item.iconClass)}
 										color="action"
 									>
 										{item.icon}
-									</IdeomniSvgIcon>
+									</IdeomniSvgIconExtended>
 								) : (
 									item.title && <Typography className="text-lg font-bold">{item.title[0]}</Typography>
 								)}
@@ -126,13 +126,13 @@ function IdeomniNavVerticalTab(props: IdeomniNavVerticalTabProps) {
 						<>
 							<div className="relative mb-2 flex h-8 min-h-8 w-8 items-center justify-center">
 								{item.icon ? (
-									<IdeomniSvgIcon
+									<IdeomniSvgIconExtended
 										size={32}
 										className={clsx('Ideomni-list-item-icon', item.iconClass)}
 										color="action"
 									>
 										{item.icon}
-									</IdeomniSvgIcon>
+									</IdeomniSvgIconExtended>
 								) : (
 									item.title && (
 										<Typography className="text-2xl font-bold">{item.title[0]}</Typography>

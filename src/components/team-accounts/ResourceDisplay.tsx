@@ -4,7 +4,8 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-import { MonetizationOn, Co2 } from '@mui/icons-material';
+import { MonetizationOn } from '@mui/icons-material';
+import NatureIcon from '@/components/icons/NatureIcon';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import TeamAccountService from '@/lib/services/teamAccountService';
 import { getResourceMuiIcon } from '@/constants/resourceIcons';
@@ -69,7 +70,7 @@ function ResourceDisplay({
     const color = TeamAccountService.getResourceColor(amount, type);
     const formattedAmount = TeamAccountService.formatResourceAmount(amount);
     const label = t(`teamAccounts.${type.toUpperCase()}`);
-    const IconComponent = type === 'gold' ? MonetizationOn : Co2;
+    const IconComponent = type === 'gold' ? MonetizationOn : NatureIcon;
 
     if (variant === 'chip') {
       return (

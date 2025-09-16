@@ -7,7 +7,7 @@ Raw material production system for Students. Production is **instant** - materia
 
 ### Instant Production Lifecycle
 ```
-REQUEST → VALIDATE → PAY → PRODUCE → STORE
+REQUEST → VALIDATE → PAY → PRODUCE → STORE/COMBINE
          (instant - all in one transaction)
 ```
 
@@ -15,7 +15,7 @@ REQUEST → VALIDATE → PAY → PRODUCE → STORE
 2. **VALIDATE**: Check all prerequisites
 3. **PAY**: Process resource payments
 4. **PRODUCE**: Materials created instantly
-5. **STORE**: Add to facility inventory
+5. **STORE/COMBINE**: Add to facility inventory (combines with existing same type)
 
 ## Production Prerequisites
 
@@ -127,10 +127,54 @@ function calculateProductionCost(
 ```typescript
 function calculateSpaceRequired(
   material: RawMaterial,
-  quantity: number
+  quantity: number,
+  existingItem?: InventoryItem
 ): number {
-  // Space is based on carbon emission per unit
+  if (existingItem && existingItem.rawMaterialId === material.id) {
+    // If same material exists, only need incremental space
+    const newTotalQuantity = existingItem.quantity + quantity;
+    const newTotalSpace = material.carbonEmission * newTotalQuantity;
+    const currentSpace = existingItem.totalSpaceOccupied;
+    return newTotalSpace - currentSpace; // Only the additional space needed
+  }
+  // New material type needs full space
   return material.carbonEmission * quantity;
+}
+```
+
+### 4. Inventory Combination
+
+```typescript
+function handleInventoryStorage(
+  facilityId: string,
+  material: RawMaterial,
+  quantity: number,
+  productionCost: number
+): InventoryUpdate {
+  const existingItem = findExistingItem(facilityId, material.id);
+  
+  if (existingItem) {
+    // Combine with existing item
+    const newQuantity = existingItem.quantity + quantity;
+    const newTotalValue = existingItem.totalValue + productionCost;
+    const newUnitCost = newTotalValue / newQuantity;
+    
+    return updateInventoryItem({
+      quantity: newQuantity,
+      unitCost: newUnitCost,
+      totalValue: newTotalValue,
+      totalSpaceOccupied: material.carbonEmission * newQuantity
+    });
+  } else {
+    // Create new inventory item
+    return createInventoryItem({
+      rawMaterialId: material.id,
+      quantity: quantity,
+      unitCost: productionCost / quantity,
+      totalValue: productionCost,
+      totalSpaceOccupied: material.carbonEmission * quantity
+    });
+  }
 }
 ```
 

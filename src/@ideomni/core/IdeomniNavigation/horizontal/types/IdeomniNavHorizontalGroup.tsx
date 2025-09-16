@@ -17,7 +17,7 @@ import { WithRouterProps } from '@ideomni/core/withRouter/withRouter';
 import * as PopperJS from '@popperjs/core';
 import usePathname from '@ideomni/hooks/usePathname';
 import IdeomniNavItem, { IdeomniNavItemComponentProps } from '../../IdeomniNavItem';
-import IdeomniSvgIcon from '../../../IdeomniSvgIcon';
+import IdeomniSvgIconExtended from '../../../IdeomniSvgIcon/IdeomniSvgIconExtended';
 
 const Root = styled(ListItemButton)<ListItemButtonProps>(({ theme }) => ({
 	color: theme.vars.palette.text.primary,
@@ -104,12 +104,12 @@ function IdeomniNavHorizontalGroup(props: IdeomniNavHorizontalGroupProps) {
 								{...itemProps}
 							>
 								{item.icon && (
-									<IdeomniSvgIcon
+									<IdeomniSvgIconExtended
 										color="action"
 										className={clsx('Ideomni-list-item-icon shrink-0', item.iconClass)}
 									>
 										{item.icon}
-									</IdeomniSvgIcon>
+									</IdeomniSvgIconExtended>
 								)}
 
 								<ListItemText
@@ -124,14 +124,14 @@ function IdeomniNavHorizontalGroup(props: IdeomniNavHorizontalGroupProps) {
 										className="h-4 w-4 p-0 ml-1"
 										color="inherit"
 									>
-										<IdeomniSvgIcon
+										<IdeomniSvgIconExtended
 											size={16}
 											className="arrow-icon"
 										>
 											{theme.direction === 'ltr'
 												? 'heroicons-outline:chevron-right'
 												: 'heroicons-outline:chevron-left'}
-										</IdeomniSvgIcon>
+										</IdeomniSvgIconExtended>
 									</IconButton>
 								)}
 							</Root>

@@ -12,8 +12,8 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { MonetizationOn, Co2, ReportProblemOutlined, SendOutlined, ArrowForwardOutlined, TrendingUpOutlined, TrendingDownOutlined, AccessTimeOutlined, HomeOutlined, SearchOutlined } from '@mui/icons-material';
-import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
+import { MonetizationOn, ReportProblemOutlined, SendOutlined, ArrowForwardOutlined, TrendingUpOutlined, TrendingDownOutlined, AccessTimeOutlined, HomeOutlined, SearchOutlined } from '@mui/icons-material';
+import NatureIcon from '@/components/icons/NatureIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { useGetCurrentUserTeamAccountQuery, useGetTransferHistoryQuery } from '../TeamAccountApi';
 import TeamTransferService from '@/lib/services/teamTransferService';
@@ -108,7 +108,7 @@ function TransferHubPage() {
                   {t('teamManagement.CARBON')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
-                  <Co2 className="text-green-600" sx={{ fontSize: 28 }} />
+                  <NatureIcon className="text-green-600" sx={{ fontSize: 28 }} />
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
@@ -161,7 +161,7 @@ function TransferHubPage() {
                   <CardContent className="flex-1 p-8">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center justify-center">
-                        <Co2 className="text-green-600" sx={{ fontSize: 20 }} />
+                        <NatureIcon className="text-green-600" sx={{ fontSize: 20 }} />
                       </div>
                       <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
                         {t('teamManagement.CARBON_TRANSFERS')}
@@ -171,7 +171,7 @@ function TransferHubPage() {
                       {t('teamManagement.TRANSFER_CARBON_SUBTITLE')}
                     </Typography>
                     <Typography variant="body2" className="mb-2">
-                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> <Co2 sx={{ fontSize: 16, mx: 0.5 }} className="text-green-600" /> {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
+                      <span className="font-medium">{t('teamManagement.AVAILABLE_BALANCE')}:</span> <NatureIcon sx={{ fontSize: 16, mx: 0.5 }} className="text-green-600" /> {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                     </Typography>
                   </CardContent>
                   <CardActions className="p-8 pt-0">
@@ -236,7 +236,7 @@ function TransferHubPage() {
                           {transfer.resourceType === TeamResourceType.GOLD ? (
                             <MonetizationOn sx={{ fontSize: 14 }} className="text-yellow-600" />
                           ) : (
-                            <Co2 sx={{ fontSize: 14 }} className="text-green-600" />
+                            <NatureIcon sx={{ fontSize: 14 }} className="text-green-600" />
                           )}
                           {TeamTransferService.formatTransferAmount(transfer.amount)} • {new Date(transfer.createdAt).toLocaleDateString()}
                         </Typography>
@@ -251,7 +251,7 @@ function TransferHubPage() {
                         {transfer.resourceType === TeamResourceType.GOLD ? (
                           <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
                         ) : (
-                          <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                          <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
                         )}
                         {TeamTransferService.formatTransferAmount(transfer.amount)}
                       </Typography>

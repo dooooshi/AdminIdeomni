@@ -3,6 +3,12 @@
 ## Overview
 This document defines the RESTful API endpoints for the raw material production system for Students. All endpoints follow the standard response format and require Student authentication.
 
+**Important Update (2025-09-06)**: 
+- When producing the same type of raw material multiple times, the system now **combines them into a single inventory item** instead of creating separate entries
+- Space usage is calculated incrementally - only the additional space needed is consumed
+- Unit costs are calculated as weighted averages when combining materials
+- Production history is maintained in the inventory item's metadata
+
 **Language Support**:
 - API returns content in a single language based on request headers
 - Language detection: `Accept-Language` header, `?lang=` query param, or `x-lang` header
@@ -67,7 +73,7 @@ Instantly produces raw materials. Production is immediate - resources are consum
       level: number
     },
     material: {
-      id: number,
+      number: number,             // Material number (unique identifier)
       name: string,              // Name in requested language
       quantity: number
     },
@@ -172,7 +178,7 @@ Retrieves historical production record. Since production is instant, this shows 
     status: "SUCCESS" | "FAILED",  // Only final states
     failureReason: string | null,   // Reason if failed
     material: {
-      id: number,
+      number: number,             // Material number (unique identifier)
       name: string,              // Name in requested language
       quantity: number,
       origin: string
@@ -233,7 +239,7 @@ Lists all production records for a facility or team. Since production is instant
         productionNumber: string,
         status: "SUCCESS" | "FAILED",
         material: {
-          id: number,
+          number: number,         // Material number (unique identifier)
           name: string,          // Name in requested language
           quantity: number
         },

@@ -25,6 +25,7 @@ X-Lang: en | zh (optional, alternative language header)
 ### Request Body
 ```json
 {
+  "productName": "SmartPhone X5",
   "productDescription": "Advanced mobile communication device",
   "craftCategories": [
     {
@@ -55,6 +56,7 @@ X-Lang: en | zh (optional, alternative language header)
 
 | Field | Type | Required | Description | Validation Rules |
 |-------|------|----------|-------------|------------------|
+| `productName` | string | Yes | Product name | Max 200 characters, required |
 | `productDescription` | string | No | Product description | Max 500 characters |
 | `craftCategories` | array | Yes | Craft categories for production | Min 1 item |
 | `craftCategories[].craftCategoryId` | number | Yes | ID of craft category | Must exist in database |
@@ -101,6 +103,7 @@ The system automatically calculates and stores:
   "data": {
     "id": 1,
     "formulaNumber": 1,
+    "productName": "SmartPhone X5",
     "productDescription": "Advanced mobile communication device",
     "activityId": "clxx1234567890abcdef",
     "teamId": "clxx1234567890abcdef01",
@@ -365,6 +368,16 @@ export class ProductFormulaService {
 ```typescript
 // src/product-formula/dto/create-product-formula.dto.ts
 export class CreateProductFormulaDto {
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(200)
+  @ApiProperty({
+    description: 'Product name',
+    maxLength: 200,
+    required: true,
+  })
+  productName: string;
+
   @IsOptional()
   @IsString()
   @MaxLength(500)
@@ -487,6 +500,7 @@ curl -X POST http://localhost:2999/api/user/team/product-formulas \
   -H "Content-Type: application/json" \
   -H "Accept-Language: en" \
   -d '{
+    "productName": "SmartHome Hub",
     "productDescription": "Smart home controller",
     "craftCategories": [
       {"craftCategoryId": 11}

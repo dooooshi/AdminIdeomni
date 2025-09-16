@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTheme, alpha } from '@mui/material/styles';
 import { Box, Typography, Tooltip } from '@mui/material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
@@ -169,8 +169,31 @@ const HexTile: React.FC<HexTileProps> = ({
 		return null;
 	};
 
+	// State for controlling tooltip
+	const [tooltipOpen, setTooltipOpen] = useState(false);
+
+	const handleTooltipClose = () => {
+		setTooltipOpen(false);
+	};
+
+	const handleTooltipOpen = () => {
+		setTooltipOpen(true);
+	};
+
+	const handlePurchaseClick = (e: React.MouseEvent) => {
+		e.stopPropagation();
+		e.preventDefault();
+		if (onTileClick && tile.canPurchase && tile.landType !== 'MARINE') {
+			onTileClick(tile);
+			handleTooltipClose();
+		}
+	};
+
 	return (
 		<Tooltip
+			open={isHovered || tooltipOpen}
+			onOpen={handleTooltipOpen}
+			onClose={handleTooltipClose}
 			title={
 				<Box sx={{ py: 1, px: 0.5, minWidth: 200 }}>
 					<Typography 
@@ -446,18 +469,27 @@ const HexTile: React.FC<HexTileProps> = ({
 									</Box>
 								)}
 
-								{/* Quick Action Hint */}
-								{tile.canPurchase && (
-									<Box sx={{ 
-										mt: 1, 
-										p: 1, 
-										bgcolor: alpha(theme.palette.success.main, 0.1),
-										borderRadius: 1,
-										border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
-									}}>
-										<Typography 
-											variant="caption" 
-											sx={{ 
+								{/* Quick Action Button - Not for marine tiles */}
+								{tile.canPurchase && tile.landType !== 'MARINE' && (
+									<Box
+										sx={{
+											mt: 1,
+											p: 1,
+											bgcolor: alpha(theme.palette.success.main, 0.1),
+											borderRadius: 1,
+											border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+											cursor: 'pointer',
+											transition: 'all 0.2s',
+											'&:hover': {
+												bgcolor: alpha(theme.palette.success.main, 0.2),
+												borderColor: alpha(theme.palette.success.main, 0.4)
+											}
+										}}
+										onClick={handlePurchaseClick}
+									>
+										<Typography
+											variant="caption"
+											sx={{
 												color: 'success.main',
 												fontSize: '0.7rem',
 												fontWeight: 500,
@@ -469,6 +501,29 @@ const HexTile: React.FC<HexTileProps> = ({
 										</Typography>
 									</Box>
 								)}
+								{/* Marine tile notice */}
+								{tile.canPurchase && tile.landType === 'MARINE' && (
+									<Box sx={{
+										mt: 1,
+										p: 1,
+										bgcolor: alpha(theme.palette.info.main, 0.1),
+										borderRadius: 1,
+										border: `1px solid ${alpha(theme.palette.info.main, 0.2)}`
+									}}>
+										<Typography
+											variant="caption"
+											sx={{
+												color: 'info.main',
+												fontSize: '0.7rem',
+												fontWeight: 500,
+												display: 'block',
+												textAlign: 'center'
+											}}
+										>
+											ℹ️ {t('map.MARINE_TILES_NOT_PURCHASABLE')}
+										</Typography>
+									</Box>
+								)}
 							</>
 						)}
 
@@ -477,7 +532,7 @@ const HexTile: React.FC<HexTileProps> = ({
 			}
 			arrow
 			placement="top"
-			componentsProps={{
+			slotProps={{
 				tooltip: {
 					sx: {
 						bgcolor: alpha(theme.palette.background.paper, 0.95),
@@ -508,10 +563,26 @@ const HexTile: React.FC<HexTileProps> = ({
 						transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
 						filter: !tile.isActive ? 'grayscale(0.3)' : 'none',
 					}}
-					onMouseEnter={onMouseEnter}
-					onMouseLeave={onMouseLeave}
+					onMouseEnter={() => {
+						onMouseEnter();
+						handleTooltipOpen();
+					}}
+					onMouseLeave={() => {
+						onMouseLeave();
+						// Don't close tooltip immediately to allow interaction
+						setTimeout(() => {
+							if (!tooltipOpen) {
+								handleTooltipClose();
+							}
+						}, 100);
+					}}
 					onMouseMove={(e) => onTileHover?.(tile, e)}
-					onClick={() => onTileClick?.(tile)}
+					onClick={() => {
+						// Don't trigger tile click for marine tiles or when tooltip purchase is available
+						if (!tile.canPurchase || tile.landType === 'MARINE') {
+							onTileClick?.(tile);
+						}
+					}}
 					onContextMenu={(e) => {
 						e.preventDefault();
 						onTileRightClick?.(tile, e);

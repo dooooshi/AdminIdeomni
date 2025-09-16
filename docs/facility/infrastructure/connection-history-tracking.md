@@ -339,27 +339,44 @@ export class InfrastructureLoggingService {
 ```
 
 ### Phase 3: Query Implementation
-Implement query patterns for history retrieval:
+Implement query patterns for history retrieval with pagination support:
 
 ```typescript
-// Repository for history queries
+// Repository for history queries with pagination
 export class InfrastructureHistoryRepository {
-  async getConnectionLifecycle(connectionId: string) {
-    return this.prisma.infrastructureOperationLog.findMany({
-      where: {
-        OR: [
-          { entityId: connectionId, entityType: 'Connection' },
-          { entityId: connectionId, entityType: 'ConnectionRequest' }
-        ]
-      },
-      include: {
-        providerTeam: true,
-        consumerTeam: true,
-        performedByUser: true,
-        terminationDetail: true
-      },
-      orderBy: { timestamp: 'asc' }
-    });
+  async getConnectionLifecycle(
+    connectionId: string,
+    params: { limit?: number; offset?: number } = {}
+  ) {
+    const where = {
+      OR: [
+        { entityId: connectionId, entityType: 'Connection' },
+        { entityId: connectionId, entityType: 'ConnectionRequest' }
+      ]
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.infrastructureOperationLog.findMany({
+        where,
+        include: {
+          providerTeam: true,
+          consumerTeam: true,
+          performedByUser: true,
+          terminationDetail: true
+        },
+        orderBy: { timestamp: 'asc' },
+        take: params.limit || 50,
+        skip: params.offset || 0
+      }),
+      this.prisma.infrastructureOperationLog.count({ where })
+    ]);
+
+    return {
+      data,
+      total,
+      limit: params.limit || 50,
+      offset: params.offset || 0
+    };
   }
 
   async getTeamInfrastructureHistory(
@@ -368,9 +385,13 @@ export class InfrastructureHistoryRepository {
     params: {
       role?: 'PROVIDER' | 'CONSUMER';
       infrastructureType?: InfrastructureType;
+      serviceType?: ServiceType;
+      operationType?: OperationType;
       dateFrom?: Date;
       dateTo?: Date;
-    }
+      limit?: number;
+      offset?: number;
+    } = {}
   ) {
     const where: any = {
       activityId: activityId,
@@ -394,31 +415,125 @@ export class InfrastructureHistoryRepository {
     if (params.infrastructureType) {
       where.infrastructureType = params.infrastructureType;
     }
+    if (params.serviceType) {
+      where.serviceType = params.serviceType;
+    }
+    if (params.operationType) {
+      where.operationType = params.operationType;
+    }
 
-    return this.prisma.infrastructureOperationLog.findMany({
-      where,
-      include: {
-        providerTeam: true,
-        consumerTeam: true,
-        performedByUser: true,
-        terminationDetail: true
-      },
-      orderBy: { timestamp: 'desc' }
-    });
+    const [data, total] = await Promise.all([
+      this.prisma.infrastructureOperationLog.findMany({
+        where,
+        include: {
+          providerTeam: true,
+          consumerTeam: true,
+          performedByUser: true,
+          terminationDetail: true
+        },
+        orderBy: { timestamp: 'desc' },
+        take: params.limit || 50,
+        skip: params.offset || 0
+      }),
+      this.prisma.infrastructureOperationLog.count({ where })
+    ]);
+
+    return {
+      data,
+      total,
+      limit: params.limit || 50,
+      offset: params.offset || 0
+    };
   }
 
-  async getTerminationDetails(connectionId: string) {
-    return this.prisma.connectionTerminationDetail.findOne({
-      where: {
-        connectionId
-      },
+  async getRecentOperations(
+    teamId: string,
+    activityId: string,
+    params: { limit?: number; offset?: number } = {}
+  ) {
+    const where = {
+      activityId,
+      OR: [
+        { providerTeamId: teamId },
+        { consumerTeamId: teamId }
+      ]
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.infrastructureOperationLog.findMany({
+        where,
+        include: {
+          providerTeam: true,
+          consumerTeam: true,
+          performedByUser: true
+        },
+        orderBy: { timestamp: 'desc' },
+        take: params.limit || 10,
+        skip: params.offset || 0
+      }),
+      this.prisma.infrastructureOperationLog.count({ where })
+    ]);
+
+    return {
+      data,
+      total,
+      limit: params.limit || 10,
+      offset: params.offset || 0
+    };
+  }
+
+  async getEntityHistory(
+    entityType: string,
+    entityId: string,
+    params: { limit?: number; offset?: number } = {}
+  ) {
+    const where = { entityType, entityId };
+
+    const [data, total] = await Promise.all([
+      this.prisma.infrastructureOperationLog.findMany({
+        where,
+        include: {
+          providerTeam: true,
+          consumerTeam: true,
+          performedByUser: true,
+          terminationDetail: true
+        },
+        orderBy: { timestamp: 'desc' },
+        take: params.limit || 50,
+        skip: params.offset || 0
+      }),
+      this.prisma.infrastructureOperationLog.count({ where })
+    ]);
+
+    return {
+      data,
+      total,
+      limit: params.limit || 50,
+      offset: params.offset || 0
+    };
+  }
+
+  async getTerminationDetails(connectionId?: string, subscriptionId?: string) {
+    if (!connectionId && !subscriptionId) {
+      throw new Error('Either connectionId or subscriptionId must be provided');
+    }
+
+    const where: any = {};
+    if (connectionId) where.connectionId = connectionId;
+    if (subscriptionId) where.subscriptionId = subscriptionId;
+
+    return this.prisma.connectionTerminationDetail.findFirst({
+      where,
       include: {
         operationLog: {
           include: {
             providerTeam: true,
-            consumerTeam: true
+            consumerTeam: true,
+            performedByUser: true
           }
-        }
+        },
+        connection: true,
+        subscription: true
       }
     });
   }
@@ -432,14 +547,18 @@ export class InfrastructureHistoryRepository {
 #### 1. Get Connection History
 ```
 GET /api/infrastructure/history/connection/{connectionId}
+Query Parameters:
+  - limit?: number (default: 50, max: 100)
+  - offset?: number (default: 0)
 ```
-Returns complete event history for a specific connection.
+Returns complete event history for a specific connection with pagination support.
 
 Response includes:
 - All state changes from request to termination
 - Actor information for each event
 - Structured event metadata
 - Termination details if applicable
+- Pagination metadata (data, total, limit, offset)
 
 #### 2. Get Team Infrastructure History
 ```
@@ -450,18 +569,49 @@ Query Parameters:
   - dateFrom?: ISO 8601
   - dateTo?: ISO 8601
   - role?: PROVIDER | CONSUMER
+  - limit?: number (default: 50, max: 100)
+  - offset?: number (default: 0)
 ```
 Note: teamId and activityId are automatically obtained from the authenticated user's context
 
+Response format:
+```json
+{
+  "data": [...],     // Array of operation logs
+  "total": 100,      // Total count of matching records
+  "limit": 50,       // Items per page
+  "offset": 0        // Starting position
+}
+```
+
 #### 3. Get Termination Details
 ```
-GET /api/infrastructure/history/termination/{connectionId}
+GET /api/infrastructure/history/termination/connection/{connectionId}
+GET /api/infrastructure/history/termination/subscription/{subscriptionId}
 ```
 Returns detailed termination information including:
 - Who initiated the termination
 - Reason and classification
 - Financial impact
 - Connection duration and usage metrics
+
+#### 4. Get Recent Operations
+```
+GET /api/infrastructure/history/recent
+Query Parameters:
+  - limit?: number (default: 10, max: 50)
+  - offset?: number (default: 0)
+```
+Returns recent infrastructure operations for the authenticated team with pagination.
+
+#### 5. Get Entity History
+```
+GET /api/infrastructure/history/entity/{entityType}/{entityId}
+Query Parameters:
+  - limit?: number (default: 50, max: 100)
+  - offset?: number (default: 0)
+```
+Returns operation history for a specific entity (for debugging/admin purposes) with pagination.
 
 
 ## Migration from Existing System
@@ -546,37 +696,6 @@ async function enhanceExistingLogs() {
 - Sensitive financial data requires elevated permissions
 - Personal user information masked in public queries
 - Audit trail for all data access
-
-## Implementation Status
-
-### Completed Components ✅
-
-1. **TypeScript Types & Interfaces**
-   - `src/types/infrastructureHistory.ts` - Complete type definitions
-   - `src/lib/utils/infrastructureHistoryHelpers.ts` - Helper utilities
-
-2. **Service Layer**
-   - `src/lib/services/infrastructureLoggingService.ts` - Logging service for events
-   - `src/lib/services/infrastructureHistoryService.ts` - Query service for history
-
-3. **UI Components**
-   - `src/components/infrastructure/InfrastructureHistoryViewer.tsx` - Main history viewer
-   - `src/app/(control-panel)/infrastructure/history/page.tsx` - History page
-
-4. **Translations**
-   - English translations added to `en.ts`
-   - Chinese translations added to `zh.ts`
-
-5. **Navigation**
-   - History link added to navigation configuration
-
-### Architecture Notes
-
-The implementation follows a TypeScript/API client architecture rather than direct database access:
-- Services communicate with backend APIs via `apiClient`
-- Types are defined in TypeScript interfaces
-- Material-UI components are used for the UI layer
-- History tracking integrates with existing infrastructure management system
 
 ## Conclusion
 This enhanced history tracking system builds upon the existing infrastructure logging to provide comprehensive lifecycle tracking and detailed termination records while maintaining full backward compatibility with the current implementation.

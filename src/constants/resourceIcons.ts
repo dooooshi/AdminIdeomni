@@ -12,7 +12,7 @@ export const RESOURCE_ICONS = {
   
   // Material-UI icon identifiers for components
   GOLD_MUI: 'MonetizationOn',
-  CARBON_MUI: 'Co2',
+  CARBON_MUI: 'Nature',
   
   // SVG icon identifiers for components (legacy support)
   GOLD_SVG: 'heroicons-solid:currency-dollar',
@@ -40,11 +40,11 @@ export function getResourceEmoji(type: 'gold' | 'carbon'): string {
 
 /**
  * Get Material-UI icon component for resource type
- * Note: This returns the icon name, not the component. 
- * Import and use MonetizationOn/Co2 directly in components.
+ * Note: This returns the icon name, not the component.
+ * Import and use MonetizationOn/NatureIcon directly in components.
  */
-export function getResourceIcon(type: 'gold' | 'carbon'): 'MonetizationOn' | 'Co2' {
-  return type === 'gold' ? 'MonetizationOn' : 'Co2';
+export function getResourceIcon(type: 'gold' | 'carbon'): 'MonetizationOn' | 'Nature' {
+  return type === 'gold' ? 'MonetizationOn' : 'Nature';
 }
 
 /**

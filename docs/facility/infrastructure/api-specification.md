@@ -395,6 +395,8 @@ Consumer requests connection to provider's water/power plant.
 }
 ```
 
+**Note**: If a facility previously had a connection that was disconnected, the system will automatically clean up the old disconnected record when creating a new connection request. This prevents database constraint violations and ensures smooth reconnection workflows.
+
 #### GET /api/infrastructure/connections/requests/provider
 List connection requests where team is provider.
 
@@ -630,6 +632,8 @@ Consumer applies for service subscription.
   }
 }
 ```
+
+**Note**: If a facility previously had a subscription that was cancelled or suspended, the system will automatically clean up the old record when creating a new subscription request. This ensures smooth resubscription workflows without database constraint violations.
 
 #### GET /api/infrastructure/services/subscriptions/provider
 List subscriptions where team is service provider.
@@ -966,6 +970,12 @@ All endpoints follow the standard error response format:
 - `UNAUTHORIZED_OPERATION`: User lacks permission for operation
 - `RESOURCE_NOT_FOUND`: Requested resource doesn't exist
 
+**Note on Reconnection/Resubscription**:
+- The system automatically handles cleanup of disconnected connections and cancelled subscriptions
+- Previous 500 errors from unique constraint violations have been resolved
+- Facilities can seamlessly apply for new connections/subscriptions after disconnection/cancellation
+- All operations are now protected by database transactions to prevent race conditions
+
 ## Rate Limiting
 
 All endpoints are subject to rate limiting:
@@ -984,9 +994,30 @@ Infrastructure events can trigger webhooks (if configured):
 
 API version is included in the response headers:
 ```
-X-API-Version: 1.0.0
+X-API-Version: 1.0.1
 ```
 
 ## Performance Considerations
 
 - Pagination required for list endpoints (max 100 items)
+
+## Changelog
+
+### Version 1.0.1 (2025-09-15)
+
+#### Bug Fixes
+- **Fixed 500 errors on reconnection**: Resolved unique constraint violations when facilities apply for new connections after disconnection
+- **Fixed 500 errors on resubscription**: Resolved unique constraint violations when facilities apply for new service subscriptions after cancellation
+- **Fixed service registration conflicts**: Infrastructure services (BASE_STATION/FIRE_STATION) now handle re-registration gracefully with update-or-create logic
+
+#### Improvements
+- **Transaction protection**: All connection and subscription requests now wrapped in database transactions to prevent race conditions
+- **Automatic cleanup**: System automatically removes old DISCONNECTED connections and CANCELLED/SUSPENDED subscriptions before creating new ones
+- **Double validation**: Added validation checks both outside and inside transactions for consistency
+- **Seamless reconnection**: Facilities can now reconnect/resubscribe without manual cleanup of old records
+
+#### Technical Details
+- Updated `infrastructure-connection.service.ts` to handle disconnected connection cleanup
+- Updated `infrastructure-service.service.ts` to handle cancelled subscription cleanup
+- Updated `facility-building.service.ts` to handle service re-registration
+- Added transaction wrappers to prevent concurrent operation conflicts

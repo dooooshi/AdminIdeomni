@@ -407,6 +407,28 @@ Either party can disconnect with the following rules:
 - Provider capacity freed up
 - No refund for partial billing periods
 
+### Reconnection and Resubscription Handling
+
+The system supports seamless reconnection/resubscription after disconnection or cancellation:
+
+#### Infrastructure Connections (Water/Power)
+When a facility that previously had a connection applies for a new one:
+1. **Automatic Cleanup**: System automatically removes any DISCONNECTED connection records to prevent database constraint violations
+2. **Fresh Start**: New connection request is treated as a completely new relationship
+3. **No History Impact**: Previous disconnection does not affect approval or pricing
+
+#### Service Subscriptions (Base Station/Fire Station)
+When a facility that previously had a subscription applies for a new one:
+1. **Automatic Cleanup**: System automatically removes any CANCELLED or SUSPENDED subscription records
+2. **New Subscription**: Treated as a new subscription with fresh billing cycle
+3. **Service Continuity**: No waiting period required after cancellation
+
+#### Implementation Details
+- **Transaction Protection**: All connection/subscription requests are wrapped in database transactions to prevent race conditions
+- **Double Validation**: System performs validation both outside and inside the transaction to ensure consistency
+- **Unique Constraint Management**: Each facility can only have ONE active record per infrastructure/service type
+- **Error Prevention**: Automatic cleanup prevents 500 errors from unique constraint violations
+
 
 ## Capacity and Load Management
 
@@ -594,6 +616,8 @@ interface ConsumerMetrics {
    - Consumer must not have existing active connection of same type
    - Consumer must not have existing pending request of same type (must cancel first)
    - Both facilities must be in same activity
+   - Disconnected connections are automatically cleaned up when applying for new connections
+   - All validations are performed within database transactions to prevent race conditions
 
 2. **Service Validation**
    - Consumer must be within influence range
@@ -601,6 +625,8 @@ interface ConsumerMetrics {
    - Consumer must not have existing active subscription of same type
    - Consumer must not have existing pending request of same type (must cancel first)
    - Both facilities must be in same activity
+   - Cancelled/suspended subscriptions are automatically cleaned up when applying for new subscriptions
+   - Service registrations handle re-registration gracefully with update-or-create logic
 
 3. **Team Validation**
    - User must belong to team

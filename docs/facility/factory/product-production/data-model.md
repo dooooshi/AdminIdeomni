@@ -60,7 +60,7 @@ model ProductProduction {
   
   // Production quantities
   requestedQuantity     Int                     // Units requested
-  producedQuantity      Int                     // Actual units produced after yield
+  producedQuantity      Decimal                 @db.Decimal(12, 3) // Actual units produced after yield (can be decimal)
   combinedYield         Decimal                 @db.Decimal(5, 4) // Combined yield from all craft categories
   
   // Resource consumption

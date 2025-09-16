@@ -23,6 +23,8 @@ import {
   DialogActions,
   TextField,
   Avatar,
+  Fab,
+  Zoom,
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
@@ -248,6 +250,12 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
   // Update purchase validation when area changes
   useEffect(() => {
     if (selectedTile && purchaseArea > 0) {
+      // Skip validation for marine tiles - they cannot be purchased
+      if (selectedTile.landType === 'MARINE') {
+        console.log('Skipping validation for marine tile - purchase not allowed');
+        return;
+      }
+
       // NEW: Validate integer input on frontend
       const validationErrors = LandService.validatePurchaseInput(purchaseArea);
       if (validationErrors.length > 0) {
@@ -366,15 +374,15 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
       console.warn('Tile data still loading, ignoring click on tileId:', tileId);
       return;
     }
-    
+
     // Find the clicked tile
     let tile = filteredTiles.find(t => t.tileId === tileId);
-    
+
     // Fallback to original tiles array if not found in filtered tiles
     if (!tile && tiles && Array.isArray(tiles)) {
       tile = tiles.find(t => t.tileId === tileId);
     }
-    
+
     if (!tile) {
       console.error('❌ Tile not found for tileId:', tileId);
       return;
@@ -382,15 +390,23 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
 
     // Set selected tile
     setSelectedTile(tile);
-    
-    // Only open purchase modal if tile can be purchased
-    if (tile.canPurchase) {
+
+    // Check if this is a purchase action (called from tooltip)
+    const isPurchaseAction = tile.canPurchase && tile.landType !== 'MARINE';
+
+    if (isPurchaseAction) {
+      // Open purchase modal for non-marine purchasable tiles when clicked from tooltip
       setPurchaseArea(1);
       setDescription(`Purchase land on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
       setPurchaseDialogOpen(true);
+    } else if (tile.landType === 'MARINE') {
+      // Marine tiles cannot be purchased - show info message
+      console.log(`Marine tile ${tile.tileId} selected - marine tiles cannot be purchased`);
+      setLocalError('Marine tiles cannot be purchased');
+      setTimeout(() => setLocalError(null), 3000);
     } else {
-      // For non-purchasable tiles, just show selection without opening modal
-      console.log(`Tile ${tile.tileId} selected but cannot be purchased`);
+      // Just select the tile without any action
+      console.log(`Tile ${tile.tileId} selected`);
     }
   }, [filteredTiles, tiles]);
 

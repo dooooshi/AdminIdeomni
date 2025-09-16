@@ -20,7 +20,8 @@ model ProductFormula {
   formulaNumber         Int                         // System-generated unique number within activity (auto-incremented)
   
   // Product Information
-  productDescription    String?                     // Product description
+  productName           String                      // Product name (required)
+  productDescription    String?                     // Product description (optional)
   
   // Activity and Team Association (populated from user authentication context)
   activityId            String                      // Associated activity (from auth context)

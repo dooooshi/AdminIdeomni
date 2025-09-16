@@ -12,7 +12,7 @@ import { ListItemButton } from '@mui/material';
 import usePathname from '@ideomni/hooks/usePathname';
 import IdeomniNavBadge from '../../IdeomniNavBadge';
 import IdeomniNavItem, { IdeomniNavItemComponentProps } from '../../IdeomniNavItem';
-import IdeomniSvgIcon from '../../../IdeomniSvgIcon';
+import IdeomniSvgIconExtended from '../../../IdeomniSvgIcon/IdeomniSvgIconExtended';
 import { IdeomniNavItemType } from '../../types/IdeomniNavItemType';
 
 type ListComponentProps = ListProps & {
@@ -85,12 +85,12 @@ function IdeomniNavVerticalCollapse(props: IdeomniNavItemComponentProps) {
 					{...itemProps}
 				>
 					{item.icon && (
-						<IdeomniSvgIcon
+						<IdeomniSvgIconExtended
 							className={clsx('Ideomni-list-item-icon shrink-0', item.iconClass)}
 							color="action"
 						>
 							{item.icon}
-						</IdeomniSvgIcon>
+						</IdeomniSvgIconExtended>
 					)}
 
 					<ListItemText
@@ -119,13 +119,13 @@ function IdeomniNavVerticalCollapse(props: IdeomniNavItemComponentProps) {
 							setOpen(!open);
 						}}
 					>
-						<IdeomniSvgIcon
+						<IdeomniSvgIconExtended
 							size={13}
 							className="arrow-icon"
 							color="inherit"
 						>
 							{open ? 'heroicons-solid:chevron-down' : 'heroicons-solid:chevron-right'}
-						</IdeomniSvgIcon>
+						</IdeomniSvgIconExtended>
 					</IconButton>
 				</ListItemButton>
 

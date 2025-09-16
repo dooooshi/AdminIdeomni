@@ -12,8 +12,9 @@ import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { MonetizationOn, Co2 } from '@mui/icons-material';
+import { MonetizationOn } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
+import NatureIcon from '@/components/icons/NatureIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
 import { 
   useGetCurrentUserTeamAccountQuery,
@@ -134,7 +135,7 @@ function HistoryOverviewPage() {
                   {t('teamManagement.CARBON_BALANCE')}
                 </Typography>
                 <Typography variant="h4" className="font-light text-gray-900 dark:text-white flex items-center gap-2">
-                  <Co2 className="text-green-600" sx={{ fontSize: 28 }} />
+                  <NatureIcon className="text-green-600" sx={{ fontSize: 28 }} />
                   {TeamTransferService.formatTransferAmount(teamAccount.carbon)}
                 </Typography>
               </div>
@@ -212,19 +213,19 @@ function HistoryOverviewPage() {
                           </Typography>
                           <div className="flex items-center gap-3 mt-2">
                             <Typography variant="body2" className="text-green-600">
-                              +<Co2 sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn)}
+                              +<NatureIcon sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn)}
                             </Typography>
                             <Typography variant="body2" className="text-red-600">
-                              -<Co2 sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonOut)}
+                              -<NatureIcon sx={{ fontSize: 14, mx: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonOut)}
                             </Typography>
                           </div>
                           <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-1">
                             {t('teamManagement.NET')}: {operationSummary.totalCarbonIn - operationSummary.totalCarbonOut >= 0 ? '+' : ''}
-                            <Co2 sx={{ fontSize: 16, mr: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut)}
+                            <NatureIcon sx={{ fontSize: 16, mr: 0.5 }} className="text-green-600" />{TeamTransferService.formatTransferAmount(operationSummary.totalCarbonIn - operationSummary.totalCarbonOut)}
                           </Typography>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
-                          <Co2 sx={{ fontSize: 20 }} className="text-green-500" />
+                          <NatureIcon sx={{ fontSize: 20 }} className="text-green-500" />
                         </div>
                       </div>
                     </CardContent>
@@ -322,7 +323,7 @@ function HistoryOverviewPage() {
                             {operation.resourceType === TeamResourceType.GOLD ? (
                               <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
                             ) : (
-                              <Co2 sx={{ fontSize: 16 }} className="text-green-600" />
+                              <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
                             )}
                             {TeamTransferService.formatTransferAmount(operation.amount)}
                           </Typography>
@@ -413,7 +414,7 @@ function HistoryOverviewPage() {
                             </Typography>
                             <br />
                             <Typography variant="caption" className="text-green-600 flex items-center gap-1 justify-end">
-                              <Co2 sx={{ fontSize: 12 }} />
+                              <NatureIcon sx={{ fontSize: 12 }} />
                               {TeamTransferService.formatTransferAmount(partner.totalCarbonExchanged)}
                             </Typography>
                           </div>

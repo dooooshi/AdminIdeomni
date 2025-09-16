@@ -17,7 +17,7 @@ import isUrlInChildren from '@ideomni/core/IdeomniNavigation/isUrlInChildren';
 import usePathname from '@ideomni/hooks/usePathname';
 import IdeomniNavBadge from '../../IdeomniNavBadge';
 import IdeomniNavItem, { IdeomniNavItemComponentProps } from '../../IdeomniNavItem';
-import IdeomniSvgIcon from '../../../IdeomniSvgIcon';
+import IdeomniSvgIconExtended from '../../../IdeomniSvgIcon/IdeomniSvgIconExtended';
 
 const Root = styled(ListItemButton)<ListItemButtonProps>(({ theme }) => ({
 	color: theme.vars.palette.text.primary,
@@ -97,12 +97,12 @@ function IdeomniNavHorizontalCollapse(props: IdeomniNavHorizontalCollapseProps) 
 									{...itemProps}
 								>
 									{item.icon && (
-										<IdeomniSvgIcon
+										<IdeomniSvgIconExtended
 											color="action"
 											className={clsx('Ideomni-list-item-icon shrink-0', item.iconClass)}
 										>
 											{item.icon}
-										</IdeomniSvgIcon>
+										</IdeomniSvgIconExtended>
 									)}
 
 									<ListItemText
@@ -122,14 +122,14 @@ function IdeomniNavHorizontalCollapse(props: IdeomniNavHorizontalCollapseProps) 
 										className="h-3 w-3 p-0 ml-1"
 										color="inherit"
 									>
-										<IdeomniSvgIcon
+										<IdeomniSvgIconExtended
 											size={12}
 											className="arrow-icon"
 										>
 											{theme.direction === 'ltr'
 												? 'heroicons-outline:chevron-right'
 												: 'heroicons-outline:chevron-left'}
-										</IdeomniSvgIcon>
+										</IdeomniSvgIconExtended>
 									</IconButton>
 								</Root>
 							</div>

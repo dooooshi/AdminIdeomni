@@ -38,10 +38,10 @@ const settingsConfig: IdeomniSettingsConfigType = {
 	 * The theme object defines the color theme for the application.
 	 */
 	theme: {
-		main: themesConfig.defaultDark,
-		navbar: themesConfig.defaultDark,
-		toolbar: themesConfig.defaultDark,
-		footer: themesConfig.defaultDark
+		main: themesConfig.default,
+		navbar: themesConfig.default,
+		toolbar: themesConfig.default,
+		footer: themesConfig.default
 	},
 
 	/**

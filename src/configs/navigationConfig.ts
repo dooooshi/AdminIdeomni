@@ -355,7 +355,7 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							id: 'team-management.transfers.carbon',
 							title: 'Transfer Carbon',
 							type: 'item',
-							icon: 'heroicons-outline:leaf',
+							icon: 'custom:nature-tree',
 							url: '/team-management/transfers/carbon',
 							translate: 'TRANSFER_CARBON',
 							auth: ['user']

@@ -112,7 +112,7 @@ interface InstantProduction {
       return { success: false, error: resourceResult.error };
     }
     
-    // 4. Add to inventory IMMEDIATELY
+    // 4. Add to inventory IMMEDIATELY (combines with existing if same type)
     await addToInventory(request.facilityId, material, quantity);
     
     // 5. Record successful production
@@ -205,6 +205,41 @@ Optimized for history queries:
 3. **Connection Check**: Must have water AND power connections
 4. **Payment Check**: Must have funds for resources
 
+## Inventory Combination Logic
+
+### When Producing Same Material Type
+The system now intelligently combines materials of the same type:
+
+1. **Check Existing Inventory**: Before creating a new inventory item, check if the same raw material already exists
+2. **Combine Quantities**: If found, add the new quantity to existing quantity
+3. **Weighted Average Cost**: Calculate new unit cost as weighted average of old and new
+4. **Incremental Space**: Only consume the additional space needed, not duplicate the full amount
+5. **Production History**: Maintain last 10 production records in metadata for tracking
+
+```typescript
+// Example: Combining materials
+if (existingItem) {
+  const newQuantity = existingItem.quantity + request.quantity;
+  const newTotalValue = existingItem.totalValue + newProduction.totalCost;
+  const newUnitCost = newTotalValue / newQuantity;
+  const newTotalSpace = material.carbonEmission * newQuantity;
+  const spaceIncrement = newTotalSpace - existingItem.totalSpaceOccupied;
+  
+  // Update existing item instead of creating new
+  await updateInventoryItem({
+    quantity: newQuantity,
+    unitCost: newUnitCost,
+    totalValue: newTotalValue,
+    totalSpaceOccupied: newTotalSpace,
+    metadata: {
+      ...existingMetadata,
+      lastProductionNumber: productionNumber,
+      productionHistory: [...history, newProduction].slice(-10)
+    }
+  });
+}
+```
+
 ## Benefits of Instant Production
 
 1. **Simpler**: No state management or timing logic
@@ -212,5 +247,7 @@ Optimized for history queries:
 3. **Faster**: Immediate feedback to user
 4. **Reliable**: No pending/stuck productions
 5. **Intuitive**: Pay resources → Get materials
+6. **Space Efficient**: Same materials combine in inventory
+7. **Cost Tracking**: Weighted average maintains accurate unit costs
 
-This simplified model reflects that raw material production is instant once resources are paid.
+This simplified model reflects that raw material production is instant once resources are paid, with intelligent inventory management.

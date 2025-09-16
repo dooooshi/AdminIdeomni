@@ -17,6 +17,8 @@ import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import { useGetCurrentUserTeamAccountQuery } from '../TeamAccountApi';
 import TeamAccountService from '@/lib/services/teamAccountService';
 import ResourceDisplay from '@/components/team-accounts/ResourceDisplay';
+import NatureIcon from '@/components/icons/NatureIcon';
+import { MonetizationOn } from '@mui/icons-material';
 
 interface TeamAccountCardProps {
   className?: string;
@@ -170,43 +172,27 @@ function TeamAccountCard({
                 <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.GOLD_BALANCE')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {teamAccount.gold.toLocaleString()}
-                </Typography>
+                <Box className="flex items-center gap-2">
+                  <MonetizationOn className="text-yellow-600" sx={{ fontSize: 32 }} />
+                  <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                    {teamAccount.gold.toLocaleString()}
+                  </Typography>
+                </Box>
               </div>
               <div>
                 <Typography variant="caption" className="text-gray-500 dark:text-slate-400 uppercase tracking-wider text-xs font-medium mb-2 block">
                   {t('teamManagement.CARBON_CREDITS')}
                 </Typography>
-                <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
-                  {teamAccount.carbon.toLocaleString()}
-                </Typography>
+                <Box className="flex items-center gap-2">
+                  <NatureIcon className="text-green-600" sx={{ fontSize: 32 }} />
+                  <Typography variant="h4" className="font-light text-gray-900 dark:text-white">
+                    {teamAccount.carbon.toLocaleString()}
+                  </Typography>
+                </Box>
               </div>
             </div>
           </Box>
 
-          {/* Resource Status */}
-          {!compact && (
-            <Box className="mb-6">
-              <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full ${
-                  teamAccount.gold > 0 && teamAccount.carbon > 0 
-                    ? 'bg-green-400' 
-                    : teamAccount.gold === 0 && teamAccount.carbon === 0
-                    ? 'bg-red-400'
-                    : 'bg-amber-400'
-                }`} />
-                <Typography variant="body2" color="text.secondary">
-                  {teamAccount.gold > 0 && teamAccount.carbon > 0 
-                    ? t('teamManagement.ALL_RESOURCES_AVAILABLE')
-                    : teamAccount.gold === 0 && teamAccount.carbon === 0
-                    ? t('teamManagement.NO_RESOURCES_AVAILABLE')
-                    : t('teamManagement.LIMITED_RESOURCES_AVAILABLE')
-                  }
-                </Typography>
-              </div>
-            </Box>
-          )}
 
           {/* Team Information */}
           {showTeamInfo && !compact && teamAccount.team && (
