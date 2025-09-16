@@ -495,26 +495,7 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                       </Box>
                     </Box>
                     
-                    <Box sx={{ display: 'flex', gap: 2, mb: 1 }}>
-                      <Box>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('infrastructure.COVERAGE_RADIUS')}
-                        </Typography>
-                        <Typography variant="h6">
-                          {facility.level + 2} {t('infrastructure.TILES')}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('infrastructure.ACTIVE_SUBSCRIBERS')}
-                        </Typography>
-                        <Typography variant="h6">
-                          {providerActiveSubscriptions.filter(s => 
-                            s.serviceType === (facility.facilityType === 'BASE_STATION' ? 'BASE_STATION' : 'FIRE_STATION')
-                          ).length}
-                        </Typography>
-                      </Box>
-                    </Box>
+                    {/* Removed coverage radius and active subscribers display */}
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <LocationIcon fontSize="small" color="action" />

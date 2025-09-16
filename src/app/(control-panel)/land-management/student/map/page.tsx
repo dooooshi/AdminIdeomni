@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import useDebounce from '@/@ideomni/hooks/useDebounce';
 import { useCache } from '@/hooks/useCache';
 import {
   Box,
@@ -47,6 +48,7 @@ import { HexagonalMapRef } from '@/components/map/types';
 import LandService from '@/lib/services/landService';
 import TouchGestureHandler from '@/components/land/TouchGestureHandler';
 import MobileBottomNavigation from '@/components/land/MobileBottomNavigation';
+import LandPurchaseModal from '@/components/land/LandPurchaseModal';
 import {
   AvailableTile,
   TileDetailsWithOwnership,
@@ -247,68 +249,17 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     };
   }, [selectedTile, purchaseDialogOpen, handleZoomIn, handleZoomOut, handleResetZoom, handleRefresh]);
 
-  // Update purchase validation when area changes
-  useEffect(() => {
-    if (selectedTile && purchaseArea > 0) {
-      // Skip validation for marine tiles - they cannot be purchased
-      if (selectedTile.landType === 'MARINE') {
-        console.log('Skipping validation for marine tile - purchase not allowed');
-        return;
-      }
-
-      // NEW: Validate integer input on frontend
-      const validationErrors = LandService.validatePurchaseInput(purchaseArea);
-      if (validationErrors.length > 0) {
-        console.warn('Invalid Area Input:', validationErrors.join(', '));
-        return;
-      }
-      validatePurchase();
-    }
-  }, [selectedTile, purchaseArea]);
-
-  const loadMapData = async () => {
-    try {
-      setLocalError(null);
-      
-      // Refresh both cached data sources
-      await Promise.all([
-        refreshTiles(),
-        refreshTeamSummary()
-      ]);
-      
-      // DEBUG: Log team summary to understand team status
-      console.log('🏃‍♂️ Team Summary Status:', teamSummary);
-      
-      // Diagnostic information
-      if (teamSummary) {
-        console.log('💰 Team Resources:', {
-          goldSpent: teamSummary.totalGoldSpent,
-          carbonSpent: teamSummary.totalCarbonSpent,
-          totalSpent: teamSummary.totalSpent,
-          totalPurchases: teamSummary.totalPurchases,
-          ownedArea: teamSummary.totalOwnedArea
-        });
-      } else {
-        console.warn('⚠️ No team summary available - this might indicate user is not on a team');
-      }
-      
-    } catch (err: any) {
-      console.error('Failed to load land map data:', err);
-      const errorMessage = LandService.getErrorMessage(err);
-      setLocalError(errorMessage);
-    }
-  };
-
-  const validatePurchase = async () => {
+  // Define validatePurchase callback first
+  const validatePurchase = useCallback(async () => {
     if (!selectedTile) return;
 
     try {
       const validation = await LandService.validatePurchase(selectedTile.tileId, purchaseArea);
-      
+
       if (validation.errors && validation.errors.length > 0) {
         console.error('❌ Purchase Validation Errors:', validation.errors);
       }
-      
+
       // Ensure all cost values are numbers to prevent NaN display
       const sanitizedValidation: PurchaseValidation = {
         ...validation,
@@ -321,7 +272,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         canPurchase: !!validation.canPurchase,
         errors: validation.errors || []
       };
-      
+
       console.log('🔍 Purchase Validation Debug:', {
         rawValidation: validation,
         sanitizedCanPurchase: sanitizedValidation.canPurchase,
@@ -330,16 +281,16 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         booleanConversion: !!validation.canPurchase,
         strictEqual: validation.canPurchase === true
       });
-      
+
       // Show validation errors to user if any exist
       if (sanitizedValidation.errors.length > 0) {
         const errorMessage = sanitizedValidation.errors.join(', ');
         console.error('❌ Purchase blocked by validation errors:', errorMessage);
-        
+
         // Provide more helpful error context
         console.warn('Purchase validation issues:', errorMessage);
       }
-      
+
       setPurchaseValidation(sanitizedValidation);
       console.log('✅ Set purchaseValidation state:', sanitizedValidation);
     } catch (err: any) {
@@ -355,6 +306,61 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         teamCarbonBalance: 0,
         errors: ['Failed to validate purchase. Please try again.']
       });
+    }
+  }, [selectedTile, purchaseArea]);
+
+  // Create debounced version of validatePurchase (500ms delay)
+  const debouncedValidatePurchase = useDebounce(validatePurchase, 500);
+
+  // Update purchase validation when area changes (debounced)
+  useEffect(() => {
+    if (selectedTile && purchaseArea > 0) {
+      // Skip validation for marine tiles - they cannot be purchased
+      if (selectedTile.landType === 'MARINE') {
+        console.log('Skipping validation for marine tile - purchase not allowed');
+        return;
+      }
+
+      // NEW: Validate integer input on frontend
+      const validationErrors = LandService.validatePurchaseInput(purchaseArea);
+      if (validationErrors.length > 0) {
+        console.warn('Invalid Area Input:', validationErrors.join(', '));
+        return;
+      }
+      debouncedValidatePurchase();
+    }
+  }, [selectedTile, purchaseArea, debouncedValidatePurchase]);
+
+  const loadMapData = async () => {
+    try {
+      setLocalError(null);
+
+      // Refresh both cached data sources
+      await Promise.all([
+        refreshTiles(),
+        refreshTeamSummary()
+      ]);
+
+      // DEBUG: Log team summary to understand team status
+      console.log('🏃‍♂️ Team Summary Status:', teamSummary);
+
+      // Diagnostic information
+      if (teamSummary) {
+        console.log('💰 Team Resources:', {
+          goldSpent: teamSummary.totalGoldSpent,
+          carbonSpent: teamSummary.totalCarbonSpent,
+          totalSpent: teamSummary.totalSpent,
+          totalPurchases: teamSummary.totalPurchases,
+          ownedArea: teamSummary.totalOwnedArea
+        });
+      } else {
+        console.warn('⚠️ No team summary available - this might indicate user is not on a team');
+      }
+
+    } catch (err: any) {
+      console.error('Failed to load land map data:', err);
+      const errorMessage = LandService.getErrorMessage(err);
+      setLocalError(errorMessage);
     }
   };
 
@@ -391,11 +397,11 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
     // Set selected tile
     setSelectedTile(tile);
 
-    // Check if this is a purchase action (called from tooltip)
+    // Check if this is a purchasable tile (always open modal for purchasable tiles)
     const isPurchaseAction = tile.canPurchase && tile.landType !== 'MARINE';
 
     if (isPurchaseAction) {
-      // Open purchase modal for non-marine purchasable tiles when clicked from tooltip
+      // Directly open purchase modal for non-marine purchasable tiles
       setPurchaseArea(1);
       setDescription(`Purchase land on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
       setPurchaseDialogOpen(true);
@@ -412,37 +418,16 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
 
 
 
-  const handlePurchaseConfirm = async () => {
-    if (!selectedTile || !purchaseValidation?.canPurchase) return;
+  const handlePurchaseComplete = async (purchase: any) => {
+    // Close dialog
+    setPurchaseDialogOpen(false);
+    resetPurchaseForm();
 
-    try {
-      setPurchasing(true);
+    // Refresh data after successful purchase
+    await loadMapData();
 
-      const purchaseRequest: LandPurchaseRequest = {
-        tileId: selectedTile.tileId,
-        area: purchaseArea,
-        description: description || undefined,
-      };
-
-
-      const result = await LandService.purchaseLand(purchaseRequest);
-      
-      // Close dialog first for better UX
-      setPurchaseDialogOpen(false);
-      resetPurchaseForm();
-      
-      
-      
-      // Refresh data after successful purchase
-      await loadMapData();
-      
-    } catch (err: any) {
-      console.error('Purchase failed:', err);
-      const errorMessage = LandService.getErrorMessage(err);
-      setLocalError(errorMessage);
-    } finally {
-      setPurchasing(false);
-    }
+    // Show success message
+    console.log('Purchase completed successfully:', purchase);
   };
 
   const resetPurchaseForm = () => {
@@ -536,143 +521,12 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
 
 
 
-  const renderPurchaseModal = () => (
-    <Dialog 
-      open={purchaseDialogOpen} 
-      onClose={() => setPurchaseDialogOpen(false)}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle>
-        {t('land.PURCHASE_DIALOG_TITLE', { tileId: selectedTile?.tileId })}
-      </DialogTitle>
-      
-      <DialogContent>
-        {selectedTile && (
-          <Stack spacing={3} sx={{ mt: 2 }}>
-            {/* Basic Tile Info */}
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {t('land.TILE_INFORMATION')}
-                </Typography>
-                <Grid container spacing={2}>
-                  <Grid size={{ xs: 6 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('land.LAND_TYPE')}
-                    </Typography>
-                    <Typography variant="body1">
-                      {LandService.formatLandType(selectedTile.landType)}
-                    </Typography>
-                  </Grid>
-                  <Grid size={{ xs: 6 }}>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('land.YOUR_HOLDINGS')}
-                    </Typography>
-                    <Typography variant="body1">
-                      {LandService.formatArea(selectedTile.teamOwnedArea || 0)}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-
-            {/* Purchase Amount */}
-            <Card>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {t('land.PURCHASE_AMOUNT')}
-                </Typography>
-                <TextField
-                  label={t('land.AMOUNT_UNITS')}
-                  type="number"
-                  fullWidth
-                  value={Math.round(purchaseArea)}
-                  onChange={(e) => {
-                    const val = Number(e.target.value);
-                    if (val >= 1 && val <= 1000) {
-                      setPurchaseArea(val);
-                    }
-                  }}
-                  inputProps={{ min: 1, max: 1000, step: 1 }}
-                  variant="outlined"
-                  helperText={t('land.AMOUNT_HELPER_TEXT')}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Cost Summary */}
-            {purchaseValidation && (
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {t('land.INVESTMENT_ANALYSIS')}
-                  </Typography>
-                  <Grid container spacing={2}>
-                    <Grid size={{ xs: 6 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('land.GOLD_COST')}
-                      </Typography>
-                      <Typography variant="body1">
-                        {LandService.formatCurrency(purchaseValidation.goldCost || 0, 'gold')}
-                      </Typography>
-                    </Grid>
-                    <Grid size={{ xs: 6 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {t('land.CARBON_COST')}
-                      </Typography>
-                      <Typography variant="body1">
-                        {LandService.formatCurrency(purchaseValidation.carbonCost || 0, 'carbon')}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  
-                  {purchaseValidation.errors && purchaseValidation.errors.length > 0 && (
-                    <Alert severity="error" sx={{ mt: 2 }}>
-                      {purchaseValidation.errors.map((error, index) => (
-                        <Typography key={index} variant="body2">
-                          {error}
-                        </Typography>
-                      ))}
-                    </Alert>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Notes */}
-            <TextField
-              label={t('land.NOTES_OPTIONAL')}
-              multiline
-              rows={2}
-              fullWidth
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t('land.NOTES_PLACEHOLDER')}
-              variant="outlined"
-            />
-          </Stack>
-        )}
-      </DialogContent>
-      
-      <DialogActions sx={{ p: 3, gap: 2 }}>
-        <Button 
-          onClick={() => setPurchaseDialogOpen(false)}
-          variant="outlined"
-        >
-          {tCommon('common.CANCEL')}
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handlePurchaseConfirm}
-          disabled={!purchaseValidation?.canPurchase || purchasing}
-          startIcon={purchasing ? <CircularProgress size={20} color="inherit" /> : <ShoppingCartIcon />}
-        >
-          {purchasing ? t('land.PURCHASING') : t('land.PURCHASE_UNITS', { amount: Math.round(purchaseArea) })}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  // Transform selectedTile to match AvailableTile interface for modal
+  const modalTile = selectedTile ? {
+    ...selectedTile,
+    teamOwnedArea: selectedTile.teamOwnedArea || 0,
+    availableArea: selectedTile.availableArea || 0,
+  } : null;
 
   if (loading) {
     return (
@@ -823,8 +677,16 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
       </MapContainer>
 
 
-      {/* Purchase Modal */}
-      {renderPurchaseModal()}
+      {/* Purchase Modal using LandPurchaseModal component */}
+      <LandPurchaseModal
+        open={purchaseDialogOpen}
+        onClose={() => {
+          setPurchaseDialogOpen(false);
+          resetPurchaseForm();
+        }}
+        tile={modalTile}
+        onPurchaseComplete={handlePurchaseComplete}
+      />
       
       
 

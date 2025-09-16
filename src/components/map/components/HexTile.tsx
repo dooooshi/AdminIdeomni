@@ -469,7 +469,7 @@ const HexTile: React.FC<HexTileProps> = ({
 									</Box>
 								)}
 
-								{/* Quick Action Button - Not for marine tiles */}
+								{/* Purchase Action Button - Click here or tile to purchase */}
 								{tile.canPurchase && tile.landType !== 'MARINE' && (
 									<Box
 										sx={{
@@ -578,10 +578,8 @@ const HexTile: React.FC<HexTileProps> = ({
 					}}
 					onMouseMove={(e) => onTileHover?.(tile, e)}
 					onClick={() => {
-						// Don't trigger tile click for marine tiles or when tooltip purchase is available
-						if (!tile.canPurchase || tile.landType === 'MARINE') {
-							onTileClick?.(tile);
-						}
+						// Always trigger tile click - the parent component handles purchase logic
+						onTileClick?.(tile);
 					}}
 					onContextMenu={(e) => {
 						e.preventDefault();

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import useDebounce from '@/@ideomni/hooks/useDebounce';
 import {
   Dialog,
   DialogContent,
@@ -10,8 +11,6 @@ import {
   Box,
   Alert,
   Slider,
-  FormControlLabel,
-  Switch,
   Stack,
   CircularProgress,
 } from '@mui/material';
@@ -20,7 +19,7 @@ import {
   Close as CloseIcon,
   Security as SecurityIcon,
 } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import LandService from '@/lib/services/landService';
 import {
@@ -76,43 +75,25 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   tile,
   onPurchaseComplete
 }) => {
+  const theme = useTheme();
   const { t } = useTranslation();
   const { t: tCommon } = useTranslation();
   
   // Form state
   const [area, setArea] = useState(1);
   const [description, setDescription] = useState('');
-  const [enablePriceProtection, setEnablePriceProtection] = useState(false);
-  const [maxGoldCost, setMaxGoldCost] = useState<number | undefined>();
-  const [maxCarbonCost, setMaxCarbonCost] = useState<number | undefined>();
   
   // Validation and loading states
   const [validation, setValidation] = useState<PurchaseValidation | null>(null);
   const [validating, setValidating] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingValidation, setPendingValidation] = useState(false);
 
-  // Reset form when modal opens/closes or tile changes
-  useEffect(() => {
-    if (open && tile) {
-      resetForm();
-      generateDefaultDescription();
-    }
-  }, [open, tile]);
-
-  // Validate purchase when area changes
-  useEffect(() => {
-    if (tile && area > 0) {
-      validatePurchase();
-    }
-  }, [tile, area]);
-
+  // Helper functions
   const resetForm = () => {
     setArea(1); // NEW: Always start with 1 unit (integer only)
     setDescription('');
-    setEnablePriceProtection(false);
-    setMaxGoldCost(undefined);
-    setMaxCarbonCost(undefined);
     setValidation(null);
     setError(null);
   };
@@ -122,13 +103,15 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
     setDescription(`Purchase ${area} area on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
   };
 
-  const validatePurchase = async () => {
+  // Validation function
+  const validatePurchase = useCallback(async () => {
     if (!tile || area <= 0) return;
 
     try {
       setValidating(true);
+      setPendingValidation(false);
       setError(null);
-      
+
       const validationResult = await LandService.validatePurchase(tile.tileId, area);
       setValidation(validationResult);
     } catch (err: any) {
@@ -138,7 +121,26 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
     } finally {
       setValidating(false);
     }
-  };
+  }, [tile, area]);
+
+  // Debounced validation function (500ms delay)
+  const debouncedValidation = useDebounce(validatePurchase, 500);
+
+  // Reset form when modal opens/closes or tile changes
+  useEffect(() => {
+    if (open && tile) {
+      resetForm();
+      generateDefaultDescription();
+    }
+  }, [open, tile]);
+
+  // Validate purchase when area changes (debounced)
+  useEffect(() => {
+    if (tile && area > 0) {
+      setPendingValidation(true);
+      debouncedValidation();
+    }
+  }, [tile, area, debouncedValidation]);
 
   const handlePurchase = async () => {
     if (!tile || !validation?.canPurchase) return;
@@ -152,11 +154,6 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
         area: area,
         description: description || undefined,
       };
-
-      if (enablePriceProtection) {
-        if (maxGoldCost) purchaseRequest.maxGoldCost = maxGoldCost;
-        if (maxCarbonCost) purchaseRequest.maxCarbonCost = maxCarbonCost;
-      }
 
       const purchase = await LandService.purchaseLand(purchaseRequest);
       onPurchaseComplete(purchase);
@@ -272,11 +269,11 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
           </Box>
 
           {/* Cost Display */}
-          {validating ? (
+          {(validating || pendingValidation) ? (
             <Box display="flex" alignItems="center" py={2}>
               <CircularProgress size={16} sx={{ mr: 1.5, color: 'text.secondary' }} />
               <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                Calculating...
+                {pendingValidation ? 'Waiting...' : 'Calculating...'}
               </Typography>
             </Box>
           ) : validation && (
@@ -314,76 +311,6 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
               </Stack>
             </ErrorSummary>
           )}
-
-          {/* Price Protection */}
-          <Box>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={enablePriceProtection}
-                  onChange={(e) => setEnablePriceProtection(e.target.checked)}
-                  disabled={purchasing}
-                  size="small"
-                />
-              }
-              label={
-                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                  Price Protection
-                </Typography>
-              }
-            />
-            
-            {enablePriceProtection && (
-              <Stack spacing={2} sx={{ mt: 2 }}>
-                <TextField
-                  label={t('land.MAX_GOLD_COST')}
-                  type="number"
-                  size="small"
-                  value={maxGoldCost || ''}
-                  onChange={(e) => setMaxGoldCost(e.target.value ? Number(e.target.value) : undefined)}
-                  inputProps={{ min: 0, step: 0.01 }}
-                  disabled={purchasing}
-                  sx={{ 
-                    '& .MuiOutlinedInput-root': { 
-                      borderRadius: '6px',
-                      '& fieldset': {
-                        borderColor: 'rgba(0, 0, 0, 0.1)',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: 'rgba(0, 0, 0, 0.2)',
-                      },
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '13px',
-                    }
-                  }}
-                />
-                <TextField
-                  label={t('land.MAX_CARBON_COST')}
-                  type="number"
-                  size="small"
-                  value={maxCarbonCost || ''}
-                  onChange={(e) => setMaxCarbonCost(e.target.value ? Number(e.target.value) : undefined)}
-                  inputProps={{ min: 0, step: 0.01 }}
-                  disabled={purchasing}
-                  sx={{ 
-                    '& .MuiOutlinedInput-root': { 
-                      borderRadius: '6px',
-                      '& fieldset': {
-                        borderColor: 'rgba(0, 0, 0, 0.1)',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: 'rgba(0, 0, 0, 0.2)',
-                      },
-                    },
-                    '& .MuiInputLabel-root': {
-                      fontSize: '13px',
-                    }
-                  }}
-                />
-              </Stack>
-            )}
-          </Box>
 
           {/* Description */}
           <TextField
@@ -437,21 +364,22 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
               onClick={handlePurchase}
               disabled={!canPurchase}
               startIcon={purchasing ? <CircularProgress size={16} /> : null}
-              sx={{ 
+              sx={{
                 flex: 1,
                 borderRadius: '6px',
                 boxShadow: 'none',
                 fontSize: '14px',
                 fontWeight: 400,
                 py: 1,
-                backgroundColor: 'rgb(37, 37, 37)',
-                '&:hover': { 
+                backgroundColor: theme.palette.mode === 'dark' ? 'rgb(37, 37, 37)' : theme.palette.primary.main,
+                color: 'white',
+                '&:hover': {
                   boxShadow: 'none',
-                  backgroundColor: 'rgb(23, 23, 23)'
+                  backgroundColor: theme.palette.mode === 'dark' ? 'rgb(23, 23, 23)' : theme.palette.primary.dark
                 },
                 '&:disabled': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.06)',
-                  color: 'rgba(0, 0, 0, 0.26)'
+                  backgroundColor: theme.palette.action.disabledBackground,
+                  color: theme.palette.action.disabled
                 }
               }}
             >
