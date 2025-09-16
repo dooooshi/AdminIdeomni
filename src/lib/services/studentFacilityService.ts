@@ -409,10 +409,10 @@ export class StudentFacilityService {
       FacilityType.WATER_PLANT, FacilityType.POWER_PLANT, FacilityType.BASE_STATION, FacilityType.FIRE_STATION
     ];
 
-    if (rawMaterialTypes.includes(type)) return 'Raw Material Production';
-    if (functionalTypes.includes(type)) return 'Functional Facilities';
-    if (infrastructureTypes.includes(type)) return 'Infrastructure';
-    return 'Other Facilities';
+    if (rawMaterialTypes.includes(type)) return 'RAW_MATERIAL_PRODUCTION';
+    if (functionalTypes.includes(type)) return 'FUNCTIONAL';
+    if (infrastructureTypes.includes(type)) return 'INFRASTRUCTURE';
+    return 'OTHER';
   }
 
   /**

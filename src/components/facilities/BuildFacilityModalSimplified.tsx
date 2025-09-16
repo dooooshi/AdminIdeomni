@@ -344,7 +344,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
                 {validation.canBuild && teamBalance && (
                   <Box mt={1}>
                     <Typography variant="caption" color="text.secondary">
-                      {t('facilityManagement.YOUR_BALANCE')}: 
+                      {t('facilityManagement.YOUR_BALANCE')}:
                       <MonetizationOn sx={{ fontSize: 14, mx: 0.5 }} />
                       {teamBalance.gold} 
                       <Co2 sx={{ fontSize: 14, mx: 0.5 }} />

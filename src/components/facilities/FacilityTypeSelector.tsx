@@ -73,7 +73,7 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
   facilityCosts,
   className,
 }) => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
 
   // Create facility options
   const filteredFacilities: FacilityOption[] = useMemo(() => {
@@ -204,10 +204,10 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
       {filteredFacilities.length === 0 && (
         <Box textAlign="center" py={4}>
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            {t('facilityManagement:NO_FACILITIES_FOUND')}
+            {t('facilityManagement.NO_FACILITIES_FOUND')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {t('facilityManagement:NO_COMPATIBLE_FACILITIES')}
+            {t('facilityManagement.NO_COMPATIBLE_FACILITIES')}
           </Typography>
         </Box>
       )}

@@ -218,7 +218,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
   tileOwnership,
   teamBalance,
 }) => {
-  const { t } = useTranslation(['facilityManagement', 'common']);
+  const { t } = useTranslation();
 
   // State management
   const [activeStep, setActiveStep] = useState(0);
@@ -261,7 +261,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
       }
     } catch (err) {
       console.error('Failed to load available tiles:', err);
-      setError(t('facilityManagement:FAILED_TO_LOAD_TILES'));
+      setError(t('facilityManagement.FAILED_TO_LOAD_TILES'));
     } finally {
       setTilesLoading(false);
     }
@@ -312,7 +312,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
     } catch (err) {
       console.error('Validation failed:', err);
-      setError(t('facilityManagement:VALIDATION_ERROR'));
+      setError(t('facilityManagement.VALIDATION_ERROR'));
       setValidation(null);
     } finally {
       setLoading(false);
@@ -380,7 +380,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
     } catch (err) {
       console.error('Build failed:', err);
-      setError(t('facilityManagement:FACILITY_CREATE_ERROR'));
+      setError(t('facilityManagement.FACILITY_CREATE_ERROR'));
     } finally {
       setBuilding(false);
     }
@@ -403,10 +403,10 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
   const getStepLabel = (step: string): string => {
     switch (step) {
-      case 'SELECT_TILE': return t('facilityManagement:SELECT_TILE');
-      case 'SELECT_FACILITY': return t('facilityManagement:SELECT_FACILITY_TYPE');
-      case 'CONFIGURE_BUILD': return t('facilityManagement:CONFIGURE_BUILD');
-      case 'CONFIRM_BUILD': return t('facilityManagement:CONFIRM_BUILD');
+      case 'SELECT_TILE': return t('facilityManagement.SELECT_TILE');
+      case 'SELECT_FACILITY': return t('facilityManagement.SELECT_FACILITY_TYPE');
+      case 'CONFIGURE_BUILD': return t('facilityManagement.CONFIGURE_BUILD');
+      case 'CONFIRM_BUILD': return t('facilityManagement.CONFIRM_BUILD');
       default: return step;
     }
   };
@@ -430,7 +430,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
         <Stack direction="row" alignItems="center" spacing={2}>
           <BuildOutlined color="primary" sx={{ fontSize: 24 }} />
           <Typography variant="h5" fontWeight={500}>
-            {t('facilityManagement:BUILD_FACILITY')}
+            {t('facilityManagement.BUILD_FACILITY')}
           </Typography>
         </Stack>
       </DialogTitle>
@@ -450,7 +450,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
               <LocationOnOutlined color="primary" sx={{ fontSize: 20 }} />
               <Box>
                 <Typography variant="subtitle2" fontWeight={500}>
-                  {t('facilityManagement:TILE')} {selectedTile?.tileId || selectedTileId}
+                  {t('facilityManagement.TILE')} {selectedTile?.tileId || selectedTileId}
                 </Typography>
                 <Stack direction="row" spacing={1} mt={0.5}>
                   <Chip 
@@ -460,14 +460,14 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                   />
                   {selectedTile ? (
                     <Chip 
-                      label={`${t('facilityManagement:OWNED_AREA')}: ${selectedTile.teamOwnedArea}`}
+                      label={`${t('facilityManagement.OWNED_AREA')}: ${selectedTile.teamOwnedArea}`}
                       size="small" 
                       color="success"
                       sx={{ height: 20, fontSize: '0.75rem' }}
                     />
                   ) : tileOwnership && (
                     <Chip 
-                      label={`${t('facilityManagement:OWNED_AREA')}: ${tileOwnership.ownedArea}/${tileOwnership.totalArea}`}
+                      label={`${t('facilityManagement.OWNED_AREA')}: ${tileOwnership.ownedArea}/${tileOwnership.totalArea}`}
                       size="small" 
                       color="success"
                       sx={{ height: 20, fontSize: '0.75rem' }}
@@ -505,21 +505,21 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
           {activeStep === 0 && (
             <Box>
               <Typography variant="h6" gutterBottom>
-                {t('facilityManagement:SELECT_TILE_TO_BUILD')}
+                {t('facilityManagement.SELECT_TILE_TO_BUILD')}
               </Typography>
               <Typography variant="body2" color="text.secondary" mb={2}>
-                {t('facilityManagement:SELECT_TILE_DESCRIPTION')}
+                {t('facilityManagement.SELECT_TILE_DESCRIPTION')}
               </Typography>
 
               {tilesLoading ? (
                 <Box display="flex" justifyContent="center" py={4}>
                   <CircularProgress />
-                  <Typography ml={2}>{t('facilityManagement:LOADING_TILES')}</Typography>
+                  <Typography ml={2}>{t('facilityManagement.LOADING_TILES')}</Typography>
                 </Box>
               ) : availableTiles.length === 0 ? (
                 <Alert severity="warning" sx={{ borderRadius: 1 }}>
                   <Typography variant="body2">
-                    {t('facilityManagement:NO_OWNED_TILES')}
+                    {t('facilityManagement.NO_OWNED_TILES')}
                   </Typography>
                 </Alert>
               ) : (
@@ -541,7 +541,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         <CardContent sx={{ p: 2 }}>
                           <Stack direction="row" justifyContent="space-between" alignItems="start" mb={1}>
                             <Typography variant="subtitle2" fontWeight={500}>
-                              {t('facilityManagement:TILE')} {tile.tileId}
+                              {t('facilityManagement.TILE')} {tile.tileId}
                             </Typography>
                             <Chip
                               label={tile.landType}
@@ -550,10 +550,10 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                             />
                           </Stack>
                           <Typography variant="caption" color="text.secondary" display="block">
-                            {t('facilityManagement:OWNED_AREA')}: {tile.teamOwnedArea}
+                            {t('facilityManagement.OWNED_AREA')}: {tile.teamOwnedArea}
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {t('facilityManagement:AVAILABLE_AREA')}: {tile.availableArea}
+                            {t('facilityManagement.AVAILABLE_AREA')}: {tile.availableArea}
                           </Typography>
                         </CardContent>
                       </Card>
@@ -568,10 +568,10 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
           {activeStep === 1 && (
             <Box>
               <Typography variant="h6" gutterBottom>
-                {t('facilityManagement:CHOOSE_FACILITY_TYPE')}
+                {t('facilityManagement.CHOOSE_FACILITY_TYPE')}
               </Typography>
               <Typography variant="body2" color="text.secondary" mb={2}>
-                {t('facilityManagement:SELECT_FACILITY_DESCRIPTION')}
+                {t('facilityManagement.SELECT_FACILITY_DESCRIPTION')}
               </Typography>
 
               <FacilityTypeSelector
@@ -597,19 +597,19 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
           {activeStep === 2 && selectedFacilityType && validation && (
             <Box>
               <Typography variant="h6" gutterBottom>
-                {t('facilityManagement:CONFIGURE_BUILD_OPTIONS')}
+                {t('facilityManagement.CONFIGURE_BUILD_OPTIONS')}
               </Typography>
 
               {/* Build Costs Summary */}
               <Card sx={{ mb: 3 }}>
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>
-                    {t('facilityManagement:BUILD_COSTS')}
+                    {t('facilityManagement.BUILD_COSTS')}
                   </Typography>
                   <Grid container spacing={2}>
                     <Grid item xs={4}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:GOLD_COST')}
+                        {t('facilityManagement.GOLD_COST')}
                       </Typography>
                       <Typography variant="h6" color="warning.main">
                         <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
@@ -617,7 +617,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:CARBON_COST')}
+                        {t('facilityManagement.CARBON_COST')}
                       </Typography>
                       <Typography variant="h6" color="error.main">
                         <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
@@ -625,7 +625,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:TOTAL_COST')}
+                        {t('facilityManagement.TOTAL_COST')}
                       </Typography>
                       <Typography variant="h6" color="primary.main" className="flex items-center gap-2">
                         <MonetizationOn sx={{ fontSize: 20 }} className="text-yellow-600" />
@@ -639,12 +639,12 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
               {/* Description */}
               <TextField
                 fullWidth
-                label={t('facilityManagement:DESCRIPTION_OPTIONAL')}
+                label={t('facilityManagement.DESCRIPTION_OPTIONAL')}
                 multiline
                 rows={3}
                 value={buildRequest.description}
                 onChange={(e) => setBuildRequest(prev => ({ ...prev, description: e.target.value }))}
-                placeholder={t('facilityManagement:FACILITY_DESCRIPTION_PLACEHOLDER')}
+                placeholder={t('facilityManagement.FACILITY_DESCRIPTION_PLACEHOLDER')}
                 sx={{ mb: 3 }}
               />
 
@@ -658,10 +658,10 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         onChange={(e) => setEnablePriceProtection(e.target.checked)}
                       />
                     }
-                    label={t('facilityManagement:ENABLE_PRICE_PROTECTION')}
+                    label={t('facilityManagement.ENABLE_PRICE_PROTECTION')}
                   />
                   <Typography variant="caption" color="text.secondary" display="block" mb={2}>
-                    {t('facilityManagement:PRICE_PROTECTION_DESCRIPTION')}
+                    {t('facilityManagement.PRICE_PROTECTION_DESCRIPTION')}
                   </Typography>
 
                   {enablePriceProtection && (
@@ -669,7 +669,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                       <Grid item xs={6}>
                         <TextField
                           fullWidth
-                          label={t('facilityManagement:MAX_GOLD_COST')}
+                          label={t('facilityManagement.MAX_GOLD_COST')}
                           type="number"
                           value={maxGoldCost}
                           onChange={(e) => setMaxGoldCost(e.target.value === '' ? '' : Number(e.target.value))}
@@ -680,7 +680,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                       <Grid item xs={6}>
                         <TextField
                           fullWidth
-                          label={t('facilityManagement:MAX_CARBON_COST')}
+                          label={t('facilityManagement.MAX_CARBON_COST')}
                           type="number"
                           value={maxCarbonCost}
                           onChange={(e) => setMaxCarbonCost(e.target.value === '' ? '' : Number(e.target.value))}
@@ -699,20 +699,20 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
           {activeStep === 3 && selectedFacilityType && validation && (
             <Box>
               <Typography variant="h6" gutterBottom>
-                {t('facilityManagement:CONFIRM_FACILITY_BUILD')}
+                {t('facilityManagement.CONFIRM_FACILITY_BUILD')}
               </Typography>
 
               <Card sx={{ mb: 2 }}>
                 <CardContent>
                   <Typography variant="subtitle1" gutterBottom>
-                    {t('facilityManagement:BUILD_SUMMARY')}
+                    {t('facilityManagement.BUILD_SUMMARY')}
                   </Typography>
                   <Divider sx={{ my: 1 }} />
                   
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:FACILITY_TYPE')}
+                        {t('facilityManagement.FACILITY_TYPE')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
                         {StudentFacilityService.getFacilityIcon(selectedFacilityType)} {' '}
@@ -721,15 +721,15 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:LOCATION')}
+                        {t('facilityManagement.LOCATION')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        {t('facilityManagement:TILE')} {selectedTile?.tileId} ({selectedTile?.landType})
+                        {t('facilityManagement.TILE')} {selectedTile?.tileId} ({selectedTile?.landType})
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:GOLD_COST')}
+                        {t('facilityManagement.GOLD_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium" color="warning.main">
                         <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {validation.goldCost}
@@ -737,7 +737,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:CARBON_COST')}
+                        {t('facilityManagement.CARBON_COST')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium" color="error.main">
                         <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {validation.carbonCost}
@@ -748,7 +748,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                   {buildRequest.description && (
                     <Box mt={2}>
                       <Typography variant="caption" color="text.secondary">
-                        {t('facilityManagement:DESCRIPTION')}
+                        {t('facilityManagement.DESCRIPTION')}
                       </Typography>
                       <Typography variant="body2">
                         {buildRequest.description}
@@ -768,17 +768,17 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                   }
                 >
                   <Typography variant="body2">
-                    {t('facilityManagement:CURRENT_BALANCE')}: {' '}
+                    {t('facilityManagement.CURRENT_BALANCE')}: {' '}
                     <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} /> {teamBalance.gold} | <Co2 fontSize="small" sx={{ mr: 0.5 }} /> {teamBalance.carbon}
                   </Typography>
                   {teamBalance.gold < validation.goldCost && (
                     <Typography variant="caption" color="error">
-                      {t('facilityManagement:INSUFFICIENT_GOLD')}
+                      {t('facilityManagement.INSUFFICIENT_GOLD')}
                     </Typography>
                   )}
                   {teamBalance.carbon < validation.carbonCost && (
                     <Typography variant="caption" color="error">
-                      {t('facilityManagement:INSUFFICIENT_CARBON')}
+                      {t('facilityManagement.INSUFFICIENT_CARBON')}
                     </Typography>
                   )}
                 </Alert>
@@ -790,12 +790,12 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
       <DialogActions>
         <Button onClick={onClose} disabled={building}>
-          {t('facilityManagement:CANCEL')}
+          {t('facilityManagement.CANCEL')}
         </Button>
         
         {activeStep > 0 && (
           <Button onClick={handleBack} disabled={building}>
-            {t('facilityManagement:BACK')}
+            {t('facilityManagement.BACK')}
           </Button>
         )}
         
@@ -806,7 +806,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
             disabled={!canProceedToNext() || loading}
             startIcon={loading ? <CircularProgress size={16} /> : undefined}
           >
-            {t('facilityManagement:NEXT')}
+            {t('facilityManagement.NEXT')}
           </Button>
         ) : (
           <Button
@@ -816,7 +816,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
             startIcon={building ? <CircularProgress size={16} /> : <BuildOutlined />}
             color="primary"
           >
-            {building ? t('facilityManagement:BUILDING') : t('facilityManagement:BUILD_FACILITY')}
+            {building ? t('facilityManagement.BUILDING') : t('facilityManagement.BUILD_FACILITY')}
           </Button>
         )}
       </DialogActions>
