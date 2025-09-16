@@ -1,545 +1,451 @@
 import apiClient from '@/lib/http/api-client';
 import {
-  ApiResponse,
   TradeOrder,
   TradeStatus,
-  TradeItem,
-  TradeTransaction,
-  TradeHistory,
   CreateTradeRequest,
-  TradeListQuery,
-  PreviewTradeRequest,
   AcceptTradeRequest,
   RejectTradeRequest,
-  TradeHistoryQuery,
-  TradeOperationHistoryQuery,
+  PreviewTradeRequest,
   TradePreviewResponse,
+  TradeListParams,
   TradeListResponse,
-  TradeSummary,
-  TradeDetailResponse,
-  TradeStatistics,
-  TradeStats,
-  TeamOperationHistory,
-  DestinationOption,
-  ValidationResult,
+  TradeDetailsResponse,
+  TradeHistory,
+  AvailableTeamsResponse,
+  AvailableDestinationsResponse,
+  Team,
+  FacilitySpaceInventory,
   TradeError,
-  TradeErrorCode,
-  TeamInfo,
-  FacilityInventoryInfo,
-  PaginationInfo
+  isTradeError,
+  toNumber,
+  TradeListItem,
 } from '@/types/trade';
-import { TeamListItem } from '@/types/team';
-import StudentFacilitySpaceService from './studentFacilitySpaceService';
 
 /**
  * Trade Service
  * Handles all trade-related API operations for students
- * Based on the trade API documentation in docs/trade/
+ * Based on the API documentation from docs/trade/
  */
 export class TradeService {
-  private static readonly BASE_PATH = '/api/trades';
-
-  // ==========================================
-  // TRADE CRUD OPERATIONS
-  // ==========================================
+  private static readonly TRADES_BASE_PATH = '/trades';
 
   /**
-   * Create a new trade offer
-   * POST /api/trades
+   * Helper method to extract data from API response wrapper
    */
-  static async createTrade(data: CreateTradeRequest): Promise<TradeOrder> {
-    try {
-      const response = await apiClient.post<ApiResponse<TradeOrder>>(
-        this.BASE_PATH,
-        data
-      );
+  private static extractResponseData<T>(response: any): T {
+    // Handle nested response structure
+    if (response.data?.data?.data) {
+      return response.data.data.data;
+    }
 
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to create trade');
-      }
-
+    if (response.data?.data) {
       return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.createTrade error:', error);
-      throw this.handleError(error);
+    }
+
+    if (response.data) {
+      return response.data;
+    }
+
+    return response;
+  }
+
+  /**
+   * Handle API errors
+   */
+  private static handleError(error: any): never {
+    if (error.response?.data && isTradeError(error.response.data)) {
+      const tradeError = error.response.data as TradeError;
+      const errorMessage = tradeError.details
+        ? `${tradeError.message} (Required: ${tradeError.details.required}, Available: ${tradeError.details.available})`
+        : tradeError.message;
+      throw new Error(errorMessage);
+    }
+
+    if (error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+
+    throw error;
+  }
+
+  // ==================== TRADE RETRIEVAL OPERATIONS ====================
+
+  /**
+   * Get available teams for trading
+   * GET /api/trades/available-teams
+   */
+  static async getAvailableTeams(): Promise<Team[]> {
+    try {
+      const response = await apiClient.get<AvailableTeamsResponse>(
+        `${this.TRADES_BASE_PATH}/available-teams`
+      );
+      return this.extractResponseData<Team[]>(response);
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
   /**
-   * Get list of trades with filtering
+   * Get available destinations for receiving trade
+   * GET /api/trades/available-destinations
+   */
+  static async getAvailableDestinations(): Promise<FacilitySpaceInventory[]> {
+    try {
+      const response = await apiClient.get<AvailableDestinationsResponse>(
+        `${this.TRADES_BASE_PATH}/available-destinations`
+      );
+      return this.extractResponseData<FacilitySpaceInventory[]>(response);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  /**
+   * Get source inventories with tradeable items
+   * GET /api/trades/source-inventories
+   */
+  static async getSourceInventories(): Promise<FacilitySpaceInventory[]> {
+    try {
+      const response = await apiClient.get<AvailableDestinationsResponse>(
+        `${this.TRADES_BASE_PATH}/source-inventories`
+      );
+      return this.extractResponseData<FacilitySpaceInventory[]>(response);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  /**
+   * List trades with filtering
    * GET /api/trades
    */
-  static async listTrades(query: TradeListQuery = {}): Promise<TradeListResponse> {
+  static async listTrades(params: TradeListParams = {}): Promise<TradeListResponse> {
     try {
-      const {
-        type = 'all',
-        status,
-        page = 1,
-        pageSize = 20,
-        startDate,
-        endDate,
-        teamId
-      } = query;
+      const queryParams: Record<string, any> = {};
 
-      const params: Record<string, any> = {
-        type,
-        page,
-        pageSize
-      };
+      if (params.type) queryParams.type = params.type;
+      if (params.status) queryParams.status = params.status;
+      if (params.page) queryParams.page = params.page;
+      if (params.pageSize) queryParams.pageSize = params.pageSize;
 
-      if (status) params.status = status;
-      if (startDate) params.startDate = startDate;
-      if (endDate) params.endDate = endDate;
-      if (teamId) params.teamId = teamId;
-
-      const response = await apiClient.get<ApiResponse<TradeListResponse>>(
-        this.BASE_PATH,
-        { params }
+      const response = await apiClient.get<TradeListResponse>(
+        this.TRADES_BASE_PATH,
+        { params: queryParams }
       );
 
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch trades');
+      const data = this.extractResponseData<TradeListItem[]>(response);
+
+      // Ensure proper response structure
+      if (Array.isArray(data)) {
+        return {
+          success: true,
+          data: data,
+          total: data.length,
+          page: params.page || 1,
+          pageSize: params.pageSize || 20,
+        };
       }
 
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.listTrades error:', error);
-      throw this.handleError(error);
+      return data as TradeListResponse;
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
   /**
-   * Get detailed information about a specific trade
+   * Get trade details
    * GET /api/trades/:id
    */
-  static async getTradeDetails(id: string): Promise<TradeDetailResponse> {
+  static async getTradeDetails(tradeId: string): Promise<TradeOrder> {
     try {
-      const response = await apiClient.get<ApiResponse<TradeDetailResponse>>(
-        `${this.BASE_PATH}/${id}`
+      const response = await apiClient.get<TradeDetailsResponse>(
+        `${this.TRADES_BASE_PATH}/${tradeId}`
       );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch trade details');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.getTradeDetails error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  // ==========================================
-  // TRADE ACTIONS
-  // ==========================================
-
-  /**
-   * Preview trade with transport cost calculation
-   * POST /api/trades/:id/preview
-   */
-  static async previewTrade(
-    tradeId: string,
-    destinationInventoryId: string
-  ): Promise<TradePreviewResponse> {
-    try {
-      const response = await apiClient.post<ApiResponse<TradePreviewResponse>>(
-        `${this.BASE_PATH}/${tradeId}/preview`,
-        { destinationInventoryId }
-      );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to preview trade');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.previewTrade error:', error);
-      throw this.handleError(error);
+      return this.extractResponseData<TradeOrder>(response);
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
   /**
-   * Accept a trade offer with destination selection
-   * POST /api/trades/:id/accept
-   */
-  static async acceptTrade(
-    tradeId: string,
-    destinationInventoryId: string
-  ): Promise<TradeTransaction> {
-    try {
-      const response = await apiClient.post<ApiResponse<TradeTransaction>>(
-        `${this.BASE_PATH}/${tradeId}/accept`,
-        { destinationInventoryId }
-      );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to accept trade');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.acceptTrade error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  /**
-   * Reject a trade offer
-   * POST /api/trades/:id/reject
-   */
-  static async rejectTrade(tradeId: string, reason?: string): Promise<void> {
-    try {
-      const response = await apiClient.post<ApiResponse<void>>(
-        `${this.BASE_PATH}/${tradeId}/reject`,
-        { reason }
-      );
-
-      if (!response.data.success) {
-        throw new Error(response.data.message || 'Failed to reject trade');
-      }
-    } catch (error: any) {
-      console.error('TradeService.rejectTrade error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  /**
-   * Cancel a trade offer (sender only)
-   * DELETE /api/trades/:id
-   */
-  static async cancelTrade(tradeId: string): Promise<void> {
-    try {
-      const response = await apiClient.delete<ApiResponse<void>>(
-        `${this.BASE_PATH}/${tradeId}`
-      );
-
-      if (!response.data.success) {
-        throw new Error(response.data.message || 'Failed to cancel trade');
-      }
-    } catch (error: any) {
-      console.error('TradeService.cancelTrade error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  // ==========================================
-  // HISTORY & ANALYTICS
-  // ==========================================
-
-  /**
-   * Get trade history for a specific trade
+   * Get trade history
    * GET /api/trades/:id/history
    */
   static async getTradeHistory(tradeId: string): Promise<TradeHistory[]> {
     try {
-      const response = await apiClient.get<ApiResponse<TradeHistory[]>>(
-        `${this.BASE_PATH}/${tradeId}/history`
+      const response = await apiClient.get(
+        `${this.TRADES_BASE_PATH}/${tradeId}/history`
       );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch trade history');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.getTradeHistory error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  /**
-   * Get trade statistics for the current user's team
-   * GET /api/trades/my-stats
-   */
-  static async getMyTradeStats(
-    startDate?: string,
-    endDate?: string
-  ): Promise<TradeStatistics> {
-    try {
-      const params: Record<string, any> = {};
-      if (startDate) params.startDate = startDate;
-      if (endDate) params.endDate = endDate;
-
-      const response = await apiClient.get<ApiResponse<TradeStatistics>>(
-        `${this.BASE_PATH}/my-stats`,
-        { params }
-      );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch trade statistics');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.getMyTradeStats error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  /**
-   * Get team operation history (financial movements)
-   * GET /api/trades/my-operations
-   */
-  static async getMyOperations(
-    query: TradeOperationHistoryQuery = {}
-  ): Promise<{
-    operations: TeamOperationHistory[];
-    pagination: PaginationInfo;
-  }> {
-    try {
-      const { page = 1, pageSize = 20, startDate, endDate } = query;
-
-      const params: Record<string, any> = {
-        page,
-        pageSize
-      };
-
-      if (startDate) params.startDate = startDate;
-      if (endDate) params.endDate = endDate;
-
-      const response = await apiClient.get<ApiResponse<{
-        operations: TeamOperationHistory[];
-        pagination: PaginationInfo;
-      }>>(
-        `${this.BASE_PATH}/my-operations`,
-        { params }
-      );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch operations');
-      }
-
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.getMyOperations error:', error);
-      throw this.handleError(error);
-    }
-  }
-
-  // ==========================================
-  // HELPER METHODS
-  // ==========================================
-
-  /**
-   * Get available teams for trading (same activity)
-   * Uses the pattern from contract/transfer services
-   */
-  static async getAvailableTeamsForTrade(): Promise<TeamInfo[]> {
-    try {
-      // Try the dedicated endpoint first
-      const response = await apiClient.get<any>(`${this.BASE_PATH}/teams/available`);
-
-      // Handle various response structures
-      if (response.data?.success && response.data?.data?.data && Array.isArray(response.data.data.data)) {
-        return response.data.data.data.map((team: any) => this.transformToTeamInfo(team));
-      }
-
-      if (response.data?.success && response.data?.data && Array.isArray(response.data.data)) {
-        return response.data.data.map((team: any) => this.transformToTeamInfo(team));
-      }
-
-      if (response.data && Array.isArray(response.data)) {
-        return response.data.map((team: any) => this.transformToTeamInfo(team));
-      }
-
-      console.warn('No teams found, returning empty array');
-      return [];
+      return this.extractResponseData<TradeHistory[]>(response);
     } catch (error) {
-      console.warn('Failed to fetch available teams:', error);
-      // Fallback to the generic teams endpoint
-      try {
-        const fallbackResponse = await apiClient.get<any>('/api/user/teams/available');
-        if (fallbackResponse.data?.data && Array.isArray(fallbackResponse.data.data)) {
-          return fallbackResponse.data.data.map((team: any) => this.transformToTeamInfo(team));
-        }
-      } catch (fallbackError) {
-        console.error('Fallback team fetch also failed:', fallbackError);
-      }
-      return [];
+      this.handleError(error);
+    }
+  }
+
+  // ==================== TRADE CREATION OPERATIONS ====================
+
+  /**
+   * Create a new trade
+   * POST /api/trades
+   */
+  static async createTrade(request: CreateTradeRequest): Promise<TradeOrder> {
+    try {
+      const response = await apiClient.post<TradeDetailsResponse>(
+        this.TRADES_BASE_PATH,
+        request
+      );
+      return this.extractResponseData<TradeOrder>(response);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  // ==================== TRADE ACTION OPERATIONS ====================
+
+  /**
+   * Preview trade (calculate transport cost)
+   * POST /api/trades/:id/preview
+   */
+  static async previewTrade(
+    tradeId: string,
+    request: PreviewTradeRequest
+  ): Promise<TradePreviewResponse> {
+    try {
+      const response = await apiClient.post<{ success: boolean; data: TradePreviewResponse }>(
+        `${this.TRADES_BASE_PATH}/${tradeId}/preview`,
+        request
+      );
+      return this.extractResponseData<TradePreviewResponse>(response);
+    } catch (error) {
+      this.handleError(error);
     }
   }
 
   /**
-   * Get team's facility inventories for source/destination selection
-   * Leverages the facility space API
+   * Accept trade
+   * POST /api/trades/:id/accept
    */
-  static async getTeamDestinationOptions(): Promise<DestinationOption[]> {
+  static async acceptTrade(
+    tradeId: string,
+    request: AcceptTradeRequest
+  ): Promise<TradeOrder> {
     try {
-      const overview = await StudentFacilitySpaceService.getTeamFacilitySpaceOverview();
-
-      if (!overview.data?.facilities) {
-        return [];
-      }
-
-      return overview.data.facilities
-        .filter(f => f.spaceMetrics.availableSpace > 0)
-        .map(f => ({
-          inventoryId: `inv_${f.facilityInstanceId}`, // Generate inventoryId from facilityInstanceId
-          facilityId: f.facilityInstanceId,
-          facilityName: f.facilityName,
-          facilityType: f.facilityType,
-          location: f.tileCoordinates,
-          availableSpace: f.spaceMetrics.availableSpace,
-          currentUtilization: f.spaceMetrics.utilizationRate
-        }));
-    } catch (error: any) {
-      console.error('Failed to fetch destination options:', error);
-      return [];
+      const response = await apiClient.post<TradeDetailsResponse>(
+        `${this.TRADES_BASE_PATH}/${tradeId}/accept`,
+        request
+      );
+      return this.extractResponseData<TradeOrder>(response);
+    } catch (error) {
+      this.handleError(error);
     }
+  }
+
+  /**
+   * Reject trade
+   * POST /api/trades/:id/reject
+   */
+  static async rejectTrade(
+    tradeId: string,
+    request: RejectTradeRequest = {}
+  ): Promise<TradeOrder> {
+    try {
+      const response = await apiClient.post<TradeDetailsResponse>(
+        `${this.TRADES_BASE_PATH}/${tradeId}/reject`,
+        request
+      );
+      return this.extractResponseData<TradeOrder>(response);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  /**
+   * Cancel trade
+   * DELETE /api/trades/:id
+   */
+  static async cancelTrade(tradeId: string): Promise<TradeOrder> {
+    try {
+      const response = await apiClient.delete<TradeDetailsResponse>(
+        `${this.TRADES_BASE_PATH}/${tradeId}`
+      );
+      return this.extractResponseData<TradeOrder>(response);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  // ==================== UTILITY METHODS ====================
+
+  /**
+   * Get trade status color for UI
+   */
+  static getStatusColor(status: TradeStatus): 'default' | 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' {
+    const colors: Record<TradeStatus, 'default' | 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'> = {
+      [TradeStatus.PENDING]: 'warning',
+      [TradeStatus.ACCEPTED]: 'info',
+      [TradeStatus.REJECTED]: 'error',
+      [TradeStatus.CANCELLED]: 'default',
+      [TradeStatus.COMPLETED]: 'success',
+    };
+    return colors[status] || 'default';
+  }
+
+  /**
+   * Get trade status display text
+   */
+  static getStatusText(status: TradeStatus): string {
+    const statusTexts: Record<TradeStatus, string> = {
+      [TradeStatus.PENDING]: 'Pending',
+      [TradeStatus.ACCEPTED]: 'Accepted',
+      [TradeStatus.REJECTED]: 'Rejected',
+      [TradeStatus.CANCELLED]: 'Cancelled',
+      [TradeStatus.COMPLETED]: 'Completed',
+    };
+    return statusTexts[status] || status;
+  }
+
+  /**
+   * Format currency for display
+   */
+  static formatCurrency(value: number | string, showSymbol = true): string {
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+
+    if (showSymbol) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(numValue).replace('$', '');
+    }
+
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(numValue);
+  }
+
+  /**
+   * Calculate total items quantity
+   */
+  static calculateTotalQuantity(items: Array<{ quantity: number | string }>): number {
+    return items.reduce((total, item) => {
+      const quantity = typeof item.quantity === 'string'
+        ? parseFloat(item.quantity)
+        : item.quantity;
+      return total + quantity;
+    }, 0);
+  }
+
+  /**
+   * Check if user can respond to trade
+   */
+  static canRespondToTrade(
+    trade: TradeOrder,
+    currentTeamId: string
+  ): boolean {
+    return trade.status === TradeStatus.PENDING &&
+           trade.targetTeamId === currentTeamId;
+  }
+
+  /**
+   * Check if user can cancel trade
+   */
+  static canCancelTrade(
+    trade: TradeOrder,
+    currentTeamId: string
+  ): boolean {
+    return trade.status === TradeStatus.PENDING &&
+           trade.senderTeamId === currentTeamId;
+  }
+
+  /**
+   * Get trade type for current user
+   */
+  static getTradeType(
+    trade: TradeOrder,
+    currentTeamId: string
+  ): 'incoming' | 'outgoing' {
+    return trade.targetTeamId === currentTeamId ? 'incoming' : 'outgoing';
+  }
+
+  /**
+   * Format trade date
+   */
+  static formatTradeDate(date: Date | string): string {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(dateObj);
+  }
+
+  /**
+   * Get trade summary text
+   */
+  static getTradeSummary(trade: TradeOrder): string {
+    const itemCount = trade.items?.length || 0;
+    const totalQuantity = trade.items
+      ? this.calculateTotalQuantity(trade.items)
+      : 0;
+
+    return `${itemCount} item${itemCount !== 1 ? 's' : ''} (${totalQuantity} units)`;
   }
 
   /**
    * Validate trade creation request
    */
-  static validateCreateTradeRequest(data: CreateTradeRequest): ValidationResult {
+  static validateTradeRequest(request: CreateTradeRequest): string[] {
     const errors: string[] = [];
-    const warnings: string[] = [];
 
-    // Validate target team
-    if (!data.targetTeamId) {
+    if (!request.targetTeamId) {
       errors.push('Target team is required');
     }
 
-    // Validate source inventory
-    if (!data.sourceInventoryId) {
+    if (!request.sourceFacilityId) {
+      errors.push('Source facility is required');
+    }
+
+    if (!request.sourceInventoryId) {
       errors.push('Source inventory is required');
     }
 
-    // Validate items
-    if (!data.items || data.items.length === 0) {
-      errors.push('At least one item must be selected');
-    } else {
-      data.items.forEach((item, index) => {
-        if (!item.inventoryItemId) {
-          errors.push(`Item ${index + 1}: Inventory item ID is required`);
-        }
-        if (!item.quantity || item.quantity <= 0) {
-          errors.push(`Item ${index + 1}: Quantity must be greater than 0`);
-        }
-      });
+    if (!request.items || request.items.length === 0) {
+      errors.push('At least one item is required');
     }
 
-    // Validate price
-    if (data.totalPrice === undefined || data.totalPrice < 0) {
-      errors.push('Total price must be 0 or greater');
-    } else if (data.totalPrice > 1000000) {
-      warnings.push('Very high price may discourage trades');
+    if (request.totalPrice <= 0) {
+      errors.push('Total price must be greater than 0');
     }
 
-    // Validate message
-    if (data.message && data.message.length > 500) {
-      errors.push('Message cannot exceed 500 characters');
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors,
-      warnings
-    };
-  }
-
-  /**
-   * Transform raw team data to TeamInfo interface
-   */
-  private static transformToTeamInfo(team: any): TeamInfo {
-    return {
-      id: team.id,
-      name: team.name,
-      description: team.description,
-      leader: team.leader || {
-        id: 'unknown',
-        username: 'Unknown',
-        firstName: null,
-        lastName: null
-      },
-      memberCount: team.currentMembers || team.memberCount || 0,
-      maxMembers: team.maxMembers || 10,
-      isOpen: team.isOpen !== false
-    };
-  }
-
-  /**
-   * Handle errors from API calls
-   */
-  private static handleError(error: any): TradeError {
-    if (error.response?.data) {
-      const data = error.response.data;
-
-      // Map business codes to error codes
-      let code = TradeErrorCode.VALIDATION_ERROR;
-      if (data.businessCode === 409) {
-        if (data.message?.includes('gold')) {
-          code = TradeErrorCode.INSUFFICIENT_FUNDS;
-        } else if (data.message?.includes('space')) {
-          code = TradeErrorCode.INSUFFICIENT_SPACE;
-        } else if (data.message?.includes('inventory')) {
-          code = TradeErrorCode.INSUFFICIENT_INVENTORY;
-        }
-      } else if (data.businessCode === 404) {
-        code = TradeErrorCode.TRADE_NOT_FOUND;
-      } else if (data.businessCode === 403) {
-        code = TradeErrorCode.UNAUTHORIZED;
+    request.items?.forEach((item, index) => {
+      if (!item.inventoryItemId) {
+        errors.push(`Item ${index + 1}: Inventory item ID is required`);
       }
-
-      return {
-        code,
-        message: data.message || 'An error occurred',
-        details: data.details
-      };
-    }
-
-    return {
-      code: TradeErrorCode.VALIDATION_ERROR,
-      message: error.message || 'An unexpected error occurred',
-      details: null
-    };
-  }
-
-  /**
-   * Get trade dashboard stats
-   * GET /api/trades/stats
-   */
-  static async getTradeStats(): Promise<TradeStats> {
-    try {
-      const response = await apiClient.get<ApiResponse<TradeStats>>(
-        `${this.BASE_PATH}/stats`
-      );
-
-      if (!response.data.success || !response.data.data) {
-        throw new Error(response.data.message || 'Failed to fetch trade stats');
+      if (item.quantity <= 0) {
+        errors.push(`Item ${index + 1}: Quantity must be greater than 0`);
       }
+    });
 
-      return response.data.data;
-    } catch (error: any) {
-      console.error('TradeService.getTradeStats error:', error);
-      throw this.handleError(error);
-    }
+    return errors;
   }
 
   /**
-   * Format error message for display
+   * Group trades by date
    */
-  static getErrorMessage(error: TradeError): string {
-    switch (error.code) {
-      case TradeErrorCode.INSUFFICIENT_FUNDS:
-        return `Insufficient gold. ${error.details ? `Required: ${error.details.required}, Available: ${error.details.available}` : ''}`;
-      case TradeErrorCode.INSUFFICIENT_SPACE:
-        return `Insufficient space in destination facility. ${error.details ? `Required: ${error.details.required}, Available: ${error.details.available}` : ''}`;
-      case TradeErrorCode.INSUFFICIENT_INVENTORY:
-        return 'Not enough items in inventory to fulfill this trade';
-      case TradeErrorCode.TEAMS_NOT_IN_SAME_ACTIVITY:
-        return 'Teams must be in the same activity to trade';
-      case TradeErrorCode.TRADE_NOT_FOUND:
-        return 'Trade not found or has been removed';
-      case TradeErrorCode.TRADE_ALREADY_PROCESSED:
-        return 'This trade has already been accepted, rejected, or cancelled';
-      case TradeErrorCode.INVALID_TRADE_STATUS:
-        return 'Trade is in an invalid status for this operation';
-      case TradeErrorCode.UNAUTHORIZED:
-        return 'You are not authorized to perform this action';
-      default:
-        return error.message || 'An error occurred while processing the trade';
-    }
+  static groupTradesByDate(trades: TradeListItem[]): Map<string, TradeListItem[]> {
+    const grouped = new Map<string, TradeListItem[]>();
+
+    trades.forEach(trade => {
+      const date = new Date(trade.createdAt).toDateString();
+      const existing = grouped.get(date) || [];
+      grouped.set(date, [...existing, trade]);
+    });
+
+    return grouped;
   }
 }
 

@@ -70,10 +70,22 @@ export class TransportationService {
       search?: string;
     }
   ): Promise<FacilityInventoryResponse> {
-    const response = await apiClient.get<FacilityInventoryResponse>(
+    // Validate inventoryId before making the API call
+    if (!inventoryId || inventoryId === 'undefined' || inventoryId === 'null') {
+      throw new Error('Invalid inventoryId provided to getFacilityInventoryItems');
+    }
+
+    const response = await apiClient.get<any>(
       `${this.BASE_PATH}/facilities/${inventoryId}/items`,
       { params }
     );
+
+    // The API returns the full response with success, businessCode, message, and data
+    // We need to return just the data part which contains the facility inventory info
+    if (response.data && typeof response.data === 'object' && 'data' in response.data) {
+      return response.data.data as FacilityInventoryResponse;
+    }
+
     return this.extractResponseData<FacilityInventoryResponse>(response);
   }
 

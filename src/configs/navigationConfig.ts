@@ -372,6 +372,43 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					]
 				},
 				{
+					id: 'team-management.trade',
+					title: 'Trade Management',
+					type: 'collapse',
+					icon: 'heroicons-outline:shopping-cart',
+					translate: 'TRADE_MANAGEMENT',
+					auth: ['user'],
+					children: [
+						{
+							id: 'team-management.trade.hub',
+							title: 'Trade Hub',
+							type: 'item',
+							icon: 'heroicons-outline:building-storefront',
+							url: '/student-trade',
+							translate: 'TRADE_HUB',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.trade.create',
+							title: 'Create Trade',
+							type: 'item',
+							icon: 'heroicons-outline:plus-circle',
+							url: '/student-trade/create',
+							translate: 'CREATE_TRADE',
+							auth: ['user']
+						},
+						{
+							id: 'team-management.trade.history',
+							title: 'Trade History',
+							type: 'item',
+							icon: 'heroicons-outline:clock',
+							url: '/student-trade/history',
+							translate: 'TRADE_HISTORY',
+							auth: ['user']
+						}
+					]
+				},
+				{
 					id: 'team-management.contracts',
 					title: 'Team Contracts',
 					type: 'collapse',
@@ -583,65 +620,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:chart-bar',
 					url: '/student-resources',
 					translate: 'RESOURCE_CONSUMPTION',
-					auth: ['user']
-				}
-			]
-		});
-
-		// Add Trade System for Students
-		navigation.push({
-			id: 'student-trade',
-			title: 'Trade System',
-			subtitle: 'Exchange resources with other teams',
-			type: 'group',
-			icon: 'heroicons-outline:arrows-right-left',
-			translate: 'TRADE_SYSTEM',
-			translateSubtitle: 'TRADE_SYSTEM_SUBTITLE',
-			auth: ['user'],
-			children: [
-				{
-					id: 'student-trade.dashboard',
-					title: 'Trade Dashboard',
-					type: 'item',
-					icon: 'heroicons-outline:chart-pie',
-					url: '/student-trade',
-					translate: 'TRADE_DASHBOARD',
-					auth: ['user']
-				},
-				{
-					id: 'student-trade.incoming',
-					title: 'Incoming Trades',
-					type: 'item',
-					icon: 'heroicons-outline:arrow-down-tray',
-					url: '/student-trade/incoming',
-					translate: 'INCOMING_TRADES',
-					auth: ['user']
-				},
-				{
-					id: 'student-trade.outgoing',
-					title: 'My Offers',
-					type: 'item',
-					icon: 'heroicons-outline:arrow-up-tray',
-					url: '/student-trade/outgoing',
-					translate: 'MY_OFFERS',
-					auth: ['user']
-				},
-				{
-					id: 'student-trade.create',
-					title: 'Create Trade',
-					type: 'item',
-					icon: 'heroicons-outline:plus-circle',
-					url: '/student-trade/create',
-					translate: 'CREATE_TRADE',
-					auth: ['user']
-				},
-				{
-					id: 'student-trade.history',
-					title: 'Trade History',
-					type: 'item',
-					icon: 'heroicons-outline:clock',
-					url: '/student-trade/history',
-					translate: 'TRADE_HISTORY',
 					auth: ['user']
 				}
 			]

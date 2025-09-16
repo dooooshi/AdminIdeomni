@@ -1,5 +1,4 @@
-// Trade System Type Definitions
-// Based on docs/trade/*.md specifications
+import { Decimal } from '@prisma/client/runtime/library';
 
 // ==================== ENUMS ====================
 
@@ -8,7 +7,7 @@ export enum TradeStatus {
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
-  COMPLETED = 'COMPLETED'
+  COMPLETED = 'COMPLETED',
 }
 
 export enum TradeOperation {
@@ -18,205 +17,107 @@ export enum TradeOperation {
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
 }
 
 export enum InventoryItemType {
   RAW_MATERIAL = 'RAW_MATERIAL',
-  PRODUCT = 'PRODUCT'
+  PRODUCT = 'PRODUCT',
 }
 
-// ==================== CORE ENTITIES ====================
+// ==================== CORE MODELS ====================
 
 export interface TradeOrder {
   id: string;
-
-  // Activity context
   activityId: string;
-
-  // Sender information
   senderTeamId: string;
-  senderTeam?: TeamInfo;
+  senderTeam?: Team;
   sourceFacilityId: string;
-  sourceFacility?: FacilityInfo;
-  sourceInventoryId: string; // FacilitySpaceInventory ID
-
-  // Receiver information
+  sourceFacility?: TileFacilityInstance;
   targetTeamId: string;
-  targetTeam?: TeamInfo;
-  destInventoryId?: string; // Set when receiver accepts
-  destInventory?: FacilityInventoryInfo;
-
-  // Trade details
+  targetTeam?: Team;
+  destInventoryId?: string;
+  destInventory?: FacilitySpaceInventory;
   message?: string;
-  totalPrice: number; // Price for items only (no transport)
+  totalPrice: number | Decimal;
   status: TradeStatus;
-
-  // Metadata
   createdBy: string;
-  createdByUser?: UserInfo;
-  respondedAt?: string;
+  createdByUser?: User;
+  respondedAt?: Date | string;
   respondedBy?: string;
-  respondedByUser?: UserInfo;
+  respondedByUser?: User;
   responseReason?: string;
-
-  // Relations
-  items: TradeItem[];
+  items?: TradeItem[];
   transaction?: TradeTransaction;
-
-  // Timestamps
-  createdAt: string;
-  updatedAt: string;
+  history?: TradeHistory[];
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 export interface TradeItem {
   id: string;
   tradeOrderId: string;
-
-  // Item reference
   inventoryItemId: string;
+  inventoryItem?: FacilityInventoryItem;
   sourceInventoryId: string;
-
-  // Item details
+  sourceInventory?: FacilitySpaceInventory;
   itemName: string;
   itemType: InventoryItemType;
-  quantity: number;
-  unitSpace: number; // Space per unit
-  totalSpace?: number; // quantity * unitSpace
+  quantity: number | Decimal;
+  unitSpace: number | Decimal;
+  createdAt: Date | string;
 }
 
 export interface TradeTransaction {
   id: string;
   tradeOrderId: string;
   activityId: string;
-
-  // Teams
   senderTeamId: string;
-  senderTeam?: TeamInfo;
+  senderTeam?: Team;
   receiverTeamId: string;
-  receiverTeam?: TeamInfo;
-
-  // Inventory locations
+  receiverTeam?: Team;
   sourceInventoryId: string;
-  destInventoryId: string; // Chosen by receiver
-
-  // Amounts (receiver pays all)
-  itemsCost: number;
-  transportCost: number;
-  totalPaid: number; // items + transport
-  sellerReceived: number; // items cost only
-
-  // Transportation tracking
+  sourceInventory?: FacilitySpaceInventory;
+  destInventoryId: string;
+  destInventory?: FacilitySpaceInventory;
+  itemsCost: number | Decimal;
+  transportCost: number | Decimal;
+  totalPaid: number | Decimal;
+  sellerReceived: number | Decimal;
   transportationOrderId?: string;
-
-  // Execution
   executedBy: string;
-  executedByUser?: UserInfo;
-  executedAt: string;
+  executedByUser?: User;
+  executedAt: Date | string;
 }
 
 export interface TradeHistory {
   id: string;
   tradeOrderId: string;
-
-  // Operation tracking
   operation: TradeOperation;
   previousStatus?: TradeStatus;
   newStatus: TradeStatus;
-
-  // Actor information
   actorId: string;
-  actor?: UserInfo;
+  actor?: User;
   actorTeamId: string;
-  actorTeam?: TeamInfo;
-
-  // Additional context
+  actorTeam?: Team;
   description: string;
-  metadata?: {
-    transportCost?: number;
-    destinationInventoryId?: string;
-    rejectionReason?: string;
-    failureDetails?: any;
-    totalCost?: number;
-    transactionId?: string;
-    transportationOrderId?: string;
-  };
-
-  createdAt: string;
+  metadata?: Record<string, any>;
+  createdAt: Date | string;
 }
 
-// ==================== HELPER INTERFACES ====================
-
-export interface TeamInfo {
-  id: string;
-  name: string;
-  description?: string;
-  leader?: UserInfo;
-  memberCount?: number;
-  maxMembers?: number;
-  isOpen?: boolean;
-}
-
-export interface UserInfo {
-  id: string;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-export interface FacilityInfo {
-  id: string;
-  type: string;
-  name?: string;
-  location: TileCoordinates;
-  level?: number;
-}
-
-export interface FacilityInventoryInfo {
-  id: string;
-  facilityId: string;
-  facilityType: string;
-  facilityName?: string;
-  totalSpace: number;
-  usedSpace: number;
-  availableSpace: number;
-  location?: TileCoordinates;
-}
-
-export interface TileCoordinates {
-  q: number;
-  r: number;
-  s?: number;
-}
-
-// ==================== API REQUEST TYPES ====================
+// ==================== API REQUEST/RESPONSE TYPES ====================
 
 export interface CreateTradeRequest {
   targetTeamId: string;
   sourceFacilityId: string;
   sourceInventoryId: string;
-  items: CreateTradeItem[];
+  destinationInventoryId: string;
+  items: Array<{
+    inventoryItemId: string;
+    quantity: number;
+  }>;
   totalPrice: number;
   message?: string;
-}
-
-export interface CreateTradeItem {
-  inventoryItemId: string;
-  quantity: number;
-}
-
-export interface TradeListQuery {
-  type?: 'incoming' | 'outgoing' | 'all';
-  status?: TradeStatus;
-  page?: number;
-  pageSize?: number;
-  startDate?: string;
-  endDate?: string;
-  teamId?: string;
-}
-
-export interface PreviewTradeRequest {
-  destinationInventoryId: string;
 }
 
 export interface AcceptTradeRequest {
@@ -227,21 +128,9 @@ export interface RejectTradeRequest {
   reason?: string;
 }
 
-export interface TradeHistoryQuery {
-  page?: number;
-  pageSize?: number;
-  startDate?: string;
-  endDate?: string;
+export interface PreviewTradeRequest {
+  destinationInventoryId: string;
 }
-
-export interface TradeOperationHistoryQuery {
-  page?: number;
-  pageSize?: number;
-  startDate?: string;
-  endDate?: string;
-}
-
-// ==================== API RESPONSE TYPES ====================
 
 export interface TradePreviewResponse {
   itemsCost: number;
@@ -256,177 +145,225 @@ export interface TradePreviewResponse {
     hasSpace: boolean;
     hasFunds: boolean;
     canAccept: boolean;
-    errors?: string[];
   };
+}
+
+export interface TradeListParams {
+  type?: 'incoming' | 'outgoing' | 'all';
+  status?: TradeStatus;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface TradeListResponse {
-  trades: TradeSummary[];
-  pagination: PaginationInfo;
+  success: boolean;
+  data: TradeListItem[];
+  total?: number;
+  page?: number;
+  pageSize?: number;
 }
 
-export interface TradeSummary {
+export interface TradeListItem {
   id: string;
-  type?: 'incoming' | 'outgoing';
-  senderTeam: TeamInfo;
-  targetTeam?: TeamInfo;
-  partnerTeam: TeamInfo;
+  senderTeam: {
+    id: string;
+    name: string;
+  };
+  targetTeam?: {
+    id: string;
+    name: string;
+  };
   totalPrice: number;
-  totalValue: number;
   itemCount: number;
   totalQuantity: number;
   status: TradeStatus;
-  createdAt: string;
+  createdAt: Date | string;
   message?: string;
 }
 
-export interface TradeDetailResponse {
+export interface TradeDetailsResponse {
+  success: boolean;
+  data: TradeOrder;
+}
+
+// ==================== SUPPORTING TYPES ====================
+
+export interface Team {
   id: string;
-  senderTeam: TeamInfo;
-  targetTeam?: TeamInfo;
-  totalPrice: number;
-  items: TradeItem[];
-  sourceFacility: FacilityInfo;
-  message?: string;
-  status: TradeStatus;
-  createdAt: string;
-  history?: TradeHistory[];
-}
-
-export interface TradeStats {
-  totalTrades: number;
-  pendingCount: number;
-  incomingCount: number;
-  outgoingCount: number;
-  completedCount: number;
-  rejectedCount: number;
-  totalValue: number;
-  transportCosts: number;
-  growth?: {
-    trades: number;
-    value: number;
+  name: string;
+  activityId: string;
+  resources?: {
+    gold: number;
+    carbon: number;
+  };
+  statistics?: {
+    memberCount: number;
+    landCount: number;
+    facilityCount: number;
   };
 }
 
-export interface TradeStatistics {
-  teamId: string;
-  period: {
-    start: string;
-    end: string;
-  };
-  sales: {
-    count: number;
-    totalAmount: number;
-    averageAmount: number;
-    topBuyers: TradePartner[];
-  };
-  purchases: {
-    count: number;
-    totalAmount: number;
-    averageAmount: number;
-    transportCosts: number;
-    topSellers: TradePartner[];
-  };
-  netPosition: number;
-  mostTradedItems: TradedItem[];
+export interface User {
+  id: string;
+  name: string;
+  email?: string;
 }
 
-export interface TradePartner {
-  teamId: string;
-  teamName: string;
-  tradeCount: number;
-  totalAmount: number;
+export interface TileFacilityInstance {
+  id: string;
+  name: string;
+  type: string;
+  level: number;
+  location?: {
+    q: number;
+    r: number;
+  };
 }
 
-export interface TradedItem {
-  itemName: string;
+export interface FacilitySpaceInventory {
+  id?: string;
+  inventoryId?: string; // For destination inventories (single inventory)
+  inventoryIds?: string[]; // For source inventories (grouped by facility)
+  facility?: {
+    id: string;
+    name: string;
+    type: string;
+    level: number;
+    teamId?: string;
+    location?: {
+      q: number;
+      r: number;
+    };
+    tileId?: number;
+    uniqueKey?: string;
+  };
+  space?: {
+    total: number;
+    used: number;
+    available: number;
+    utilization: string;
+  };
+  itemCount?: number;
+  canReceive?: boolean;
+  items?: Array<{
+    inventoryItemId: string;
+    inventoryId?: string; // Which inventory this item belongs to
+    itemType: string;
+    name: string;
+    description?: string | null;
+    quantity: number;
+    unitSpace: number;
+    totalSpace: number;
+    materialInfo?: {
+      id: number;
+      nameZh: string;
+      carbonEmission: number;
+    };
+    productInfo?: {
+      id: number;
+      description: string;
+      formulaNumber: number;
+    };
+  }>;
+}
+
+export interface FacilityInventoryItem {
+  id: string;
+  name: string;
+  type: InventoryItemType;
   quantity: number;
-  tradeCount: number;
+  unitSpace: number;
+  inventoryId?: string; // Track which inventory this item belongs to
 }
 
-export interface TeamOperationHistory {
-  id: string;
-  operationType: string;
-  amount: number;
-  resourceType: 'GOLD' | 'CARBON';
-  balanceBefore: number;
-  balanceAfter: number;
-  targetTeam?: TeamInfo;
-  sourceTeam?: TeamInfo;
-  description: string;
-  metadata?: {
-    tradeOrderId?: string;
-    itemsCost?: number;
-    transportCost?: number;
-    items?: TradeItem[];
-  };
-  createdAt: string;
+export interface AvailableTeamsResponse {
+  success: boolean;
+  data: Team[];
 }
 
-// ==================== DESTINATION SELECTION TYPES ====================
-
-export interface DestinationOption {
-  inventoryId: string;
-  facilityId: string;
-  facilityName: string;
-  facilityType: string;
-  location: TileCoordinates;
-  availableSpace: number;
-  currentUtilization: number;
-  estimatedTransportCost?: number;
-  distance?: number;
+export interface AvailableDestinationsResponse {
+  success: boolean;
+  data: FacilitySpaceInventory[];
 }
 
-export interface DestinationSelectionResult {
-  selectedInventoryId: string;
-  facility: FacilityInventoryInfo;
-  transportPreview: {
-    cost: number;
-    distance: number;
-    tier: string;
+// ==================== ERROR TYPES ====================
+
+export interface TradeError {
+  success: false;
+  businessCode: number;
+  message: string;
+  details?: {
+    required?: number;
+    available?: number;
+    [key: string]: any;
   };
 }
 
 // ==================== UTILITY TYPES ====================
 
-export interface PaginationInfo {
-  page: number;
-  pageSize: number;
-  total: number;
-  pages: number;
+export type TradeType = 'incoming' | 'outgoing';
+
+export interface TradeFilters {
+  status?: TradeStatus;
+  type?: TradeType;
+  startDate?: Date;
+  endDate?: Date;
+  teamId?: string;
 }
 
-export interface ApiResponse<T = any> {
-  success: boolean;
-  businessCode?: number;
-  message?: string;
-  data: T;
-  timestamp?: string;
-  path?: string;
+export interface TradeSummary {
+  totalTrades: number;
+  pendingTrades: number;
+  completedTrades: number;
+  totalVolume: number;
+  totalTransportCosts: number;
+  averageTradeValue: number;
 }
 
-export interface ValidationResult {
-  isValid: boolean;
-  errors: string[];
-  warnings?: string[];
+// ==================== HELPER TYPE GUARDS ====================
+
+export function isTradeError(response: any): response is TradeError {
+  return response && response.success === false && response.businessCode !== undefined;
 }
 
-// ==================== ERROR TYPES ====================
-
-export enum TradeErrorCode {
-  INSUFFICIENT_INVENTORY = 'INSUFFICIENT_INVENTORY',
-  INSUFFICIENT_FUNDS = 'INSUFFICIENT_FUNDS',
-  INSUFFICIENT_SPACE = 'INSUFFICIENT_SPACE',
-  TEAMS_NOT_IN_SAME_ACTIVITY = 'TEAMS_NOT_IN_SAME_ACTIVITY',
-  TRADE_NOT_FOUND = 'TRADE_NOT_FOUND',
-  TRADE_ALREADY_PROCESSED = 'TRADE_ALREADY_PROCESSED',
-  INVALID_TRADE_STATUS = 'INVALID_TRADE_STATUS',
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  VALIDATION_ERROR = 'VALIDATION_ERROR'
+export function isDecimal(value: any): value is Decimal {
+  return value && typeof value === 'object' && 'toNumber' in value;
 }
 
-export interface TradeError {
-  code: TradeErrorCode;
-  message: string;
-  details?: any;
+export function toNumber(value: number | Decimal | string): number {
+  if (typeof value === 'string') {
+    return parseFloat(value);
+  }
+  if (isDecimal(value)) {
+    return value.toNumber();
+  }
+  return value;
 }
+
+// ==================== STATUS HELPERS ====================
+
+export const TradeStatusColors: Record<TradeStatus, string> = {
+  [TradeStatus.PENDING]: 'warning',
+  [TradeStatus.ACCEPTED]: 'info',
+  [TradeStatus.REJECTED]: 'error',
+  [TradeStatus.CANCELLED]: 'default',
+  [TradeStatus.COMPLETED]: 'success',
+};
+
+export const TradeStatusLabels: Record<TradeStatus, string> = {
+  [TradeStatus.PENDING]: 'Pending',
+  [TradeStatus.ACCEPTED]: 'Accepted',
+  [TradeStatus.REJECTED]: 'Rejected',
+  [TradeStatus.CANCELLED]: 'Cancelled',
+  [TradeStatus.COMPLETED]: 'Completed',
+};
+
+export const TradeOperationLabels: Record<TradeOperation, string> = {
+  [TradeOperation.CREATED]: 'Trade created',
+  [TradeOperation.PREVIEWED]: 'Trade previewed',
+  [TradeOperation.ACCEPTED]: 'Trade accepted',
+  [TradeOperation.REJECTED]: 'Trade rejected',
+  [TradeOperation.CANCELLED]: 'Trade cancelled',
+  [TradeOperation.COMPLETED]: 'Trade completed',
+  [TradeOperation.FAILED]: 'Trade failed',
+};

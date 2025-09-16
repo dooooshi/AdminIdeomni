@@ -21,6 +21,67 @@ Ultra-simple trade system where sender offers items, receiver pays everything.
 - Transfer gold between TeamAccount entities
 - Integrates with existing TeamAccount model (gold field)
 
+## Complete Trade Flow
+
+### Step-by-Step Trade Process
+
+#### 1. Sender Creates Trade
+```typescript
+// Step 1: Get available teams to trade with
+const availableTeams = await fetch('/api/trades/available-teams');
+// Returns list of teams in same activity
+
+// Step 2: Select items from one of your facilities
+// (items must be from SAME facility)
+
+// Step 3: Create the trade offer
+const trade = await fetch('/api/trades', {
+  method: 'POST',
+  body: JSON.stringify({
+    targetTeamId: selectedTeamId,
+    sourceFacilityId: facilityId,
+    sourceInventoryId: inventoryId,
+    items: selectedItems,
+    totalPrice: 5000,
+    message: 'Selling iron and coal'
+  })
+});
+```
+
+#### 2. Receiver Reviews Trade
+```typescript
+// Step 1: List incoming trades
+const trades = await fetch('/api/trades?type=incoming');
+
+// Step 2: Get trade details
+const tradeDetails = await fetch(`/api/trades/${tradeId}`);
+
+// Step 3: Get available destination facilities
+const destinations = await fetch('/api/trades/available-destinations');
+// Returns list of your facilities with available space
+
+// Step 4: Preview trade with selected destination
+const preview = await fetch(`/api/trades/${tradeId}/preview`, {
+  method: 'POST',
+  body: JSON.stringify({
+    destinationInventoryId: selectedDestinationId
+  })
+});
+// Shows transport cost calculation
+```
+
+#### 3. Receiver Accepts Trade
+```typescript
+// Accept the trade with chosen destination
+const result = await fetch(`/api/trades/${tradeId}/accept`, {
+  method: 'POST',
+  body: JSON.stringify({
+    destinationInventoryId: selectedDestinationId
+  })
+});
+// Executes transfer: receiver pays all, seller gets item price
+```
+
 ## Simple Trade Flow with History Tracking
 
 ```typescript
@@ -36,40 +97,73 @@ async executeTrade(tradeId: string, destInventoryId: string, userId: string) {
       throw new Error('Teams must be in same activity');
     }
 
-    // 3. Calculate transport using TransportationCostService
-    const transportCost = await this.transportationCostService.calculateCost(
+    // 3. Calculate TOTAL space for ALL items combined
+    const totalSpaceUnits = trade.items.reduce((sum, item) => {
+      return sum.add(item.quantity.mul(item.unitSpace));
+    }, new Decimal(0));
+
+    // 4. Calculate transport cost for TOTAL combined shipment
+    // TransportationCostService should calculate for all items as single shipment
+    const transportCalc = await this.transportationCostService.calculateCost(
       trade.items[0].sourceInventoryId, // All items from same inventory
       destInventoryId,
-      trade.items[0].inventoryItemId,
-      trade.items[0].quantity,
+      totalSpaceUnits, // Total space for all items combined
       receiverTeam.id
     );
+    const transportCost = transportCalc.cheapestTier.totalCost;
 
-    // 4. Validate receiver funds and space
-    const totalCost = trade.totalPrice + transportCost;
+    // 5. Validate receiver funds and space
+    const totalCost = trade.totalPrice.add(transportCost);
     const receiverAccount = await tx.teamAccount.findUnique({ where: { teamId: receiverTeam.id } });
-    if (receiverAccount.gold < totalCost) {
+    if (receiverAccount.gold.lessThan(totalCost)) {
       throw new Error('Insufficient gold');
     }
 
     const destInventory = await tx.facilitySpaceInventory.findUnique({ where: { id: destInventoryId } });
-    if (destInventory.availableSpace < totalSpace) {
+    if (destInventory.availableSpace.lessThan(totalSpaceUnits)) {
       throw new Error('Insufficient space');
     }
 
-    // 5. Track balances before transfer
+    // 6. Track balances before transfer
     const senderAccount = await tx.teamAccount.findUnique({ where: { teamId: senderTeam.id } });
     const receiverBalanceBefore = receiverAccount.gold;
     const senderBalanceBefore = senderAccount.gold;
 
-    // 6. Execute transfers
-    // Create TransportationOrder for tracking
-    const transportOrder = await this.transportationService.createOrder(tx, {
-      sourceInventoryId: trade.items[0].sourceInventoryId,
-      destInventoryId,
-      items: trade.items,
-      teamId: receiverTeam.id
+    // 7. Execute transfers
+    // Get active transport configuration
+    const transportConfig = await tx.transportationConfig.findFirst({
+      where: {
+        templateId: activity.mapTemplateId,
+        isActive: true  // Important: Only use active configs
+      }
     });
+
+    // Create TransportationOrder for EACH item with proportional costs
+    const transportationOrderIds = [];
+    for (const item of trade.items) {
+      const itemSpaceRatio = item.quantity.mul(item.unitSpace).div(totalSpaceUnits);
+      const itemTransportCost = transportCost.mul(itemSpaceRatio);
+      const itemCarbonEmission = transportCalc.cheapestTier.carbonEmission.mul(itemSpaceRatio);
+
+      const transportOrder = await tx.transportationOrder.create({
+        data: {
+          configId: transportConfig.id,
+          sourceInventoryId: item.sourceInventoryId,
+          destInventoryId,
+          inventoryItemId: item.inventoryItemId,
+          quantity: item.quantity,
+          unitSpaceOccupied: item.unitSpace,
+          totalSpaceTransferred: item.quantity.mul(item.unitSpace),
+          tier: transportCalc.cheapestTier.tier,
+          hexDistance: transportCalc.hexDistance,
+          transportCostUnits: transportCalc.transportCostUnits, // From path calculation
+          totalGoldCost: itemTransportCost,  // Proportional to space
+          totalCarbonEmission: itemCarbonEmission,  // Proportional to space
+          // ... other fields
+        }
+      });
+      transportationOrderIds.push(transportOrder.id);
+    }
 
     // Transfer gold between TeamAccount entities
     await tx.teamAccount.update({
@@ -82,7 +176,7 @@ async executeTrade(tradeId: string, destInventoryId: string, userId: string) {
       data: { gold: { increment: trade.totalPrice } }
     });
 
-    // 7. Create history tracking records
+    // 8. Create history tracking records
     // Trade history
     await tx.tradeHistory.create({
       data: {
@@ -165,7 +259,7 @@ async executeTrade(tradeId: string, destInventoryId: string, userId: string) {
       }
     });
 
-    // 8. Complete trade
+    // 9. Complete trade
     await updateStatus(tx, tradeId, 'COMPLETED');
 
     // Final trade history entry
@@ -190,6 +284,44 @@ async executeTrade(tradeId: string, destInventoryId: string, userId: string) {
 }
 ```
 
+## Transport Cost Calculation Method
+
+### Combined Shipment Principle
+All items in a trade are shipped together as ONE combined shipment:
+
+```typescript
+// CORRECT: Calculate total space for all items
+const totalSpaceUnits = trade.items.reduce((sum, item) => {
+  return sum.add(item.quantity.mul(item.unitSpace));
+}, new Decimal(0));
+
+// Calculate cost for combined shipment
+const transportCalc = await transportationCostService.calculateCost(
+  sourceInventoryId,
+  destInventoryId,
+  totalSpaceUnits,  // Total space, not individual items
+  teamId
+);
+```
+
+### Cost Distribution
+Transport costs are distributed proportionally by space occupied:
+
+```typescript
+// Each item pays proportional to its space usage
+for (const item of trade.items) {
+  const itemSpaceRatio = item.quantity.mul(item.unitSpace).div(totalSpaceUnits);
+  const itemTransportCost = totalTransportCost.mul(itemSpaceRatio);
+  const itemCarbonEmission = totalCarbonEmission.mul(itemSpaceRatio);
+
+  // Create TransportationOrder with proportional costs
+  await createTransportOrder({
+    totalGoldCost: itemTransportCost,  // NOT divided equally
+    totalCarbonEmission: itemCarbonEmission
+  });
+}
+```
+
 ## Service Methods
 
 ```typescript
@@ -198,14 +330,16 @@ class TradeService {
   async createTrade(data: CreateTradeDto) {
     // Validate all items from same FacilitySpaceInventory
     // Validate teams in same activity
+    // Check facility category is RAW_MATERIAL_PRODUCTION or FUNCTIONAL
     // Create trade with PENDING status
     // No transport options - receiver always pays
   }
 
   // Preview trade (receiver)
   async previewTrade(tradeId: string, destInventoryId: string) {
+    // Calculate TOTAL space for all items combined
     // Calculate transport cost via TransportationCostService.calculateCost(
-    //   sourceInventoryId, destInventoryId, inventoryItemId, quantity, teamId
+    //   sourceInventoryId, destInventoryId, totalSpaceUnits, teamId
     // )
     // Check TeamAccount gold balance
     // Return total: items + transport
@@ -214,7 +348,8 @@ class TradeService {
   // Accept trade (receiver)
   async acceptTrade(tradeId: string, destInventoryId: string) {
     // Execute in transaction
-    // Create TransportationOrder
+    // Verify TransportationConfig is active
+    // Create TransportationOrder for EACH item with proportional costs
     // Update TeamAccount balances
     // Receiver pays all
     // Instant delivery to inventory
@@ -347,3 +482,41 @@ async getTradeStatistics(teamId: string) {
 - **Instant delivery**
 - **No negotiation**
 - **Complete audit trail** for all operations
+
+## Integration with Facility-Space System
+
+### Space Calculation
+- All space measurements use **carbon emission units**
+- `unitSpaceOccupied` is derived from `RawMaterial.carbonEmission` or `ProductFormula.productFormulaCarbonEmission`
+- Space validation against `FacilitySpaceInventory.availableSpace`
+- Only `RAW_MATERIAL_PRODUCTION` and `FUNCTIONAL` facilities have storage space
+
+### Facility Category Checking
+```typescript
+// CORRECT: Check facility category, not hardcoded types
+const canStoreFacility = await tx.tileFacilityInstance.findFirst({
+  where: {
+    id: facilityId,
+    category: {
+      in: ['RAW_MATERIAL_PRODUCTION', 'FUNCTIONAL']
+    }
+  }
+});
+
+// WRONG: Don't hardcode facility types
+// if (['FACTORY', 'WAREHOUSE', 'MALL'].includes(facility.facilityType))
+```
+
+### Integration Points
+- Uses `FacilityInventoryItem` for item tracking
+- Updates `FacilitySpaceInventory` for space management
+- Links to existing `RawMaterial` and `ProductFormula` models
+- Creates `TransportationOrder` records for full transport tracking
+
+## Removed Features
+
+### Statistics Endpoints
+- Trade statistics endpoints have been removed to maintain module focus
+- Historical data is still preserved in `TeamOperationHistory` and `TradeHistory` tables
+- Statistics can be generated through direct queries to operation history tables if needed
+- Focus is on core trade functionality and proper integration with existing systems

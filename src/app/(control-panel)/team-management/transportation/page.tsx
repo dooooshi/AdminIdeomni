@@ -154,7 +154,15 @@ export default function TransportationPage() {
 
   const fetchInventoryItems = async () => {
     if (!sourceFacility) return;
-    
+
+    // Check if inventoryId exists before making the API call
+    if (!sourceFacility.inventoryId) {
+      console.warn('Source facility has no inventoryId:', sourceFacility);
+      setInventoryItems([]);
+      setLoadingItems(false);
+      return;
+    }
+
     try {
       setLoadingItems(true);
       // Use the new transportation API to fetch inventory items

@@ -7,7 +7,221 @@ http://localhost:2999/api
 
 ## Endpoints
 
-### 1. Create Trade
+### 1. Get Available Teams for Trading
+```http
+GET /api/trades/available-teams
+```
+
+**Purpose:** Get all teams in the same activity that can receive trades from the current team.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "team_456",
+      "name": "Manufacturing Inc",
+      "resources": {
+        "gold": 50000,
+        "carbon": 1000
+      },
+      "statistics": {
+        "memberCount": 4,
+        "landCount": 5,
+        "facilityCount": 3
+      }
+    },
+    {
+      "id": "team_789",
+      "name": "Supply Co",
+      "resources": {
+        "gold": 35000,
+        "carbon": 800
+      },
+      "statistics": {
+        "memberCount": 3,
+        "landCount": 3,
+        "facilityCount": 2
+      }
+    }
+  ]
+}
+```
+
+### 2. Get Available Destinations for Receiving Trade
+```http
+GET /api/trades/available-destinations
+```
+
+**Purpose:** Get all facility inventories where the team can receive traded items (only RAW_MATERIAL_PRODUCTION and FUNCTIONAL facilities).
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "inventoryId": "inv_001",
+      "facility": {
+        "id": "facility_123",
+        "name": "Main Warehouse",
+        "type": "WAREHOUSE",
+        "level": 2,
+        "location": {
+          "q": 5,
+          "r": -3
+        },
+        "tileId": 42,
+        "uniqueKey": "5,-3_WAREHOUSE"
+      },
+      "space": {
+        "total": 1000,
+        "used": 300,
+        "available": 700,
+        "utilization": "30.00%"
+      },
+      "itemCount": 5,
+      "canReceive": true
+    },
+    {
+      "inventoryId": "inv_002",
+      "facility": {
+        "id": "facility_456",
+        "name": "Production Facility A",
+        "type": "FACTORY",
+        "level": 1,
+        "location": {
+          "q": 4,
+          "r": -2
+        },
+        "tileId": 38,
+        "uniqueKey": "4,-2_FACTORY"
+      },
+      "space": {
+        "total": 500,
+        "used": 450,
+        "available": 50,
+        "utilization": "90.00%"
+      },
+      "itemCount": 12,
+      "canReceive": true
+    }
+  ]
+}
+```
+
+### 3. Get Source Inventories (Tradeable Items)
+```http
+GET /api/trades/source-inventories
+```
+
+**Purpose:** Get all facilities with tradeable items, grouped by facility with items from all inventories combined.
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "facility": {
+        "id": "facility_123",
+        "name": "Main Warehouse",
+        "type": "WAREHOUSE",
+        "level": 2,
+        "location": {
+          "q": 5,
+          "r": -3
+        },
+        "tileId": 42,
+        "uniqueKey": "5,-3_WAREHOUSE"
+      },
+      "inventoryIds": ["inv_001", "inv_002"],
+      "items": [
+        {
+          "inventoryItemId": "item_001",
+          "inventoryId": "inv_001",
+          "itemType": "RAW_MATERIAL",
+          "name": "Iron Ore",
+          "description": null,
+          "quantity": 500,
+          "unitSpace": 1.5,
+          "totalSpace": 750,
+          "materialInfo": {
+            "id": 1,
+            "nameZh": "铁矿石",
+            "carbonEmission": 2.5
+          }
+        },
+        {
+          "inventoryItemId": "item_002",
+          "inventoryId": "inv_001",
+          "itemType": "PRODUCT",
+          "name": "Steel Beam",
+          "description": "High-quality steel beam for construction",
+          "quantity": 100,
+          "unitSpace": 3.0,
+          "totalSpace": 300,
+          "productInfo": {
+            "id": 42,
+            "description": "High-quality steel beam for construction",
+            "formulaNumber": 1001
+          }
+        },
+        {
+          "inventoryItemId": "item_003",
+          "inventoryId": "inv_002",
+          "itemType": "RAW_MATERIAL",
+          "name": "Copper",
+          "description": null,
+          "quantity": 200,
+          "unitSpace": 1.1,
+          "totalSpace": 220,
+          "materialInfo": {
+            "id": 3,
+            "nameZh": "铜",
+            "carbonEmission": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "facility": {
+        "id": "facility_456",
+        "name": "Mine Storage",
+        "type": "MINE",
+        "level": 1,
+        "location": {
+          "q": 3,
+          "r": -1
+        },
+        "tileId": 35,
+        "uniqueKey": "3,-1_MINE"
+      },
+      "inventoryIds": ["inv_003"],
+      "items": [
+        {
+          "inventoryItemId": "item_004",
+          "inventoryId": "inv_003",
+          "itemType": "RAW_MATERIAL",
+          "name": "Coal",
+          "description": null,
+          "quantity": 1000,
+          "unitSpace": 1.2,
+          "totalSpace": 1200,
+          "materialInfo": {
+            "id": 2,
+            "nameZh": "煤炭",
+            "carbonEmission": 3.0
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 4. Create Trade
 ```http
 POST /api/trades
 ```
@@ -45,7 +259,7 @@ POST /api/trades
 }
 ```
 
-### 2. List Trades
+### 4. List Trades
 ```http
 GET /api/trades?type=incoming
 ```
@@ -75,7 +289,7 @@ GET /api/trades?type=incoming
 }
 ```
 
-### 3. Get Trade Details
+### 5. Get Trade Details
 ```http
 GET /api/trades/:id
 ```
@@ -112,7 +326,7 @@ GET /api/trades/:id
 }
 ```
 
-### 4. Preview Trade (Calculate Transport)
+### 6. Preview Trade (Calculate Transport)
 ```http
 POST /api/trades/:id/preview
 ```
@@ -146,7 +360,7 @@ POST /api/trades/:id/preview
 }
 ```
 
-### 5. Accept Trade
+### 7. Accept Trade
 ```http
 POST /api/trades/:id/accept
 ```
@@ -185,7 +399,7 @@ POST /api/trades/:id/accept
 }
 ```
 
-### 6. Reject Trade
+### 8. Reject Trade
 ```http
 POST /api/trades/:id/reject
 ```
@@ -208,7 +422,7 @@ POST /api/trades/:id/reject
 }
 ```
 
-### 7. Cancel Trade
+### 9. Cancel Trade
 ```http
 DELETE /api/trades/:id
 ```
@@ -224,7 +438,7 @@ DELETE /api/trades/:id
 }
 ```
 
-### 8. Get Trade History
+### 10. Get Trade History
 ```http
 GET /api/trades/:id/history
 ```
@@ -286,129 +500,6 @@ GET /api/trades/:id/history
 }
 ```
 
-### 9. Get My Trade Statistics
-```http
-GET /api/trades/my-stats
-```
-
-**Note**: Team is determined from authenticated user's team context.
-
-**Query Parameters:**
-- `startDate`: ISO date string for start of period
-- `endDate`: ISO date string for end of period
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "teamId": "team_123",
-    "period": {
-      "start": "2024-01-01T00:00:00Z",
-      "end": "2024-01-31T23:59:59Z"
-    },
-    "sales": {
-      "count": 15,
-      "totalAmount": 75000,
-      "averageAmount": 5000,
-      "topBuyers": [
-        {
-          "teamId": "team_456",
-          "teamName": "Manufacturing Inc",
-          "tradeCount": 5,
-          "totalAmount": 25000
-        }
-      ]
-    },
-    "purchases": {
-      "count": 10,
-      "totalAmount": 60000,
-      "averageAmount": 6000,
-      "transportCosts": 10000,
-      "topSellers": [
-        {
-          "teamId": "team_789",
-          "teamName": "Supply Co",
-          "tradeCount": 3,
-          "totalAmount": 18000
-        }
-      ]
-    },
-    "netPosition": 15000,  // sales - purchases
-    "mostTradedItems": [
-      {
-        "itemName": "Iron Ore",
-        "quantity": 1000,
-        "tradeCount": 8
-      }
-    ]
-  }
-}
-```
-
-### 10. Get My Trade Operation History
-```http
-GET /api/trades/my-operations
-```
-
-**Note**: Team is determined from authenticated user's team context.
-
-**Query Parameters:**
-- `page`: Page number (default: 1)
-- `limit`: Items per page (default: 20)
-- `startDate`: ISO date string for filtering
-- `endDate`: ISO date string for filtering
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "operations": [
-      {
-        "id": "op_001",
-        "operationType": "TRADE_PURCHASE",
-        "amount": 6000,
-        "resourceType": "GOLD",
-        "balanceBefore": 50000,
-        "balanceAfter": 44000,
-        "targetTeam": {
-          "id": "team_789",
-          "name": "Supply Co"
-        },
-        "description": "Trade purchase from Supply Co",
-        "metadata": {
-          "tradeOrderId": "trade_123",
-          "itemsCost": 5000,
-          "transportCost": 1000
-        },
-        "createdAt": "2024-01-15T11:30:00Z"
-      },
-      {
-        "id": "op_002",
-        "operationType": "TRADE_SALE",
-        "amount": 3000,
-        "resourceType": "GOLD",
-        "balanceBefore": 44000,
-        "balanceAfter": 47000,
-        "sourceTeam": {
-          "id": "team_456",
-          "name": "Manufacturing Inc"
-        },
-        "description": "Trade sale to Manufacturing Inc",
-        "createdAt": "2024-01-16T09:00:00Z"
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 45,
-      "pages": 3
-    }
-  }
-}
-```
-
 ## Error Responses
 
 ### Insufficient Resources
@@ -442,6 +533,11 @@ GET /api/trades/my-operations
 1. **Items must be from SAME inventory** (same facility)
 2. **Receiver ALWAYS pays transportation**
 3. **Total cost = Item price + Transport cost**
-4. **Transport calculated using TransportationCostService.calculateCost(sourceInventoryId, destInventoryId, inventoryItemId, quantity, teamId)**
+4. **Transport calculated as ONE combined shipment for ALL items**:
+   - Calculate total space units for all items combined
+   - Get transport cost for total space using TransportationCostService
+   - Distribute cost proportionally by each item's space usage
 5. **Instant delivery upon acceptance**
 6. **Teams must be in SAME activity**
+7. **Only RAW_MATERIAL_PRODUCTION and FUNCTIONAL facilities can store items**
+8. **TransportationConfig must be active for trade execution**
