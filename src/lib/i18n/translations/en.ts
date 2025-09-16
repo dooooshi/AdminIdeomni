@@ -2,6 +2,98 @@ import { enExtendedTranslations } from './en-extended';
 
 export const enTranslations = {
   ...enExtendedTranslations,
+  // Population namespace
+  'POPULATION_HISTORY': 'Population History',
+  'population.TITLE': 'Population Change History',
+  'population.SUBTITLE': 'Track and analyze population changes across all tiles in your activity',
+
+  // Summary Cards
+  'population.TOTAL_CHANGES': 'Total Changes',
+  'population.NET_POPULATION_CHANGE': 'Net Population Change',
+  'population.MOST_ACTIVE_TEAM': 'Most Active Team',
+  'population.MOST_ACTIVE_TILE': 'Most Active Tile',
+  'population.TOTAL_POPULATION_GAIN': 'Total Population Gain',
+  'population.TOTAL_POPULATION_LOSS': 'Total Population Loss',
+  'population.NET_CHANGE': 'Net Change',
+  'population.TEAM_PREFIX': 'Team',
+  'population.TILE_PREFIX': 'Tile #',
+
+  // Table Headers
+  'population.TABLE_TILE_ID': 'Tile ID',
+  'population.TABLE_TEAM': 'Team',
+  'population.TABLE_TIMESTAMP': 'Timestamp',
+  'population.TABLE_PREVIOUS': 'Previous',
+  'population.TABLE_NEW': 'New',
+  'population.TABLE_CHANGE': 'Change',
+  'population.TABLE_TYPE': 'Type',
+  'population.TABLE_REASON': 'Reason',
+  'population.COORDINATES': 'Coordinates',
+
+  // Filter Labels
+  'population.FILTER_TILE_ID': 'Tile ID',
+  'population.FILTER_TEAM_ID': 'Team ID',
+  'population.FILTER_CHANGE_TYPE': 'Change Type',
+  'population.FILTER_FROM_DATE': 'From Date',
+  'population.FILTER_TO_DATE': 'To Date',
+  'population.FILTER_ALL_TYPES': 'All Types',
+  'population.APPLY_FILTERS': 'Apply',
+  'population.CLEAR_FILTERS': 'Clear',
+
+  // Change Types
+  'population.CHANGE_TYPE': 'Change Type',
+  'population.TYPE_SIPHON_EFFECT': 'Siphon Effect',
+  'population.TYPE_SPILLOVER_EFFECT': 'Spillover Effect',
+  'population.TYPE_PRODUCTION_FACILITY': 'Production Facility',
+  'population.TYPE_GROWTH_FACILITY': 'Growth Facility',
+  'population.TYPE_INFRASTRUCTURE_CHANGE': 'Infrastructure Change',
+  'population.TYPE_MANUAL_ADJUSTMENT': 'Manual Adjustment',
+
+  // Detail View
+  'population.ADDITIONAL_DETAILS': 'Additional Details',
+  'population.FACILITY_TYPE': 'Facility Type',
+  'population.CALCULATION_STEP': 'Calculation Step',
+  'population.STEP': 'Step',
+  'population.TRIGGERED_BY': 'Triggered By',
+  'population.TRIGGERED_BY_USER': 'Triggered By User',
+  'population.ACTION': 'Action',
+  'population.FULL_REASON': 'Full Reason',
+  'population.NA': 'N/A',
+
+  // Actions
+  'population.TOGGLE_FILTERS': 'Toggle Filters',
+  'population.EXPORT_CSV': 'Export to CSV',
+  'population.REFRESH_DATA': 'Refresh Data',
+  'population.RETRY': 'Retry',
+
+  // Messages
+  'population.NO_CHANGES_FOUND': 'No population changes found for the selected filters',
+  'population.LOADING': 'Loading population data...',
+  'population.ERROR_LOADING': 'Failed to load population history',
+
+  // Pagination
+  'population.ROWS_PER_PAGE': 'Rows per page:',
+  'population.PAGE_OF': 'of',
+
+  // Date/Time
+  'population.TODAY': 'Today',
+  'population.YESTERDAY': 'Yesterday',
+  'population.LAST_7_DAYS': 'Last 7 Days',
+  'population.LAST_30_DAYS': 'Last 30 Days',
+  'population.THIS_MONTH': 'This Month',
+  'population.LAST_MONTH': 'Last Month',
+
+  // Quick Filters
+  'population.QUICK_FILTERS': 'Quick Filters',
+  'population.GAINS_ONLY': 'Gains Only',
+  'population.LOSSES_ONLY': 'Losses Only',
+  'population.HIGH_IMPACT': 'High Impact Changes',
+
+  // Tooltips
+  'population.TOOLTIP_EXPORT': 'Export data to CSV file',
+  'population.TOOLTIP_REFRESH': 'Refresh population data',
+  'population.TOOLTIP_FILTERS': 'Show or hide filter options',
+  'population.TOOLTIP_EXPAND': 'Click to view more details',
+  'population.TOOLTIP_SORT': 'Click to sort by this column',
   // Transportation namespace
   'transportation.TRANSPORTATION_CONFIG': 'Transportation Configuration',
   'transportation.ALL_TRANSPORTATION_CONFIGS': 'All Transportation Configurations',

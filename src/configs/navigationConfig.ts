@@ -659,6 +659,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/land-management/manager/overview',
 					translate: 'MANAGER_OVERVIEW',
 					auth: ['user']
+				},
+				{
+					id: 'land-management.population-history',
+					title: 'Population History',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar-square',
+					url: '/land-management/manager/population-history',
+					translate: 'POPULATION_HISTORY',
+					auth: ['user']
 				}
 			]
 		});

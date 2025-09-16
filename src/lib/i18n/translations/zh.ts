@@ -2,6 +2,98 @@ import { zhExtendedTranslations } from './zh-extended';
 
 export const zhTranslations = {
   ...zhExtendedTranslations,
+  // Population namespace
+  'POPULATION_HISTORY': '人口历史',
+  'population.TITLE': '人口变化历史',
+  'population.SUBTITLE': '追踪和分析您活动中所有地块的人口变化',
+
+  // Summary Cards
+  'population.TOTAL_CHANGES': '总变化次数',
+  'population.NET_POPULATION_CHANGE': '人口净变化',
+  'population.MOST_ACTIVE_TEAM': '最活跃团队',
+  'population.MOST_ACTIVE_TILE': '最活跃地块',
+  'population.TOTAL_POPULATION_GAIN': '人口总增长',
+  'population.TOTAL_POPULATION_LOSS': '人口总减少',
+  'population.NET_CHANGE': '净变化',
+  'population.TEAM_PREFIX': '团队',
+  'population.TILE_PREFIX': '地块 #',
+
+  // Table Headers
+  'population.TABLE_TILE_ID': '地块编号',
+  'population.TABLE_TEAM': '团队',
+  'population.TABLE_TIMESTAMP': '时间',
+  'population.TABLE_PREVIOUS': '之前',
+  'population.TABLE_NEW': '之后',
+  'population.TABLE_CHANGE': '变化',
+  'population.TABLE_TYPE': '类型',
+  'population.TABLE_REASON': '原因',
+  'population.COORDINATES': '坐标',
+
+  // Filter Labels
+  'population.FILTER_TILE_ID': '地块编号',
+  'population.FILTER_TEAM_ID': '团队编号',
+  'population.FILTER_CHANGE_TYPE': '变化类型',
+  'population.FILTER_FROM_DATE': '开始日期',
+  'population.FILTER_TO_DATE': '结束日期',
+  'population.FILTER_ALL_TYPES': '所有类型',
+  'population.APPLY_FILTERS': '应用',
+  'population.CLEAR_FILTERS': '清除',
+
+  // Change Types
+  'population.CHANGE_TYPE': '变化类型',
+  'population.TYPE_SIPHON_EFFECT': '虹吸效应',
+  'population.TYPE_SPILLOVER_EFFECT': '溢出效应',
+  'population.TYPE_PRODUCTION_FACILITY': '生产设施',
+  'population.TYPE_GROWTH_FACILITY': '增长设施',
+  'population.TYPE_INFRASTRUCTURE_CHANGE': '基础设施变化',
+  'population.TYPE_MANUAL_ADJUSTMENT': '手动调整',
+
+  // Detail View
+  'population.ADDITIONAL_DETAILS': '详细信息',
+  'population.FACILITY_TYPE': '设施类型',
+  'population.CALCULATION_STEP': '计算步骤',
+  'population.STEP': '步骤',
+  'population.TRIGGERED_BY': '触发者',
+  'population.TRIGGERED_BY_USER': '触发用户',
+  'population.ACTION': '操作',
+  'population.FULL_REASON': '完整原因',
+  'population.NA': '无',
+
+  // Actions
+  'population.TOGGLE_FILTERS': '切换筛选器',
+  'population.EXPORT_CSV': '导出CSV',
+  'population.REFRESH_DATA': '刷新数据',
+  'population.RETRY': '重试',
+
+  // Messages
+  'population.NO_CHANGES_FOUND': '未找到符合筛选条件的人口变化',
+  'population.LOADING': '正在加载人口数据...',
+  'population.ERROR_LOADING': '加载人口历史失败',
+
+  // Pagination
+  'population.ROWS_PER_PAGE': '每页行数：',
+  'population.PAGE_OF': '共',
+
+  // Date/Time
+  'population.TODAY': '今天',
+  'population.YESTERDAY': '昨天',
+  'population.LAST_7_DAYS': '最近7天',
+  'population.LAST_30_DAYS': '最近30天',
+  'population.THIS_MONTH': '本月',
+  'population.LAST_MONTH': '上月',
+
+  // Quick Filters
+  'population.QUICK_FILTERS': '快速筛选',
+  'population.GAINS_ONLY': '仅增长',
+  'population.LOSSES_ONLY': '仅减少',
+  'population.HIGH_IMPACT': '高影响变化',
+
+  // Tooltips
+  'population.TOOLTIP_EXPORT': '导出数据到CSV文件',
+  'population.TOOLTIP_REFRESH': '刷新人口数据',
+  'population.TOOLTIP_FILTERS': '显示或隐藏筛选选项',
+  'population.TOOLTIP_EXPAND': '点击查看更多详情',
+  'population.TOOLTIP_SORT': '点击按此列排序',
   // Transportation namespace
   'transportation.TRANSPORTATION_CONFIG': 'Transportation Config',
   'transportation.ALL_TRANSPORTATION_CONFIGS': '所有运输配置',
