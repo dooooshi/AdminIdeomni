@@ -429,38 +429,6 @@ function TransferHistoryPage() {
               )}
           </Paper>
 
-          {/* Quick Actions */}
-          <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
-            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement.QUICK_ACTIONS')}
-            </Typography>
-            <div className="flex gap-4 flex-wrap">
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/history/operations')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:list-bullet</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.ALL_OPERATIONS')}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/history/balances')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:scale</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.BALANCE_HISTORY')}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/transfers')}
-                className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:paper-airplane</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.TRANSFER_RESOURCES')}
-              </Button>
-            </div>
-          </Paper>
         </motion.div>
       </div>
     </div>

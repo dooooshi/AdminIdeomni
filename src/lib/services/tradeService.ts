@@ -31,21 +31,22 @@ export class TradeService {
 
   /**
    * Helper method to extract data from API response wrapper
+   * According to API spec, all responses should be { success: true, data: {...} }
    */
   private static extractResponseData<T>(response: any): T {
-    // Handle nested response structure
-    if (response.data?.data?.data) {
-      return response.data.data.data;
-    }
-
-    if (response.data?.data) {
+    // Standard API response format
+    if (response.data && 'success' in response.data && 'data' in response.data) {
+      console.log('API Response:', response.data);
       return response.data.data;
     }
 
+    // Fallback for backward compatibility
     if (response.data) {
+      console.warn('Non-standard API response format:', response.data);
       return response.data;
     }
 
+    console.error('Unexpected response format:', response);
     return response;
   }
 
@@ -205,6 +206,7 @@ export class TradeService {
   /**
    * Preview trade (calculate transport cost)
    * POST /api/trades/:id/preview
+   * Response should include itemsCost, transportCost, totalCost, validation
    */
   static async previewTrade(
     tradeId: string,
@@ -215,7 +217,15 @@ export class TradeService {
         `${this.TRADES_BASE_PATH}/${tradeId}/preview`,
         request
       );
-      return this.extractResponseData<TradePreviewResponse>(response);
+      const data = this.extractResponseData<TradePreviewResponse>(response);
+
+      // Validate response structure matches API spec
+      if (!data.itemsCost || !data.transportCost || !data.totalCost) {
+        console.error('Invalid preview response structure:', data);
+        throw new Error('Invalid trade preview response from server');
+      }
+
+      return data;
     } catch (error) {
       this.handleError(error);
     }
@@ -224,6 +234,7 @@ export class TradeService {
   /**
    * Accept trade
    * POST /api/trades/:id/accept
+   * Response should include transaction details with itemsCost, transportCost, totalPaid
    */
   static async acceptTrade(
     tradeId: string,
@@ -234,7 +245,18 @@ export class TradeService {
         `${this.TRADES_BASE_PATH}/${tradeId}/accept`,
         request
       );
-      return this.extractResponseData<TradeOrder>(response);
+      const data = this.extractResponseData<TradeOrder>(response);
+
+      // Log transaction details if available
+      if (data.transaction) {
+        console.log('Trade accepted with transaction:', {
+          itemsCost: data.transaction.itemsCost,
+          transportCost: data.transaction.transportCost,
+          totalPaid: data.transaction.totalPaid,
+        });
+      }
+
+      return data;
     } catch (error) {
       this.handleError(error);
     }

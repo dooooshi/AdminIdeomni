@@ -1,7 +1,9 @@
 import { enExtendedTranslations } from './en-extended';
+import { tradeTranslationsEn } from './trade-en';
 
 export const enTranslations = {
   ...enExtendedTranslations,
+  ...tradeTranslationsEn,
   // Population namespace
   'POPULATION_HISTORY': 'Population History',
   'population.TITLE': 'Population Change History',
@@ -199,10 +201,13 @@ export const enTranslations = {
   'transportation.CARBON_EMITTED_RESULT': 'Carbon Emitted',
   'transportation.TOTAL_GOLD_COST': '{{cost}} gold',
   'transportation.CARBON_COST': '{{carbon}} carbon',
+  'transportation.AVAILABLE': 'available',
 
   // Common actions (from common namespace)
   SAVE: 'Save',
   CANCEL: 'Cancel',
+  DESCRIPTION: 'Description',
+  PURCHASE_AREA_ON_TILE: 'Purchase {{amount}} area on {{landType}} tile {{tileId}}',
   
   // Generic activity-related keys
   DURATION_DAYS: '{{days}} days',
@@ -274,7 +279,6 @@ export const enTranslations = {
   OK: 'OK',
   NAME: 'Name',
   TITLE: 'Title',
-  DESCRIPTION: 'Description',
   DATE: 'Date',
   TIME: 'Time',
   TYPE: 'Type',
@@ -4020,6 +4024,9 @@ export const enTranslations = {
   'TRADE_HUB': 'Trade Hub',
   'CREATE_TRADE': 'Create Trade',
   'TRADE_HISTORY': 'Trade History',
+  'navigation.TRADE_HUB': 'Trade Hub',
+  'navigation.CREATE_TRADE': 'Create Trade',
+  'navigation.TRADE_HISTORY': 'Trade History',
   'trade.title': 'Trade Management',
   'trade.subtitle': 'Manage trades between teams in your activity',
   'trade.createNew': 'Create Trade',
@@ -4104,25 +4111,6 @@ export const enTranslations = {
   'trade.status.rejected': 'Rejected',
   'trade.status.cancelled': 'Cancelled',
   'trade.status.completed': 'Completed',
-
-  // Facility Types for Trade
-  'facilityType.MINE': 'Mine',
-  'facilityType.QUARRY': 'Quarry',
-  'facilityType.FOREST': 'Forest',
-  'facilityType.FARM': 'Farm',
-  'facilityType.RANCH': 'Ranch',
-  'facilityType.FISHERY': 'Fishery',
-  'facilityType.FACTORY': 'Factory',
-  'facilityType.MALL': 'Mall',
-  'facilityType.WAREHOUSE': 'Warehouse',
-  'facilityType.WATER_PLANT': 'Water Plant',
-  'facilityType.POWER_PLANT': 'Power Plant',
-  'facilityType.BASE_STATION': 'Base Station',
-  'facilityType.FIRE_STATION': 'Fire Station',
-  'facilityType.SCHOOL': 'School',
-  'facilityType.HOSPITAL': 'Hospital',
-  'facilityType.PARK': 'Park',
-  'facilityType.CINEMA': 'Cinema',
 
   // Trade Operations
   'trade.operation.created': 'Trade created',

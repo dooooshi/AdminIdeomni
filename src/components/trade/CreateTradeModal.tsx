@@ -44,6 +44,7 @@ import {
   Team,
   FacilitySpaceInventory,
   FacilityInventoryItem,
+  InventoryItemType,
 } from '@/types/trade';
 
 interface CreateTradeModalProps {
@@ -73,22 +74,19 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
   const [targetTeamId, setTargetTeamId] = useState<string>('');
   const [sourceFacilityId, setSourceFacilityId] = useState<string>('');
   const [sourceInventoryId, setSourceInventoryId] = useState<string>('');
-  const [destinationInventoryId, setDestinationInventoryId] = useState<string>('');
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [transportCost, setTransportCost] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
 
   // Available options
   const [availableTeams, setAvailableTeams] = useState<Team[]>([]);
   const [sourceInventories, setSourceInventories] = useState<FacilitySpaceInventory[]>([]);
-  const [destinationInventories, setDestinationInventories] = useState<FacilitySpaceInventory[]>([]);
   const [inventoryItems, setInventoryItems] = useState<FacilityInventoryItem[]>([]);
 
   const steps = [
     t('trade.steps.selectFacility', 'Select Facility'),
     t('trade.steps.selectItems', 'Select Items'),
-    t('trade.steps.selectTeam', 'Select Team & Destination'),
+    t('trade.steps.selectTeam', 'Select Target Team'),
     t('trade.steps.setPrice', 'Set Price & Message'),
     t('trade.steps.review', 'Review & Confirm'),
   ];
@@ -134,12 +132,10 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
 
       setSourceInventories(validSources);
 
-      // Load destination inventories (for receiving items)
-      const destinations = await TradeService.getAvailableDestinations();
-      setDestinationInventories(destinations);
+      // Note: Destination inventories are handled in AcceptTradeModal
     } catch (err) {
       console.error('Failed to load initial data:', err); // Debug log
-      setError(err instanceof Error ? err.message : 'Failed to load data');
+      setError(err instanceof Error ? err.message : t('trade.error.loadData', 'Failed to load data'));
     } finally {
       setLoading(false);
     }
@@ -163,14 +159,17 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
       // Extract items from the nested structure
       const allItems: any[] = [];
 
+      // Check if response has data property or is the data directly
+      const inventoryData = (response as any).data || response;
+
       // The response should now be just the data part with inventory structure
-      if (response?.inventory?.rawMaterials?.items) {
-        allItems.push(...response.inventory.rawMaterials.items);
+      if (inventoryData?.inventory?.rawMaterials?.items) {
+        allItems.push(...inventoryData.inventory.rawMaterials.items);
       }
 
       // Add products if they exist
-      if (response?.inventory?.products?.items) {
-        allItems.push(...response.inventory.products.items);
+      if (inventoryData?.inventory?.products?.items) {
+        allItems.push(...inventoryData.inventory.products.items);
       }
 
       // Transform the response to match our interface
@@ -203,45 +202,12 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
     setTargetTeamId('');
     setSourceFacilityId('');
     setSourceInventoryId('');
-    setDestinationInventoryId('');
     setSelectedItems([]);
     setTotalPrice(0);
-    setTransportCost(0);
     setMessage('');
     setError(null);
   };
 
-  const calculateTransportCost = async (destInventoryId: string) => {
-    try {
-      setLoading(true);
-
-      // Import TransportationService
-      const { TransportationService } = await import('@/lib/services/transportationService');
-
-      // Calculate transport cost for each item
-      let totalTransportCost = 0;
-
-      for (const item of selectedItems) {
-        const cost = await TransportationService.calculateTransferCost({
-          sourceInventoryId,
-          destInventoryId,
-          inventoryItemId: item.inventoryItemId,
-          quantity: item.quantity,
-          teamId: targetTeamId,
-        });
-
-        totalTransportCost += cost.totalCost || 0;
-      }
-
-      setTransportCost(totalTransportCost);
-    } catch (error) {
-      console.error('Failed to calculate transport cost:', error);
-      // Set a default transport cost if calculation fails
-      setTransportCost(selectedItems.reduce((sum, item) => sum + (item.quantity * 10), 0));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleInventorySelect = (facilityId: string) => {
     if (!facilityId) {
@@ -270,9 +236,9 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
       if (selectedFacility.items && selectedFacility.items.length > 0) {
         // Transform the items from the source inventory response
         const items: FacilityInventoryItem[] = selectedFacility.items.map(item => ({
-          id: item.inventoryItemId || item.id || '',
+          id: item.inventoryItemId || '',
           name: item.name || 'Unknown Item',
-          type: (item.itemType || 'RAW_MATERIAL') as 'RAW_MATERIAL' | 'PRODUCT',
+          type: (item.itemType === 'PRODUCT' ? InventoryItemType.PRODUCT : InventoryItemType.RAW_MATERIAL),
           quantity: typeof item.quantity === 'number' ? item.quantity : parseFloat(item.quantity as any) || 0,
           unitSpace: typeof item.unitSpace === 'number' ? item.unitSpace : parseFloat(item.unitSpace as any) || 1,
           inventoryId: item.inventoryId, // Keep track of which inventory each item belongs to
@@ -311,7 +277,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         const firstSelectedItem = selectedItems[0].item;
         if (firstSelectedItem.inventoryId && firstSelectedItem.inventoryId !== item.inventoryId) {
           // Items must be from the same inventory - show error
-          setError(t('trade.sameInventoryError', 'All items must be from the same inventory'));
+          setError(t('trade.error.sameInventory'));
           return;
         }
       }
@@ -355,7 +321,6 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         targetTeamId,
         sourceFacilityId,
         sourceInventoryId,
-        destinationInventoryId,
         items: selectedItems.map(si => ({
           inventoryItemId: si.inventoryItemId,
           quantity: si.quantity,
@@ -369,7 +334,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
       handleReset();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create trade');
+      setError(err instanceof Error ? err.message : t('trade.error.createTrade'));
     } finally {
       setSubmitting(false);
     }
@@ -383,7 +348,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
       case 1:
         return selectedItems.length > 0;
       case 2:
-        return targetTeamId !== '' && destinationInventoryId !== '';
+        return targetTeamId !== '';
       case 3:
         return totalPrice > 0;
       case 4:
@@ -400,14 +365,14 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         return (
           <Box>
             <Typography variant="body2" color="textSecondary" mb={2}>
-              {t('trade.selectFacilityDesc', 'Select the facility inventory to trade items from')}
+              {t('trade.selectFacilityDesc')}
             </Typography>
             <FormControl fullWidth>
-              <InputLabel>{t('trade.sourceInventory', 'Source Inventory')}</InputLabel>
+              <InputLabel>{t('trade.field.sourceInventory')}</InputLabel>
               <Select
                 value={sourceFacilityId || ''}
                 onChange={(e) => handleInventorySelect(e.target.value)}
-                label={t('trade.sourceInventory', 'Source Inventory')}
+                label={t('trade.field.sourceInventory')}
                 renderValue={(selected) => {
                   if (!selected) return '';
                   const selectedInventory = sourceInventories.find(inv => inv.facility?.id === selected);
@@ -451,7 +416,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
                 {sourceInventories.length === 0 ? (
                   <MenuItem disabled>
                     <Typography variant="body2" color="textSecondary">
-                      {t('trade.noInventoriesAvailable', 'No inventories available')}
+                      {t('trade.inventory.noInventories')}
                     </Typography>
                   </MenuItem>
                 ) : (
@@ -515,30 +480,30 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
                             {/* Show inventory IDs if multiple */}
                             {inventory.inventoryIds && inventory.inventoryIds.length > 1 && (
                               <>
-                                {inventory.inventoryIds.length} {t('trade.inventories', 'inventories')}
+                                {inventory.inventoryIds.length} {t('trade.inventory.multiple', 'inventories')}
                                 {' • '}
                               </>
                             )}
                             {/* Show level if exists */}
                             {inventory.facility.level && (
                               <>
-                                {t('trade.level', 'Level')} {inventory.facility.level}
+                                {t('trade.inventory.level', 'Level {{level}}', { level: inventory.facility.level })}
                                 {' • '}
                               </>
                             )}
                             {/* Show item count and space */}
                             {itemCount > 0 ? (
                               <>
-                                {itemCount} {t('trade.itemsCount', 'items')}
+                                {itemCount} {t('trade.units.items')}
                                 {totalSpace > 0 && (
                                   <>
                                     {' • '}
-                                    {totalSpace.toFixed(1)} {t('trade.spaceUnits', 'units')}
+                                    {totalSpace.toFixed(1)} {t('trade.units.units')}
                                   </>
                                 )}
                               </>
                             ) : (
-                              t('trade.noItems', 'No items')
+                              t('trade.inventory.noItems')
                             )}
                             {/* Show facility ID for debugging/identification */}
                             {inventory.facility.id && (
@@ -559,7 +524,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
             </FormControl>
             {sourceInventories.length === 0 && !loading && (
               <Typography variant="body2" color="textSecondary" mt={2}>
-                {t('trade.noSourceInventoriesHelp', 'No facilities with tradeable items found. Make sure you have items in your facilities.')}
+                {t('trade.inventory.noSourceInventoriesHelp')}
               </Typography>
             )}
           </Box>
@@ -570,16 +535,16 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         return (
           <Box>
             <Typography variant="body2" color="textSecondary" mb={2}>
-              {t('trade.selectItemsDesc', 'Select items to include in the trade')}
+              {t('trade.selectItemsDesc')}
             </Typography>
             <TableContainer component={Paper} variant="outlined">
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell padding="checkbox"></TableCell>
-                    <TableCell>{t('trade.itemName', 'Item')}</TableCell>
-                    <TableCell>{t('trade.available', 'Available')}</TableCell>
-                    <TableCell>{t('trade.quantity', 'Quantity')}</TableCell>
+                    <TableCell>{t('trade.field.itemName')}</TableCell>
+                    <TableCell>{t('trade.field.available')}</TableCell>
+                    <TableCell>{t('trade.field.quantity')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -611,7 +576,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
                           {item.name}
                           {item.inventoryId && (
                             <Typography variant="caption" color="textSecondary" display="block">
-                              {t('trade.inventoryId', 'Inventory')}: {item.inventoryId.substring(0, 8)}...
+                              {t('trade.inventory.id')}: {item.inventoryId.substring(0, 8)}...
                             </Typography>
                           )}
                         </TableCell>
@@ -642,85 +607,42 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         );
 
       case 2:
-        // Select Target Team and Destination
+        // Select Target Team
         return (
           <Box>
             <Typography variant="body2" color="textSecondary" mb={2}>
-              {t('trade.selectTeamDesc', 'Select the team and destination for the trade')}
+              {t('trade.selectTeamDesc')}
             </Typography>
-            <Stack spacing={3}>
-              <FormControl fullWidth>
-                <InputLabel>{t('trade.targetTeam', 'Target Team')}</InputLabel>
-                <Select
-                  value={targetTeamId || ''}
-                  onChange={(e) => setTargetTeamId(e.target.value)}
-                  label={t('trade.targetTeam', 'Target Team')}
-                  renderValue={(selected) => {
-                    if (!selected) return '';
-                    const selectedTeam = availableTeams.find(team => team.id === selected);
-                    return selectedTeam?.name || selected;
-                  }}
-                  displayEmpty
-                >
-                  {availableTeams.map(team => (
-                    <MenuItem key={team.id} value={team.id}>
-                      <Box>
-                        <Typography variant="body1">
-                          {team.name}
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          {t('trade.teamResources', '🪙 {{gold}} • 🌳 {{carbon}}', {
-                            gold: team.resources?.gold || 0,
-                            carbon: team.resources?.carbon || 0,
-                          })}
-                        </Typography>
-                      </Box>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              {targetTeamId && (
-                <FormControl fullWidth>
-                  <InputLabel>{t('trade.destinationInventory', 'Destination Inventory')}</InputLabel>
-                  <Select
-                    value={destinationInventoryId || ''}
-                    onChange={(e) => {
-                      setDestinationInventoryId(e.target.value);
-                      // Calculate transport cost when destination is selected
-                      if (e.target.value && selectedItems.length > 0) {
-                        calculateTransportCost(e.target.value);
-                      }
-                    }}
-                    label={t('trade.destinationInventory', 'Destination Inventory')}
-                    renderValue={(selected) => {
-                      if (!selected) return '';
-                      const selectedInventory = destinationInventories.find(inv => inv.inventoryId === selected);
-                      return selectedInventory?.facility?.name || selected;
-                    }}
-                    displayEmpty
-                  >
-                    {destinationInventories
-                      .filter(inv => inv.facility?.teamId === targetTeamId)
-                      .map(inventory => (
-                        <MenuItem key={inventory.inventoryId} value={inventory.inventoryId}>
-                          <Box>
-                            <Typography variant="body1">
-                              {inventory.facility?.name}
-                            </Typography>
-                            <Typography variant="caption" color="textSecondary">
-                              {t('trade.inventorySpace', '{{used}}/{{total}} space used', {
-                                used: inventory.space?.used || 0,
-                                total: inventory.space?.total || 0,
-                              })}
-                            </Typography>
-                          </Box>
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
-              )}
-            </Stack>
+            <FormControl fullWidth>
+              <InputLabel>{t('trade.field.targetTeam')}</InputLabel>
+              <Select
+                value={targetTeamId || ''}
+                onChange={(e) => setTargetTeamId(e.target.value)}
+                label={t('trade.field.targetTeam')}
+                renderValue={(selected) => {
+                  if (!selected) return '';
+                  const selectedTeam = availableTeams.find(team => team.id === selected);
+                  return selectedTeam?.name || selected;
+                }}
+                displayEmpty
+              >
+                {availableTeams.map(team => (
+                  <MenuItem key={team.id} value={team.id}>
+                    <Box>
+                      <Typography variant="body1">
+                        {team.name}
+                      </Typography>
+                      <Typography variant="caption" color="textSecondary">
+                        {t('trade.team.resources', '🪙 {{gold}} • 🌳 {{carbon}}', {
+                          gold: team.resources?.gold || 0,
+                          carbon: team.resources?.carbon || 0,
+                        })}
+                      </Typography>
+                    </Box>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
         );
 
@@ -729,11 +651,11 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         return (
           <Box>
             <Typography variant="body2" color="textSecondary" mb={2}>
-              {t('trade.setPriceDesc', 'Set the total price for all items')}
+              {t('trade.setPriceDesc')}
             </Typography>
             <Stack spacing={3}>
               <TextField
-                label={t('trade.totalPrice', 'Total Price')}
+                label={t('trade.field.totalPrice')}
                 type="number"
                 value={totalPrice}
                 onChange={(e) => setTotalPrice(parseFloat(e.target.value) || 0)}
@@ -751,13 +673,13 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
                 inputProps={{ min: 0, step: 100 }}
               />
               <TextField
-                label={t('trade.message', 'Message (Optional)')}
+                label={t('trade.field.message')}
                 multiline
                 rows={3}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 fullWidth
-                placeholder={t('trade.messagePlaceholder', 'Add a message for the recipient...')}
+                placeholder={t('trade.field.messagePlaceholder')}
               />
             </Stack>
           </Box>
@@ -767,17 +689,16 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
         // Review & Confirm
         const targetTeam = availableTeams.find(t => t.id === targetTeamId);
         const sourceInventory = sourceInventories.find(inv => inv.facility?.id === sourceFacilityId);
-        const destinationInventory = destinationInventories.find(inv => inv.inventoryId === destinationInventoryId);
 
         return (
           <Box>
             <Typography variant="body2" color="textSecondary" mb={2}>
-              {t('trade.reviewDesc', 'Review your trade offer before sending')}
+              {t('trade.reviewDesc')}
             </Typography>
             <Stack spacing={2}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('trade.from', 'From')}
+                  {t('trade.field.from')}
                 </Typography>
                 <Typography variant="body1">
                   {sourceInventory?.facility?.name}
@@ -786,19 +707,16 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
 
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('trade.to', 'To')}
+                  {t('trade.field.to')}
                 </Typography>
                 <Typography variant="body1">
                   {targetTeam?.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {destinationInventory?.facility?.name}
                 </Typography>
               </Paper>
 
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('trade.itemsSummary', 'Items')}
+                  {t('trade.summary.items')}
                 </Typography>
                 {selectedItems.map(si => (
                   <Chip
@@ -812,27 +730,17 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
 
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {t('trade.priceSummary', 'Price')}
+                  {t('trade.summary.price')}
                 </Typography>
                 <Typography variant="h6" color="primary">
                   {TradeService.formatCurrency(totalPrice)} 🪙
                 </Typography>
-                {transportCost > 0 && (
-                  <>
-                    <Typography variant="caption" display="block" color="textSecondary">
-                      {t('trade.transportCost', 'Transport Cost')}: {TradeService.formatCurrency(transportCost)} 🪙
-                    </Typography>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {t('trade.totalCost', 'Total Cost')}: {TradeService.formatCurrency(totalPrice + transportCost)} 🪙
-                    </Typography>
-                  </>
-                )}
               </Paper>
 
               {message && (
                 <Paper variant="outlined" sx={{ p: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
-                    {t('trade.messageSummary', 'Message')}
+                    {t('trade.summary.message')}
                   </Typography>
                   <Typography variant="body2">
                     {message}
@@ -856,7 +764,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
       fullWidth
     >
       <DialogTitle>
-        {t('trade.createTitle', 'Create Trade Offer')}
+        {t('trade.createTitle')}
       </DialogTitle>
 
       <DialogContent>
@@ -890,11 +798,11 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
           handleReset();
           onClose();
         }}>
-          {t('common.cancel', 'Cancel')}
+          {t('trade.misc.close')}
         </Button>
         {activeStep > 0 && (
           <Button onClick={handleBack}>
-            {t('common.back', 'Back')}
+            {t('trade.misc.back')}
           </Button>
         )}
         {activeStep < steps.length - 1 ? (
@@ -903,7 +811,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
             onClick={handleNext}
             disabled={!canProceed()}
           >
-            {t('common.next', 'Next')}
+            {t('trade.misc.next')}
           </Button>
         ) : (
           <Button
@@ -914,7 +822,7 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
             {submitting ? (
               <CircularProgress size={20} />
             ) : (
-              t('trade.sendOffer', 'Send Offer')
+              t('trade.actions.sendOffer')
             )}
           </Button>
         )}

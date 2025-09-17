@@ -1,7 +1,9 @@
 import { zhExtendedTranslations } from './zh-extended';
+import { tradeTranslationsZh } from './trade-zh';
 
 export const zhTranslations = {
   ...zhExtendedTranslations,
+  ...tradeTranslationsZh,
   // Population namespace
   'POPULATION_HISTORY': '人口历史',
   'population.TITLE': '人口变化历史',
@@ -199,6 +201,13 @@ export const zhTranslations = {
   'transportation.CARBON_EMITTED_RESULT': '碳排放',
   'transportation.TOTAL_GOLD_COST': '{{cost}} 金币',
   'transportation.CARBON_COST': '{{carbon}} 碳排放',
+  'transportation.AVAILABLE': '可用',
+
+  // Common actions
+  SAVE: '保存',
+  CANCEL: '取消',
+  DESCRIPTION: '描述',
+  PURCHASE_AREA_ON_TILE: '在{{landType}}地块{{tileId}}上购买{{amount}}区域',
 
   // Trade namespace
   'trade.title': '交易管理',
@@ -298,9 +307,6 @@ export const zhTranslations = {
   // Common namespace
   'common.DATE': '日期',
   'common.STATUS': '状态',
-  // Common actions (from common namespace)
-  SAVE: '保存',
-  CANCEL: '取消',
   
   // Generic activity-related keys
   DURATION_DAYS: '{{days}} 天',
@@ -316,8 +322,7 @@ export const zhTranslations = {
   'common.VIEW_DETAILS': '查看详情',
   'common.ACTIONS': '操作',
   'common.EDIT': '编辑',
-  DELETE: '删除',
-  EDIT: '编辑',
+  'common.MAX': '最大',
   ADD: '添加',
   REMOVE: '移除',
   CONFIRM: '确认',
@@ -356,7 +361,6 @@ export const zhTranslations = {
   OK: '确定',
   NAME: '名称',
   TITLE: '标题',
-  DESCRIPTION: '描述',
   DATE: '日期',
   TIME: '时间',
   TYPE: '类型',
@@ -3791,7 +3795,8 @@ export const zhTranslations = {
   'productProduction.totalProductionCost': '总生产成本',
   'productProduction.validationResult': '{{check}}：{{result}}',
   'productProduction.passed': '通过',
-  
+  'productProduction.failed': '失败',
+
   // Confirmation
   'productProduction.confirmProduction': '确认生产',
   'productProduction.confirmationMessage': '请查看以下详细信息并确认开始生产。',
@@ -4123,4 +4128,13 @@ export const zhTranslations = {
   'contract.PENDING_APPROVAL': '待批准',
   'contract.VIEW_DETAILS': '查看详情',
   'contract.INVALID_CONTRACT_ID': '无效的合约ID',
+
+  // Trade Management namespace - 贸易管理
+  'TRADE_MANAGEMENT': '贸易管理',
+  'TRADE_HUB': '贸易中心',
+  'CREATE_TRADE': '创建贸易',
+  'TRADE_HISTORY': '贸易历史',
+  'navigation.TRADE_HUB': '贸易中心',
+  'navigation.CREATE_TRADE': '创建贸易',
+  'navigation.TRADE_HISTORY': '贸易历史'
 };

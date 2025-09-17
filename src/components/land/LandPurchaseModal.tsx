@@ -100,7 +100,11 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
 
   const generateDefaultDescription = () => {
     if (!tile) return;
-    setDescription(`Purchase ${area} area on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
+    setDescription(t('PURCHASE_AREA_ON_TILE', {
+      amount: area,
+      landType: LandService.formatLandType(tile.landType),
+      tileId: tile.tileId
+    }));
   };
 
   // Validation function

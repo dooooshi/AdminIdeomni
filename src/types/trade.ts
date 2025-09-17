@@ -1,4 +1,6 @@
-import { Decimal } from '@prisma/client/runtime/library';
+// ==================== TYPES ====================
+// Using number | string to handle decimal values from API
+type DecimalValue = number | string;
 
 // ==================== ENUMS ====================
 
@@ -39,7 +41,7 @@ export interface TradeOrder {
   destInventoryId?: string;
   destInventory?: FacilitySpaceInventory;
   message?: string;
-  totalPrice: number | Decimal;
+  totalPrice: DecimalValue;
   status: TradeStatus;
   createdBy: string;
   createdByUser?: User;
@@ -63,8 +65,8 @@ export interface TradeItem {
   sourceInventory?: FacilitySpaceInventory;
   itemName: string;
   itemType: InventoryItemType;
-  quantity: number | Decimal;
-  unitSpace: number | Decimal;
+  quantity: DecimalValue;
+  unitSpace: DecimalValue;
   createdAt: Date | string;
 }
 
@@ -80,10 +82,10 @@ export interface TradeTransaction {
   sourceInventory?: FacilitySpaceInventory;
   destInventoryId: string;
   destInventory?: FacilitySpaceInventory;
-  itemsCost: number | Decimal;
-  transportCost: number | Decimal;
-  totalPaid: number | Decimal;
-  sellerReceived: number | Decimal;
+  itemsCost: DecimalValue;
+  transportCost: DecimalValue;
+  totalPaid: DecimalValue;
+  sellerReceived: DecimalValue;
   transportationOrderId?: string;
   executedBy: string;
   executedByUser?: User;
@@ -111,7 +113,6 @@ export interface CreateTradeRequest {
   targetTeamId: string;
   sourceFacilityId: string;
   sourceInventoryId: string;
-  destinationInventoryId: string;
   items: Array<{
     inventoryItemId: string;
     quantity: number;
@@ -326,16 +327,10 @@ export function isTradeError(response: any): response is TradeError {
   return response && response.success === false && response.businessCode !== undefined;
 }
 
-export function isDecimal(value: any): value is Decimal {
-  return value && typeof value === 'object' && 'toNumber' in value;
-}
-
-export function toNumber(value: number | Decimal | string): number {
+// Helper function to convert DecimalValue to number
+export function toNumber(value: DecimalValue): number {
   if (typeof value === 'string') {
     return parseFloat(value);
-  }
-  if (isDecimal(value)) {
-    return value.toNumber();
   }
   return value;
 }

@@ -373,40 +373,12 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				},
 				{
 					id: 'team-management.trade',
-					title: 'Trade Management',
-					type: 'collapse',
+					title: 'Trade Center',
+					type: 'item',
 					icon: 'heroicons-outline:shopping-cart',
-					translate: 'TRADE_MANAGEMENT',
-					auth: ['user'],
-					children: [
-						{
-							id: 'team-management.trade.hub',
-							title: 'Trade Hub',
-							type: 'item',
-							icon: 'heroicons-outline:building-storefront',
-							url: '/student-trade',
-							translate: 'TRADE_HUB',
-							auth: ['user']
-						},
-						{
-							id: 'team-management.trade.create',
-							title: 'Create Trade',
-							type: 'item',
-							icon: 'heroicons-outline:plus-circle',
-							url: '/student-trade/create',
-							translate: 'CREATE_TRADE',
-							auth: ['user']
-						},
-						{
-							id: 'team-management.trade.history',
-							title: 'Trade History',
-							type: 'item',
-							icon: 'heroicons-outline:clock',
-							url: '/student-trade/history',
-							translate: 'TRADE_HISTORY',
-							auth: ['user']
-						}
-					]
+					url: '/student-trade',
+					translate: 'TRADE_CENTER',
+					auth: ['user']
 				},
 				{
 					id: 'team-management.contracts',

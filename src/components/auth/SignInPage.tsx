@@ -135,19 +135,26 @@ function SignInPage() {
 			</Box>
 
 			{/* Admin Sign In Link */}
-			<Box 
+			<Box
 				className="absolute top-6 left-6 z-10"
 				sx={{
 					animation: isLoaded ? `${slideInLeft} 0.6s ease-out 0.2s both` : 'none',
+					color: theme => theme.palette.background.default,
+					'& a': {
+						color: 'inherit !important',
+						textDecoration: 'none',
+					},
+					'& a:hover': {
+						color: theme => theme.palette.mode === 'light' ?
+							theme.palette.grey[100] :
+							'rgba(255, 255, 255, 0.05)',
+						textDecoration: 'none',
+					},
 				}}
 			>
 				<Link
 					to="/sign-in/admin"
-					className="flex items-center space-x-2 text-sm hover:underline"
-					style={{
-						color: 'rgba(0, 0, 0, 0.6)',
-						transition: 'all 0.2s ease',
-					}}
+					className="flex items-center space-x-2 text-sm"
 				>
 					<IdeomniSvgIcon size={16}>heroicons-outline:shield-check</IdeomniSvgIcon>
 					<span>{t('auth.ADMIN_SIGN_IN')}</span>

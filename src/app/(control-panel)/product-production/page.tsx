@@ -497,7 +497,7 @@ export default function ProductProductionPage() {
                     />
                   </Box>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    {t('productProduction.totalCostLabel')}: ${formatNumber(formula.totalMaterialCost || 0)}
+                    {t('productProduction.totalCostLabel')}: ${formatNumber(formula.totalMaterialCost || 0, 2)}
                   </Typography>
                 </CardContent>
               </Card>
@@ -511,7 +511,20 @@ export default function ProductProductionPage() {
 
   // Quantity Input Step
   const QuantityInputStep = () => {
-    const maxQuantity = selectedFactory?.productionCapability?.maxQuantity || 0;
+    // Calculate max quantity based on available materials
+    let maxQuantity = 0;
+    if (costData?.resources?.materials && costData.resources.materials.length > 0) {
+      // Find the limiting material (smallest ratio of available/required)
+      const maxQuantities = costData.resources.materials.map(material => {
+        if (material.quantityRequired > 0) {
+          return Math.floor(material.quantityAvailable / material.quantityRequired);
+        }
+        return 9999;
+      });
+      maxQuantity = Math.min(...maxQuantities);
+    } else {
+      maxQuantity = selectedFactory?.productionCapability?.maxQuantity || 0;
+    }
     
     return (
       <Box>
@@ -576,9 +589,6 @@ export default function ProductProductionPage() {
                   <AddIcon />
                 </IconButton>
               </Box>
-              <FormHelperText>
-                {t('productProduction.maxProducible', { max: maxQuantity })}
-              </FormHelperText>
             </Grid2>
             
             <Grid2 item xs={12} md={6}>
@@ -654,7 +664,7 @@ export default function ProductProductionPage() {
                       />
                       <ListItemSecondaryAction>
                         <Typography variant="body2" fontWeight="medium">
-                          ${formatNumber(material.totalCost)}
+                          ${formatNumber(material.totalCost, 2)}
                         </Typography>
                         {!material.sufficient && (
                           <Chip size="small" label={t('productProduction.insufficient')} color="error" sx={{ ml: 1 }} />
@@ -669,7 +679,7 @@ export default function ProductProductionPage() {
                     {t('productProduction.totalMaterialCost')}
                   </Typography>
                   <Typography variant="h6" color="primary">
-                    ${formatNumber(costData.costs?.materialCostA || 0)}
+                    ${formatNumber(costData.costs?.materialCostA || 0, 2)}
                   </Typography>
                 </Box>
               </CardContent>
@@ -697,7 +707,7 @@ export default function ProductProductionPage() {
                           unitPrice: costData.resources?.water?.unitPrice || 0 
                         })}
                       </Typography>
-                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.waterCost !== undefined ? costData.costs.finalCosts.waterCost : costData.resources?.water?.totalCost || 0)}</Typography>
+                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.waterCost !== undefined ? costData.costs.finalCosts.waterCost : costData.resources?.water?.totalCost || 0, 2)}</Typography>
                     </Box>
                   </Box>
 
@@ -713,7 +723,7 @@ export default function ProductProductionPage() {
                           unitPrice: costData.resources?.power?.unitPrice || 0 
                         })}
                       </Typography>
-                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.powerCost !== undefined ? costData.costs.finalCosts.powerCost : costData.resources?.power?.totalCost || 0)}</Typography>
+                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.powerCost !== undefined ? costData.costs.finalCosts.powerCost : costData.resources?.power?.totalCost || 0, 2)}</Typography>
                     </Box>
                   </Box>
 
@@ -723,7 +733,7 @@ export default function ProductProductionPage() {
                       <Typography variant="subtitle2">{t('productProduction.laborCost')}</Typography>
                     </Box>
                     <Box sx={{ pl: 4 }}>
-                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.goldCost || 0)}</Typography>
+                      <Typography variant="h6">${formatNumber(costData.costs?.finalCosts?.goldCost || 0, 2)}</Typography>
                     </Box>
                   </Box>
                 </Stack>
@@ -825,7 +835,7 @@ export default function ProductProductionPage() {
                       {t('productProduction.carbonEmission')}
                     </Typography>
                     <Typography variant="body1">
-                      {t('productProduction.carbonEmissionValue', { amount: formatNumber(costData.output?.carbonEmission || 0) })}
+                      {t('productProduction.carbonEmissionValue', { amount: formatNumber(costData.output?.carbonEmission || 0, 3) })}
                     </Typography>
                   </Box>
                 </Stack>
@@ -843,7 +853,7 @@ export default function ProductProductionPage() {
                       {t('productProduction.totalProductionCost')}
                     </Typography>
                     <Typography variant="h3">
-                      ${formatNumber(costData.costs?.finalCosts?.totalCost || 0)}
+                      ${formatNumber(costData.costs?.finalCosts?.totalCost || 0, 2)}
                     </Typography>
                   </Grid2>
                   <Grid2 item xs={12} sm={6}>
@@ -856,7 +866,7 @@ export default function ProductProductionPage() {
                             <ErrorIcon sx={{ mr: 1 }} />
                           )}
                           <Typography variant="body2">
-                            {t('productProduction.validationResult', { check: validation.check, result: validation.passed ? t('productProduction.passed') : validation.message })}
+                            {t('productProduction.validationResult', { check: validation.check, result: validation.passed ? t('productProduction.passed') : validation.message || t('productProduction.failed') })}
                           </Typography>
                         </Box>
                       )) || []}
@@ -934,7 +944,7 @@ export default function ProductProductionPage() {
               
               <Grid2 item xs={12}>
                 <Typography variant="h5" color="primary">
-                  {t('productProduction.totalCost')}: ${formatNumber(costData.costs?.finalCosts?.totalCost || 0)}
+                  {t('productProduction.totalCost')}: ${formatNumber(costData.costs?.finalCosts?.totalCost || 0, 2)}
                 </Typography>
               </Grid2>
             </Grid2>
@@ -1068,7 +1078,7 @@ export default function ProductProductionPage() {
                     <TableCell>{row.formula?.name || t('productProduction.unknown')}</TableCell>
                     <TableCell align="right">{row.quantities?.requested || 0}</TableCell>
                     <TableCell align="right">{row.quantities?.produced || 0}</TableCell>
-                    <TableCell align="right">${formatNumber(row.costs?.total || 0)}</TableCell>
+                    <TableCell align="right">${formatNumber(row.costs?.total || 0, 2)}</TableCell>
                     <TableCell align="center">
                       <Chip
                         size="small"
@@ -1110,7 +1120,7 @@ export default function ProductProductionPage() {
           {t('productProduction.confirmProductionMessage', {
             quantity: quantity,
             product: selectedFormula?.productName,
-            cost: formatNumber(costData?.costs.finalCosts.totalCost || 0)
+            cost: formatNumber(costData?.costs.finalCosts.totalCost || 0, 2)
           })}
         </Typography>
       </DialogContent>

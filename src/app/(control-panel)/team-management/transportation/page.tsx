@@ -85,7 +85,7 @@ export default function TransportationPage() {
   const [sourceFacility, setSourceFacility] = useState<FacilityForTransport | null>(null);
   const [destFacility, setDestFacility] = useState<FacilityForTransport | null>(null);
   const [selectedItem, setSelectedItem] = useState<InventoryItemForTransport | null>(null);
-  const [transferQuantity, setTransferQuantity] = useState(1);
+  const [transferQuantity, setTransferQuantity] = useState<number>(1);
   const [costPreview, setCostPreview] = useState<TransportationCostPreview | null>(null);
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [successDialog, setSuccessDialog] = useState(false);
@@ -184,20 +184,20 @@ export default function TransportationPage() {
             allItems.push({
               id: item.id,
               inventoryItemId: item.id, // Use the item ID directly for the API
-              name: item.nameEn || item.name || item.nameZh || 'Unknown Material',
+              name: item.name || 'Unknown Material', // Always use name field
               type: InventoryItemType.RAW_MATERIAL,
               availableQuantity: parseFloat(item.quantity || '0')
             });
           });
         }
-        
+
         // Add products
         if (inventoryData.inventory.products?.items) {
           inventoryData.inventory.products.items.forEach((item) => {
             allItems.push({
               id: item.id,
               inventoryItemId: item.id, // Use the item ID directly for the API
-              name: item.nameEn || item.name || item.nameZh || item.productName || 'Unknown Product',
+              name: item.name || item.productName || 'Unknown Product', // Always use name field
               type: InventoryItemType.PRODUCT,
               availableQuantity: parseFloat(item.quantity || '0')
             });
@@ -332,9 +332,6 @@ export default function TransportationPage() {
                         <WarehouseIcon color="action" />
                       </Box>
                       <Typography variant="body2" color="text.secondary">
-                        {t('transportation.TYPE')}: {facility.facilityType}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
                         {t('transportation.LOCATION')}: ({facility.tileX}, {facility.tileY})
                       </Typography>
                       <Box mt={1}>
@@ -379,9 +376,6 @@ export default function TransportationPage() {
                           </Typography>
                           <WarehouseIcon color="action" />
                         </Box>
-                        <Typography variant="body2" color="text.secondary">
-                          Type: {facility.facilityType}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary">
                           Location: ({facility.tileX}, {facility.tileY})
                         </Typography>
@@ -439,7 +433,7 @@ export default function TransportationPage() {
                     ) : (
                       inventoryItems.map((item) => (
                         <MenuItem key={item.id} value={item.id}>
-                          {item.name} ({Math.floor(item.availableQuantity || 0)} {t('common.AVAILABLE')})
+                          {item.name} ({(item.availableQuantity || 0).toFixed(2)} {t('transportation.AVAILABLE')})
                         </MenuItem>
                       ))
                     )}
@@ -457,20 +451,23 @@ export default function TransportationPage() {
                         setTransferQuantity(1);
                         return;
                       }
-                      const value = parseInt(inputValue, 10);
+                      const value = parseFloat(inputValue);
                       if (isNaN(value)) {
                         setTransferQuantity(1);
                         return;
                       }
-                      const max = Math.floor(selectedItem?.availableQuantity || 1);
-                      setTransferQuantity(Math.min(Math.max(1, value), max));
+                      // Round to 2 decimal places
+                      const roundedValue = Math.round(value * 100) / 100;
+                      const max = selectedItem?.availableQuantity || 1;
+                      setTransferQuantity(Math.min(Math.max(0.01, roundedValue), max));
                     }}
                     disabled={!selectedItem}
                     inputProps={{
-                      min: 1,
-                      max: Math.floor(selectedItem?.availableQuantity || 1)
+                      min: 0.01,
+                      max: selectedItem?.availableQuantity || 1,
+                      step: 0.01
                     }}
-                    helperText={selectedItem ? `${t('common.MAX')}: ${Math.floor(selectedItem.availableQuantity)}` : ''}
+                    helperText={selectedItem ? `${t('common.MAX')}: ${selectedItem.availableQuantity.toFixed(2)}` : ''}
                   />
                 </Grid>
               </Grid>
