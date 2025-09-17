@@ -1,4 +1,4 @@
-import apiClient from '@/lib/http/api-client';
+import { apiClient } from '@/lib/http';
 
 // User Management Types based on API documentation
 export interface AdminUserDetailsDto {
@@ -68,8 +68,20 @@ export interface AdminUpdateUserDto {
   roles?: string[];
 }
 
+// Bulk import user DTO (without sendWelcomeEmail which is not supported)
+export interface BulkImportUserDto {
+  username: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  userType: number;
+  isActive?: boolean;
+  roles?: string[];
+}
+
 export interface AdminBulkCreateUserDto {
-  users: AdminCreateUserDto[];
+  users: BulkImportUserDto[];  // Use BulkImportUserDto for bulk operations
 }
 
 export interface AdminBulkUpdateUserDto {
@@ -264,7 +276,15 @@ export class UserService {
    * Create multiple users in bulk
    */
   static async bulkCreateUsers(bulkData: AdminBulkCreateUserDto): Promise<BulkOperationResultDto> {
-    const response = await apiClient.post<ApiResponse<BulkOperationResultDto>>(`${this.BASE_PATH}/bulk`, bulkData);
+    const response = await apiClient.post<ApiResponse<BulkOperationResultDto>>(`${this.BASE_PATH}/bulk-import`, bulkData);
+    return response.data.data;
+  }
+
+  /**
+   * Validate users data before bulk import
+   */
+  static async validateBulkImport(bulkData: AdminBulkCreateUserDto): Promise<BulkOperationResultDto> {
+    const response = await apiClient.post<ApiResponse<BulkOperationResultDto>>(`${this.BASE_PATH}/bulk-import/validate`, bulkData);
     return response.data.data;
   }
 

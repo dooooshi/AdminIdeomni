@@ -31,6 +31,7 @@ import IdeomniPageSimple from '@ideomni/core/IdeomniPageSimple';
 import {
   UserList,
   UserForm,
+  UserBulkImportDialog,
   AdminUserDetailsDto,
 } from '@/components/user-management';
 import UserService from '@/lib/services/userService';
@@ -44,6 +45,7 @@ const UserManagementPage: React.FC = () => {
   const [passwordResetOpen, setPasswordResetOpen] = useState(false);
   const [resetPasswordUser, setResetPasswordUser] = useState<AdminUserDetailsDto | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   // Password reset form state
   const [passwordResetSettings, setPasswordResetSettings] = useState({
@@ -70,6 +72,10 @@ const UserManagementPage: React.FC = () => {
   const handleResetPassword = (user: AdminUserDetailsDto) => {
     setResetPasswordUser(user);
     setPasswordResetOpen(true);
+  };
+
+  const handleBulkImport = () => {
+    setBulkImportOpen(true);
   };
 
   const handleUserFormSuccess = (user: AdminUserDetailsDto) => {
@@ -105,6 +111,11 @@ const UserManagementPage: React.FC = () => {
   const handleClosePasswordReset = () => {
     setPasswordResetOpen(false);
     setResetPasswordUser(null);
+  };
+
+  const handleBulkImportSuccess = () => {
+    setBulkImportOpen(false);
+    setRefreshTrigger(prev => prev + 1);
   };
 
   const formatDate = (dateString: string | Date) => {
@@ -169,6 +180,7 @@ const UserManagementPage: React.FC = () => {
                 onEditUser={handleEditUser}
                 onViewUser={handleViewUser}
                 onResetPassword={handleResetPassword}
+                onBulkImport={handleBulkImport}
                 refreshTrigger={refreshTrigger}
               />
             </CardContent>
@@ -443,6 +455,13 @@ const UserManagementPage: React.FC = () => {
               </Button>
             </DialogActions>
           </Dialog>
+
+          {/* Bulk Import Dialog */}
+          <UserBulkImportDialog
+            open={bulkImportOpen}
+            onClose={() => setBulkImportOpen(false)}
+            onSuccess={handleBulkImportSuccess}
+          />
         </div>
       }
     />

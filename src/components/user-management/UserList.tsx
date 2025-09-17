@@ -55,6 +55,7 @@ import {
   Business as BusinessIcon,
   Work as WorkIcon,
   School as SchoolIcon,
+  Upload as UploadIcon,
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -69,6 +70,7 @@ interface UserListProps {
   onEditUser: (user: AdminUserDetailsDto) => void;
   onViewUser: (user: AdminUserDetailsDto) => void;
   onResetPassword: (user: AdminUserDetailsDto) => void;
+  onBulkImport: () => void;
   refreshTrigger?: number;
 }
 
@@ -81,6 +83,7 @@ const UserList: React.FC<UserListProps> = ({
   onEditUser,
   onViewUser,
   onResetPassword,
+  onBulkImport,
   refreshTrigger,
 }) => {
   const { t } = useTranslation();
@@ -305,7 +308,7 @@ const UserList: React.FC<UserListProps> = ({
         
         <Stack direction="row" spacing={1}>
           {selectedCount > 0 && (
-            <Chip 
+            <Chip
               label={`${selectedCount} ${t('userList.SELECTED')}`}
               onDelete={() => setFilters(prev => ({ ...prev, selectedUserIds: [] }))}
               color="primary"
@@ -319,6 +322,14 @@ const UserList: React.FC<UserListProps> = ({
             size="small"
           >
             {t('userList.CREATE_USER')}
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<UploadIcon />}
+            onClick={onBulkImport}
+            size="small"
+          >
+            {t('userList.BULK_IMPORT')}
           </Button>
           <IconButton onClick={() => loadUsers()} size="small">
             <RefreshIcon />
@@ -350,7 +361,10 @@ const UserList: React.FC<UserListProps> = ({
                 <InputLabel>{t('userList.USER_TYPE')}</InputLabel>
                 <Select
                   value={filters.userType || ''}
-                  onChange={(e) => handleFilterChange('userType', e.target.value || undefined)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    handleFilterChange('userType', value ? Number(value) : undefined);
+                  }}
                   label={t('userList.USER_TYPE')}
                   sx={{ minWidth: 150 }}
                 >

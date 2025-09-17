@@ -1,0 +1,6 @@
+username,email,password,firstName,lastName,userType,isActive
+john_doe,john.doe@example.com,SecurePass123!,John,Doe,3,true
+jane_smith,jane.smith@example.com,SecurePass456!,Jane,Smith,2,true
+bob_manager,bob.manager@example.com,SecurePass789!,Bob,Johnson,1,true
+alice_student,alice.student@example.com,SecurePass321!,Alice,Williams,3,true
+tom_worker,tom.worker@example.com,SecurePass654!,Tom,Brown,2,false
