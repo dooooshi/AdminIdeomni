@@ -382,11 +382,30 @@ export class AdminUserActivityService {
         sortOrder: params.sortOrder,
       });
 
-      const response = await apiClient.get<ApiResponse<PaginationResult<UserWithActivityDto>>>(
+      const response = await apiClient.get<ApiResponse<PaginationResult<any>>>(
         `${this.BASE_PATH}/search`,
         { params: queryParams }
       );
-      return response.data.data;
+
+      // Map the nested structure to flat structure
+      const mappedData = response.data.data.data.map((item: any) => ({
+        id: item.user.id,
+        username: item.user.username,
+        email: item.user.email,
+        firstName: item.user.firstName,
+        lastName: item.user.lastName,
+        userType: item.user.userType,
+        isActive: item.user.isActive,
+        createdAt: item.user.createdAt,
+        lastLoginAt: item.user.lastLoginAt,
+        currentActivity: item.currentActivity,
+        currentTeam: item.currentTeam
+      }));
+
+      return {
+        ...response.data.data,
+        data: mappedData
+      };
     } catch (error) {
       const processedError = ErrorHandler.processError(error, 'searchUsersWithActivityStatus');
       ErrorHandler.logError(processedError, 'AdminUserActivityService.searchUsersWithActivityStatus');

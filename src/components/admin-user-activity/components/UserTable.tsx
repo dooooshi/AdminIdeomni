@@ -138,8 +138,8 @@ const UserTable: React.FC<UserTableProps> = ({
                 </TableCell>
               </TableRow>
             ) : (
-              users?.data.map((userWithActivity) => (
-                <TableRow key={userWithActivity.id} hover>
+              users?.data.map((userWithActivity, index) => (
+                <TableRow key={`user-${userWithActivity.id || index}`} hover>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedUsers.includes(userWithActivity.id)}

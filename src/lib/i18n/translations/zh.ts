@@ -3018,6 +3018,11 @@ export const zhTranslations = {
   'userStats.THIS_MONTH': '本月',
   'userStats.USER_GROWTH': '用户增长',
   'userStats.PERCENTAGE_CHANGE': '变化',
+  'userStats.USER_LOAD_ERROR': '加载用户统计失败',
+  'userStats.NO_RESULTS': '暂无统计数据',
+
+  // User form additional translations
+  'USER_FORM_EDITING_INFO': '正在编辑用户: {{username}} ({{email}})',
 
   // Navigation items (global)
   ADMIN_MANAGEMENT: '管理员管理',

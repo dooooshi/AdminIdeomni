@@ -83,12 +83,16 @@ Bonus = 0.6 × X per facility
 
 #### Calculation Formula
 ```
-Final Population = Base_A × (1 + School_Bonus) × (1 + Hospital_Bonus) × (1 + Park_Bonus) × (1 + Cinema_Bonus)
+Final Population = Base_A × School_Multiplier × Hospital_Multiplier × Park_Multiplier × Cinema_Multiplier
+
+Where each type's multiplier is:
+Type_Multiplier = ∏(1 + bonus_i/100) for all facilities of that type
 ```
 
 #### Rules
 - Growth effects stack MULTIPLICATIVELY, not additively
-- Multiple facilities of same type both apply (e.g., two schools)
+- Multiple facilities of same type stack MULTIPLICATIVELY (e.g., two L2 schools = 1.20 × 1.20 = 1.44)
+- Different facility types also stack MULTIPLICATIVELY
 - Calculate percentage based on facility level and distance
 - Apply all multipliers to Base Population A from Step 2
 - Floor final result to integer
@@ -148,16 +152,17 @@ Population is **automatically recalculated** when:
 ### Example 1: Complete Calculation
 ```
 Initial: X = 1000
-First Calculation: 2 low-level neighbors, 1 high-level neighbor
+Step 1: 2 low-level neighbors, 1 high-level neighbor
   = 1000 - (2 × 100) + (1 × 100) = 900
-  
-Second Calculation: Has all infrastructure, 1 FARM, 1 Level 2 FACTORY
+
+Step 2: Has all infrastructure, 1 FARM, 1 Level 2 FACTORY
   FARM = 0.6 × 1000 = 600
   FACTORY = 2 × 1000 × 2^(2-1) = 2000 × 2 = 4000
   Base A = 900 + 600 + 4000 = 5500
-  
-Third Calculation: Level 2 SCHOOL on same tile (20% bonus)
-  Final = 5500 × 1.20 = 6600
+
+Step 3: Two Level 2 SCHOOLS on same tile (each 20% bonus)
+  School Multiplier = 1.20 × 1.20 = 1.44
+  Final = 5500 × 1.44 = 7920
 ```
 
 ### Example 2: Missing Infrastructure

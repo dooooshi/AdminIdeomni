@@ -132,7 +132,7 @@ const UserList: React.FC<UserListProps> = ({
       const data = await UserService.searchUsers(requestParams);
       setUserData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('USER_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('userList.USER_LOAD_ERROR'));
       setUserData(null);
     } finally {
       setLoading(false);
@@ -202,7 +202,7 @@ const UserList: React.FC<UserListProps> = ({
       setDeleteDialogOpen(false);
       setUserToDelete(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('USER_DELETE_ERROR'));
+      setError(err instanceof Error ? err.message : t('userList.USER_DELETE_ERROR'));
     } finally {
       setDeleting(false);
     }
@@ -290,11 +290,11 @@ const UserList: React.FC<UserListProps> = ({
       <Box display="flex" justifyContent="between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
         <Box>
           <Typography variant="h6" component="h2" sx={{ fontWeight: 600 }}>
-            {t('USERS')}
+            {t('userList.USERS')}
           </Typography>
           {totalCount > 0 && (
             <Typography variant="body2" color="text.secondary">
-              {t('SHOWING_RESULTS', { 
+              {t('userList.SHOWING_RESULTS', { 
                 start: page * pageSize + 1,
                 end: Math.min((page + 1) * pageSize, totalCount),
                 total: totalCount
@@ -306,7 +306,7 @@ const UserList: React.FC<UserListProps> = ({
         <Stack direction="row" spacing={1}>
           {selectedCount > 0 && (
             <Chip 
-              label={`${selectedCount} ${t('SELECTED')}`}
+              label={`${selectedCount} ${t('userList.SELECTED')}`}
               onDelete={() => setFilters(prev => ({ ...prev, selectedUserIds: [] }))}
               color="primary"
               size="small"
@@ -318,7 +318,7 @@ const UserList: React.FC<UserListProps> = ({
             onClick={onCreateUser}
             size="small"
           >
-            {t('CREATE_USER')}
+            {t('userList.CREATE_USER')}
           </Button>
           <IconButton onClick={() => loadUsers()} size="small">
             <RefreshIcon />
@@ -334,7 +334,7 @@ const UserList: React.FC<UserListProps> = ({
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
-                placeholder={t('SEARCH_PLACEHOLDER')}
+                placeholder={t('userList.SEARCH_PLACEHOLDER')}
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 InputProps={{
@@ -347,33 +347,33 @@ const UserList: React.FC<UserListProps> = ({
             {/* Quick Filters */}
             <Grid size={{ xs: 12, sm: 6, md: 2 }}>
               <FormControl fullWidth size="small">
-                <InputLabel>{t('USER_TYPE')}</InputLabel>
+                <InputLabel>{t('userList.USER_TYPE')}</InputLabel>
                 <Select
                   value={filters.userType || ''}
                   onChange={(e) => handleFilterChange('userType', e.target.value || undefined)}
-                  label={t('USER_TYPE')}
+                  label={t('userList.USER_TYPE')}
                   sx={{ minWidth: 150 }}
                 >
-                  <MenuItem value="">{t('ALL_TYPES')}</MenuItem>
-                  <MenuItem value={1}>{t('MANAGER')}</MenuItem>
-                  <MenuItem value={2}>{t('WORKER')}</MenuItem>
-                  <MenuItem value={3}>{t('STUDENT')}</MenuItem>
+                  <MenuItem value="">{t('userList.ALL_TYPES')}</MenuItem>
+                  <MenuItem value={1}>{t('userList.MANAGER')}</MenuItem>
+                  <MenuItem value={2}>{t('userList.WORKER')}</MenuItem>
+                  <MenuItem value={3}>{t('userList.STUDENT')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
 
             <Grid size={{ xs: 12, sm: 6, md: 1 }}>
               <FormControl fullWidth size="small">
-                <InputLabel>{t('STATUS')}</InputLabel>
+                <InputLabel>{t('userList.STATUS')}</InputLabel>
                 <Select
                   value={filters.isActive !== undefined ? filters.isActive.toString() : ''}
                   onChange={(e) => handleFilterChange('isActive', e.target.value === '' ? undefined : e.target.value === 'true')}
-                  label={t('STATUS')}
+                  label={t('userList.STATUS')}
                   sx={{ minWidth: 140 }}
                 >
-                  <MenuItem value="">{t('ALL_STATUSES')}</MenuItem>
-                  <MenuItem value="true">{t('ACTIVE')}</MenuItem>
-                  <MenuItem value="false">{t('INACTIVE')}</MenuItem>
+                  <MenuItem value="">{t('userList.ALL_STATUSES')}</MenuItem>
+                  <MenuItem value="true">{t('userList.ACTIVE')}</MenuItem>
+                  <MenuItem value="false">{t('userList.INACTIVE')}</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -386,14 +386,14 @@ const UserList: React.FC<UserListProps> = ({
                   onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   size="small"
                 >
-                  {t('ADVANCED_FILTERS')}
+                  {t('userList.ADVANCED_FILTERS')}
                 </Button>
                 <Button
                   onClick={clearFilters}
                   size="small"
                   color="secondary"
                 >
-                  {t('CLEAR_FILTERS')}
+                  {t('userList.CLEAR_FILTERS')}
                 </Button>
               </Stack>
             </Grid>
@@ -411,7 +411,7 @@ const UserList: React.FC<UserListProps> = ({
                       onChange={(e) => handleFilterChange('hasActivities', e.target.checked ? true : undefined)}
                     />
                   }
-                  label={t('HAS_ACTIVITIES')}
+                  label={t('userList.HAS_ACTIVITIES')}
                 />
               </Grid>
             </Grid>
@@ -438,7 +438,7 @@ const UserList: React.FC<UserListProps> = ({
                     direction={filters.sortBy === 'username' ? filters.sortOrder : 'asc'}
                     onClick={() => handleSortChange('username')}
                   >
-                    {t('USERNAME')}
+                    {t('userList.USERNAME')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
@@ -447,19 +447,19 @@ const UserList: React.FC<UserListProps> = ({
                     direction={filters.sortBy === 'email' ? filters.sortOrder : 'asc'}
                     onClick={() => handleSortChange('email')}
                   >
-                    {t('EMAIL')}
+                    {t('userList.EMAIL')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('FULL_NAME')}</TableCell>
-                <TableCell>{t('USER_TYPE')}</TableCell>
-                <TableCell>{t('STATUS')}</TableCell>
+                <TableCell>{t('userList.FULL_NAME')}</TableCell>
+                <TableCell>{t('userList.USER_TYPE')}</TableCell>
+                <TableCell>{t('userList.STATUS')}</TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={filters.sortBy === 'lastLoginAt'}
                     direction={filters.sortBy === 'lastLoginAt' ? filters.sortOrder : 'asc'}
                     onClick={() => handleSortChange('lastLoginAt')}
                   >
-                    {t('LAST_LOGIN')}
+                    {t('userList.LAST_LOGIN')}
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
@@ -468,10 +468,10 @@ const UserList: React.FC<UserListProps> = ({
                     direction={filters.sortBy === 'createdAt' ? filters.sortOrder : 'asc'}
                     onClick={() => handleSortChange('createdAt')}
                   >
-                    {t('CREATED_AT')}
+                    {t('userList.CREATED_AT')}
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>{t('ACTIONS')}</TableCell>
+                <TableCell>{t('userList.ACTIONS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -480,7 +480,7 @@ const UserList: React.FC<UserListProps> = ({
                   <TableCell colSpan={9} align="center">
                     <Box display="flex" justifyContent="center" alignItems="center" py={4}>
                       <CircularProgress size={24} sx={{ mr: 2 }} />
-                      {t('LOADING_USERS')}
+                      {t('userList.LOADING_USERS')}
                     </Box>
                   </TableCell>
                 </TableRow>
@@ -491,10 +491,10 @@ const UserList: React.FC<UserListProps> = ({
                   <TableCell colSpan={9} align="center">
                     <Box py={4}>
                       <Typography variant="body1" color="text.secondary">
-                        {t('NO_RESULTS')}
+                        {t('userList.NO_RESULTS')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {t('NO_RESULTS_MESSAGE')}
+                        {t('userList.NO_RESULTS_MESSAGE')}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -539,7 +539,7 @@ const UserList: React.FC<UserListProps> = ({
                   
                   <TableCell>
                     <Chip
-                      label={user.isActive ? t('ACTIVE') : t('INACTIVE')}
+                      label={user.isActive ? t('userList.ACTIVE') : t('userList.INACTIVE')}
                       color={getStatusColor(user.isActive) as any}
                       size="small"
                     />
@@ -547,7 +547,7 @@ const UserList: React.FC<UserListProps> = ({
                   
                   <TableCell>
                     <Typography variant="body2">
-                      {user.lastLoginAt ? formatDate(user.lastLoginAt) : t('NEVER')}
+                      {user.lastLoginAt ? formatDate(user.lastLoginAt) : t('userList.NEVER')}
                     </Typography>
                   </TableCell>
                   
@@ -559,22 +559,22 @@ const UserList: React.FC<UserListProps> = ({
                   
                   <TableCell>
                     <Stack direction="row" spacing={0.5}>
-                      <Tooltip title={t('VIEW_USER')}>
+                      <Tooltip title={t('userList.VIEW_USER')}>
                         <IconButton size="small" onClick={() => onViewUser(user)}>
                           <ViewIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('EDIT_USER')}>
+                      <Tooltip title={t('userList.EDIT_USER')}>
                         <IconButton size="small" onClick={() => onEditUser(user)}>
                           <EditIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('RESET_PASSWORD')}>
+                      <Tooltip title={t('userList.RESET_PASSWORD')}>
                         <IconButton size="small" onClick={() => onResetPassword(user)}>
                           <VpnKeyIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title={t('DELETE_USER')}>
+                      <Tooltip title={t('userList.DELETE_USER')}>
                         <IconButton size="small" onClick={() => handleDeleteClick(user)} color="error">
                           <DeleteIcon fontSize="small" />
                         </IconButton>
@@ -597,7 +597,7 @@ const UserList: React.FC<UserListProps> = ({
             rowsPerPage={pageSize}
             onRowsPerPageChange={handlePageSizeChange}
             rowsPerPageOptions={[10, 20, 50, 100]}
-            labelRowsPerPage={t('ROWS_PER_PAGE')}
+            labelRowsPerPage={t('userList.ROWS_PER_PAGE')}
             showFirstButton
             showLastButton
           />
@@ -606,12 +606,12 @@ const UserList: React.FC<UserListProps> = ({
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
-        <DialogTitle>{t('DELETE_USER_CONFIRM')}</DialogTitle>
+        <DialogTitle>{t('userList.DELETE_USER_CONFIRM')}</DialogTitle>
         <DialogContent>
           <Typography variant="body1" gutterBottom>
             {userToDelete && (
               <>
-                {t('DELETE_USER_WARNING')}
+                {t('userList.DELETE_USER_WARNING')}
                 <br />
                 <strong>{userToDelete.username} ({userToDelete.email})</strong>
               </>
@@ -619,7 +619,7 @@ const UserList: React.FC<UserListProps> = ({
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel}>{t('CANCEL')}</Button>
+          <Button onClick={handleDeleteCancel}>{t('userList.CANCEL')}</Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
@@ -627,7 +627,7 @@ const UserList: React.FC<UserListProps> = ({
             disabled={deleting}
             startIcon={deleting && <CircularProgress size={16} />}
           >
-            {deleting ? t('DELETING') : t('DELETE')}
+            {deleting ? t('userList.DELETING') : t('userList.DELETE')}
           </Button>
         </DialogActions>
       </Dialog>

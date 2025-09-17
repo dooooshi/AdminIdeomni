@@ -154,7 +154,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       setStatistics(statsData);
       setGrowthData(growthAnalytics);
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('USER_LOAD_ERROR'));
+      setError(err instanceof Error ? err.message : t('userStats.USER_LOAD_ERROR'));
       setStatistics(null);
       setGrowthData(null);
     } finally {
@@ -178,7 +178,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       <Box display="flex" justifyContent="center" alignItems="center" py={4}>
         <CircularProgress />
         <Typography variant="body2" sx={{ ml: 2 }}>
-          {t('LOADING')}
+          {t('userStats.LOADING')}
         </Typography>
       </Box>
     );
@@ -202,44 +202,44 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
   if (!statistics) {
     return (
       <Alert severity="info">
-        {t('NO_RESULTS')}
+        {t('userStats.NO_RESULTS')}
       </Alert>
     );
   }
 
   const statCards = [
     {
-      title: t('TOTAL_USERS'),
+      title: t('userStats.TOTAL_USERS'),
       value: statistics.totalUsers || 0,
       icon: <PeopleIcon />,
       color: 'primary' as const,
     },
     {
-      title: t('ACTIVE_USERS'),
+      title: t('userStats.ACTIVE_USERS'),
       value: statistics.activeUsers || 0,
       icon: <PersonAddIcon />,
       color: 'success' as const,
     },
     {
-      title: t('INACTIVE_USERS'),
+      title: t('userStats.INACTIVE_USERS'),
       value: statistics.inactiveUsers || 0,
       icon: <PeopleIcon />,
       color: 'warning' as const,
     },
     {
-      title: t('MANAGERS'),
+      title: t('userStats.MANAGERS'),
       value: statistics.byUserType?.managers || 0,
       icon: <BusinessIcon />,
       color: 'info' as const,
     },
     {
-      title: t('WORKERS'),
+      title: t('userStats.WORKERS'),
       value: statistics.byUserType?.workers || 0,
       icon: <WorkIcon />,
       color: 'secondary' as const,
     },
     {
-      title: t('STUDENTS'),
+      title: t('userStats.STUDENTS'),
       value: statistics.byUserType?.students || 0,
       icon: <SchoolIcon />,
       color: 'error' as const,
@@ -251,9 +251,9 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h6" component="h2" sx={{ fontWeight: 600 }}>
-          {t('USER_STATISTICS')}
+          {t('userStats.USER_STATISTICS')}
         </Typography>
-        <Tooltip title={t('REFRESH_DATA')}>
+        <Tooltip title={t('userStats.REFRESH_DATA')}>
           <IconButton onClick={handleRefresh} size="small">
             <RefreshIcon />
           </IconButton>
@@ -273,7 +273,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-            {t('RECENT_REGISTRATIONS')}
+            {t('userStats.RECENT_REGISTRATIONS')}
           </Typography>
           
           <Grid container spacing={3}>
@@ -290,7 +290,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
                   {statistics.recentRegistrations?.today || 0}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('TODAY')}
+                  {t('userStats.TODAY')}
                 </Typography>
               </Box>
             </Grid>
@@ -308,7 +308,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
                   {statistics.recentRegistrations?.thisWeek || 0}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('THIS_WEEK')}
+                  {t('userStats.THIS_WEEK')}
                 </Typography>
               </Box>
             </Grid>
@@ -326,7 +326,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
                   {statistics.recentRegistrations?.thisMonth || 0}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('THIS_MONTH')}
+                  {t('userStats.THIS_MONTH')}
                 </Typography>
               </Box>
             </Grid>
@@ -336,7 +336,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
           {growthData && (
             <Box mt={3}>
               <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
-                {t('USER_GROWTH')} ({growthData.period})
+                {t('userStats.USER_GROWTH')} ({growthData.period})
               </Typography>
               
               <Box display="flex" alignItems="center" gap={2}>
@@ -347,7 +347,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
                   size="small"
                 />
                 <Typography variant="body2" color="text.secondary">
-                  {t('PERCENTAGE_CHANGE')} vs previous period
+                  {t('userStats.PERCENTAGE_CHANGE')} vs previous period
                 </Typography>
               </Box>
             </Box>

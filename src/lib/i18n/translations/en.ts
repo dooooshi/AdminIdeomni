@@ -2516,7 +2516,12 @@ export const enTranslations = {
   'userStats.THIS_MONTH': 'This Month',
   'userStats.USER_GROWTH': 'User Growth',
   'userStats.PERCENTAGE_CHANGE': 'Change',
-  
+  'userStats.USER_LOAD_ERROR': 'Failed to load user statistics',
+  'userStats.NO_RESULTS': 'No statistics available',
+
+  // User form additional translations
+  'USER_FORM_EDITING_INFO': 'Editing user: {{username}} ({{email}})',
+
   // Common
   'common.ALL_STATUSES': 'All Statuses',
   
