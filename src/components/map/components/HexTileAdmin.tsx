@@ -44,6 +44,20 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
 				return t('map.TERRAIN_COASTAL');
+			case 'GRASSLANDS':
+				return t('map.TERRAIN_GRASSLANDS');
+			case 'FORESTS':
+				return t('map.TERRAIN_FORESTS');
+			case 'HILLS':
+				return t('map.TERRAIN_HILLS');
+			case 'MOUNTAINS':
+				return t('map.TERRAIN_MOUNTAINS');
+			case 'PLATEAUS':
+				return t('map.TERRAIN_PLATEAUS');
+			case 'DESERTS':
+				return t('map.TERRAIN_DESERTS');
+			case 'WETLANDS':
+				return t('map.TERRAIN_WETLANDS');
 			default:
 				return landType.toLowerCase();
 		}
@@ -52,12 +66,19 @@ const HexTileAdmin: React.FC<Omit<HexTileProps, 'allTiles' | 'hexSize'>> = ({
 	// Administrative color palette - more subtle for configuration
 	const getLandTypeColor = (landType: string, isHovered: boolean = false) => {
 		const isDark = theme.palette.mode === 'dark';
-		
+
 		// Admin-focused color palette with better contrast for configuration
 		const baseColors = {
 			MARINE: isDark ? '#1565C0' : '#1976D2', // Material Blue
-			PLAIN: isDark ? '#2E7D32' : '#388E3C',   // Material Green  
-			COASTAL: isDark ? '#F57C00' : '#FF9800'  // Material Orange
+			PLAIN: isDark ? '#2E7D32' : '#388E3C',   // Material Green
+			COASTAL: isDark ? '#F57C00' : '#FF9800',  // Material Orange
+			GRASSLANDS: isDark ? '#81C784' : '#66BB6A', // Vibrant green
+			FORESTS: isDark ? '#4CAF50' : '#388E3C', // Deep forest green
+			HILLS: isDark ? '#A1887F' : '#8D6E63', // Earthy brown
+			MOUNTAINS: isDark ? '#9E9E9E' : '#616161', // Stone grey
+			PLATEAUS: isDark ? '#8D6E63' : '#795548', // Mesa brown
+			DESERTS: isDark ? '#FFB74D' : '#FF9800', // Sandy orange
+			WETLANDS: isDark ? '#26C6DA' : '#00ACC1' // Aqua cyan
 		};
 
 		const color = baseColors[landType] || theme.palette.grey[isDark ? 600 : 400];

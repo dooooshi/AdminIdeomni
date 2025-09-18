@@ -187,13 +187,20 @@ const TeamLandStatusPage: React.FC<TeamLandStatusPageProps> = () => {
   };
 
   // Use the same color scheme as map components
-  const getLandTypeColor = (landType: 'PLAIN' | 'COASTAL' | 'MARINE'): string => {
+  const getLandTypeColor = (landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS'): string => {
     const isDark = theme.palette.mode === 'dark';
-    
+
     const baseColors = {
       MARINE: isDark ? '#1e3a8a' : '#3b82f6', // Deep ocean blue
-      PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green  
-      COASTAL: isDark ? '#ea580c' : '#f97316'  // Warm coastal orange
+      PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green
+      COASTAL: isDark ? '#ea580c' : '#f97316',  // Warm coastal orange
+      GRASSLANDS: isDark ? '#81C784' : '#66BB6A', // Vibrant green
+      FORESTS: isDark ? '#4CAF50' : '#388E3C', // Deep forest green
+      HILLS: isDark ? '#A1887F' : '#8D6E63', // Earthy brown
+      MOUNTAINS: isDark ? '#9E9E9E' : '#616161', // Stone grey
+      PLATEAUS: isDark ? '#8D6E63' : '#795548', // Mesa brown
+      DESERTS: isDark ? '#FFB74D' : '#FF9800', // Sandy orange
+      WETLANDS: isDark ? '#26C6DA' : '#00ACC1' // Aqua cyan
     };
 
     return baseColors[landType] || theme.palette.grey[isDark ? 700 : 300];

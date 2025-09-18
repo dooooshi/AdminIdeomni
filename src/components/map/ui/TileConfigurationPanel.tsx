@@ -186,7 +186,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
   }, [originalData]);
 
   // Handle land type change and apply defaults
-  const handleLandTypeChange = useCallback((newLandType: 'MARINE' | 'COASTAL' | 'PLAIN') => {
+  const handleLandTypeChange = useCallback((newLandType: 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS') => {
     const defaults = MapTemplateService.getDefaultConfiguration(newLandType);
     setFormData(prev => {
       const updated = {
@@ -206,10 +206,18 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
   // Get land type color
   const getLandTypeColor = (landType: string) => {
+    const isDark = theme.palette.mode === 'dark';
     const colors = {
       MARINE: theme.palette.info.main,
       COASTAL: theme.palette.warning.main,
       PLAIN: theme.palette.success.main,
+      GRASSLANDS: isDark ? '#81C784' : '#66BB6A',
+      FORESTS: isDark ? '#4CAF50' : '#388E3C',
+      HILLS: isDark ? '#A1887F' : '#8D6E63',
+      MOUNTAINS: isDark ? '#9E9E9E' : '#616161',
+      PLATEAUS: isDark ? '#8D6E63' : '#795548',
+      DESERTS: isDark ? '#FFB74D' : '#FF9800',
+      WETLANDS: isDark ? '#26C6DA' : '#00ACC1'
     };
     return colors[landType] || theme.palette.grey[500];
   };
@@ -291,48 +299,24 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             <InputLabel>{t('map.LAND_TYPE')}</InputLabel>
             <Select
               value={formData.landType || ''}
-              onChange={(e) => handleLandTypeChange(e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN')}
+              onChange={(e) => handleLandTypeChange(e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS')}
               label={t('map.LAND_TYPE')}
             >
-              <MenuItem value="MARINE">
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: getLandTypeColor('MARINE'),
-                    }}
-                  />
-                  {t('map.TERRAIN_MARINE')}
-                </Box>
-              </MenuItem>
-              <MenuItem value="COASTAL">
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: getLandTypeColor('COASTAL'),
-                    }}
-                  />
-                  {t('map.TERRAIN_COASTAL')}
-                </Box>
-              </MenuItem>
-              <MenuItem value="PLAIN">
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Box
-                    sx={{
-                      width: 12,
-                      height: 12,
-                      borderRadius: '50%',
-                      backgroundColor: getLandTypeColor('PLAIN'),
-                    }}
-                  />
-                  {t('map.TERRAIN_PLAIN')}
-                </Box>
-              </MenuItem>
+              {['MARINE', 'COASTAL', 'PLAIN', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'].map((landType) => (
+                <MenuItem key={landType} value={landType}>
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        backgroundColor: getLandTypeColor(landType),
+                      }}
+                    />
+                    {t(`map.TERRAIN_${landType}`)}
+                  </Box>
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 

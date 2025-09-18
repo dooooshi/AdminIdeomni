@@ -42,6 +42,13 @@ export enum LandType {
   MARINE = 'MARINE',
   COASTAL = 'COASTAL',
   PLAIN = 'PLAIN',
+  GRASSLANDS = 'GRASSLANDS',
+  FORESTS = 'FORESTS',
+  HILLS = 'HILLS',
+  MOUNTAINS = 'MOUNTAINS',
+  PLATEAUS = 'PLATEAUS',
+  DESERTS = 'DESERTS',
+  WETLANDS = 'WETLANDS',
 }
 
 export enum FacilityCategory {

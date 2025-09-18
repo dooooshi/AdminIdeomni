@@ -336,8 +336,8 @@ export class MapTemplateService {
    * NEW: Support for dual pricing system (gold + carbon)
    */
   static async updateTilesByLandType(
-    templateId: number, 
-    landType: 'MARINE' | 'COASTAL' | 'PLAIN',
+    templateId: number,
+    landType: 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS',
     updateData: BulkUpdateTilesByLandTypeDto
   ): Promise<MapTileBulkUpdateResponseDto> {
     const response = await apiClient.put<ApiResponse<MapTileBulkUpdateResponseDto>>(
@@ -463,7 +463,7 @@ export class MapTemplateService {
    * Get default land type configuration values
    * NEW: Updated for dual pricing system - all tiles start with zero pricing
    */
-  static getDefaultConfiguration(landType: 'MARINE' | 'COASTAL' | 'PLAIN') {
+  static getDefaultConfiguration(landType: 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS') {
     const defaults = {
       MARINE: {
         // NEW: Dual pricing system
@@ -485,6 +485,48 @@ export class MapTemplateService {
         initialCarbonPrice: 0.0,
         initialPopulation: 1000,
         transportationCostUnit: 3.00,
+      },
+      GRASSLANDS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 800,
+        transportationCostUnit: 3.50,
+      },
+      FORESTS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 300,
+        transportationCostUnit: 4.50,
+      },
+      HILLS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 400,
+        transportationCostUnit: 5.50,
+      },
+      MOUNTAINS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 100,
+        transportationCostUnit: 7.00,
+      },
+      PLATEAUS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 600,
+        transportationCostUnit: 4.00,
+      },
+      DESERTS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 50,
+        transportationCostUnit: 6.00,
+      },
+      WETLANDS: {
+        initialGoldPrice: 0.0,
+        initialCarbonPrice: 0.0,
+        initialPopulation: 200,
+        transportationCostUnit: 5.00,
       }
     };
     return defaults[landType];

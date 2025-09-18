@@ -44,8 +44,15 @@ const ColorSwatch = styled(Box, {
 	// Enhanced color palette matching the updated HexagonalMap design
 	const baseColors = {
 		MARINE: isDark ? '#1e3a8a' : '#3b82f6', // Deep ocean blue (refined)
-		PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green  
-		COASTAL: isDark ? '#ea580c' : '#f97316'  // Warm coastal orange
+		PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green
+		COASTAL: isDark ? '#ea580c' : '#f97316',  // Warm coastal orange
+		GRASSLANDS: isDark ? '#81C784' : '#66BB6A', // Vibrant green
+		FORESTS: isDark ? '#4CAF50' : '#388E3C', // Deep forest green
+		HILLS: isDark ? '#A1887F' : '#8D6E63', // Earthy brown
+		MOUNTAINS: isDark ? '#9E9E9E' : '#616161', // Stone grey
+		PLATEAUS: isDark ? '#8D6E63' : '#795548', // Mesa brown
+		DESERTS: isDark ? '#FFB74D' : '#FF9800', // Sandy orange
+		WETLANDS: isDark ? '#26C6DA' : '#00ACC1' // Aqua cyan
 	};
 	
 	const backgroundColor = baseColors[landType] || theme.palette.grey[isDark ? 700 : 300];
@@ -88,6 +95,41 @@ const MapLegend: React.FC = () => {
 			type: 'COASTAL',
 			label: t('map.COASTAL'),
 			description: t('map.COASTAL_DESCRIPTION')
+		},
+		{
+			type: 'GRASSLANDS',
+			label: t('map.GRASSLANDS'),
+			description: t('map.GRASSLANDS_DESCRIPTION')
+		},
+		{
+			type: 'FORESTS',
+			label: t('map.FORESTS'),
+			description: t('map.FORESTS_DESCRIPTION')
+		},
+		{
+			type: 'HILLS',
+			label: t('map.HILLS'),
+			description: t('map.HILLS_DESCRIPTION')
+		},
+		{
+			type: 'MOUNTAINS',
+			label: t('map.MOUNTAINS'),
+			description: t('map.MOUNTAINS_DESCRIPTION')
+		},
+		{
+			type: 'PLATEAUS',
+			label: t('map.PLATEAUS'),
+			description: t('map.PLATEAUS_DESCRIPTION')
+		},
+		{
+			type: 'DESERTS',
+			label: t('map.DESERTS'),
+			description: t('map.DESERTS_DESCRIPTION')
+		},
+		{
+			type: 'WETLANDS',
+			label: t('map.WETLANDS'),
+			description: t('map.WETLANDS_DESCRIPTION')
 		}
 	];
 

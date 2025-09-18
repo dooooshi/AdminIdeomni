@@ -484,10 +484,10 @@ const PurchaseWizard: React.FC<PurchaseWizardProps> = ({
                 {t('common.PREFERRED_LAND_TYPE_OPTIONAL')}
               </Typography>
               <Stack direction="row" spacing={1}>
-                {['PLAIN', 'COASTAL', 'MARINE'].map(landType => (
+                {['PLAIN', 'COASTAL', 'MARINE', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'].map(landType => (
                   <Chip
                     key={landType}
-                    label={LandService.formatLandType(landType as 'MARINE' | 'PLAIN' | 'COASTAL')}
+                    label={LandService.formatLandType(landType as 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS')}
                     onClick={() => setWizardData(prev => ({ 
                       ...prev, 
                       priorityLandType: prev.priorityLandType === landType ? null : landType 

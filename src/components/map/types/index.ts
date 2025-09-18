@@ -2,7 +2,7 @@ export interface MapTile {
 	id: number;
 	axialQ: number;
 	axialR: number;
-	landType: 'MARINE' | 'PLAIN' | 'COASTAL';
+	landType: 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 	isActive?: boolean;
 	// Template configuration data
 	initialGoldPrice?: number;
@@ -151,7 +151,7 @@ export interface GenerateMapTemplateDto {
 export interface CreateTileDto {
 	axialQ: number;
 	axialR: number;
-	landType: 'MARINE' | 'PLAIN' | 'COASTAL';
+	landType: 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 	templateId: number;
 	initialGoldPrice?: number;
 	initialCarbonPrice?: number;
@@ -160,7 +160,7 @@ export interface CreateTileDto {
 }
 
 export interface UpdateTileDto {
-	landType?: 'MARINE' | 'PLAIN' | 'COASTAL';
+	landType?: 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 	isActive?: boolean;
 	initialGoldPrice?: number;
 	initialCarbonPrice?: number;
@@ -279,7 +279,7 @@ export interface GetMapTemplatesQueryParams {
 
 export interface GetTilesQueryParams {
 	templateId?: number;
-	landType?: 'MARINE' | 'PLAIN' | 'COASTAL';
+	landType?: 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 	isActive?: boolean;
 	page?: number;
 	pageSize?: number;
@@ -288,7 +288,7 @@ export interface GetTilesQueryParams {
 export interface GetActivityTileStatesQueryParams {
 	activityId: string;
 	tileId?: number;
-	landType?: 'MARINE' | 'PLAIN' | 'COASTAL';
+	landType?: 'MARINE' | 'PLAIN' | 'COASTAL' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 	isModified?: boolean;
 	// NEW: Dual pricing search filters
 	minCurrentGoldPrice?: number;
@@ -330,7 +330,14 @@ export interface PaginatedResponse<T> {
 export enum LandType {
 	MARINE = 'MARINE',
 	COASTAL = 'COASTAL',
-	PLAIN = 'PLAIN'
+	PLAIN = 'PLAIN',
+	GRASSLANDS = 'GRASSLANDS',
+	FORESTS = 'FORESTS',
+	HILLS = 'HILLS',
+	MOUNTAINS = 'MOUNTAINS',
+	PLATEAUS = 'PLATEAUS',
+	DESERTS = 'DESERTS',
+	WETLANDS = 'WETLANDS'
 }
 
 // Facility Types

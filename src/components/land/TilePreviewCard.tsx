@@ -135,28 +135,70 @@ const TilePreviewCard: React.FC<TilePreviewCardProps> = ({
   const getLandTypeConfig = (landType: string) => {
     switch (landType) {
       case 'PLAIN':
-        return { 
-          color: 'success' as const, 
-          icon: <LocationIcon />, 
-          description: 'Balanced terrain with moderate pricing' 
+        return {
+          color: 'success' as const,
+          icon: <LocationIcon />,
+          description: 'Balanced terrain with moderate pricing'
         };
       case 'COASTAL':
-        return { 
-          color: 'info' as const, 
-          icon: <LocationIcon />, 
-          description: 'Premium coastal location with strategic value' 
+        return {
+          color: 'info' as const,
+          icon: <LocationIcon />,
+          description: 'Premium coastal location with strategic value'
         };
       case 'MARINE':
-        return { 
-          color: 'primary' as const, 
-          icon: <LocationIcon />, 
-          description: 'High-value marine territory with unique benefits' 
+        return {
+          color: 'primary' as const,
+          icon: <LocationIcon />,
+          description: 'High-value marine territory with unique benefits'
+        };
+      case 'GRASSLANDS':
+        return {
+          color: 'success' as const,
+          icon: <LocationIcon />,
+          description: 'Fertile grasslands ideal for agriculture'
+        };
+      case 'FORESTS':
+        return {
+          color: 'success' as const,
+          icon: <LocationIcon />,
+          description: 'Dense forests rich in natural resources'
+        };
+      case 'HILLS':
+        return {
+          color: 'warning' as const,
+          icon: <LocationIcon />,
+          description: 'Rolling hills with mining potential'
+        };
+      case 'MOUNTAINS':
+        return {
+          color: 'default' as const,
+          icon: <LocationIcon />,
+          description: 'Mountainous terrain with mineral deposits'
+        };
+      case 'PLATEAUS':
+        return {
+          color: 'warning' as const,
+          icon: <LocationIcon />,
+          description: 'Elevated plateaus with strategic advantages'
+        };
+      case 'DESERTS':
+        return {
+          color: 'warning' as const,
+          icon: <LocationIcon />,
+          description: 'Arid desert with unique resources'
+        };
+      case 'WETLANDS':
+        return {
+          color: 'info' as const,
+          icon: <LocationIcon />,
+          description: 'Wetlands supporting diverse ecosystems'
         };
       default:
-        return { 
-          color: 'default' as const, 
-          icon: <LocationIcon />, 
-          description: 'Unknown terrain type' 
+        return {
+          color: 'default' as const,
+          icon: <LocationIcon />,
+          description: 'Unknown terrain type'
         };
     }
   };

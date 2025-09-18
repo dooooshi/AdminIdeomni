@@ -55,7 +55,7 @@ interface AdvancedTileConfigurationPanelProps {
 }
 
 interface LandTypeBatchUpdate {
-  landType: 'MARINE' | 'COASTAL' | 'PLAIN';
+  landType: 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   fixedPrice?: number;
   fixedPopulation?: number;
   fixedTransportationCost?: number;
@@ -74,7 +74,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
   // State management
   const [batchUpdateDialogOpen, setBatchUpdateDialogOpen] = useState(false);
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
-  const [selectedLandType, setSelectedLandType] = useState<'MARINE' | 'COASTAL' | 'PLAIN'>('COASTAL');
+  const [selectedLandType, setSelectedLandType] = useState<'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS'>('COASTAL');
   const [processing, setProcessing] = useState(false);
   const [lastOperationResult, setLastOperationResult] = useState<{
     success: boolean;
@@ -167,10 +167,18 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
 
   // Get land type color
   const getLandTypeColor = (landType: string) => {
+    const isDark = theme.palette.mode === 'dark';
     const colors = {
       MARINE: theme.palette.info.main,
       COASTAL: theme.palette.warning.main,
       PLAIN: theme.palette.success.main,
+      GRASSLANDS: isDark ? '#81C784' : '#66BB6A',
+      FORESTS: isDark ? '#4CAF50' : '#388E3C',
+      HILLS: isDark ? '#A1887F' : '#8D6E63',
+      MOUNTAINS: isDark ? '#9E9E9E' : '#616161',
+      PLATEAUS: isDark ? '#8D6E63' : '#795548',
+      DESERTS: isDark ? '#FFB74D' : '#FF9800',
+      WETLANDS: isDark ? '#26C6DA' : '#00ACC1'
     };
     return colors[landType] || theme.palette.grey[500];
   };
@@ -205,7 +213,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
         />
         <CardContent>
           <Grid container spacing={2}>
-            {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => {
+            {(['MARINE', 'COASTAL', 'PLAIN', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'] as const).map((landType) => {
               const stats = getLandTypeStats(landType);
               return (
                 <Grid key={landType} size={{ xs: 12, md: 4 }}>
@@ -304,12 +312,12 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 value={batchData.landType}
                 onChange={(e) => setBatchData(prev => ({ 
                   ...prev, 
-                  landType: e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN' 
+                  landType: e.target.value as 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS' 
                 }))}
                 label={t('map.LAND_TYPE')}
                 disabled={processing}
               >
-                {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => (
+                {(['MARINE', 'COASTAL', 'PLAIN', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'] as const).map((landType) => (
                   <MenuItem key={landType} value={landType}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <Box

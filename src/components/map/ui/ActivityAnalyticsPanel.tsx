@@ -130,6 +130,13 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
       case 'MARINE': return '#2196f3';
       case 'COASTAL': return '#4caf50';
       case 'PLAIN': return '#ff9800';
+      case 'GRASSLANDS': return '#66BB6A';
+      case 'FORESTS': return '#388E3C';
+      case 'HILLS': return '#8D6E63';
+      case 'MOUNTAINS': return '#616161';
+      case 'PLATEAUS': return '#795548';
+      case 'DESERTS': return '#FF9800';
+      case 'WETLANDS': return '#00ACC1';
       default: return '#9e9e9e';
     }
   };
@@ -174,6 +181,13 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                   <MenuItem value="MARINE">{t('MARINE')}</MenuItem>
                   <MenuItem value="COASTAL">{t('COASTAL')}</MenuItem>
                   <MenuItem value="PLAIN">{t('PLAIN')}</MenuItem>
+                  <MenuItem value="GRASSLANDS">{t('GRASSLANDS')}</MenuItem>
+                  <MenuItem value="FORESTS">{t('FORESTS')}</MenuItem>
+                  <MenuItem value="HILLS">{t('HILLS')}</MenuItem>
+                  <MenuItem value="MOUNTAINS">{t('MOUNTAINS')}</MenuItem>
+                  <MenuItem value="PLATEAUS">{t('PLATEAUS')}</MenuItem>
+                  <MenuItem value="DESERTS">{t('DESERTS')}</MenuItem>
+                  <MenuItem value="WETLANDS">{t('WETLANDS')}</MenuItem>
                 </Select>
               </FormControl>
               

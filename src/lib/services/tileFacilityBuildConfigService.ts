@@ -432,6 +432,41 @@ export class TileFacilityBuildConfigService {
         goldMultiplier: 1.2, // Higher gold cost due to land value
         carbonMultiplier: 0.8, // Lower carbon cost due to better access
         isAllowed: true // All facilities allowed
+      },
+      [LandType.GRASSLANDS]: {
+        goldMultiplier: 1.1, // Moderate cost for grasslands
+        carbonMultiplier: 0.9,
+        isAllowed: true // Good for farming and ranching
+      },
+      [LandType.FORESTS]: {
+        goldMultiplier: 0.9, // Lower cost in forests
+        carbonMultiplier: 1.1,
+        isAllowed: facilityType !== FacilityType.FISHERY // All except fisheries
+      },
+      [LandType.HILLS]: {
+        goldMultiplier: 1.3, // Higher cost due to terrain
+        carbonMultiplier: 1.2,
+        isAllowed: facilityType !== FacilityType.FISHERY // Good for mining
+      },
+      [LandType.MOUNTAINS]: {
+        goldMultiplier: 1.5, // High cost due to difficult terrain
+        carbonMultiplier: 1.4,
+        isAllowed: [FacilityType.MINE, FacilityType.QUARRY, FacilityType.POWER_PLANT].includes(facilityType)
+      },
+      [LandType.PLATEAUS]: {
+        goldMultiplier: 1.2, // Moderate-high cost
+        carbonMultiplier: 1.0,
+        isAllowed: facilityType !== FacilityType.FISHERY
+      },
+      [LandType.DESERTS]: {
+        goldMultiplier: 0.7, // Lower land value
+        carbonMultiplier: 1.5, // Higher transport costs
+        isAllowed: [FacilityType.MINE, FacilityType.QUARRY, FacilityType.POWER_PLANT].includes(facilityType)
+      },
+      [LandType.WETLANDS]: {
+        goldMultiplier: 0.9, // Lower development cost
+        carbonMultiplier: 1.3, // Environmental considerations
+        isAllowed: [FacilityType.FISHERY, FacilityType.FARM, FacilityType.PARK].includes(facilityType)
       }
     };
 

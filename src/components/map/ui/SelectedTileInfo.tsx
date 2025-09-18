@@ -18,6 +18,20 @@ function SelectedTileInfo({ selectedTile }: SelectedTileInfoProps) {
 				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
 				return t('map.TERRAIN_COASTAL');
+			case 'GRASSLANDS':
+				return t('map.TERRAIN_GRASSLANDS');
+			case 'FORESTS':
+				return t('map.TERRAIN_FORESTS');
+			case 'HILLS':
+				return t('map.TERRAIN_HILLS');
+			case 'MOUNTAINS':
+				return t('map.TERRAIN_MOUNTAINS');
+			case 'PLATEAUS':
+				return t('map.TERRAIN_PLATEAUS');
+			case 'DESERTS':
+				return t('map.TERRAIN_DESERTS');
+			case 'WETLANDS':
+				return t('map.TERRAIN_WETLANDS');
 			default:
 				return landType.toLowerCase();
 		}

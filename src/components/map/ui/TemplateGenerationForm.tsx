@@ -478,7 +478,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                       {t('map.CUSTOM_LAND_TYPE_CONFIGURATION')}
                     </Typography>
                     
-                    {(['MARINE', 'COASTAL', 'PLAIN'] as const).map((landType) => (
+                    {(['MARINE', 'COASTAL', 'PLAIN', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'] as const).map((landType) => (
                       <Paper key={landType} variant="outlined" sx={{ p: 2 }}>
                         <Typography variant="subtitle2" gutterBottom>
                           <Box display="flex" alignItems="center" gap={1}>

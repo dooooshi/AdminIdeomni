@@ -149,6 +149,20 @@ const ActivityTileStateManagementPage: React.FC = () => {
               return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.0 };
             case 'PLAIN':
               return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 2.5 };
+            case 'GRASSLANDS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 3.5 };
+            case 'FORESTS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 4.5 };
+            case 'HILLS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.5 };
+            case 'MOUNTAINS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 7.0 };
+            case 'PLATEAUS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 4.0 };
+            case 'DESERTS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 6.0 };
+            case 'WETLANDS':
+              return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.0 };
             default:
               return { initialPrice: 500, initialPopulation: 500, transportationCostUnit: 5.0 };
           }

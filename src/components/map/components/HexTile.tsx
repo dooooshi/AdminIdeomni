@@ -35,6 +35,20 @@ const HexTile: React.FC<HexTileProps> = ({
 				return t('map.TERRAIN_PLAIN');
 			case 'COASTAL':
 				return t('map.TERRAIN_COASTAL');
+			case 'GRASSLANDS':
+				return t('map.TERRAIN_GRASSLANDS');
+			case 'FORESTS':
+				return t('map.TERRAIN_FORESTS');
+			case 'HILLS':
+				return t('map.TERRAIN_HILLS');
+			case 'MOUNTAINS':
+				return t('map.TERRAIN_MOUNTAINS');
+			case 'PLATEAUS':
+				return t('map.TERRAIN_PLATEAUS');
+			case 'DESERTS':
+				return t('map.TERRAIN_DESERTS');
+			case 'WETLANDS':
+				return t('map.TERRAIN_WETLANDS');
 			default:
 				return landType.toLowerCase();
 		}
@@ -43,12 +57,19 @@ const HexTile: React.FC<HexTileProps> = ({
 	// Enhanced color palette matching project's sophisticated design system
 	const getLandTypeColor = (landType: string, isHovered: boolean = false) => {
 		const isDark = theme.palette.mode === 'dark';
-		
+
 		// Refined color palette using project's design tokens
 		const baseColors = {
 			MARINE: isDark ? '#1e3a8a' : '#3b82f6', // Deep ocean blue (refined)
-			PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green  
-			COASTAL: isDark ? '#ea580c' : '#f97316'  // Warm coastal orange
+			PLAIN: isDark ? '#166534' : '#22c55e',   // Natural emerald green
+			COASTAL: isDark ? '#ea580c' : '#f97316',  // Warm coastal orange
+			GRASSLANDS: isDark ? '#81C784' : '#66BB6A', // Vibrant green
+			FORESTS: isDark ? '#4CAF50' : '#388E3C', // Deep forest green
+			HILLS: isDark ? '#A1887F' : '#8D6E63', // Earthy brown
+			MOUNTAINS: isDark ? '#9E9E9E' : '#616161', // Stone grey
+			PLATEAUS: isDark ? '#8D6E63' : '#795548', // Mesa brown
+			DESERTS: isDark ? '#FFB74D' : '#FF9800', // Sandy orange
+			WETLANDS: isDark ? '#26C6DA' : '#00ACC1' // Aqua cyan
 		};
 
 		const color = baseColors[landType] || theme.palette.grey[isDark ? 700 : 300];

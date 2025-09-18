@@ -324,6 +324,20 @@ const LandTypeAnimations: React.FC<LandTypeAnimationsProps> = ({
       return renderCoastalAnimations();
     case 'PLAIN':
       return renderPlainAnimations();
+    case 'GRASSLANDS':
+      return renderPlainAnimations(); // Use plain animations for grasslands
+    case 'FORESTS':
+      return renderPlainAnimations(); // Use plain animations for forests temporarily
+    case 'HILLS':
+      return renderCoastalAnimations(); // Use coastal animations for hills temporarily
+    case 'MOUNTAINS':
+      return null; // No animations for mountains yet
+    case 'PLATEAUS':
+      return null; // No animations for plateaus yet
+    case 'DESERTS':
+      return null; // No animations for deserts yet
+    case 'WETLANDS':
+      return renderMarineAnimations(); // Use marine animations for wetlands
     default:
       return null;
   }

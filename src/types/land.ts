@@ -25,7 +25,7 @@ export interface TileInfo {
   id: number;
   axialQ: number;
   axialR: number;
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   initialGoldPrice?: number;
   initialCarbonPrice?: number;
   initialPopulation?: number;
@@ -56,7 +56,7 @@ export interface AvailableTile {
   tileId: number;
   axialQ: number;
   axialR: number;
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   currentGoldPrice: number;
   currentCarbonPrice: number;
   currentPopulation?: number; // Optional as it may be null from API
@@ -70,7 +70,7 @@ export interface OwnedTileForBuilding {
   tileId: number;
   axialQ: number;
   axialR: number;
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   teamOwnedArea: number;
   usedArea: number;
   availableArea: number;
@@ -162,7 +162,7 @@ export interface FacilityInstance {
 export interface TileLandStatus {
   tileId: number;
   coordinates: { q: number; r: number };
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   ownedArea: number;
   facilities: FacilityInstance[];
 }
@@ -215,7 +215,7 @@ export interface RecentPurchase {
   teamName: string;
   tileId: number;
   tileCoordinates: string;
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   area: number;
   goldCost: number;
   carbonCost: number;
@@ -228,7 +228,7 @@ export interface ManagerTileOwnership {
   tileId: number;
   axialQ: number;
   axialR: number;
-  landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   currentGoldPrice: number;
   currentCarbonPrice: number;
   currentPopulation: number;
@@ -242,7 +242,7 @@ export interface ManagerTileOwnershipQuery {
   page?: number;
   pageSize?: number;
   tileId?: number;
-  landType?: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType?: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 }
 
 export interface LandPurchaseAnalytics {
@@ -260,7 +260,7 @@ export interface LandPurchaseAnalytics {
     total: number;
   };
   purchasesByLandType: {
-    landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+    landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
     purchases: number;
     area: number;
     revenue: number;
@@ -269,7 +269,7 @@ export interface LandPurchaseAnalytics {
     tileId: number;
     axialQ: number;
     axialR: number;
-    landType: 'PLAIN' | 'COASTAL' | 'MARINE';
+    landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
     totalRevenue: number;
     totalArea: number;
     purchases: number;
@@ -304,8 +304,8 @@ export interface LandStatusSummary {
   utilizationRate: number;
   totalRevenue: number;
   averageRevenuePerTile: number;
-  mostPopularLandType: 'PLAIN' | 'COASTAL' | 'MARINE';
-  leastPopularLandType: 'PLAIN' | 'COASTAL' | 'MARINE';
+  mostPopularLandType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
+  leastPopularLandType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
 }
 
 // UI Component Types
@@ -365,7 +365,7 @@ export interface LandTileState extends AvailableTile {
 }
 
 export interface LandMapFilters {
-  landType?: 'PLAIN' | 'COASTAL' | 'MARINE';
+  landType?: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS';
   minPrice?: number;
   maxPrice?: number;
   minAvailableArea?: number;

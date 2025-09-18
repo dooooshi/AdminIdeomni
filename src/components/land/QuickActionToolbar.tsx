@@ -133,6 +133,20 @@ const QuickActionToolbar: React.FC<QuickActionToolbarProps> = ({
         return 'info';
       case 'MARINE':
         return 'primary';
+      case 'GRASSLANDS':
+        return 'success';
+      case 'FORESTS':
+        return 'success';
+      case 'HILLS':
+        return 'warning';
+      case 'MOUNTAINS':
+        return 'default';
+      case 'PLATEAUS':
+        return 'warning';
+      case 'DESERTS':
+        return 'warning';
+      case 'WETLANDS':
+        return 'info';
       default:
         return 'default';
     }

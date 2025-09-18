@@ -394,7 +394,7 @@ export class LandService {
   /**
    * Format land type for display
    */
-  static formatLandType(landType: 'PLAIN' | 'COASTAL' | 'MARINE'): string {
+  static formatLandType(landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS'): string {
     switch (landType) {
       case 'PLAIN':
         return 'Plain';
@@ -402,6 +402,20 @@ export class LandService {
         return 'Coastal';
       case 'MARINE':
         return 'Marine';
+      case 'GRASSLANDS':
+        return 'Grasslands';
+      case 'FORESTS':
+        return 'Forests';
+      case 'HILLS':
+        return 'Hills';
+      case 'MOUNTAINS':
+        return 'Mountains';
+      case 'PLATEAUS':
+        return 'Plateaus';
+      case 'DESERTS':
+        return 'Deserts';
+      case 'WETLANDS':
+        return 'Wetlands';
       default:
         return 'Unknown';
     }
@@ -417,7 +431,7 @@ export class LandService {
   /**
    * Get land type color for UI display
    */
-  static getLandTypeColor(landType: 'PLAIN' | 'COASTAL' | 'MARINE'): string {
+  static getLandTypeColor(landType: 'PLAIN' | 'COASTAL' | 'MARINE' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS', isDarkMode: boolean = false): string {
     switch (landType) {
       case 'PLAIN':
         return '#4CAF50'; // Green
@@ -425,6 +439,20 @@ export class LandService {
         return '#2196F3'; // Blue
       case 'MARINE':
         return '#1976D2'; // Dark Blue
+      case 'GRASSLANDS':
+        return isDarkMode ? '#81C784' : '#66BB6A'; // Vibrant green
+      case 'FORESTS':
+        return isDarkMode ? '#4CAF50' : '#388E3C'; // Deep forest green
+      case 'HILLS':
+        return isDarkMode ? '#A1887F' : '#8D6E63'; // Earthy brown
+      case 'MOUNTAINS':
+        return isDarkMode ? '#9E9E9E' : '#616161'; // Stone grey
+      case 'PLATEAUS':
+        return isDarkMode ? '#8D6E63' : '#795548'; // Mesa brown
+      case 'DESERTS':
+        return isDarkMode ? '#FFB74D' : '#FF9800'; // Sandy orange
+      case 'WETLANDS':
+        return isDarkMode ? '#26C6DA' : '#00ACC1'; // Aqua cyan
       default:
         return '#9E9E9E'; // Grey
     }
