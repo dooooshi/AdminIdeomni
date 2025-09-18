@@ -155,14 +155,14 @@ const HexTile: React.FC<HexTileProps> = ({
 	// Purchase indicator icon overlay
 	const renderPurchaseIndicator = () => {
 		if (!tile.canPurchase && !tile.isOwned) return null;
-		
+
 		const iconSize = 12;
 		const iconX = position.x + 15;
 		const iconY = position.y - 8;
-		
-		
+
+
 		if (tile.isOwned) {
-			// Checkmark for owned tiles  
+			// Checkmark for owned tiles
 			return (
 				<g transform={`translate(${iconX}, ${iconY})`}>
 					<circle
@@ -186,8 +186,51 @@ const HexTile: React.FC<HexTileProps> = ({
 				</g>
 			);
 		}
-		
+
 		return null;
+	};
+
+	// Land type icon renderer
+	const renderLandTypeIcon = () => {
+		const isDark = theme.palette.mode === 'dark';
+
+		// Map land types to icons
+		const landTypeIcons: Record<string, string> = {
+			MARINE: '🌊',
+			PLAIN: '🌾',
+			COASTAL: '🏖️',
+			GRASSLANDS: '🌱',
+			FORESTS: '🌲',
+			HILLS: '⛰️',
+			MOUNTAINS: '🏔️',
+			PLATEAUS: '🗻',
+			DESERTS: '🏜️',
+			WETLANDS: '🌿'
+		};
+
+		const icon = landTypeIcons[tile.landType];
+		if (!icon) return null;
+
+		// Position icon in the center of the hex
+		const fontSize = 14;
+		const iconColor = isDark ? alpha(theme.palette.common.white, 0.7) : alpha(theme.palette.common.black, 0.6);
+
+		return (
+			<text
+				x={position.x}
+				y={position.y + fontSize / 3}
+				textAnchor="middle"
+				fontSize={fontSize}
+				fill={iconColor}
+				style={{
+					pointerEvents: 'none',
+					userSelect: 'none',
+					filter: !tile.isActive ? 'grayscale(0.5)' : 'none'
+				}}
+			>
+				{icon}
+			</text>
+		);
 	};
 
 	// State for controlling tooltip
@@ -578,7 +621,7 @@ const HexTile: React.FC<HexTileProps> = ({
 					stroke={getPurchaseStrokeColor(isHovered, isSelected)}
 					strokeWidth={isSelected ? 3 : isHovered ? 2 : (tile.canPurchase ? 1.5 : 0.5)}
 					style={{
-						cursor: onTileClick ? 'pointer' : 'default',
+						cursor: onTileClick && tile.landType !== 'MARINE' ? 'pointer' : 'default',
 						transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
 						transformOrigin: `${position.x}px ${position.y}px`,
 						transform: isSelected ? 'scale(1.08)' : isHovered ? 'scale(1.05)' : 'scale(1)',
@@ -599,8 +642,11 @@ const HexTile: React.FC<HexTileProps> = ({
 					}}
 					onMouseMove={(e) => onTileHover?.(tile, e)}
 					onClick={() => {
-						// Always trigger tile click - the parent component handles purchase logic
-						onTileClick?.(tile);
+						// Prevent clicking on MARINE tiles
+						if (tile.landType !== 'MARINE') {
+							// Always trigger tile click - the parent component handles purchase logic
+							onTileClick?.(tile);
+						}
 					}}
 					onContextMenu={(e) => {
 						e.preventDefault();
@@ -617,7 +663,10 @@ const HexTile: React.FC<HexTileProps> = ({
 						hexSize={hexSize}
 					/>
 				)}
-				
+
+				{/* Land type icon in center of tile */}
+				{renderLandTypeIcon()}
+
 				{renderPurchaseIndicator()}
 			</g>
 		</Tooltip>

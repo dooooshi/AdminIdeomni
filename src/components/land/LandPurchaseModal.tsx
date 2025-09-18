@@ -103,7 +103,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
 
   const generateDefaultDescription = () => {
     if (!tile) return;
-    setDescription(t('PURCHASE_AREA_ON_TILE', {
+    setDescription(t('land.PURCHASE_AREA_ON_TILE_FORMATTED', {
       amount: area,
       landType: LandService.formatLandType(tile.landType),
       tileId: tile.tileId
@@ -192,7 +192,11 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
     
     // Update description with new area
     if (tile) {
-      setDescription(`Purchase ${integerArea} units on ${LandService.formatLandType(tile.landType)} tile ${tile.tileId}`);
+      setDescription(t('land.PURCHASE_AREA_ON_TILE_FORMATTED', {
+        amount: integerArea,
+        landType: LandService.formatLandType(tile.landType),
+        tileId: tile.tileId
+      }));
     }
   };
 
@@ -256,10 +260,10 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
           {/* Area Selection */}
           <Box>
             <Typography variant="body2" color="text.secondary" mb={1.5} sx={{ fontSize: '13px' }}>
-              Area
+              {t('land.AREA')}
             </Typography>
             <Typography variant="h6" fontWeight={300} mb={2} sx={{ fontSize: '24px' }}>
-              {area} {area === 1 ? 'unit' : 'units'}
+              {area} {area === 1 ? t('land.UNIT') : t('land.UNITS')}
             </Typography>
             <Slider
               value={area}
@@ -292,7 +296,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
             <Box display="flex" alignItems="center" py={2}>
               <CircularProgress size={16} sx={{ mr: 1.5, color: 'text.secondary' }} />
               <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
-                {pendingValidation ? 'Waiting...' : 'Calculating...'}
+                {pendingValidation ? t('land.WAITING') : t('land.CALCULATING')}
               </Typography>
             </Box>
           ) : validation && (
@@ -333,12 +337,12 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
 
           {/* Description */}
           <TextField
-            label="Description"
+            label={t('land.DESCRIPTION')}
             multiline
             rows={2}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description..."
+            placeholder={t('land.OPTIONAL_DESCRIPTION_PLACEHOLDER')}
             disabled={purchasing}
             sx={{ 
               '& .MuiOutlinedInput-root': { 
@@ -376,7 +380,7 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 }
               }}
             >
-              Cancel
+              {t('land.CANCEL')}
             </Button>
             <Button
               variant="contained"

@@ -365,10 +365,10 @@ const TeamLandStatusPage: React.FC<TeamLandStatusPageProps> = () => {
               >
                 {t('landManagement.TILE')} #{tile.tileId}
               </Typography>
-              <Chip 
+              <Chip
                 label={t(`map.LAND_TYPE_${tile.landType}`)}
                 size="small"
-                sx={{ 
+                sx={{
                   bgcolor: alpha(getLandTypeColor(tile.landType), 0.15),
                   color: getLandTypeColor(tile.landType),
                   fontWeight: 500,
@@ -483,8 +483,8 @@ const TeamLandStatusPage: React.FC<TeamLandStatusPageProps> = () => {
                       >
                         {formatFacilityType(facility.facilityType)}
                       </Typography>
-                      <Chip 
-                        label={`Lvl ${facility.level}`}
+                      <Chip
+                        label={`${t('landManagement.LEVEL')} ${facility.level}`}
                         size="small"
                         sx={{ 
                           height: 20,
