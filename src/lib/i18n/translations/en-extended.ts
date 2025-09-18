@@ -449,4 +449,107 @@ export const enExtendedTranslations = {
   'progress.FAILED': 'Failed',
   'progress.CANCELLED': 'Cancelled',
   'progress.PERCENTAGE': '{{percent}}% complete',
+
+  // Manager Product Formula
+  'managerProductFormula.title': 'Manager Product Formulas',
+  'managerProductFormula.subtitle': 'Manage and configure product formulas for your activity',
+  'managerProductFormula.managerRoleRequired': 'Manager role is required to access this page',
+
+  // List view
+  'managerProductFormula.createFormula': 'Create Formula',
+  'managerProductFormula.searchPlaceholder': 'Search by product name or formula number',
+  'managerProductFormula.formulaNumber': 'Formula #',
+  'managerProductFormula.productName': 'Product Name',
+  'managerProductFormula.productDescription': 'Product Description',
+  'managerProductFormula.materials': 'Materials',
+  'managerProductFormula.craftCategories': 'Craft Categories',
+  'managerProductFormula.totalCost': 'Total Cost',
+  'managerProductFormula.status': 'Status',
+  'managerProductFormula.mtoUsage': 'MTO Usage',
+  'managerProductFormula.noFormulas': 'No formulas found',
+  'managerProductFormula.locked': 'Locked',
+  'managerProductFormula.active': 'Active',
+  'managerProductFormula.notUsed': 'Not Used',
+  'managerProductFormula.clone': 'Clone',
+
+  // Create/Edit modal
+  'managerProductFormula.createNewFormula': 'Create New Formula',
+  'managerProductFormula.editFormula': 'Edit Formula',
+  'managerProductFormula.productNameHelper': 'Enter a unique name for your product (max 200 characters)',
+  'managerProductFormula.productDescriptionHelper': 'Optional description for your product (max 500 characters)',
+  'managerProductFormula.lockedWarning': 'This formula is locked because it is being used in active MTO requirements. Changes are not allowed.',
+
+  // Material selector
+  'managerProductFormula.addMaterials': 'Add Materials',
+  'managerProductFormula.noMaterialsAdded': 'No materials added yet',
+  'managerProductFormula.selectMaterials': 'Select Materials',
+  'managerProductFormula.searchMaterials': 'Search materials by name or number',
+  'managerProductFormula.materialNumber': 'Material #',
+  'managerProductFormula.materialName': 'Material Name',
+  'managerProductFormula.origin': 'Origin',
+  'managerProductFormula.quantity': 'Quantity',
+  'managerProductFormula.unitCost': 'Unit Cost',
+  'managerProductFormula.alreadyAdded': 'Already Added',
+  'managerProductFormula.addSelected': 'Add Selected',
+
+  // Craft category selector
+  'managerProductFormula.addCraftCategories': 'Add Craft Categories',
+  'managerProductFormula.noCategoriesAdded': 'No craft categories added yet',
+  'managerProductFormula.noCraftCategoriesAdded': 'No craft categories added yet',
+  'managerProductFormula.selectCraftCategories': 'Select Craft Categories',
+  'managerProductFormula.searchCraftCategories': 'Search craft categories',
+  'managerProductFormula.categoryType': 'Category Type',
+  'managerProductFormula.technologyLevel': 'Technology Level',
+  'managerProductFormula.fixedCosts': 'Fixed Costs',
+  'managerProductFormula.variablePercentages': 'Variable %',
+  'managerProductFormula.yield': 'Yield',
+  'managerProductFormula.filterByType': 'Filter by Type',
+  'managerProductFormula.filterByLevel': 'Filter by Level',
+  'managerProductFormula.sameTypeExists': 'Same Type Exists',
+
+  // Cost calculator panel
+  'managerProductFormula.costCalculation': 'Cost Calculation',
+  'managerProductFormula.materialCost': 'Material Cost',
+  'managerProductFormula.carbonEmission': 'Carbon Emission',
+  'managerProductFormula.waterCosts': 'Water Costs',
+  'managerProductFormula.powerCosts': 'Power Costs',
+  'managerProductFormula.goldCosts': 'Gold Costs',
+  'managerProductFormula.setupCost': 'Setup Cost',
+  'managerProductFormula.variablePercent': 'Variable %',
+  'managerProductFormula.totalVariablePercent': 'Total Variable %',
+  'managerProductFormula.calculationFormula': 'Calculation Formula',
+  'managerProductFormula.totalSetupCost': 'Total Setup Cost',
+  'managerProductFormula.totalMaterialCost': 'Total Material Cost',
+
+  // Detail view
+  'managerProductFormula.formulaDetails': 'Formula Details',
+  'managerProductFormula.createdAt': 'Created At',
+  'managerProductFormula.createdBy': 'Created By',
+  'managerProductFormula.activity': 'Activity',
+  'managerProductFormula.mtoUsageInfo': 'Used in {{type1Count}} Type 1 and {{type2Count}} Type 2 MTO requirements',
+  'managerProductFormula.costSummary': 'Cost Summary',
+
+  // Delete confirmation
+  'managerProductFormula.confirmDelete': 'Confirm Delete',
+  'managerProductFormula.deleteWarning': 'This action cannot be undone.',
+  'managerProductFormula.deleteConfirmMessage': 'Are you sure you want to delete the formula "{{name}}"?',
+
+  // Success messages
+  'managerProductFormula.createSuccess': 'Formula created successfully',
+  'managerProductFormula.updateSuccess': 'Formula updated successfully',
+  'managerProductFormula.deleteSuccess': 'Formula deleted successfully',
+  'managerProductFormula.cloneSuccess': 'Formula cloned successfully',
+
+  // Error messages
+  'managerProductFormula.errors.loadFailed': 'Failed to load formulas',
+  'managerProductFormula.errors.createFailed': 'Failed to create formula',
+  'managerProductFormula.errors.updateFailed': 'Failed to update formula',
+  'managerProductFormula.errors.deleteFailed': 'Failed to delete formula',
+  'managerProductFormula.errors.cloneFailed': 'Failed to clone formula',
+  'managerProductFormula.errors.productNameRequired': 'Product name is required',
+  'managerProductFormula.errors.productNameTooLong': 'Product name is too long (max 200 characters)',
+  'managerProductFormula.errors.materialsRequired': 'At least one material is required',
+  'managerProductFormula.errors.craftCategoriesRequired': 'At least one craft category is required',
+  'managerProductFormula.errors.duplicateCategoryType': 'Each category type can only be selected once',
+  'managerProductFormula.errors.formulaLocked': 'This formula is locked and cannot be edited',
 };

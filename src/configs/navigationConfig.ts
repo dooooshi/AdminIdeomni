@@ -680,8 +680,31 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				}
 			]
 		});
+
+		// Add MTO (Made-To-Order) Management for Managers (userType: 1)
+		navigation.push({
+			id: 'mto-management',
+			title: 'MTO Management',
+			subtitle: 'Made-To-Order system management',
+			type: 'group',
+			icon: 'heroicons-outline:shopping-bag',
+			translate: 'MTO_MANAGEMENT',
+			translateSubtitle: 'MTO_MANAGEMENT_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'mto-management.manager-product-formula',
+					title: 'Manager Product Formula',
+					type: 'item',
+					icon: 'heroicons-outline:beaker',
+					url: '/mto-management/manager-product-formula',
+					translate: 'MANAGER_PRODUCT_FORMULA',
+					auth: ['user']
+				}
+			]
+		});
 	}
-	
+
 	return navigation;
 }
 

@@ -4,6 +4,11 @@ import { tradeTranslationsZh } from './trade-zh';
 export const zhTranslations = {
   ...zhExtendedTranslations,
   ...tradeTranslationsZh,
+  // MTO Management
+  'MTO_MANAGEMENT': 'MTO管理',
+  'MTO_MANAGEMENT_SUBTITLE': '按订单制造系统管理',
+  'MANAGER_PRODUCT_FORMULA': '经理产品配方',
+
   // Population namespace
   'POPULATION_HISTORY': '人口历史',
   'population.TITLE': '人口变化历史',

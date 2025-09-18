@@ -449,4 +449,107 @@ export const zhExtendedTranslations = {
   'progress.FAILED': '失败',
   'progress.CANCELLED': '已取消',
   'progress.PERCENTAGE': '{{percent}}% 完成',
+
+  // Manager Product Formula
+  'managerProductFormula.title': '管理员产品配方',
+  'managerProductFormula.subtitle': '管理和配置您活动的产品配方',
+  'managerProductFormula.managerRoleRequired': '需要管理员角色才能访问此页面',
+
+  // List view
+  'managerProductFormula.createFormula': '创建配方',
+  'managerProductFormula.searchPlaceholder': '按产品名称或配方编号搜索',
+  'managerProductFormula.formulaNumber': '配方编号',
+  'managerProductFormula.productName': '产品名称',
+  'managerProductFormula.productDescription': '产品描述',
+  'managerProductFormula.materials': '原材料',
+  'managerProductFormula.craftCategories': '工艺类别',
+  'managerProductFormula.totalCost': '总成本',
+  'managerProductFormula.status': '状态',
+  'managerProductFormula.mtoUsage': 'MTO使用情况',
+  'managerProductFormula.noFormulas': '未找到配方',
+  'managerProductFormula.locked': '已锁定',
+  'managerProductFormula.active': '活动',
+  'managerProductFormula.notUsed': '未使用',
+  'managerProductFormula.clone': '克隆',
+
+  // Create/Edit modal
+  'managerProductFormula.createNewFormula': '创建新配方',
+  'managerProductFormula.editFormula': '编辑配方',
+  'managerProductFormula.productNameHelper': '为您的产品输入唯一名称（最多200个字符）',
+  'managerProductFormula.productDescriptionHelper': '可选的产品描述（最多500个字符）',
+  'managerProductFormula.lockedWarning': '此配方已锁定，因为它正在活动的MTO要求中使用。不允许更改。',
+
+  // Material selector
+  'managerProductFormula.addMaterials': '添加原材料',
+  'managerProductFormula.noMaterialsAdded': '尚未添加原材料',
+  'managerProductFormula.selectMaterials': '选择原材料',
+  'managerProductFormula.searchMaterials': '按名称或编号搜索原材料',
+  'managerProductFormula.materialNumber': '材料编号',
+  'managerProductFormula.materialName': '材料名称',
+  'managerProductFormula.origin': '来源',
+  'managerProductFormula.quantity': '数量',
+  'managerProductFormula.unitCost': '单位成本',
+  'managerProductFormula.alreadyAdded': '已添加',
+  'managerProductFormula.addSelected': '添加选中',
+
+  // Craft category selector
+  'managerProductFormula.addCraftCategories': '添加工艺类别',
+  'managerProductFormula.noCategoriesAdded': '尚未添加工艺类别',
+  'managerProductFormula.noCraftCategoriesAdded': '尚未添加工艺类别',
+  'managerProductFormula.selectCraftCategories': '选择工艺类别',
+  'managerProductFormula.searchCraftCategories': '搜索工艺类别',
+  'managerProductFormula.categoryType': '类别类型',
+  'managerProductFormula.technologyLevel': '技术等级',
+  'managerProductFormula.fixedCosts': '固定成本',
+  'managerProductFormula.variablePercentages': '变动百分比',
+  'managerProductFormula.yield': '产出率',
+  'managerProductFormula.filterByType': '按类型筛选',
+  'managerProductFormula.filterByLevel': '按等级筛选',
+  'managerProductFormula.sameTypeExists': '相同类型已存在',
+
+  // Cost calculator panel
+  'managerProductFormula.costCalculation': '成本计算',
+  'managerProductFormula.materialCost': '材料成本',
+  'managerProductFormula.carbonEmission': '碳排放',
+  'managerProductFormula.waterCosts': '水成本',
+  'managerProductFormula.powerCosts': '电力成本',
+  'managerProductFormula.goldCosts': '金币成本',
+  'managerProductFormula.setupCost': '设置成本',
+  'managerProductFormula.variablePercent': '变动百分比',
+  'managerProductFormula.totalVariablePercent': '总变动百分比',
+  'managerProductFormula.calculationFormula': '计算公式',
+  'managerProductFormula.totalSetupCost': '总设置成本',
+  'managerProductFormula.totalMaterialCost': '总材料成本',
+
+  // Detail view
+  'managerProductFormula.formulaDetails': '配方详情',
+  'managerProductFormula.createdAt': '创建时间',
+  'managerProductFormula.createdBy': '创建者',
+  'managerProductFormula.activity': '活动',
+  'managerProductFormula.mtoUsageInfo': '在{{type1Count}}个类型1和{{type2Count}}个类型2的MTO要求中使用',
+  'managerProductFormula.costSummary': '成本摘要',
+
+  // Delete confirmation
+  'managerProductFormula.confirmDelete': '确认删除',
+  'managerProductFormula.deleteWarning': '此操作无法撤销。',
+  'managerProductFormula.deleteConfirmMessage': '您确定要删除配方"{{name}}"吗？',
+
+  // Success messages
+  'managerProductFormula.createSuccess': '配方创建成功',
+  'managerProductFormula.updateSuccess': '配方更新成功',
+  'managerProductFormula.deleteSuccess': '配方删除成功',
+  'managerProductFormula.cloneSuccess': '配方克隆成功',
+
+  // Error messages
+  'managerProductFormula.errors.loadFailed': '加载配方失败',
+  'managerProductFormula.errors.createFailed': '创建配方失败',
+  'managerProductFormula.errors.updateFailed': '更新配方失败',
+  'managerProductFormula.errors.deleteFailed': '删除配方失败',
+  'managerProductFormula.errors.cloneFailed': '克隆配方失败',
+  'managerProductFormula.errors.productNameRequired': '产品名称是必填项',
+  'managerProductFormula.errors.productNameTooLong': '产品名称太长（最多200个字符）',
+  'managerProductFormula.errors.materialsRequired': '至少需要一种原材料',
+  'managerProductFormula.errors.craftCategoriesRequired': '至少需要一个工艺类别',
+  'managerProductFormula.errors.duplicateCategoryType': '每种类别类型只能选择一次',
+  'managerProductFormula.errors.formulaLocked': '此配方已锁定，无法编辑',
 };

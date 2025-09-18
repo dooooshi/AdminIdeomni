@@ -13,18 +13,27 @@ This document defines all business rules, constraints, and validation logic for 
 - **Error**: Return 403 Forbidden if non-manager attempts formula operations
 
 #### Activity-Based Access Control
-- **Rule**: Managers have full access to ALL formulas within their assigned activity
-- **Scope**: Managers can view, edit, delete, and clone any formula in their activity
+- **Rule**: Managers have full access to ALL formulas within their enrolled activity
+- **Activity Retrieval**: Activity ID is automatically determined from manager's current enrollment
+- **Enrollment Check**: System queries UserActivity table for manager's active enrollment (status = 'ENROLLED')
+- **Scope**: Managers can view, edit, delete, and duplicate any formula in their enrolled activity
 - **Collaboration**: Multiple managers in same activity can collaborate on formulas
 - **Boundary**: Managers cannot access formulas from other activities
-- **Validation**: Verify manager's activity association matches formula's activity
+- **Validation**: System automatically verifies manager's enrolled activity matches formula's activity
 - **Error**: Return 403 if manager attempts to access formula from different activity
+- **No Enrollment**: Return 400 Bad Request if manager is not enrolled in any activity
 
 ### 2. Formula Creation Rules
 
+#### Automatic Activity Assignment
+- **Rule**: Activity ID is automatically retrieved from manager's enrollment
+- **Process**: System queries UserActivity table for manager's current enrollment
+- **No Manual Input**: Managers do not provide activityId in requests
+- **Validation**: System ensures manager is enrolled before allowing creation
+
 #### Formula Numbering
 - **Rule**: Formula numbers are auto-incremented within each activity
-- **Logic**: `MAX(formulaNumber) + 1` WHERE activityId = target_activity
+- **Logic**: `MAX(formulaNumber) + 1` WHERE activityId = manager's enrolled activity
 - **Constraint**: Unique combination of (formulaNumber, activityId)
 
 #### Product Naming

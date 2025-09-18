@@ -19,7 +19,8 @@ The Manager Product Formula module extends the existing business simulation plat
 - **Database**: PostgreSQL with Prisma ORM
 - **Language**: TypeScript
 - **Package Manager**: pnpm (always use pnpm, never npm)
-- **Authentication**: JWT with User authentication (Manager role required)
+- **Authentication**: JWT with User authentication (Manager role userType = 1 required)
+- **Activity Context**: Automatic retrieval from manager's UserActivity enrollment
 - **i18n**: English and Chinese language support
 
 ## Implementation Details
@@ -42,9 +43,10 @@ The Manager Product Formula module extends the existing business simulation plat
 ### API Endpoints
 - Controller: `src/mto/controllers/manager-product-formula.controller.ts`
 - Services: `src/mto/services/manager-product-formula.service.ts`
+- Helper Service: `src/mto/services/user-activity-helper.service.ts` - Retrieves manager's enrolled activity
 - DTOs: `src/mto/dto/`
 - Base Paths:
-  - Product Formulas: `/api/user/manager/mto/product-formulas`
+  - Product Formulas: `/api/user/manager/mto/formulas`
   - Raw Materials: `/api/user/manager/mto/raw-materials`
   - Craft Categories: `/api/user/manager/mto/craft-categories`
 
@@ -57,9 +59,12 @@ The Manager Product Formula module extends the existing business simulation plat
 - **Purpose**: Enable diverse MTO requirements that challenge teams
 
 #### 2. Activity-Based Collaboration
-- **Activity-Specific**: Each formula belongs to a specific activity
+- **Automatic Activity Detection**: System automatically retrieves manager's enrolled activity from UserActivity table
+- **No Manual Input**: Managers don't need to specify activityId in requests
+- **Enrollment Required**: Manager must have active enrollment (status = 'ENROLLED') in an activity
+- **Activity-Specific**: Each formula belongs to the manager's enrolled activity
 - **Shared Access**: ALL managers within an activity have full access to all formulas
-- **Collaborative Management**: Any manager can create, edit, delete, or clone formulas in their activity
+- **Collaborative Management**: Any manager can create, edit, delete, or duplicate formulas in their activity
 - **Audit Trail**: System tracks which manager created or modified each formula
 - **Formula Numbering**: Auto-incremented within each activity scope
 
@@ -77,6 +82,7 @@ The Manager Product Formula module extends the existing business simulation plat
    - Enables team-based MTO planning and coordination
 
 2. **Formula Creation**
+   - Activity ID automatically determined from manager's enrollment
    - Managers can create product formulas with custom specifications
    - Select from all available raw materials
    - Define multiple craft categories for production flexibility
@@ -94,10 +100,58 @@ The Manager Product Formula module extends the existing business simulation plat
    - Calculate total costs automatically
    - Carbon emission tracking
 
+## Authentication & Authorization Flow
+
+### Prerequisites
+1. **Manager Role**: User must have `userType = 1` (Manager role)
+2. **Activity Enrollment**: Manager must be enrolled in an activity with status = 'ENROLLED'
+3. **JWT Token**: Valid JWT token from user login
+
+### Authentication Flow
+```mermaid
+sequenceDiagram
+    participant M as Manager
+    participant API as MTO API
+    participant UAH as UserActivityHelper
+    participant DB as Database
+
+    M->>API: Request with JWT Token
+    API->>API: Verify JWT Token
+    API->>API: Check userType = 1
+    API->>UAH: Get current activity ID
+    UAH->>DB: Query UserActivity table
+    DB-->>UAH: Return enrolled activity
+    UAH-->>API: Return activity ID
+    API->>API: Process request with activity context
+    API-->>M: Return response
+```
+
+### Activity Context Resolution
+1. **Request Received**: Manager sends request with JWT token
+2. **Role Validation**: System checks `req.user.userType === 1`
+3. **Activity Lookup**: UserActivityHelperService queries database:
+   ```sql
+   SELECT activityId FROM UserActivity
+   WHERE userId = ?
+   AND status = 'ENROLLED'
+   AND deletedAt IS NULL
+   ORDER BY enrolledAt DESC
+   LIMIT 1
+   ```
+4. **Context Applied**: Activity ID is used for all operations
+5. **Access Control**: Manager can only access formulas within their enrolled activity
+
+### Error Scenarios
+- **403 Forbidden**: User is not a manager (userType !== 1)
+- **400 Bad Request**: Manager is not enrolled in any activity
+- **403 Forbidden**: Formula belongs to a different activity (for GET/PUT/DELETE operations)
+
 ### Testing Strategy
 - Integration tests for all API endpoints
 - Validation tests for formula constraints
 - Permission tests for Manager role access
+- Activity enrollment verification tests
+- Cross-activity access prevention tests
 - Cost calculation verification
 
 ## Quick Links

@@ -5,10 +5,12 @@ API endpoints for managers to create and manage product formulas for Made-To-Ord
 
 ## Authentication & Authorization
 - **Authentication**: User JWT authentication required
-- **Authorization**: Manager role (UserRole.MANAGER) required for all operations
-- **Access Scope**: Managers have full access to ALL formulas within their activity
+- **Authorization**: Manager role (userType = 1) required for all operations
+- **Activity Context**: Activity ID is automatically retrieved from manager's current enrollment
+- **Access Scope**: Managers have full access to ALL formulas within their enrolled activity
 - **Collaboration**: Multiple managers in same activity can create, read, update, and delete any formula
 - **Activity Boundary**: Managers cannot access formulas from other activities
+- **Enrollment Required**: Manager must be enrolled in an activity (status = 'ENROLLED')
 - **Headers**:
   ```http
   Authorization: Bearer {jwt_token}
@@ -19,38 +21,33 @@ API endpoints for managers to create and manage product formulas for Made-To-Ord
 ## API Endpoints
 
 ### 1. Create Manager Product Formula
-**POST** `/api/user/manager/mto/product-formulas`
+**POST** `/api/user/manager/mto/formulas`
 
-Creates a new product formula for MTO requirements.
+Creates a new product formula for MTO requirements. The activity ID is automatically determined from the manager's current enrollment.
 
 #### Request Body
 ```json
 {
   "productName": "Advanced Circuit Board",
   "productDescription": "High-performance electronic component for MTO requirement",
-  "activityId": "clxx1234567890abcdef",
-  "craftCategories": [
-    {
-      "craftCategoryId": 11
-    },
-    {
-      "craftCategoryId": 15
-    }
-  ],
   "materials": [
     {
       "rawMaterialId": 85,
-      "quantity": 10.5
+      "quantity": 10.5,
+      "unit": "units"
     },
     {
       "rawMaterialId": 88,
-      "quantity": 7.25
+      "quantity": 7.25,
+      "unit": "units"
     },
     {
       "rawMaterialId": 95,
-      "quantity": 3.0
+      "quantity": 3.0,
+      "unit": "units"
     }
-  ]
+  ],
+  "craftCategoryIds": [11, 15]
 }
 ```
 
@@ -59,18 +56,18 @@ Creates a new product formula for MTO requirements.
 |-------|------|----------|-------------|------------------|
 | `productName` | string | Yes | Product name | 1-200 characters |
 | `productDescription` | string | No | Product description | Max 500 characters |
-| `activityId` | string | Yes | Associated activity ID | Must exist, manager must have access |
-| `craftCategories` | array | Yes | Required craft categories | Min 1 item |
-| `craftCategories[].craftCategoryId` | number | Yes | Craft category ID | Must exist in database |
-| `materials` | array | Yes | Required raw materials | Min 1, max 999 items |
+| `materials` | array | Yes | Required raw materials | Min 1, max 20 items |
 | `materials[].rawMaterialId` | number | Yes | Raw material ID | Must exist in database |
 | `materials[].quantity` | number | Yes | Quantity required | 0.001-9999.999 |
+| `materials[].unit` | string | No | Unit of measurement | Defaults to 'units' |
+| `craftCategoryIds` | number[] | Yes | Craft category IDs | Min 1, max 7 items, one per category type |
 
 #### Validation Rules
-1. **Craft Category Uniqueness**: Only one craft category per `categoryType`
-2. **Material Uniqueness**: No duplicate raw materials in single formula
-3. **Activity Access**: Manager must have access to specified activity
+1. **Manager Enrollment**: Manager must be enrolled in an activity (automatic check)
+2. **Craft Category Uniqueness**: Only one craft category per `categoryType`
+3. **Material Uniqueness**: No duplicate raw materials in single formula
 4. **Auto-generated Fields**:
+   - `activityId`: From manager's current enrollment
    - `formulaNumber`: Auto-incremented within activity
    - `createdBy`: From authenticated user context
    - Cost calculations (automatic based on materials and craft categories)
@@ -106,18 +103,20 @@ Creates a new product formula for MTO requirements.
 ```
 
 ### 2. List Manager Product Formulas
-**GET** `/api/user/manager/mto/product-formulas`
+**GET** `/api/user/manager/mto/formulas`
 
-Lists ALL product formulas for the manager's activity, including formulas created by other managers in the same activity.
+Lists ALL product formulas for the manager's enrolled activity, including formulas created by other managers in the same activity.
 
 #### Query Parameters
 | Parameter | Type | Required | Description | Default |
 |-----------|------|----------|-------------|---------|
-| `activityId` | string | Yes | Filter by activity ID | - |
 | `page` | number | No | Page number | 1 |
-| `limit` | number | No | Items per page | 20 |
-| `search` | string | No | Search by product name | - |
+| `limit` | number | No | Items per page (max 100) | 20 |
+| `searchTerm` | string | No | Search by product name or description | - |
 | `isLocked` | boolean | No | Filter by lock status | - |
+| `isActive` | boolean | No | Filter by active status | - |
+| `includeDeleted` | boolean | No | Include soft-deleted formulas | false |
+| `includeRelations` | boolean | No | Include full relation data | false |
 
 #### Success Response (200 OK)
 ```json
@@ -152,12 +151,16 @@ Lists ALL product formulas for the manager's activity, including formulas create
 ```
 
 ### 3. Get Manager Product Formula Details
-**GET** `/api/user/manager/mto/product-formulas/{id}`
+**GET** `/api/user/manager/mto/formulas/{id}`
 
-Retrieves detailed information about a specific formula.
+Retrieves detailed information about a specific formula. The formula must belong to the manager's enrolled activity.
 
 #### Path Parameters
 - `id` (number): Formula ID
+
+#### Authorization
+- Manager must be enrolled in the same activity as the formula
+- Returns 403 Forbidden if formula belongs to a different activity
 
 #### Success Response (200 OK)
 ```json
@@ -225,9 +228,9 @@ Retrieves detailed information about a specific formula.
 ```
 
 ### 4. Update Manager Product Formula
-**PUT** `/api/user/manager/mto/product-formulas/{id}`
+**PUT** `/api/user/manager/mto/formulas/{id}`
 
-Updates an existing formula (only if not locked by active MTO). Any manager in the activity can update any formula within that activity.
+Updates an existing formula (only if not locked by active MTO). Any manager in the same activity can update any formula within that activity.
 
 #### Path Parameters
 - `id` (number): Formula ID
@@ -237,26 +240,25 @@ Updates an existing formula (only if not locked by active MTO). Any manager in t
 {
   "productName": "Updated Circuit Board",
   "productDescription": "Updated description",
-  "craftCategories": [
-    {
-      "craftCategoryId": 11
-    }
-  ],
   "materials": [
     {
       "rawMaterialId": 85,
-      "quantity": 12.0
+      "quantity": 12.0,
+      "unit": "units"
     },
     {
       "rawMaterialId": 88,
-      "quantity": 8.5
+      "quantity": 8.5,
+      "unit": "units"
     }
-  ]
+  ],
+  "craftCategoryIds": [11],
+  "isActive": true
 }
 ```
 
 #### Validation Rules
-- Formula must belong to the manager's activity
+- Formula must belong to the manager's enrolled activity (automatic check)
 - Formula must not be locked (no active MTO using it)
 - Same validation as creation for categories and materials
 - Cost recalculation happens automatically
@@ -275,16 +277,16 @@ Updates an existing formula (only if not locked by active MTO). Any manager in t
 ```
 
 ### 5. Delete Manager Product Formula
-**DELETE** `/api/user/manager/mto/product-formulas/{id}`
+**DELETE** `/api/user/manager/mto/formulas/{id}`
 
-Soft deletes a formula (only if not used by any MTO). Any manager in the activity can delete any unused formula within that activity.
+Soft deletes a formula (only if not used by any MTO). Any manager in the same activity can delete any unused formula within that activity.
 
 #### Path Parameters
 - `id` (number): Formula ID
 
 #### Validation Rules
-- Formula must belong to the manager's activity
-- Formula must not be used by any MTO requirement
+- Formula must belong to the manager's enrolled activity (automatic check)
+- Formula must not be locked (no active MTO using it)
 - System tracks deletedBy to show which manager deleted
 
 #### Success Response (200 OK)
@@ -296,19 +298,19 @@ Soft deletes a formula (only if not used by any MTO). Any manager in the activit
 }
 ```
 
-### 6. Clone Manager Product Formula
-**POST** `/api/user/manager/mto/product-formulas/{id}/clone`
+### 6. Duplicate Manager Product Formula
+**POST** `/api/user/manager/mto/formulas/{id}/duplicate`
 
-Creates a copy of an existing formula.
+Creates a copy of an existing formula in the manager's enrolled activity.
 
 #### Path Parameters
 - `id` (number): Source formula ID
 
-#### Request Body (optional)
-```json
-{
-  "productName": "Cloned Circuit Board",
-  "targetActivityId": "clxx9876543210fedcba"
+#### Notes
+- The duplicated formula is created in the manager's current enrolled activity
+- The product name is automatically appended with " (Copy)"
+- A new formula number is assigned
+- The formula can be from the same or different activity
 }
 ```
 

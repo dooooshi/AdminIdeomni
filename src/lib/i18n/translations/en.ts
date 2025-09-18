@@ -4,6 +4,11 @@ import { tradeTranslationsEn } from './trade-en';
 export const enTranslations = {
   ...enExtendedTranslations,
   ...tradeTranslationsEn,
+  // MTO Management
+  'MTO_MANAGEMENT': 'MTO Management',
+  'MTO_MANAGEMENT_SUBTITLE': 'Made-To-Order system management',
+  'MANAGER_PRODUCT_FORMULA': 'Manager Product Formula',
+
   // Population namespace
   'POPULATION_HISTORY': 'Population History',
   'population.TITLE': 'Population Change History',
