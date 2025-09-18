@@ -552,4 +552,21 @@ export const zhExtendedTranslations = {
   'managerProductFormula.errors.craftCategoriesRequired': '至少需要一个工艺类别',
   'managerProductFormula.errors.duplicateCategoryType': '每种类别类型只能选择一次',
   'managerProductFormula.errors.formulaLocked': '此配方已锁定，无法编辑',
+
+  // Additional translations
+  'managerProductFormula.copy': '(副本)',
+  'managerProductFormula.type1': '类型 1',
+  'managerProductFormula.type2': '类型 2',
+  'managerProductFormula.level1': '等级 1',
+  'managerProductFormula.level2': '等级 2',
+  'managerProductFormula.level3': '等级 3',
+  'managerProductFormula.level4': '等级 4',
+  'managerProductFormula.waterAbbr': '水:',
+  'managerProductFormula.powerAbbr': '电:',
+  'managerProductFormula.goldAbbr': '金:',
+  'managerProductFormula.finalWater': '最终水费',
+  'managerProductFormula.finalPower': '最终电费',
+  'managerProductFormula.finalGold': '最终金币',
+  'managerProductFormula.defaultUnit': '单位',
+  'managerProductFormula.dateFormat': 'yyyy年MM月dd日 HH:mm',
 };

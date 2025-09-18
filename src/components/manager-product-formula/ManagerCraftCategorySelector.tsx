@@ -209,26 +209,26 @@ const ManagerCraftCategorySelector: React.FC<ManagerCraftCategorySelectorProps> 
                   <TableCell align="right">
                     <Stack spacing={0.5}>
                       <Typography variant="caption">
-                        W: {category.craftCategory?.fixedWaterCost}
+                        {t('managerProductFormula.waterAbbr')} {category.craftCategory?.fixedWaterCost}
                       </Typography>
                       <Typography variant="caption">
-                        P: {category.craftCategory?.fixedPowerCost}
+                        {t('managerProductFormula.powerAbbr')} {category.craftCategory?.fixedPowerCost}
                       </Typography>
                       <Typography variant="caption">
-                        G: ${category.craftCategory?.fixedGoldCost}
+                        {t('managerProductFormula.goldAbbr')} ${category.craftCategory?.fixedGoldCost}
                       </Typography>
                     </Stack>
                   </TableCell>
                   <TableCell align="right">
                     <Stack spacing={0.5}>
                       <Typography variant="caption">
-                        W: {category.craftCategory?.variableWaterPercent}%
+                        {t('managerProductFormula.waterAbbr')} {category.craftCategory?.variableWaterPercent}%
                       </Typography>
                       <Typography variant="caption">
-                        P: {category.craftCategory?.variablePowerPercent}%
+                        {t('managerProductFormula.powerAbbr')} {category.craftCategory?.variablePowerPercent}%
                       </Typography>
                       <Typography variant="caption">
-                        G: {category.craftCategory?.variableGoldPercent}%
+                        {t('managerProductFormula.goldAbbr')} {category.craftCategory?.variableGoldPercent}%
                       </Typography>
                     </Stack>
                   </TableCell>
@@ -284,10 +284,10 @@ const ManagerCraftCategorySelector: React.FC<ManagerCraftCategorySelectorProps> 
                 label={t('managerProductFormula.filterByLevel')}
               >
                 <MenuItem value="">{t('common.all')}</MenuItem>
-                <MenuItem value="LEVEL_1">Level 1</MenuItem>
-                <MenuItem value="LEVEL_2">Level 2</MenuItem>
-                <MenuItem value="LEVEL_3">Level 3</MenuItem>
-                <MenuItem value="LEVEL_4">Level 4</MenuItem>
+                <MenuItem value="LEVEL_1">{t('managerProductFormula.level1')}</MenuItem>
+                <MenuItem value="LEVEL_2">{t('managerProductFormula.level2')}</MenuItem>
+                <MenuItem value="LEVEL_3">{t('managerProductFormula.level3')}</MenuItem>
+                <MenuItem value="LEVEL_4">{t('managerProductFormula.level4')}</MenuItem>
               </Select>
             </FormControl>
           </Stack>
@@ -359,26 +359,26 @@ const ManagerCraftCategorySelector: React.FC<ManagerCraftCategorySelectorProps> 
                         <TableCell align="right">
                           <Stack spacing={0.5}>
                             <Typography variant="caption">
-                              W: {category.fixedWaterCost}
+                              {t('managerProductFormula.waterAbbr')} {category.fixedWaterCost}
                             </Typography>
                             <Typography variant="caption">
-                              P: {category.fixedPowerCost}
+                              {t('managerProductFormula.powerAbbr')} {category.fixedPowerCost}
                             </Typography>
                             <Typography variant="caption">
-                              G: ${category.fixedGoldCost}
+                              {t('managerProductFormula.goldAbbr')} ${category.fixedGoldCost}
                             </Typography>
                           </Stack>
                         </TableCell>
                         <TableCell align="right">
                           <Stack spacing={0.5}>
                             <Typography variant="caption">
-                              W: {category.variableWaterPercent}%
+                              {t('managerProductFormula.waterAbbr')} {category.variableWaterPercent}%
                             </Typography>
                             <Typography variant="caption">
-                              P: {category.variablePowerPercent}%
+                              {t('managerProductFormula.powerAbbr')} {category.variablePowerPercent}%
                             </Typography>
                             <Typography variant="caption">
-                              G: {category.variableGoldPercent}%
+                              {t('managerProductFormula.goldAbbr')} {category.variableGoldPercent}%
                             </Typography>
                           </Stack>
                         </TableCell>

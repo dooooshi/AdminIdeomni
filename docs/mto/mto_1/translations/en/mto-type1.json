@@ -1,0 +1,265 @@
+{
+  "common": {
+    "title": "MTO Type 1 - Population-Based Procurement",
+    "requirement": "Requirement",
+    "delivery": "Delivery",
+    "settlement": "Settlement",
+    "product": "Product",
+    "formula": "Formula",
+    "tile": "Tile",
+    "team": "Team",
+    "manager": "Manager",
+    "student": "Student"
+  },
+  "status": {
+    "DRAFT": {
+      "label": "Draft",
+      "description": "Requirement is being configured"
+    },
+    "RELEASED": {
+      "label": "Released",
+      "description": "Requirement is visible to teams"
+    },
+    "IN_PROGRESS": {
+      "label": "In Progress",
+      "description": "Teams are delivering products"
+    },
+    "SETTLING": {
+      "label": "Settling",
+      "description": "Settlement process is running"
+    },
+    "SETTLED": {
+      "label": "Settled",
+      "description": "Settlement completed"
+    },
+    "CANCELLED": {
+      "label": "Cancelled",
+      "description": "Requirement has been cancelled"
+    }
+  },
+  "fields": {
+    "managerProductFormulaId": "Product Formula",
+    "purchaseGoldPrice": "Purchase Price (Gold)",
+    "basePurchaseNumber": "Base Purchase Quantity",
+    "baseCountPopulationNumber": "Population Segment Size",
+    "overallPurchaseNumber": "Total Purchase Limit",
+    "overallPurchaseBudget": "Total Budget",
+    "releaseTime": "Release Time",
+    "settlementTime": "Settlement Time",
+    "tilePopulation": "Tile Population",
+    "requirementNumber": "Required Quantity",
+    "deliveredNumber": "Delivered Quantity",
+    "settledNumber": "Settled Quantity",
+    "fulfillmentRate": "Fulfillment Rate"
+  },
+  "messages": {
+    "requirement": {
+      "created": "MTO Type 1 requirement created successfully",
+      "updated": "Requirement updated successfully",
+      "released": "Requirement has been released to teams",
+      "cancelled": "Requirement has been cancelled",
+      "fetched": "Requirements fetched successfully",
+      "notFound": "Requirement not found"
+    },
+    "delivery": {
+      "submitted": "Delivery submitted successfully",
+      "validated": "Products validated successfully",
+      "rejected": "Some products were rejected",
+      "fetched": "Deliveries fetched successfully",
+      "notFound": "Delivery not found"
+    },
+    "settlement": {
+      "initiated": "Settlement process started",
+      "completed": "Settlement completed successfully",
+      "payment": "Payment of {{amount}} Gold processed",
+      "failed": "Settlement failed"
+    },
+    "return": {
+      "requested": "Product return requested",
+      "completed": "Products returned to facility",
+      "failed": "Return request failed"
+    },
+    "calculation": {
+      "completed": "Requirement calculation completed",
+      "historyFetched": "Calculation history retrieved"
+    },
+    "distribution": {
+      "summaryFetched": "Distribution summary retrieved"
+    }
+  },
+  "errors": {
+    "4001": "Insufficient balance for transportation fee",
+    "4002": "Products not owned by team",
+    "4003": "Formula validation failed - craft categories mismatch",
+    "4004": "Delivery window closed",
+    "4005": "Tile requirement already fulfilled",
+    "4006": "Invalid status transition",
+    "4008": "Facility space insufficient",
+    "4009": "Activity not found",
+    "4010": "Permission denied",
+    "4013": "Formula validation failed - missing required material {{materialName}}",
+    "4014": "Formula validation failed - incorrect quantity for {{materialName}}",
+    "4015": "Formula validation failed - unauthorized material included"
+  },
+  "validation": {
+    "releaseTime": {
+      "future": "Release time must be in the future",
+      "invalid": "Invalid release time format"
+    },
+    "settlementTime": {
+      "afterRelease": "Settlement time must be after release time",
+      "minWindow": "Delivery window must be specified"
+    },
+    "population": {
+      "threshold": "Base population must be greater than 1"
+    },
+    "price": {
+      "positive": "Price must be positive"
+    },
+    "quantity": {
+      "min": "Quantity must be at least {{min}}",
+      "max": "Quantity cannot exceed {{max}}"
+    }
+  },
+  "calculation": {
+    "steps": {
+      "INITIAL_CALCULATION": {
+        "title": "Initial Calculation",
+        "description": "Calculating requirements based on tile populations"
+      },
+      "BUDGET_CONSTRAINT_CHECK": {
+        "title": "Budget Constraint Check",
+        "description": "Total requirement ({{total}}) exceeds limit ({{limit}})"
+      },
+      "TILE_ELIMINATION": {
+        "title": "Tile Elimination",
+        "description": "Eliminated {{count}} tile(s) with maximum requirement {{max}}"
+      },
+      "BUDGET_REALLOCATION": {
+        "title": "Budget Reallocation",
+        "description": "Reallocating budget after tile elimination"
+      },
+      "FINAL_DISTRIBUTION": {
+        "title": "Final Distribution",
+        "description": "Distribution calculation complete"
+      },
+      "MANUAL_ADJUSTMENT": {
+        "title": "Manual Adjustment",
+        "description": "Manual adjustment by manager"
+      }
+    },
+    "reasons": {
+      "budgetExceeded": "Exceeded budget allocation",
+      "belowThreshold": "Population below minimum threshold",
+      "withinBudget": "Within budget constraints",
+      "eliminated": "Eliminated due to budget constraint"
+    }
+  },
+  "settlement": {
+    "steps": {
+      "SETTLEMENT_INITIATED": {
+        "title": "Settlement Initiated",
+        "description": "Settlement process started at {{time}}"
+      },
+      "TILE_PROCESSING_START": {
+        "title": "Processing Tile",
+        "description": "Starting settlement for tile {{tileName}}"
+      },
+      "DELIVERY_VALIDATION": {
+        "title": "Delivery Validation",
+        "description": "Processing {{count}} deliveries for tile"
+      },
+      "PRODUCT_VALIDATION": {
+        "title": "Product Validation",
+        "description": "Validated {{validated}} products, settled {{settled}}, rejected {{rejected}}"
+      },
+      "PAYMENT_PROCESSING": {
+        "title": "Payment Processing",
+        "description": "Processed payment of {{amount}} Gold to team {{teamName}}"
+      },
+      "UNSETTLED_HANDLING": {
+        "title": "Handling Unsettled Products",
+        "description": "Processing {{count}} unsettled products"
+      },
+      "TILE_PROCESSING_COMPLETE": {
+        "title": "Tile Complete",
+        "description": "Completed settlement for tile {{tileName}}"
+      },
+      "SETTLEMENT_SUMMARY": {
+        "title": "Settlement Summary",
+        "description": "Settlement process summary"
+      },
+      "SETTLEMENT_COMPLETED": {
+        "title": "Settlement Completed",
+        "description": "Settlement completed in {{duration}}"
+      },
+      "SETTLEMENT_ERROR": {
+        "title": "Settlement Error",
+        "description": "Error occurred during settlement: {{error}}"
+      }
+    },
+    "rejection": {
+      "reasons": {
+        "formulaMismatch": "Product formula mismatch",
+        "requirementFulfilled": "Tile requirement already fulfilled",
+        "invalidProduct": "Product validation failed",
+        "craftCategoriesMismatch": "Craft categories do not match formula",
+        "materialMismatch": "Raw materials do not match formula",
+        "quantityMismatch": "Material quantities do not match formula"
+      }
+    }
+  },
+  "business": {
+    "distributionMethod": {
+      "populationBased": "Population-based distribution",
+      "budgetConstrained": "Budget-constrained allocation",
+      "populationBasedWithBudget": "Population-based with budget constraint"
+    },
+    "deliveryWindow": {
+      "label": "Delivery Window",
+      "format": "{{days}} days, {{hours}} hours remaining",
+      "closed": "Delivery window closed",
+      "notStarted": "Delivery window not yet open"
+    },
+    "transportationFee": {
+      "label": "Transportation Fee",
+      "calculation": "Distance: {{distance}} hex, Cost: {{cost}} Gold"
+    },
+    "fifo": {
+      "label": "First-In-First-Out Processing",
+      "description": "Deliveries processed in order of submission"
+    },
+    "fulfillmentRate": {
+      "label": "Fulfillment Rate",
+      "format": "{{value}}%"
+    },
+    "progress": {
+      "overall": "Overall Progress",
+      "tile": "Tile Progress",
+      "team": "Team Progress"
+    }
+  },
+  "formatting": {
+    "currency": {
+      "gold": "{{value}} Gold",
+      "largeAmount": "{{value}}M Gold"
+    },
+    "quantity": {
+      "units": "{{value}} units",
+      "products": "{{value}} products"
+    },
+    "percentage": "{{value}}%",
+    "datetime": {
+      "full": "MMM DD, YYYY HH:mm:ss",
+      "date": "MMM DD, YYYY",
+      "time": "HH:mm:ss",
+      "relative": "{{value}} {{unit}} ago"
+    },
+    "duration": {
+      "format": "{{hours}}h {{minutes}}m {{seconds}}s",
+      "days": "{{days}} days",
+      "hours": "{{hours}} hours",
+      "minutes": "{{minutes}} minutes"
+    }
+  }
+}

@@ -169,7 +169,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                         {t('managerProductFormula.createdAt')}:
                       </Typography>
                       <Typography variant="body2">
-                        {format(new Date(formula.createdAt), 'MMM dd, yyyy HH:mm')}
+                        {format(new Date(formula.createdAt), t('managerProductFormula.dateFormat'))}
                       </Typography>
                     </Stack>
                     {formula.createdBy && (
@@ -252,7 +252,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                           ${formatNumber(material.quantity * Number(material.rawMaterial?.totalCost || 0))}
                         </TableCell>
                         <TableCell align="right">
-                          {formatNumber(material.quantity * Number(material.rawMaterial?.carbonEmission || 0), 3)} kg
+                          {formatNumber(material.quantity * Number(material.rawMaterial?.carbonEmission || 0), 3)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -373,9 +373,6 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     <EcoIcon color="success" />
                     <Typography variant="h5" fontWeight="bold" color="success.main">
                       {formatNumber(formula.productFormulaCarbonEmission, 3)}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      kg CO₂
                     </Typography>
                   </Stack>
                 </Grid>

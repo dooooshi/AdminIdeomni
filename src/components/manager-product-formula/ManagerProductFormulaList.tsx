@@ -134,7 +134,7 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
   const handleClone = async (formula: ManagerProductFormula) => {
     try {
       await ManagerProductFormulaService.cloneProductFormula(formula.id, {
-        productName: `${formula.productName} (Copy)`
+        productName: `${formula.productName} ${t('managerProductFormula.copy')}`
       });
       enqueueSnackbar(t('managerProductFormula.cloneSuccess'), { variant: 'success' });
       loadFormulas();
@@ -277,10 +277,10 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                       <TableCell align="center">
                         <Stack direction="row" spacing={0.5} justifyContent="center">
                           {formula.usedInMTOType1 && (
-                            <Chip label="Type 1" size="small" color="primary" />
+                            <Chip label={t('managerProductFormula.type1')} size="small" color="primary" />
                           )}
                           {formula.usedInMTOType2 && (
-                            <Chip label="Type 2" size="small" color="secondary" />
+                            <Chip label={t('managerProductFormula.type2')} size="small" color="secondary" />
                           )}
                           {!formula.usedInMTOType1 && !formula.usedInMTOType2 && (
                             <Typography variant="caption" color="textSecondary">

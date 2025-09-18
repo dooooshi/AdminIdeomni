@@ -3769,6 +3769,14 @@ export const enTranslations = {
   'common.unavailable': 'Unavailable',
   'common.next': 'Next',
   'common.back': 'Back',
+  'common.search': 'Search',
+  'common.create': 'Create',
+  'common.view': 'View',
+  'common.delete': 'Delete',
+  'common.save': 'Save',
+  'common.update': 'Update',
+  'common.submit': 'Submit',
+  'common.select': 'Select',
   
   // Product Formula translations
   'productFormula.title': 'Product Formulas',

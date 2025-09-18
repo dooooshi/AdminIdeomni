@@ -1,0 +1,265 @@
+{
+  "common": {
+    "title": "MTO类型1 - 基于人口的采购",
+    "requirement": "需求",
+    "delivery": "交付",
+    "settlement": "结算",
+    "product": "产品",
+    "formula": "配方",
+    "tile": "地块",
+    "team": "团队",
+    "manager": "经理",
+    "student": "学生"
+  },
+  "status": {
+    "DRAFT": {
+      "label": "草稿",
+      "description": "需求正在配置中"
+    },
+    "RELEASED": {
+      "label": "已发布",
+      "description": "需求对团队可见"
+    },
+    "IN_PROGRESS": {
+      "label": "进行中",
+      "description": "团队正在交付产品"
+    },
+    "SETTLING": {
+      "label": "结算中",
+      "description": "正在进行结算"
+    },
+    "SETTLED": {
+      "label": "已结算",
+      "description": "结算完成"
+    },
+    "CANCELLED": {
+      "label": "已取消",
+      "description": "需求已被取消"
+    }
+  },
+  "fields": {
+    "managerProductFormulaId": "产品配方",
+    "purchaseGoldPrice": "采购价格（金币）",
+    "basePurchaseNumber": "基础采购数量",
+    "baseCountPopulationNumber": "人口段大小",
+    "overallPurchaseNumber": "总采购限额",
+    "overallPurchaseBudget": "总预算",
+    "releaseTime": "发布时间",
+    "settlementTime": "结算时间",
+    "tilePopulation": "地块人口",
+    "requirementNumber": "需求数量",
+    "deliveredNumber": "已交付数量",
+    "settledNumber": "已结算数量",
+    "fulfillmentRate": "完成率"
+  },
+  "messages": {
+    "requirement": {
+      "created": "MTO类型1需求创建成功",
+      "updated": "需求更新成功",
+      "released": "需求已发布给团队",
+      "cancelled": "需求已取消",
+      "fetched": "需求获取成功",
+      "notFound": "需求未找到"
+    },
+    "delivery": {
+      "submitted": "交付提交成功",
+      "validated": "产品验证成功",
+      "rejected": "部分产品被拒绝",
+      "fetched": "交付记录获取成功",
+      "notFound": "交付记录未找到"
+    },
+    "settlement": {
+      "initiated": "结算流程已开始",
+      "completed": "结算成功完成",
+      "payment": "已处理 {{amount}} 金币付款",
+      "failed": "结算失败"
+    },
+    "return": {
+      "requested": "已请求产品退回",
+      "completed": "产品已退回设施",
+      "failed": "退回请求失败"
+    },
+    "calculation": {
+      "completed": "需求计算完成",
+      "historyFetched": "计算历史已获取"
+    },
+    "distribution": {
+      "summaryFetched": "分配摘要已获取"
+    }
+  },
+  "errors": {
+    "4001": "运输费余额不足",
+    "4002": "产品不属于团队",
+    "4003": "配方验证失败 - 工艺类别不匹配",
+    "4004": "交付窗口已关闭",
+    "4005": "地块需求已满足",
+    "4006": "无效的状态转换",
+    "4008": "设施空间不足",
+    "4009": "活动未找到",
+    "4010": "权限被拒绝",
+    "4013": "配方验证失败 - 缺少必需材料 {{materialName}}",
+    "4014": "配方验证失败 - {{materialName}} 数量不正确",
+    "4015": "配方验证失败 - 包含未授权材料"
+  },
+  "validation": {
+    "releaseTime": {
+      "future": "发布时间必须在未来",
+      "invalid": "无效的发布时间格式"
+    },
+    "settlementTime": {
+      "afterRelease": "结算时间必须在发布时间之后",
+      "minWindow": "必须指定交付窗口"
+    },
+    "population": {
+      "threshold": "基础人口必须大于1"
+    },
+    "price": {
+      "positive": "价格必须为正数"
+    },
+    "quantity": {
+      "min": "数量至少为 {{min}}",
+      "max": "数量不能超过 {{max}}"
+    }
+  },
+  "calculation": {
+    "steps": {
+      "INITIAL_CALCULATION": {
+        "title": "初始计算",
+        "description": "基于地块人口计算需求"
+      },
+      "BUDGET_CONSTRAINT_CHECK": {
+        "title": "预算约束检查",
+        "description": "总需求（{{total}}）超过限额（{{limit}}）"
+      },
+      "TILE_ELIMINATION": {
+        "title": "地块消除",
+        "description": "消除了 {{count}} 个需求最大值为 {{max}} 的地块"
+      },
+      "BUDGET_REALLOCATION": {
+        "title": "预算重新分配",
+        "description": "地块消除后重新分配预算"
+      },
+      "FINAL_DISTRIBUTION": {
+        "title": "最终分配",
+        "description": "分配计算完成"
+      },
+      "MANUAL_ADJUSTMENT": {
+        "title": "手动调整",
+        "description": "经理手动调整"
+      }
+    },
+    "reasons": {
+      "budgetExceeded": "超出预算分配",
+      "belowThreshold": "人口低于最低阈值",
+      "withinBudget": "在预算约束内",
+      "eliminated": "因预算约束被消除"
+    }
+  },
+  "settlement": {
+    "steps": {
+      "SETTLEMENT_INITIATED": {
+        "title": "结算已启动",
+        "description": "结算流程于 {{time}} 开始"
+      },
+      "TILE_PROCESSING_START": {
+        "title": "处理地块",
+        "description": "开始结算地块 {{tileName}}"
+      },
+      "DELIVERY_VALIDATION": {
+        "title": "交付验证",
+        "description": "处理地块的 {{count}} 个交付"
+      },
+      "PRODUCT_VALIDATION": {
+        "title": "产品验证",
+        "description": "验证了 {{validated}} 个产品，结算 {{settled}} 个，拒绝 {{rejected}} 个"
+      },
+      "PAYMENT_PROCESSING": {
+        "title": "付款处理",
+        "description": "向团队 {{teamName}} 处理了 {{amount}} 金币付款"
+      },
+      "UNSETTLED_HANDLING": {
+        "title": "处理未结算产品",
+        "description": "处理 {{count}} 个未结算产品"
+      },
+      "TILE_PROCESSING_COMPLETE": {
+        "title": "地块完成",
+        "description": "完成地块 {{tileName}} 的结算"
+      },
+      "SETTLEMENT_SUMMARY": {
+        "title": "结算摘要",
+        "description": "结算流程摘要"
+      },
+      "SETTLEMENT_COMPLETED": {
+        "title": "结算完成",
+        "description": "结算在 {{duration}} 内完成"
+      },
+      "SETTLEMENT_ERROR": {
+        "title": "结算错误",
+        "description": "结算过程中发生错误：{{error}}"
+      }
+    },
+    "rejection": {
+      "reasons": {
+        "formulaMismatch": "产品配方不匹配",
+        "requirementFulfilled": "地块需求已满足",
+        "invalidProduct": "产品验证失败",
+        "craftCategoriesMismatch": "工艺类别与配方不匹配",
+        "materialMismatch": "原材料与配方不匹配",
+        "quantityMismatch": "材料数量与配方不匹配"
+      }
+    }
+  },
+  "business": {
+    "distributionMethod": {
+      "populationBased": "基于人口的分配",
+      "budgetConstrained": "预算约束分配",
+      "populationBasedWithBudget": "基于人口的预算约束分配"
+    },
+    "deliveryWindow": {
+      "label": "交付窗口",
+      "format": "剩余 {{days}} 天 {{hours}} 小时",
+      "closed": "交付窗口已关闭",
+      "notStarted": "交付窗口尚未开放"
+    },
+    "transportationFee": {
+      "label": "运输费",
+      "calculation": "距离：{{distance}} 格，费用：{{cost}} 金币"
+    },
+    "fifo": {
+      "label": "先进先出处理",
+      "description": "按提交顺序处理交付"
+    },
+    "fulfillmentRate": {
+      "label": "完成率",
+      "format": "{{value}}%"
+    },
+    "progress": {
+      "overall": "总体进度",
+      "tile": "地块进度",
+      "team": "团队进度"
+    }
+  },
+  "formatting": {
+    "currency": {
+      "gold": "{{value}} 金币",
+      "largeAmount": "{{value}}万金币"
+    },
+    "quantity": {
+      "units": "{{value}} 单位",
+      "products": "{{value}} 个产品"
+    },
+    "percentage": "{{value}}%",
+    "datetime": {
+      "full": "YYYY年MM月DD日 HH:mm:ss",
+      "date": "YYYY年MM月DD日",
+      "time": "HH:mm:ss",
+      "relative": "{{value}}{{unit}}前"
+    },
+    "duration": {
+      "format": "{{hours}}小时{{minutes}}分{{seconds}}秒",
+      "days": "{{days}}天",
+      "hours": "{{hours}}小时",
+      "minutes": "{{minutes}}分钟"
+    }
+  }
+}

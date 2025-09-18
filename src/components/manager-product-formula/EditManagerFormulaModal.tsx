@@ -86,7 +86,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
         materials: materials.map(m => ({
           rawMaterialId: m.rawMaterialId,
           quantity: m.quantity,
-          unit: m.unit || 'units'
+          unit: m.unit || t('managerProductFormula.defaultUnit')
         })),
         craftCategoryIds: craftCategories.map(c => c.craftCategoryId)
       };

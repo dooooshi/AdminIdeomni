@@ -97,7 +97,7 @@ const ManagerMaterialSelector: React.FC<ManagerMaterialSelectorProps> = ({
             rawMaterialId: materialId,
             rawMaterial: material,
             quantity: quantities[materialId] || 1,
-            unit: 'units'
+            unit: t('managerProductFormula.defaultUnit')
           });
         }
       }

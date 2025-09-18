@@ -26,6 +26,8 @@ if sum of all (requirement_number) > overall_purchase_number, keep deducting Max
 
 before the  Settlement time, every team can deliver the products (the number must be int) into every tile ’s list, need to pay for the transporattion fee. 
 
+(for per MTO, the team can submit one time in per tile)
+
 to the Settlement time, the system will conduct the settlement process: 
 1. count each tile ’s comming products, check if the product align with the manager_product_formule, count one by one until each tile’s requirement_number for this product fullfilled. the system pay the team ( need to integrate with existing team account module)
 2. for the uncount products, the team can select team’s facility-space and pay the transportation fee to get the products back
@@ -34,7 +36,7 @@ to the Settlement time, the system will conduct the settlement process:
 
 => MTO type 2
 
-NOTE that the only team build the facility type MALL
+NOTE that the only team build the facility type MALL can participate
 
 add a data model manager_requirement_product_type_2 
 1. manager product formula id
@@ -44,13 +46,14 @@ add a data model manager_requirement_product_type_2
 
 at the release time, the  user will see the MTO type 2 details,
 
-befor the settlement time, the team with  MALL facility can submit the products to its MALL (need the products within the MALL facility’s space)with 
+befor the settlement time, the team with  MALL facility can submit the products to its MALL with traget MTO (need the products within the MALL facility’s space)with 
 1. (int) product number 
 2. (decimal) product sell price per unit
 
+(for per MTO, the team can submit one time in per tile)
 
 at the settlement time, 
-- do a calculation for all tiles (with MALL facility) ’s population ,   
+- do a calculation for all tiles (with MALL facility in this tile) 's population ,   
 - evey tile ’s budget would be  this tile’s population /  all tiles (with MALL facility) ’s population * 
 overall_purchase_budget
 - for each tile ’s all MALL ’s product for this MTO_type_2, order based on product sell price per unit, start from the lowest, 

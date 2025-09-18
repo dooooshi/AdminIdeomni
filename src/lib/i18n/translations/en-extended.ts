@@ -552,4 +552,21 @@ export const enExtendedTranslations = {
   'managerProductFormula.errors.craftCategoriesRequired': 'At least one craft category is required',
   'managerProductFormula.errors.duplicateCategoryType': 'Each category type can only be selected once',
   'managerProductFormula.errors.formulaLocked': 'This formula is locked and cannot be edited',
+
+  // Additional translations
+  'managerProductFormula.copy': '(Copy)',
+  'managerProductFormula.type1': 'Type 1',
+  'managerProductFormula.type2': 'Type 2',
+  'managerProductFormula.level1': 'Level 1',
+  'managerProductFormula.level2': 'Level 2',
+  'managerProductFormula.level3': 'Level 3',
+  'managerProductFormula.level4': 'Level 4',
+  'managerProductFormula.waterAbbr': 'W:',
+  'managerProductFormula.powerAbbr': 'P:',
+  'managerProductFormula.goldAbbr': 'G:',
+  'managerProductFormula.finalWater': 'Final Water',
+  'managerProductFormula.finalPower': 'Final Power',
+  'managerProductFormula.finalGold': 'Final Gold',
+  'managerProductFormula.defaultUnit': 'units',
+  'managerProductFormula.dateFormat': 'MMM dd, yyyy HH:mm',
 };

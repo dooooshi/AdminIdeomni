@@ -62,9 +62,6 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
             <Typography variant="h5" fontWeight="bold" color="success.main">
               {formatNumber(costs.productFormulaCarbonEmission, 3)}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              kg CO₂
-            </Typography>
           </Stack>
         </Grid>
 
@@ -186,13 +183,13 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
               {t('managerProductFormula.calculationFormula')}:
             </Typography>
             <Typography variant="caption" component="div" sx={{ fontFamily: 'monospace' }}>
-              Final Water = {costs.totalSetupWaterCost} + ({formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalWaterPercent)}%)
+              {t('managerProductFormula.finalWater')} = {costs.totalSetupWaterCost} + ({formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalWaterPercent)}%)
             </Typography>
             <Typography variant="caption" component="div" sx={{ fontFamily: 'monospace' }}>
-              Final Power = {costs.totalSetupPowerCost} + ({formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalPowerPercent)}%)
+              {t('managerProductFormula.finalPower')} = {costs.totalSetupPowerCost} + ({formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalPowerPercent)}%)
             </Typography>
             <Typography variant="caption" component="div" sx={{ fontFamily: 'monospace' }}>
-              Final Gold = ${formatNumber(costs.totalSetupGoldCost)} + (${formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalGoldPercent)}%)
+              {t('managerProductFormula.finalGold')} = ${formatNumber(costs.totalSetupGoldCost)} + (${formatNumber(costs.totalMaterialCost)} × {formatNumber(costs.totalGoldPercent)}%)
             </Typography>
           </Paper>
         </Grid>
