@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import useDebounce from '@/@ideomni/hooks/useDebounce';
 import {
   Dialog,
@@ -82,13 +82,16 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   // Form state
   const [area, setArea] = useState(1);
   const [description, setDescription] = useState('');
-  
+
   // Validation and loading states
   const [validation, setValidation] = useState<PurchaseValidation | null>(null);
   const [validating, setValidating] = useState(false);
   const [purchasing, setPurchasing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pendingValidation, setPendingValidation] = useState(false);
+
+  // Track if modal just opened to prevent initial double validation
+  const isInitialMount = useRef(true);
 
   // Helper functions
   const resetForm = () => {
@@ -133,13 +136,25 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
   // Reset form when modal opens/closes or tile changes
   useEffect(() => {
     if (open && tile) {
+      isInitialMount.current = true; // Mark as initial mount when modal opens
       resetForm();
       generateDefaultDescription();
     }
   }, [open, tile]);
 
-  // Validate purchase when area changes (debounced)
+  // Validate purchase when area changes (debounced) - but skip on initial mount
   useEffect(() => {
+    // Skip validation if this is the initial mount (modal just opened)
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      // Perform initial validation without debounce
+      if (tile && area > 0) {
+        validatePurchase();
+      }
+      return;
+    }
+
+    // For subsequent changes, use debounced validation
     if (tile && area > 0) {
       setPendingValidation(true);
       debouncedValidation();
