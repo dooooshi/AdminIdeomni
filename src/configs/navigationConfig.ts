@@ -547,6 +547,38 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 			]
 		});
 		
+		// Add MTO (Made-To-Order) for Students
+		navigation.push({
+			id: 'mto-student',
+			title: 'MTO Orders',
+			subtitle: 'View and fulfill Made-To-Order requirements',
+			type: 'group',
+			icon: 'heroicons-outline:shopping-bag',
+			translate: 'MTO_ORDERS',
+			translateSubtitle: 'MTO_ORDERS_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'mto-student.market',
+					title: 'MTO Market',
+					type: 'item',
+					icon: 'heroicons-outline:shopping-cart',
+					url: '/student/mto-market',
+					translate: 'MTO_STUDENT_MARKET',
+					auth: ['user']
+				},
+				{
+					id: 'mto-student.deliveries',
+					title: 'My Deliveries',
+					type: 'item',
+					icon: 'heroicons-outline:truck',
+					url: '/student/mto-deliveries',
+					translate: 'MTO_STUDENT_DELIVERIES',
+					auth: ['user']
+				}
+			]
+		});
+
 		// Add Production & Resources for Students
 		navigation.push({
 			id: 'production-resources',
@@ -699,6 +731,24 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:beaker',
 					url: '/mto-management/manager-product-formula',
 					translate: 'MANAGER_PRODUCT_FORMULA',
+					auth: ['user']
+				},
+				{
+					id: 'mto-management.mto-type-1',
+					title: 'MTO Type 1 - Population Based',
+					type: 'item',
+					icon: 'heroicons-outline:user-group',
+					url: '/mto-management/mto-type-1',
+					translate: 'MTO_TYPE1_TITLE',
+					auth: ['user']
+				},
+				{
+					id: 'mto-management.mto-type-2',
+					title: 'MTO Type 2 - MALL Based',
+					type: 'item',
+					icon: 'heroicons-outline:building-storefront',
+					url: '/mto-management/mto-type-2',
+					translate: 'MTO_TYPE2_TITLE',
 					auth: ['user']
 				}
 			]

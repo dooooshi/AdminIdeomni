@@ -1,9 +1,11 @@
 import { enExtendedTranslations } from './en-extended';
 import { tradeTranslationsEn } from './trade-en';
+import { mtoTranslationsEn } from './mto-en';
 
 export const enTranslations = {
   ...enExtendedTranslations,
   ...tradeTranslationsEn,
+  ...mtoTranslationsEn,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO Management',
   'MTO_MANAGEMENT_SUBTITLE': 'Made-To-Order system management',

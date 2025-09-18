@@ -1,9 +1,11 @@
 import { zhExtendedTranslations } from './zh-extended';
 import { tradeTranslationsZh } from './trade-zh';
+import { mtoTranslationsZh } from './mto-zh';
 
 export const zhTranslations = {
   ...zhExtendedTranslations,
   ...tradeTranslationsZh,
+  ...mtoTranslationsZh,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO管理',
   'MTO_MANAGEMENT_SUBTITLE': '按订单制造系统管理',
