@@ -24,9 +24,9 @@ import {
   AlertTitle,
   CircularProgress,
   Button,
-  Grid,
   Divider
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
@@ -71,14 +71,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
       setLoading(true);
       setError(null);
 
-      let data: MtoType1CalculationHistory[];
-      if (mockMode) {
-        const { mtoType1MockService } = await import('@/lib/services/mtoType1MockService');
-        data = await mtoType1MockService.getCalculationHistory(mtoType1Id);
-      } else {
-        const response = await MtoType1Service.getCalculationHistory(Number(mtoType1Id));
-        data = response;
-      }
+      const data = await MtoType1Service.getCalculationHistory(Number(mtoType1Id));
 
       setHistory(data.sort((a, b) => a.id - b.id));
       setActiveStep(data.length - 1);
@@ -201,7 +194,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
               >
                 <Box display="flex" alignItems="center">
                   <Typography variant="subtitle1" fontWeight="bold">
-                    {step.stepDescription}
+                    Calculation #{step.id}
                   </Typography>
                   <Chip
                     label={step.calculationType.replace(/_/g, ' ')}
@@ -214,43 +207,43 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
               <StepContent>
                 <Card variant="outlined" sx={{ mb: 2 }}>
                   <CardContent>
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} md={4}>
+                    <Grid2 container spacing={2}>
+                      <Grid2 size={{ xs: 12, md: 4 }}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.initialRequirement')}
                         </Typography>
                         <Typography variant="h6" color="primary">
-                          {formatNumber(step.totalInitialRequirement)}
+                          {formatNumber(step.totalCalculatedRequirement)}
                         </Typography>
-                      </Grid>
-                      <Grid item xs={12} md={4}>
+                      </Grid2>
+                      <Grid2 size={{ xs: 12, md: 4 }}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.adjustedRequirement')}
                         </Typography>
                         <Typography variant="h6" color={step.calculationType === 'ADJUSTMENT' ? 'warning.main' : 'primary'}>
                           {formatNumber(step.totalAdjustedRequirement)}
                         </Typography>
-                      </Grid>
-                      {step.tilesSetToZero > 0 && (
-                        <Grid item xs={12} md={4}>
+                      </Grid2>
+                      {step.excludedTiles > 0 && (
+                        <Grid2 size={{ xs: 12, md: 4 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mtoType1.calculationHistory.tilesEliminated')}
                           </Typography>
                           <Typography variant="h6" color="error">
-                            {step.tilesSetToZero}
+                            {step.excludedTiles}
                           </Typography>
-                        </Grid>
+                        </Grid2>
                       )}
-                      {step.budgetSaved && (
-                        <Grid item xs={12}>
+                      {step.adjustmentReason && (
+                        <Grid2 size={12}>
                           <Alert severity="info" variant="outlined">
                             <Typography variant="body2">
-                              {t('mto:mtoType1.calculationHistory.budgetSaved')}: {formatCurrency(step.budgetSaved)}
+                              {step.adjustmentReason}
                             </Typography>
                           </Alert>
-                        </Grid>
+                        </Grid2>
                       )}
-                    </Grid>
+                    </Grid2>
 
                     {tileAdjustments.length > 0 && (
                       <Box mt={2}>

@@ -3,7 +3,6 @@
 import React from 'react';
 import {
   Box,
-  Grid,
   Card,
   CardContent,
   Typography,
@@ -16,6 +15,7 @@ import {
   ListItemIcon,
   Divider
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
@@ -112,14 +112,14 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
 
   return (
     <Box>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={3}>
+      <Grid2 container spacing={3}>
+        <Grid2 size={{ xs: 12, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography color="textSecondary" gutterBottom variant="body2">
-                    {t('mto:mtoType1.stats.fulfillmentRate')}
+                    {t('mto:mto.type1.stats.fulfillmentRate')}
                   </Typography>
                   <Typography variant="h4" color="primary">
                     {formatPercentage(statistics.fulfillmentRate)}
@@ -139,60 +139,60 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               />
             </CardContent>
           </Card>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={3}>
+        <Grid2 size={{ xs: 12, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <LocationIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom variant="body2">
-                  {t('mto:mtoType1.stats.tilesCoverage')}
+                  {t('mto:mto.type1.stats.tilesCoverage')}
                 </Typography>
               </Box>
               <Typography variant="h4">
                 {statistics.tilesWithDelivery}/{statistics.activeTiles}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                {formatPercentage((statistics.tilesWithDelivery / statistics.activeTiles) * 100)} coverage
+                {formatPercentage((statistics.tilesWithDelivery / statistics.activeTiles) * 100)} {t('mto:mto.type1.stats.coverage')}
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={3}>
+        <Grid2 size={{ xs: 12, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <GroupIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom variant="body2">
-                  {t('mto:mtoType1.stats.participatingTeams')}
+                  {t('mto:mto.type1.stats.participatingTeams')}
                 </Typography>
               </Box>
               <Typography variant="h4">
                 {statistics.uniqueTeams}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                Avg {formatNumber(statistics.averageDeliveryPerTile)} per tile
+                {t('mto:mto.type1.stats.avgPerTile', { avg: formatNumber(statistics.averageDeliveryPerTile) })}
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={3}>
+        <Grid2 size={{ xs: 12, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
                 <MoneyIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom variant="body2">
-                  {t('mto:mtoType1.stats.budgetUtilization')}
+                  {t('mto:mto.type1.stats.budgetUtilization')}
                 </Typography>
               </Box>
               <Typography variant="h5">
                 {formatCurrency(statistics.spentBudget)}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                of {formatCurrency(statistics.totalBudget)}
+                {t('mto:mto.type1.stats.ofTotal', { total: formatCurrency(statistics.totalBudget) })}
               </Typography>
               <LinearProgress
                 variant="determinate"
@@ -201,12 +201,12 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               />
             </CardContent>
           </Card>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
-              {t('mto:mtoType1.stats.deliveryDistribution')}
+              {t('mto:mto.type1.stats.deliveryDistribution')}
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -229,43 +229,43 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
             </ResponsiveContainer>
 
             <Box sx={{ mt: 2 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={4}>
+              <Grid2 container spacing={2}>
+                <Grid2 size={4}>
                   <Box display="flex" alignItems="center">
                     <CheckIcon color="success" sx={{ mr: 1 }} />
                     <Box>
-                      <Typography variant="body2" color="textSecondary">Settled</Typography>
+                      <Typography variant="body2" color="textSecondary">{t('mto:mto.type1.stats.settled')}</Typography>
                       <Typography variant="h6">{formatNumber(statistics.totalSettled)}</Typography>
                     </Box>
                   </Box>
-                </Grid>
-                <Grid item xs={4}>
+                </Grid2>
+                <Grid2 size={4}>
                   <Box display="flex" alignItems="center">
                     <CancelIcon color="warning" sx={{ mr: 1 }} />
                     <Box>
-                      <Typography variant="body2" color="textSecondary">Unsettled</Typography>
+                      <Typography variant="body2" color="textSecondary">{t('mto:mto.type1.stats.unsettled')}</Typography>
                       <Typography variant="h6">{formatNumber(statistics.totalUnsettled)}</Typography>
                     </Box>
                   </Box>
-                </Grid>
-                <Grid item xs={4}>
+                </Grid2>
+                <Grid2 size={4}>
                   <Box display="flex" alignItems="center">
                     <TimerIcon color="action" sx={{ mr: 1 }} />
                     <Box>
-                      <Typography variant="body2" color="textSecondary">Remaining</Typography>
+                      <Typography variant="body2" color="textSecondary">{t('mto:mto.type1.stats.remaining')}</Typography>
                       <Typography variant="h6">{formatNumber(statistics.totalRequirement - statistics.totalDelivered)}</Typography>
                     </Box>
                   </Box>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Box>
           </Paper>
-        </Grid>
+        </Grid2>
 
-        <Grid item xs={12} md={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
-              {t('mto:mtoType1.stats.budgetAllocation')}
+              {t('mto:mto.type1.stats.budgetAllocation')}
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -293,7 +293,7 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                   <DeliveryIcon color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary={t('mto:mtoType1.stats.totalDeliveries')}
+                  primary={t('mto:mto.type1.stats.totalDeliveries')}
                   secondary={formatNumber(statistics.totalDelivered)}
                 />
               </ListItem>
@@ -303,19 +303,19 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                   <AssessmentIcon color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary={t('mto:mtoType1.stats.totalRequirement')}
+                  primary={t('mto:mto.type1.stats.totalRequirement')}
                   secondary={formatNumber(statistics.totalRequirement)}
                 />
               </ListItem>
             </List>
           </Paper>
-        </Grid>
+        </Grid2>
 
         {tileData.length > 0 && (
-          <Grid item xs={12}>
+          <Grid2 size={12}>
             <Paper sx={{ p: 2 }}>
               <Typography variant="h6" gutterBottom>
-                {t('mto:mtoType1.stats.tilePerformance')}
+                {t('mto:mto.type1.stats.tilePerformance')}
               </Typography>
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={tileData}>
@@ -324,20 +324,20 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                   <YAxis />
                   <Tooltip formatter={(value: number) => formatNumber(value)} />
                   <Legend />
-                  <Bar dataKey="requirement" fill="#8884d8" name="Requirement" />
-                  <Bar dataKey="delivered" fill="#82ca9d" name="Delivered" />
-                  <Bar dataKey="settled" fill="#ffc658" name="Settled" />
+                  <Bar dataKey="requirement" fill="#8884d8" name={t('mto:mto.type1.stats.requirement')} />
+                  <Bar dataKey="delivered" fill="#82ca9d" name={t('mto:mto.type1.stats.delivered')} />
+                  <Bar dataKey="settled" fill="#ffc658" name={t('mto:mto.type1.stats.settled')} />
                 </BarChart>
               </ResponsiveContainer>
             </Paper>
-          </Grid>
+          </Grid2>
         )}
 
         {timeSeriesData.length > 0 && (
-          <Grid item xs={12}>
+          <Grid2 size={12}>
             <Paper sx={{ p: 2 }}>
               <Typography variant="h6" gutterBottom>
-                {t('mto:mtoType1.stats.deliveryTimeline')}
+                {t('mto:mto.type1.stats.deliveryTimeline')}
               </Typography>
               <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={timeSeriesData}>
@@ -346,14 +346,14 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                   <YAxis />
                   <Tooltip formatter={(value: number) => formatNumber(value)} />
                   <Legend />
-                  <Area type="monotone" dataKey="deliveries" stackId="1" stroke="#8884d8" fill="#8884d8" name="Deliveries" />
-                  <Area type="monotone" dataKey="settlements" stackId="1" stroke="#82ca9d" fill="#82ca9d" name="Settlements" />
+                  <Area type="monotone" dataKey="deliveries" stackId="1" stroke="#8884d8" fill="#8884d8" name={t('mto:mto.type1.stats.deliveries')} />
+                  <Area type="monotone" dataKey="settlements" stackId="1" stroke="#82ca9d" fill="#82ca9d" name={t('mto:mto.type1.stats.settlements')} />
                 </AreaChart>
               </ResponsiveContainer>
             </Paper>
-          </Grid>
+          </Grid2>
         )}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

@@ -19,7 +19,7 @@ import {
   Divider,
   Autocomplete
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid2 from '@mui/material/Grid';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -232,16 +232,16 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
         )}
 
         <Box component="form" noValidate>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+          <Grid2 container spacing={3}>
+            <Grid2 size={12}>
               <Typography variant="h6" gutterBottom>
                 <ScienceIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.basicInfo')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('mto.type1.fields.name')}
@@ -252,9 +252,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 required
                 disabled={requirement?.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <Autocomplete
                 options={formulas}
                 getOptionLabel={(option) => `#${option.formulaNumber} - ${option.productName || 'Unnamed'}`}
@@ -281,9 +281,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   />
                 )}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 multiline
@@ -293,17 +293,17 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 onChange={(e) => handleChange('description', e.target.value)}
                 disabled={requirement?.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <Typography variant="h6" gutterBottom>
                 <MoneyIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.pricing')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={4}>
+            <Grid2 size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -318,9 +318,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   startAdornment: <InputAdornment position="start">$</InputAdornment>,
                 }}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={4}>
+            <Grid2 size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -332,9 +332,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 required
                 disabled={requirement?.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={4}>
+            <Grid2 size={{ xs: 12, md: 4 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -346,9 +346,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 required
                 disabled={requirement?.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -367,9 +367,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   ),
                 }}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label={t('mto.type1.fields.totalBudget')}
@@ -380,17 +380,17 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 }}
                 helperText={t('mto.type1.helpers.totalBudget')}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <Typography variant="h6" gutterBottom>
                 <ScheduleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.schedule')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <DateTimePicker
                 label={t('mto.type1.fields.releaseTime')}
                 value={formData.releaseTime}
@@ -405,9 +405,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   }
                 }}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <DateTimePicker
                 label={t('mto.type1.fields.settlementTime')}
                 value={formData.settlementTime}
@@ -423,9 +423,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   }
                 }}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 multiline
@@ -435,9 +435,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 onChange={(e) => handleChange('notes', e.target.value)}
                 disabled={requirement?.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Button
                   variant="outlined"
@@ -457,8 +457,8 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   {requirement ? t('common.update') : t('common.create')}
                 </Button>
               </Stack>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Box>
       </Paper>
     </LocalizationProvider>

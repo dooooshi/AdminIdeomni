@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  GridLegacy as Grid,
   Table,
   TableBody,
   TableCell,
@@ -34,6 +33,7 @@ import {
   IconButton,
   Badge,
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   PlayArrow as PlayArrowIcon,
   Refresh as RefreshIcon,
@@ -231,8 +231,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
       )}
 
       {/* Summary Cards */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid2 container spacing={3} sx={{ mb: 4 }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -248,8 +248,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -268,8 +268,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -288,8 +288,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -310,8 +310,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Settlement Progress Stepper */}
       {requirement.status === 'IN_PROGRESS' && (
@@ -339,8 +339,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
       )}
 
       {/* Price Distribution Chart */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+      <Grid2 container spacing={3} sx={{ mb: 4 }}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Price Distribution Analysis" />
             <CardContent>
@@ -356,8 +356,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </ResponsiveContainer>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Submission Status Distribution" />
             <CardContent>
@@ -393,8 +393,8 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Submissions by Priority Ranking */}
       <Card sx={{ mb: 4 }}>

@@ -12,13 +12,13 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  GridLegacy as Grid,
   Alert,
   CircularProgress,
   InputAdornment,
   Box,
   FormHelperText
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -214,8 +214,8 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
             </Alert>
           )}
 
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+          <Grid2 container spacing={3}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 label={t('mto.type2.fields.requirementName')}
@@ -223,9 +223,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('name', e.target.value)}
                 placeholder={t('mto.type2.placeholders.requirementName')}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth required error={!!errors.managerProductFormulaId}>
                 <InputLabel>{t('mto.type2.fields.productFormula')}</InputLabel>
                 <Select
@@ -249,9 +249,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   <FormHelperText>{errors.managerProductFormulaId}</FormHelperText>
                 )}
               </FormControl>
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -267,9 +267,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 }}
                 disabled={editData && editData.status !== 'DRAFT'}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.releaseTime')}
@@ -287,9 +287,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   minDateTime={editData ? undefined : new Date()}
                 />
               </LocalizationProvider>
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12} md={6}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.settlementTime')}
@@ -307,9 +307,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   minDateTime={new Date(formData.releaseTime)}
                 />
               </LocalizationProvider>
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 multiline
@@ -319,9 +319,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('description', e.target.value)}
                 placeholder={t('mto.type2.placeholders.description')}
               />
-            </Grid>
+            </Grid2>
 
-            <Grid item xs={12}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 multiline
@@ -331,8 +331,8 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('notes', e.target.value)}
                 placeholder={t('mto.type2.placeholders.notes')}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Box>
       </DialogContent>
 

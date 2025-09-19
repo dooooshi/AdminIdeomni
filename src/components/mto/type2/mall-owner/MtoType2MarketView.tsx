@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  GridLegacy as Grid,
   Chip,
   Button,
   CircularProgress,
@@ -35,6 +34,7 @@ import {
   Divider,
   LinearProgress,
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   Visibility as VisibilityIcon,
   Add as AddIcon,
@@ -242,8 +242,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
       </Box>
 
       {/* Summary Stats */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid2 container spacing={3} sx={{ mb: 4 }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -262,8 +262,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -279,8 +279,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -296,8 +296,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -313,8 +313,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Requirements List */}
       {filteredRequirements.length === 0 ? (
@@ -325,13 +325,13 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
           }
         </Alert>
       ) : (
-        <Grid container spacing={3}>
+        <Grid2 container spacing={3}>
           {filteredRequirements.map((requirement) => {
             const opportunityScore = getOpportunityScore(requirement);
             const hasSubmissions = requirement.mySubmissions.length > 0;
 
             return (
-              <Grid item xs={12} lg={6} key={requirement.requirementId}>
+              <Grid2 size={{ xs: 12, lg: 6 }} key={requirement.requirementId}>
                 <Card
                   sx={{
                     height: '100%',
@@ -374,24 +374,24 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
 
                   <CardContent>
                     {/* Key Metrics */}
-                    <Grid container spacing={2} sx={{ mb: 2 }}>
-                      <Grid item xs={4}>
+                    <Grid2 container spacing={2} sx={{ mb: 2 }}>
+                      <Grid2 size={4}>
                         <Typography variant="body2" color="textSecondary">
                           My MALLs
                         </Typography>
                         <Typography variant="h6" color="primary">
                           {requirement.myMalls.length}
                         </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
+                      </Grid2>
+                      <Grid2 size={4}>
                         <Typography variant="body2" color="textSecondary">
                           My Submissions
                         </Typography>
                         <Typography variant="h6" color={hasSubmissions ? 'success.main' : 'textSecondary'}>
                           {requirement.mySubmissions.length}
                         </Typography>
-                      </Grid>
-                      <Grid item xs={4}>
+                      </Grid2>
+                      <Grid2 size={4}>
                         <Typography variant="body2" color="textSecondary">
                           Opportunity Score
                         </Typography>
@@ -405,8 +405,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                         >
                           {opportunityScore}%
                         </Typography>
-                      </Grid>
-                    </Grid>
+                      </Grid2>
+                    </Grid2>
 
                     <Divider sx={{ my: 2 }} />
 
@@ -518,18 +518,18 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid2>
             );
           })}
-        </Grid>
+        </Grid2>
       )}
 
       {/* Filters Dialog */}
       <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Filter Opportunities</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
+          <Grid2 container spacing={3} sx={{ mt: 1 }}>
+            <Grid2 size={12}>
               <FormControl fullWidth>
                 <InputLabel>Status</InputLabel>
                 <Select
@@ -545,8 +545,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                   <MenuItem value="CANCELLED">Cancelled</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Min Budget"
@@ -555,8 +555,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, minBudget: parseInt(e.target.value) || 0 }))}
                 InputProps={{ inputProps: { min: 0 } }}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Max Budget"
@@ -565,8 +565,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, maxBudget: parseInt(e.target.value) || 0 }))}
                 InputProps={{ inputProps: { min: 0 } }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 size={12}>
               <FormControl fullWidth>
                 <InputLabel>MALL Eligibility</InputLabel>
                 <Select
@@ -578,8 +578,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                   <MenuItem value="eligible">Only Where I Have MALLs</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </DialogContent>
         <DialogActions>
           <Button onClick={resetFilters}>Reset</Button>
@@ -603,8 +603,8 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
         <DialogContent>
           {selectedRequirement && (
             <Box sx={{ pt: 2 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+              <Grid2 container spacing={3}>
+                <Grid2 size={{ xs: 12, md: 6 }}>
                   <Typography variant="h6" gutterBottom>
                     {selectedRequirement.requirementName || `Requirement ${selectedRequirement.requirementId}`}
                   </Typography>
@@ -618,9 +618,9 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                       Budget: ${selectedRequirement.totalBudget.toLocaleString()}
                     </Typography>
                   </Box>
-                </Grid>
+                </Grid2>
 
-                <Grid item xs={12}>
+                <Grid2 size={12}>
                   <Typography variant="subtitle1" gutterBottom>
                     My Eligible MALLs
                   </Typography>
@@ -660,10 +660,10 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                       </TableBody>
                     </Table>
                   </TableContainer>
-                </Grid>
+                </Grid2>
 
                 {selectedRequirement.mySubmissions.length > 0 && (
-                  <Grid item xs={12}>
+                  <Grid2 size={12}>
                     <Typography variant="subtitle1" gutterBottom>
                       My Submissions
                     </Typography>
@@ -714,9 +714,9 @@ export const MtoType2MarketView: React.FC<MtoType2MarketViewProps> = ({
                         </TableBody>
                       </Table>
                     </TableContainer>
-                  </Grid>
+                  </Grid2>
                 )}
-              </Grid>
+              </Grid2>
             </Box>
           )}
         </DialogContent>

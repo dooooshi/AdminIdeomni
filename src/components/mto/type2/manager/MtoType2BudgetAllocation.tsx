@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  GridLegacy as Grid,
   Table,
   TableBody,
   TableCell,
@@ -24,6 +23,7 @@ import {
   DialogContent,
   DialogActions,
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   Refresh as RefreshIcon,
   Visibility as VisibilityIcon,
@@ -206,8 +206,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
       ) : (
         <>
           {/* Summary Cards */}
-          <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} sm={6} md={3}>
+          <Grid2 container spacing={3} sx={{ mb: 4 }}>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -223,8 +223,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -243,8 +243,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -260,8 +260,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
               <Card>
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -292,12 +292,12 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
 
           {/* Visualization Charts */}
-          <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} md={6}>
+          <Grid2 container spacing={3} sx={{ mb: 4 }}>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <Card>
                 <CardHeader title="Budget Distribution by Tile" />
                 <CardContent>
@@ -323,8 +323,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, md: 6 }}>
               <Card>
                 <CardHeader title="Budget Allocation vs Usage" />
                 <CardContent>
@@ -342,8 +342,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
 
           {/* Detailed Table */}
           <Card>
@@ -438,8 +438,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
         <DialogContent>
           {selectedTile && (
             <Box sx={{ pt: 2 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+              <Grid2 container spacing={3}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     Budget Information
                   </Typography>
@@ -454,8 +454,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                       Remaining: ${selectedTile.remainingBudget.toLocaleString()}
                     </Typography>
                   </Box>
-                </Grid>
-                <Grid item xs={12} sm={6}>
+                </Grid2>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     Tile Statistics
                   </Typography>
@@ -467,8 +467,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                       MALL Count: {selectedTile.mallCount}
                     </Typography>
                   </Box>
-                </Grid>
-                <Grid item xs={12}>
+                </Grid2>
+                <Grid2 size={12}>
                   <Typography variant="subtitle2" gutterBottom>
                     MALL Details
                   </Typography>
@@ -496,8 +496,8 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                       </TableBody>
                     </Table>
                   </TableContainer>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Box>
           )}
         </DialogContent>

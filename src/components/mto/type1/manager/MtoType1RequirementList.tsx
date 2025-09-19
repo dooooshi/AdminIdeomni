@@ -59,10 +59,11 @@ interface MtoType1RequirementListProps {
   refresh?: number;
 }
 
-const statusColors: Record<keyof MtoType1Status, 'default' | 'primary' | 'success' | 'warning' | 'error'> = {
+const statusColors: Record<keyof MtoType1Status, 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'> = {
   DRAFT: 'default',
   RELEASED: 'primary',
   IN_PROGRESS: 'warning',
+  SETTLING: 'info',
   SETTLED: 'success',
   CANCELLED: 'error'
 };

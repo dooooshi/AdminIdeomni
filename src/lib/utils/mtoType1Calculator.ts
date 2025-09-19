@@ -7,6 +7,27 @@ import {
   MtoType1Settlement
 } from '@/lib/types/mtoType1';
 
+// Extended internal interface with additional properties needed for calculations
+interface MtoType1TileRequirementInternal extends MtoType1TileRequirement {
+  tileName?: string;
+  purchaseGoldPrice?: number;
+  basePurchaseNumber?: number;
+  baseCountPopulationNumber?: number;
+  initialRequirement?: number;
+  requirementBudget?: number;
+  deliveredNumber?: number;
+  remainingRequirement?: number;
+  adjustmentReason?: string;
+}
+
+// Extended internal interface for delivery
+interface MtoType1DeliveryInternal extends MtoType1Delivery {
+  mapTileId?: string;
+  deliveryNumber?: number;
+  mtoType1Id?: number;
+  mtoType1DeliveryId?: number;
+}
+
 export interface TilePopulationData {
   tileId: string;
   tileName: string;
@@ -71,8 +92,8 @@ export class MtoType1Calculator {
   calculateInitialRequirements(
     tiles: TilePopulationData[],
     config: MtoCalculationConfig
-  ): Map<string, MtoType1TileRequirement> {
-    const tileRequirements = new Map<string, MtoType1TileRequirement>();
+  ): Map<string, MtoType1TileRequirementInternal> {
+    const tileRequirements = new Map<string, MtoType1TileRequirementInternal>();
     this.calculationHistory = [];
     let stepNumber = 1;
 
@@ -82,30 +103,34 @@ export class MtoType1Calculator {
       );
       const initialRequirement = config.basePurchaseNumber * populationMultiplier;
 
-      const requirement: MtoType1TileRequirement = {
-        id: `calc-${tile.tileId}-${Date.now()}`,
-        mtoType1Id: '',
-        mapTileId: tile.tileId,
+      const requirement: MtoType1TileRequirementInternal = {
+        id: Date.now(),
+        requirementId: 0,
+        tileId: tile.tileId,
         tileName: tile.tileName,
         tilePopulation: tile.currentPopulation,
         purchaseGoldPrice: config.purchaseGoldPrice,
         basePurchaseNumber: config.basePurchaseNumber,
         baseCountPopulationNumber: config.baseCountPopulationNumber,
         initialRequirement,
+        calculatedRequirement: initialRequirement,
         adjustedRequirement: initialRequirement,
+        deliveredQuantity: 0,
+        remainingQuantity: initialRequirement,
         deliveredNumber: 0,
         remainingRequirement: initialRequirement,
         requirementBudget: initialRequirement * config.purchaseGoldPrice,
+        isExcluded: false,
         adjustmentReason: null,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
 
       tileRequirements.set(tile.tileId, requirement);
       return requirement;
     });
 
-    const totalInitial = initialRequirements.reduce((sum, r) => sum + r.initialRequirement, 0);
+    const totalInitial = initialRequirements.reduce((sum, r) => sum + r.calculatedRequirement, 0);
 
     this.calculationHistory.push({
       stepNumber: stepNumber++,
@@ -115,11 +140,11 @@ export class MtoType1Calculator {
       totalAdjustedRequirement: totalInitial,
       tilesSetToZero: 0,
       tileAdjustments: initialRequirements.map(r => ({
-        tileId: r.mapTileId,
+        tileId: r.tileId,
         tileName: r.tileName,
         population: r.tilePopulation,
-        initialReq: r.initialRequirement,
-        adjustedReq: r.initialRequirement,
+        initialReq: r.calculatedRequirement,
+        adjustedReq: r.calculatedRequirement,
         reason: 'Initial calculation'
       }))
     });
@@ -152,12 +177,12 @@ export class MtoType1Calculator {
       totalAdjustedRequirement: totalAdjusted,
       tilesSetToZero: Array.from(tileRequirements.values()).filter(r => r.adjustedRequirement === 0).length,
       tileAdjustments: Array.from(tileRequirements.values()).map(r => ({
-        tileId: r.mapTileId,
+        tileId: r.tileId,
         tileName: r.tileName,
         population: r.tilePopulation,
-        initialReq: r.initialRequirement,
+        initialReq: r.calculatedRequirement,
         adjustedReq: r.adjustedRequirement,
-        reason: r.adjustmentReason || 'Within budget'
+        reason: r.excludedReason || 'Within budget'
       }))
     });
 
@@ -165,7 +190,7 @@ export class MtoType1Calculator {
   }
 
   private applyBudgetConstraint(
-    requirements: MtoType1TileRequirement[],
+    requirements: MtoType1TileRequirementInternal[],
     config: MtoCalculationConfig,
     stepNumber: number
   ): void {
@@ -182,15 +207,18 @@ export class MtoType1Calculator {
       maxTiles.forEach(tile => {
         if (tile.adjustedRequirement > 0) {
           tile.adjustedRequirement = 0;
+          tile.remainingQuantity = 0;
           tile.remainingRequirement = 0;
           tile.requirementBudget = 0;
+          tile.isExcluded = true;
+          tile.excludedReason = 'Budget constraint - exceeded overall limit';
           tile.adjustmentReason = 'Budget constraint - exceeded overall limit';
 
           eliminatedTiles.push({
-            tileId: tile.mapTileId,
+            tileId: tile.tileId,
             tileName: tile.tileName,
             population: tile.tilePopulation,
-            initialReq: tile.initialRequirement,
+            initialReq: tile.calculatedRequirement,
             adjustedReq: 0,
             reason: `Eliminated: had max requirement of ${maxRequirement}`
           });
@@ -221,7 +249,7 @@ export class MtoType1Calculator {
   }
 
   simulateSettlement(
-    tileRequirements: Map<string, MtoType1TileRequirement>,
+    tileRequirements: Map<string, MtoType1TileRequirementInternal>,
     deliveries: MtoType1Delivery[],
     config: MtoCalculationConfig
   ): Map<string, MtoType1Settlement[]> {
@@ -231,14 +259,14 @@ export class MtoType1Calculator {
 
     Array.from(tileRequirements.entries()).forEach(([tileId, requirement]) => {
       const tileDeliveries = deliveries
-        .filter(d => d.mapTileId === tileId)
-        .sort((a, b) => new Date(a.deliveredAt).getTime() - new Date(b.deliveredAt).getTime());
+        .filter(d => d.tileId === tileId)
+        .sort((a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime());
 
       this.settlementHistory.push({
         stepNumber: globalStepNumber++,
         stepType: 'TILE_PROCESSING_START',
         stepDescription: `Starting settlement for tile ${requirement.tileName}`,
-        tileId: requirement.mapTileId,
+        tileId: requirement.tileId,
         tileName: requirement.tileName,
         tileRequirement: requirement.adjustedRequirement
       });
@@ -252,7 +280,7 @@ export class MtoType1Calculator {
         stepNumber: globalStepNumber++,
         stepType: 'DELIVERY_VALIDATION',
         stepDescription: `Processing ${tileDeliveries.length} deliveries for tile`,
-        tileId: requirement.mapTileId,
+        tileId: requirement.tileId,
         deliveriesProcessed: tileDeliveries.length
       });
 
@@ -260,7 +288,8 @@ export class MtoType1Calculator {
         let validatedCount = 0;
         let rejectedCount = 0;
 
-        for (let i = 0; i < delivery.deliveryNumber; i++) {
+        const deliveryQuantity = (delivery as MtoType1DeliveryInternal).deliveryNumber || delivery.productQuantity || 0;
+        for (let i = 0; i < deliveryQuantity; i++) {
           if (remainingRequirement <= 0) {
             rejectedCount++;
           } else {
@@ -274,19 +303,17 @@ export class MtoType1Calculator {
               remainingRequirement--;
 
               settlements.push({
-                id: `settlement-${delivery.id}-${i}-${Date.now()}`,
-                mtoType1Id: delivery.mtoType1Id,
-                mtoType1DeliveryId: delivery.id,
-                productId: `product-${i}`,
-                productName: `Product ${i + 1}`,
-                settlementStatus: 'SETTLED',
-                settlementAmount: config.purchaseGoldPrice,
-                settlementTime: new Date(),
-                paymentStatus: 'PAID',
-                paymentTransactionId: `payment-${Date.now()}`,
-                createdAt: new Date(),
-                updatedAt: new Date()
-              });
+                id: Date.now() + i,
+                requirementId: delivery.requirementId,
+                deliveryId: delivery.id,
+                teamId: delivery.teamId,
+                tileId: delivery.tileId,
+                settledQuantity: 1,
+                unitPrice: (requirement as any).purchaseGoldPrice || config.purchaseGoldPrice,
+                totalPayment: (requirement as any).purchaseGoldPrice || config.purchaseGoldPrice,
+                transactionId: `payment-${Date.now()}-${i}`,
+                settledAt: new Date().toISOString()
+              } as MtoType1Settlement);
             } else {
               rejectedCount++;
             }
@@ -300,7 +327,7 @@ export class MtoType1Calculator {
           stepNumber: globalStepNumber++,
           stepType: 'PRODUCT_VALIDATION',
           stepDescription: `Validated products for delivery ${delivery.id}`,
-          tileId: requirement.mapTileId,
+          tileId: requirement.tileId,
           productsValidated: validatedCount + rejectedCount,
           productsSettled: validatedCount,
           productsRejected: rejectedCount
@@ -312,7 +339,7 @@ export class MtoType1Calculator {
             stepNumber: globalStepNumber++,
             stepType: 'PAYMENT_PROCESSING',
             stepDescription: `Processed payment for team ${delivery.teamId}`,
-            tileId: requirement.mapTileId,
+            tileId: requirement.tileId,
             totalPaymentAmount: paymentAmount
           });
         }
@@ -322,7 +349,7 @@ export class MtoType1Calculator {
         stepNumber: globalStepNumber++,
         stepType: 'TILE_PROCESSING_COMPLETE',
         stepDescription: `Completed settlement for tile ${requirement.tileName}`,
-        tileId: requirement.mapTileId,
+        tileId: requirement.tileId,
         productsSettled: settlements.length,
         processingDuration: Math.random() * 1000
       });
@@ -380,15 +407,15 @@ export class MtoType1Calculator {
 
   generateStatistics(
     requirement: MtoType1Requirement,
-    tileRequirements: MtoType1TileRequirement[],
+    tileRequirements: MtoType1TileRequirementInternal[],
     deliveries: MtoType1Delivery[]
   ) {
     const totalRequirement = tileRequirements.reduce((sum, t) => sum + t.adjustedRequirement, 0);
-    const totalDelivered = deliveries.reduce((sum, d) => sum + d.deliveryNumber, 0);
-    const totalSettled = deliveries.reduce((sum, d) => sum + (d.settledNumber || 0), 0);
+    const totalDelivered = deliveries.reduce((sum, d) => sum + ((d as MtoType1DeliveryInternal).deliveryNumber || d.productQuantity || 0), 0);
+    const totalSettled = deliveries.reduce((sum, d) => sum + ((d as any).settledNumber || 0), 0);
     const fulfillmentRate = totalRequirement > 0 ? (totalSettled / totalRequirement) * 100 : 0;
     const tilesWithRequirement = tileRequirements.filter(t => t.adjustedRequirement > 0).length;
-    const tilesWithDelivery = new Set(deliveries.map(d => d.mapTileId)).size;
+    const tilesWithDelivery = new Set(deliveries.map(d => d.tileId)).size;
 
     return {
       totalRequirement,
@@ -399,16 +426,16 @@ export class MtoType1Calculator {
       activeTiles: tilesWithRequirement,
       tilesWithDelivery,
       averageDeliveryPerTile: tilesWithDelivery > 0 ? Math.round(totalDelivered / tilesWithDelivery) : 0,
-      totalBudget: requirement.overallPurchaseBudget,
-      spentBudget: totalSettled * requirement.purchaseGoldPrice,
-      remainingBudget: requirement.overallPurchaseBudget - (totalSettled * requirement.purchaseGoldPrice),
+      totalBudget: requirement.overallPurchaseBudget || 0,
+      spentBudget: totalSettled * (requirement.purchaseGoldPrice || 0),
+      remainingBudget: (requirement.overallPurchaseBudget || 0) - (totalSettled * (requirement.purchaseGoldPrice || 0)),
       uniqueTeams: new Set(deliveries.map(d => d.teamId)).size
     };
   }
 
   validateDelivery(
     delivery: Partial<MtoType1Delivery>,
-    tileRequirement: MtoType1TileRequirement,
+    tileRequirement: MtoType1TileRequirementInternal,
     teamBalance: number,
     transportationFee: number
   ): { valid: boolean; errors: string[] } {
@@ -418,16 +445,18 @@ export class MtoType1Calculator {
       errors.push('Team ID is required');
     }
 
-    if (!delivery.mapTileId) {
+    const deliveryInternal = delivery as MtoType1DeliveryInternal;
+    if (!deliveryInternal.mapTileId && !delivery.tileId) {
       errors.push('Tile ID is required');
     }
 
-    if (!delivery.deliveryNumber || delivery.deliveryNumber <= 0) {
+    const quantity = deliveryInternal.deliveryNumber || delivery.productQuantity || 0;
+    if (quantity <= 0) {
       errors.push('Delivery quantity must be greater than 0');
     }
 
-    if (delivery.deliveryNumber && delivery.deliveryNumber > tileRequirement.remainingRequirement) {
-      errors.push(`Delivery quantity (${delivery.deliveryNumber}) exceeds remaining requirement (${tileRequirement.remainingRequirement})`);
+    if (quantity && quantity > tileRequirement.remainingQuantity) {
+      errors.push(`Delivery quantity (${quantity}) exceeds remaining requirement (${tileRequirement.remainingQuantity})`);
     }
 
     if (teamBalance < transportationFee) {

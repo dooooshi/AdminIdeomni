@@ -9,7 +9,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Grid,
+  
   Card,
   CardContent,
   CircularProgress,
@@ -21,7 +21,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import {
+import Grid2 from '@mui/material/Grid';import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   TrendingFlat as FlatIcon,
@@ -206,8 +206,8 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
         </Stack>
 
         {/* Controls */}
-        <Grid container spacing={2} mb={3}>
-          <Grid item xs={12} md={6}>
+        <Grid2 container spacing={2} mb={3}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth size="small">
               <InputLabel>{t('mto.type2.priceTrends.selectFormula')}</InputLabel>
               <Select
@@ -222,9 +222,9 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                 ))}
               </Select>
             </FormControl>
-          </Grid>
+          </Grid2>
 
-          <Grid item xs={12} md={3}>
+          <Grid2 size={{ xs: 12, md: 3 }}>
             <ToggleButtonGroup
               value={period}
               exclusive
@@ -236,9 +236,9 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
               <ToggleButton value="30d">30D</ToggleButton>
               <ToggleButton value="90d">90D</ToggleButton>
             </ToggleButtonGroup>
-          </Grid>
+          </Grid2>
 
-          <Grid item xs={12} md={3}>
+          <Grid2 size={{ xs: 12, md: 3 }}>
             <ToggleButtonGroup
               value={chartType}
               exclusive
@@ -253,14 +253,14 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                 <AssessmentIcon fontSize="small" />
               </ToggleButton>
             </ToggleButtonGroup>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
 
         {priceTrend && (
           <>
             {/* Summary Cards */}
-            <Grid container spacing={2} mb={3}>
-              <Grid item xs={12} md={3}>
+            <Grid2 container spacing={2} mb={3}>
+              <Grid2 size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -282,9 +282,9 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                     </Stack>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid2>
 
-              <Grid item xs={12} md={3}>
+              <Grid2 size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -304,9 +304,9 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                     </Stack>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid2>
 
-              <Grid item xs={12} md={3}>
+              <Grid2 size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -324,9 +324,9 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                     </Stack>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid2>
 
-              <Grid item xs={12} md={3}>
+              <Grid2 size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -341,8 +341,8 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                     </Stack>
                   </CardContent>
                 </Card>
-              </Grid>
-            </Grid>
+              </Grid2>
+            </Grid2>
 
             {/* Price Chart */}
             <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>

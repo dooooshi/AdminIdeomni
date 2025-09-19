@@ -24,6 +24,7 @@ export interface MtoType2Requirement {
     description?: string;
     notes?: string;
   };
+  totalSubmissions?: number;
 }
 
 export interface MtoType2Submission {
@@ -84,6 +85,7 @@ export interface MtoType2Settlement {
       errors?: string[];
     };
   };
+  totalSubmissions?: number;
 }
 
 export interface MtoType2CalculationHistory {
@@ -159,6 +161,7 @@ export interface MtoType2CreateRequest {
     description?: string;
     notes?: string;
   };
+  totalSubmissions?: number;
 }
 
 export interface MtoType2UpdateRequest {
@@ -170,6 +173,7 @@ export interface MtoType2UpdateRequest {
     description?: string;
     notes?: string;
   };
+  totalSubmissions?: number;
 }
 
 export interface MtoType2SubmissionRequest {

@@ -2,6 +2,7 @@ export interface MtoType1Status {
   DRAFT: 'DRAFT';
   RELEASED: 'RELEASED';
   IN_PROGRESS: 'IN_PROGRESS';
+  SETTLING: 'SETTLING';
   SETTLED: 'SETTLED';
   CANCELLED: 'CANCELLED';
 }
@@ -26,6 +27,14 @@ export interface MtoType1Requirement {
     description?: string;
     notes?: string;
   };
+  // Additional optional properties for UI display
+  totalAdjustedRequirement?: number;
+  totalDeliveredNumber?: number;
+  uniqueTeamsDelivered?: number;
+  fulfillmentRate?: number;
+  totalSettledNumber?: number;
+  cancellationReason?: string;
+  cancelledAt?: string;
 }
 
 export interface MtoType1TileRequirement {

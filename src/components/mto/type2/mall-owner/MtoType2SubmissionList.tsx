@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  GridLegacy as Grid,
   Table,
   TableBody,
   TableCell,
@@ -39,6 +38,7 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   Visibility as VisibilityIcon,
   Edit as EditIcon,
@@ -312,8 +312,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       </Box>
 
       {/* Summary Cards */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid2 container spacing={3} sx={{ mb: 4 }}>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -329,8 +329,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -349,8 +349,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -369,8 +369,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -391,12 +391,12 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Status Distribution Chart */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+      <Grid2 container spacing={3} sx={{ mb: 4 }}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Submission Status Distribution" />
             <CardContent>
@@ -422,8 +422,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </ResponsiveContainer>
             </CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Settlement Progress" />
             <CardContent>
@@ -470,8 +470,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       {/* Submissions by Tile */}
       {totalSubmissions === 0 ? (
@@ -602,8 +602,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       <Dialog open={filtersOpen} onClose={() => setFiltersOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Filter Submissions</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+          <Grid2 container spacing={3} sx={{ mt: 1 }}>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel>Status</InputLabel>
                 <Select
@@ -620,8 +620,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   <MenuItem value="REJECTED">Rejected</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            </Grid2>
+            <Grid2 size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel>Tile ID</InputLabel>
                 <Select
@@ -635,8 +635,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   ))}
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Date From"
@@ -645,8 +645,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
                 InputLabelProps={{ shrink: true }}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Date To"
@@ -655,8 +655,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
                 InputLabelProps={{ shrink: true }}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Min Value"
@@ -665,8 +665,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, minValue: parseInt(e.target.value) || 0 }))}
                 InputProps={{ inputProps: { min: 0 } }}
               />
-            </Grid>
-            <Grid item xs={6}>
+            </Grid2>
+            <Grid2 size={6}>
               <TextField
                 fullWidth
                 label="Max Value"
@@ -675,8 +675,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 onChange={(e) => setFilters(prev => ({ ...prev, maxValue: parseInt(e.target.value) || 0 }))}
                 InputProps={{ inputProps: { min: 0 } }}
               />
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </DialogContent>
         <DialogActions>
           <Button onClick={resetFilters}>Reset</Button>
@@ -698,8 +698,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
         <DialogContent>
           {selectedSubmission && (
             <Box sx={{ pt: 2 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+              <Grid2 container spacing={3}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2">Requirement ID:</Typography>
                   <Typography variant="body2" gutterBottom>
                     {selectedSubmission.requirementId}
@@ -719,9 +719,9 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   <Typography variant="body2" gutterBottom>
                     {selectedSubmission.mallLevel}
                   </Typography>
-                </Grid>
+                </Grid2>
 
-                <Grid item xs={12} sm={6}>
+                <Grid2 size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2">Product Quantity:</Typography>
                   <Typography variant="body2" gutterBottom>
                     {selectedSubmission.productQuantity.toLocaleString()}
@@ -744,9 +744,9 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                     color={getStatusColor(selectedSubmission.submissionStatus)}
                     size="small"
                   />
-                </Grid>
+                </Grid2>
 
-                <Grid item xs={12}>
+                <Grid2 size={12}>
                   <Divider sx={{ my: 2 }} />
                   <Typography variant="subtitle2">Settlement Information:</Typography>
                   {selectedSubmission.settledQuantity ? (
@@ -768,10 +768,10 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                       Not yet settled
                     </Typography>
                   )}
-                </Grid>
+                </Grid2>
 
                 {selectedSubmission.validationErrors && selectedSubmission.validationErrors.length > 0 && (
-                  <Grid item xs={12}>
+                  <Grid2 size={12}>
                     <Alert severity="error">
                       <Typography variant="subtitle2" gutterBottom>
                         Validation Errors:
@@ -787,15 +787,15 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                         ))}
                       </List>
                     </Alert>
-                  </Grid>
+                  </Grid2>
                 )}
 
-                <Grid item xs={12}>
+                <Grid2 size={12}>
                   <Typography variant="body2" color="textSecondary">
                     Submitted: {new Date(selectedSubmission.submittedAt).toLocaleString()}
                   </Typography>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Box>
           )}
         </DialogContent>
@@ -819,8 +819,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       <Dialog open={editFormOpen} onClose={() => setEditFormOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Edit Submission</DialogTitle>
         <DialogContent>
-          <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
+          <Grid2 container spacing={3} sx={{ mt: 1 }}>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 label="Product Quantity"
@@ -832,8 +832,8 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 }))}
                 InputProps={{ inputProps: { min: 1 } }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 size={12}>
               <TextField
                 fullWidth
                 label="Unit Price"
@@ -845,15 +845,15 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 }))}
                 InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid2>
+            <Grid2 size={12}>
               <Alert severity="info">
                 <Typography variant="body2">
                   Total Value: ${(editFormData.productQuantity * editFormData.unitPrice).toLocaleString()}
                 </Typography>
               </Alert>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditFormOpen(false)}>Cancel</Button>

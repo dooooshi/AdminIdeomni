@@ -17,12 +17,12 @@ import {
   Button,
   Collapse,
   Paper,
-  Grid,
   LinearProgress,
   Tooltip,
   IconButton,
   Badge
 } from '@mui/material';
+import Grid2 from '@mui/material/Grid';
 import {
   CheckCircle as CheckIcon,
   Cancel as ErrorIcon,
@@ -301,8 +301,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                 </Box>
 
                 <Collapse in={expandedSections.has('summary')}>
-                  <Grid container spacing={2} sx={{ mt: 1 }}>
-                    <Grid item xs={4}>
+                  <Grid2 container spacing={2} sx={{ mt: 1 }}>
+                    <Grid2 size={4}>
                       <Badge badgeContent={validationResult.errors.length} color="error">
                         <Chip
                           icon={<ErrorIcon />}
@@ -311,8 +311,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           variant="outlined"
                         />
                       </Badge>
-                    </Grid>
-                    <Grid item xs={4}>
+                    </Grid2>
+                    <Grid2 size={4}>
                       <Badge badgeContent={validationResult.warnings?.length || 0} color="warning">
                         <Chip
                           icon={<WarningIcon />}
@@ -321,8 +321,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           variant="outlined"
                         />
                       </Badge>
-                    </Grid>
-                    <Grid item xs={4}>
+                    </Grid2>
+                    <Grid2 size={4}>
                       <Badge badgeContent={validationResult.info?.length || 0} color="info">
                         <Chip
                           icon={<InfoIcon />}
@@ -331,8 +331,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           variant="outlined"
                         />
                       </Badge>
-                    </Grid>
-                  </Grid>
+                    </Grid2>
+                  </Grid2>
 
                   {validationResult.errors.length > 0 && (
                     <Alert severity="error" sx={{ mt: 2 }}>
@@ -409,26 +409,26 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                       <Typography variant="body2" color="textSecondary" gutterBottom>
                         Craft Categories
                       </Typography>
-                      <Grid container spacing={1} sx={{ mb: 2 }}>
+                      <Grid2 container spacing={1} sx={{ mb: 2 }}>
                         {formulaValidation.craftCategories.required.map(cat => (
-                          <Grid item key={cat}>
+                          <Grid2 size="auto" key={cat}>
                             <Chip
                               label={cat}
                               color={formulaValidation.craftCategories.provided.includes(cat) ? 'success' : 'error'}
                               size="small"
                             />
-                          </Grid>
+                          </Grid2>
                         ))}
                         {formulaValidation.craftCategories.extra.map(cat => (
-                          <Grid item key={cat}>
+                          <Grid2 size="auto" key={cat}>
                             <Chip
                               label={`${cat} (extra)`}
                               color="warning"
                               size="small"
                             />
-                          </Grid>
+                          </Grid2>
                         ))}
-                      </Grid>
+                      </Grid2>
 
                       <Typography variant="body2" color="textSecondary" gutterBottom>
                         Materials
@@ -480,8 +480,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
 
                   <Collapse in={expandedSections.has('delivery')}>
                     <Paper variant="outlined" sx={{ p: 2, mt: 1 }}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                      <Grid2 container spacing={2}>
+                        <Grid2 size={{ xs: 12, md: 6 }}>
                           <Box display="flex" alignItems="center" mb={1}>
                             <BalanceIcon sx={{ mr: 1 }} />
                             <Typography variant="body2" color="textSecondary">
@@ -496,9 +496,9 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           <Typography variant="caption" color="textSecondary">
                             ${deliveryValidation.teamBalance.available} / ${deliveryValidation.teamBalance.required}
                           </Typography>
-                        </Grid>
+                        </Grid2>
 
-                        <Grid item xs={12} md={6}>
+                        <Grid2 size={{ xs: 12, md: 6 }}>
                           <Box display="flex" alignItems="center" mb={1}>
                             <LocationIcon sx={{ mr: 1 }} />
                             <Typography variant="body2" color="textSecondary">
@@ -513,9 +513,9 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           <Typography variant="caption" color="textSecondary">
                             {deliveryValidation.tileRequirement.remaining} remaining of {deliveryValidation.tileRequirement.total}
                           </Typography>
-                        </Grid>
+                        </Grid2>
 
-                        <Grid item xs={12}>
+                        <Grid2 size={12}>
                           <List dense>
                             <ListItem>
                               <ListItemIcon>
@@ -536,8 +536,8 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                               />
                             </ListItem>
                           </List>
-                        </Grid>
-                      </Grid>
+                        </Grid2>
+                      </Grid2>
                     </Paper>
                   </Collapse>
                 </Box>

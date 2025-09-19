@@ -31,7 +31,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MtoType2Service } from '@/lib/services/mtoType2Service';
-import { MtoType2SettlementPriority } from '@/lib/types/mtoType2';
+import type { MtoType2SettlementPriority } from '@/lib/types/mtoType2';
 import { useToast } from '@/components/common/ToastProvider';
 
 interface MtoType2SettlementPriorityProps {
