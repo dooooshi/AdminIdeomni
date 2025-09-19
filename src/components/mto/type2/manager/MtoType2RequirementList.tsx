@@ -84,7 +84,15 @@ const statusColors: Record<string, 'default' | 'primary' | 'secondary' | 'info' 
   CANCELLED: 'error'
 };
 
-const MtoType2RequirementList: React.FC = () => {
+interface MtoType2RequirementListProps {
+  activityId?: string;
+  isManager?: boolean;
+}
+
+const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
+  activityId,
+  isManager = false,
+}) => {
   const { t } = useTranslation();
   const [requirements, setRequirements] = useState<MtoType2Requirement[]>([]);
   const [loading, setLoading] = useState(false);

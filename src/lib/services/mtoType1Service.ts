@@ -36,7 +36,7 @@ export interface ApiResponse<T> {
 }
 
 export class MtoType1Service {
-  private static readonly ADMIN_BASE_PATH = '/api/admin/mto-type1';
+  private static readonly MANAGER_BASE_PATH = '/api/user/manager/mto-type1';
   private static readonly TEAM_BASE_PATH = '/api/team/mto-type1';
 
   private static extractResponseData<T>(response: any): T {
@@ -46,12 +46,12 @@ export class MtoType1Service {
     return response.data || response;
   }
 
-  // Manager/Admin Endpoints
+  // Manager Endpoints
 
   static async createRequirement(
     data: MtoType1CreateRequest
   ): Promise<MtoType1Requirement> {
-    const response = await apiClient.post(`${this.ADMIN_BASE_PATH}/requirements`, data);
+    const response = await apiClient.post(`${this.MANAGER_BASE_PATH}/requirements`, data);
     return this.extractResponseData<MtoType1Requirement>(response);
   }
 
@@ -59,16 +59,16 @@ export class MtoType1Service {
     id: number,
     data: MtoType1UpdateRequest
   ): Promise<MtoType1Requirement> {
-    const response = await apiClient.put(`${this.ADMIN_BASE_PATH}/requirements/${id}`, data);
+    const response = await apiClient.put(`${this.MANAGER_BASE_PATH}/requirements/${id}`, data);
     return this.extractResponseData<MtoType1Requirement>(response);
   }
 
   static async deleteRequirement(id: number): Promise<void> {
-    await apiClient.delete(`${this.ADMIN_BASE_PATH}/requirements/${id}`);
+    await apiClient.delete(`${this.MANAGER_BASE_PATH}/requirements/${id}`);
   }
 
   static async getRequirement(id: number): Promise<MtoType1Requirement> {
-    const response = await apiClient.get(`${this.ADMIN_BASE_PATH}/requirements/${id}`);
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/requirements/${id}`);
     return this.extractResponseData<MtoType1Requirement>(response);
   }
 
@@ -87,7 +87,7 @@ export class MtoType1Service {
       });
     }
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements?${queryParams.toString()}`
+      `${this.MANAGER_BASE_PATH}/requirements?${queryParams.toString()}`
     );
     return this.extractResponseData<MtoType1Requirement[]>(response);
   }
@@ -117,18 +117,20 @@ export class MtoType1Service {
     if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
 
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements?${queryParams.toString()}`
+      `${this.MANAGER_BASE_PATH}/requirements?${queryParams.toString()}`
     );
     return response.data;
   }
 
   static async releaseRequirement(id: number): Promise<MtoType1Requirement> {
-    const response = await apiClient.post(`${this.ADMIN_BASE_PATH}/requirements/${id}/release`);
+    const response = await apiClient.post(`${this.MANAGER_BASE_PATH}/requirements/${id}/release`);
     return this.extractResponseData<MtoType1Requirement>(response);
   }
 
-  static async cancelRequirement(id: number): Promise<MtoType1Requirement> {
-    const response = await apiClient.post(`${this.ADMIN_BASE_PATH}/requirements/${id}/cancel`);
+  static async cancelRequirement(id: number, reason?: string): Promise<MtoType1Requirement> {
+    const response = await apiClient.post(`${this.MANAGER_BASE_PATH}/requirements/${id}/cancel`, {
+      reason: reason || 'Cancelled by manager'
+    });
     return this.extractResponseData<MtoType1Requirement>(response);
   }
 
@@ -136,36 +138,36 @@ export class MtoType1Service {
     requirementId: number
   ): Promise<MtoType1TileRequirement[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/tiles`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/tiles`
     );
     return this.extractResponseData<MtoType1TileRequirement[]>(response);
   }
 
   static async recalculateRequirements(requirementId: number): Promise<MtoType1TileRequirement[]> {
     const response = await apiClient.post(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/recalculate`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/recalculate`
     );
     return this.extractResponseData<MtoType1TileRequirement[]>(response);
   }
 
   static async getDeliveries(requirementId: number): Promise<MtoType1Delivery[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/deliveries`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/deliveries`
     );
     return this.extractResponseData<MtoType1Delivery[]>(response);
   }
 
   static async settleRequirement(requirementId: number): Promise<MtoType1SettlementHistory> {
     const response = await apiClient.post(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/settle`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/settle`
     );
     return this.extractResponseData<MtoType1SettlementHistory>(response);
   }
 
   static async getSettlements(requirementId?: number): Promise<MtoType1Settlement[]> {
     const url = requirementId
-      ? `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/settlements`
-      : `${this.ADMIN_BASE_PATH}/settlements`;
+      ? `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/settlements`
+      : `${this.MANAGER_BASE_PATH}/settlements`;
     const response = await apiClient.get(url);
     return this.extractResponseData<MtoType1Settlement[]>(response);
   }
@@ -174,7 +176,7 @@ export class MtoType1Service {
     requirementId: number
   ): Promise<MtoType1CalculationHistory[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/calculation-history`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/calculation-history`
     );
     return this.extractResponseData<MtoType1CalculationHistory[]>(response);
   }
@@ -183,14 +185,14 @@ export class MtoType1Service {
     requirementId: number
   ): Promise<MtoType1SettlementHistory[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/requirements/${requirementId}/settlement-history`
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/settlement-history`
     );
     return this.extractResponseData<MtoType1SettlementHistory[]>(response);
   }
 
   static async getStatistics(activityId?: string): Promise<MtoType1Statistics> {
     const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.ADMIN_BASE_PATH}/statistics${params}`);
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics${params}`);
     return this.extractResponseData<MtoType1Statistics>(response);
   }
 

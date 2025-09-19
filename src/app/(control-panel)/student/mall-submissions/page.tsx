@@ -8,21 +8,24 @@ import {
   Typography,
   Breadcrumbs,
   Link,
-  Chip,
-  Stack
+  Paper,
+  Stack,
+  Chip
 } from '@mui/material';
 import {
   Home as HomeIcon,
   NavigateNext as NavigateNextIcon,
-  Store as StoreIcon,
-  TrendingUp as TrendingUpIcon
+  Store as MallIcon,
+  Receipt as ReceiptIcon,
+  Assessment as AssessmentIcon
 } from '@mui/icons-material';
-import MtoType2RequirementList from '@/components/mto/type2/manager/MtoType2RequirementList';
+import { MtoType2SubmissionList } from '@/components/mto/type2/mall-owner/MtoType2SubmissionList';
 import { useSearchParams } from 'next/navigation';
 
-export default function MtoType2ManagementPage() {
+export default function MallSubmissionsPage() {
   const { t } = useTranslation();
   const searchParams = useSearchParams();
+  const teamId = searchParams.get('teamId') || 'current';
   const activityId = searchParams.get('activityId') || 'default';
 
   return (
@@ -44,40 +47,63 @@ export default function MtoType2ManagementPage() {
           <Link
             underline="hover"
             color="inherit"
-            href="/mto-management"
+            href="/student"
           >
-            {t('navigation.mtoManagement')}
+            {t('navigation.student')}
           </Link>
-          <Typography color="text.primary">{t('mto.type2.title')}</Typography>
+          <Typography color="text.primary">{t('mto.type2.mallSubmissions')}</Typography>
         </Breadcrumbs>
       </Box>
 
       <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
           <Typography variant="h4" gutterBottom>
-            {t('mto.type2.title')}
+            {t('mto.type2.mallSubmissionsTitle')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {t('mto.type2.description')}
+            {t('mto.type2.mallSubmissionsDescription')}
           </Typography>
         </Box>
         <Stack direction="row" spacing={1}>
           <Chip
-            icon={<StoreIcon />}
-            label={t('mto.type2.mallBased')}
-            color="secondary"
+            icon={<MallIcon />}
+            label={t('mto.type2.mallOwnerOnly')}
+            color="primary"
             variant="outlined"
           />
           <Chip
-            icon={<TrendingUpIcon />}
-            label={t('mto.type2.competitiveBidding')}
+            icon={<ReceiptIcon />}
+            label={t('mto.type2.submissionTracking')}
+            color="info"
+            variant="outlined"
+          />
+          <Chip
+            icon={<AssessmentIcon />}
+            label={t('mto.type2.settlementStatus')}
             color="success"
             variant="outlined"
           />
         </Stack>
       </Stack>
 
-      <MtoType2RequirementList activityId={activityId} isManager={true} />
+      <Paper sx={{ p: 2, mb: 3, bgcolor: 'background.paper' }}>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <ReceiptIcon color="primary" />
+          <Box flex={1}>
+            <Typography variant="subtitle1" fontWeight="medium">
+              {t('mto.type2.submissionManagement')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('mto.type2.submissionManagementDescription')}
+            </Typography>
+          </Box>
+        </Stack>
+      </Paper>
+
+      <MtoType2SubmissionList
+        teamId={teamId}
+        activityId={activityId}
+      />
     </Container>
   );
 }

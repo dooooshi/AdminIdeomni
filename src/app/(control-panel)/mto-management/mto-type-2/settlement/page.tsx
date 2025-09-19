@@ -8,22 +8,19 @@ import {
   Typography,
   Breadcrumbs,
   Link,
-  Chip,
-  Stack
+  Stack,
+  Chip
 } from '@mui/material';
 import {
   Home as HomeIcon,
   NavigateNext as NavigateNextIcon,
-  Store as StoreIcon,
-  TrendingUp as TrendingUpIcon
+  AccountBalance as BalanceIcon,
+  Store as StoreIcon
 } from '@mui/icons-material';
-import MtoType2RequirementList from '@/components/mto/type2/manager/MtoType2RequirementList';
-import { useSearchParams } from 'next/navigation';
+import MtoType2SettlementManager from '@/components/mto/type2/manager/MtoType2SettlementManager';
 
-export default function MtoType2ManagementPage() {
+export default function MtoType2SettlementPage() {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const activityId = searchParams.get('activityId') || 'default';
 
   return (
     <Container maxWidth="xl">
@@ -48,36 +45,36 @@ export default function MtoType2ManagementPage() {
           >
             {t('navigation.mtoManagement')}
           </Link>
-          <Typography color="text.primary">{t('mto.type2.title')}</Typography>
+          <Link
+            underline="hover"
+            color="inherit"
+            href="/mto-management/mto-type-2"
+          >
+            {t('mto.type2.title')}
+          </Link>
+          <Typography color="text.primary">{t('mto.type2.settlement.title')}</Typography>
         </Breadcrumbs>
       </Box>
 
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
-            {t('mto.type2.title')}
+      <Box sx={{ mb: 4 }}>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+          <BalanceIcon fontSize="large" color="primary" />
+          <Typography variant="h4" component="h1">
+            {t('mto.type2.settlement.title')}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {t('mto.type2.description')}
-          </Typography>
-        </Box>
-        <Stack direction="row" spacing={1}>
           <Chip
             icon={<StoreIcon />}
             label={t('mto.type2.mallBased')}
             color="secondary"
             variant="outlined"
           />
-          <Chip
-            icon={<TrendingUpIcon />}
-            label={t('mto.type2.competitiveBidding')}
-            color="success"
-            variant="outlined"
-          />
         </Stack>
-      </Stack>
+        <Typography variant="body1" color="text.secondary">
+          {t('mto.type2.settlement.description')}
+        </Typography>
+      </Box>
 
-      <MtoType2RequirementList activityId={activityId} isManager={true} />
+      <MtoType2SettlementManager activityId="default-activity" />
     </Container>
   );
 }

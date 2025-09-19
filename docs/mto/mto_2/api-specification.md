@@ -13,21 +13,21 @@ http://localhost:2999/api
 ## Authentication
 
 All endpoints require JWT authentication with role-based access control:
-- **Admin endpoints**: Require admin authentication
+- **Manager endpoints**: Require manager role authentication
 - **MALL endpoints**: Require user authentication with MALL ownership
 - **Public endpoints**: Require basic user authentication
 
 ## API Endpoints
 
-### 1. Admin Management APIs
+### 1. Manager Management APIs
 
 #### 1.1 Create MTO Type 2
 
-**Endpoint**: `POST /api/admin/mto-type-2`
+**Endpoint**: `POST /api/user/manager/mto-type2`
 
 **Description**: Create a new MTO Type 2 procurement opportunity.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**:
 ```typescript
@@ -78,11 +78,11 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.2 Update MTO Type 2
 
-**Endpoint**: `PUT /api/admin/mto-type-2/:id`
+**Endpoint**: `PUT /api/user/manager/mto-type2/:id`
 
 **Description**: Update an existing MTO Type 2 (only in DRAFT status).
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**:
 ```typescript
@@ -108,11 +108,11 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.3 Release MTO Type 2
 
-**Endpoint**: `POST /api/admin/mto-type-2/:id/release`
+**Endpoint**: `POST /api/user/manager/mto-type2/:id/release`
 
 **Description**: Release MTO Type 2 for team submissions.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**: Empty
 
@@ -132,17 +132,16 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.4 Cancel MTO Type 2
 
-**Endpoint**: `POST /api/admin/mto-type-2/:id/cancel`
+**Endpoint**: `POST /api/user/manager/mto-type2/:id/cancel`
 
 **Description**: Cancel an MTO Type 2 before settlement.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**:
 ```typescript
 {
   reason: string;
-  notifyTeams?: boolean; // default: true
 }
 ```
 
@@ -163,11 +162,11 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.5 Trigger Settlement
 
-**Endpoint**: `POST /api/admin/mto-type-2/:id/settle`
+**Endpoint**: `POST /api/user/manager/mto-type2/:id/settle`
 
 **Description**: Manually trigger settlement (usually automatic).
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**: Empty
 
@@ -187,11 +186,11 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.6 Get MTO Type 2 List
 
-**Endpoint**: `GET /api/admin/mto-type-2`
+**Endpoint**: `GET /api/user/manager/mto-type2`
 
 **Description**: List all MTO Type 2 with filters.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Query Parameters**:
 ```typescript
@@ -227,11 +226,11 @@ All endpoints require JWT authentication with role-based access control:
 
 #### 1.7 Get Settlement Report
 
-**Endpoint**: `GET /api/admin/mto-type-2/:id/settlement-report`
+**Endpoint**: `GET /api/user/manager/mto-type2/:id/settlement-report`
 
 **Description**: Detailed settlement report for an MTO Type 2.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Response** (200 OK):
 ```typescript
@@ -594,76 +593,15 @@ All endpoints require JWT authentication with role-based access control:
 }
 ```
 
-### 4. WebSocket Events
+### 4. Batch Operations
 
-#### 4.1 Real-time Updates
+#### 4.1 Bulk Settlement Status
 
-**Connection**: `ws://localhost:2999/mto-type-2`
-
-**Events**:
-
-**MTO Released**:
-```typescript
-{
-  event: "MTO_TYPE_2_RELEASED",
-  data: {
-    mtoType2Id: number;
-    formulaName: string;
-    releaseTime: string;
-    settlementTime: string;
-  }
-}
-```
-
-**Settlement Started**:
-```typescript
-{
-  event: "MTO_TYPE_2_SETTLEMENT_STARTED",
-  data: {
-    mtoType2Id: number;
-    estimatedDuration: number;
-  }
-}
-```
-
-**Settlement Completed**:
-```typescript
-{
-  event: "MTO_TYPE_2_SETTLEMENT_COMPLETED",
-  data: {
-    mtoType2Id: number;
-    summary: {
-      totalPurchased: number;
-      totalSpent: string;
-      participatingMalls: number;
-    }
-  }
-}
-```
-
-**My Settlement Result** (team-specific):
-```typescript
-{
-  event: "MY_SETTLEMENT_RESULT",
-  data: {
-    mtoType2Id: number;
-    facilityInstanceId: string;
-    settledQuantity: number;
-    revenue: string;
-    unsettledQuantity: number;
-  }
-}
-```
-
-### 5. Batch Operations
-
-#### 5.1 Bulk Settlement Status
-
-**Endpoint**: `POST /api/admin/mto-type-2/bulk-settle`
+**Endpoint**: `POST /api/user/manager/mto-type2/bulk-settle`
 
 **Description**: Trigger settlement for multiple MTO Type 2.
 
-**Authorization**: Admin only
+**Authorization**: Manager role only
 
 **Request Body**:
 ```typescript
@@ -687,9 +625,9 @@ All endpoints require JWT authentication with role-based access control:
 }
 ```
 
-### 6. Analytics APIs
+### 5. Analytics APIs
 
-#### 6.1 Price Trends
+#### 5.1 Price Trends
 
 **Endpoint**: `GET /api/analytics/mto-type-2/price-trends`
 
@@ -769,10 +707,9 @@ All errors follow this format:
 
 ## Rate Limiting
 
-- Admin endpoints: 100 requests per minute
+- Manager endpoints: 100 requests per minute
 - MALL endpoints: 60 requests per minute
 - Public endpoints: 30 requests per minute
-- WebSocket: 10 messages per second
 
 ## API Versioning
 

@@ -86,7 +86,7 @@ graph LR
 
 **Purpose:** Managers create a new procurement requirement that will be automatically distributed to tiles based on population
 
-**Endpoint:** `POST /api/admin/mto-type1/requirements`
+**Endpoint:** `POST /api/user/manager/mto-type1/requirements`
 
 **Authorization:** Manager with `MTO_MANAGE` permission
 
@@ -165,9 +165,9 @@ class CreateMtoType1Dto {
 
 ### 1.2 Update MTO Type 1 Requirement
 
-**Endpoint:** `PATCH /api/admin/mto-type1/requirements/:id`
+**Endpoint:** `PATCH /api/user/manager/mto-type1/requirements/:id`
 
-**Authorization:** Admin with `MTO_MANAGE` permission
+**Authorization:** Manager with `MTO_MANAGE` permission
 
 **Request Body:** (Partial update)
 ```json
@@ -185,9 +185,9 @@ class CreateMtoType1Dto {
 
 **Purpose:** Managers search and browse all MTO requirements with filtering and pagination
 
-**Endpoint:** `GET /api/admin/mto-type1/requirements`
+**Endpoint:** `GET /api/user/manager/mto-type1/requirements`
 
-**Authorization:** Admin with `MTO_VIEW` permission
+**Authorization:** Manager with `MTO_VIEW` permission
 
 **Query Parameters:**
 ```typescript
@@ -252,31 +252,30 @@ class CreateMtoType1Dto {
 
 ### 1.4 Get MTO Type 1 Requirement Details
 
-**Endpoint:** `GET /api/admin/mto-type1/requirements/:id`
+**Endpoint:** `GET /api/user/manager/mto-type1/requirements/:id`
 
-**Authorization:** Admin with `MTO_VIEW` permission
+**Authorization:** Manager with `MTO_VIEW` permission
 
 **Success Response (200):** Full requirement with all relations
 
 ### 1.5 Cancel MTO Type 1 Requirement
 
-**Endpoint:** `POST /api/admin/mto-type1/requirements/:id/cancel`
+**Endpoint:** `POST /api/user/manager/mto-type1/requirements/:id/cancel`
 
-**Authorization:** Admin with `MTO_MANAGE` permission
+**Authorization:** Manager with `MTO_MANAGE` permission
 
 **Request Body:**
 ```json
 {
-  "reason": "Market conditions changed",
-  "notifyTeams": true
+  "reason": "Market conditions changed"
 }
 ```
 
 ### 1.6 Force Settlement
 
-**Endpoint:** `POST /api/admin/mto-type1/requirements/:id/force-settle`
+**Endpoint:** `POST /api/user/manager/mto-type1/requirements/:id/force-settle`
 
-**Authorization:** Admin with `MTO_MANAGE` permission
+**Authorization:** Manager with `MTO_MANAGE` permission
 
 **Description:** Manually trigger settlement before scheduled time
 
@@ -284,7 +283,7 @@ class CreateMtoType1Dto {
 
 **Purpose:** Managers view the detailed calculation process showing how requirements were distributed
 
-**Endpoint:** `GET /api/admin/mto-type1/requirements/:id/calculation-history`
+**Endpoint:** `GET /api/user/manager/mto-type1/requirements/:id/calculation-history`
 
 **Authorization:** Manager with `MTO_VIEW` permission
 
@@ -388,7 +387,7 @@ class CreateMtoType1Dto {
 
 **Purpose:** Managers view the detailed settlement process history showing validation and payment details
 
-**Endpoint:** `GET /api/admin/mto-type1/requirements/:id/settlement-history`
+**Endpoint:** `GET /api/user/manager/mto-type1/requirements/:id/settlement-history`
 
 **Authorization:** Manager with `MTO_VIEW` permission
 
@@ -518,7 +517,7 @@ graph LR
 | **Distribution** | Sees all tiles and allocations | Sees available tiles with remaining demand |
 | **Timeline** | Sets release and settlement times | Sees countdown to settlement |
 | **Monitoring** | Full visibility of all teams | Only sees own deliveries |
-| **Settlement** | Controls and reviews settlement | Receives payment notifications |
+| **Settlement** | Controls and reviews settlement | Receives payments automatically |
 | **Reports** | Comprehensive analytics | Own performance metrics |
 | **Access Control** | Full access to all requirements | Limited to released requirements in their activity |
 
@@ -1003,48 +1002,6 @@ interface ProductValidation {
 
 **Description:** Process expired return requests
 
-## 4. Webhook Events
-
-### 4.1 Requirement Released
-
-```json
-{
-  "event": "mto_type1.requirement.released",
-  "data": {
-    "requirementId": "uuid",
-    "activityId": "uuid",
-    "releaseTime": "2024-03-01T00:00:00Z"
-  }
-}
-```
-
-### 4.2 Settlement Completed
-
-```json
-{
-  "event": "mto_type1.settlement.completed",
-  "data": {
-    "requirementId": "uuid",
-    "fulfillmentRate": 75.0,
-    "totalSettled": 7500
-  }
-}
-```
-
-### 4.3 Delivery Submitted
-
-```json
-{
-  "event": "mto_type1.delivery.submitted",
-  "data": {
-    "deliveryId": "uuid",
-    "teamId": "uuid",
-    "tileId": "uuid",
-    "quantity": 100
-  }
-}
-```
-
 ## Error Responses
 
 ### Common Business Errors
@@ -1083,7 +1040,7 @@ interface ProductValidation {
 
 | Endpoint Type | Rate Limit |
 |---------------|------------|
-| Admin endpoints | 100/minute |
+| Manager endpoints | 100/minute |
 | Team endpoints | 60/minute |
 | Public endpoints | 30/minute |
 | Delivery submission | 10/minute |
@@ -1094,7 +1051,7 @@ interface ProductValidation {
 
 **Step 1:** Manager creates requirement for 10,000 units
 ```http
-POST /api/admin/mto-type1/requirements
+POST /api/user/manager/mto-type1/requirements
 {
   "managerProductFormulaId": 123,
   "purchaseGoldPrice": 100.50,
@@ -1111,7 +1068,7 @@ POST /api/admin/mto-type1/requirements
 
 **Step 3:** Manager monitors progress
 ```http
-GET /api/admin/mto-type1/requirements/1/fulfillment-status
+GET /api/user/manager/mto-type1/requirements/1/fulfillment-status
 ```
 
 ### Student Scenario: Fulfilling a Requirement

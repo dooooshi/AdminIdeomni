@@ -188,7 +188,11 @@ For each tile with MALL facilities:
 
 ### 5.2 MALL Level and Price-Based Fulfillment
 
-**Rule**: Products purchased prioritizing highest MALL levels first, then by ascending price order until budget exhaustion.
+> **⚠️ CLARIFICATION NEEDED**: The original requirements in `/docs/mto/requirements.md` specify pure price-based ordering without mention of MALL levels. This documentation includes MALL level priority. Confirm which approach should be implemented.
+
+**Current Rule (As Documented)**: Products purchased prioritizing highest MALL levels first, then by ascending price order until budget exhaustion.
+
+**Original Requirement**: "order based on product sell price per unit, start from the lowest"
 
 **Algorithm per Tile**:
 ```typescript
@@ -399,7 +403,7 @@ unsettledNumber = submittedNumber - settledNumber
 **Handling**:
 - Settlement completes with zero purchases
 - Detailed validation failure report generated
-- Teams notified of validation failures
+- Teams can check validation status
 
 ### 10.3 Identical Prices
 

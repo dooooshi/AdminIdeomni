@@ -513,92 +513,9 @@ async function processProductReturn(
 }
 ```
 
-## 6. Notification System Integration
+## 6. Activity System Integration
 
-### 6.1 Event Notifications
-
-Teams need timely notifications about MTO Type 2 events.
-
-**Notification Service Interface**:
-```typescript
-interface NotificationService {
-  // Send notification to team
-  notifyTeam(
-    teamId: string,
-    type: NotificationType,
-    data: NotificationData
-  ): Promise<void>;
-
-  // Broadcast to multiple teams
-  broadcastToTeams(
-    teamIds: string[],
-    type: NotificationType,
-    data: NotificationData
-  ): Promise<void>;
-
-  // Send to MALL owners only
-  notifyMallOwners(
-    activityId: string,
-    type: NotificationType,
-    data: NotificationData
-  ): Promise<void>;
-}
-```
-
-### 6.2 Notification Events
-
-**Event Types and Triggers**:
-
-```typescript
-enum MtoType2NotificationEvents {
-  // Admin-triggered
-  MTO_RELEASED = 'MTO_TYPE_2_RELEASED',
-  MTO_CANCELLED = 'MTO_TYPE_2_CANCELLED',
-
-  // System-triggered
-  SETTLEMENT_STARTING = 'SETTLEMENT_STARTING',
-  SETTLEMENT_COMPLETED = 'SETTLEMENT_COMPLETED',
-
-  // Team-specific
-  SUBMISSION_CONFIRMED = 'SUBMISSION_CONFIRMED',
-  SUBMISSION_SETTLED = 'SUBMISSION_SETTLED',
-  PRODUCTS_UNSETTLED = 'PRODUCTS_UNSETTLED',
-  RETURN_COMPLETED = 'RETURN_COMPLETED',
-
-  // Reminders
-  SUBMISSION_DEADLINE_24H = 'SUBMISSION_DEADLINE_24H',
-  RETURN_DEADLINE_APPROACHING = 'RETURN_DEADLINE_APPROACHING'
-}
-```
-
-**Notification Implementation**:
-```typescript
-async function notifyMtoRelease(mtoType2: MtoType2): Promise<void> {
-  // Get all teams with MALLs
-  const mallTeams = await getMallOwningTeams(mtoType2.activityId);
-
-  // Prepare notification data
-  const notificationData = {
-    mtoType2Id: mtoType2.id,
-    formulaName: mtoType2.formula.name,
-    releaseTime: mtoType2.releaseTime,
-    settlementTime: mtoType2.settlementTime,
-    overallBudget: mtoType2.overallPurchaseBudget,
-    actionUrl: `/mto-type-2/${mtoType2.id}`
-  };
-
-  // Send notifications
-  await notificationService.broadcastToTeams(
-    mallTeams.map(t => t.id),
-    MtoType2NotificationEvents.MTO_RELEASED,
-    notificationData
-  );
-}
-```
-
-## 7. Activity System Integration
-
-### 7.1 Activity Context
+### 6.1 Activity Context
 
 MTO Type 2 operates within activity boundaries.
 
@@ -831,8 +748,8 @@ async function settlementWithRecovery(
     // Log failure
     await logSettlementFailure(mtoType2Id, error);
 
-    // Notify administrators
-    await notifySettlementFailure(mtoType2Id, error);
+    // Log settlement failure for audit
+    await logSettlementFailure(mtoType2Id, error);
 
     throw error;
   }
@@ -918,7 +835,7 @@ describe('MTO Type 2 Integration', () => {
 - [ ] Verify MALL facility queries
 - [ ] Test formula validation endpoints
 - [ ] Confirm payment processing
-- [ ] Validate notification delivery
+- [ ] Validate system events
 - [ ] Check monitoring metrics
 - [ ] Run integration test suite
 - [ ] Verify audit logging
@@ -934,7 +851,6 @@ interface MtoType2ServiceRegistry {
   populationService: PopulationService;
   teamAccountService: TeamAccountService;
   transportationService: TransportationService;
-  notificationService: NotificationService;
   activityService: ActivityService;
   metricsService: MetricsService;
   auditService: AuditService;

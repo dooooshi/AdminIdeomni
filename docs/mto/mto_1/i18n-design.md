@@ -691,8 +691,8 @@ export class MtoType1I18nService {
 
 ### 2. Controller Integration
 ```typescript
-@Controller('api/admin/mto-type1')
-export class AdminMtoType1Controller {
+@Controller('api/user/manager/mto-type1')
+export class ManagerMtoType1Controller {
   @Post('requirements')
   async create(@Body() dto: CreateDto, @Lang() lang: string) {
     const result = await this.service.create(dto);

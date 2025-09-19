@@ -119,7 +119,7 @@ MTO Type 1 implements a sophisticated demand generation and fulfillment system w
 - `DeliveryService`: Delivery management
 
 ### Controllers
-- `AdminMtoType1Controller`: Administrative operations
+- `ManagerMtoType1Controller`: Manager operations
 - `TeamMtoType1Controller`: Team-facing operations
 
 ### Database Tables

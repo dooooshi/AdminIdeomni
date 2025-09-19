@@ -22,7 +22,6 @@ mto.type2.
 ├── actions.         // Action buttons
 ├── messages.        // User messages
 ├── errors.          // Error messages
-├── notifications.   // Notification texts
 ├── reports.         // Report labels
 └── help.           // Help texts
 ```
@@ -343,71 +342,9 @@ mto.type2.
 }
 ```
 
-## 7. Notifications
+## 7. Reports and Analytics
 
-### 7.1 System Notifications
-
-**English (en.json)**:
-```json
-{
-  "mto.type2.notifications.released.title": "New MTO Type 2 Available",
-  "mto.type2.notifications.released.body": "A new competitive bidding opportunity for {formulaName} is now open for submissions",
-  "mto.type2.notifications.cancelled.title": "MTO Type 2 Cancelled",
-  "mto.type2.notifications.cancelled.body": "The MTO Type 2 for {formulaName} has been cancelled",
-  "mto.type2.notifications.settlementStarting.title": "Settlement Starting",
-  "mto.type2.notifications.settlementStarting.body": "Settlement process is starting for {formulaName}",
-  "mto.type2.notifications.settlementCompleted.title": "Settlement Completed",
-  "mto.type2.notifications.settlementCompleted.body": "Settlement has been completed for {formulaName}"
-}
-```
-
-**Chinese (zh.json)**:
-```json
-{
-  "mto.type2.notifications.released.title": "新竞价采购可用",
-  "mto.type2.notifications.released.body": "{formulaName}的竞价采购机会现已开放提交",
-  "mto.type2.notifications.cancelled.title": "竞价采购已取消",
-  "mto.type2.notifications.cancelled.body": "{formulaName}的竞价采购已被取消",
-  "mto.type2.notifications.settlementStarting.title": "结算开始",
-  "mto.type2.notifications.settlementStarting.body": "{formulaName}的结算流程正在开始",
-  "mto.type2.notifications.settlementCompleted.title": "结算完成",
-  "mto.type2.notifications.settlementCompleted.body": "{formulaName}的结算已完成"
-}
-```
-
-### 7.2 Team-Specific Notifications
-
-**English (en.json)**:
-```json
-{
-  "mto.type2.notifications.submissionSettled.title": "Your Submission Settled",
-  "mto.type2.notifications.submissionSettled.body": "Sold {quantity} units at {unitPrice} per unit. Total revenue: {revenue}",
-  "mto.type2.notifications.partialSettlement.title": "Partial Settlement",
-  "mto.type2.notifications.partialSettlement.body": "{settledQuantity} of {totalQuantity} units were sold. {unsettledQuantity} units remain unsettled",
-  "mto.type2.notifications.noSettlement.title": "Products Not Settled",
-  "mto.type2.notifications.noSettlement.body": "Your submission was not selected during settlement. All {quantity} units remain unsettled",
-  "mto.type2.notifications.returnReminder.title": "Return Deadline Approaching",
-  "mto.type2.notifications.returnReminder.body": "You have {days} days to return {quantity} unsettled products"
-}
-```
-
-**Chinese (zh.json)**:
-```json
-{
-  "mto.type2.notifications.submissionSettled.title": "您的提交已结算",
-  "mto.type2.notifications.submissionSettled.body": "以每单位{unitPrice}售出{quantity}单位。总收入：{revenue}",
-  "mto.type2.notifications.partialSettlement.title": "部分结算",
-  "mto.type2.notifications.partialSettlement.body": "{totalQuantity}单位中的{settledQuantity}已售出。{unsettledQuantity}单位未结算",
-  "mto.type2.notifications.noSettlement.title": "产品未结算",
-  "mto.type2.notifications.noSettlement.body": "您的提交在结算中未被选中。所有{quantity}单位仍未结算",
-  "mto.type2.notifications.returnReminder.title": "退货截止日期临近",
-  "mto.type2.notifications.returnReminder.body": "您还有{days}天时间退回{quantity}个未结算产品"
-}
-```
-
-## 8. Reports and Analytics
-
-### 8.1 Settlement Report
+### 7.1 Settlement Report
 
 **English (en.json)**:
 ```json
@@ -443,9 +380,9 @@ mto.type2.
 }
 ```
 
-## 9. Formatting Functions
+## 8. Formatting Functions
 
-### 9.1 Number Formatting
+### 8.1 Number Formatting
 
 ```typescript
 function formatNumber(value: number, locale: string): string {
@@ -457,7 +394,7 @@ function formatNumber(value: number, locale: string): string {
 // formatNumber(1000000, 'zh') → "1,000,000"
 ```
 
-### 9.2 Currency Formatting
+### 8.2 Currency Formatting
 
 ```typescript
 function formatCurrency(amount: number, locale: string): string {
@@ -471,7 +408,7 @@ function formatCurrency(amount: number, locale: string): string {
 // formatCurrency(1500.50, 'zh') → "1,500.50 金币"
 ```
 
-### 9.3 Date/Time Formatting
+### 8.3 Date/Time Formatting
 
 ```typescript
 function formatDateTime(date: Date, locale: string): string {
@@ -491,7 +428,7 @@ function formatDateTime(date: Date, locale: string): string {
 // formatDateTime(date, 'zh') → "2024/03/15 14:30"
 ```
 
-### 9.4 Percentage Formatting
+### 8.4 Percentage Formatting
 
 ```typescript
 function formatPercentage(value: number, locale: string): string {
@@ -507,9 +444,9 @@ function formatPercentage(value: number, locale: string): string {
 // formatPercentage(85.5, 'zh') → "85.5%"
 ```
 
-## 10. Dynamic Message Interpolation
+## 9. Dynamic Message Interpolation
 
-### 10.1 Message Template System
+### 9.1 Message Template System
 
 ```typescript
 interface MessageInterpolator {
@@ -541,36 +478,34 @@ class I18nMessageInterpolator implements MessageInterpolator {
 }
 ```
 
-### 10.2 Usage Examples
+### 9.2 Usage Examples
 
 ```typescript
-// Settlement notification
+// Settlement result message
 const message = i18n.interpolate(
-  'mto.type2.notifications.submissionSettled.body',
+  'mto.type2.messages.settlementCompleted',
   {
     quantity: 100,
-    unitPrice: 50.5,
-    revenue: 5050
+    totalAmount: 5050
   },
   'en'
 );
-// Result: "Sold 100 units at 50.5 per unit. Total revenue: 5,050"
+// Result: "Settlement completed successfully"
 
-// Return reminder
-const reminderMessage = i18n.interpolate(
-  'mto.type2.notifications.returnReminder.body',
+// Transportation fee message
+const feeMessage = i18n.interpolate(
+  'mto.type2.messages.transportationFee',
   {
-    days: 3,
-    quantity: 25
+    fee: 150.50
   },
   'zh'
 );
-// Result: "您还有3天时间退回25个未结算产品"
+// Result: "运输费用：150.50 金币"
 ```
 
-## 11. Implementation Guidelines
+## 10. Implementation Guidelines
 
-### 11.1 Service Integration
+### 10.1 Service Integration
 
 ```typescript
 @Injectable()
@@ -598,26 +533,10 @@ export class MtoType2I18nService {
       averagePrice: formatCurrency(settlement.averagePrice, lang)
     };
   }
-
-  // Generate notification message
-  generateNotification(
-    type: NotificationType,
-    params: Record<string, any>,
-    lang: string
-  ): NotificationMessage {
-    return {
-      title: this.i18nService.translate(`mto.type2.notifications.${type}.title`, lang),
-      body: this.i18nService.interpolate(
-        `mto.type2.notifications.${type}.body`,
-        params,
-        lang
-      )
-    };
-  }
 }
 ```
 
-### 11.2 API Response Localization
+### 10.2 API Response Localization
 
 ```typescript
 @Injectable()
@@ -662,9 +581,9 @@ export class MtoType2ResponseFormatter {
 }
 ```
 
-## 12. Testing i18n
+## 11. Testing i18n
 
-### 12.1 Translation Coverage Test
+### 11.1 Translation Coverage Test
 
 ```typescript
 describe('MTO Type 2 i18n Coverage', () => {
@@ -686,7 +605,7 @@ describe('MTO Type 2 i18n Coverage', () => {
 });
 ```
 
-### 12.2 Formatting Test
+### 11.2 Formatting Test
 
 ```typescript
 describe('MTO Type 2 Formatting', () => {
@@ -702,16 +621,16 @@ describe('MTO Type 2 Formatting', () => {
 });
 ```
 
-## 13. Maintenance Guidelines
+## 12. Maintenance Guidelines
 
-### 13.1 Adding New Translations
+### 12.1 Adding New Translations
 
 1. Add key to both language files simultaneously
 2. Follow naming convention: `mto.type2.category.specificKey`
 3. Test interpolation if placeholders are used
 4. Update documentation
 
-### 13.2 Translation Review Process
+### 12.2 Translation Review Process
 
 1. Technical review for key consistency
 2. Language review by native speakers

@@ -92,7 +92,7 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 ### 7. Internationalization (i18n)
 - Full support for English and Chinese
 - Localized pricing displays and number formatting
-- Translated status messages and notifications
+- Translated status messages
 - Multi-language settlement reports
 
 ## Core Components
@@ -150,7 +150,7 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 - `SettlementService`: Transaction processing
 
 ### Controllers
-- `AdminMtoType2Controller`: Administrative configuration
+- `ManagerMtoType2Controller`: Manager configuration
 - `MallMtoType2Controller`: MALL owner operations
 - `PublicMtoType2Controller`: Read-only public access
 
@@ -199,6 +199,38 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 - Simultaneous settlement processing
 - No preferential treatment algorithms
 - Transparent allocation formulas
+
+## Implementation Status
+
+### ✅ Completed Components
+- **Data Models**: Full schema implementation with all required fields
+- **Basic CRUD Operations**: Create, read, update for MTO Type 2 configurations
+- **Submission Creation**: MALL teams can submit products with pricing
+- **Time Validation**: Release and settlement time constraints enforced
+- **MALL Verification**: Only teams with MALL facilities can submit
+- **Unique Constraints**: One submission per team per tile enforced
+
+### ⚠️ In Progress
+- **Settlement Logic**: Core settlement algorithm needs implementation (TODO at line 570 in mto-type2.service.ts)
+- **Budget Allocation**: Population-based budget distribution not implemented
+- **Price Ordering**: Submission sorting by price not implemented
+- **Formula Validation**: Product formula verification missing
+
+### ❌ Not Yet Implemented
+- **Payment Processing**: Team payment integration pending
+- **Return Process**: Unsettled product returns not implemented
+- **Transportation Fees**: Return transportation calculation missing
+- **Settlement History**: Audit trail and reporting incomplete
+
+### 📝 Notes on Documentation vs Requirements
+- **Mall Level Priority**: Documentation mentions "Priority given to highest level MALLs" but requirements specify price-only ordering
+- **Clarification Needed**: Confirm if mall level should be considered or pure price-based ordering
+
+### 🚧 Development Priority
+1. **Urgent**: Implement complete settlement algorithm with budget allocation
+2. **High**: Add formula validation and payment processing
+3. **Medium**: Implement return process with transportation fees
+4. **Low**: Add comprehensive reporting and analytics
 
 ## Success Metrics
 

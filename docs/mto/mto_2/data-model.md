@@ -294,7 +294,7 @@ model MtoType2CalculationHistory {
 
   // Metadata
   createdAt                    DateTime  @default(now())
-  createdBy                    String?   // System or admin user
+  createdBy                    String?   // System or manager user
 
   // Relations
   mtoType2                     ManagerRequirementProductType2 @relation(fields: [mtoType2Id], references: [id])

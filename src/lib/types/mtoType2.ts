@@ -297,3 +297,95 @@ export interface MtoType2CompetitorAnalysis {
     confidence: number;
   };
 }
+
+// Additional types for missing features
+export interface MtoType2FormulaLock {
+  formulaId: number;
+  isLocked: boolean;
+  lockedAt?: string;
+  lockedBy?: string;
+  lockedForMtoType2Id?: number;
+}
+
+export interface MtoType2MALLVerification {
+  facilityInstanceId: string;
+  facilityType: 'MALL';
+  level: number;
+  status: 'OPERATIONAL' | 'UNDER_CONSTRUCTION' | 'DISABLED';
+  availableCapacity: number;
+  currentInventory: number;
+  verifiedAt: string;
+  errors?: string[];
+}
+
+export interface MtoType2UnsettledReturn {
+  submissionId: number;
+  unsettledQuantity: number;
+  targetFacilityInstanceId: string;
+  targetFacilityName: string;
+  transportationFee: number;
+  returnStatus: 'PENDING' | 'IN_TRANSIT' | 'COMPLETED' | 'FAILED';
+  requestedAt: string;
+  completedAt?: string;
+  failureReason?: string;
+}
+
+export interface MtoType2SettlementPriority {
+  submissionId: number;
+  mallLevel: number;
+  unitPrice: number;
+  submittedAt: string;
+  priorityScore: number;
+  settlementOrder: number;
+  explanation: string;
+}
+
+export interface MtoType2PriceTrend {
+  formulaId: number;
+  period: '7d' | '30d' | '90d';
+  trends: Array<{
+    date: string;
+    averagePrice: number;
+    minPrice: number;
+    maxPrice: number;
+    volume: number;
+    participations: number;
+  }>;
+  summary: {
+    currentAverage: number;
+    percentChange: number;
+    volatility: number;
+    trend: 'INCREASING' | 'DECREASING' | 'STABLE';
+  };
+}
+
+export interface MtoType2BulkSettleRequest {
+  mtoType2Ids: number[];
+  skipValidation?: boolean;
+  notifyTeams?: boolean;
+}
+
+export interface MtoType2BulkSettleResponse {
+  jobId: string;
+  totalItems: number;
+  successful: number;
+  failed: number;
+  estimatedCompletionTime: string;
+  results: Array<{
+    mtoType2Id: number;
+    status: 'SUCCESS' | 'FAILED';
+    message?: string;
+    settlementId?: string;
+  }>;
+}
+
+export interface MtoType2AuditTrail {
+  id: number;
+  mtoType2Id: number;
+  action: string;
+  performedBy: string;
+  performedAt: string;
+  details: any;
+  ipAddress?: string;
+  userAgent?: string;
+}

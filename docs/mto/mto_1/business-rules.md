@@ -586,7 +586,7 @@ interface PaymentRules {
 - Immediate credit to team account upon validation
 - No payment for invalid products
 - Transaction recorded with unique ID
-- Reversible only by system admin with reason
+- Reversible only by manager with reason
 
 ### 4.4 Settlement History Benefits
 
@@ -693,7 +693,7 @@ function acceptDelivery(delivery: Delivery): boolean {
 
 - All disputes logged with evidence
 - Manager review required for resolution
-- System admin has final authority
+- Manager has final authority
 
 ## 7. Performance Constraints
 

@@ -14,7 +14,15 @@ import {
   MtoType2Statistics,
   MtoType2MallOwnerView,
   MtoType2PublicView,
-  MtoType2CompetitorAnalysis
+  MtoType2CompetitorAnalysis,
+  MtoType2FormulaLock,
+  MtoType2MALLVerification,
+  MtoType2UnsettledReturn,
+  MtoType2SettlementPriority,
+  MtoType2PriceTrend,
+  MtoType2BulkSettleRequest,
+  MtoType2BulkSettleResponse,
+  MtoType2AuditTrail
 } from '@/lib/types/mtoType2';
 
 export interface ApiResponse<T> {
@@ -37,7 +45,7 @@ export interface ApiResponse<T> {
 }
 
 export class MtoType2Service {
-  private static readonly ADMIN_BASE_PATH = '/api/admin/mto-type-2';
+  private static readonly MANAGER_BASE_PATH = '/api/user/manager/mto-type2';
   private static readonly MALL_BASE_PATH = '/api/mall/mto-type-2';
   private static readonly PUBLIC_BASE_PATH = '/api/public/mto-type-2';
 
@@ -48,12 +56,12 @@ export class MtoType2Service {
     return response.data || response;
   }
 
-  // Manager/Admin Endpoints
+  // Manager Endpoints
 
   static async createRequirement(
     data: MtoType2CreateRequest
   ): Promise<MtoType2Requirement> {
-    const response = await apiClient.post(this.ADMIN_BASE_PATH, data);
+    const response = await apiClient.post(this.MANAGER_BASE_PATH, data);
     return this.extractResponseData<MtoType2Requirement>(response);
   }
 
@@ -61,16 +69,16 @@ export class MtoType2Service {
     id: number,
     data: MtoType2UpdateRequest
   ): Promise<MtoType2Requirement> {
-    const response = await apiClient.put(`${this.ADMIN_BASE_PATH}/${id}`, data);
+    const response = await apiClient.put(`${this.MANAGER_BASE_PATH}/${id}`, data);
     return this.extractResponseData<MtoType2Requirement>(response);
   }
 
   static async deleteRequirement(id: number): Promise<void> {
-    await apiClient.delete(`${this.ADMIN_BASE_PATH}/${id}`);
+    await apiClient.delete(`${this.MANAGER_BASE_PATH}/${id}`);
   }
 
   static async getRequirement(id: number): Promise<MtoType2Requirement> {
-    const response = await apiClient.get(`${this.ADMIN_BASE_PATH}/${id}`);
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/${id}`);
     return this.extractResponseData<MtoType2Requirement>(response);
   }
 
@@ -89,7 +97,7 @@ export class MtoType2Service {
       });
     }
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}?${queryParams.toString()}`
+      `${this.MANAGER_BASE_PATH}?${queryParams.toString()}`
     );
     return this.extractResponseData<MtoType2Requirement[]>(response);
   }
@@ -119,52 +127,54 @@ export class MtoType2Service {
     if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
 
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}?${queryParams.toString()}`
+      `${this.MANAGER_BASE_PATH}?${queryParams.toString()}`
     );
     return response.data;
   }
 
   static async releaseRequirement(id: number): Promise<MtoType2Requirement> {
-    const response = await apiClient.post(`${this.ADMIN_BASE_PATH}/${id}/release`);
+    const response = await apiClient.post(`${this.MANAGER_BASE_PATH}/${id}/release`);
     return this.extractResponseData<MtoType2Requirement>(response);
   }
 
-  static async cancelRequirement(id: number): Promise<MtoType2Requirement> {
-    const response = await apiClient.post(`${this.ADMIN_BASE_PATH}/${id}/cancel`);
+  static async cancelRequirement(id: number, reason?: string): Promise<MtoType2Requirement> {
+    const response = await apiClient.post(`${this.MANAGER_BASE_PATH}/${id}/cancel`, {
+      reason: reason || 'Cancelled by administrator'
+    });
     return this.extractResponseData<MtoType2Requirement>(response);
   }
 
   static async getMallBudgets(requirementId: number): Promise<MtoType2MallBudget[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/budgets`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/budgets`
     );
     return this.extractResponseData<MtoType2MallBudget[]>(response);
   }
 
   static async calculateBudgets(requirementId: number): Promise<MtoType2MallBudget[]> {
     const response = await apiClient.post(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/calculate-budgets`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/calculate-budgets`
     );
     return this.extractResponseData<MtoType2MallBudget[]>(response);
   }
 
   static async getSubmissions(requirementId: number): Promise<MtoType2Submission[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/submissions`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/submissions`
     );
     return this.extractResponseData<MtoType2Submission[]>(response);
   }
 
   static async settleRequirement(requirementId: number): Promise<MtoType2SettlementHistory> {
     const response = await apiClient.post(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/settle`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/settle`
     );
     return this.extractResponseData<MtoType2SettlementHistory>(response);
   }
 
   static async getSettlements(requirementId: number): Promise<MtoType2Settlement[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/settlements`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/settlements`
     );
     return this.extractResponseData<MtoType2Settlement[]>(response);
   }
@@ -173,7 +183,7 @@ export class MtoType2Service {
     requirementId: number
   ): Promise<MtoType2CalculationHistory[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/calculation-history`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/calculation-history`
     );
     return this.extractResponseData<MtoType2CalculationHistory[]>(response);
   }
@@ -182,15 +192,34 @@ export class MtoType2Service {
     requirementId: number
   ): Promise<MtoType2SettlementHistory[]> {
     const response = await apiClient.get(
-      `${this.ADMIN_BASE_PATH}/${requirementId}/settlement-history`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/settlement-history`
     );
     return this.extractResponseData<MtoType2SettlementHistory[]>(response);
   }
 
   static async getStatistics(activityId?: string): Promise<MtoType2Statistics> {
     const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.ADMIN_BASE_PATH}/statistics${params}`);
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics${params}`);
     return this.extractResponseData<MtoType2Statistics>(response);
+  }
+
+  static async getSettlementReport(requirementId: number): Promise<{
+    summary: any;
+    priceAnalytics: any;
+    tileBreakdown: any[];
+    topSuppliers: any[];
+  }> {
+    const response = await apiClient.get(
+      `${this.MANAGER_BASE_PATH}/${requirementId}/settlement-report`
+    );
+    return this.extractResponseData(response);
+  }
+
+  static async getManagerFormulas(activityId: string): Promise<Array<{ id: number; name: string; }>> {
+    const response = await apiClient.get(
+      `/api/admin/manager-product-formulas?activityId=${activityId}`
+    );
+    return this.extractResponseData(response);
   }
 
   // MALL Owner Endpoints
@@ -306,6 +335,171 @@ export class MtoType2Service {
     );
     return this.extractResponseData(response);
   }
+
+  // New methods for missing features
+
+  static async verifyMALLFacility(
+    facilityInstanceId: string
+  ): Promise<MtoType2MALLVerification> {
+    const response = await apiClient.get(
+      `${this.MALL_BASE_PATH}/verify-facility/${facilityInstanceId}`
+    );
+    return this.extractResponseData<MtoType2MALLVerification>(response);
+  }
+
+  static async lockFormula(
+    formulaId: number,
+    mtoType2Id: number
+  ): Promise<MtoType2FormulaLock> {
+    const response = await apiClient.post(
+      `/api/admin/manager-product-formulas/${formulaId}/lock`,
+      { mtoType2Id }
+    );
+    return this.extractResponseData<MtoType2FormulaLock>(response);
+  }
+
+  static async unlockFormula(formulaId: number): Promise<MtoType2FormulaLock> {
+    const response = await apiClient.post(
+      `/api/admin/manager-product-formulas/${formulaId}/unlock`
+    );
+    return this.extractResponseData<MtoType2FormulaLock>(response);
+  }
+
+  static async getSettlementPriorities(
+    requirementId: number
+  ): Promise<MtoType2SettlementPriority[]> {
+    const response = await apiClient.get(
+      `${this.MANAGER_BASE_PATH}/${requirementId}/settlement-priorities`
+    );
+    return this.extractResponseData<MtoType2SettlementPriority[]>(response);
+  }
+
+  static async createUnsettledReturn(
+    data: MtoType2UnsettledReturnRequest
+  ): Promise<MtoType2UnsettledReturn> {
+    const response = await apiClient.post(
+      `${this.MALL_BASE_PATH}/unsettled/returns`,
+      data
+    );
+    return this.extractResponseData<MtoType2UnsettledReturn>(response);
+  }
+
+  static async getUnsettledReturns(
+    teamId?: string,
+    status?: string
+  ): Promise<MtoType2UnsettledReturn[]> {
+    const params = new URLSearchParams();
+    if (teamId) params.append('teamId', teamId);
+    if (status) params.append('status', status);
+
+    const response = await apiClient.get(
+      `${this.MALL_BASE_PATH}/unsettled/returns?${params.toString()}`
+    );
+    return this.extractResponseData<MtoType2UnsettledReturn[]>(response);
+  }
+
+  static async getPriceTrends(
+    formulaId: number,
+    period: '7d' | '30d' | '90d' = '30d'
+  ): Promise<MtoType2PriceTrend> {
+    const response = await apiClient.get(
+      `/api/analytics/mto-type-2/price-trends?formulaId=${formulaId}&period=${period}`
+    );
+    return this.extractResponseData<MtoType2PriceTrend>(response);
+  }
+
+  static async bulkSettle(
+    data: MtoType2BulkSettleRequest
+  ): Promise<MtoType2BulkSettleResponse> {
+    const response = await apiClient.post(
+      `${this.MANAGER_BASE_PATH}/bulk-settle`,
+      data
+    );
+    return this.extractResponseData<MtoType2BulkSettleResponse>(response);
+  }
+
+  static async getAuditTrail(
+    mtoType2Id: number
+  ): Promise<MtoType2AuditTrail[]> {
+    const response = await apiClient.get(
+      `${this.MANAGER_BASE_PATH}/${mtoType2Id}/audit-trail`
+    );
+    return this.extractResponseData<MtoType2AuditTrail[]>(response);
+  }
+
+  static async calculateTransportationFee(
+    fromFacilityId: string,
+    toFacilityId: string,
+    quantity: number
+  ): Promise<{ fee: number; estimatedTime: string }> {
+    const response = await apiClient.post(
+      `${this.MALL_BASE_PATH}/calculate-transportation-fee`,
+      { fromFacilityId, toFacilityId, quantity }
+    );
+    return this.extractResponseData(response);
+  }
+
+  static async validateFacilityCapacity(
+    facilityId: string,
+    requiredCapacity: number
+  ): Promise<{ hasCapacity: boolean; availableSpace: number; message?: string }> {
+    const response = await apiClient.get(
+      `${this.MALL_BASE_PATH}/facilities/${facilityId}/validate-capacity?required=${requiredCapacity}`
+    );
+    return this.extractResponseData(response);
+  }
 }
+
+// Create a singleton instance for easier import and use
+export const mtoType2Service = {
+  createRequirement: MtoType2Service.createRequirement.bind(MtoType2Service),
+  updateRequirement: MtoType2Service.updateRequirement.bind(MtoType2Service),
+  deleteRequirement: MtoType2Service.deleteRequirement.bind(MtoType2Service),
+  getRequirement: MtoType2Service.getRequirement.bind(MtoType2Service),
+  getRequirements: MtoType2Service.getRequirements.bind(MtoType2Service),
+  searchRequirements: MtoType2Service.searchRequirements.bind(MtoType2Service),
+  releaseRequirement: MtoType2Service.releaseRequirement.bind(MtoType2Service),
+  cancelRequirement: MtoType2Service.cancelRequirement.bind(MtoType2Service),
+  getMallBudgets: MtoType2Service.getMallBudgets.bind(MtoType2Service),
+  calculateBudgets: MtoType2Service.calculateBudgets.bind(MtoType2Service),
+  getSubmissions: MtoType2Service.getSubmissions.bind(MtoType2Service),
+  settleRequirement: MtoType2Service.settleRequirement.bind(MtoType2Service),
+  getSettlements: MtoType2Service.getSettlements.bind(MtoType2Service),
+  getCalculationHistory: MtoType2Service.getCalculationHistory.bind(MtoType2Service),
+  getSettlementHistory: MtoType2Service.getSettlementHistory.bind(MtoType2Service),
+  getStatistics: MtoType2Service.getStatistics.bind(MtoType2Service),
+  getSettlementReport: MtoType2Service.getSettlementReport.bind(MtoType2Service),
+  getManagerFormulas: MtoType2Service.getManagerFormulas.bind(MtoType2Service),
+
+  // MALL Owner methods
+  getAvailableForMall: MtoType2Service.getAvailableForMall.bind(MtoType2Service),
+  getRequirementForMall: MtoType2Service.getRequirementForMall.bind(MtoType2Service),
+  getCompetitorAnalysis: MtoType2Service.getCompetitorAnalysis.bind(MtoType2Service),
+  createSubmission: MtoType2Service.createSubmission.bind(MtoType2Service),
+  updateSubmission: MtoType2Service.updateSubmission.bind(MtoType2Service),
+  withdrawSubmission: MtoType2Service.withdrawSubmission.bind(MtoType2Service),
+  getMallSubmissions: MtoType2Service.getMallSubmissions.bind(MtoType2Service),
+  getSubmissionStatus: MtoType2Service.getSubmissionStatus.bind(MtoType2Service),
+  returnUnsettledProducts: MtoType2Service.returnUnsettledProducts.bind(MtoType2Service),
+  getMallSettlements: MtoType2Service.getMallSettlements.bind(MtoType2Service),
+
+  // Public methods
+  getPublicRequirements: MtoType2Service.getPublicRequirements.bind(MtoType2Service),
+  getPublicRequirement: MtoType2Service.getPublicRequirement.bind(MtoType2Service),
+  getMarketInsights: MtoType2Service.getMarketInsights.bind(MtoType2Service),
+
+  // New missing feature methods
+  verifyMALLFacility: MtoType2Service.verifyMALLFacility.bind(MtoType2Service),
+  lockFormula: MtoType2Service.lockFormula.bind(MtoType2Service),
+  unlockFormula: MtoType2Service.unlockFormula.bind(MtoType2Service),
+  getSettlementPriorities: MtoType2Service.getSettlementPriorities.bind(MtoType2Service),
+  createUnsettledReturn: MtoType2Service.createUnsettledReturn.bind(MtoType2Service),
+  getUnsettledReturns: MtoType2Service.getUnsettledReturns.bind(MtoType2Service),
+  getPriceTrends: MtoType2Service.getPriceTrends.bind(MtoType2Service),
+  bulkSettle: MtoType2Service.bulkSettle.bind(MtoType2Service),
+  getAuditTrail: MtoType2Service.getAuditTrail.bind(MtoType2Service),
+  calculateTransportationFee: MtoType2Service.calculateTransportationFee.bind(MtoType2Service),
+  validateFacilityCapacity: MtoType2Service.validateFacilityCapacity.bind(MtoType2Service)
+};
 
 export default MtoType2Service;

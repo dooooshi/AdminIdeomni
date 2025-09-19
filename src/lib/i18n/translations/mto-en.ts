@@ -345,5 +345,69 @@ export const mtoTranslationsEn = {
   'mto.type2.mall.messages.bidCancelled': 'Bid cancelled successfully',
   'mto.type2.mall.errors.submitFailed': 'Failed to submit bid',
   'mto.type2.mall.errors.updateFailed': 'Failed to update bid',
-  'mto.type2.mall.errors.cancelFailed': 'Failed to cancel bid'
+  'mto.type2.mall.errors.cancelFailed': 'Failed to cancel bid',
+
+  // Additional MTO Type 2 Translations
+  'mto.type2.fields.requirementName': 'Requirement Name',
+  'mto.type2.fields.productFormula': 'Product Formula',
+  'mto.type2.fields.overallBudget': 'Overall Budget',
+  'mto.type2.fields.releaseTime': 'Release Time',
+  'mto.type2.fields.settlementTime': 'Settlement Time',
+  'mto.type2.fields.description': 'Description',
+  'mto.type2.fields.notes': 'Notes',
+  'mto.type2.fields.status': 'Status',
+  'mto.type2.fields.id': 'ID',
+
+  'mto.type2.placeholders.requirementName': 'Enter a descriptive name for this requirement',
+  'mto.type2.placeholders.description': 'Provide details about this procurement opportunity',
+  'mto.type2.placeholders.notes': 'Internal notes (not visible to teams)',
+
+  'mto.type2.validation.formulaRequired': 'Product formula is required',
+  'mto.type2.validation.budgetRequired': 'Budget must be greater than 0',
+  'mto.type2.validation.releaseTimeRequired': 'Release time is required',
+  'mto.type2.validation.settlementTimeRequired': 'Settlement time is required and must be after release time',
+
+  'mto.type2.messages.createSuccess': 'MTO Type 2 requirement created successfully',
+  'mto.type2.messages.updateSuccess': 'MTO Type 2 requirement updated successfully',
+  'mto.type2.messages.deleteSuccess': 'MTO Type 2 requirement deleted successfully',
+  'mto.type2.messages.releaseSuccess': 'MTO Type 2 requirement released successfully',
+  'mto.type2.messages.cancelSuccess': 'MTO Type 2 requirement cancelled successfully',
+  'mto.type2.messages.reportGenerated': 'Settlement report generated successfully',
+
+  'mto.type2.errors.fetchFailed': 'Failed to fetch requirements',
+  'mto.type2.errors.cancelFailed': 'Failed to cancel requirement',
+  'mto.type2.errors.cannotDeleteNonDraft': 'Can only delete requirements in draft status',
+  'mto.type2.errors.loadFormulasFailed': 'Failed to load product formulas',
+  'mto.type2.errors.reportFailed': 'Failed to generate report',
+
+  'mto.type2.warnings.onlyDraftEditable': 'Only draft requirements can be edited',
+
+  'mto.type2.confirmDelete.title': 'Delete MTO Type 2 Requirement',
+  'mto.type2.confirmDelete.message': 'Are you sure you want to delete "{name}"? This action cannot be undone.',
+  'mto.type2.confirmRelease.title': 'Release MTO Type 2 Requirement',
+  'mto.type2.confirmRelease.message': 'Once released, teams with MALL facilities can start submitting bids. Continue?',
+  'mto.type2.confirmCancel.title': 'Cancel MTO Type 2 Requirement',
+  'mto.type2.confirmCancel.message': 'This will cancel the requirement and notify all participating teams. Continue?',
+  'mto.type2.confirmCancel.reasonLabel': 'Cancellation reason',
+
+  'mto.type2.actions.viewBudget': 'View Budget Allocation',
+  'mto.type2.actions.release': 'Release',
+  'mto.type2.actions.settle': 'Initiate Settlement',
+  'mto.type2.actions.viewReport': 'View Settlement Report',
+  'mto.type2.actions.cancel': 'Cancel Requirement',
+
+  'mto.type2.mallMarket': 'MALL Market',
+  'mto.type2.mallMarketTitle': 'MTO Type 2 - MALL Market',
+  'mto.type2.mallMarketDescription': 'Browse and bid on MALL-exclusive Made-To-Order opportunities',
+  'mto.type2.mallSubmissions': 'MALL Submissions',
+  'mto.type2.mallSubmissionsTitle': 'My MALL Submissions',
+  'mto.type2.mallSubmissionsDescription': 'Track and manage your MALL submissions and settlement status',
+  'mto.type2.mallExclusive': 'MALL Exclusive',
+  'mto.type2.mallOwnerRequired': 'MALL Ownership Required',
+  'mto.type2.mallOwnerRequiredDescription': 'Only teams with MALL facilities can participate in MTO Type 2 procurement',
+  'mto.type2.mallOwnerOnly': 'MALL Owner Only',
+  'mto.type2.submissionTracking': 'Submission Tracking',
+  'mto.type2.settlementStatus': 'Settlement Status',
+  'mto.type2.submissionManagement': 'Submission Management',
+  'mto.type2.submissionManagementDescription': 'View and manage all your MALL submissions, track settlement progress, and retrieve unsettled products'
 };

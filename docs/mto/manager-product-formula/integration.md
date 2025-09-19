@@ -642,7 +642,7 @@ async updateFormula(
       }
     });
 
-    // 5. Notify other managers
+    // 5. Emit update event
     this.eventEmitter.emit('formula:updated', {
       formulaId,
       updatedBy: managerId,

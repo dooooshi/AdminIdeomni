@@ -401,15 +401,16 @@ interface DeliveryTracking {
 
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AdminAuthGuard } from '@/auth/guards/admin-auth.guard';
+import { ManagerGuard } from '@/user/guards/user-auth.guard';
 
 @Injectable()
-export class MtoType1AdminGuard extends AdminAuthGuard {
+export class MtoType1ManagerGuard extends ManagerGuard {
   constructor(reflector: Reflector) {
-    super(reflector);
+    super();
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    // First check if user is a manager (userType = 1)
     const baseResult = await super.canActivate(context);
     if (!baseResult) return false;
 
@@ -421,7 +422,9 @@ export class MtoType1AdminGuard extends AdminAuthGuard {
 
     if (!requiredPermission) return true;
 
-    return request.user.permissions.includes(requiredPermission);
+    // Additional permission checks if needed
+    // Manager role already has all MTO permissions
+    return true;
   }
 }
 ```
@@ -558,24 +561,25 @@ export class MtoType1EventService {
 ### 10.2 Event Listeners
 
 ```typescript
-// src/mto-type1/listeners/notification.listener.ts
+// src/mto-type1/listeners/event.listener.ts
 
 import { OnEvent } from '@nestjs/event-emitter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class MtoType1NotificationListener {
+export class MtoType1EventListener {
   @OnEvent('mto_type1.requirement.released')
   async handleRequirementReleased(payload: any) {
-    // Send notifications to teams
-    await this.notifyTeams(payload.requirementId);
+    // Log event for audit trail
+    await this.logEvent('requirement.released', payload);
   }
 
   @OnEvent('mto_type1.settlement.completed')
   async handleSettlementCompleted(payload: any) {
-    // Generate reports and notify stakeholders
+    // Generate settlement report
     await this.generateReport(payload);
-    await this.notifyManagers(payload);
+    // Update statistics
+    await this.updateStatistics(payload);
   }
 }
 ```
@@ -634,7 +638,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     CommonModule
   ],
   controllers: [
-    AdminMtoType1Controller,
+    ManagerMtoType1Controller,
     TeamMtoType1Controller
   ],
   providers: [
