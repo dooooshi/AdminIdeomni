@@ -94,7 +94,7 @@ export class MtoType1Service {
 
   static async searchRequirements(
     params: MtoType1SearchParams
-  ): Promise<ApiResponse<MtoType1Requirement[]>> {
+  ): Promise<{ data: MtoType1Requirement[]; extra?: { pagination?: any } }> {
     const queryParams = new URLSearchParams();
 
     if (params.q) queryParams.append('q', params.q);
@@ -118,7 +118,28 @@ export class MtoType1Service {
     const response = await apiClient.get(
       `${this.MANAGER_BASE_PATH}/requirements?${queryParams.toString()}`
     );
-    return response.data;
+
+    // Handle the nested response structure
+    const responseData = response.data;
+    if (responseData && responseData.data) {
+      // If data has an items array, use that
+      if (responseData.data.items && Array.isArray(responseData.data.items)) {
+        return {
+          data: responseData.data.items,
+          extra: { pagination: responseData.data.pagination }
+        };
+      }
+      // Otherwise use data directly if it's an array
+      if (Array.isArray(responseData.data)) {
+        return {
+          data: responseData.data,
+          extra: responseData.extra
+        };
+      }
+    }
+
+    // Fallback
+    return { data: [], extra: undefined };
   }
 
   static async releaseRequirement(id: number): Promise<MtoType1Requirement> {

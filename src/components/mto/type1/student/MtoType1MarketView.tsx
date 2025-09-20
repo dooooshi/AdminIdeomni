@@ -261,7 +261,7 @@ const MtoType1MarketView: React.FC<MtoType1MarketViewProps> = ({
             const profit = calculatePotentialProfit(requirement);
 
             return (
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Card key={requirement.requirementId} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                   <CardContent sx={{ flexGrow: 1 }}>
                     {/* Header */}
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={2}>

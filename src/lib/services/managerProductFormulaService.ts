@@ -55,6 +55,21 @@ export class ManagerProductFormulaService {
 
     const data = this.extractResponseData<any>(response);
 
+    // Handle the response structure {items: [], total: number, page: number, limit: number}
+    if (data?.items && Array.isArray(data.items)) {
+      const totalPages = Math.ceil((data.total || 0) / (data.limit || limit));
+      return {
+        items: data.items,
+        pagination: {
+          page: data.page || page,
+          limit: data.limit || limit,
+          total: data.total || 0,
+          totalPages: totalPages
+        }
+      };
+    }
+
+    // Fallback for older response structure
     if (data?.data && Array.isArray(data.data)) {
       return {
         items: data.data,
@@ -68,8 +83,8 @@ export class ManagerProductFormulaService {
     }
 
     return {
-      items: data?.items || [],
-      pagination: data?.pagination || {
+      items: [],
+      pagination: {
         page: 1,
         limit: 20,
         total: 0,

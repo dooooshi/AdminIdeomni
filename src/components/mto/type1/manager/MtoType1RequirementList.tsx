@@ -102,8 +102,8 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
         sortOrder: 'desc'
       });
 
-      // Ensure requirements is always an array
-      const requirementsData = Array.isArray(response.data) ? response.data : (Array.isArray(response) ? response : []);
+      // Handle the response with the correct structure
+      const requirementsData = response.data || [];
       setRequirements(requirementsData);
       setTotalCount(response.extra?.pagination?.total || requirementsData.length || 0);
     } catch (error) {
@@ -273,14 +273,14 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
                       />
                     </TableCell>
                     <TableCell align="right">
-                      {formatCurrency(requirement.purchaseGoldPrice)}
+                      {formatCurrency(Number(requirement.purchaseGoldPrice))}
                     </TableCell>
                     <TableCell align="right">
-                      {requirement.overallPurchaseNumber.toLocaleString()}
+                      {Number(requirement.overallPurchaseNumber).toLocaleString()}
                     </TableCell>
                     <TableCell align="right">
                       <Typography variant="body2" color="primary">
-                        {formatCurrency(requirement.overallPurchaseBudget)}
+                        {formatCurrency(Number(requirement.overallPurchaseBudget))}
                       </Typography>
                     </TableCell>
                     <TableCell>
