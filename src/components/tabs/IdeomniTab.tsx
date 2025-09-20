@@ -1,10 +1,11 @@
 import { styled } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import { TabProps } from '@mui/material/Tab';
+import React from 'react';
 
 type StyledTabProps = TabProps;
 
-const IdeomniTab = styled((props: StyledTabProps) => (
+const IdeomniTab: React.ComponentType<StyledTabProps> = styled((props: StyledTabProps) => (
 	<Tab
 		disableRipple
 		{...props}

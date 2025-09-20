@@ -15,7 +15,7 @@ import {
   ListItemIcon,
   Divider
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
@@ -112,8 +112,8 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
 
   return (
     <Box>
-      <Grid2 container spacing={3}>
-        <Grid2 size={{ xs: 12, md: 3 }}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -139,9 +139,9 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
 
-        <Grid2 size={{ xs: 12, md: 3 }}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
@@ -158,9 +158,9 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               </Typography>
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
 
-        <Grid2 size={{ xs: 12, md: 3 }}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
@@ -177,9 +177,9 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               </Typography>
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
 
-        <Grid2 size={{ xs: 12, md: 3 }}>
+        <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center">
@@ -201,9 +201,9 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               />
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid>
 
-        <Grid2 size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               {t('mto:mto.type1.stats.deliveryDistribution')}
@@ -229,8 +229,8 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
             </ResponsiveContainer>
 
             <Box sx={{ mt: 2 }}>
-              <Grid2 container spacing={2}>
-                <Grid2 size={4}>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
                   <Box display="flex" alignItems="center">
                     <CheckIcon color="success" sx={{ mr: 1 }} />
                     <Box>
@@ -238,8 +238,8 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                       <Typography variant="h6">{formatNumber(statistics.totalSettled)}</Typography>
                     </Box>
                   </Box>
-                </Grid2>
-                <Grid2 size={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <Box display="flex" alignItems="center">
                     <CancelIcon color="warning" sx={{ mr: 1 }} />
                     <Box>
@@ -247,8 +247,8 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                       <Typography variant="h6">{formatNumber(statistics.totalUnsettled)}</Typography>
                     </Box>
                   </Box>
-                </Grid2>
-                <Grid2 size={4}>
+                </Grid>
+                <Grid item xs={4}>
                   <Box display="flex" alignItems="center">
                     <TimerIcon color="action" sx={{ mr: 1 }} />
                     <Box>
@@ -256,13 +256,13 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                       <Typography variant="h6">{formatNumber(statistics.totalRequirement - statistics.totalDelivered)}</Typography>
                     </Box>
                   </Box>
-                </Grid2>
-              </Grid2>
+                </Grid>
+              </Grid>
             </Box>
           </Paper>
-        </Grid2>
+        </Grid>
 
-        <Grid2 size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Paper sx={{ p: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               {t('mto:mto.type1.stats.budgetAllocation')}
@@ -309,10 +309,10 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
               </ListItem>
             </List>
           </Paper>
-        </Grid2>
+        </Grid>
 
         {tileData.length > 0 && (
-          <Grid2 size={12}>
+          <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
               <Typography variant="h6" gutterBottom>
                 {t('mto:mto.type1.stats.tilePerformance')}
@@ -330,11 +330,11 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                 </BarChart>
               </ResponsiveContainer>
             </Paper>
-          </Grid2>
+          </Grid>
         )}
 
         {timeSeriesData.length > 0 && (
-          <Grid2 size={12}>
+          <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
               <Typography variant="h6" gutterBottom>
                 {t('mto:mto.type1.stats.deliveryTimeline')}
@@ -351,9 +351,9 @@ const MtoType1StatsDashboard: React.FC<Props> = ({ statistics, tileData = [], ti
                 </AreaChart>
               </ResponsiveContainer>
             </Paper>
-          </Grid2>
+          </Grid>
         )}
-      </Grid2>
+      </Grid>
     </Box>
   );
 };

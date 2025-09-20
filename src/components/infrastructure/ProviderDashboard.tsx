@@ -10,7 +10,7 @@ import {
   Alert,
   Chip,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   WaterDrop as WaterIcon,
   PowerSettingsNew as PowerIcon,
@@ -84,7 +84,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
             : 0;
             
           return (
-            <Grid key={`provider-${facility.facilityId}`} size={{ xs: 12, md: 6 }}>
+            <Grid key={`provider-${facility.facilityId}`} item xs={12} md={6}>
               <Card>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>

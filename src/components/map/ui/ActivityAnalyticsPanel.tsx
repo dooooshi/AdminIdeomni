@@ -16,7 +16,7 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  Grid,
+
   Stack,
   Paper,
   LinearProgress,
@@ -30,6 +30,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Analytics as AnalyticsIcon,
   TrendingUp as TrendingUpIcon,
@@ -232,7 +233,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                   </Typography>
                   
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                    <Grid item xs={12} sm={6} md={3}>
                       <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'primary.50' }}>
                         <LandscapeIcon color="primary" sx={{ fontSize: 32, mb: 1 }} />
                         <Typography variant="h4" color="primary" fontWeight="bold">
@@ -244,7 +245,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                       </Paper>
                     </Grid>
                     
-                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                    <Grid item xs={12} sm={6} md={3}>
                       <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'success.50' }}>
                         <AttachMoneyIcon color="success" sx={{ fontSize: 32, mb: 1 }} />
                         <Typography variant="h4" color="success.main" fontWeight="bold">
@@ -256,7 +257,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                       </Paper>
                     </Grid>
                     
-                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                    <Grid item xs={12} sm={6} md={3}>
                       <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'info.50' }}>
                         <PeopleIcon color="info" sx={{ fontSize: 32, mb: 1 }} />
                         <Typography variant="h4" color="info.main" fontWeight="bold">
@@ -268,7 +269,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                       </Paper>
                     </Grid>
                     
-                    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                    <Grid item xs={12} sm={6} md={3}>
                       <Paper sx={{ p: 2, textAlign: 'center', bgcolor: 'warning.50' }}>
                         <AssessmentIcon color="warning" sx={{ fontSize: 32, mb: 1 }} />
                         <Typography variant="h4" color="warning.main" fontWeight="bold">
@@ -290,7 +291,7 @@ const ActivityAnalyticsPanel: React.FC<ActivityAnalyticsPanelProps> = ({
                   
                   <Grid container spacing={2}>
                     {Object.entries(analytics.landTypeBreakdown).map(([landType, data]) => (
-                      <Grid key={landType} size={{ xs: 12, md: 4 }}>
+                      <Grid key={landType} item xs={12} md={4}>
                         <Card variant="outlined" sx={{ borderColor: getLandTypeColor(landType) }}>
                           <CardContent>
                             <Box display="flex" alignItems="center" gap={1} mb={2}>

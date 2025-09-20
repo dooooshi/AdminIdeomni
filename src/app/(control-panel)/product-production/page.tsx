@@ -48,7 +48,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import {
   Factory as FactoryIcon,
   Science as ScienceIcon,
@@ -450,13 +450,13 @@ export default function ProductProductionPage() {
           </Typography>
         </Card>
       ) : (
-        <Grid2 container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={2} sx={{ mt: 2 }}>
           {formulas.map((formula) => {
           const isSelected = selectedFormula?.id === formula.id;
           const canProduce = selectedFactory?.productionCapability?.canProduce || false;
           
           return (
-            <Grid2 item xs={12} sm={6} md={4} key={formula.id}>
+            <Grid item xs={12} sm={6} md={4} key={formula.id}>
               <Card
                 variant={isSelected ? 'elevation' : 'outlined'}
                 sx={{
@@ -501,10 +501,10 @@ export default function ProductProductionPage() {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid2>
+            </Grid>
           );
         })}
-        </Grid2>
+        </Grid>
       )}
     </Box>
   );
@@ -533,8 +533,8 @@ export default function ProductProductionPage() {
         </Typography>
         
         <Card sx={{ mt: 3, p: 3 }}>
-          <Grid2 container spacing={3} alignItems="center">
-            <Grid2 item xs={12} md={6}>
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={6}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('productProduction.productionQuantity')}
               </Typography>
@@ -589,9 +589,9 @@ export default function ProductProductionPage() {
                   <AddIcon />
                 </IconButton>
               </Box>
-            </Grid2>
+            </Grid>
             
-            <Grid2 item xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               {selectedFormula && (
                 <Paper variant="outlined" sx={{ p: 2 }}>
                   <Typography variant="subtitle2" gutterBottom>
@@ -623,8 +623,8 @@ export default function ProductProductionPage() {
                   </Stack>
                 </Paper>
               )}
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Card>
       </Box>
     );
@@ -646,9 +646,9 @@ export default function ProductProductionPage() {
           {t('productProduction.reviewCosts')}
         </Typography>
 
-        <Grid2 container spacing={3} sx={{ mt: 1 }}>
+        <Grid container spacing={3} sx={{ mt: 1 }}>
           {/* Material Costs */}
-          <Grid2 item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader 
                 title={t('productProduction.materialCosts')}
@@ -684,10 +684,10 @@ export default function ProductProductionPage() {
                 </Box>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
           {/* Resource Consumption */}
-          <Grid2 item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader 
                 title={t('productProduction.resourceConsumption')}
@@ -739,10 +739,10 @@ export default function ProductProductionPage() {
                 </Stack>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
           {/* Space Impact */}
-          <Grid2 item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader 
                 title={t('productProduction.spaceImpact')}
@@ -792,10 +792,10 @@ export default function ProductProductionPage() {
                 )}
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
           {/* Production Output */}
-          <Grid2 item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader 
                 title={t('productProduction.expectedOutput')}
@@ -841,22 +841,22 @@ export default function ProductProductionPage() {
                 </Stack>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
           {/* Total Cost Summary */}
-          <Grid2 item xs={12}>
+          <Grid item xs={12}>
             <Card sx={{ bgcolor: 'primary.main', color: 'primary.contrastText' }}>
               <CardContent>
-                <Grid2 container alignItems="center" spacing={3}>
-                  <Grid2 item xs={12} sm={6}>
+                <Grid container alignItems="center" spacing={3}>
+                  <Grid item xs={12} sm={6}>
                     <Typography variant="h5" gutterBottom>
                       {t('productProduction.totalProductionCost')}
                     </Typography>
                     <Typography variant="h3">
                       ${formatNumber(costData.costs?.finalCosts?.totalCost || 0, 2)}
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={12} sm={6}>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
                     <Stack spacing={1}>
                       {costData.validation?.validations?.map((validation, index) => (
                         <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -871,12 +871,12 @@ export default function ProductProductionPage() {
                         </Box>
                       )) || []}
                     </Stack>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
     );
   };
@@ -901,53 +901,53 @@ export default function ProductProductionPage() {
               {t('productProduction.productionSummary')}
             </Typography>
             
-            <Grid2 container spacing={2} sx={{ mt: 2 }}>
-              <Grid2 item xs={12} sm={6}>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body2" color="text.secondary">
                   {t('productProduction.factory')}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
                   {selectedFactory?.name}
                 </Typography>
-              </Grid2>
+              </Grid>
               
-              <Grid2 item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body2" color="text.secondary">
                   {t('productProduction.formula')}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
                   {selectedFormula?.productName}
                 </Typography>
-              </Grid2>
+              </Grid>
               
-              <Grid2 item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body2" color="text.secondary">
                   {t('productProduction.requestedQuantity')}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
                   {t('productProduction.unitsWithCount', { count: quantity })}
                 </Typography>
-              </Grid2>
+              </Grid>
               
-              <Grid2 item xs={12} sm={6}>
+              <Grid item xs={12} sm={6}>
                 <Typography variant="body2" color="text.secondary">
                   {t('productProduction.expectedOutput')}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium" color="success.main">
                   {t('productProduction.unitsWithCount', { count: costData.output?.expectedQuantity || 0 })}
                 </Typography>
-              </Grid2>
+              </Grid>
               
-              <Grid2 item xs={12}>
+              <Grid item xs={12}>
                 <Divider sx={{ my: 2 }} />
-              </Grid2>
+              </Grid>
               
-              <Grid2 item xs={12}>
+              <Grid item xs={12}>
                 <Typography variant="h5" color="primary">
                   {t('productProduction.totalCost')}: ${formatNumber(costData.costs?.finalCosts?.totalCost || 0, 2)}
                 </Typography>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Box>
@@ -1145,19 +1145,19 @@ export default function ProductProductionPage() {
     <Box sx={{ p: 3 }}>
       <HeaderSection />
       
-      <Grid2 container spacing={3}>
+      <Grid container spacing={3}>
         {/* Left Panel - Factory Selection */}
-        <Grid2 item xs={12} md={3}>
+        <Grid item xs={12} md={3}>
           <FactoryPanel />
-        </Grid2>
+        </Grid>
         
         {/* Center Panel - Production Wizard */}
-        <Grid2 item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <ProductionPanel />
-        </Grid2>
+        </Grid>
         
         {/* Right Panel - History */}
-        <Grid2 item xs={12} md={3}>
+        <Grid item xs={12} md={3}>
           <Stack spacing={2}>
             <RecentHistoryPanel />
             <Button
@@ -1171,8 +1171,8 @@ export default function ProductProductionPage() {
                 : t('productProduction.viewFullHistory')}
             </Button>
           </Stack>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
 
       <ProductionHistoryTable />
       <ProductionConfirmationDialog />

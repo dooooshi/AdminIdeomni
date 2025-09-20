@@ -19,7 +19,7 @@ import {
   Divider,
   Autocomplete
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -40,14 +40,12 @@ import { addDays } from 'date-fns';
 
 interface MtoType1RequirementFormProps {
   requirement?: MtoType1Requirement;
-  activityId: string;
   onSave: (requirement: MtoType1Requirement) => void;
   onCancel: () => void;
 }
 
 const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
   requirement,
-  activityId,
   onSave,
   onCancel
 }) => {
@@ -152,7 +150,6 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
     setSaving(true);
     try {
       const requestData = {
-        activityId,
         managerProductFormulaId: formData.managerProductFormulaId!,
         purchaseGoldPrice: formData.purchaseGoldPrice,
         basePurchaseNumber: formData.basePurchaseNumber,
@@ -218,6 +215,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
     }).format(value).replace('$', '');
   };
 
+  // Form is editable when creating new requirement or editing a DRAFT requirement
+  const isFormEditable = !requirement || requirement.status === 'DRAFT';
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Paper sx={{ p: 3 }}>
@@ -225,23 +225,23 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
           {requirement ? t('mto.type1.editRequirement') : t('mto.type1.createRequirement')}
         </Typography>
 
-        {requirement?.status !== 'DRAFT' && (
+        {requirement && requirement.status !== 'DRAFT' && (
           <Alert severity="warning" sx={{ mb: 3 }}>
             {t('mto.type1.warnings.cannotEditReleased')}
           </Alert>
         )}
 
         <Box component="form" noValidate>
-          <Grid2 container spacing={3}>
-            <Grid2 size={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 <ScienceIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.basicInfo')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('mto.type1.fields.name')}
@@ -250,18 +250,18 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 error={!!errors.name}
                 helperText={errors.name}
                 required
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Autocomplete
                 options={formulas}
                 getOptionLabel={(option) => `#${option.formulaNumber} - ${option.productName || 'Unnamed'}`}
                 value={formulas.find(f => f.id === formData.managerProductFormulaId) || null}
                 onChange={(_, value) => handleChange('managerProductFormulaId', value?.id || null)}
                 loading={formulasLoading}
-                disabled={!!requirement || requirement?.status !== 'DRAFT'}
+                disabled={!!requirement || !isFormEditable}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -281,9 +281,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   />
                 )}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 multiline
@@ -291,19 +291,19 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 label={t('mto.type1.fields.description')}
                 value={formData.description}
                 onChange={(e) => handleChange('description', e.target.value)}
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 <MoneyIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.pricing')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 type="number"
@@ -313,14 +313,14 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 error={!!errors.purchaseGoldPrice}
                 helperText={errors.purchaseGoldPrice}
                 required
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
                 InputProps={{
                   startAdornment: <InputAdornment position="start">$</InputAdornment>,
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 type="number"
@@ -330,11 +330,11 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 error={!!errors.basePurchaseNumber}
                 helperText={errors.basePurchaseNumber || t('mto.type1.helpers.basePurchaseNumber')}
                 required
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 type="number"
@@ -344,11 +344,11 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 error={!!errors.overallPurchaseNumber}
                 helperText={errors.overallPurchaseNumber}
                 required
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 type="number"
@@ -358,7 +358,7 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 error={!!errors.baseCountPopulationNumber}
                 helperText={errors.baseCountPopulationNumber || t('mto.type1.helpers.baseCountPopulation')}
                 required
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -367,9 +367,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   ),
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('mto.type1.fields.totalBudget')}
@@ -380,22 +380,22 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 }}
                 helperText={t('mto.type1.helpers.totalBudget')}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 <ScheduleIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
                 {t('mto.type1.sections.schedule')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <DateTimePicker
                 label={t('mto.type1.fields.releaseTime')}
                 value={formData.releaseTime}
                 onChange={(value) => handleChange('releaseTime', value)}
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -405,14 +405,14 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   }
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <DateTimePicker
                 label={t('mto.type1.fields.settlementTime')}
                 value={formData.settlementTime}
                 onChange={(value) => handleChange('settlementTime', value)}
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
                 minDateTime={formData.releaseTime || undefined}
                 slotProps={{
                   textField: {
@@ -423,9 +423,9 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   }
                 }}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 multiline
@@ -433,11 +433,11 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 label={t('mto.type1.fields.notes')}
                 value={formData.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
-                disabled={requirement?.status !== 'DRAFT'}
+                disabled={!isFormEditable}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <Stack direction="row" spacing={2} justifyContent="flex-end">
                 <Button
                   variant="outlined"
@@ -452,13 +452,13 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                   color="primary"
                   startIcon={saving ? <CircularProgress size={20} /> : <SaveIcon />}
                   onClick={handleSubmit}
-                  disabled={saving || requirement?.status !== 'DRAFT'}
+                  disabled={saving || !isFormEditable}
                 >
                   {requirement ? t('common.update') : t('common.create')}
                 </Button>
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Box>
       </Paper>
     </LocalizationProvider>

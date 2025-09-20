@@ -8,7 +8,7 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  Grid,
+
   Paper,
   Chip,
   Table,
@@ -35,6 +35,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Assessment as AssessmentIcon,
   TrendingUp as TrendingUpIcon,
@@ -221,13 +222,13 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
     return (
       <Grid container spacing={3}>
         {/* Key Metrics */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
             {t('mapTemplate.KEY_METRICS')}
           </Typography>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h4" color="primary">
               {selectedTemplate.tileCount || 0}
@@ -238,7 +239,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
           </Paper>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h4" color="success.main">
               {facilityStats?.totalConfigs || 0}
@@ -249,7 +250,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
           </Paper>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h4" color="info.main">
               {facilityStats?.allowedConfigs || 0}
@@ -260,7 +261,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
           </Paper>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h4" color="warning.main">
               {facilityStats ? TileFacilityBuildConfigService.formatCurrency(facilityStats.averageCosts.requiredGold) : '$0'}
@@ -273,7 +274,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
         {/* Land Type Distribution */}
         {facilityStats && (
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader title={t('mapTemplate.LAND_TYPE_DISTRIBUTION')} />
               <CardContent>
@@ -307,12 +308,12 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
         {/* Cost Analysis */}
         {facilityStats && (
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid item xs={12} md={6}>
             <Card>
               <CardHeader title={t('mapTemplate.COST_ANALYSIS')} />
               <CardContent>
                 <Grid container spacing={2}>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">
                       {t('mapTemplate.GOLD_COST_RANGE')}
                     </Typography>
@@ -320,7 +321,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {TileFacilityBuildConfigService.formatCurrency(facilityStats.costRanges.goldRange.min)} - {TileFacilityBuildConfigService.formatCurrency(facilityStats.costRanges.goldRange.max)}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">
                       {t('mapTemplate.CARBON_COST_RANGE')}
                     </Typography>
@@ -328,7 +329,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {facilityStats.costRanges.carbonRange.min} - {facilityStats.costRanges.carbonRange.max} CO₂
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">
                       {t('mapTemplate.AVERAGE_UPGRADE_COST')}
                     </Typography>
@@ -336,7 +337,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                       {TileFacilityBuildConfigService.formatCurrency(facilityStats.averageCosts.upgradeGoldCost)}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Typography variant="body2" color="text.secondary">
                       {t('mapTemplate.COST_EFFICIENCY')}
                     </Typography>
@@ -352,7 +353,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
         {/* Facility Type Breakdown */}
         {facilityStats && (
-          <Grid size={{ xs: 12 }}>
+          <Grid item xs={12}>
             <Card>
               <CardHeader title={t('mapTemplate.FACILITY_TYPE_BREAKDOWN')} />
               <CardContent>
@@ -425,7 +426,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
     return (
       <Grid container spacing={3}>
         {/* Max Level Distribution */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardHeader title={t('mapTemplate.MAX_LEVEL_DISTRIBUTION')} />
             <CardContent>
@@ -454,12 +455,12 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         </Grid>
 
         {/* Configuration Status */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardHeader title={t('mapTemplate.CONFIGURATION_STATUS')} />
             <CardContent>
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="body2">{t('mapTemplate.ALLOWED_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="success.main">
@@ -474,7 +475,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="body2">{t('mapTemplate.DISALLOWED_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="error.main">
@@ -489,7 +490,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="body2">{t('mapTemplate.UPGRADABLE_CONFIGURATIONS')}</Typography>
                     <Typography variant="h6" color="info.main">
@@ -509,14 +510,14 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         </Grid>
 
         {/* Advanced Metrics */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h6">{t('mapTemplate.ADVANCED_METRICS')}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Paper sx={{ p: 2, textAlign: 'center' }}>
                     <Typography variant="h5" color="primary">
                       {(facilityStats.allowedConfigs / facilityStats.totalConfigs * 100).toFixed(1)}%
@@ -527,7 +528,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Paper sx={{ p: 2, textAlign: 'center' }}>
                     <Typography variant="h5" color="secondary">
                       {(facilityStats.upgradableConfigs / facilityStats.allowedConfigs * 100).toFixed(1)}%
@@ -538,7 +539,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Paper sx={{ p: 2, textAlign: 'center' }}>
                     <Typography variant="h5" color="success.main">
                       {TileFacilityBuildConfigService.formatNumber(facilityStats.averageCosts.requiredCarbon)}
@@ -549,7 +550,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
                   </Paper>
                 </Grid>
 
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Paper sx={{ p: 2, textAlign: 'center' }}>
                     <Typography variant="h5" color="warning.main">
                       {calculateCostEfficiency(facilityStats).toFixed(2)}
@@ -581,7 +582,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
           
           <Grid container spacing={2}>
             {templates.map((template) => (
-              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={template.id}>
+              <Grid item xs={12} sm={6} md={4} key={template.id}>
                 <Card 
                   sx={{ 
                     cursor: 'pointer',
@@ -619,13 +620,13 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
 
     return (
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Typography variant="h6" gutterBottom>
             {t('mapTemplate.TEMPLATE_COMPARISON')} ({comparisons.length} {t('mapTemplate.TEMPLATES')})
           </Typography>
         </Grid>
 
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -699,7 +700,7 @@ const AnalyticsStatistics: React.FC<AnalyticsStatisticsProps> = ({
         </Grid>
 
         {/* Comparison Actions */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <Box display="flex" gap={2}>
             <Button
               variant="outlined"

@@ -46,6 +46,7 @@ import { MtoType2Requirement } from '@/lib/types/mtoType2';
 import MtoType2Service from '@/lib/services/mtoType2Service';
 import { enqueueSnackbar } from 'notistack';
 import { format } from 'date-fns';
+import { MtoType2RequirementForm } from './MtoType2RequirementForm';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -85,12 +86,10 @@ const statusColors: Record<string, 'default' | 'primary' | 'secondary' | 'info' 
 };
 
 interface MtoType2RequirementListProps {
-  activityId?: string;
   isManager?: boolean;
 }
 
 const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
-  activityId,
   isManager = false,
 }) => {
   const { t } = useTranslation();
@@ -112,10 +111,13 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
     setLoading(true);
     try {
       const data = await MtoType2Service.getRequirements();
-      setRequirements(data);
+      // Ensure we always have an array
+      const requirementsArray = Array.isArray(data) ? data : [];
+      setRequirements(requirementsArray);
     } catch (error) {
       console.error('Failed to load requirements:', error);
       enqueueSnackbar(t('mto.type2.errors.loadFailed'), { variant: 'error' });
+      setRequirements([]); // Set to empty array on error
     } finally {
       setLoading(false);
     }
@@ -162,19 +164,20 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
   };
 
   const getFilteredRequirements = (status?: string) => {
-    let filtered = requirements;
-    
+    // Ensure requirements is always an array
+    let filtered = Array.isArray(requirements) ? requirements : [];
+
     if (status) {
       filtered = filtered.filter(req => req.status === status);
     }
-    
+
     if (searchTerm) {
-      filtered = filtered.filter(req => 
+      filtered = filtered.filter(req =>
         req.requirementName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         req.id.toString().includes(searchTerm)
       );
     }
-    
+
     return filtered;
   };
 
@@ -430,6 +433,21 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Create/Edit Form Dialog */}
+      <MtoType2RequirementForm
+        open={formDialogOpen}
+        onClose={() => {
+          setFormDialogOpen(false);
+          setSelectedRequirement(null);
+        }}
+        onSuccess={() => {
+          setFormDialogOpen(false);
+          setSelectedRequirement(null);
+          loadRequirements();
+        }}
+        editData={selectedRequirement}
+      />
     </Box>
   );
 };

@@ -16,7 +16,7 @@ import {
   FormControlLabel,
   Switch,
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import {
   Search as SearchIcon,
   Refresh as RefreshIcon,
@@ -59,9 +59,9 @@ const UserFilters: React.FC<UserFiltersProps> = ({
           {t('activityManagement.ADVANCED_USER_SEARCH')}
         </Typography>
         
-        <Grid2 container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center">
           {/* Search Query */}
-          <Grid2 item xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             <TextField
               fullWidth
               label={t('activityManagement.SEARCH_USERS')}
@@ -72,10 +72,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
               }}
               placeholder={t('activityManagement.SEARCH_BY_NAME_EMAIL_USERNAME')}
             />
-          </Grid2>
+          </Grid>
 
           {/* User Type Filter */}
-          <Grid2 item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.USER_TYPE')}</InputLabel>
               <Select
@@ -90,10 +90,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
                 <MenuItem value={USER_TYPES.STUDENT}>{t('activityManagement.STUDENT')}</MenuItem>
               </Select>
             </FormControl>
-          </Grid2>
+          </Grid>
 
           {/* Activity Status Filter */}
-          <Grid2 item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.ACTIVITY_STATUS')}</InputLabel>
               <Select
@@ -107,10 +107,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
                 <MenuItem value="unassigned">{t('activityManagement.UNASSIGNED_USERS')}</MenuItem>
               </Select>
             </FormControl>
-          </Grid2>
+          </Grid>
 
           {/* Enrollment Status Filter */}
-          <Grid2 item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
               <Select
@@ -127,10 +127,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
                 ))}
               </Select>
             </FormControl>
-          </Grid2>
+          </Grid>
 
           {/* Include Inactive Toggle */}
-          <Grid2 item xs={12} sm={6} md={2}>
+          <Grid item xs={12} sm={6} md={2}>
             <FormControlLabel
               control={
                 <Switch
@@ -140,10 +140,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
               }
               label={t('activityManagement.INCLUDE_INACTIVE')}
             />
-          </Grid2>
+          </Grid>
 
           {/* Actions */}
-          <Grid2 item xs={12} md={12} sx={{ mt: 2 }}>
+          <Grid item xs={12} md={12} sx={{ mt: 2 }}>
             <Stack direction="row" spacing={2} alignItems="center">
               <Button
                 variant="outlined"
@@ -172,8 +172,8 @@ const UserFilters: React.FC<UserFiltersProps> = ({
                 </Button>
               )}
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

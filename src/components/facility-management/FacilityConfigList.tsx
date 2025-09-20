@@ -32,12 +32,13 @@ import {
   Card,
   CardContent,
   TableSortLabel,
-  Grid,
+
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Divider
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -431,7 +432,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
@@ -443,7 +444,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
@@ -455,7 +456,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
@@ -467,7 +468,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
@@ -498,7 +499,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
       {/* Filters and Actions */}
       <Paper sx={{ p: 2, mb: 2 }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid item xs={12} md={4}>
             <TextField
               fullWidth
               variant="outlined"
@@ -510,7 +511,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               }}
             />
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('facilityManagement.FACILITY_TYPE')}</InputLabel>
               <Select
@@ -528,7 +529,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('facilityManagement.CATEGORY')}</InputLabel>
               <Select
@@ -546,7 +547,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 1 }}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('facilityManagement.STATUS')}</InputLabel>
               <Select
@@ -561,7 +562,7 @@ const FacilityConfigList: React.FC<FacilityConfigListProps> = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 12, md: 2 }}>
+          <Grid item xs={12} md={2}>
             <Stack direction="row" spacing={1}>
               <Button
                 variant="contained"

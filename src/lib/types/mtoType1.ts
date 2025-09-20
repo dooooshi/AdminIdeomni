@@ -203,7 +203,6 @@ export interface MtoType1DeliveryUpdateRequest {
 export interface MtoType1SearchParams {
   q?: string;
   status?: keyof MtoType1Status | Array<keyof MtoType1Status>;
-  activityId?: string;
   managerProductFormulaId?: number;
   dateFrom?: string;
   dateTo?: string;

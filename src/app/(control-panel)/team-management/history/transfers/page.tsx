@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MonetizationOn } from '@mui/icons-material';
@@ -151,8 +151,8 @@ function TransferHistoryPage() {
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
               {t('teamManagement.FILTER_OPERATIONS')}
             </Typography>
-              <Grid component="div" container spacing={3}>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement.TRANSFER_DIRECTION')}</InputLabel>
                     <Select
@@ -166,7 +166,7 @@ function TransferHistoryPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement.RESOURCE_TYPE')}</InputLabel>
                     <Select
@@ -180,7 +180,7 @@ function TransferHistoryPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     type="date"
@@ -190,7 +190,7 @@ function TransferHistoryPage() {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     type="date"
@@ -223,8 +223,8 @@ function TransferHistoryPage() {
 
           {/* Transfer Summary Cards */}
           {transfersData && (
-            <Grid component="div" container spacing={6}>
-              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+            <Grid container spacing={6}>
+              <Grid item xs={12} sm={4}>
                 <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                   <div className="flex items-center justify-between">
                     <div>
@@ -243,7 +243,7 @@ function TransferHistoryPage() {
                   </div>
                 </Paper>
               </Grid>
-              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+              <Grid item xs={12} sm={4}>
                 <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                   <div className="flex items-center justify-between">
                     <div>
@@ -262,7 +262,7 @@ function TransferHistoryPage() {
                   </div>
                 </Paper>
               </Grid>
-              <Grid component="div" size={{ xs: 12, sm: 4 }}>
+              <Grid item xs={12} sm={4}>
                 <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                   <div className="flex items-center justify-between">
                     <div>

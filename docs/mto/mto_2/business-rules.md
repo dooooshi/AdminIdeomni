@@ -12,9 +12,10 @@ This document defines the comprehensive business rules for MTO Type 2, a MALL-ex
 
 **Validation Process**:
 1. Team must have at least one active MALL facility
-2. MALL must be in the same activity as the MTO Type 2
+2. MALL must be in the same activity as the MTO Type 2 (activity determined from auth context)
 3. MALL must have sufficient storage space for submitted products
 4. MALL status must be OPERATIONAL (not under construction or disabled)
+5. **ActivityId is never exposed in APIs** - it's derived from the team's authentication context
 
 **Error Conditions**:
 - `NO_MALL_FACILITY`: Team has no MALL facilities
@@ -42,6 +43,7 @@ This document defines the comprehensive business rules for MTO Type 2, a MALL-ex
 - `releaseTime`: Must be future timestamp
 - `settlementTime`: Must be after releaseTime
 - `overallPurchaseBudget`: Must be positive decimal
+- **Note**: `activityId` is NOT a parameter - it's determined from the manager's authentication context
 
 **Validation Rules**:
 - Settlement time must be after release time
@@ -469,6 +471,8 @@ if (remainingBudget === unitPrice * quantity) {
 - No team-specific advantages
 - No special pricing rules
 - Transparent algorithm application
+- **Activity isolation enforced via authentication** - teams cannot access other activities' MTO Type 2
+- ActivityId is never exposed in requests, preventing cross-activity access attempts
 
 ### 12.2 Market Manipulation Prevention
 

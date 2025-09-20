@@ -32,11 +32,12 @@ import {
   Card,
   CardContent,
   TableSortLabel,
-  Grid,
+
   InputAdornment,
   FormControlLabel,
   Switch,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -309,7 +310,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Grid container spacing={2} alignItems="center">
-            <Grid size={{ xs: 12, md: 3 }}>
+            <Grid item xs={12} md={3}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.search')}
@@ -324,7 +325,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 }}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 2 }}>
+            <Grid item xs={12} md={2}>
               <FormControl fullWidth>
                 <InputLabel>{t('rawMaterial.origin')}</InputLabel>
                 <Select
@@ -346,7 +347,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{ xs: 6, md: 1.5 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.minCost')}
@@ -355,7 +356,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('minCost', e.target.value)}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 1.5 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.maxCost')}
@@ -364,7 +365,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('maxCost', e.target.value)}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 1.5 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.minCarbon')}
@@ -373,7 +374,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('minCarbon', e.target.value)}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 1.5 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('rawMaterial.maxCarbon')}
@@ -382,7 +383,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 onChange={(e) => handleFilterChange('maxCarbon', e.target.value)}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 2 }}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -393,7 +394,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 label={t('rawMaterial.activeOnly')}
               />
             </Grid>
-            <Grid size={{ xs: 6, md: 2 }}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -404,7 +405,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 label={t('rawMaterial.showDeleted')}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 8 }}>
+            <Grid item xs={12} md={8}>
               <Stack direction="row" spacing={1}>
                 <Button
                   variant="outlined"

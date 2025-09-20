@@ -28,7 +28,7 @@ import {
   Stack,
   Card,
   CardContent,
-  Grid,
+
   Avatar,
   Tooltip,
   Alert,
@@ -37,6 +37,7 @@ import {
   Switch,
   Divider,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Close as CloseIcon,
   History as HistoryIcon,
@@ -323,7 +324,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
         {/* Statistics */}
         {activities?.statistics && (
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="primary">
@@ -335,7 +336,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="success.main">
@@ -347,7 +348,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="info.main">
@@ -359,7 +360,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 2 }}>
                   <Typography variant="h4" color="warning.main">
@@ -389,7 +390,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
               {t('activityManagement.FILTERS')}
             </Typography>
             <Grid container spacing={2} alignItems="center">
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <FormControl fullWidth>
                   <InputLabel>{t('activityManagement.STATUS')}</InputLabel>
                   <Select
@@ -407,7 +408,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -418,7 +419,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   label={t('activityManagement.INCLUDE_UPCOMING')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -429,7 +430,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                   label={t('activityManagement.INCLUDE_PAST')}
                 />
               </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Button
                   variant="outlined"
                   startIcon={<RefreshIcon />}

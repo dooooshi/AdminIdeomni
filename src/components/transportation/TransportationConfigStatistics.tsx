@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, Typography, Skeleton, Chip } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import { 
   TrendingUp as TrendingUpIcon,
   LocalShipping as LocalShippingIcon,
@@ -110,7 +110,7 @@ const TransportationConfigStatistics: React.FC<TransportationConfigStatisticsPro
     return (
       <Grid container spacing={3}>
         {[1, 2, 3, 4].map((index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 1 }} />
           </Grid>
         ))}

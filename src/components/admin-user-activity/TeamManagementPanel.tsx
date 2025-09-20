@@ -31,7 +31,7 @@ import {
   Alert,
   CircularProgress,
   Tooltip,
-  Grid,
+
   Avatar,
   AvatarGroup,
   Divider,
@@ -42,6 +42,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Group as GroupIcon,
   PersonAdd as PersonAddIcon,
@@ -272,7 +273,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
       {/* Team Statistics Cards */}
       {statistics && (
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant="h4" color="primary">
@@ -284,7 +285,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant="h4" color="success.main">
@@ -296,7 +297,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant="h4" color="warning.main">
@@ -308,7 +309,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
               </CardContent>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid item xs={12} sm={6} md={3}>
             <Card>
               <CardContent sx={{ textAlign: 'center', py: 2 }}>
                 <Typography variant="h4" color="info.main">
@@ -333,7 +334,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
           
           <Grid container spacing={2} alignItems="center">
             {/* Search Query */}
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label={t('activityManagement.SEARCH_TEAMS')}
@@ -347,7 +348,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             </Grid>
 
             {/* Activity Filter */}
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <FormControl fullWidth>
                 <InputLabel>{t('activityManagement.ACTIVITY')}</InputLabel>
                 <Select
@@ -365,7 +366,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             </Grid>
 
             {/* Sort By */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('activityManagement.SORT_BY')}</InputLabel>
                 <Select
@@ -381,7 +382,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             </Grid>
 
             {/* Actions */}
-            <Grid size={{ xs: 12, md: 3 }}>
+            <Grid item xs={12} md={3}>
               <Stack direction="row" spacing={2}>
                 <Button
                   variant="outlined"
@@ -601,7 +602,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
             <Box>
               {/* Team Info */}
               <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.TEAM_NAME')}:
                   </Typography>
@@ -609,7 +610,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                     {teamDetailsDialog.team.name}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.ACTIVITY')}:
                   </Typography>
@@ -617,7 +618,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                     {teamDetailsDialog.team.activity.name}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.DESCRIPTION')}:
                   </Typography>
@@ -704,7 +705,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
           )}
           <Divider sx={{ mb: 3 }} />
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('activityManagement.SELECT_USER')}</InputLabel>
                 <Select
@@ -722,7 +723,7 @@ const TeamManagementPanel: React.FC<TeamManagementPanelProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('activityManagement.REASON')}

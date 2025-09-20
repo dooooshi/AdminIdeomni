@@ -15,7 +15,7 @@ import {
   AccordionSummary,
   AccordionDetails
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   ExpandMore as ExpandMoreIcon,
   LocalShipping as LocalShippingIcon
@@ -124,7 +124,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
         </AccordionSummary>
         <AccordionDetails>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('transportation.BASE_COST')}
@@ -140,7 +140,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 }}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('transportation.EMISSION_RATE')}
@@ -156,7 +156,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 }}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label={t('transportation.MIN_DISTANCE')}
@@ -172,7 +172,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
               />
             </Grid>
             {!isLastTier && (
-              <Grid size={{ xs: 12, md: 4 }}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   fullWidth
                   label={t('transportation.MAX_DISTANCE')}
@@ -188,7 +188,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 />
               </Grid>
             )}
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label={t('transportation.SPACE_BASIS')}
@@ -249,7 +249,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
             {t('transportation.GENERAL_SETTINGS')}
           </Typography>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid size={12}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Switch
@@ -260,7 +260,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 label={t('transportation.ENABLE_CROSS_TEAM_TRANSFERS')}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('transportation.MAX_TRANSFER_QUANTITY')}
@@ -273,7 +273,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 helperText={t('transportation.MAX_TRANSFER_QUANTITY_HELP')}
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('transportation.TRANSFER_COOLDOWN')}
@@ -289,7 +289,7 @@ const TransportationConfigForm: React.FC<TransportationConfigFormProps> = ({
                 }}
               />
             </Grid>
-            <Grid size={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('transportation.DESCRIPTION')}

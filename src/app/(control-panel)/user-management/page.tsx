@@ -15,12 +15,13 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Grid,
+
   FormControlLabel,
   Switch,
   Chip,
   IconButton,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   People as PeopleIcon,
   Dashboard as DashboardIcon,
@@ -215,7 +216,7 @@ const UserManagementPage: React.FC = () => {
               {viewingUser && (
                 <Box>
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.USERNAME')}
                       </Typography>
@@ -224,7 +225,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.EMAIL')}
                       </Typography>
@@ -233,7 +234,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.FIRST_NAME')}
                       </Typography>
@@ -242,7 +243,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.LAST_NAME')}
                       </Typography>
@@ -251,7 +252,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.USER_TYPE')}
                       </Typography>
@@ -262,7 +263,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.STATUS')}
                       </Typography>
@@ -273,7 +274,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.ROLES')}
                       </Typography>
@@ -290,7 +291,7 @@ const UserManagementPage: React.FC = () => {
                       </Box>
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.LAST_LOGIN')}
                       </Typography>
@@ -299,7 +300,7 @@ const UserManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid size={{ xs: 6 }}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2" color="text.secondary">
                         {t('userManagement.CREATED_AT')}
                       </Typography>
@@ -310,13 +311,13 @@ const UserManagementPage: React.FC = () => {
 
                     {viewingUser.statistics && (
                       <>
-                        <Grid size={{ xs: 12 }}>
+                        <Grid item xs={12}>
                           <Typography variant="subtitle1" sx={{ mt: 2, mb: 1, fontWeight: 600 }}>
                             {t('userManagement.USER_ACTIVITIES')}
                           </Typography>
                         </Grid>
 
-                        <Grid size={{ xs: 4 }}>
+                        <Grid item xs={4}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('userManagement.ACTIVITIES_PARTICIPATED')}
                           </Typography>
@@ -325,7 +326,7 @@ const UserManagementPage: React.FC = () => {
                           </Typography>
                         </Grid>
 
-                        <Grid size={{ xs: 4 }}>
+                        <Grid item xs={4}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('userManagement.ACTIVITIES_COMPLETED')}
                           </Typography>
@@ -334,7 +335,7 @@ const UserManagementPage: React.FC = () => {
                           </Typography>
                         </Grid>
 
-                        <Grid size={{ xs: 4 }}>
+                        <Grid item xs={4}>
                           <Typography variant="subtitle2" color="text.secondary">
                             {t('userManagement.TOTAL_LOGIN_COUNT')}
                           </Typography>
@@ -393,7 +394,7 @@ const UserManagementPage: React.FC = () => {
                   </Alert>
 
                   <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -408,7 +409,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <FormControlLabel
                         control={
                           <Switch
@@ -423,7 +424,7 @@ const UserManagementPage: React.FC = () => {
                       />
                     </Grid>
 
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <FormControlLabel
                         control={
                           <Switch

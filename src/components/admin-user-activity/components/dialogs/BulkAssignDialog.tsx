@@ -21,7 +21,7 @@ import {
   CircularProgress,
   Tooltip,
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import { format } from 'date-fns';
 import { Activity } from '@/lib/services/activityService';
 import { BulkAssignDialogState } from '../../types';
@@ -111,8 +111,8 @@ const BulkAssignDialog: React.FC<BulkAssignDialogProps> = ({
           </Typography>
         </Box>
         <Divider sx={{ mb: 3 }} />
-        <Grid2 container spacing={2}>
-          <Grid2 item xs={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.SELECT_ACTIVITY')}</InputLabel>
               <Select
@@ -134,8 +134,8 @@ const BulkAssignDialog: React.FC<BulkAssignDialogProps> = ({
                 )}
               </Select>
             </FormControl>
-          </Grid2>
-          <Grid2 item xs={12}>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               label={t('activityManagement.REASON')}
@@ -148,8 +148,8 @@ const BulkAssignDialog: React.FC<BulkAssignDialogProps> = ({
               })}
               placeholder={t('activityManagement.BULK_ASSIGNMENT_REASON_PLACEHOLDER')}
             />
-          </Grid2>
-          <Grid2 item xs={12}>
+          </Grid>
+          <Grid item xs={12}>
             <FormControlLabel
               control={
                 <Switch
@@ -162,8 +162,8 @@ const BulkAssignDialog: React.FC<BulkAssignDialogProps> = ({
               }
               label={t('activityManagement.FORCE_ASSIGNMENT')}
             />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button

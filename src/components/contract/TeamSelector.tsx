@@ -17,9 +17,9 @@ import {
   Paper,
   Chip,
   TextField,
-  InputAdornment,
-  Grid
+  InputAdornment
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Search as SearchIcon,
   Groups as TeamIcon
@@ -126,7 +126,7 @@ const TeamSelector: React.FC<TeamSelectorProps> = ({
     <Box>
       <Grid container spacing={3}>
         {/* Available Teams */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               {t('contract.AVAILABLE_TEAMS')} ({filteredTeams.length})
@@ -195,7 +195,7 @@ const TeamSelector: React.FC<TeamSelectorProps> = ({
         </Grid>
 
         {/* Selected Teams */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Paper variant="outlined" sx={{ p: 2 }}>
             <Typography variant="subtitle1" gutterBottom>
               {t('contract.SELECTED_TEAMS')} ({selectedTeamIds.length}/{maxTeams})

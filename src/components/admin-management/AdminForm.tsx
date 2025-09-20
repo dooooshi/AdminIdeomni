@@ -21,10 +21,11 @@ import {
   CircularProgress,
   IconButton,
   InputAdornment,
-  Grid,
+
   Divider,
   Chip,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Visibility,
   VisibilityOff,
@@ -221,14 +222,14 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
           <Grid container spacing={3}>
             {/* Basic Information */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
                 {t('adminManagement.ADMIN_FORM_BASIC_INFO')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('adminManagement.USERNAME_LABEL')}
@@ -243,7 +244,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('adminManagement.EMAIL_LABEL')}
@@ -259,7 +260,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('adminManagement.FIRST_NAME_LABEL')}
@@ -273,7 +274,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label={t('adminManagement.LAST_NAME_LABEL')}
@@ -289,7 +290,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Password */}
             {(!isEditMode || formik.values.password) && (
-              <Grid size={{ xs: 12 }}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label={isEditMode ? t('adminManagement.PASSWORD_LABEL') + " " + t('adminManagement.PASSWORD_EDIT_HINT') : t('adminManagement.PASSWORD_LABEL')}
@@ -320,14 +321,14 @@ const AdminForm: React.FC<AdminFormProps> = ({
             )}
 
             {/* Admin Configuration */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium" sx={{ mt: 2 }}>
                 {t('adminManagement.ADMIN_TYPE_LABEL')}
               </Typography>
               <Divider sx={{ mb: 2 }} />
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel>{t('adminManagement.ADMIN_TYPE_LABEL')}</InputLabel>
                 <Select
@@ -381,7 +382,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             </Grid>
 
             {isEditMode && (
-              <Grid size={{ xs: 12 }}>
+              <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -409,7 +410,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Warnings */}
             {formik.values.adminType === 1 && (
-              <Grid size={{ xs: 12 }}>
+              <Grid item xs={12}>
                 <Alert severity="warning">
                   <Typography variant="body2" fontWeight="medium" gutterBottom>
                     {t('adminManagement.SECURITY_WARNING')}

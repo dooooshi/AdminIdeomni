@@ -21,7 +21,7 @@ import {
   LinearProgress,
   Button,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   WaterDrop as WaterIcon,
   PowerSettingsNew as PowerIcon,
@@ -250,7 +250,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
           </Typography>
           <Grid container spacing={2}>
             {infrastructureFacilities.map((facility) => (
-              <Grid key={`infra-${facility.facilityId}`} size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid key={`infra-${facility.facilityId}`} item xs={12} sm={6} md={3}>
                 <Card sx={{ height: '100%' }}>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -288,7 +288,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
             <Alert severity="error">{error}</Alert>
           ) : (
             <Grid container spacing={2}>
-              <Grid size={12}>
+              <Grid item xs={12}>
                 <Typography variant="body2" color="text.secondary">
                   {t('infrastructure.FACILITY_ID')}: {facilityDetails.facilityId}
                 </Typography>
@@ -301,7 +301,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
               </Grid>
               
               {/* Infrastructure Details */}
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid item xs={12} md={6}>
                 <Typography variant="subtitle2" gutterBottom>
                   {t('infrastructure.WATER_CONNECTION')}
                 </Typography>
@@ -336,7 +336,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                 )}
               </Grid>
 
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid item xs={12} md={6}>
                 <Typography variant="subtitle2" gutterBottom>
                   {t('infrastructure.POWER_CONNECTION')}
                 </Typography>
@@ -371,7 +371,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                 )}
               </Grid>
 
-              <Grid size={12}>
+              <Grid item xs={12}>
                 {facilityDetails.missingInfrastructure.length > 0 && (
                   <Alert severity="error">
                     {t('infrastructure.MISSING_INFRASTRUCTURE')}: {facilityDetails.missingInfrastructure.map(i => t(`infrastructure.${i}`)).join(', ')}

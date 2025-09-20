@@ -6,7 +6,7 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
+
   Card,
   CardContent,
   LinearProgress,
@@ -21,6 +21,7 @@ import {
   Tooltip,
   CircularProgress
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Water as WaterIcon,
   Power as PowerIcon,
@@ -139,7 +140,7 @@ const ResourceConsumptionPanel: React.FC<ResourceConsumptionPanelProps> = ({
         ) : (
           <>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
@@ -163,7 +164,7 @@ const ResourceConsumptionPanel: React.FC<ResourceConsumptionPanelProps> = ({
                 </Card>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
@@ -187,7 +188,7 @@ const ResourceConsumptionPanel: React.FC<ResourceConsumptionPanelProps> = ({
                 </Card>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
@@ -206,7 +207,7 @@ const ResourceConsumptionPanel: React.FC<ResourceConsumptionPanelProps> = ({
                 </Card>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>

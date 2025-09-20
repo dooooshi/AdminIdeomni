@@ -511,7 +511,9 @@ class InfrastructureService {
   }
 
   async cancelConnectionRequest(requestId: string, reason?: string): Promise<any> {
-    const response = await apiClient.put(`/infrastructure/connections/requests/${requestId}/cancel`, { reason });
+    const response = await apiClient.delete(`/infrastructure/connections/requests/${requestId}/cancel`, {
+      data: { reason }
+    });
     return response.data.data;
   }
 

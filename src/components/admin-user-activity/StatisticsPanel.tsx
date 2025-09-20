@@ -7,7 +7,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+
   Table,
   TableBody,
   TableCell,
@@ -25,6 +25,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Analytics as AnalyticsIcon,
   People as PeopleIcon,
@@ -169,7 +170,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
             {t('activityManagement.OVERALL_PARTICIPATION')}
           </Typography>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h3" color="primary">
                   {statistics.totalUsers.toLocaleString()}
@@ -179,7 +180,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h3" color="success.main">
                   {statistics.usersWithActivity.toLocaleString()}
@@ -198,7 +199,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h3" color="warning.main">
                   {statistics.usersWithoutActivity.toLocaleString()}
@@ -229,7 +230,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
           </Typography>
           <Grid container spacing={3}>
             {getUserTypeStats().map((userType, index) => (
-              <Grid key={index} size={{ xs: 12, md: 4 }}>
+              <Grid key={index} item xs={12} md={4}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -390,7 +391,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
             {t('activityManagement.TEAM_STATISTICS')}
           </Typography>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" color="primary">
                   {statistics.teamStatistics.totalTeams}
@@ -400,7 +401,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" color="success.main">
                   {statistics.teamStatistics.usersInTeams}
@@ -410,7 +411,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" color="warning.main">
                   {statistics.teamStatistics.usersWithoutTeams}
@@ -420,7 +421,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" color="info.main">
                   {statistics.teamStatistics.averageTeamSize.toFixed(1)}
@@ -487,7 +488,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
             {t('activityManagement.RECENT_ACTIVITY_TRENDS')}
           </Typography>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Card variant="outlined">
                 <CardContent sx={{ textAlign: 'center' }}>
                   <CalendarTodayIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
@@ -500,7 +501,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Card variant="outlined">
                 <CardContent sx={{ textAlign: 'center' }}>
                   <CalendarTodayIcon color="info" sx={{ fontSize: 40, mb: 1 }} />
@@ -513,7 +514,7 @@ const StatisticsPanel: React.FC<StatisticsPanelProps> = ({
                 </CardContent>
               </Card>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Card variant="outlined">
                 <CardContent sx={{ textAlign: 'center' }}>
                   <CalendarTodayIcon color="success" sx={{ fontSize: 40, mb: 1 }} />

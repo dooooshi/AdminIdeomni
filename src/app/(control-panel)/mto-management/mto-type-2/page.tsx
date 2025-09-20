@@ -18,15 +18,14 @@ import {
   TrendingUp as TrendingUpIcon
 } from '@mui/icons-material';
 import MtoType2RequirementList from '@/components/mto/type2/manager/MtoType2RequirementList';
-import { useSearchParams } from 'next/navigation';
+import { ToastProvider } from '@/components/common/ToastProvider';
 
 export default function MtoType2ManagementPage() {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const activityId = searchParams.get('activityId') || 'default';
 
   return (
-    <Container maxWidth="xl">
+    <ToastProvider>
+      <Container maxWidth="xl">
       <Box sx={{ mb: 3 }}>
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="small" />}
@@ -77,7 +76,8 @@ export default function MtoType2ManagementPage() {
         </Stack>
       </Stack>
 
-      <MtoType2RequirementList activityId={activityId} isManager={true} />
+      <MtoType2RequirementList isManager={true} />
     </Container>
+    </ToastProvider>
   );
 }

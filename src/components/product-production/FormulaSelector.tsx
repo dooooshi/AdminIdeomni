@@ -6,10 +6,9 @@ import {
   Card,
   CardContent,
   Typography,
-  Chip,
-  Grid
+  Chip
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Science as ScienceIcon,
   CheckCircle as CheckCircleIcon,
@@ -53,13 +52,13 @@ export const FormulaSelector: React.FC<FormulaSelectorProps> = ({
   }
 
   return (
-    <Grid2 container spacing={2}>
+    <Grid container spacing={2}>
       {formulas.map((formula) => {
         const isSelected = selectedFormula?.id === formula.id;
         const canProduce = selectedFactory?.productionCapability?.canProduce || false;
         
         return (
-          <Grid2 size={{ xs: 12, sm: 6, md: 4 }} key={formula.id}>
+          <Grid item xs={12} sm={6} md={4} key={formula.id}>
             <Card
               variant={isSelected ? 'elevation' : 'outlined'}
               sx={{
@@ -69,7 +68,7 @@ export const FormulaSelector: React.FC<FormulaSelectorProps> = ({
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                '&:hover': { 
+                '&:hover': {
                   boxShadow: 3,
                   borderColor: 'primary.light'
                 }
@@ -94,8 +93,8 @@ export const FormulaSelector: React.FC<FormulaSelectorProps> = ({
                   <Typography 
                     variant="body2" 
                     color="text.secondary" 
-                    sx={{ 
-                      mt: 1, 
+                    sx={{
+                      mt: 1,
                       mb: 2,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -129,9 +128,9 @@ export const FormulaSelector: React.FC<FormulaSelectorProps> = ({
                 </Box>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
         );
       })}
-    </Grid2>
+    </Grid>
   );
 };

@@ -6,7 +6,7 @@ import {
   Box,
   Card,
   CardContent,
-  Grid,
+
   Typography,
   Chip,
   IconButton,
@@ -15,6 +15,7 @@ import {
   Alert,
   useTheme,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   People as PeopleIcon,
   PersonAdd as PersonAddIcon,
@@ -263,7 +264,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
       {/* Main Statistics Cards */}
       <Grid container spacing={3} mb={4}>
         {statCards.map((card, index) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
+          <Grid key={index} item xs={12}>
             <StatCard {...card} />
           </Grid>
         ))}
@@ -277,7 +278,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
           </Typography>
           
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box 
                 sx={{ 
                   p: 2, 
@@ -295,7 +296,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
               </Box>
             </Grid>
             
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box 
                 sx={{ 
                   p: 2, 
@@ -313,7 +314,7 @@ const UserStatistics: React.FC<UserStatisticsProps> = ({ refreshTrigger, onRefre
               </Box>
             </Grid>
             
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box 
                 sx={{ 
                   p: 2, 

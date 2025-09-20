@@ -12,7 +12,7 @@ import {
   Typography,
   Alert,
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import {
   CheckCircle as CheckCircleIcon,
   Error as ErrorIcon,
@@ -44,8 +44,8 @@ const ResultsDialog: React.FC<ResultsDialogProps> = ({
       <DialogContent>
         {operationResult && (
           <Box>
-            <Grid2 container spacing={2} sx={{ mb: 3 }}>
-              <Grid2 item xs={4}>
+            <Grid container spacing={2} sx={{ mb: 3 }}>
+              <Grid item xs={4}>
                 <Box sx={{ textAlign: 'center' }}>
                   <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
                   <Typography variant="h6" color="success.main">
@@ -55,8 +55,8 @@ const ResultsDialog: React.FC<ResultsDialogProps> = ({
                     {t('activityManagement.SUCCESSFUL')}
                   </Typography>
                 </Box>
-              </Grid2>
-              <Grid2 item xs={4}>
+              </Grid>
+              <Grid item xs={4}>
                 <Box sx={{ textAlign: 'center' }}>
                   <ErrorIcon sx={{ fontSize: 40, color: 'error.main', mb: 1 }} />
                   <Typography variant="h6" color="error.main">
@@ -66,8 +66,8 @@ const ResultsDialog: React.FC<ResultsDialogProps> = ({
                     {t('activityManagement.FAILED')}
                   </Typography>
                 </Box>
-              </Grid2>
-              <Grid2 item xs={4}>
+              </Grid>
+              <Grid item xs={4}>
                 <Box sx={{ textAlign: 'center' }}>
                   <WarningIcon sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
                   <Typography variant="h6" color="warning.main">
@@ -77,8 +77,8 @@ const ResultsDialog: React.FC<ResultsDialogProps> = ({
                     {t('activityManagement.SKIPPED')}
                   </Typography>
                 </Box>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
 
             {operationResult.details?.filter(d => !d.success).length > 0 && (
               <Box sx={{ mb: 3 }}>

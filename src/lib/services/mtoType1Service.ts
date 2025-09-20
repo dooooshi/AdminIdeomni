@@ -36,8 +36,8 @@ export interface ApiResponse<T> {
 }
 
 export class MtoType1Service {
-  private static readonly MANAGER_BASE_PATH = '/api/user/manager/mto-type1';
-  private static readonly TEAM_BASE_PATH = '/api/team/mto-type1';
+  private static readonly MANAGER_BASE_PATH = '/user/manager/mto-type1';
+  private static readonly TEAM_BASE_PATH = '/team/mto-type1';
 
   private static extractResponseData<T>(response: any): T {
     if (response.data && response.data.data !== undefined) {
@@ -105,7 +105,6 @@ export class MtoType1Service {
         queryParams.append('status', params.status);
       }
     }
-    if (params.activityId) queryParams.append('activityId', params.activityId);
     if (params.managerProductFormulaId) {
       queryParams.append('managerProductFormulaId', params.managerProductFormulaId.toString());
     }
@@ -190,19 +189,15 @@ export class MtoType1Service {
     return this.extractResponseData<MtoType1SettlementHistory[]>(response);
   }
 
-  static async getStatistics(activityId?: string): Promise<MtoType1Statistics> {
-    const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics${params}`);
+  static async getStatistics(): Promise<MtoType1Statistics> {
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics`);
     return this.extractResponseData<MtoType1Statistics>(response);
   }
 
   // Team/Student Endpoints
 
-  static async getAvailableRequirements(
-    activityId?: string
-  ): Promise<MtoType1TeamView[]> {
-    const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.TEAM_BASE_PATH}/available${params}`);
+  static async getAvailableRequirements(): Promise<MtoType1TeamView[]> {
+    const response = await apiClient.get(`${this.TEAM_BASE_PATH}/available`);
     return this.extractResponseData<MtoType1TeamView[]>(response);
   }
 

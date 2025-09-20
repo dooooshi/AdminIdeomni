@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
   Box,
-  Grid,
+
   Divider,
   Chip,
   Stack,
@@ -18,6 +18,7 @@ import {
   IconButton,
   Avatar,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import { useTheme, alpha } from '@mui/material/styles';
 import {
   Close as CloseIcon,
@@ -150,7 +151,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
         {/* Overview Section */}
         <Box sx={{ mb: 4 }}>
           <Grid container spacing={4}>
-            <Grid size={{ xs: 12, md: 8 }}>
+            <Grid item xs={12} md={8}>
               <Stack spacing={2}>
                 <Box>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -170,7 +171,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
                 </Box>
               </Stack>
             </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Box sx={{ textAlign: { xs: 'left', md: 'right' } }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   {t('rawMaterial.origin')}
@@ -194,7 +195,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
             {t('rawMaterial.resourceRequirements')}
           </Typography>
           <Grid container spacing={3}>
-            <Grid size={{ xs: 6 }}>
+            <Grid item xs={6}>
               <Box>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.waterRequired')}
@@ -204,7 +205,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6 }}>
+            <Grid item xs={6}>
               <Box>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.powerRequired')}
@@ -242,7 +243,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
             {t('rawMaterial.resourceBreakdown')}
           </Typography>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 6, sm: 3 }}>
+            <Grid item xs={12}>
               <Box sx={{ textAlign: 'center', py: 1 }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.waterCost')}
@@ -252,7 +253,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6, sm: 3 }}>
+            <Grid item xs={12}>
               <Box sx={{ textAlign: 'center', py: 1 }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.powerCost')}
@@ -262,7 +263,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6, sm: 3 }}>
+            <Grid item xs={12}>
               <Box sx={{ textAlign: 'center', py: 1 }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.goldRatio')}
@@ -272,7 +273,7 @@ const RawMaterialDetailsDialog: React.FC<RawMaterialDetailsDialogProps> = ({
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6, sm: 3 }}>
+            <Grid item xs={12}>
               <Box sx={{ textAlign: 'center', py: 1 }}>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                   {t('rawMaterial.carbonPerCost')}

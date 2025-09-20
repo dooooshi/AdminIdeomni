@@ -14,7 +14,7 @@ import {
   FormControl,
   InputLabel,
   Button,
-  Grid,
+
   Alert,
   InputAdornment,
   Chip,
@@ -29,6 +29,7 @@ import {
   Paper,
   LinearProgress,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   PlayArrow as PlayArrowIcon,
   Preview as PreviewIcon,
@@ -220,7 +221,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
 
         <Grid container spacing={3}>
           {/* Land Type Selection */}
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <InputLabel>{t('mapTemplate.TARGET_LAND_TYPE')}</InputLabel>
               <Select
@@ -238,7 +239,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </Grid>
 
           {/* Preset Scenarios */}
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid item xs={12} md={6}>
             <FormControl fullWidth>
               <InputLabel>{t('mapTemplate.PRESET_SCENARIO')}</InputLabel>
               <Select
@@ -253,13 +254,13 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </Grid>
 
           {/* Fixed Value Updates */}
-          <Grid size={{ xs: 12 }}>
+          <Grid item xs={12}>
             <Typography variant="subtitle2" gutterBottom>
               {t('mapTemplate.FIXED_VALUES')}
             </Typography>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type="number"
@@ -272,7 +273,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type="number"
@@ -285,7 +286,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type="number"
@@ -298,7 +299,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
             />
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6 }}>
+          <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               type="number"
@@ -312,7 +313,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
           </Grid>
 
           {/* Actions */}
-          <Grid size={{ xs: 12 }}>
+          <Grid item xs={12}>
             <Box display="flex" gap={2} justifyContent="flex-end">
               <Button onClick={resetForm}>
                 {t('mapTemplate.RESET')}

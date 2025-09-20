@@ -19,7 +19,7 @@ import {
   CircularProgress,
   Tooltip,
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import { format } from 'date-fns';
 import AdminUserActivityService from '@/lib/services/adminUserActivityService';
 import { Activity } from '@/lib/services/activityService';
@@ -115,8 +115,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
           </Box>
         )}
         <Divider sx={{ mb: 3 }} />
-        <Grid2 container spacing={2}>
-          <Grid2 item xs={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('activityManagement.SELECT_NEW_ACTIVITY')}</InputLabel>
               <Select
@@ -140,8 +140,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
                 )}
               </Select>
             </FormControl>
-          </Grid2>
-          <Grid2 item xs={12}>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               label={t('activityManagement.REASON')}
@@ -154,8 +154,8 @@ const TransferDialog: React.FC<TransferDialogProps> = ({
               })}
               placeholder={t('activityManagement.TRANSFER_REASON_PLACEHOLDER')}
             />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button

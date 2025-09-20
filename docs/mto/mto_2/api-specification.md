@@ -29,10 +29,14 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: Manager role only
 
+**Authentication Context**:
+- The `activityId` is automatically determined from the manager's authentication context
+- Managers can only create MTO Type 2 for activities they have permission to manage
+- System validates manager has appropriate permissions for the activity
+
 **Request Body**:
 ```typescript
 {
-  activityId: string;
   managerProductFormulaId: number;
   releaseTime: string; // ISO 8601 format
   settlementTime: string; // ISO 8601 format
@@ -192,10 +196,12 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: Manager role only
 
+**Authentication Context**:
+- MTO Type 2 list is filtered to activities the manager has permission to view
+
 **Query Parameters**:
 ```typescript
 {
-  activityId?: string;
   status?: "DRAFT" | "RELEASED" | "IN_PROGRESS" | "SETTLING" | "SETTLED" | "CANCELLED";
   fromDate?: string; // ISO 8601
   toDate?: string; // ISO 8601
@@ -286,10 +292,14 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: User with MALL facility
 
+**Authentication Context**:
+- The team's current `activityId` is automatically determined from authentication
+- Only MTO Type 2 for the team's enrolled activity are shown
+- System validates team has MALL facilities in the activity
+
 **Query Parameters**:
 ```typescript
 {
-  activityId: string;
   mallInstanceId?: string; // specific MALL facility instance (cuid)
 }
 ```
@@ -384,10 +394,12 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: User with MALL facility
 
+**Authentication Context**:
+- Submissions are filtered to the team's current activity
+
 **Query Parameters**:
 ```typescript
 {
-  activityId: string;
   status?: "PENDING" | "PARTIAL" | "FULL" | "UNSETTLED" | "RETURNED";
   facilityId?: number;
   page?: number;
@@ -556,10 +568,12 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: Any authenticated user
 
+**Authentication Context**:
+- Market data is filtered to the user's current activity context
+
 **Query Parameters**:
 ```typescript
 {
-  activityId: string;
   includeUpcoming?: boolean; // default: false
 }
 ```
@@ -635,12 +649,14 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: Any authenticated user
 
+**Authentication Context**:
+- Price trends are filtered to activities the user has access to
+
 **Query Parameters**:
 ```typescript
 {
   formulaId: number;
   period?: "7d" | "30d" | "90d"; // default: "30d"
-  activityId?: string;
 }
 ```
 

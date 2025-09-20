@@ -18,13 +18,13 @@ import {
   Box,
   FormHelperText
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MtoType2CreateRequest, MtoType2Requirement } from '@/lib/types/mtoType2';
-import { MtoType2Service } from '@/lib/services/mtoType2Service';
+import MtoType2Service from '@/lib/services/mtoType2Service';
 import { useToast } from '@/components/common/ToastProvider';
 
 interface MtoType2RequirementFormProps {
@@ -32,7 +32,6 @@ interface MtoType2RequirementFormProps {
   onClose: () => void;
   onSuccess: () => void;
   editData?: MtoType2Requirement | null;
-  activityId: string;
   managerFormulas?: Array<{ id: number; name: string; }>;
 }
 
@@ -41,7 +40,6 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
   onClose,
   onSuccess,
   editData,
-  activityId,
   managerFormulas = []
 }) => {
   const { t } = useTranslation();
@@ -51,7 +49,6 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
   const [availableFormulas, setAvailableFormulas] = useState(managerFormulas);
 
   const initialFormData: MtoType2CreateRequest = {
-    activityId,
     managerProductFormulaId: editData?.managerProductFormulaId || 0,
     releaseTime: editData?.releaseTime || new Date(Date.now() + 3600000).toISOString(),
     settlementTime: editData?.settlementTime || new Date(Date.now() + 86400000).toISOString(),
@@ -127,7 +124,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
   const loadManagerFormulas = async () => {
     try {
       setLoadingFormulas(true);
-      const formulas = await MtoType2Service.getManagerFormulas(activityId);
+      const formulas = await MtoType2Service.getManagerFormulas();
       if (formulas) {
         setAvailableFormulas(formulas);
       }
@@ -214,8 +211,8 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
             </Alert>
           )}
 
-          <Grid2 container spacing={3}>
-            <Grid2 size={12}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('mto.type2.fields.requirementName')}
@@ -223,9 +220,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('name', e.target.value)}
                 placeholder={t('mto.type2.placeholders.requirementName')}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <FormControl fullWidth required error={!!errors.managerProductFormulaId}>
                 <InputLabel>{t('mto.type2.fields.productFormula')}</InputLabel>
                 <Select
@@ -249,9 +246,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   <FormHelperText>{errors.managerProductFormulaId}</FormHelperText>
                 )}
               </FormControl>
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 required
@@ -267,9 +264,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 }}
                 disabled={editData && editData.status !== 'DRAFT'}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.releaseTime')}
@@ -287,9 +284,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   minDateTime={editData ? undefined : new Date()}
                 />
               </LocalizationProvider>
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.settlementTime')}
@@ -307,9 +304,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   minDateTime={new Date(formData.releaseTime)}
                 />
               </LocalizationProvider>
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 multiline
@@ -319,9 +316,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('description', e.target.value)}
                 placeholder={t('mto.type2.placeholders.description')}
               />
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={12}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 multiline
@@ -331,8 +328,8 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 onChange={(e) => handleMetadataChange('notes', e.target.value)}
                 placeholder={t('mto.type2.placeholders.notes')}
               />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Box>
       </DialogContent>
 

@@ -22,10 +22,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemIcon,
-  Grid
+  ListItemIcon
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Inventory as InventoryIcon,
   Water as WaterIcon,
@@ -115,8 +114,8 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
             {t('productProduction.costBreakdown')}
           </Typography>
           
-          <Grid2 container spacing={3}>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom color="text.secondary">
                   {t('productProduction.totalProductionCost')}
@@ -125,9 +124,9 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                   {formatCurrency(costs.finalCosts.totalCost)}
                 </Typography>
               </Paper>
-            </Grid2>
+            </Grid>
             
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom color="text.secondary">
                   {t('productProduction.expectedOutput')}
@@ -139,8 +138,8 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                   {t('productProduction.yieldRate', { rate: output.combinedYield.toFixed(1) })}%
                 </Typography>
               </Paper>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
 
           <Divider sx={{ my: 2 }} />
 
@@ -242,8 +241,8 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
               </Alert>
             )}
             
-            <Grid2 container spacing={2}>
-              <Grid2 size={{ xs: 6 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
                 <Paper variant="outlined" sx={{ p: 1.5 }}>
                   <Typography variant="caption" color="text.secondary">
                     {t('productProduction.materialSpaceFreed')}
@@ -252,8 +251,8 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                     -{formatNumber(space.materialSpaceToFree)}
                   </Typography>
                 </Paper>
-              </Grid2>
-              <Grid2 size={{ xs: 6 }}>
+              </Grid>
+              <Grid item xs={6}>
                 <Paper variant="outlined" sx={{ p: 1.5 }}>
                   <Typography variant="caption" color="text.secondary">
                     {t('productProduction.productSpaceNeeded')}
@@ -262,8 +261,8 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                     +{formatNumber(space.productSpaceNeeded)}
                   </Typography>
                 </Paper>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           </Stack>
         </CardContent>
       </Card>

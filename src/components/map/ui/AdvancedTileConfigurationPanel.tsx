@@ -22,7 +22,7 @@ import {
   MenuItem,
   Button,
   Alert,
-  Grid,
+
   InputAdornment,
   Stack,
   Chip,
@@ -33,6 +33,7 @@ import {
   DialogActions,
   LinearProgress,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   BatchPrediction as BatchIcon,
   Tune as TuneIcon,
@@ -216,7 +217,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
             {(['MARINE', 'COASTAL', 'PLAIN', 'GRASSLANDS', 'FORESTS', 'HILLS', 'MOUNTAINS', 'PLATEAUS', 'DESERTS', 'WETLANDS'] as const).map((landType) => {
               const stats = getLandTypeStats(landType);
               return (
-                <Grid key={landType} size={{ xs: 12, md: 4 }}>
+                <Grid key={landType} item xs={12} md={4}>
                   <Box
                     sx={{
                       p: 2,
@@ -342,7 +343,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                 {t('map.FIXED_VALUES_SECTION')}
               </Typography>
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('map.FIXED_PRICE')}
@@ -358,7 +359,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                     }}
                   />
                 </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('map.FIXED_POPULATION')}
@@ -371,7 +372,7 @@ const AdvancedTileConfigurationPanel: React.FC<AdvancedTileConfigurationPanelPro
                     disabled={processing}
                   />
                 </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('map.FIXED_TRANSPORT_COST')}

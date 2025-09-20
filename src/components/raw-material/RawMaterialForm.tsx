@@ -9,7 +9,7 @@ import {
   DialogActions,
   TextField,
   Button,
-  Grid,
+
   FormControl,
   InputLabel,
   Select,
@@ -28,6 +28,7 @@ import {
   Fade,
   Avatar,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import { useTheme, alpha } from '@mui/material/styles';
 import {
   Save as SaveIcon,
@@ -376,7 +377,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
               </Box>
               
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.materialNumber')}
@@ -393,7 +394,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <FormControl fullWidth error={!!errors.origin} variant="outlined">
                     <InputLabel>{t('rawMaterial.origin')}</InputLabel>
                     <Select
@@ -416,7 +417,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   </FormControl>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.nameEn')}
@@ -428,7 +429,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.nameZh')}
@@ -457,7 +458,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
               </Box>
               
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.totalCost')}
@@ -477,7 +478,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.goldCost')}
@@ -497,7 +498,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.waterRequired')}
@@ -517,7 +518,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.powerRequired')}
@@ -537,7 +538,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid item xs={12} md={4}>
                   <TextField
                     fullWidth
                     label={t('rawMaterial.carbonEmission')}

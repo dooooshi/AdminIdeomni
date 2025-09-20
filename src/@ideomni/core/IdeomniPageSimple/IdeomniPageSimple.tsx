@@ -305,6 +305,6 @@ function IdeomniPageSimple(props: IdeomniPageSimpleProps) {
 	);
 }
 
-const StyledIdeomniPageSimple = memo(styled(IdeomniPageSimple)``);
+const StyledIdeomniPageSimple: React.ComponentType<IdeomniPageSimpleProps> = memo(styled(IdeomniPageSimple)``);
 
 export default StyledIdeomniPageSimple;

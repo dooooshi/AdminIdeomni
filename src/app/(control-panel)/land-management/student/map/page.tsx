@@ -12,7 +12,7 @@ import {
   Chip,
   Alert,
   CircularProgress,
-  Grid,
+
   Button,
   IconButton,
   Tooltip,
@@ -27,6 +27,7 @@ import {
   Fab,
   Zoom,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Refresh as RefreshIcon,
   ZoomIn as ZoomInIcon,

@@ -3909,6 +3909,8 @@ export const enTranslations = {
   'productFormula.totalMaterialsAdded': 'Total materials added',
   'productFormula.totalCategoriesSelected': 'Total categories selected',
   'productFormula.submitConfirmation': 'Please review all details carefully. Once submitted, this formula will be available for production.',
+  'productFormula.techName': 'Tech Name',
+  'productFormula.displayName': 'Display Name',
   
   // Product Production translations
   'productProduction.title': 'Product Production',

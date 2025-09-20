@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 
 interface StatCard {
@@ -46,7 +46,7 @@ function TeamStatsCards({ stats, className = '' }: TeamStatsCardsProps) {
     >
       <Grid container spacing={3}>
         {stats.map((stat, index) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid key={index} item xs={12} sm={6} md={3}>
             <Paper 
               component={motion.div}
               variants={item}

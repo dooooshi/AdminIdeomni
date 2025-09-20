@@ -25,7 +25,7 @@ import {
   Button,
   Chip,
   Divider,
-  Grid,
+
   Alert,
   IconButton,
   Tooltip,
@@ -35,6 +35,7 @@ import {
   InputAdornment,
   Stack,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Undo as UndoIcon,
@@ -327,7 +328,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
           <Grid container spacing={2}>
             {/* NEW: Dual Pricing System */}
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label={t('map.INITIAL_GOLD_PRICE')}
@@ -347,7 +348,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 label={t('map.INITIAL_CARBON_PRICE')}
@@ -372,7 +373,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
 
 
             {/* Initial Population */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('map.INITIAL_POPULATION')}
@@ -393,7 +394,7 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             </Grid>
 
             {/* Transportation Cost */}
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('map.TRANSPORTATION_COST_UNIT')}

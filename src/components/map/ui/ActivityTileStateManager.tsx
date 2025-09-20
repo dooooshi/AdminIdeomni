@@ -18,7 +18,7 @@ import {
   Typography,
   Button,
   Alert,
-  Grid,
+
   Select,
   MenuItem,
   FormControl,
@@ -37,6 +37,7 @@ import {
   FormControlLabel,
   Switch,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   PlayArrow as PlayArrowIcon,
   Stop as StopIcon,
@@ -355,7 +356,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                   {t('map.QUICK_STATISTICS')}
                 </Typography>
                 <Grid container spacing={2}>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <MoneyIcon fontSize="small" />
                       <Box>
@@ -368,7 +369,7 @@ const ActivityTileStateManager: React.FC<ActivityTileStateManagerProps> = ({
                       </Box>
                     </Box>
                   </Grid>
-                  <Grid size={{ xs: 6 }}>
+                  <Grid item xs={6}>
                     <Box display="flex" alignItems="center" gap={1}>
                       <PeopleIcon fontSize="small" />
                       <Box>

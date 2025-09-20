@@ -19,7 +19,7 @@ import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { MonetizationOn } from '@mui/icons-material';
@@ -151,8 +151,8 @@ function AllOperationsPage() {
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
               {t('teamManagement.FILTER_OPERATIONS')}
             </Typography>
-              <Grid component="div" container spacing={3}>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6} md={3}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement.OPERATION_TYPE')}</InputLabel>
                     <Select
@@ -169,7 +169,7 @@ function AllOperationsPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <FormControl fullWidth>
                     <InputLabel>{t('teamManagement.RESOURCE_TYPE')}</InputLabel>
                     <Select
@@ -183,7 +183,7 @@ function AllOperationsPage() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     type="date"
@@ -193,7 +193,7 @@ function AllOperationsPage() {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     type="date"

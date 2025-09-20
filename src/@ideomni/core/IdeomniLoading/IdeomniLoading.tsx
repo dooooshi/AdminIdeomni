@@ -13,15 +13,12 @@ export type IdeomniLoadingProps = {
  */
 function IdeomniLoading(props: IdeomniLoadingProps) {
 	const { delay = 0, className } = props;
-	const [showLoading, setShowLoading] = useState(delay === 0); // Start with true only if no delay
-	const [isClient, setIsClient] = useState(false);
+	const [showLoading, setShowLoading] = useState(true); // Always start visible to prevent hydration mismatch
 
-	// Detect client-side hydration
 	useEffect(() => {
-		setIsClient(true);
-		
-		// Only set up delay if we have one and are on client
+		// If we have a delay, hide initially then show after delay
 		if (delay > 0) {
+			setShowLoading(false);
 			const timer = setTimeout(() => {
 				setShowLoading(true);
 			}, delay);
@@ -30,10 +27,6 @@ function IdeomniLoading(props: IdeomniLoadingProps) {
 		}
 	}, [delay]);
 
-	// For SSR/SSG: always show loading immediately to prevent hydration mismatch
-	// For client: respect the delay logic
-	const shouldShow = !isClient || showLoading;
-
 	return (
 		<div
 			className={clsx(
@@ -41,9 +34,9 @@ function IdeomniLoading(props: IdeomniLoadingProps) {
 				'flex flex-1 min-h-full h-full w-full self-center flex-col items-center justify-center p-6'
 			)}
 			style={{
-				visibility: shouldShow ? 'visible' : 'hidden',
-				opacity: shouldShow ? 1 : 0,
-				transition: isClient ? 'opacity 0.2s ease-in-out' : 'none'
+				visibility: showLoading ? 'visible' : 'hidden',
+				opacity: showLoading ? 1 : 0,
+				transition: 'opacity 0.2s ease-in-out'
 			}}
 		>
 			<Box

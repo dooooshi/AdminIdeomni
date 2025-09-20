@@ -18,7 +18,7 @@ import {
   Alert,
   ListSubheader
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -163,7 +163,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
                     <Stack direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
                       <Stack direction="row" spacing={1} alignItems="center">
                         <Typography variant="body2">
-                          {category.name || `${category.nameEn} (${category.nameZh})`}
+                          {category.name}
                         </Typography>
                         <Chip
                           label={getTechnologyLevelLabel(category.technologyLevel)}
@@ -198,13 +198,13 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
       {craftCategories.length > 0 && (
         <Grid container spacing={2}>
           {craftCategories.map((cc, index) => (
-            <Grid size={{ xs: 12, md: 6 }} key={index}>
+            <Grid item xs={12} md={6} key={index}>
               <Card variant="outlined">
                 <CardContent>
                   <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
                     <Box>
                       <Typography variant="subtitle2" gutterBottom>
-                        {cc.craftCategory?.name || `${cc.craftCategory?.nameEn} (${cc.craftCategory?.nameZh})`}
+                        {cc.craftCategory?.name}
                       </Typography>
                       <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
                         <Chip
@@ -222,7 +222,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
                         {t('productFormula.yield')}: {cc.craftCategory?.yieldPercentage}%
                       </Typography>
                       <Grid container spacing={1}>
-                        <Grid size={6}>
+                        <Grid item xs={6}>
                           <Typography variant="caption" color="text.secondary">
                             {t('productFormula.setupCosts')}:
                           </Typography>
@@ -247,7 +247,7 @@ const CraftCategorySelector: React.FC<CraftCategorySelectorProps> = ({
                             </Stack>
                           </Stack>
                         </Grid>
-                        <Grid size={6}>
+                        <Grid item xs={6}>
                           <Typography variant="caption" color="text.secondary">
                             {t('productFormula.variablePercents')}:
                           </Typography>

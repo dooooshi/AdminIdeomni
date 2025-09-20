@@ -7,7 +7,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+
   Button,
   FormControl,
   InputLabel,
@@ -33,6 +33,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Download as DownloadIcon,
   FileDownload as FileDownloadIcon,
@@ -206,7 +207,7 @@ const ExportPanel: React.FC = () => {
 
       <Grid container spacing={3}>
         {/* Export Configuration */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid item xs={12} md={8}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -215,7 +216,7 @@ const ExportPanel: React.FC = () => {
 
               <Grid container spacing={3}>
                 {/* Export Format */}
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel>{t('activityManagement.EXPORT_FORMAT')}</InputLabel>
                     <Select
@@ -249,7 +250,7 @@ const ExportPanel: React.FC = () => {
                 </Grid>
 
                 {/* User Type Filter */}
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
                     <InputLabel>{t('activityManagement.USER_TYPE_FILTER')}</InputLabel>
                     <Select
@@ -266,7 +267,7 @@ const ExportPanel: React.FC = () => {
                 </Grid>
 
                 {/* Activity Filter */}
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <FormControl fullWidth>
                     <InputLabel>{t('activityManagement.ACTIVITY_FILTER')}</InputLabel>
                     <Select
@@ -284,7 +285,7 @@ const ExportPanel: React.FC = () => {
                 </Grid>
 
                 {/* Include Options */}
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.INCLUDE_OPTIONS')}
                   </Typography>
@@ -311,7 +312,7 @@ const ExportPanel: React.FC = () => {
                 </Grid>
 
                 {/* Field Selection */}
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.EXPORT_FIELDS')} ({t('activityManagement.OPTIONAL')})
                   </Typography>
@@ -321,7 +322,7 @@ const ExportPanel: React.FC = () => {
                   <Paper variant="outlined" sx={{ p: 2, maxHeight: 200, overflow: 'auto' }}>
                     <Grid container spacing={1}>
                       {availableFields.map((field) => (
-                        <Grid key={field.value} size={{ xs: 12, sm: 6 }}>
+                        <Grid key={field.value} item xs={12} sm={6}>
                           <FormControlLabel
                             control={
                               <Switch
@@ -409,7 +410,7 @@ const ExportPanel: React.FC = () => {
         </Grid>
 
         {/* Export History */}
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -518,7 +519,7 @@ const ExportPanel: React.FC = () => {
               </Alert>
 
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
+                <Grid item xs={12}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('activityManagement.EXPORT_DETAILS')}:
                   </Typography>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
-  Grid,
+
   Card,
   CardContent,
   Button,
@@ -16,6 +16,7 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   SearchOutlined,
   AddOutlined,
@@ -244,7 +245,7 @@ const StudentFacilitiesPage: React.FC = () => {
           <Card variant="outlined" sx={{ mb: 4 }}>
             <CardContent>
               <Grid container spacing={3} alignItems="end">
-                <Grid size={{ xs: 12, md: 5 }}>
+                <Grid item xs={12} md={5}>
                   <TextField
                     fullWidth
                     size="small"
@@ -261,7 +262,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     variant="outlined"
                   />
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     size="small"
@@ -277,7 +278,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     <MenuItem value="DAMAGED">{t('facilityManagement.DAMAGED')}</MenuItem>
                   </TextField>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <TextField
                     fullWidth
                     size="small"
@@ -294,7 +295,7 @@ const StudentFacilitiesPage: React.FC = () => {
                     )) : null}
                   </TextField>
                 </Grid>
-                <Grid size={12}>
+                <Grid item xs={12}>
                   <Button
                     variant="outlined"
                     size="small"

@@ -7,7 +7,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
+
   Alert,
   CircularProgress,
   Chip,
@@ -21,6 +21,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Refresh as RefreshIcon,
   TrendingUp as TrendingUpIcon,
@@ -167,7 +168,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
 
       {/* Overview Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -185,7 +186,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -206,7 +207,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -227,7 +228,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
           </Card>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -252,7 +253,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
       {/* Category and Type Breakdown */}
       <Grid container spacing={3}>
         {/* Facilities by Category */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -324,7 +325,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
         </Grid>
 
         {/* Facilities by Type */}
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -400,7 +401,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
             {t('facilityManagement.SUMMARY')}
           </Typography>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="body2" color="textSecondary">
                 {t('facilityManagement.MOST_POPULAR_CATEGORY')}
               </Typography>
@@ -412,7 +413,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 }
               </Typography>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="body2" color="textSecondary">
                 {t('facilityManagement.MOST_POPULAR_TYPE')}
               </Typography>
@@ -424,7 +425,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 }
               </Typography>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="body2" color="textSecondary">
                 {t('facilityManagement.ACTIVE_RATE')}
               </Typography>
@@ -432,7 +433,7 @@ const FacilityStatistics: React.FC<FacilityStatisticsProps> = ({
                 {calculatePercentage(statistics.activeFacilities, statistics.totalFacilities)}%
               </Typography>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Typography variant="body2" color="textSecondary">
                 {t('facilityManagement.TOTAL_CATEGORIES')}
               </Typography>

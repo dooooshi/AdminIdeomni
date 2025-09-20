@@ -45,9 +45,9 @@ export interface ApiResponse<T> {
 }
 
 export class MtoType2Service {
-  private static readonly MANAGER_BASE_PATH = '/api/user/manager/mto-type2';
-  private static readonly MALL_BASE_PATH = '/api/mall/mto-type-2';
-  private static readonly PUBLIC_BASE_PATH = '/api/public/mto-type-2';
+  private static readonly MANAGER_BASE_PATH = '/user/manager/mto-type2';
+  private static readonly MALL_BASE_PATH = '/mall/mto-type-2';
+  private static readonly PUBLIC_BASE_PATH = '/public/mto-type-2';
 
   private static extractResponseData<T>(response: any): T {
     if (response.data && response.data.data !== undefined) {
@@ -99,7 +99,9 @@ export class MtoType2Service {
     const response = await apiClient.get(
       `${this.MANAGER_BASE_PATH}?${queryParams.toString()}`
     );
-    return this.extractResponseData<MtoType2Requirement[]>(response);
+    const data = this.extractResponseData<MtoType2Requirement[]>(response);
+    // Ensure we always return an array
+    return Array.isArray(data) ? data : [];
   }
 
   static async searchRequirements(
@@ -115,7 +117,6 @@ export class MtoType2Service {
         queryParams.append('status', params.status);
       }
     }
-    if (params.activityId) queryParams.append('activityId', params.activityId);
     if (params.managerProductFormulaId) {
       queryParams.append('managerProductFormulaId', params.managerProductFormulaId.toString());
     }
@@ -197,9 +198,8 @@ export class MtoType2Service {
     return this.extractResponseData<MtoType2SettlementHistory[]>(response);
   }
 
-  static async getStatistics(activityId?: string): Promise<MtoType2Statistics> {
-    const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics${params}`);
+  static async getStatistics(): Promise<MtoType2Statistics> {
+    const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics`);
     return this.extractResponseData<MtoType2Statistics>(response);
   }
 
@@ -215,20 +215,17 @@ export class MtoType2Service {
     return this.extractResponseData(response);
   }
 
-  static async getManagerFormulas(activityId: string): Promise<Array<{ id: number; name: string; }>> {
+  static async getManagerFormulas(): Promise<Array<{ id: number; name: string; }>> {
     const response = await apiClient.get(
-      `/api/admin/manager-product-formulas?activityId=${activityId}`
+      `/api/admin/manager-product-formulas`
     );
     return this.extractResponseData(response);
   }
 
   // MALL Owner Endpoints
 
-  static async getAvailableForMall(
-    activityId?: string
-  ): Promise<MtoType2MallOwnerView[]> {
-    const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.MALL_BASE_PATH}/available${params}`);
+  static async getAvailableForMall(): Promise<MtoType2MallOwnerView[]> {
+    const response = await apiClient.get(`${this.MALL_BASE_PATH}/available`);
     return this.extractResponseData<MtoType2MallOwnerView[]>(response);
   }
 

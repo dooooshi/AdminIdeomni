@@ -55,7 +55,6 @@ interface MtoType1RequirementListProps {
   onEditClick: (requirement: MtoType1Requirement) => void;
   onViewClick: (requirement: MtoType1Requirement) => void;
   onDeleteSuccess: () => void;
-  activityId?: string;
   refresh?: number;
 }
 
@@ -73,7 +72,6 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
   onEditClick,
   onViewClick,
   onDeleteSuccess,
-  activityId,
   refresh = 0
 }) => {
   const { t } = useTranslation();
@@ -100,13 +98,14 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
         limit: rowsPerPage,
         q: searchTerm || undefined,
         status: statusFilter === 'ALL' ? undefined : statusFilter,
-        activityId,
         sortBy: 'releaseTime',
         sortOrder: 'desc'
       });
 
-      setRequirements(response.data || []);
-      setTotalCount(response.extra?.pagination?.total || 0);
+      // Ensure requirements is always an array
+      const requirementsData = Array.isArray(response.data) ? response.data : (Array.isArray(response) ? response : []);
+      setRequirements(requirementsData);
+      setTotalCount(response.extra?.pagination?.total || requirementsData.length || 0);
     } catch (error) {
       console.error('Failed to load requirements:', error);
       setRequirements([]);

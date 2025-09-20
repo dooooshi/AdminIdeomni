@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Tabs from '@mui/material/Tabs';
@@ -375,8 +375,8 @@ export default function StudentTradePage() {
           </div>
 
           {/* Statistics Cards */}
-          <Grid component="div" container spacing={3}>
-            <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -393,7 +393,7 @@ export default function StudentTradePage() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -410,7 +410,7 @@ export default function StudentTradePage() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -428,7 +428,7 @@ export default function StudentTradePage() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid component="div" size={{ xs: 12, sm: 6, md: 3 }}>
+            <Grid item xs={12} sm={6} md={3}>
               <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -542,7 +542,7 @@ export default function StudentTradePage() {
 
               <TabPanel value={tabValue} index={4}>
                 <Grid container spacing={4}>
-                  <Grid component="div" size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Paper variant="outlined" className="p-4">
                       <Typography variant="h6" className="font-medium mb-4">
                         {t('trade.analytics.distribution', 'Trade Distribution')}
@@ -572,7 +572,7 @@ export default function StudentTradePage() {
                       </div>
                     </Paper>
                   </Grid>
-                  <Grid component="div" size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Paper variant="outlined" className="p-4">
                       <Typography variant="h6" className="font-medium mb-4">
                         {t('trade.analytics.financialSummary', 'Financial Summary')}

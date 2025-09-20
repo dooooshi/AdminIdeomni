@@ -23,7 +23,7 @@ import {
   Select,
   MenuItem,
   Button,
-  Grid,
+
   Alert,
   Slider,
   Switch,
@@ -36,6 +36,7 @@ import {
   IconButton,
   Paper,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   AutoFixHigh as AutoFixHighIcon,
   Settings as SettingsIcon,
@@ -234,7 +235,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
           </Typography>
 
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 8 }}>
+            <Grid item xs={12} md={8}>
               <TextField
                 fullWidth
                 label={t('map.TEMPLATE_NAME')}
@@ -247,7 +248,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
             
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label={t('map.RANDOM_SEED')}
@@ -267,7 +268,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
 
-            <Grid size={{ xs: 12 }}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label={t('map.DESCRIPTION')}
@@ -289,7 +290,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
           </Typography>
 
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Typography gutterBottom>
                 {t('map.WIDTH')}: {formData.width}
               </Typography>
@@ -305,7 +306,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
             
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Typography gutterBottom>
                 {t('map.HEIGHT')}: {formData.height}
               </Typography>
@@ -321,7 +322,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
             
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Paper variant="outlined" sx={{ p: 2, textAlign: 'center' }}>
                 <MapIcon color="primary" />
                 <Typography variant="caption" display="block">
@@ -342,7 +343,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
           </Typography>
 
           <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Box display="flex" alignItems="center" gap={1} mb={1}>
                 <Box
                   sx={{
@@ -368,7 +369,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
             
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Box display="flex" alignItems="center" gap={1} mb={1}>
                 <Box
                   sx={{
@@ -394,7 +395,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
               />
             </Grid>
             
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Box display="flex" alignItems="center" gap={1} mb={1}>
                 <Box
                   sx={{
@@ -495,7 +496,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                         </Typography>
                         
                         <Grid container spacing={2}>
-                          <Grid size={{ xs: 12, md: 4 }}>
+                          <Grid item xs={12} md={4}>
                             <TextField
                               fullWidth
                               label={t('map.INITIAL_PRICE')}
@@ -520,7 +521,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                             />
                           </Grid>
                           
-                          <Grid size={{ xs: 12, md: 4 }}>
+                          <Grid item xs={12} md={4}>
                             <TextField
                               fullWidth
                               label={t('map.INITIAL_POPULATION')}
@@ -545,7 +546,7 @@ const TemplateGenerationForm: React.FC<TemplateGenerationFormProps> = ({
                             />
                           </Grid>
                           
-                          <Grid size={{ xs: 12, md: 4 }}>
+                          <Grid item xs={12} md={4}>
                             <TextField
                               fullWidth
                               label={t('map.TRANSPORTATION_COST')}

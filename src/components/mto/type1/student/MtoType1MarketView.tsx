@@ -43,13 +43,11 @@ import { enqueueSnackbar } from 'notistack';
 import { formatDistanceToNow, format } from 'date-fns';
 
 interface MtoType1MarketViewProps {
-  activityId?: string;
   onViewDetails: (requirement: MtoType1TeamView) => void;
   onMakeDelivery: (requirement: MtoType1TeamView) => void;
 }
 
 const MtoType1MarketView: React.FC<MtoType1MarketViewProps> = ({
-  activityId = 'default-activity',
   onViewDetails,
   onMakeDelivery
 }) => {
@@ -62,12 +60,12 @@ const MtoType1MarketView: React.FC<MtoType1MarketViewProps> = ({
 
   useEffect(() => {
     loadAvailableRequirements();
-  }, [activityId]);
+  }, []);
 
   const loadAvailableRequirements = async () => {
     setLoading(true);
     try {
-      const data = await MtoType1Service.getAvailableRequirements(activityId);
+      const data = await MtoType1Service.getAvailableRequirements();
       setRequirements(data);
     } catch (error) {
       console.error('Failed to load requirements:', error);

@@ -30,8 +30,9 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  Grid,
+
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   CloudUpload as CloudUploadIcon,
   FileDownload as FileDownloadIcon,
@@ -299,7 +300,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
       {validationResult && (
         <>
           <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" color="primary">
                   {validationResult.totalRows}
@@ -309,7 +310,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" color="success.main">
                   {validationResult.validRows}
@@ -319,7 +320,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" color="error.main">
                   {validationResult.invalidRows}
@@ -430,7 +431,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
           </Alert>
 
           <Grid container spacing={2}>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
                 <Typography variant="h4" color="success.main">
@@ -441,7 +442,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <ErrorIcon sx={{ fontSize: 40, color: 'error.main', mb: 1 }} />
                 <Typography variant="h4" color="error.main">
@@ -452,7 +453,7 @@ const UserBulkImportDialog: React.FC<UserBulkImportDialogProps> = ({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={{ xs: 4 }}>
+            <Grid item xs={4}>
               <Paper sx={{ p: 2, textAlign: 'center' }}>
                 <InfoIcon sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
                 <Typography variant="h4" color="info.main">

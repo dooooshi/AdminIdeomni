@@ -90,10 +90,14 @@ graph LR
 
 **Authorization:** Manager with `MTO_MANAGE` permission
 
+**Authentication Context:**
+- The `activityId` is automatically determined from the manager's authentication context
+- Managers can only create requirements for activities they have permission to manage
+- System validates manager has `MTO_MANAGE` permission for the specific activity
+
 **Request Body:**
 ```typescript
 {
-  "activityId": "cuid_string",
   "managerProductFormulaId": 123,
   "purchaseGoldPrice": 100.50,
   "basePurchaseNumber": 100,
@@ -107,9 +111,6 @@ graph LR
 **Validation Rules:**
 ```typescript
 class CreateMtoType1Dto {
-  @IsString()
-  activityId: string;
-
   @IsInt()
   managerProductFormulaId: number;
 
@@ -193,7 +194,6 @@ class CreateMtoType1Dto {
 ```typescript
 {
   // Filtering
-  "activityId"?: string;              // Filter by activity
   "status"?: MtoType1Status;          // Filter by status (DRAFT, RELEASED, IN_PROGRESS, etc.)
   "managerProductFormulaId"?: number; // Filter by product formula
   "q"?: string;                       // Search in product name and description
@@ -532,14 +532,17 @@ graph LR
 **Access Control:**
 - Students can ONLY see requirements with status: RELEASED or IN_PROGRESS
 - Cannot see DRAFT, SETTLING, SETTLED, or CANCELLED requirements
-- Only requirements for their current activity are visible
+- Only requirements for their current activity are visible (determined from authentication)
+- ActivityId is derived from the team's enrollment, not passed in requests
+
+**Authentication Context:**
+- The team's current `activityId` is automatically determined from authentication
+- Teams can only see requirements for their enrolled activity
+- System validates team membership and activity enrollment
 
 **Query Parameters:**
 ```typescript
 {
-  // Required
-  "activityId": string;                // Current activity (must match team's activity)
-
   // Filtering (limited options for students)
   "tileId"?: string;                      // Filter by specific tile
   "q"?: string;                           // Search in product name
@@ -611,7 +614,8 @@ graph LR
 
 **Access Control:**
 - Can only access if requirement status is RELEASED or IN_PROGRESS
-- Must belong to team's current activity
+- Must belong to team's current activity (determined from authentication context)
+- ActivityId validation is automatic, not user-provided
 
 **Query Parameters:**
 ```typescript
@@ -1052,6 +1056,8 @@ interface ProductValidation {
 **Step 1:** Manager creates requirement for 10,000 units
 ```http
 POST /api/user/manager/mto-type1/requirements
+Authorization: Bearer <manager_jwt_token>
+
 {
   "managerProductFormulaId": 123,
   "purchaseGoldPrice": 100.50,
@@ -1060,6 +1066,7 @@ POST /api/user/manager/mto-type1/requirements
   "baseCountPopulationNumber": 1000
 }
 ```
+*Note: activityId is determined from the manager's authentication context*
 
 **Step 2:** System automatically calculates distribution
 - Tile A (pop: 5500): 500 units allocated
@@ -1075,8 +1082,10 @@ GET /api/user/manager/mto-type1/requirements/1/fulfillment-status
 
 **Step 1:** Student views available requirements
 ```http
-GET /api/team/mto-type1/requirements?activityId=current
+GET /api/team/mto-type1/requirements
+Authorization: Bearer <team_jwt_token>
 ```
+*Note: activityId is determined from the team's current enrollment*
 
 **Step 2:** Student checks tile-specific demands
 ```http

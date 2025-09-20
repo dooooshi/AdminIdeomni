@@ -10,13 +10,14 @@ import {
   Chip, 
   Alert,
   CircularProgress,
-  Grid,
+
   Button,
   IconButton,
   Tooltip,
   Stack,
   Divider
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import { 
   Refresh as RefreshIcon,
   ZoomIn as ZoomInIcon,
@@ -190,7 +191,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
           </Box>
           
           <Grid container spacing={2}>
-            <Grid size={{ xs: 6 }}>
+            <Grid item xs={6}>
               <Typography variant="body2" color="text.secondary">
                 Owned Area: {LandService.formatArea(selectedTile.totalOwnedArea)}
               </Typography>
@@ -198,7 +199,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                 Available: {LandService.formatArea(selectedTile.availableArea)}
               </Typography>
             </Grid>
-            <Grid size={{ xs: 6 }}>
+            <Grid item xs={6}>
               <Typography variant="body2" color="text.secondary">
                 Revenue: {LandService.formatCurrency(selectedTile.totalRevenue)}
               </Typography>
@@ -267,7 +268,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
 
       {/* Overview Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
@@ -279,7 +280,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
@@ -291,7 +292,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
@@ -303,7 +304,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
@@ -439,7 +440,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
             {t('landManagement.MAP_LEGEND')}
           </Typography>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box display="flex" alignItems="center" gap={1}>
                 <Box 
                   sx={{ 
@@ -452,7 +453,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                 <Typography variant="body2">{t('landManagement.PLAIN_LAND')}</Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box display="flex" alignItems="center" gap={1}>
                 <Box 
                   sx={{ 
@@ -465,7 +466,7 @@ const ManagerLandMapPage: React.FC<ManagerLandMapPageProps> = () => {
                 <Typography variant="body2">{t('landManagement.COASTAL_LAND')}</Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12, sm: 4 }}>
+            <Grid item xs={12} sm={4}>
               <Box display="flex" alignItems="center" gap={1}>
                 <Box 
                   sx={{ 

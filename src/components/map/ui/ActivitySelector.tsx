@@ -23,7 +23,7 @@ import {
   InputAdornment,
   Button,
   Chip,
-  Grid,
+
   Alert,
   LinearProgress,
   Stack,
@@ -31,6 +31,7 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Search as SearchIcon,
   PlayArrow as PlayArrowIcon,
@@ -186,7 +187,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
           {/* Filters */}
           <Stack spacing={2} mb={3}>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
                   placeholder={t('SEARCH_ACTIVITIES')}
@@ -202,7 +203,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                   size="small"
                 />
               </Grid>
-              <Grid size={{ xs: 12, md: 3 }}>
+              <Grid item xs={12} md={3}>
                 <FormControl fullWidth size="small">
                   <InputLabel>{t('STATUS')}</InputLabel>
                   <Select
@@ -218,7 +219,7 @@ const ActivitySelector: React.FC<ActivitySelectorProps> = ({
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid size={{ xs: 12, md: 3 }}>
+              <Grid item xs={12} md={3}>
                 <FormControl fullWidth size="small">
                   <InputLabel>{t('TYPE')}</InputLabel>
                   <Select

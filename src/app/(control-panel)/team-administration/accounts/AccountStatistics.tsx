@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import Skeleton from '@mui/material/Skeleton';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -125,7 +125,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
       <div className={className}>
         <Grid container spacing={3}>
           {Array.from({ length: 4 }).map((_, index) => (
-            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={index}>
+            <Grid item xs={12} sm={6} lg={3} key={index}>
               <Card>
                 <CardContent className="p-6">
                   <Box className="flex items-start justify-between mb-4">
@@ -169,7 +169,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
     >
       <Grid container spacing={3}>
         {/* Total Teams */}
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
           <motion.div variants={item}>
             <StatisticCard
               title={t('teamAccounts.totalTeams')}
@@ -182,7 +182,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Total Gold */}
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
           <motion.div variants={item}>
             <StatisticCard
               title={t('teamAccounts.totalGold')}
@@ -195,7 +195,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Total Carbon */}
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
           <motion.div variants={item}>
             <StatisticCard
               title={t('teamAccounts.totalCarbon')}
@@ -208,7 +208,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Resource Ratio */}
-        <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
           <motion.div variants={item}>
             <StatisticCard
               title={t('teamAccounts.goldToCarbonRatio')}
@@ -221,7 +221,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Average Gold */}
-        <Grid size={{ xs: 12, sm: 6 }}>
+        <Grid item xs={12} sm={6}>
           <motion.div variants={item}>
             <Card>
               <CardContent className="p-6">
@@ -268,7 +268,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Average Carbon */}
-        <Grid size={{ xs: 12, sm: 6 }}>
+        <Grid item xs={12} sm={6}>
           <motion.div variants={item}>
             <Card>
               <CardContent className="p-6">
@@ -315,7 +315,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
         </Grid>
 
         {/* Resource Summary */}
-        <Grid size={{ xs: 12 }}>
+        <Grid item xs={12}>
           <motion.div variants={item}>
             <Card>
               <CardContent className="p-6">
@@ -324,7 +324,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                 </Typography>
                 
                 <Grid container spacing={4}>
-                  <Grid size={{ xs: 12, md: 4 }}>
+                  <Grid item xs={12} md={4}>
                     <Box className="text-center">
                       <Typography variant="h3" className="font-bold text-blue-600 mb-2">
                         {summary.totalTeamsWithAccounts}
@@ -335,7 +335,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                     </Box>
                   </Grid>
                   
-                  <Grid size={{ xs: 12, md: 4 }}>
+                  <Grid item xs={12} md={4}>
                     <Box className="text-center">
                       <Typography variant="h3" className="font-bold text-yellow-600 mb-2">
                         {TeamAccountService.formatResourceAmount(summary.totalGold + summary.totalCarbon)}
@@ -346,7 +346,7 @@ function AccountStatistics({ className }: AccountStatisticsProps) {
                     </Box>
                   </Grid>
                   
-                  <Grid size={{ xs: 12, md: 4 }}>
+                  <Grid item xs={12} md={4}>
                     <Box className="text-center">
                       <Typography variant="h3" className="font-bold text-green-600 mb-2">
                         {summary.totalTeamsWithAccounts > 0 

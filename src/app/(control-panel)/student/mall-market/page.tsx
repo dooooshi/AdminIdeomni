@@ -103,7 +103,6 @@ export default function MallMarketPage() {
 
       <MtoType2MarketView
         teamId={teamId}
-        activityId={activityId}
       />
     </Container>
   );

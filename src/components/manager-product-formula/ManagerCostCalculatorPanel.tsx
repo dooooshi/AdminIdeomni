@@ -6,11 +6,12 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
+
   Stack,
   Divider,
   Chip
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Water as WaterIcon,
   Bolt as PowerIcon,
@@ -44,7 +45,7 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
       </Stack>
 
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Typography variant="subtitle2" color="textSecondary" gutterBottom>
             {t('managerProductFormula.materialCost')}
           </Typography>
@@ -53,7 +54,7 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Typography>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Typography variant="subtitle2" color="textSecondary" gutterBottom>
             {t('managerProductFormula.carbonEmission')}
           </Typography>
@@ -65,11 +66,11 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Stack>
         </Grid>
 
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Divider />
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <Stack spacing={2}>
             <Typography variant="subtitle2" color="textSecondary">
               {t('managerProductFormula.waterCosts')}
@@ -100,7 +101,7 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Stack>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <Stack spacing={2}>
             <Typography variant="subtitle2" color="textSecondary">
               {t('managerProductFormula.powerCosts')}
@@ -131,7 +132,7 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Stack>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <Stack spacing={2}>
             <Typography variant="subtitle2" color="textSecondary">
               {t('managerProductFormula.goldCosts')}
@@ -162,11 +163,11 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Stack>
         </Grid>
 
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Divider />
         </Grid>
 
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="subtitle1" fontWeight="medium">
               {t('managerProductFormula.totalVariablePercent')}
@@ -177,7 +178,7 @@ const ManagerCostCalculatorPanel: React.FC<ManagerCostCalculatorPanelProps> = ({
           </Stack>
         </Grid>
 
-        <Grid size={12}>
+        <Grid item xs={12}>
           <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
             <Typography variant="body2" color="textSecondary" gutterBottom>
               {t('managerProductFormula.calculationFormula')}:

@@ -25,7 +25,7 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';import {
+import Grid from '@mui/material/GridLegacy';import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   AttachMoney as MoneyIcon,
@@ -235,8 +235,8 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
         </Stack>
 
         {/* Summary Cards */}
-        <Grid2 container spacing={3} mb={3}>
-          <Grid2 size={{ xs: 12, md: 3 }}>
+        <Grid container spacing={3} mb={3}>
+          <Grid item xs={12} md={3}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -252,9 +252,9 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                 </Stack>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={{ xs: 12, md: 3 }}>
+          <Grid item xs={12} md={3}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -283,9 +283,9 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                 />
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={{ xs: 12, md: 3 }}>
+          <Grid item xs={12} md={3}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -301,9 +301,9 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                 </Stack>
               </CardContent>
             </Card>
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={{ xs: 12, md: 3 }}>
+          <Grid item xs={12} md={3}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -319,8 +319,8 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                 </Stack>
               </CardContent>
             </Card>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
 
         {/* Tabs for Detailed Views */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -334,8 +334,8 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
 
         {/* Overview Tab */}
         <TabPanel value={tabValue} index={0}>
-          <Grid2 container spacing={3}>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   {t('mto.type2.settlementReport.budgetUtilization')}
@@ -355,9 +355,9 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                   />
                 </Box>
               </Paper>
-            </Grid2>
+            </Grid>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid item xs={12} md={6}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   {t('mto.type2.settlementReport.priceStatistics')}
@@ -400,8 +400,8 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
                   </Stack>
                 </Stack>
               </Paper>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </TabPanel>
 
         {/* Tile Analysis Tab */}

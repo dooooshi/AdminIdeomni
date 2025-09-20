@@ -34,11 +34,12 @@ import {
   TableSortLabel,
   Checkbox,
   Collapse,
-  Grid,
+
   FormControlLabel,
   Switch,
   Divider,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
@@ -342,7 +343,7 @@ const UserList: React.FC<UserListProps> = ({
         <CardContent>
           <Grid container spacing={2} alignItems="center">
             {/* Search */}
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 placeholder={t('userList.SEARCH_PLACEHOLDER')}
@@ -356,7 +357,7 @@ const UserList: React.FC<UserListProps> = ({
             </Grid>
 
             {/* Quick Filters */}
-            <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('userList.USER_TYPE')}</InputLabel>
                 <Select
@@ -376,7 +377,7 @@ const UserList: React.FC<UserListProps> = ({
               </FormControl>
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6, md: 1 }}>
+            <Grid item xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel>{t('userList.STATUS')}</InputLabel>
                 <Select
@@ -393,7 +394,7 @@ const UserList: React.FC<UserListProps> = ({
             </Grid>
 
             {/* Filter Actions */}
-            <Grid size={{ xs: 12, md: 4 }}>
+            <Grid item xs={12} md={4}>
               <Stack direction="row" spacing={1}>
                 <Button
                   startIcon={showAdvancedFilters ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -417,7 +418,7 @@ const UserList: React.FC<UserListProps> = ({
           <Collapse in={showAdvancedFilters}>
             <Divider sx={{ my: 2 }} />
             <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6 }}>
+              <Grid item xs={12} sm={6}>
                 <FormControlLabel
                   control={
                     <Switch

@@ -21,9 +21,10 @@ import {
   TableRow,
   Divider,
   Chip,
-  Grid,
+
   Alert
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Lock as LockIcon,
   LockOpen as UnlockIcon,
@@ -151,7 +152,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
           <Stack spacing={3}>
             <Paper variant="outlined" sx={{ p: 2 }}>
               <Grid container spacing={2}>
-                <Grid size={12}>
+                <Grid item xs={12}>
                   <Typography variant="h5" gutterBottom>
                     {formula.productName}
                   </Typography>
@@ -161,7 +162,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     </Typography>
                   )}
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   <Stack spacing={1}>
                     <Stack direction="row" spacing={1} alignItems="center">
                       <CalendarIcon fontSize="small" color="action" />
@@ -185,7 +186,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     )}
                   </Stack>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6 }}>
+                <Grid item xs={12} sm={6}>
                   {formula.activity && (
                     <Stack spacing={1}>
                       <Typography variant="body2" color="textSecondary">
@@ -333,7 +334,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                 {t('managerProductFormula.costSummary')}
               </Typography>
               <Grid container spacing={2}>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     {t('managerProductFormula.totalMaterialCost')}
                   </Typography>
@@ -341,7 +342,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     ${formatNumber(formula.totalMaterialCost)}
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     {t('managerProductFormula.totalSetupCost')}
                   </Typography>
@@ -357,7 +358,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     </Typography>
                   </Stack>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     {t('managerProductFormula.totalVariablePercent')}
                   </Typography>
@@ -365,7 +366,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     {formatNumber(formula.totalPercent)}%
                   </Typography>
                 </Grid>
-                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Grid item xs={12} sm={6} md={3}>
                   <Typography variant="body2" color="textSecondary" gutterBottom>
                     {t('managerProductFormula.carbonEmission')}
                   </Typography>

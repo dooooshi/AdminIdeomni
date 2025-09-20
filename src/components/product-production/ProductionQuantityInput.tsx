@@ -9,10 +9,9 @@ import {
   IconButton,
   FormHelperText,
   Paper,
-  Stack,
-  Grid
+  Stack
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Add as AddIcon,
   Remove as RemoveIcon
@@ -57,8 +56,8 @@ export const ProductionQuantityInput: React.FC<ProductionQuantityInputProps> = (
       </Typography>
       
       <Card sx={{ mt: 3, p: 3 }}>
-        <Grid2 container spacing={3} alignItems="center">
-          <Grid2 size={{ xs: 12, md: 6 }}>
+        <Grid container spacing={3} alignItems="center">
+          <Grid item xs={12} md={6}>
             <Typography variant="subtitle1" gutterBottom>
               {t('productProduction.productionQuantity')}
             </Typography>
@@ -90,9 +89,9 @@ export const ProductionQuantityInput: React.FC<ProductionQuantityInputProps> = (
             <FormHelperText>
               {t('productProduction.maxProducible', { max: maxQuantity })}
             </FormHelperText>
-          </Grid2>
+          </Grid>
           
-          <Grid2 size={{ xs: 12, md: 6 }}>
+          <Grid item xs={12} md={6}>
             {selectedFormula && (
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
@@ -120,8 +119,8 @@ export const ProductionQuantityInput: React.FC<ProductionQuantityInputProps> = (
                 </Stack>
               </Paper>
             )}
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Card>
     </Box>
   );

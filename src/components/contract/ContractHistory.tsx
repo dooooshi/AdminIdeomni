@@ -141,14 +141,13 @@ const ContractHistory: React.FC<ContractHistoryProps> = ({ contractId }) => {
         
         return (
           <TimelineItem key={item.id}>
-            <TimelineOppositeContent 
+            <TimelineOppositeContent
               sx={{ flex: 0.3, px: 1 }}
-              color="textSecondary"
             >
-              <Typography variant="caption" display="block">
+              <Typography variant="caption" display="block" color="textSecondary">
                 {dateTime.date}
               </Typography>
-              <Typography variant="caption" display="block">
+              <Typography variant="caption" display="block" color="textSecondary">
                 {dateTime.time}
               </Typography>
             </TimelineOppositeContent>

@@ -3,10 +3,11 @@ import Tabs from '@mui/material/Tabs';
 import { TabsProps } from '@mui/material/Tabs/Tabs';
 import Box from '@mui/material/Box';
 import clsx from 'clsx';
+import React from 'react';
 
 type StyledTabsProps = TabsProps;
 
-const IdeomniTabs = styled((props: StyledTabsProps) => (
+const IdeomniTabs: React.ComponentType<StyledTabsProps> = styled((props: StyledTabsProps) => (
 	<Tabs
 		indicatorColor="secondary"
 		textColor="inherit"

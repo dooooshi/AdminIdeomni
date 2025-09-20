@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
@@ -148,9 +148,9 @@ function HistoryOverviewPage() {
               <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
                 {t('teamManagement.OPERATION_SUMMARY')} ({t('teamManagement.LAST_30_DAYS')})
               </Typography>
-              <Grid component="div" container spacing={6}>
+              <Grid container spacing={6}>
                 {/* Total Operations */}
-                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
+                <Grid item xs={12} sm={6} lg={3}>
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
@@ -173,7 +173,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Gold Flow */}
-                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
+                <Grid item xs={12} sm={6} lg={3}>
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
@@ -203,7 +203,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Carbon Flow */}
-                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
+                <Grid item xs={12} sm={6} lg={3}>
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
@@ -233,7 +233,7 @@ function HistoryOverviewPage() {
                 </Grid>
 
                 {/* Operation Types */}
-                <Grid component="div" size={{ xs: 12, sm: 6, lg: 3 }}>
+                <Grid item xs={12} sm={6} lg={3}>
                   <Card className="border border-gray-100 dark:border-gray-800 shadow-none">
                     <CardContent className="p-6">
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium mb-4 block">
@@ -264,7 +264,7 @@ function HistoryOverviewPage() {
           {/* Recent Activity and Quick Links */}
           <Grid container spacing={8}>
             {/* Recent Operations */}
-            <Grid component="div" size={{ xs: 12, lg: 8 }}>
+            <Grid item xs={12} lg={8}>
               <Paper className="p-8 border border-gray-100 dark:border-gray-800 shadow-none">
                 <div className="flex items-center justify-between mb-6">
                   <Typography variant="h6" className="font-medium text-gray-900 dark:text-white">
@@ -353,7 +353,7 @@ function HistoryOverviewPage() {
             </Grid>
 
             {/* Quick Links */}
-            <Grid component="div" size={{ xs: 12, lg: 4 }}>
+            <Grid item xs={12} lg={4}>
               <div className="space-y-6">
                 <Paper className="p-6 border border-gray-100 dark:border-gray-800 shadow-none">
                   <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-4">

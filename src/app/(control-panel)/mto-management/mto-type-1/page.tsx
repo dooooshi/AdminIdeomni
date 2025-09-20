@@ -161,7 +161,6 @@ export default function MtoType1ManagementPage() {
             onEditClick={handleEditClick}
             onViewClick={handleViewClick}
             onDeleteSuccess={handleDeleteSuccess}
-            activityId={'default-activity'} // TODO: Get from context or route params
             refresh={refreshList}
           />
         </TabPanel>
@@ -205,7 +204,6 @@ export default function MtoType1ManagementPage() {
         <DialogContent>
           <MtoType1RequirementForm
             requirement={selectedRequirement}
-            activityId={'default-activity'} // TODO: Get from context or route params
             onSave={handleFormSave}
             onCancel={handleFormCancel}
           />

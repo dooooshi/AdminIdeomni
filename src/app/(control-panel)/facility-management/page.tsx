@@ -17,8 +17,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Grid,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Business as BusinessIcon,
   Settings as SettingsIcon,
@@ -280,7 +280,7 @@ const FacilityManagementPage: React.FC = () => {
             <DialogContent dividers>
               {viewingFacility && (
                 <Grid container spacing={2}>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.NAME')}
                     </Typography>
@@ -288,7 +288,7 @@ const FacilityManagementPage: React.FC = () => {
                       {viewingFacility.name}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.TYPE')}
                     </Typography>
@@ -296,7 +296,7 @@ const FacilityManagementPage: React.FC = () => {
                       {t(viewingFacility.facilityType)}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.CATEGORY')}
                     </Typography>
@@ -304,7 +304,7 @@ const FacilityManagementPage: React.FC = () => {
                       {t(viewingFacility.category)}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.STATUS')}
                     </Typography>
@@ -313,7 +313,7 @@ const FacilityManagementPage: React.FC = () => {
                     </Typography>
                   </Grid>
                   {viewingFacility.description && (
-                    <Grid size={{ xs: 12 }}>
+                    <Grid item xs={12}>
                       <Typography variant="body2" color="textSecondary">
                         {t('facilityManagement.DESCRIPTION')}
                       </Typography>
@@ -323,7 +323,7 @@ const FacilityManagementPage: React.FC = () => {
                     </Grid>
                   )}
                   {viewingFacility.capacity && (
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid item xs={12} md={6}>
                       <Typography variant="body2" color="textSecondary">
                         {t('facilityManagement.CAPACITY')}
                       </Typography>
@@ -333,7 +333,7 @@ const FacilityManagementPage: React.FC = () => {
                     </Grid>
                   )}
                   {viewingFacility.buildCost && (
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid item xs={12} md={6}>
                       <Typography variant="body2" color="textSecondary">
                         {t('facilityManagement.BUILD_COST')}
                       </Typography>
@@ -343,7 +343,7 @@ const FacilityManagementPage: React.FC = () => {
                     </Grid>
                   )}
                   {viewingFacility.maintenanceCost && (
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid item xs={12} md={6}>
                       <Typography variant="body2" color="textSecondary">
                         {t('facilityManagement.MAINTENANCE_COST')}
                       </Typography>
@@ -353,7 +353,7 @@ const FacilityManagementPage: React.FC = () => {
                     </Grid>
                   )}
                   {viewingFacility.operationCost && (
-                    <Grid size={{ xs: 12, md: 6 }}>
+                    <Grid item xs={12} md={6}>
                       <Typography variant="body2" color="textSecondary">
                         {t('facilityManagement.OPERATION_COST')}
                       </Typography>
@@ -362,7 +362,7 @@ const FacilityManagementPage: React.FC = () => {
                       </Typography>
                     </Grid>
                   )}
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.CREATED_AT')}
                     </Typography>
@@ -370,7 +370,7 @@ const FacilityManagementPage: React.FC = () => {
                       {new Date(viewingFacility.createdAt).toLocaleDateString()}
                     </Typography>
                   </Grid>
-                  <Grid size={{ xs: 12, md: 6 }}>
+                  <Grid item xs={12} md={6}>
                     <Typography variant="body2" color="textSecondary">
                       {t('facilityManagement.UPDATED_AT')}
                     </Typography>
@@ -432,7 +432,7 @@ const FacilityManagementPage: React.FC = () => {
             <DialogContent dividers>
               {viewingConfig && (
                 <Grid container spacing={2}>
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('facilityManagement.BASIC_INFORMATION')}
                     </Typography>
@@ -442,7 +442,7 @@ const FacilityManagementPage: React.FC = () => {
                     <Typography><strong>{t('facilityManagement.CREATED_DATE')}:</strong> {new Date(viewingConfig.createdAt).toLocaleString()}</Typography>
                   </Grid>
                   
-                  <Grid size={{ xs: 12, sm: 6 }}>
+                  <Grid item xs={12} sm={6}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('facilityManagement.CAPACITY_CONFIGURATION')}
                     </Typography>
@@ -453,7 +453,7 @@ const FacilityManagementPage: React.FC = () => {
                     )}
                   </Grid>
                   
-                  <Grid size={{ xs: 12, sm: 4 }}>
+                  <Grid item xs={12} sm={4}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('facilityManagement.BUILD_COST')}
                     </Typography>
@@ -464,7 +464,7 @@ const FacilityManagementPage: React.FC = () => {
                     )}
                   </Grid>
                   
-                  <Grid size={{ xs: 12, sm: 4 }}>
+                  <Grid item xs={12} sm={4}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('facilityManagement.MAINTENANCE_COST')}
                     </Typography>
@@ -475,7 +475,7 @@ const FacilityManagementPage: React.FC = () => {
                     )}
                   </Grid>
                   
-                  <Grid size={{ xs: 12, sm: 4 }}>
+                  <Grid item xs={12} sm={4}>
                     <Typography variant="subtitle2" gutterBottom>
                       {t('facilityManagement.OPERATION_COST')}
                     </Typography>

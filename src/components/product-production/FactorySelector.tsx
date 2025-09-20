@@ -12,10 +12,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  LinearProgress,
-  Grid
+  LinearProgress
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   Factory as FactoryIcon,
   CheckCircle as CheckCircleIcon,
@@ -98,7 +97,7 @@ export const FactorySelector: React.FC<FactorySelectorProps> = ({
               cursor: 'pointer',
               border: isSelected ? 2 : 1,
               borderColor: isSelected ? 'primary.main' : 'divider',
-              '&:hover': { 
+              '&:hover': {
                 boxShadow: 3,
                 borderColor: 'primary.light'
               }

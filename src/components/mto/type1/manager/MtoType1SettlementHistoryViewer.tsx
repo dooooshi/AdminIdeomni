@@ -36,7 +36,7 @@ import {
   TimelineDot,
   TimelineOppositeContent
 } from '@mui/lab';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   ExpandMore as ExpandMoreIcon,
   LocationOn as LocationIcon,
@@ -201,8 +201,8 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
         {t('mto:mtoType1.settlementHistory.title')}
       </Typography>
 
-      <Grid2 container spacing={2} sx={{ mb: 3 }}>
-        <Grid2 size={{ xs: 12, md: 4 }}>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} md={4}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -213,8 +213,8 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
               </Typography>
             </CardContent>
           </Card>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 4 }}>
+        </Grid>
+        <Grid item xs={12} md={4}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -225,8 +225,8 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
               </Typography>
             </CardContent>
           </Card>
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: 4 }}>
+        </Grid>
+        <Grid item xs={12} md={4}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -237,8 +237,8 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
               </Typography>
             </CardContent>
           </Card>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
 
       {/* Tile groups feature disabled - MtoType1SettlementHistory doesn't have tileId */}
       {false && Array.from(tileGroups.entries()).map(([tileId, tileHistory]: [any, any]) => {
@@ -301,7 +301,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
               <Timeline position="alternate">
                 {tileHistory.map((step, index) => (
                   <TimelineItem key={step.id}>
-                    <TimelineOppositeContent color="textSecondary">
+                    <TimelineOppositeContent>
                       <Typography variant="caption">
                         Settlement #{step.id}
                       </Typography>
@@ -321,38 +321,38 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
 
                           {step.stepType === 'PRODUCT_VALIDATION' && (
                             <Box mt={2}>
-                              <Grid2 container spacing={1}>
+                              <Grid container spacing={1}>
                                 {step.productsValidated !== undefined && (
-                                  <Grid2 size={4}>
+                                  <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
                                       Validated
                                     </Typography>
                                     <Typography variant="h6">
                                       {step.productsValidated}
                                     </Typography>
-                                  </Grid2>
+                                  </Grid>
                                 )}
                                 {step.productsSettled !== undefined && (
-                                  <Grid2 size={4}>
+                                  <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
                                       Settled
                                     </Typography>
                                     <Typography variant="h6" color="success.main">
                                       {step.productsSettled}
                                     </Typography>
-                                  </Grid2>
+                                  </Grid>
                                 )}
                                 {step.productsRejected !== undefined && step.productsRejected > 0 && (
-                                  <Grid2 size={4}>
+                                  <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
                                       Rejected
                                     </Typography>
                                     <Typography variant="h6" color="error">
                                       {step.productsRejected}
                                     </Typography>
-                                  </Grid2>
+                                  </Grid>
                                 )}
-                              </Grid2>
+                              </Grid>
 
                               {step.validationDetails && (
                                 <Box mt={2}>

@@ -7,7 +7,7 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
+
   Alert,
   CircularProgress,
   Button,
@@ -27,6 +27,7 @@ import {
   ListItemText,
   ListItemIcon
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Refresh as RefreshIcon,
   Landscape as LandscapeIcon,

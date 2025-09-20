@@ -22,7 +22,7 @@ import {
   useTheme,
   alpha,
 } from '@mui/material';
-import Grid2 from '@mui/material/GridLegacy';
+import Grid from '@mui/material/GridLegacy';
 import {
   Search as SearchIcon,
   Refresh as RefreshIcon,
@@ -150,8 +150,8 @@ export default function StudentFacilitySpacePage() {
 
         {/* Simplified Metrics */}
         {overviewData && (
-          <Grid2 container spacing={3} sx={{ mb: 8 }}>
-            <Grid2 item xs={12} md={3}>
+          <Grid container spacing={3} sx={{ mb: 8 }}>
+            <Grid item xs={12} md={3}>
               <Box>
                 <Typography 
                   variant="h1" 
@@ -176,8 +176,8 @@ export default function StudentFacilitySpacePage() {
                   {t('studentFacilitySpace.metrics.totalFacilities')}
                 </Typography>
               </Box>
-            </Grid2>
-            <Grid2 item xs={12} md={3}>
+            </Grid>
+            <Grid item xs={12} md={3}>
               <Box>
                 <Typography 
                   variant="h1" 
@@ -202,8 +202,8 @@ export default function StudentFacilitySpacePage() {
                   {t('studentFacilitySpace.metrics.totalCapacity')}
                 </Typography>
               </Box>
-            </Grid2>
-            <Grid2 item xs={12} md={3}>
+            </Grid>
+            <Grid item xs={12} md={3}>
               <Box>
                 <Typography 
                   variant="h1" 
@@ -228,8 +228,8 @@ export default function StudentFacilitySpacePage() {
                   {t('studentFacilitySpace.metrics.spaceUsed')}
                 </Typography>
               </Box>
-            </Grid2>
-            <Grid2 item xs={12} md={3}>
+            </Grid>
+            <Grid item xs={12} md={3}>
               <Box>
                 <Typography 
                   variant="h1" 
@@ -256,8 +256,8 @@ export default function StudentFacilitySpacePage() {
                   {t('studentFacilitySpace.metrics.utilizationRate')}
                 </Typography>
               </Box>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         )}
 
         {/* Simplified Table */}
@@ -576,40 +576,40 @@ export default function StudentFacilitySpacePage() {
                 </Box>
 
                 {/* Simple Stats Grid */}
-                <Grid2 container spacing={4}>
-                  <Grid2 item xs={6}>
+                <Grid container spacing={4}>
+                  <Grid item xs={6}>
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
                       {t('studentFacilitySpace.details.available')}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 400, color: 'text.primary' }}>
                       {selectedFacilityDetails.spaceMetrics.availableSpace.toLocaleString()}
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
                       {t('studentFacilitySpace.details.totalItems')}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 400, color: 'text.primary' }}>
                       {selectedFacilityDetails.inventorySummary.totalItems}
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
                       {t('studentFacilitySpace.details.rawMaterials')}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 400, color: 'text.primary' }}>
                       {selectedFacilityDetails.spaceMetrics.rawMaterialSpace.toLocaleString()}
                     </Typography>
-                  </Grid2>
-                  <Grid2 item xs={6}>
+                  </Grid>
+                  <Grid item xs={6}>
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
                       {t('studentFacilitySpace.details.products')}
                     </Typography>
                     <Typography variant="h6" sx={{ fontWeight: 400, color: 'text.primary' }}>
                       {selectedFacilityDetails.spaceMetrics.productSpace.toLocaleString()}
                     </Typography>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
 
                 {/* Inventory Items */}
                 {selectedFacilityDetails.inventorySummary.topItemsBySpace && 

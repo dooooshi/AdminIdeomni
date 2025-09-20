@@ -151,7 +151,6 @@ export interface MtoType2SettlementHistory {
 }
 
 export interface MtoType2CreateRequest {
-  activityId: string;
   managerProductFormulaId: number;
   releaseTime: string;
   settlementTime: string;
@@ -191,7 +190,6 @@ export interface MtoType2UnsettledReturnRequest {
 export interface MtoType2SearchParams {
   q?: string;
   status?: keyof MtoType2Status | Array<keyof MtoType2Status>;
-  activityId?: string;
   managerProductFormulaId?: number;
   dateFrom?: string;
   dateTo?: string;

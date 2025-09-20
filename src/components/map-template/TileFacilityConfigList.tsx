@@ -26,7 +26,7 @@ import {
   TablePagination,
   TableSortLabel,
   Paper,
-  Grid,
+
   InputAdornment,
   Dialog,
   DialogTitle,
@@ -40,6 +40,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Search as SearchIcon,
   Add as AddIcon,
@@ -289,7 +290,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
         {showFilters && (
           <Paper sx={{ p: 2, mb: 2 }}>
             <Grid container spacing={2} alignItems="center">
-              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+              <Grid item xs={12} sm={6} md={3}>
                 <TextField
                   fullWidth
                   size="small"
@@ -306,7 +307,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 />
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid item xs={12}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 180 }}>
                   <InputLabel>{t('mapTemplate.LAND_TYPE')}</InputLabel>
                   <Select
@@ -331,7 +332,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid item xs={12}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 200 }}>
                   <InputLabel>{t('mapTemplate.FACILITY_TYPE')}</InputLabel>
                   <Select
@@ -356,7 +357,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid item xs={12}>
                 <FormControl fullWidth size="small" sx={{ minWidth: 150 }}>
                   <InputLabel>{t('mapTemplate.STATUS')}</InputLabel>
                   <Select
@@ -378,7 +379,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 </FormControl>
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -390,7 +391,7 @@ const TileFacilityConfigList: React.FC<TileFacilityConfigListProps> = ({
                 />
               </Grid>
 
-              <Grid size={{ xs: 12, sm: 6, md: 1 }}>
+              <Grid item xs={12}>
                 <Button onClick={resetFilters} size="small">
                   {t('mapTemplate.RESET')}
                 </Button>

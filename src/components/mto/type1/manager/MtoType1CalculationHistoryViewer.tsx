@@ -26,7 +26,7 @@ import {
   Button,
   Divider
 } from '@mui/material';
-import Grid2 from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
@@ -207,43 +207,43 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
               <StepContent>
                 <Card variant="outlined" sx={{ mb: 2 }}>
                   <CardContent>
-                    <Grid2 container spacing={2}>
-                      <Grid2 size={{ xs: 12, md: 4 }}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} md={4}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.initialRequirement')}
                         </Typography>
                         <Typography variant="h6" color="primary">
                           {formatNumber(step.totalCalculatedRequirement)}
                         </Typography>
-                      </Grid2>
-                      <Grid2 size={{ xs: 12, md: 4 }}>
+                      </Grid>
+                      <Grid item xs={12} md={4}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.adjustedRequirement')}
                         </Typography>
                         <Typography variant="h6" color={step.calculationType === 'ADJUSTMENT' ? 'warning.main' : 'primary'}>
                           {formatNumber(step.totalAdjustedRequirement)}
                         </Typography>
-                      </Grid2>
+                      </Grid>
                       {step.excludedTiles > 0 && (
-                        <Grid2 size={{ xs: 12, md: 4 }}>
+                        <Grid item xs={12} md={4}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mtoType1.calculationHistory.tilesEliminated')}
                           </Typography>
                           <Typography variant="h6" color="error">
                             {step.excludedTiles}
                           </Typography>
-                        </Grid2>
+                        </Grid>
                       )}
                       {step.adjustmentReason && (
-                        <Grid2 size={12}>
+                        <Grid item xs={12}>
                           <Alert severity="info" variant="outlined">
                             <Typography variant="body2">
                               {step.adjustmentReason}
                             </Typography>
                           </Alert>
-                        </Grid2>
+                        </Grid>
                       )}
-                    </Grid2>
+                    </Grid>
 
                     {tileAdjustments.length > 0 && (
                       <Box mt={2}>

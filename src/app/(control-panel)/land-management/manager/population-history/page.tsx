@@ -7,7 +7,7 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
+
   Table,
   TableBody,
   TableCell,
@@ -32,6 +32,7 @@ import {
   Collapse,
   SelectChangeEvent
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Refresh as RefreshIcon,
   Download as DownloadIcon,
@@ -403,7 +404,7 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
                           {t('population.ADDITIONAL_DETAILS')}
                         </Typography>
                         <Grid container spacing={2}>
-                          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                          <Grid item xs={12} sm={6} md={3}>
                             <Typography variant="body2" color="text.secondary">
                               {t('population.FACILITY_TYPE')}
                             </Typography>
@@ -411,7 +412,7 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
                               {row.facilityType || t('population.NA')}
                             </Typography>
                           </Grid>
-                          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                          <Grid item xs={12} sm={6} md={3}>
                             <Typography variant="body2" color="text.secondary">
                               {t('population.CALCULATION_STEP')}
                             </Typography>
@@ -421,7 +422,7 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
                           </Grid>
                           {row.triggeredBy && (
                             <>
-                              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                              <Grid item xs={12} sm={6} md={3}>
                                 <Typography variant="body2" color="text.secondary">
                                   {t('population.TRIGGERED_BY')}
                                 </Typography>
@@ -429,7 +430,7 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
                                   {row.triggeredBy.username}
                                 </Typography>
                               </Grid>
-                              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                              <Grid item xs={12} sm={6} md={3}>
                                 <Typography variant="body2" color="text.secondary">
                                   {t('population.ACTION')}
                                 </Typography>

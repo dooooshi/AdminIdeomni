@@ -10,7 +10,7 @@ import {
   Typography,
   TextField,
   Button,
-  Grid,
+
   Alert,
   CircularProgress,
   Stepper,
@@ -19,6 +19,7 @@ import {
   Paper,
   Divider
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -196,7 +197,7 @@ const CreateContractForm: React.FC<CreateContractFormProps> = ({ userTeamId }) =
             </Typography>
             
             <Grid container spacing={3}>
-              <Grid size={12}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   label={t('contract.TITLE')}
@@ -212,7 +213,7 @@ const CreateContractForm: React.FC<CreateContractFormProps> = ({ userTeamId }) =
                 />
               </Grid>
               
-              <Grid size={12}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   multiline

@@ -7,7 +7,7 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
+
   List,
   ListItem,
   ListItemText,
@@ -23,6 +23,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
@@ -222,7 +223,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
     return (
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -250,7 +251,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -330,7 +331,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
       {/* Key Metrics Grid */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
             t('landManagement:TOTAL_OWNED_AREA'),
             LandService.formatArea(overview.totalAreaPurchased),
@@ -340,7 +341,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           )}
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
             t('landManagement:TOTAL_REVENUE'),
             LandService.formatCurrency(overview.totalRevenue),
@@ -350,7 +351,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           )}
         </Grid>
         
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        <Grid item xs={12} sm={6} md={3}>
           {renderStatCard(
             t('landManagement:TEAMS_WITH_LAND'),
             overview.teamsWithLand,
@@ -363,7 +364,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
       {/* Additional Metrics */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'primary.main' }}>
               <LandscapeIcon />
@@ -379,7 +380,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </MetricBox>
         </Grid>
         
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'success.main' }}>
               <MoneyIcon />
@@ -395,7 +396,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </MetricBox>
         </Grid>
         
-        <Grid size={{ xs: 12, md: 4 }}>
+        <Grid item xs={12} md={4}>
           <MetricBox>
             <Avatar sx={{ bgcolor: 'warning.main' }}>
               <TrophyIcon />
@@ -414,7 +415,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
 
       {/* Recent Activity and Top Teams */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid item xs={12} lg={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -427,7 +428,7 @@ const ManagerLandOverviewPage: React.FC<ManagerLandOverviewPageProps> = () => {
           </Card>
         </Grid>
         
-        <Grid size={{ xs: 12, lg: 6 }}>
+        <Grid item xs={12} lg={6}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>

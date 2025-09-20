@@ -290,6 +290,6 @@ function IdeomniPageCarded(props: IdeomniPageCardedProps) {
 	);
 }
 
-const StyledIdeomniPageCarded = memo(styled(IdeomniPageCarded)``);
+const StyledIdeomniPageCarded: React.ComponentType<IdeomniPageCardedProps> = memo(styled(IdeomniPageCarded)``);
 
 export default StyledIdeomniPageCarded;

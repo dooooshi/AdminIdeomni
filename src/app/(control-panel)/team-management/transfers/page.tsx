@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/GridLegacy';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
@@ -120,9 +120,9 @@ function TransferHubPage() {
             <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
               {t('teamManagement.SELECT_TRANSFER_TYPE')}
             </Typography>
-            <Grid component="div" container spacing={6}>
+            <Grid container spacing={6}>
               {/* Gold Transfer Card */}
-              <Grid component="div" size={{ xs: 12, md: 6 }}>
+              <Grid item xs={12} md={6}>
                 <Card className="h-full border border-gray-100 dark:border-gray-800 shadow-none">
                   <CardContent className="flex-1 p-8">
                     <div className="flex items-center gap-4 mb-4">
@@ -156,7 +156,7 @@ function TransferHubPage() {
               </Grid>
 
               {/* Carbon Transfer Card */}
-              <Grid component="div" size={{ xs: 12, md: 6 }}>
+              <Grid item xs={12} md={6}>
                 <Card className="h-full border border-gray-100 dark:border-gray-800 shadow-none">
                   <CardContent className="flex-1 p-8">
                     <div className="flex items-center gap-4 mb-4">

@@ -4121,6 +4121,8 @@ export const zhTranslations = {
   'productFormula.totalMaterialsAdded': '已添加材料总数',
   'productFormula.totalCategoriesSelected': '已选择类别总数',
   'productFormula.submitConfirmation': '请仔细查看所有详细信息。提交后，此配方将可用于生产。',
+  'productFormula.techName': '技术名称',
+  'productFormula.displayName': '显示名称',
   'resources.table.resource': '资源',
   'resources.table.quantity': '数量',
   'resources.table.unitPrice': '单价',
