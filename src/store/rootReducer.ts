@@ -1,6 +1,7 @@
 import { combineSlices } from '@reduxjs/toolkit';
 import apiService from './apiService';
 import { navigationSlice } from '@/components/theme-layouts/components/navigation/store/navigationSlice';
+import { shopSlice } from './shopSlice';
 
 export interface LazyLoadedSlices {
   // Define lazy loaded slices here as they are added
@@ -13,6 +14,7 @@ export const rootReducer = combineSlices(
 	 * Static slices
 	 */
 	navigationSlice,
+	shopSlice,
 	/**
 	 * Lazy loaded slices
 	 */

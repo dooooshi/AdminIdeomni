@@ -628,6 +628,29 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 				}
 			]
 		});
+
+		// Add Material Shop for Students
+		navigation.push({
+			id: 'material-shop',
+			title: 'Material Shop',
+			subtitle: 'Purchase raw materials for production',
+			type: 'group',
+			icon: 'heroicons-outline:shopping-cart',
+			translate: 'MATERIAL_SHOP',
+			translateSubtitle: 'MATERIAL_SHOP_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'material-shop.catalog',
+					title: 'Shop Catalog',
+					type: 'item',
+					icon: 'heroicons-outline:shopping-bag',
+					url: '/student/shop',
+					translate: 'SHOP_CATALOG',
+					auth: ['user']
+				}
+			]
+		});
 	}
 
 	// Add Team Administration for Managers (userType: 1)
@@ -749,6 +772,29 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:building-storefront',
 					url: '/mto-management/mto-type-2',
 					translate: 'MTO_TYPE2_TITLE',
+					auth: ['user']
+				}
+			]
+		});
+
+		// Add Shop Management for Managers (userType: 1)
+		navigation.push({
+			id: 'shop-management',
+			title: 'Shop Management',
+			subtitle: 'Raw Material Shop management',
+			type: 'group',
+			icon: 'heroicons-outline:shopping-cart',
+			translate: 'SHOP_MANAGEMENT',
+			translateSubtitle: 'SHOP_MANAGEMENT_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'shop-management.dashboard',
+					title: 'Shop Dashboard',
+					type: 'item',
+					icon: 'heroicons-outline:chart-bar',
+					url: '/shop-management',
+					translate: 'SHOP_DASHBOARD',
 					auth: ['user']
 				}
 			]
