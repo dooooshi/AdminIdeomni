@@ -33,7 +33,7 @@ import {
   FilterList as FilterIcon,
 } from '@mui/icons-material';
 import { RootState, AppDispatch } from '@/store/store';
-import { fetchMaterials } from '@/store/shopSlice';
+import { fetchMaterials, selectMaterial } from '@/store/shopSlice';
 import ShopService from '@/lib/services/shopService';
 import PurchaseDialog from './PurchaseDialog';
 
@@ -51,19 +51,19 @@ const originColors: Record<string, string> = {
 
 export default function ShopBrowseView() {
   const dispatch = useDispatch<AppDispatch>();
-  const { materials = [], materialsLoading, materialsError } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const materials = shopState?.materials || [];
+  const materialsLoading = shopState?.materialsLoading || false;
+  const materialsError = shopState?.materialsError || null;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
   const [originFilter, setOriginFilter] = useState('');
-  const [selectedMaterial, setSelectedMaterial] = useState<any | null>(null);
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMaterials());
+    dispatch(fetchMaterials(undefined));
   }, [dispatch]);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -76,12 +76,12 @@ export default function ShopBrowseView() {
   };
 
   const handlePurchase = (material: any) => {
-    setSelectedMaterial(material);
+    dispatch(selectMaterial(material));
     setPurchaseDialogOpen(true);
   };
 
   const handleClosePurchaseDialog = () => {
-    setSelectedMaterial(null);
+    dispatch(selectMaterial(null));
     setPurchaseDialogOpen(false);
   };
 
@@ -324,7 +324,6 @@ export default function ShopBrowseView() {
       {/* Purchase Dialog */}
       <PurchaseDialog
         open={purchaseDialogOpen}
-        material={selectedMaterial}
         onClose={handleClosePurchaseDialog}
       />
     </>

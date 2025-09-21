@@ -77,9 +77,10 @@ const originColors: Record<string, string> = {
 
 export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { availableRawMaterials, rawMaterialsLoading, rawMaterialsError } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const availableRawMaterials = shopState?.availableRawMaterials || [];
+  const rawMaterialsLoading = shopState?.rawMaterialsLoading || false;
+  const rawMaterialsError = shopState?.rawMaterialsError || null;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [originFilter, setOriginFilter] = useState<string>('');
@@ -214,7 +215,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
       setSuccessMessage(`${materialName} added to shop successfully!`);
 
       // Refresh materials list
-      await dispatch(fetchMaterials());
+      await dispatch(fetchMaterials(undefined));
 
       // Auto-close success message after 3 seconds
       setTimeout(() => setSuccessMessage(null), 3000);
@@ -438,7 +439,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                               <Divider sx={{ mb: 2 }} />
 
                               <Grid container spacing={3}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                   <TextField
                                     fullWidth
                                     size="small"
@@ -459,7 +460,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                   />
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
                                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                                     <FormControlLabel
                                       control={

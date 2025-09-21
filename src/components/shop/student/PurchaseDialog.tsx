@@ -50,9 +50,13 @@ interface PurchaseDialogProps {
 
 const originColors: Record<MaterialOrigin, string> = {
   [MaterialOrigin.MINE]: '#8B4513',
-  [MaterialOrigin.FARM]: '#228B22',
+  [MaterialOrigin.QUARRY]: '#696969',
+  [MaterialOrigin.FOREST]: '#228B22',
+  [MaterialOrigin.FARM]: '#90EE90',
   [MaterialOrigin.RANCH]: '#FF6347',
-  [MaterialOrigin.FACTORY]: '#4682B4',
+  [MaterialOrigin.FISHERY]: '#4682B4',
+  [MaterialOrigin.SHOPS]: '#FF69B4',
+  [MaterialOrigin.FACTORY]: '#708090',
   [MaterialOrigin.OTHER]: '#808080',
 };
 

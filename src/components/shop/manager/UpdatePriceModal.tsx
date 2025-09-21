@@ -72,7 +72,7 @@ export default function UpdatePriceModal({ open, onClose, materialId }: UpdatePr
         })
       ).unwrap();
 
-      await dispatch(fetchMaterials());
+      await dispatch(fetchMaterials(undefined));
       onClose();
     } catch (err: any) {
       setError(err.message || 'Failed to update price');

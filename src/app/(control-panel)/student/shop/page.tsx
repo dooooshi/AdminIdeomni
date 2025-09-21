@@ -54,14 +54,14 @@ export default function StudentShopPage() {
 
   useEffect(() => {
     // Load initial data
-    dispatch(fetchMaterials());
+    dispatch(fetchMaterials(undefined));
     dispatch(fetchFacilitySpaces());
   }, [dispatch]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
     await Promise.all([
-      dispatch(fetchMaterials()),
+      dispatch(fetchMaterials(undefined)),
       dispatch(fetchFacilitySpaces()),
     ]);
     setRefreshing(false);

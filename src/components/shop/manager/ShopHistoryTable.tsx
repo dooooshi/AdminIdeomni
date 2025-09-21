@@ -46,9 +46,10 @@ const categoryColors: Record<ActionCategory, string> = {
 };
 
 export default function ShopHistoryTable() {
-  const { shopHistory = [], shopHistoryLoading = false, shopHistoryPagination = null } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const shopHistory = shopState?.shopHistory || [];
+  const shopHistoryLoading = shopState?.shopHistoryLoading || false;
+  const shopHistoryPagination = shopState?.shopHistoryPagination || null;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 

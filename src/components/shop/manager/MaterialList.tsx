@@ -46,9 +46,13 @@ import ShopService from '@/lib/services/shopService';
 
 const originColors: Record<MaterialOrigin, string> = {
   [MaterialOrigin.MINE]: '#8B4513',
-  [MaterialOrigin.FARM]: '#228B22',
+  [MaterialOrigin.QUARRY]: '#696969',
+  [MaterialOrigin.FOREST]: '#228B22',
+  [MaterialOrigin.FARM]: '#90EE90',
   [MaterialOrigin.RANCH]: '#FF6347',
-  [MaterialOrigin.FACTORY]: '#4682B4',
+  [MaterialOrigin.FISHERY]: '#4682B4',
+  [MaterialOrigin.SHOPS]: '#FF69B4',
+  [MaterialOrigin.FACTORY]: '#708090',
   [MaterialOrigin.OTHER]: '#808080',
 };
 
@@ -94,7 +98,7 @@ export default function MaterialList() {
       : 100;
 
     return (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={material.id}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={material.id}>
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <CardContent sx={{ flexGrow: 1 }}>
             {/* Material Header */}
@@ -269,7 +273,7 @@ export default function MaterialList() {
       {materialsLoading ? (
         <Grid container spacing={3}>
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={n}>
+            <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={n}>
               <Card>
                 <CardContent>
                   <Skeleton variant="text" width="60%" />

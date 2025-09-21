@@ -47,9 +47,13 @@ interface ShopCatalogProps {}
 
 const originColors: Record<MaterialOrigin, string> = {
   [MaterialOrigin.MINE]: '#8B4513',
-  [MaterialOrigin.FARM]: '#228B22',
+  [MaterialOrigin.QUARRY]: '#696969',
+  [MaterialOrigin.FOREST]: '#228B22',
+  [MaterialOrigin.FARM]: '#90EE90',
   [MaterialOrigin.RANCH]: '#FF6347',
-  [MaterialOrigin.FACTORY]: '#4682B4',
+  [MaterialOrigin.FISHERY]: '#4682B4',
+  [MaterialOrigin.SHOPS]: '#FF69B4',
+  [MaterialOrigin.FACTORY]: '#708090',
   [MaterialOrigin.OTHER]: '#808080',
 };
 
@@ -89,7 +93,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
     const isInStock = remainingStock === null || remainingStock > 0;
 
     return (
-      <Grid item {...(viewMode === 'grid' ? { xs: 12, sm: 6, md: 4, lg: 3 } : { xs: 12 })} key={material.id}>
+      <Grid size={viewMode === 'grid' ? { xs: 12, sm: 6, md: 4, lg: 3 } : { xs: 12 }} key={material.id}>
         <Card sx={{
           height: viewMode === 'grid' ? '100%' : 'auto',
           display: 'flex',
@@ -304,7 +308,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
       {materialsLoading ? (
         <Grid container spacing={3}>
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <Grid item {...(viewMode === 'grid' ? { xs: 12, sm: 6, md: 4, lg: 3 } : { xs: 12 })} key={n}>
+            <Grid size={viewMode === 'grid' ? { xs: 12, sm: 6, md: 4, lg: 3 } : { xs: 12 }} key={n}>
               <Card>
                 <CardContent>
                   <Skeleton variant="text" width="60%" />

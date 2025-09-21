@@ -55,12 +55,11 @@ const originColors: Record<string, string> = {
 
 export default function TransactionHistory() {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    teamTransactions = [],
-    teamTransactionsSummary,
-    transactionsLoading,
-    transactionsError
-  } = useSelector((state: RootState) => state.shop || {});
+  const shopState = useSelector((state: RootState) => state.shop);
+  const teamTransactions = shopState?.teamTransactions || [];
+  const teamTransactionsSummary = shopState?.teamTransactionsSummary;
+  const transactionsLoading = shopState?.transactionsLoading || false;
+  const transactionsError = shopState?.transactionsError || null;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -97,7 +96,7 @@ export default function TransactionHistory() {
       tx.quantity,
       tx.unitPrice,
       tx.totalAmount,
-      `${tx.delivery.facilityType} Lv.${tx.delivery.facilityLevel}`,
+      tx.delivery.facilityName || 'N/A',
       tx.delivery.status,
     ]);
 
@@ -197,7 +196,7 @@ export default function TransactionHistory() {
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
-                {teamTransactionsSummary.transactionCount}
+                {teamTransactionsSummary.totalTransactions}
               </Typography>
             </CardContent>
           </Card>
@@ -211,7 +210,7 @@ export default function TransactionHistory() {
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
-                {ShopService.formatPrice(teamTransactionsSummary.averageTransactionValue || 0)}
+                {ShopService.formatPrice(Number(teamTransactionsSummary.totalSpent) / teamTransactionsSummary.totalTransactions || 0)}
               </Typography>
             </CardContent>
           </Card>
@@ -407,7 +406,7 @@ export default function TransactionHistory() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <FacilityIcon fontSize="small" color="action" />
                       <Typography variant="body2">
-                        {transaction.delivery.facilityType} Lv.{transaction.delivery.facilityLevel}
+                        {transaction.delivery.facilityName || 'N/A'}
                       </Typography>
                     </Box>
                   </TableCell>

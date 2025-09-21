@@ -55,15 +55,12 @@ function TabPanel(props: TabPanelProps) {
 
 export default function ShopManagementPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const {
-    materials = [],
-    materialsLoading = false,
-    materialsError = null,
-    shopHistory = [],
-    shopHistoryLoading = false
-  } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const materials = shopState?.materials || [];
+  const materialsLoading = shopState?.materialsLoading || false;
+  const materialsError = shopState?.materialsError || null;
+  const shopHistory = shopState?.shopHistory || [];
+  const shopHistoryLoading = shopState?.shopHistoryLoading || false;
 
   const [activeTab, setActiveTab] = useState(0);
   const [addMaterialOpen, setAddMaterialOpen] = useState(false);
@@ -71,14 +68,14 @@ export default function ShopManagementPage() {
 
   useEffect(() => {
     // Load initial data
-    dispatch(fetchMaterials());
+    dispatch(fetchMaterials(undefined));
     dispatch(fetchShopHistory({ limit: 50 }));
   }, [dispatch]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
     await Promise.all([
-      dispatch(fetchMaterials()),
+      dispatch(fetchMaterials(undefined)),
       dispatch(fetchShopHistory({ limit: 50 })),
     ]);
     setRefreshing(false);
@@ -131,7 +128,7 @@ export default function ShopManagementPage() {
 
       {/* Statistics Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -150,7 +147,7 @@ export default function ShopManagementPage() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -160,7 +157,7 @@ export default function ShopManagementPage() {
                 </Typography>
               </Box>
               <Typography variant="h4" component="div">
-                {shopHistoryLoading ? <Skeleton width={100} /> : `${totalRevenue.toFixed(2)}g`}
+                {shopHistoryLoading ? <Skeleton width={100} /> : `${totalRevenue.toFixed(2)}`}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
                 All time sales
@@ -169,7 +166,7 @@ export default function ShopManagementPage() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -188,7 +185,7 @@ export default function ShopManagementPage() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

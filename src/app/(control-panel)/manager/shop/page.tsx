@@ -46,23 +46,23 @@ function TabPanel(props: TabPanelProps) {
 
 export default function ShopManagerPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { materialsLoading, materialsError } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const materialsLoading = shopState?.materialsLoading || false;
+  const materialsError = shopState?.materialsError || null;
 
   const [tabValue, setTabValue] = useState(0);
   const [addMaterialOpen, setAddMaterialOpen] = useState(false);
 
   useEffect(() => {
     // Load initial data
-    dispatch(fetchMaterials());
-    dispatch(fetchShopHistory());
+    dispatch(fetchMaterials(undefined));
+    dispatch(fetchShopHistory(undefined));
   }, [dispatch]);
 
   const handleRefresh = () => {
-    dispatch(fetchMaterials());
+    dispatch(fetchMaterials(undefined));
     if (tabValue === 2) {
-      dispatch(fetchShopHistory());
+      dispatch(fetchShopHistory(undefined));
     }
   };
 

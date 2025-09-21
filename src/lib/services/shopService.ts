@@ -20,7 +20,6 @@ import type {
   ShopTransactionsResponse,
   FacilitySpaceOverview,
   StandardApiResponse,
-  ApiResponse,
   RawMaterial,
 } from '@/types/shop';
 
@@ -64,7 +63,7 @@ export class ShopService {
    * Activity context is determined from user authentication
    */
   static async getMaterials(params?: MaterialQueryParams): Promise<BrowseMaterialsResponse> {
-    const response = await apiClient.get<ApiResponse<BrowseMaterialsResponse>>(
+    const response = await apiClient.get<StandardApiResponse<BrowseMaterialsResponse>>(
       `${this.SHOP_BASE_PATH}/materials`,
       { params }
     );
@@ -76,7 +75,7 @@ export class ShopService {
    * Activity context is determined from user authentication
    */
   static async getCurrentShop(): Promise<ActivityShop> {
-    const response = await apiClient.get<ApiResponse<ActivityShop>>(
+    const response = await apiClient.get<StandardApiResponse<ActivityShop>>(
       `${this.SHOP_BASE_PATH}/current`
     );
     return this.extractResponseData(response);
@@ -154,7 +153,7 @@ export class ShopService {
     console.log('Adding material with request:', request);
 
     try {
-      const response = await apiClient.post<ApiResponse<AddMaterialResponse>>(
+      const response = await apiClient.post<StandardApiResponse<AddMaterialResponse>>(
         `${this.SHOP_BASE_PATH}/materials/add`,
         request
       );
@@ -173,7 +172,7 @@ export class ShopService {
    * Requires MANAGER role
    */
   static async removeMaterial(materialId: number): Promise<RemoveMaterialResponse> {
-    const response = await apiClient.delete<ApiResponse<RemoveMaterialResponse>>(
+    const response = await apiClient.delete<StandardApiResponse<RemoveMaterialResponse>>(
       `${this.SHOP_BASE_PATH}/materials/${materialId}`
     );
     return this.extractResponseData(response);
@@ -188,7 +187,7 @@ export class ShopService {
     materialId: number,
     request: UpdatePriceRequest
   ): Promise<UpdatePriceResponse> {
-    const response = await apiClient.post<ApiResponse<UpdatePriceResponse>>(
+    const response = await apiClient.post<StandardApiResponse<UpdatePriceResponse>>(
       `${this.SHOP_BASE_PATH}/materials/${materialId}/price`,
       request
     );
@@ -203,7 +202,7 @@ export class ShopService {
    * Team context is determined from user authentication
    */
   static async getTeamFacilitySpaces(): Promise<FacilitySpaceOverview> {
-    const response = await apiClient.get<ApiResponse<FacilitySpaceOverview>>(
+    const response = await apiClient.get<StandardApiResponse<FacilitySpaceOverview>>(
       `${this.USER_BASE_PATH}/facility-space/team/overview`
     );
     return this.extractResponseData(response);
@@ -215,7 +214,7 @@ export class ShopService {
    * Requires STUDENT role
    */
   static async purchaseMaterial(request: PurchaseRequest): Promise<PurchaseResponse> {
-    const response = await apiClient.post<ApiResponse<PurchaseResponse>>(
+    const response = await apiClient.post<StandardApiResponse<PurchaseResponse>>(
       `${this.SHOP_BASE_PATH}/purchase`,
       request
     );
@@ -231,7 +230,7 @@ export class ShopService {
   static async getTeamTransactions(
     params?: TeamTransactionQueryParams
   ): Promise<TeamTransactionsResponse> {
-    const response = await apiClient.get<ApiResponse<TeamTransactionsResponse>>(
+    const response = await apiClient.get<StandardApiResponse<TeamTransactionsResponse>>(
       `${this.SHOP_BASE_PATH}/team-transactions`,
       { params }
     );
@@ -246,7 +245,7 @@ export class ShopService {
    * Requires MANAGER role
    */
   static async getShopHistory(params?: HistoryQueryParams): Promise<ShopHistoryResponse> {
-    const response = await apiClient.get<ApiResponse<ShopHistoryResponse>>(
+    const response = await apiClient.get<StandardApiResponse<ShopHistoryResponse>>(
       `${this.SHOP_BASE_PATH}/history`,
       { params }
     );
@@ -261,7 +260,7 @@ export class ShopService {
   static async getTransactions(
     params?: HistoryQueryParams
   ): Promise<ShopTransactionsResponse> {
-    const response = await apiClient.get<ApiResponse<ShopTransactionsResponse>>(
+    const response = await apiClient.get<StandardApiResponse<ShopTransactionsResponse>>(
       `${this.SHOP_BASE_PATH}/transactions`,
       { params }
     );

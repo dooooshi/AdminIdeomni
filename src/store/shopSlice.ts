@@ -18,7 +18,7 @@ import type {
 
 // ==================== State Types ====================
 
-interface ShopState {
+export interface ShopState {
   // Materials
   materials: ShopMaterial[];
   selectedMaterial: ShopMaterial | null;

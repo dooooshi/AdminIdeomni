@@ -30,9 +30,10 @@ import { MaterialOrigin, ShopActionType } from '@/types/shop';
 import ShopService from '@/lib/services/shopService';
 
 export default function ShopStatistics() {
-  const { materials = [], shopHistory = [], teamTransactions = [] } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const materials = shopState?.materials || [];
+  const shopHistory = shopState?.shopHistory || [];
+  const teamTransactions = shopState?.teamTransactions || [];
 
   // Calculate statistics
   const totalRevenue = (shopHistory || [])
@@ -83,7 +84,7 @@ export default function ShopStatistics() {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Revenue Overview */}
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -100,7 +101,7 @@ export default function ShopStatistics() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -117,7 +118,7 @@ export default function ShopStatistics() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -142,13 +143,13 @@ export default function ShopStatistics() {
             Price Change Activity
           </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <TrendingUpIcon color="success" />
                 <Typography variant="body1">Price Increases: {priceIncreases}</Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <TrendingDownIcon color="error" />
                 <Typography variant="body1">Price Decreases: {priceDecreases}</Typography>

@@ -49,9 +49,9 @@ const originColors: Record<string, string> = {
 
 export default function ShopMaterialsList() {
   const dispatch = useDispatch<AppDispatch>();
-  const { materials = [], materialsLoading } = useSelector(
-    (state: RootState) => state.shop || {}
-  );
+  const shopState = useSelector((state: RootState) => state.shop);
+  const materials = shopState?.materials || [];
+  const materialsLoading = shopState?.materialsLoading || false;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
