@@ -73,10 +73,12 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
 
       const data = await MtoType1Service.getCalculationHistory(Number(mtoType1Id));
 
-      setHistory(data.sort((a, b) => a.id - b.id));
-      setActiveStep(data.length - 1);
+      // Ensure data is an array before sorting
+      const historyArray = Array.isArray(data) ? data : [];
+      setHistory(historyArray.sort((a, b) => a.id - b.id));
+      setActiveStep(historyArray.length - 1);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load calculation history');
+      setError(err instanceof Error ? err.message : t('mto:mtoType1.calculationHistory.error'));
     } finally {
       setLoading(false);
     }
@@ -185,23 +187,25 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
           return (
             <Step key={step.id} expanded={true}>
               <StepLabel
-                StepIconComponent={() => getStepIcon(step.calculationType)}
+                StepIconComponent={() => getStepIcon(step.calculationType || 'INITIAL')}
                 optional={
                   <Typography variant="caption">
-                    {t('mto:mtoType1.calculationHistory.step')} #{step.id}
+                    {t('mto:mtoType1.calculationHistory.step')} {step.id}
                   </Typography>
                 }
               >
                 <Box display="flex" alignItems="center">
                   <Typography variant="subtitle1" fontWeight="bold">
-                    Calculation #{step.id}
+                    {t('mto:mtoType1.calculationHistory.calculationNumber', { id: step.id })}
                   </Typography>
-                  <Chip
-                    label={step.calculationType.replace(/_/g, ' ')}
-                    color={getStepColor(step.calculationType) as any}
-                    size="small"
-                    sx={{ ml: 2 }}
-                  />
+                  {step.calculationType && (
+                    <Chip
+                      label={step.calculationType.replace(/_/g, ' ')}
+                      color={getStepColor(step.calculationType) as any}
+                      size="small"
+                      sx={{ ml: 2 }}
+                    />
+                  )}
                 </Box>
               </StepLabel>
               <StepContent>
@@ -213,7 +217,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                           {t('mto:mtoType1.calculationHistory.initialRequirement')}
                         </Typography>
                         <Typography variant="h6" color="primary">
-                          {formatNumber(step.totalCalculatedRequirement)}
+                          {formatNumber(step.totalCalculatedRequirement || 0)}
                         </Typography>
                       </Grid>
                       <Grid item xs={12} md={4}>
@@ -221,7 +225,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                           {t('mto:mtoType1.calculationHistory.adjustedRequirement')}
                         </Typography>
                         <Typography variant="h6" color={step.calculationType === 'ADJUSTMENT' ? 'warning.main' : 'primary'}>
-                          {formatNumber(step.totalAdjustedRequirement)}
+                          {formatNumber(step.totalAdjustedRequirement || 0)}
                         </Typography>
                       </Grid>
                       {step.excludedTiles > 0 && (
@@ -261,11 +265,11 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                             <Table size="small">
                               <TableHead>
                                 <TableRow>
-                                  <TableCell>{t('mto:mtoType1.calculationHistory.tileName')}</TableCell>
-                                  <TableCell align="right">{t('mto:mtoType1.calculationHistory.population')}</TableCell>
-                                  <TableCell align="right">{t('mto:mtoType1.calculationHistory.initial')}</TableCell>
-                                  <TableCell align="right">{t('mto:mtoType1.calculationHistory.adjusted')}</TableCell>
-                                  <TableCell>{t('mto:mtoType1.calculationHistory.reason')}</TableCell>
+                                  <TableCell align="center">{t('mto:mtoType1.calculationHistory.tileName')}</TableCell>
+                                  <TableCell align="center">{t('mto:mtoType1.calculationHistory.population')}</TableCell>
+                                  <TableCell align="center">{t('mto:mtoType1.calculationHistory.initial')}</TableCell>
+                                  <TableCell align="center">{t('mto:mtoType1.calculationHistory.adjusted')}</TableCell>
+                                  <TableCell align="center">{t('mto:mtoType1.calculationHistory.reason')}</TableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>
@@ -277,23 +281,23 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                                       opacity: tile.excluded ? 0.7 : 1
                                     }}
                                   >
-                                    <TableCell>
+                                    <TableCell align="center">
                                       <Typography variant="body2" fontWeight="medium">
-                                        Tile {tile.tileId}
+                                        {t('mto:mtoType1.calculationHistory.tile', { id: tile.tileId })}
                                       </Typography>
                                     </TableCell>
-                                    <TableCell align="right">{formatNumber(tile.population)}</TableCell>
-                                    <TableCell align="right">{formatNumber(tile.calculated)}</TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="center">{formatNumber(tile.population)}</TableCell>
+                                    <TableCell align="center">{formatNumber(tile.calculated)}</TableCell>
+                                    <TableCell align="center">
                                       {tile.excluded ? (
-                                        <Chip label="Excluded" color="error" size="small" />
+                                        <Chip label={t('mto:mtoType1.calculationHistory.excluded')} color="error" size="small" />
                                       ) : (
                                         formatNumber(tile.adjusted)
                                       )}
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center">
                                       <Typography variant="caption" color={tile.excluded ? 'error' : 'textSecondary'}>
-                                        {tile.excluded ? 'Excluded' : 'Active'}
+                                        {tile.excluded ? t('mto:mtoType1.calculationHistory.excluded') : t('mto:mtoType1.calculationHistory.active')}
                                       </Typography>
                                     </TableCell>
                                   </TableRow>

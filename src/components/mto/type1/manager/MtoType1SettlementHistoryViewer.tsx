@@ -84,9 +84,11 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
 
       const data = await MtoType1Service.getSettlementHistory(Number(mtoType1Id));
 
-      setHistory(data.sort((a, b) => a.id - b.id));
+      // Ensure data is an array before sorting
+      const historyArray = Array.isArray(data) ? data : [];
+      setHistory(historyArray.sort((a, b) => a.id - b.id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load settlement history');
+      setError(err instanceof Error ? err.message : t('mto:mtoType1.settlementHistory.error'));
     } finally {
       setLoading(false);
     }
@@ -303,7 +305,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                   <TimelineItem key={step.id}>
                     <TimelineOppositeContent>
                       <Typography variant="caption">
-                        Settlement #{step.id}
+                        {t('mto:mtoType1.settlementHistory.settlementNumber', { id: step.id })}
                       </Typography>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
@@ -325,7 +327,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                 {step.productsValidated !== undefined && (
                                   <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
-                                      Validated
+                                      {t('mto:mtoType1.settlementHistory.validated')}
                                     </Typography>
                                     <Typography variant="h6">
                                       {step.productsValidated}
@@ -335,7 +337,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                 {step.productsSettled !== undefined && (
                                   <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
-                                      Settled
+                                      {t('mto:mtoType1.settlementHistory.settled')}
                                     </Typography>
                                     <Typography variant="h6" color="success.main">
                                       {step.productsSettled}
@@ -345,7 +347,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                 {step.productsRejected !== undefined && step.productsRejected > 0 && (
                                   <Grid item xs={4}>
                                     <Typography variant="body2" color="textSecondary">
-                                      Rejected
+                                      {t('mto:mtoType1.settlementHistory.rejected')}
                                     </Typography>
                                     <Typography variant="h6" color="error">
                                       {step.productsRejected}
@@ -357,7 +359,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                               {step.validationDetails && (
                                 <Box mt={2}>
                                   <Typography variant="caption" color="textSecondary">
-                                    Validation Details
+                                    {t('mto:mtoType1.settlementHistory.validationDetails')}
                                   </Typography>
                                   {parseValidationDetails(step.validationDetails).map((detail, idx) => (
                                     <Box key={idx} sx={{ mt: 1 }}>
@@ -383,7 +385,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                           {step.stepType === 'PAYMENT_PROCESSING' && step.totalPaymentAmount && (
                             <Alert severity="success" variant="outlined" sx={{ mt: 2 }}>
                               <Typography variant="body2">
-                                Payment Processed: {formatCurrency(step.totalPaymentAmount)}
+                                {t('mto:mtoType1.settlementHistory.paymentProcessed')}: {formatCurrency(step.totalPaymentAmount)}
                               </Typography>
                             </Alert>
                           )}
@@ -397,7 +399,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                 sx={{ mb: 1 }}
                               />
                               <Typography variant="body2" color="success.main">
-                                Settlement Complete
+                                {t('mto:mtoType1.settlementHistory.settlementComplete')}
                               </Typography>
                             </Box>
                           )}

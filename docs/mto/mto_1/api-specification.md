@@ -521,11 +521,11 @@ graph LR
 | **Reports** | Comprehensive analytics | Own performance metrics |
 | **Access Control** | Full access to all requirements | Limited to released requirements in their activity |
 
-### 2.1 Get Available Requirements (with Search & Pagination)
+### 2.1 Get Available Requirements (with Manager Product Formula Details)
 
 **Purpose:** Students view released MTO requirements they can fulfill (only RELEASED and IN_PROGRESS status visible)
 
-**Endpoint:** `GET /api/team/mto-type1/requirements`
+**Endpoint:** `GET /api/team/mto-type1/available`
 
 **Authorization:** Student team member (Worker/Manager role)
 
@@ -573,29 +573,66 @@ graph LR
   "message": "Available requirements fetched",
   "data": [
     {
-      "id": "uuid",
-      "status": "RELEASED",  // Only RELEASED or IN_PROGRESS shown
-      "productFormula": {
-        "id": "uuid",
-        "formulaName": "Standard Package A",
-        "components": [...]
+      "id": 1,
+      "activityId": "cmfs6vtmk024kfyooqaw9pg5j",
+      "managerProductFormulaId": 2,
+      "managerProductFormula": {
+        "id": 2,
+        "name": "Standard Package A",
+        "description": "Basic product package for general use",
+        "activityId": "cmfs6vtmk024kfyooqaw9pg5j",
+        "materials": [
+          {
+            "id": 1,
+            "rawMaterialId": 101,
+            "quantity": 2,
+            "rawMaterial": {
+              "id": 101,
+              "name": "Iron Ore",
+              "description": "Raw iron ore for processing"
+            }
+          },
+          {
+            "id": 2,
+            "rawMaterialId": 102,
+            "quantity": 3,
+            "rawMaterial": {
+              "id": 102,
+              "name": "Coal",
+              "description": "Coal for fuel and processing"
+            }
+          }
+        ],
+        "craftCategories": [
+          {
+            "id": 1,
+            "craftCategoryId": 201,
+            "craftCategory": {
+              "id": 201,
+              "name": "Smelting",
+              "description": "Metal processing category"
+            }
+          }
+        ]
       },
-      "purchaseGoldPrice": 100.50,
+      "purchaseGoldPrice": "100.50",
+      "basePurchaseNumber": 100,
       "releaseTime": "2024-03-01T00:00:00Z",
       "settlementTime": "2024-03-05T00:00:00Z",
-      "timeRemaining": 86400,
-      "overallProgress": 45.5
+      "overallPurchaseNumber": 10000,
+      "overallPurchaseBudget": "1005000",
+      "baseCountPopulationNumber": 1000,
+      "status": "RELEASED",
+      "actualSpentBudget": null,
+      "actualPurchasedNumber": 0,
+      "fulfillmentRate": null,
+      "createdBy": "cmfs6vst1002nfyooqxg5xvc0",
+      "createdAt": "2024-03-01T00:00:00Z",
+      "updatedAt": "2024-03-01T00:01:00Z"
     }
   ],
   "extra": {
-    "pagination": {
-      "total": 12,
-      "page": 1,
-      "limit": 20,
-      "pages": 1,
-      "hasNext": false,
-      "hasPrev": false
-    }
+    "version": "0.0.1"
   }
 }
 ```
@@ -761,7 +798,126 @@ Use the Transportation API to get all items in a facility:
 }
 ```
 
-### 2.5 Submit Delivery
+### 2.5 Calculate MTO Transportation Cost
+
+**Purpose:** Students calculate transportation costs before submitting MTO deliveries to specific tiles
+
+**Endpoint:** `POST /api/transportation/mto-calculate`
+
+**Authorization:** Student team member (JWT required)
+
+**Description:** This endpoint helps teams plan their MTO deliveries by calculating the exact transportation cost from their facility to a destination tile. It validates inventory availability, checks tile accessibility, and provides detailed cost breakdowns including tier requirements and carbon emissions.
+
+**Request Body:**
+```typescript
+{
+  "inventoryItemId": "item123",      // Facility inventory item ID
+  "quantity": 100,                   // Quantity to transport
+  "sourceInventoryId": "inv456",     // Source facility space inventory ID
+  "destinationTileId": "tile789"     // Destination tile ID for MTO delivery
+}
+```
+
+**Validation Rules:**
+- Inventory item must exist and belong to the team
+- Source inventory must match the item's location
+- Sufficient quantity must be available
+- Destination tile must be valid and accessible
+- Team must own the inventory item
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "businessCode": 200,
+  "message": "MTO transportation cost calculated successfully",
+  "data": {
+    "itemDetails": {
+      "inventoryItemId": "item123",
+      "itemType": "PRODUCT",
+      "name": "Standard Package A",
+      "quantity": "100",
+      "unitSpaceOccupied": "1.5",
+      "totalSpaceOccupied": "150"
+    },
+    "sourceInfo": {
+      "inventoryId": "inv456",
+      "facilityType": "FACTORY",
+      "facilityLevel": 3,
+      "teamId": "team123",
+      "teamName": "Team Alpha",
+      "location": {
+        "q": 5,
+        "r": 3
+      }
+    },
+    "destinationTile": {
+      "tileId": "tile789",
+      "coordinates": {
+        "q": 10,
+        "r": 8
+      },
+      "landType": "COMMERCIAL",
+      "currentFacility": null,
+      "tileOwnerId": null,
+      "distance": 8,
+      "transportCostUnits": 16
+    },
+    "transportationCost": {
+      "requiredTier": "TIER_C",
+      "tierName": "Express",
+      "unitCost": "5.5",
+      "totalCost": "880",
+      "carbonEmission": "45.5",
+      "deliveryTime": "Instant",
+      "feasibility": {
+        "canTransport": true,
+        "sufficientQuantity": true,
+        "sufficientFunds": true,
+        "tileAvailable": true,
+        "messages": []
+      }
+    },
+    "availableTiers": [
+      {
+        "tier": "TIER_C",
+        "name": "Express",
+        "unitCost": "5.5",
+        "totalCost": "880",
+        "carbonEmission": "45.5",
+        "available": true
+      }
+    ],
+    "teamBalance": "5000"
+  }
+}
+```
+
+**Error Responses:**
+- `400`: Bad Request - Invalid parameters or insufficient quantity
+- `403`: Forbidden - Not authorized to access inventory item
+- `404`: Not Found - Inventory item or tile not found
+
+**Important Notes:**
+- Use this endpoint BEFORE submitting an MTO delivery to understand costs
+- The calculated tier is based on hex distance between source and destination
+- Different tiers have different distance requirements:
+  - TIER_A (Economy): 1-3 hexes
+  - TIER_B (Standard): 4-6 hexes
+  - TIER_C (Express): 7-9 hexes
+  - TIER_D (Premium): >9 hexes
+- Transportation cost is instantly deducted when delivery is submitted
+- Check `feasibility.canTransport` to ensure delivery is possible
+
+**Integration with MTO Workflow:**
+1. View available MTO requirements (2.1)
+2. Check tile-specific demands (2.2)
+3. Review team inventory (2.3)
+4. **Calculate transportation cost (2.5)** ← NEW
+5. Submit delivery if feasible (2.6)
+6. Track delivery status (2.11)
+
+### 2.6 Submit Delivery
 
 **Purpose:** Students deliver products to fulfill tile requirements of RELEASED MTO requirements
 
@@ -777,12 +933,22 @@ Use the Transportation API to get all items in a facility:
 **Request Body:**
 ```typescript
 {
-  "mtoType1Id": 1,
-  "mapTileId": 42,
-  "productInventoryItemIds": ["cuid_item1", "cuid_item2", "cuid_item3"],
-  "sourceFacilityInstanceId": "cuid_facility_123"
+  "mtoType1Id": 1,                    // MTO Type 1 Requirement ID (required)
+  "mapTileId": 42,                    // Target tile ID for delivery (required)
+  "productInventoryItemIds": [         // Array of product inventory item IDs to deliver (required)
+    "cuid_item1",
+    "cuid_item2",
+    "cuid_item3"
+  ],
+  "sourceFacilityInstanceId": "cuid_facility_123"  // Source facility ID where products are stored (required)
 }
 ```
+
+**Field Descriptions:**
+- `mtoType1Id`: The ID of the MTO Type 1 requirement being fulfilled (obtained from endpoint 2.1)
+- `mapTileId`: The specific tile ID where products will be delivered (obtained from endpoint 2.2)
+- `productInventoryItemIds`: Array of inventory item IDs that match the required formula
+- `sourceFacilityInstanceId`: The facility ID where the products are currently stored
 
 **Validation:**
 - **Team can only deliver once per tile** (409 error if already delivered to this tile)
@@ -832,7 +998,7 @@ interface ProductValidation {
 }
 ```
 
-### 2.6 Get Team Deliveries (with Advanced Search)
+### 2.7 Get Team Deliveries (with Advanced Search)
 
 **Purpose:** Students track their delivery history and status with comprehensive search
 
@@ -871,7 +1037,7 @@ interface ProductValidation {
 }
 ```
 
-### 2.7 Get Team Settlement Results
+### 2.8 Get Team Settlement Results
 
 **Purpose:** Students view their own settlement results to understand which products were accepted/rejected
 
@@ -933,7 +1099,79 @@ interface ProductValidation {
 }
 ```
 
-### 2.8 Request Product Return
+### 2.9 Get Manager Product Formula Details
+
+**Purpose:** Students can retrieve detailed information about a manager product formula used in MTO requirements
+
+**Endpoint:** `GET /api/team/mto-type1/manager-formulas/:id`
+
+**Authorization:** Student team member
+
+**Access Control:**
+- Formula must belong to the user's current activity
+- ActivityId is determined from authentication context
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "businessCode": 0,
+  "message": "Formula details retrieved",
+  "data": {
+    "id": 2,
+    "name": "Standard Package A",
+    "description": "Basic product package for general use",
+    "activityId": "cmfs6vtmk024kfyooqaw9pg5j",
+    "isLocked": true,
+    "lockedAt": "2024-03-01T00:00:00Z",
+    "lockedBy": "MTO_TYPE1_1",
+    "materials": [
+      {
+        "id": 1,
+        "rawMaterialId": 101,
+        "quantity": 2,
+        "rawMaterial": {
+          "id": 101,
+          "name": "Iron Ore",
+          "description": "Raw iron ore for processing",
+          "unit": "kg"
+        }
+      },
+      {
+        "id": 2,
+        "rawMaterialId": 102,
+        "quantity": 3,
+        "rawMaterial": {
+          "id": 102,
+          "name": "Coal",
+          "description": "Coal for fuel and processing",
+          "unit": "kg"
+        }
+      }
+    ],
+    "craftCategories": [
+      {
+        "id": 1,
+        "craftCategoryId": 201,
+        "craftCategory": {
+          "id": 201,
+          "name": "Smelting",
+          "description": "Metal processing category",
+          "type": "PRODUCTION"
+        }
+      }
+    ],
+    "createdAt": "2024-02-15T00:00:00Z",
+    "updatedAt": "2024-02-28T00:00:00Z"
+  }
+}
+```
+
+**Error Responses:**
+- `404`: Formula not found or not in user's activity
+- `403`: Access denied - not enrolled in activity
+
+### 2.10 Request Product Return
 
 **Purpose:** Students retrieve unsettled products after settlement
 
@@ -954,7 +1192,7 @@ interface ProductValidation {
 - Facility must have space
 - No time limitation for returns
 
-### 2.9 Get Delivery Status
+### 2.11 Get Delivery Status
 
 **Purpose:** Students check delivery and payment status
 
@@ -1080,31 +1318,39 @@ GET /api/user/manager/mto-type1/requirements/1/fulfillment-status
 
 ### Student Scenario: Fulfilling a Requirement
 
-**Step 1:** Student views available requirements
+**Step 1:** Student views available requirements (with formula details)
 ```http
-GET /api/team/mto-type1/requirements
+GET /api/team/mto-type1/available
 Authorization: Bearer <team_jwt_token>
 ```
 *Note: activityId is determined from the team's current enrollment*
+*Response includes full managerProductFormula details inline*
 
-**Step 2:** Student checks tile-specific demands
+**Step 2:** Student can optionally get formula details separately
+```http
+GET /api/team/mto-type1/manager-formulas/2
+Authorization: Bearer <team_jwt_token>
+```
+*Returns detailed formula with all materials and craft categories*
+
+**Step 3:** Student checks tile-specific demands
 ```http
 GET /api/team/mto-type1/requirements/1/tiles
 ```
 Sees: Tile A needs 300 more units, transport cost: 50 gold
 
-**Step 3:** Student submits delivery
+**Step 4:** Student submits delivery
 ```http
 POST /api/team/mto-type1/deliveries
 {
-  "mtoType1Id": 1,
-  "mapTileId": 42,
-  "productInventoryItemIds": ["item1", "item2", "item3"],
-  "sourceFacilityInstanceId": "facility_123"
+  "mtoType1Id": 1,                            // The requirement ID from Step 1
+  "mapTileId": 42,                            // Tile A's ID from Step 3
+  "productInventoryItemIds": ["item1", "item2", "item3"],  // Products matching the formula
+  "sourceFacilityInstanceId": "facility_123"  // Facility where products are stored
 }
 ```
 
-**Step 4:** After settlement, student checks payment
+**Step 5:** After settlement, student checks payment
 ```http
 GET /api/team/mto-type1/deliveries/delivery_456
 ```

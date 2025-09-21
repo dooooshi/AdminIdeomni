@@ -32,7 +32,7 @@ interface MtoType2RequirementFormProps {
   onClose: () => void;
   onSuccess: () => void;
   editData?: MtoType2Requirement | null;
-  managerFormulas?: Array<{ id: number; name: string; }>;
+  managerFormulas?: Array<{ id: number; name: string; productName?: string; }>;
 }
 
 export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = ({
@@ -50,8 +50,8 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
 
   const initialFormData: MtoType2CreateRequest = {
     managerProductFormulaId: editData?.managerProductFormulaId || 0,
-    releaseTime: editData?.releaseTime || new Date(Date.now() + 3600000).toISOString(),
-    settlementTime: editData?.settlementTime || new Date(Date.now() + 86400000).toISOString(),
+    releaseTime: editData?.releaseTime || new Date(Date.now() + 10 * 60 * 1000).toISOString(), // 10 minutes from now
+    settlementTime: editData?.settlementTime || new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes from now
     overallPurchaseBudget: editData?.overallPurchaseBudget || 10000,
     metadata: editData?.metadata || {
       name: '',
@@ -218,7 +218,18 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 label={t('mto.type2.fields.requirementName')}
                 value={formData.metadata?.name || ''}
                 onChange={(e) => handleMetadataChange('name', e.target.value)}
-                placeholder={t('mto.type2.placeholders.requirementName')}
+                placeholder={
+                  formData.managerProductFormulaId
+                    ? availableFormulas.find(f => f.id === formData.managerProductFormulaId)?.productName ||
+                      availableFormulas.find(f => f.id === formData.managerProductFormulaId)?.name ||
+                      t('mto.type2.placeholders.requirementName')
+                    : t('mto.type2.placeholders.requirementName')
+                }
+                helperText={
+                  formData.managerProductFormulaId && !formData.metadata?.name
+                    ? t('mto.type2.helpers.nameAutoFilled')
+                    : ''
+                }
               />
             </Grid>
 
@@ -227,7 +238,15 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                 <InputLabel>{t('mto.type2.fields.productFormula')}</InputLabel>
                 <Select
                   value={formData.managerProductFormulaId || ''}
-                  onChange={(e) => handleFieldChange('managerProductFormulaId', Number(e.target.value))}
+                  onChange={(e) => {
+                    const formulaId = Number(e.target.value);
+                    handleFieldChange('managerProductFormulaId', formulaId);
+                    // Auto-fill name with formula's product name if name is empty
+                    const selectedFormula = availableFormulas.find(f => f.id === formulaId);
+                    if (selectedFormula && !formData.metadata?.name) {
+                      handleMetadataChange('name', selectedFormula.productName || selectedFormula.name || '');
+                    }
+                  }}
                   disabled={loadingFormulas || (editData && editData.status !== 'DRAFT')}
                 >
                   {loadingFormulas ? (
@@ -237,7 +256,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
                   ) : (
                     availableFormulas.map(formula => (
                       <MenuItem key={formula.id} value={formula.id}>
-                        {formula.name}
+                        {formula.productName || formula.name}
                       </MenuItem>
                     ))
                   )}

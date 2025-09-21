@@ -17,8 +17,9 @@ export interface ManagerCraftCategory {
   id: number;
   categoryType: string;
   technologyLevel: string;
-  nameEn: string;
-  nameZh: string;
+  name?: string;
+  nameEn?: string;
+  nameZh?: string;
   fixedWaterCost: number | string;
   fixedPowerCost: number | string;
   fixedGoldCost: number | string;
@@ -63,9 +64,6 @@ export interface ManagerProductFormula {
   totalGoldPercent: number;
   totalPercent: number;
   productFormulaCarbonEmission: number;
-  isLocked: boolean;
-  lockedAt?: string;
-  lockedBy?: string;
   materials: ManagerProductFormulaMaterial[];
   craftCategories: ManagerProductFormulaCraftCategory[];
   materialCount?: number;
@@ -112,7 +110,6 @@ export interface ManagerProductFormulaSearchParams {
   page?: number;
   limit?: number;
   searchTerm?: string;
-  isLocked?: boolean;
   isActive?: boolean;
   includeDeleted?: boolean;
   includeRelations?: boolean;

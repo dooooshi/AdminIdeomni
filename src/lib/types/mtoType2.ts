@@ -303,9 +303,6 @@ export interface MtoType2CompetitorAnalysis {
 // Additional types for missing features
 export interface MtoType2FormulaLock {
   formulaId: number;
-  isLocked: boolean;
-  lockedAt?: string;
-  lockedBy?: string;
   lockedForMtoType2Id?: number;
 }
 

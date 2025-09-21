@@ -6,7 +6,6 @@ import {
   Box,
   Container,
   Typography,
-  Paper,
   Breadcrumbs,
   Link,
   Dialog,
@@ -30,12 +29,6 @@ export default function StudentMtoMarketPage() {
   const { t } = useTranslation();
   const [selectedRequirement, setSelectedRequirement] = useState<MtoType1TeamView | null>(null);
   const [deliveryFormOpen, setDeliveryFormOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-
-  const handleViewDetails = (requirement: MtoType1TeamView) => {
-    setSelectedRequirement(requirement);
-    setDetailsOpen(true);
-  };
 
   const handleMakeDelivery = (requirement: MtoType1TeamView) => {
     setSelectedRequirement(requirement);
@@ -51,15 +44,6 @@ export default function StudentMtoMarketPage() {
   const handleCloseDeliveryForm = () => {
     setDeliveryFormOpen(false);
     setSelectedRequirement(null);
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
-    }).format(value).replace('$', '');
   };
 
   return (
@@ -118,7 +102,7 @@ export default function StudentMtoMarketPage() {
 
       {/* Market View Component */}
       <MtoType1MarketView
-        onViewDetails={handleViewDetails}
+        onViewDetails={() => {}}
         onMakeDelivery={handleMakeDelivery}
       />
 
@@ -154,110 +138,6 @@ export default function StudentMtoMarketPage() {
               onSave={handleDeliverySuccess}
               onCancel={handleCloseDeliveryForm}
             />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Details Dialog */}
-      <Dialog
-        open={detailsOpen}
-        onClose={() => setDetailsOpen(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <Box sx={{ position: 'relative' }}>
-          <IconButton
-            aria-label="close"
-            onClick={() => setDetailsOpen(false)}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-        <DialogContent>
-          {selectedRequirement && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                {selectedRequirement.requirementName || `Requirement #${selectedRequirement.requirementId}`}
-              </Typography>
-
-              <Stack spacing={2}>
-                <Paper sx={{ p: 2 }}>
-                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {t('mto.student.requirementDetails')}
-                  </Typography>
-                  <Stack spacing={1}>
-                    <Stack direction="row" justifyContent="space-between">
-                      <Typography variant="body2">{t('mto.student.status')}:</Typography>
-                      <Chip
-                        label={t(`mto.type1.statuses.${selectedRequirement.status.toLowerCase()}`)}
-                        size="small"
-                        color="primary"
-                      />
-                    </Stack>
-                    <Stack direction="row" justifyContent="space-between">
-                      <Typography variant="body2">{t('mto.student.unitPrice')}:</Typography>
-                      <Typography variant="body2" fontWeight="bold">
-                        {formatCurrency(selectedRequirement.unitPrice)}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                </Paper>
-
-                <Paper sx={{ p: 2 }}>
-                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {t('mto.student.availableLocations')}
-                  </Typography>
-                  <Stack spacing={1}>
-                    {selectedRequirement.availableTiles?.map((tile) => (
-                      <Stack key={tile.tileId} direction="row" justifyContent="space-between">
-                        <Typography variant="body2">
-                          {t('mto.student.tile', { id: tile.tileId })}
-                        </Typography>
-                        <Chip
-                          label={t('mto.student.remaining', { count: tile.remaining })}
-                          size="small"
-                          color={tile.remaining > 0 ? 'success' : 'default'}
-                        />
-                      </Stack>
-                    ))}
-                  </Stack>
-                </Paper>
-
-                <Paper sx={{ p: 2 }}>
-                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {t('mto.student.profitAnalysis')}
-                  </Typography>
-                  <Stack spacing={1}>
-                    <Stack direction="row" justifyContent="space-between">
-                      <Typography variant="body2">{t('mto.student.potentialRevenue')}:</Typography>
-                      <Typography variant="body2" color="success.main">
-                        {formatCurrency(selectedRequirement.potentialRevenue || 0)}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" justifyContent="space-between">
-                      <Typography variant="body2">{t('mto.student.transportationCost')}:</Typography>
-                      <Typography variant="body2" color="error.main">
-                        -{formatCurrency(selectedRequirement.transportationCosts || 0)}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" justifyContent="space-between">
-                      <Typography variant="body2" fontWeight="bold">
-                        {t('mto.student.netProfit')}:
-                      </Typography>
-                      <Typography variant="body2" fontWeight="bold" color="primary.main">
-                        {formatCurrency(selectedRequirement.netProfit || 0)}
-                      </Typography>
-                    </Stack>
-                  </Stack>
-                </Paper>
-              </Stack>
-            </Box>
           )}
         </DialogContent>
       </Dialog>

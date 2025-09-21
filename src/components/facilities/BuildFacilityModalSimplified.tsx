@@ -75,6 +75,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
   const [tilesLoading, setTilesLoading] = useState(false);
   const [building, setBuilding] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [buildableFacilities, setBuildableFacilities] = useState<FacilityType[]>([]);
 
   // Load available tiles when modal opens
   const loadAvailableTiles = async () => {
@@ -82,10 +83,10 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
       setTilesLoading(true);
       setError(null);
       const response = await LandService.getOwnedTilesForBuilding();
-      
+
       // All tiles returned already have team ownership
       setAvailableTiles(response.data);
-      
+
       // Auto-select tile if one was passed in props
       if (selectedTileId) {
         const preSelectedTile = response.data.find(tile => tile.tileId === selectedTileId);
@@ -101,6 +102,29 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
     }
   };
 
+  // Load buildable facilities based on land type
+  const loadBuildableFacilities = async (landType: LandType) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await StudentFacilityService.getFacilitiesByLandType({
+        landType: landType
+      });
+
+      // Extract facilities for the specific land type
+      const facilities = response.landTypes[landType] || [];
+      setBuildableFacilities(facilities);
+
+    } catch (err) {
+      console.error('Failed to load buildable facilities:', err);
+      setError(t('facilityManagement.FAILED_TO_LOAD_FACILITIES'));
+      setBuildableFacilities([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Reset modal state when it opens
   useEffect(() => {
     if (open) {
@@ -111,11 +135,19 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
       setError(null);
       setLoading(false);
       setBuilding(false);
-      
+      setBuildableFacilities([]);
+
       // Load tiles
       loadAvailableTiles();
     }
   }, [open, selectedTileId]);
+
+  // Load buildable facilities when a tile is selected
+  useEffect(() => {
+    if (selectedTile?.landType) {
+      loadBuildableFacilities(selectedTile.landType as LandType);
+    }
+  }, [selectedTile]);
 
   // Validate build when facility type changes
   useEffect(() => {
@@ -291,6 +323,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
                 showOnlyCompatible={true}
                 showBuildableOnly={true}
                 selectedTileId={selectedTile?.tileId}
+                buildableFacilities={buildableFacilities}
               />
             )}
 

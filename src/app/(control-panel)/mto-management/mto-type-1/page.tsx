@@ -7,12 +7,11 @@ import {
   Container,
   Typography,
   Paper,
-  Tab,
-  Tabs,
   Button,
   Stack,
   Dialog,
   DialogContent,
+  DialogTitle,
   IconButton,
   Breadcrumbs,
   Link,
@@ -21,48 +20,25 @@ import {
 import {
   List as ListIcon,
   Add as AddIcon,
-  Assessment as AssessmentIcon,
   Close as CloseIcon,
   Home as HomeIcon,
-  NavigateNext as NavigateNextIcon
+  NavigateNext as NavigateNextIcon,
+  People as PeopleIcon,
+  History as HistoryIcon
 } from '@mui/icons-material';
 import MtoType1RequirementList from '@/components/mto/type1/manager/MtoType1RequirementList';
 import MtoType1RequirementForm from '@/components/mto/type1/manager/MtoType1RequirementForm';
+import MtoType1HistoryDashboard from '@/components/mto/type1/manager/MtoType1HistoryDashboard';
 import { MtoType1Requirement } from '@/lib/types/mtoType1';
 import { useAuth } from '@/lib/auth';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`mto-type1-tabpanel-${index}`}
-      aria-labelledby={`mto-type1-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
-    </div>
-  );
-}
 
 export default function MtoType1ManagementPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [tabValue, setTabValue] = useState(0);
   const [formOpen, setFormOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [selectedRequirement, setSelectedRequirement] = useState<MtoType1Requirement | undefined>();
   const [refreshList, setRefreshList] = useState(0);
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
 
   const handleCreateClick = () => {
     setSelectedRequirement(undefined);
@@ -74,10 +50,6 @@ export default function MtoType1ManagementPage() {
     setFormOpen(true);
   };
 
-  const handleViewClick = (requirement: MtoType1Requirement) => {
-    setSelectedRequirement(requirement);
-    setTabValue(1);
-  };
 
   const handleFormSave = (requirement: MtoType1Requirement) => {
     setFormOpen(false);
@@ -91,6 +63,14 @@ export default function MtoType1ManagementPage() {
 
   const handleDeleteSuccess = () => {
     setRefreshList(prev => prev + 1);
+  };
+
+  const handleOpenHistory = () => {
+    setHistoryOpen(true);
+  };
+
+  const handleCloseHistory = () => {
+    setHistoryOpen(false);
   };
 
   return (
@@ -129,53 +109,30 @@ export default function MtoType1ManagementPage() {
             {t('mto.type1.description')}
           </Typography>
         </Box>
-        <Chip
-          icon={<AssessmentIcon />}
-          label={t('mto.type1.populationBased')}
-          color="primary"
-          variant="outlined"
-        />
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Button
+            variant="outlined"
+            startIcon={<HistoryIcon />}
+            onClick={handleOpenHistory}
+          >
+            {t('mto.type1.viewHistory')}
+          </Button>
+          <Chip
+            icon={<PeopleIcon />}
+            label={t('mto.type1.populationBased')}
+            color="primary"
+            variant="outlined"
+          />
+        </Stack>
       </Stack>
 
-      <Paper sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabValue} onChange={handleTabChange} aria-label="MTO Type 1 tabs">
-            <Tab
-              icon={<ListIcon />}
-              iconPosition="start"
-              label={t('mto.type1.tabs.requirements')}
-              id="mto-type1-tab-0"
-            />
-            <Tab
-              icon={<AssessmentIcon />}
-              iconPosition="start"
-              label={t('mto.type1.tabs.analytics')}
-              id="mto-type1-tab-1"
-            />
-          </Tabs>
-        </Box>
-
-        <TabPanel value={tabValue} index={0}>
-          <MtoType1RequirementList
-            onCreateClick={handleCreateClick}
-            onEditClick={handleEditClick}
-            onViewClick={handleViewClick}
-            onDeleteSuccess={handleDeleteSuccess}
-            refresh={refreshList}
-          />
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={1}>
-          <Box sx={{ p: 3, textAlign: 'center' }}>
-            <AssessmentIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              {t('mto.type1.analytics.title')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('mto.type1.analytics.comingSoon')}
-            </Typography>
-          </Box>
-        </TabPanel>
+      <Paper sx={{ width: '100%', p: 3 }}>
+        <MtoType1RequirementList
+          onCreateClick={handleCreateClick}
+          onEditClick={handleEditClick}
+          onDeleteSuccess={handleDeleteSuccess}
+          refresh={refreshList}
+        />
       </Paper>
 
       <Dialog
@@ -207,6 +164,37 @@ export default function MtoType1ManagementPage() {
             onSave={handleFormSave}
             onCancel={handleFormCancel}
           />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={historyOpen}
+        onClose={handleCloseHistory}
+        maxWidth="xl"
+        fullWidth
+        PaperProps={{
+          sx: { minHeight: '90vh' }
+        }}
+      >
+        <DialogTitle>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <HistoryIcon />
+              <Typography variant="h6">{t('mto.type1.history.title')}</Typography>
+            </Stack>
+            <IconButton
+              aria-label="close"
+              onClick={handleCloseHistory}
+              sx={{
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Stack>
+        </DialogTitle>
+        <DialogContent>
+          <MtoType1HistoryDashboard />
         </DialogContent>
       </Dialog>
     </Container>

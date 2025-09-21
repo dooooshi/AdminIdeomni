@@ -67,138 +67,210 @@ interface BuildFacilityModalProps {
 const STEPS = ['SELECT_TILE', 'SELECT_FACILITY', 'CONFIGURE_BUILD', 'CONFIRM_BUILD'];
 
 // Separate ValidationResults component with completely static layout
-const ValidationResults = memo(({ 
-  validation, 
-  loading, 
+const ValidationResults = memo(({
+  validation,
+  loading,
   selectedFacilityType,
-  t 
+  t
 }: {
   validation: BuildValidationResponse | null;
   loading: boolean;
   selectedFacilityType: FacilityType | undefined;
   t: any;
 }) => {
-  // Determine what to show but keep layout static
-  const showLoading = loading && selectedFacilityType;
-  const showValidation = !loading && validation && selectedFacilityType;
-  const showPlaceholder = !selectedFacilityType || (!loading && !validation);
-  
-  const borderColor = showValidation 
-    ? (validation.canBuild ? 'success.main' : 'error.main')
+  // Always maintain static layout structure
+  const hasSelection = !!selectedFacilityType;
+  const isLoading = loading && hasSelection;
+  const hasValidation = !loading && validation && hasSelection;
+
+  // Calculate styles based on state, but keep structure static
+  const borderColor = hasValidation && validation?.canBuild
+    ? 'success.main'
+    : hasValidation && !validation?.canBuild
+    ? 'error.main'
     : 'divider';
-  const bgColor = showValidation
-    ? (validation.canBuild ? 'success.50' : 'error.50')
+
+  const bgColor = hasValidation && validation?.canBuild
+    ? 'success.50'
+    : hasValidation && !validation?.canBuild
+    ? 'error.50'
     : 'background.paper';
 
   return (
-    <Box sx={{ mt: 2, height: 120, position: 'relative' }}>
-      <Paper 
-        sx={{ 
-          p: 2, 
-          height: '100%',
-          border: '1px solid',
+    <Box
+      sx={{
+        mt: 2,
+        minHeight: 140,
+        maxHeight: 140,
+        overflow: 'hidden'
+      }}
+    >
+      <Paper
+        elevation={1}
+        sx={{
+          p: 2,
+          height: 140,
+          border: '2px solid',
           borderColor,
           bgcolor: bgColor,
-          transition: 'border-color 0.3s, background-color 0.3s',
-          overflow: 'hidden',
+          transition: 'all 0.2s ease-in-out',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {/* All three states rendered but with visibility control */}
-        
-        {/* Placeholder state */}
-        <Box 
-          sx={{ 
+        {/* Always render all content, just control opacity */}
+
+        {/* Default placeholder - always in DOM */}
+        <Box
+          sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: showPlaceholder ? 1 : 0,
-            visibility: showPlaceholder ? 'visible' : 'hidden',
-            transition: 'opacity 0.2s',
-            p: 2,
+            opacity: !hasSelection ? 1 : 0,
+            pointerEvents: !hasSelection ? 'auto' : 'none',
+            transition: 'opacity 0.15s ease-in-out',
+            zIndex: !hasSelection ? 2 : 0,
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" textAlign="center">
             {t('facilityManagement.SELECT_FACILITY_TO_VIEW_COSTS')}
           </Typography>
         </Box>
 
-        {/* Loading state */}
-        <Box 
-          sx={{ 
+        {/* Loading spinner - always in DOM */}
+        <Box
+          sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: showLoading ? 1 : 0,
-            visibility: showLoading ? 'visible' : 'hidden',
-            transition: 'opacity 0.2s',
-            p: 2,
+            opacity: isLoading ? 1 : 0,
+            pointerEvents: isLoading ? 'auto' : 'none',
+            transition: 'opacity 0.15s ease-in-out',
+            zIndex: isLoading ? 2 : 0,
           }}
         >
-          <CircularProgress size={24} />
-          <Typography variant="body2" ml={2}>
-            {t('facilityManagement.VALIDATING')}
+          <CircularProgress size={20} />
+          <Typography variant="body2" sx={{ ml: 2 }}>
+            {t('facilityManagement.VALIDATING')}...
           </Typography>
         </Box>
 
-        {/* Validation results */}
-        <Box 
-          sx={{ 
-            position: 'absolute',
-            top: 16,
-            left: 16,
-            right: 16,
-            bottom: 16,
-            opacity: showValidation ? 1 : 0,
-            visibility: showValidation ? 'visible' : 'hidden',
-            transition: 'opacity 0.2s',
+        {/* Price display - always in DOM, fixed layout */}
+        <Box
+          sx={{
+            opacity: hasValidation ? 1 : 0,
+            pointerEvents: hasValidation ? 'auto' : 'none',
+            transition: 'opacity 0.15s ease-in-out',
+            zIndex: hasValidation ? 2 : 0,
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}
         >
-          <Box display="flex" alignItems="center" gap={1} mb={1}>
-            <Box sx={{ width: 20, height: 20 }}>
-              {validation?.canBuild ? (
-                <CheckCircleOutlined color="success" sx={{ fontSize: 20 }} />
-              ) : validation && !validation.canBuild ? (
-                <WarningAmberOutlined color="error" sx={{ fontSize: 20 }} />
-              ) : null}
-            </Box>
-            <Typography variant="caption" fontWeight="bold" sx={{ lineHeight: 1.2 }}>
-              {validation?.canBuild 
+          {/* Header with status */}
+          <Box display="flex" alignItems="center" gap={1} mb={1.5} minHeight={24}>
+            {validation?.canBuild ? (
+              <CheckCircleOutlined color="success" sx={{ fontSize: 18 }} />
+            ) : validation && !validation.canBuild ? (
+              <WarningAmberOutlined color="error" sx={{ fontSize: 18 }} />
+            ) : (
+              <Box sx={{ width: 18, height: 18 }} />
+            )}
+            <Typography
+              variant="subtitle2"
+              fontWeight={600}
+              color={validation?.canBuild ? 'success.main' : validation ? 'error.main' : 'text.primary'}
+            >
+              {validation?.canBuild
                 ? t('facilityManagement.BUILD_VALIDATION_PASSED')
-                : validation 
+                : validation
                   ? t('facilityManagement.BUILD_VALIDATION_FAILED')
-                  : ''
+                  : '\u00A0' // Non-breaking space to maintain height
               }
             </Typography>
           </Box>
 
-          <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
+          {/* Costs grid - fixed layout */}
+          <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2} alignItems="center">
             <Box>
-              <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.7rem', lineHeight: 1.2 }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+                sx={{ fontSize: '0.75rem', mb: 0.5 }}
+              >
                 {t('facilityManagement.REQUIRED_GOLD')}
               </Typography>
-              <Typography variant="h6" color={validation?.canBuild ? "warning.main" : "text.disabled"} sx={{ display: 'flex', alignItems: 'center', lineHeight: 1.4 }}>
-                <MonetizationOn fontSize="small" sx={{ mr: 0.5 }} />
-                {validation?.goldCost || 0}
-              </Typography>
+              <Box display="flex" alignItems="center" gap={0.5}>
+                <MonetizationOn
+                  fontSize="small"
+                  sx={{ color: validation?.canBuild ? 'warning.main' : 'text.disabled' }}
+                />
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color={validation?.canBuild ? "text.primary" : "text.disabled"}
+                  sx={{ fontSize: '1.125rem', fontWeight: 600 }}
+                >
+                  {validation?.goldCost ?? '—'}
+                </Typography>
+              </Box>
             </Box>
+
             <Box>
-              <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.7rem', lineHeight: 1.2 }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+                sx={{ fontSize: '0.75rem', mb: 0.5 }}
+              >
                 {t('facilityManagement.REQUIRED_CARBON')}
               </Typography>
-              <Typography variant="h6" color={validation?.canBuild ? "error.main" : "text.disabled"} sx={{ display: 'flex', alignItems: 'center', lineHeight: 1.4 }}>
-                <Co2 fontSize="small" sx={{ mr: 0.5 }} />
-                {validation?.carbonCost || 0}
+              <Box display="flex" alignItems="center" gap={0.5}>
+                <Co2
+                  fontSize="small"
+                  sx={{ color: validation?.canBuild ? 'error.main' : 'text.disabled' }}
+                />
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color={validation?.canBuild ? "text.primary" : "text.disabled"}
+                  sx={{ fontSize: '1.125rem', fontWeight: 600 }}
+                >
+                  {validation?.carbonCost ?? '—'}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+                sx={{ fontSize: '0.75rem', mb: 0.5 }}
+              >
+                {t('facilityManagement.TOTAL_BUILD_PRICE')}
               </Typography>
+              <Box display="flex" alignItems="center" gap={0.5}>
+                <MonetizationOnOutlined
+                  fontSize="small"
+                  sx={{ color: validation?.canBuild ? 'primary.main' : 'text.disabled' }}
+                />
+                <Typography
+                  variant="h6"
+                  component="span"
+                  color={validation?.canBuild ? "primary.main" : "text.disabled"}
+                  sx={{ fontSize: '1.125rem', fontWeight: 700 }}
+                >
+                  {validation?.totalCost ?? '—'}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -295,6 +367,15 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
   // Use a ref to track validation timeout
   const validationTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (validationTimeoutRef.current) {
+        clearTimeout(validationTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const validateBuild = async (tileId: number, facilityType: FacilityType) => {
     try {
       setLoading(true);
@@ -320,27 +401,28 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
   };
 
   const handleFacilityTypeSelect = useCallback((type: FacilityType) => {
-    // Only update state if actually changing
+    // Prevent unnecessary updates
     if (type === selectedFacilityType) return;
-    
-    setSelectedFacilityType(type);
-    setBuildRequest(prev => ({ ...prev, facilityType: type }));
-    
+
     // Clear any existing validation timeout
     if (validationTimeoutRef.current) {
       clearTimeout(validationTimeoutRef.current);
     }
-    
-    // Don't reset validation to prevent layout changes
-    // Just set loading state
+
+    // Use functional updates to prevent stale closures
+    setSelectedFacilityType(type);
+    setBuildRequest(prev => ({ ...prev, facilityType: type }));
+
+    // Only set loading if we don't have validation yet
+    // This prevents the price area from flickering
     setLoading(true);
-    
-    // Debounce validation with a slight delay to prevent rapid updates
+
+    // Validate after a short delay
     validationTimeoutRef.current = setTimeout(() => {
       if (selectedTile) {
         validateBuild(selectedTile.tileId, type);
       }
-    }, 200);
+    }, 100); // Quick validation
   }, [selectedFacilityType, selectedTile]);
 
   const handleNext = () => {
@@ -500,7 +582,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
         </Stepper>
 
         {/* Step Content */}
-        <Box minHeight={400}>
+        <Box sx={{ minHeight: 520, maxHeight: 520, overflow: 'hidden', position: 'relative' }}>
           {/* Step 0: Select Tile */}
           {activeStep === 0 && (
             <Box>
@@ -566,30 +648,54 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 
           {/* Step 1: Select Facility Type */}
           {activeStep === 1 && (
-            <Box>
-              <Typography variant="h6" gutterBottom>
-                {t('facilityManagement.CHOOSE_FACILITY_TYPE')}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" mb={2}>
-                {t('facilityManagement.SELECT_FACILITY_DESCRIPTION')}
-              </Typography>
+            <Box sx={{ height: 520, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <Box sx={{ flexShrink: 0 }}>
+                <Typography variant="h6" gutterBottom>
+                  {t('facilityManagement.CHOOSE_FACILITY_TYPE')}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" mb={2}>
+                  {t('facilityManagement.SELECT_FACILITY_DESCRIPTION')}
+                </Typography>
+              </Box>
 
-              <FacilityTypeSelector
-                selectedType={selectedFacilityType}
-                onTypeSelect={handleFacilityTypeSelect}
-                compatibleLandTypes={selectedTile ? [selectedTile.landType as LandType] : [LandType.PLAIN]}
-                showOnlyCompatible={true}
-                showBuildableOnly={true}
-                selectedTileId={selectedTile?.tileId}
-              />
+              {/* Facility selector with fixed height scrollable area */}
+              <Box sx={{
+                flex: '1 1 auto',
+                minHeight: 300,
+                maxHeight: 300,
+                overflow: 'auto',
+                mb: 2,
+                pr: 1,
+                '&::-webkit-scrollbar': {
+                  width: '8px',
+                },
+                '&::-webkit-scrollbar-track': {
+                  backgroundColor: 'background.paper',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: 'divider',
+                  borderRadius: '4px',
+                },
+              }}>
+                <FacilityTypeSelector
+                  selectedType={selectedFacilityType}
+                  onTypeSelect={handleFacilityTypeSelect}
+                  compatibleLandTypes={selectedTile ? [selectedTile.landType as LandType] : [LandType.PLAIN]}
+                  showOnlyCompatible={true}
+                  showBuildableOnly={true}
+                  selectedTileId={selectedTile?.tileId}
+                />
+              </Box>
 
-              {/* Always render ValidationResults with static layout */}
-              <ValidationResults
-                validation={validation}
-                loading={loading}
-                selectedFacilityType={selectedFacilityType}
-                t={t}
-              />
+              {/* ValidationResults at bottom with fixed position */}
+              <Box sx={{ flexShrink: 0, mt: 'auto' }}>
+                <ValidationResults
+                  validation={validation}
+                  loading={loading}
+                  selectedFacilityType={selectedFacilityType}
+                  t={t}
+                />
+              </Box>
             </Box>
           )}
 

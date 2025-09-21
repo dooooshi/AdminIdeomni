@@ -195,7 +195,7 @@ const ManagerCraftCategorySelector: React.FC<ManagerCraftCategorySelectorProps> 
                     <Stack direction="row" spacing={1} alignItems="center">
                       <FactoryIcon fontSize="small" color="action" />
                       <Typography variant="body2">
-                        {category.craftCategory?.nameEn}
+                        {category.craftCategory?.name || category.craftCategory?.nameEn || ''}
                       </Typography>
                     </Stack>
                   </TableCell>
@@ -334,7 +334,7 @@ const ManagerCraftCategorySelector: React.FC<ManagerCraftCategorySelectorProps> 
                         <TableCell>
                           <Stack spacing={0.5}>
                             <Typography variant="body2">
-                              {category.nameEn}
+                              {category.name || category.nameEn || ''}
                             </Typography>
                             {(isAdded || isSameTypeAdded) && (
                               <Chip

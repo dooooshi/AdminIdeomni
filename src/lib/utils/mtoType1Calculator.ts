@@ -426,9 +426,9 @@ export class MtoType1Calculator {
       activeTiles: tilesWithRequirement,
       tilesWithDelivery,
       averageDeliveryPerTile: tilesWithDelivery > 0 ? Math.round(totalDelivered / tilesWithDelivery) : 0,
-      totalBudget: requirement.overallPurchaseBudget || 0,
-      spentBudget: totalSettled * (requirement.purchaseGoldPrice || 0),
-      remainingBudget: (requirement.overallPurchaseBudget || 0) - (totalSettled * (requirement.purchaseGoldPrice || 0)),
+      totalBudget: Number(requirement.overallPurchaseBudget) || 0,
+      spentBudget: totalSettled * (Number(requirement.purchaseGoldPrice) || 0),
+      remainingBudget: (Number(requirement.overallPurchaseBudget) || 0) - (totalSettled * (Number(requirement.purchaseGoldPrice) || 0)),
       uniqueTeams: new Set(deliveries.map(d => d.teamId)).size
     };
   }

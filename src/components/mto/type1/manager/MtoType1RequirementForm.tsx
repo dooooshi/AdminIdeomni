@@ -59,12 +59,13 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
     name: requirement?.metadata?.name || '',
     description: requirement?.metadata?.description || '',
     managerProductFormulaId: requirement?.managerProductFormulaId || null as number | null,
+    selectedFormula: null as ManagerProductFormula | null,
     purchaseGoldPrice: requirement?.purchaseGoldPrice || 100,
     basePurchaseNumber: requirement?.basePurchaseNumber || 100,
     overallPurchaseNumber: requirement?.overallPurchaseNumber || 1000,
     baseCountPopulationNumber: requirement?.baseCountPopulationNumber || 1000,
-    releaseTime: requirement?.releaseTime ? new Date(requirement.releaseTime) : addDays(new Date(), 1),
-    settlementTime: requirement?.settlementTime ? new Date(requirement.settlementTime) : addDays(new Date(), 7),
+    releaseTime: requirement?.releaseTime ? new Date(requirement.releaseTime) : new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
+    settlementTime: requirement?.settlementTime ? new Date(requirement.settlementTime) : new Date(Date.now() + 20 * 60 * 1000), // 20 minutes from now
     notes: requirement?.metadata?.notes || ''
   });
 
@@ -76,7 +77,7 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
   }, []);
 
   useEffect(() => {
-    setCalculatedBudget(formData.purchaseGoldPrice * formData.overallPurchaseNumber);
+    setCalculatedBudget(Number(formData.purchaseGoldPrice) * Number(formData.overallPurchaseNumber));
   }, [formData.purchaseGoldPrice, formData.overallPurchaseNumber]);
 
   const loadFormulas = async () => {
@@ -84,8 +85,7 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
     try {
       const response = await ManagerProductFormulaService.searchProductFormulas({
         page: 1,
-        limit: 100,
-        isLocked: false
+        limit: 100
       });
       setFormulas(response.items || []);
     } catch (error) {
@@ -99,6 +99,7 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
+    // Name is auto-filled from formula, but still validate if manually changed
     if (!formData.name.trim()) {
       newErrors.name = t('mto.type1.validation.nameRequired');
     }
@@ -107,19 +108,19 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
       newErrors.managerProductFormulaId = t('mto.type1.validation.formulaRequired');
     }
 
-    if (formData.purchaseGoldPrice <= 0) {
+    if (Number(formData.purchaseGoldPrice) <= 0) {
       newErrors.purchaseGoldPrice = t('mto.type1.validation.invalidPrice');
     }
 
-    if (formData.basePurchaseNumber <= 0) {
+    if (Number(formData.basePurchaseNumber) <= 0) {
       newErrors.basePurchaseNumber = t('mto.type1.validation.invalidQuantity');
     }
 
-    if (formData.overallPurchaseNumber <= 0) {
+    if (Number(formData.overallPurchaseNumber) <= 0) {
       newErrors.overallPurchaseNumber = t('mto.type1.validation.invalidQuantity');
     }
 
-    if (formData.baseCountPopulationNumber <= 0) {
+    if (Number(formData.baseCountPopulationNumber) <= 0) {
       newErrors.baseCountPopulationNumber = t('mto.type1.validation.invalidPopulation');
     }
 
@@ -151,12 +152,12 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
     try {
       const requestData = {
         managerProductFormulaId: formData.managerProductFormulaId!,
-        purchaseGoldPrice: formData.purchaseGoldPrice,
-        basePurchaseNumber: formData.basePurchaseNumber,
+        purchaseGoldPrice: Number(formData.purchaseGoldPrice),
+        basePurchaseNumber: Number(formData.basePurchaseNumber),
         releaseTime: formData.releaseTime.toISOString(),
         settlementTime: formData.settlementTime.toISOString(),
-        overallPurchaseNumber: formData.overallPurchaseNumber,
-        baseCountPopulationNumber: formData.baseCountPopulationNumber,
+        overallPurchaseNumber: Number(formData.overallPurchaseNumber),
+        baseCountPopulationNumber: Number(formData.baseCountPopulationNumber),
         metadata: {
           name: formData.name,
           description: formData.description,
@@ -248,9 +249,10 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 error={!!errors.name}
-                helperText={errors.name}
+                helperText={errors.name || (formData.selectedFormula ? t('mto.type1.helpers.nameAutoFilled') : '')}
                 required
                 disabled={!isFormEditable}
+                placeholder={formData.selectedFormula ? formData.selectedFormula.productName : ''}
               />
             </Grid>
 
@@ -259,7 +261,14 @@ const MtoType1RequirementForm: React.FC<MtoType1RequirementFormProps> = ({
                 options={formulas}
                 getOptionLabel={(option) => `#${option.formulaNumber} - ${option.productName || 'Unnamed'}`}
                 value={formulas.find(f => f.id === formData.managerProductFormulaId) || null}
-                onChange={(_, value) => handleChange('managerProductFormulaId', value?.id || null)}
+                onChange={(_, value) => {
+                  handleChange('managerProductFormulaId', value?.id || null);
+                  handleChange('selectedFormula', value);
+                  // Auto-fill name with formula's product name if name is empty
+                  if (value && !formData.name.trim()) {
+                    handleChange('name', value.productName || '');
+                  }
+                }}
                 loading={formulasLoading}
                 disabled={!!requirement || !isFormEditable}
                 renderInput={(params) => (

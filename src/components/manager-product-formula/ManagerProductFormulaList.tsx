@@ -199,11 +199,11 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('managerProductFormula.formulaNumber')}</TableCell>
-                  <TableCell>{t('managerProductFormula.productName')}</TableCell>
+                  <TableCell align="center">{t('managerProductFormula.formulaNumber')}</TableCell>
+                  <TableCell align="center">{t('managerProductFormula.productName')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.materials')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.craftCategories')}</TableCell>
-                  <TableCell align="right">{t('managerProductFormula.totalCost')}</TableCell>
+                  <TableCell align="center">{t('managerProductFormula.totalCost')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.status')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.mtoUsage')}</TableCell>
                   <TableCell align="center">{t('common.actions')}</TableCell>
@@ -221,12 +221,12 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                 ) : (
                   formulas.map((formula) => (
                     <TableRow key={formula.id} hover>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="body2" fontWeight="medium">
                           #{formula.formulaNumber}
                         </Typography>
                       </TableCell>
-                      <TableCell>
+                      <TableCell align="center">
                         <Typography variant="body2">
                           {formula.productName}
                         </Typography>
@@ -252,27 +252,18 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                           </Typography>
                         </Stack>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Typography variant="body2" fontWeight="medium">
                           ${formatCurrency(formula.totalMaterialCost)}
                         </Typography>
                       </TableCell>
                       <TableCell align="center">
-                        {formula.isLocked ? (
-                          <Chip
-                            label={t('managerProductFormula.locked')}
-                            size="small"
-                            color="error"
-                            icon={<LockIcon fontSize="small" />}
-                          />
-                        ) : (
-                          <Chip
-                            label={t('managerProductFormula.active')}
-                            size="small"
-                            color="success"
-                            icon={<UnlockIcon fontSize="small" />}
-                          />
-                        )}
+                        <Chip
+                          label={t('managerProductFormula.active')}
+                          size="small"
+                          color="success"
+                          icon={<UnlockIcon fontSize="small" />}
+                        />
                       </TableCell>
                       <TableCell align="center">
                         <Stack direction="row" spacing={0.5} justifyContent="center">
@@ -303,7 +294,6 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                             <IconButton
                               size="small"
                               onClick={() => onEditClick(formula)}
-                              disabled={formula.isLocked}
                             >
                               <EditIcon fontSize="small" />
                             </IconButton>
@@ -320,7 +310,7 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                             <IconButton
                               size="small"
                               onClick={() => handleDeleteClick(formula)}
-                              disabled={formula.isLocked || formula.usedInMTOType1 || formula.usedInMTOType2}
+                              disabled={formula.usedInMTOType1 || formula.usedInMTOType2}
                             >
                               <DeleteIcon fontSize="small" />
                             </IconButton>

@@ -180,7 +180,7 @@ const MtoType1SettlementManager: React.FC = () => {
                   <TableCell>#{req.id}</TableCell>
                   <TableCell>{req.requirementName}</TableCell>
                   <TableCell align="right">
-                    {formatCurrency(req.overallPurchaseBudget)}
+                    {formatCurrency(Number(req.overallPurchaseBudget))}
                   </TableCell>
                   <TableCell>
                     {format(new Date(req.releaseTime), 'MM/dd/yyyy HH:mm')}

@@ -35,7 +35,6 @@ import {
   Search as SearchIcon,
   Refresh as RefreshIcon,
   Add as AddIcon,
-  Visibility as ViewIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   PlayArrow as ReleaseIcon,
@@ -43,17 +42,20 @@ import {
   Assessment as AssessmentIcon,
   AttachMoney as MoneyIcon,
   Groups as GroupsIcon,
-  Science as ScienceIcon
+  Science as ScienceIcon,
+  Timeline as TimelineIcon,
+  Receipt as ReceiptIcon
 } from '@mui/icons-material';
 import { MtoType1Requirement, MtoType1Status } from '@/lib/types/mtoType1';
 import MtoType1Service from '@/lib/services/mtoType1Service';
 import { enqueueSnackbar } from 'notistack';
 import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale/zh-CN';
+import { useRouter } from 'next/navigation';
 
 interface MtoType1RequirementListProps {
   onCreateClick: () => void;
   onEditClick: (requirement: MtoType1Requirement) => void;
-  onViewClick: (requirement: MtoType1Requirement) => void;
   onDeleteSuccess: () => void;
   refresh?: number;
 }
@@ -70,11 +72,12 @@ const statusColors: Record<keyof MtoType1Status, 'default' | 'primary' | 'succes
 const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
   onCreateClick,
   onEditClick,
-  onViewClick,
   onDeleteSuccess,
   refresh = 0
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isChineseLocale = i18n.language === 'zh' || i18n.language === 'zh-CN';
+  const router = useRouter();
   const [requirements, setRequirements] = useState<MtoType1Requirement[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -174,6 +177,14 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
     setDeleteDialogOpen(true);
   };
 
+  const handleViewCalculationHistory = (requirementId: number) => {
+    router.push(`/mto-management/mto-type-1/history/calculation/${requirementId}`);
+  };
+
+  const handleViewSettlementHistory = (requirementId: number) => {
+    router.push(`/mto-management/mto-type-1/history/settlement/${requirementId}`);
+  };
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -248,14 +259,13 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>{t('mto.type1.id')}</TableCell>
-                  <TableCell>{t('mto.type1.name')}</TableCell>
-                  <TableCell>{t('mto.type1.formula')}</TableCell>
-                  <TableCell align="right">{t('mto.type1.unitPrice')}</TableCell>
-                  <TableCell align="right">{t('mto.type1.totalQuantity')}</TableCell>
-                  <TableCell align="right">{t('mto.type1.totalBudget')}</TableCell>
-                  <TableCell>{t('mto.type1.releaseTime')}</TableCell>
-                  <TableCell>{t('mto.type1.settlementTime')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.id')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.name')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.unitPrice')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.totalQuantity')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.totalBudget')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.releaseTime')}</TableCell>
+                  <TableCell align="center">{t('mto.type1.settlementTime')}</TableCell>
                   <TableCell align="center">{t('mto.type1.status')}</TableCell>
                   <TableCell align="center">{t('common.actions')}</TableCell>
                 </TableRow>
@@ -263,31 +273,66 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
               <TableBody>
                 {requirements.map((requirement) => (
                   <TableRow key={requirement.id}>
-                    <TableCell>{requirement.id}</TableCell>
-                    <TableCell>{requirement.metadata?.name || '-'}</TableCell>
-                    <TableCell>
-                      <Chip
-                        label={`Formula #${requirement.managerProductFormulaId}`}
-                        size="small"
-                        icon={<ScienceIcon />}
-                      />
+                    <TableCell align="center">{requirement.id}</TableCell>
+                    <TableCell align="center">
+                      <Stack spacing={0.5} alignItems="center">
+                        <Typography variant="body2">
+                          {requirement.managerProductName || requirement.managerProductFormula?.productName || requirement.metadata?.name || '-'}
+                        </Typography>
+                        <Chip
+                          label={`#${requirement.managerProductFormula?.formulaNumber || requirement.managerProductFormulaId}`}
+                          size="small"
+                          variant="outlined"
+                        />
+                      </Stack>
                     </TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(Number(requirement.purchaseGoldPrice))}
+                    <TableCell align="center">
+                      <Stack spacing={0.5} alignItems="center">
+                        <Typography variant="body2" fontWeight="medium">
+                          {formatCurrency(Number(requirement.purchaseGoldPrice))}
+                        </Typography>
+                        {requirement.managerProductFormula && (
+                          <Typography variant="caption" color="text.secondary">
+                            Cost: {formatCurrency(Number(requirement.managerProductFormula.totalMaterialCost))}
+                          </Typography>
+                        )}
+                      </Stack>
                     </TableCell>
-                    <TableCell align="right">
-                      {Number(requirement.overallPurchaseNumber).toLocaleString()}
+                    <TableCell align="center">
+                      <Stack spacing={0.5} alignItems="center">
+                        <Typography variant="body2">
+                          {Number(requirement.overallPurchaseNumber).toLocaleString()}
+                        </Typography>
+                        {requirement.actualPurchasedNumber > 0 && (
+                          <Typography variant="caption" color="success.main">
+                            Sold: {requirement.actualPurchasedNumber.toLocaleString()}
+                          </Typography>
+                        )}
+                      </Stack>
                     </TableCell>
-                    <TableCell align="right">
-                      <Typography variant="body2" color="primary">
-                        {formatCurrency(Number(requirement.overallPurchaseBudget))}
-                      </Typography>
+                    <TableCell align="center">
+                      <Stack spacing={0.5} alignItems="center">
+                        <Typography variant="body2" color="primary" fontWeight="medium">
+                          {formatCurrency(Number(requirement.overallPurchaseBudget))}
+                        </Typography>
+                        {requirement.actualSpentBudget && (
+                          <Typography variant="caption" color="text.secondary">
+                            Spent: {formatCurrency(Number(requirement.actualSpentBudget))}
+                          </Typography>
+                        )}
+                      </Stack>
                     </TableCell>
-                    <TableCell>
-                      {format(new Date(requirement.releaseTime), 'MM/dd/yyyy HH:mm')}
+                    <TableCell align="center">
+                      {isChineseLocale
+                        ? format(new Date(requirement.releaseTime), 'yyyy年MM月dd日 HH:mm', { locale: zhCN })
+                        : format(new Date(requirement.releaseTime), 'MM/dd/yyyy HH:mm')
+                      }
                     </TableCell>
-                    <TableCell>
-                      {format(new Date(requirement.settlementTime), 'MM/dd/yyyy HH:mm')}
+                    <TableCell align="center">
+                      {isChineseLocale
+                        ? format(new Date(requirement.settlementTime), 'yyyy年MM月dd日 HH:mm', { locale: zhCN })
+                        : format(new Date(requirement.settlementTime), 'MM/dd/yyyy HH:mm')
+                      }
                     </TableCell>
                     <TableCell align="center">
                       <Chip
@@ -298,12 +343,6 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
                     </TableCell>
                     <TableCell align="center">
                       <Stack direction="row" spacing={1} justifyContent="center">
-                        <Tooltip title={t('common.view')}>
-                          <IconButton size="small" onClick={() => onViewClick(requirement)}>
-                            <ViewIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-
                         {requirement.status === 'DRAFT' && (
                           <>
                             <Tooltip title={t('common.edit')}>
@@ -340,6 +379,29 @@ const MtoType1RequirementList: React.FC<MtoType1RequirementListProps> = ({
                               onClick={() => handleCancel(requirement)}
                             >
                               <CancelIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+
+                        {/* History Actions - Available for all statuses */}
+                        <Tooltip title={t('mto.type1.viewCalculationHistory')}>
+                          <IconButton
+                            size="small"
+                            color="info"
+                            onClick={() => handleViewCalculationHistory(requirement.id)}
+                          >
+                            <TimelineIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+
+                        {(requirement.status === 'SETTLING' || requirement.status === 'SETTLED') && (
+                          <Tooltip title={t('mto.type1.viewSettlementHistory')}>
+                            <IconButton
+                              size="small"
+                              color="success"
+                              onClick={() => handleViewSettlementHistory(requirement.id)}
+                            >
+                              <ReceiptIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
                         )}

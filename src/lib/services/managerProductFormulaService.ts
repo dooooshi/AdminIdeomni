@@ -36,7 +36,6 @@ export class ManagerProductFormulaService {
       page = 1,
       limit = 20,
       searchTerm,
-      isLocked,
       sort = 'formulaNumber',
       order = 'desc'
     } = params;
@@ -45,7 +44,6 @@ export class ManagerProductFormulaService {
     queryParams.append('page', page.toString());
     queryParams.append('limit', limit.toString());
     if (searchTerm) queryParams.append('search', searchTerm);
-    if (isLocked !== undefined) queryParams.append('isLocked', isLocked.toString());
     queryParams.append('sort', sort);
     queryParams.append('order', order);
 
@@ -97,7 +95,14 @@ export class ManagerProductFormulaService {
     const response = await apiClient.get<ApiResponse<ManagerProductFormula>>(
       `${this.BASE_PATH}/${id}`
     );
-    return this.extractResponseData<ManagerProductFormula>(response);
+    const data = this.extractResponseData<ManagerProductFormula>(response);
+
+    // Handle wrapped response format where data is nested in a 'data' field
+    if (data && typeof data === 'object' && 'data' in data) {
+      return (data as any).data;
+    }
+
+    return data;
   }
 
   static async createProductFormula(
@@ -107,7 +112,14 @@ export class ManagerProductFormulaService {
       this.BASE_PATH,
       data
     );
-    return this.extractResponseData<ManagerProductFormula>(response);
+    const result = this.extractResponseData<ManagerProductFormula>(response);
+
+    // Handle wrapped response format where data is nested in a 'data' field
+    if (result && typeof result === 'object' && 'data' in result) {
+      return (result as any).data;
+    }
+
+    return result;
   }
 
   static async updateProductFormula(
@@ -118,7 +130,14 @@ export class ManagerProductFormulaService {
       `${this.BASE_PATH}/${id}`,
       data
     );
-    return this.extractResponseData<ManagerProductFormula>(response);
+    const result = this.extractResponseData<ManagerProductFormula>(response);
+
+    // Handle wrapped response format where data is nested in a 'data' field
+    if (result && typeof result === 'object' && 'data' in result) {
+      return (result as any).data;
+    }
+
+    return result;
   }
 
   static async deleteProductFormula(id: number): Promise<void> {
@@ -133,7 +152,14 @@ export class ManagerProductFormulaService {
       `${this.BASE_PATH}/${id}/duplicate`,
       data || {}
     );
-    return this.extractResponseData<ManagerProductFormula>(response);
+    const result = this.extractResponseData<ManagerProductFormula>(response);
+
+    // Handle wrapped response format where data is nested in a 'data' field
+    if (result && typeof result === 'object' && 'data' in result) {
+      return (result as any).data;
+    }
+
+    return result;
   }
 
   static async validateFormula(

@@ -119,21 +119,12 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
           </Typography>
           {formula && (
             <Stack direction="row" spacing={1}>
-              {formula.isLocked ? (
-                <Chip
-                  label={t('managerProductFormula.locked')}
-                  size="small"
-                  color="error"
-                  icon={<LockIcon fontSize="small" />}
-                />
-              ) : (
-                <Chip
-                  label={t('managerProductFormula.active')}
-                  size="small"
-                  color="success"
-                  icon={<UnlockIcon fontSize="small" />}
-                />
-              )}
+              <Chip
+                label={t('managerProductFormula.active')}
+                size="small"
+                color="success"
+                icon={<UnlockIcon fontSize="small" />}
+              />
               <Chip
                 label={`#${formula.formulaNumber}`}
                 size="small"

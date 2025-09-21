@@ -60,7 +60,8 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
   const loadFormula = async () => {
     try {
       const fullFormula = await ManagerProductFormulaService.getProductFormulaById(formula.id);
-      setProductName(fullFormula.productName);
+
+      setProductName(fullFormula.productName || '');
       setProductDescription(fullFormula.productDescription || '');
       setMaterials(fullFormula.materials || []);
       setCraftCategories(fullFormula.craftCategories || []);
@@ -71,11 +72,6 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (formula.isLocked) {
-      enqueueSnackbar(t('managerProductFormula.errors.formulaLocked'), { variant: 'error' });
-      return;
-    }
-
     if (!validateForm()) return;
 
     setLoading(true);
@@ -159,23 +155,9 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
       <DialogTitle>
         <Stack direction="row" spacing={2} alignItems="center">
           <span>{t('managerProductFormula.editFormula')}</span>
-          {formula?.isLocked && (
-            <Chip
-              label={t('managerProductFormula.locked')}
-              size="small"
-              color="error"
-              icon={<LockIcon fontSize="small" />}
-            />
-          )}
         </Stack>
       </DialogTitle>
       <DialogContent dividers>
-        {formula?.isLocked && (
-          <Alert severity="warning" sx={{ mb: 2 }}>
-            {t('managerProductFormula.lockedWarning')}
-          </Alert>
-        )}
-
         <Stack spacing={3}>
           <Box>
             <TextField
@@ -186,7 +168,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
               required
               helperText={t('managerProductFormula.productNameHelper')}
               inputProps={{ maxLength: 200 }}
-              disabled={formula?.isLocked || loading}
+              disabled={loading}
             />
           </Box>
 
@@ -200,7 +182,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
               onChange={(e) => setProductDescription(e.target.value)}
               helperText={t('managerProductFormula.productDescriptionHelper')}
               inputProps={{ maxLength: 500 }}
-              disabled={formula?.isLocked || loading}
+              disabled={loading}
             />
           </Box>
 
@@ -209,7 +191,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
           <ManagerMaterialSelector
             materials={materials}
             onChange={setMaterials}
-            disabled={formula?.isLocked || loading}
+            disabled={loading}
           />
 
           <Divider />
@@ -217,7 +199,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
           <ManagerCraftCategorySelector
             craftCategories={craftCategories}
             onChange={setCraftCategories}
-            disabled={formula?.isLocked || loading}
+            disabled={loading}
           />
 
           <Divider />
@@ -232,7 +214,7 @@ const EditManagerFormulaModal: React.FC<EditManagerFormulaModalProps> = ({
         <Button
           onClick={handleSubmit}
           variant="contained"
-          disabled={loading || formula?.isLocked}
+          disabled={loading}
         >
           {loading ? <CircularProgress size={20} /> : t('common.save')}
         </Button>

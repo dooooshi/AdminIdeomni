@@ -312,6 +312,53 @@ export class StudentFacilityService {
     return this.extractResponseData(response);
   }
 
+  // ==================== FACILITY-LAND COMPATIBILITY ====================
+
+  /**
+   * Get facilities that can be built on specific land types
+   * GET /api/user/facility-land-compatibility/land-types
+   */
+  static async getFacilitiesByLandType(params?: {
+    landType?: LandType;
+  }): Promise<{
+    activityId: string;
+    templateId: number;
+    landTypes: Record<LandType, FacilityType[]>;
+  }> {
+    const response = await apiClient.get(
+      '/user/facility-land-compatibility/land-types',
+      { params }
+    );
+    return this.extractResponseData(response);
+  }
+
+  /**
+   * Get simplified building compatibility matrix
+   * GET /api/user/facility-land-compatibility/matrix
+   */
+  static async getFacilityLandCompatibilityMatrix(params?: {
+    format?: 'simple' | 'detailed';
+  }): Promise<{
+    activityId: string;
+    templateId: number;
+    matrix: {
+      header: {
+        facilityTypes: FacilityType[];
+        landTypes: LandType[];
+      };
+      compatibility: Array<{
+        landType: LandType;
+        buildable: boolean[];
+      }>;
+    };
+  }> {
+    const response = await apiClient.get(
+      '/user/facility-land-compatibility/matrix',
+      { params }
+    );
+    return this.extractResponseData(response);
+  }
+
   // ==================== UTILITY METHODS ====================
 
   /**

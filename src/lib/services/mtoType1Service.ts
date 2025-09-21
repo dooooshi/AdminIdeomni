@@ -6,6 +6,7 @@ import {
   MtoType1Settlement,
   MtoType1CalculationHistory,
   MtoType1SettlementHistory,
+  MtoType1SettlementHistoryResponse,
   MtoType1CreateRequest,
   MtoType1UpdateRequest,
   MtoType1DeliveryRequest,
@@ -210,6 +211,15 @@ export class MtoType1Service {
     return this.extractResponseData<MtoType1SettlementHistory[]>(response);
   }
 
+  static async getSettlementHistoryV2(
+    requirementId: number
+  ): Promise<{ data: MtoType1SettlementHistoryResponse }> {
+    const response = await apiClient.get(
+      `${this.MANAGER_BASE_PATH}/requirements/${requirementId}/settlement-history`
+    );
+    return response.data;
+  }
+
   static async getStatistics(): Promise<MtoType1Statistics> {
     const response = await apiClient.get(`${this.MANAGER_BASE_PATH}/statistics`);
     return this.extractResponseData<MtoType1Statistics>(response);
@@ -236,6 +246,13 @@ export class MtoType1Service {
       `${this.TEAM_BASE_PATH}/requirements/${requirementId}/tiles`
     );
     return this.extractResponseData<MtoType1TileView[]>(response);
+  }
+
+  static async getManagerFormula(formulaId: number): Promise<any> {
+    const response = await apiClient.get(
+      `${this.TEAM_BASE_PATH}/manager-formulas/${formulaId}`
+    );
+    return this.extractResponseData<any>(response);
   }
 
   static async createDelivery(data: MtoType1DeliveryRequest): Promise<MtoType1Delivery> {
@@ -300,6 +317,98 @@ export class MtoType1Service {
       quantity
     });
     return this.extractResponseData<{ cost: number; distance: number }>(response);
+  }
+
+  // Get available tiles for a requirement
+  static async getRequirementTiles(requirementId: number): Promise<MtoType1TileView[]> {
+    const response = await apiClient.get(
+      `${this.TEAM_BASE_PATH}/requirements/${requirementId}/tiles`
+    );
+    return this.extractResponseData<MtoType1TileView[]>(response);
+  }
+
+  // Transportation API methods
+  static async getTeamFacilitiesWithSpace(activityId?: string): Promise<any> {
+    const params = new URLSearchParams();
+    if (activityId) params.append('activityId', activityId);
+
+    const response = await apiClient.get(
+      `/transportation/facilities/space-status?${params.toString()}`
+    );
+    return this.extractResponseData<any>(response);
+  }
+
+  static async getFacilityInventoryItems(
+    inventoryId: string,
+    itemType?: 'RAW_MATERIAL' | 'PRODUCT'
+  ): Promise<any> {
+    const params = new URLSearchParams();
+    if (itemType) params.append('itemType', itemType);
+
+    const response = await apiClient.get(
+      `/transportation/facilities/${inventoryId}/items?${params.toString()}`
+    );
+    return this.extractResponseData<any>(response);
+  }
+
+  static async calculateTransportationCostDetailed(
+    sourceInventoryId: string,
+    destInventoryId: string,
+    inventoryItemId: string,
+    quantity: string
+  ): Promise<any> {
+    const response = await apiClient.post('/transportation/calculate', {
+      sourceInventoryId,
+      destInventoryId,
+      inventoryItemId,
+      quantity
+    });
+    return this.extractResponseData<any>(response);
+  }
+
+  // Calculate MTO-specific transportation cost to a tile
+  static async calculateMtoTransportationCost(
+    inventoryItemId: string,
+    quantity: string,
+    sourceInventoryId: string,
+    destinationTileId: string
+  ): Promise<any> {
+    const response = await apiClient.post('/transportation/mto-calculate', {
+      inventoryItemId,
+      quantity,
+      sourceInventoryId,
+      destinationTileId
+    });
+    return this.extractResponseData<any>(response);
+  }
+
+  static async executeTransfer(
+    sourceInventoryId: string,
+    destInventoryId: string,
+    inventoryItemId: string,
+    quantity: string,
+    tier: string
+  ): Promise<any> {
+    const response = await apiClient.post('/transportation/transfer', {
+      sourceInventoryId,
+      destInventoryId,
+      inventoryItemId,
+      quantity,
+      tier
+    });
+    return this.extractResponseData<any>(response);
+  }
+
+  // Submit MTO delivery with product inventory items
+  static async submitMtoDelivery(data: {
+    mtoType1Id: number;
+    tileRequirementId: number;
+    deliveryNumber: number;
+    productInventoryItemIds: string[];
+    sourceFacilityInstanceId: string;
+  }): Promise<any> {
+    const response = await apiClient.post(`${this.TEAM_BASE_PATH}/deliveries`, data);
+    return this.extractResponseData<any>(response);
   }
 }
 

@@ -25,6 +25,7 @@ interface FacilityTypeSelectorProps {
   showCosts?: boolean;
   facilityCosts?: Record<FacilityType, { gold: number; carbon: number }>;
   className?: string;
+  buildableFacilities?: FacilityType[]; // New prop for API-based buildable facilities
 }
 
 interface FacilityOption {
@@ -62,6 +63,97 @@ const LAND_TYPE_COMPATIBILITY: Record<FacilityType, LandType[]> = {
   [FacilityType.CINEMA]: [LandType.PLAIN],
 };
 
+// Memoized card component to prevent re-renders
+const FacilityCard = memo(({
+  facility,
+  isSelected,
+  onSelect,
+  t
+}: {
+  facility: FacilityOption;
+  isSelected: boolean;
+  onSelect: (type: FacilityType) => void;
+  t: any
+}) => {
+  const handleClick = useCallback(() => {
+    onSelect(facility.type);
+  }, [facility.type, onSelect]);
+
+  return (
+    <Card
+      onClick={handleClick}
+      sx={{
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        border: '2px solid',
+        borderColor: isSelected ? 'primary.main' : 'transparent',
+        outline: '1px solid',
+        outlineColor: 'divider',
+        bgcolor: isSelected ? 'action.selected' : 'background.paper',
+        opacity: (facility.compatible && facility.buildable !== false) ? 1 : 0.5,
+        height: 100,
+        display: 'flex',
+        flexDirection: 'column',
+        transform: 'scale(1)',
+        '&:hover': {
+          bgcolor: 'action.hover',
+          transform: 'scale(1.02)',
+        },
+        '&:active': {
+          transform: 'scale(0.98)',
+        },
+      }}
+    >
+      <CardContent
+        sx={{
+          p: 2,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          '&:last-child': { pb: 2 }
+        }}
+      >
+        <Avatar
+          sx={{
+            bgcolor: isSelected ? 'primary.main' :
+                     (facility.compatible && facility.buildable !== false) ? 'primary.light' : 'grey.400',
+            width: 48,
+            height: 48,
+            fontSize: '1.5rem',
+            mb: 1,
+          }}
+        >
+          {facility.icon}
+        </Avatar>
+        <Typography
+          variant="body2"
+          fontWeight={isSelected ? 'bold' : 'medium'}
+          textAlign="center"
+          noWrap
+          sx={{ width: '100%' }}
+        >
+          {facility.name}
+        </Typography>
+
+        {/* Compatibility Indicator - Small and subtle */}
+        {!facility.compatible && (
+          <Typography
+            variant="caption"
+            color="error"
+            sx={{ mt: 0.5, fontSize: '0.65rem' }}
+          >
+            {t('facilityManagement.NOT_COMPATIBLE')}
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  );
+});
+
+FacilityCard.displayName = 'FacilityCard';
+
 const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
   selectedType,
   onTypeSelect,
@@ -72,6 +164,7 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
   showCosts = false,
   facilityCosts,
   className,
+  buildableFacilities,
 }) => {
   const { t } = useTranslation();
 
@@ -87,12 +180,21 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
         const name = t(`facilityManagement.FACILITY_TYPE_${type}`);
         const icon = StudentFacilityService.getFacilityIcon(type);
         const category = StudentFacilityService.getFacilityCategory(type) as FacilityCategory;
-        const typeCompatibility = LAND_TYPE_COMPATIBILITY[type] || [];
-        const compatible = typeCompatibility.some(landType => compatibleLandTypes?.includes(landType));
-        
-        // For now, assume all compatible facilities are buildable
-        // In a real implementation, you would check build validation here
-        const buildable = compatible && (!showBuildableOnly || compatible);
+
+        // Use API-provided buildable facilities if available, otherwise fall back to hardcoded compatibility
+        let compatible = false;
+        let buildable = false;
+
+        if (buildableFacilities && buildableFacilities.length > 0) {
+          // Use API-based buildable facilities list
+          compatible = buildableFacilities.includes(type);
+          buildable = compatible;
+        } else {
+          // Fall back to hardcoded compatibility (for backward compatibility)
+          const typeCompatibility = LAND_TYPE_COMPATIBILITY[type] || [];
+          compatible = typeCompatibility.some(landType => compatibleLandTypes?.includes(landType));
+          buildable = compatible && (!showBuildableOnly || compatible);
+        }
 
         return {
           type,
@@ -116,8 +218,7 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
 
         return true;
       });
-  }, [compatibleLandTypes, showBuildableOnly, showOnlyCompatible, t]);
-
+  }, [compatibleLandTypes, showBuildableOnly, showOnlyCompatible, t, buildableFacilities]);
 
   const handleFacilitySelect = useCallback((type: FacilityType) => {
     onTypeSelect(type);
@@ -131,70 +232,12 @@ const FacilityTypeSelector: React.FC<FacilityTypeSelectorProps> = memo(({
         {filteredFacilities && filteredFacilities.length > 0 ? (
           filteredFacilities.map((facility) => (
             <Grid item xs={6} sm={4} md={3} key={facility.type}>
-              <Card
-                onClick={() => handleFacilitySelect(facility.type)}
-                sx={{
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s ease-in-out',
-                  border: '2px solid',
-                  borderColor: selectedType === facility.type ? 'primary.main' : 'transparent',
-                  outline: '1px solid',
-                  outlineColor: 'divider',
-                  bgcolor: selectedType === facility.type ? 'action.selected' : 'background.paper',
-                  opacity: (facility.compatible && facility.buildable !== false) ? 1 : 0.5,
-                  height: 100,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  '&:hover': {
-                    bgcolor: 'action.hover',
-                  },
-                }}
-              >
-                <CardContent 
-                  sx={{ 
-                    p: 2, 
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    '&:last-child': { pb: 2 } 
-                  }}
-                >
-                  <Avatar
-                    sx={{
-                      bgcolor: selectedType === facility.type ? 'primary.main' : 
-                               (facility.compatible && facility.buildable !== false) ? 'primary.light' : 'grey.400',
-                      width: 48,
-                      height: 48,
-                      fontSize: '1.5rem',
-                      mb: 1,
-                    }}
-                  >
-                    {facility.icon}
-                  </Avatar>
-                  <Typography 
-                    variant="body2" 
-                    fontWeight={selectedType === facility.type ? 'bold' : 'medium'}
-                    textAlign="center"
-                    noWrap
-                    sx={{ width: '100%' }}
-                  >
-                    {facility.name}
-                  </Typography>
-                  
-                  {/* Compatibility Indicator - Small and subtle */}
-                  {!facility.compatible && (
-                    <Typography 
-                      variant="caption" 
-                      color="error"
-                      sx={{ mt: 0.5, fontSize: '0.65rem' }}
-                    >
-                      {t('facilityManagement.NOT_COMPATIBLE')}
-                    </Typography>
-                  )}
-                </CardContent>
-              </Card>
+              <FacilityCard
+                facility={facility}
+                isSelected={selectedType === facility.type}
+                onSelect={handleFacilitySelect}
+                t={t}
+              />
             </Grid>
           ))
         ) : null}

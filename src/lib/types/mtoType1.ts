@@ -11,27 +11,113 @@ export interface MtoType1Requirement {
   id: number;
   activityId: string;
   managerProductFormulaId: number;
-  purchaseGoldPrice: number;
+  managerProductName?: string;
+  purchaseGoldPrice: number | string;
   basePurchaseNumber: number;
   releaseTime: string;
   settlementTime: string;
   overallPurchaseNumber: number;
-  overallPurchaseBudget: number;
+  overallPurchaseBudget: number | string;
   baseCountPopulationNumber: number;
   status: keyof MtoType1Status;
-  requirementName?: string;
+  actualSpentBudget?: number | string | null;
+  actualPurchasedNumber: number;
+  fulfillmentRate: number;
+  createdBy?: string;
   createdAt?: string;
   updatedAt?: string;
+  settlementCompletedAt?: string | null;
+  requirementName?: string;
   metadata?: {
     name?: string;
     description?: string;
     notes?: string;
   };
+  managerProductFormula?: {
+    id: number;
+    formulaNumber: number;
+    productName: string;
+    productDescription?: string;
+    activityId: string;
+    totalMaterialCost: number | string;
+    totalSetupWaterCost: number;
+    totalSetupPowerCost: number;
+    totalSetupGoldCost: number | string;
+    totalWaterPercent: number | string;
+    totalPowerPercent: number | string;
+    totalGoldPercent: number | string;
+    totalPercent: number | string;
+    productFormulaCarbonEmission: number | string;
+    isActive: boolean;
+    isDeleted: boolean;
+    deletedAt?: string | null;
+    deletedBy?: string | null;
+    createdAt: string;
+    createdBy: string;
+    updatedAt: string;
+    updatedBy?: string | null;
+    materials?: Array<{
+      id: number;
+      managerProductFormulaId: number;
+      rawMaterialId: number;
+      quantity: number | string;
+      unit: string;
+      materialCost: number | string;
+      createdAt: string;
+      updatedAt: string;
+      rawMaterial?: {
+        id: number;
+        materialNumber: number;
+        origin: string;
+        nameEn: string;
+        nameZh: string;
+        waterRequired: number | string;
+        powerRequired: number | string;
+        totalCost: number | string;
+        goldCost: number | string;
+        carbonEmission: number | string;
+        isActive: boolean;
+        isDeleted: boolean;
+        deletedAt?: string | null;
+        deletedBy?: string | null;
+        deletionReason?: string | null;
+        createdAt: string;
+        createdBy: string;
+        updatedAt: string;
+        lastModifiedBy?: string | null;
+      };
+    }>;
+    craftCategories?: Array<{
+      id: number;
+      managerProductFormulaId: number;
+      craftCategoryId: number;
+      createdAt: string;
+      updatedAt: string;
+      craftCategory?: {
+        id: number;
+        categoryType: string;
+        technologyLevel: string;
+        nameEn: string;
+        nameZh: string;
+        fixedWaterCost: number | string;
+        fixedPowerCost: number | string;
+        fixedGoldCost: number | string;
+        variableWaterPercent: number | string;
+        variablePowerPercent: number | string;
+        variableGoldPercent: number | string;
+        yieldPercentage: number | string;
+        isActive: boolean;
+        createdAt: string;
+        updatedAt: string;
+        createdBy?: string | null;
+        updatedBy?: string | null;
+      };
+    }>;
+  };
   // Additional optional properties for UI display
   totalAdjustedRequirement?: number;
   totalDeliveredNumber?: number;
   uniqueTeamsDelivered?: number;
-  fulfillmentRate?: number;
   totalSettledNumber?: number;
   cancellationReason?: string;
   cancelledAt?: string;
@@ -121,6 +207,42 @@ export interface MtoType1CalculationHistory {
   calculatedAt: string;
 }
 
+export interface MtoType1SettlementHistoryStep {
+  step: number;
+  stepType: 'SETTLEMENT_INITIATED' | 'SETTLEMENT_COMPLETED' | 'TILE_PROCESSING_START' | 'DELIVERY_VALIDATION' | 'PRODUCT_VALIDATION' | 'PAYMENT_PROCESSING' | 'TILE_PROCESSING_COMPLETE';
+  stepDescription: string;
+  timestamp: string;
+  tileId: string | null;
+  tileName: string | null;
+  tileRequirement: number | null;
+  productsValidated: number;
+  productsSettled: number;
+  productsRejected: number;
+  validationDetails: string | null;
+  processingDuration: number | null;
+}
+
+export interface MtoType1SettlementHistorySummary {
+  totalTilesProcessed: number;
+  totalDeliveriesProcessed: number;
+  totalProductsValidated: number;
+  totalProductsSettled: number;
+  totalProductsRejected: number;
+  totalPaymentsProcessed: number;
+  totalProcessingTime: number;
+}
+
+export interface MtoType1SettlementHistoryResponse {
+  mtoType1Id: number;
+  totalSteps: number;
+  settlementStatus: 'PENDING' | 'IN_PROGRESS' | 'SETTLED' | 'FAILED';
+  settlementStarted: string;
+  settlementCompleted: string | null;
+  summary: MtoType1SettlementHistorySummary;
+  steps: MtoType1SettlementHistoryStep[];
+}
+
+// Legacy interface kept for backward compatibility
 export interface MtoType1SettlementHistory {
   id: number;
   requirementId: number;
