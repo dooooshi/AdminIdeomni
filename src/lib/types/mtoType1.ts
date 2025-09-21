@@ -395,3 +395,204 @@ export interface MtoType1TeamView {
   transportationCosts: number;
   netProfit: number;
 }
+
+// Student Delivery Status Types
+export type DeliverySettlementStatus =
+  | 'PENDING'
+  | 'VALIDATED'
+  | 'PARTIALLY_SETTLED'
+  | 'FULLY_SETTLED'
+  | 'REJECTED';
+
+export interface MtoType1DeliveryDetail {
+  id: string;
+  deliveryNumber: number;
+  mtoType1Id: number;
+  mtoRequirement: {
+    id: number;
+    requirementName?: string;
+    status: keyof MtoType1Status;
+    purchaseGoldPrice: string | number;
+    releaseTime: string;
+    settlementTime: string;
+  };
+  tileLocation: {
+    tileId: string;
+    tileName: string;
+    coordinates: {
+      q: number;
+      r: number;
+    };
+    population?: number;
+    tileRequirement?: {
+      initialRequirementNumber: number;
+      adjustedRequirementNumber: number;
+      deliveredNumber: number;
+      settledNumber: number;
+      remainingNumber: number;
+    };
+  };
+  deliveryStatus: DeliverySettlementStatus;
+  quantities: {
+    delivered: number;
+    settled: number;
+    unsettled: number;
+    rejected: number;
+  };
+  financial: {
+    transportationFee: string | number;
+    settlementAmount: string | number;
+    unitPrice: string | number;
+    totalRevenue?: string | number;
+  };
+  managerFormula?: {
+    id: number;
+    productName: string;
+    materials: Array<{
+      rawMaterialId: number;
+      quantity: string;
+      rawMaterial: {
+        nameEn: string;
+        nameZh: string;
+      };
+    }>;
+    craftCategories: Array<{
+      craftCategoryId: number;
+      craftCategory: {
+        categoryType: string;
+        nameEn: string;
+        nameZh: string;
+      };
+    }>;
+  };
+  submittedProducts?: Array<{
+    inventoryItemId: string;
+    productName: string;
+    quantity: string;
+    unitSpaceOccupied: string;
+    teamProductFormulaId: number;
+    teamProductFormula?: {
+      id: number;
+      formulaNumber: number;
+      productName: string;
+      productDescription: string;
+      totalMaterialCost: string;
+      productFormulaCarbonEmission: string;
+      materials: Array<{
+        rawMaterialId: number;
+        quantity: string;
+        rawMaterial: {
+          nameEn: string;
+          nameZh: string;
+        };
+      }>;
+      craftCategories: Array<{
+        craftCategoryId: number;
+        craftCategory: {
+          categoryType: string;
+          nameEn: string;
+          nameZh: string;
+        };
+      }>;
+    };
+    formulaValidation: {
+      isValid: boolean;
+      matchesManagerFormula: boolean;
+      errors?: string[];
+    };
+    settlementStatus: 'SETTLED' | 'REJECTED' | 'PENDING';
+    paymentReceived?: string | number;
+  }>;
+  timestamps: {
+    deliveredAt: string;
+    settledAt?: string;
+    returnRequestedAt?: string;
+    returnCompletedAt?: string;
+  };
+  returnStatus?: {
+    requested: boolean;
+    returnFacilityId?: string;
+    returnTransportationFee?: string | number;
+    returnCompletedAt?: string;
+  };
+  canRequestReturn?: boolean;
+}
+
+export interface MtoType1DeliverySummary {
+  id: string;
+  mtoType1Id: number;
+  mtoType1Name?: string;
+  mtoStatus: keyof MtoType1Status;
+  deliveryNumber: number;
+  deliveryStatus: DeliverySettlementStatus;
+  deliveredAt: string;
+  settledAt?: string;
+  tile: {
+    tileId: string;
+    tileName: string;
+    axialQ: number;
+    axialR: number;
+  };
+  formulaSummary?: {
+    formulaId: number;
+    productName: string;
+    purchasePrice: string | number;
+  };
+  quantities: {
+    delivered: number;
+    settled: number;
+    unsettled: number;
+    rejected: number;
+  };
+  financial: {
+    transportationFee: string | number;
+    settlementAmount: string | number;
+    totalRevenue: string | number;
+  };
+  canRequestReturn: boolean;
+}
+
+export interface DeliveryFilters {
+  status?: DeliverySettlementStatus[];
+  mtoType1Id?: number;
+  tileId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  dateType?: 'delivered' | 'settled';
+  minAmount?: number;
+  maxAmount?: number;
+  searchQuery?: string;
+  settlementStatus?: 'settled' | 'unsettled' | 'mixed';
+}
+
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  extra?: {
+    pagination?: {
+      total: number;
+      page: number;
+      limit: number;
+      pages: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  };
+}
+
+export interface DeliverySummaryStats {
+  totalDeliveries: number;
+  totalDelivered: number;
+  totalSettled: number;
+  totalUnsettled: number;
+  totalRevenue: string | number;
+  totalTransportationCost: string | number;
+  netProfit: string | number;
+  averageSettlementRate: string;
+}

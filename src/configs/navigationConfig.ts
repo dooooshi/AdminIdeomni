@@ -566,6 +566,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/student/mto-market',
 					translate: 'MTO_STUDENT_MARKET',
 					auth: ['user']
+				},
+				{
+					id: 'mto-student.deliveries',
+					title: 'My Deliveries',
+					type: 'item',
+					icon: 'heroicons-outline:truck',
+					url: '/student/mto-deliveries',
+					translate: 'MTO_STUDENT_DELIVERIES',
+					auth: ['user']
 				}
 			]
 		});

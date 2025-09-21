@@ -1192,29 +1192,340 @@ interface ProductValidation {
 - Facility must have space
 - No time limitation for returns
 
-### 2.11 Get Delivery Status
+### 2.11 Get Delivery Status (Comprehensive)
 
-**Purpose:** Students check delivery and payment status
+**Purpose:** Students check comprehensive delivery status including formula details, timelines, settlement information, and tile location
 
 **Endpoint:** `GET /api/team/mto-type1/deliveries/:id`
 
 **Authorization:** Student team (owner of delivery)
+
+**Query Parameters:**
+```typescript
+{
+  "includeFormula"?: boolean;      // Include full formula details (default: true)
+  "includeProducts"?: boolean;     // Include submitted product details (default: true)
+  "includeSettlement"?: boolean;  // Include settlement breakdown (default: true)
+}
+```
 
 **Success Response (200):**
 ```json
 {
   "success": true,
   "businessCode": 0,
-  "message": "Delivery status fetched",
+  "message": "Delivery status fetched successfully",
   "data": {
-    "id": "uuid",
-    "status": "PARTIALLY_SETTLED",
-    "deliveredNumber": 10,
-    "settledNumber": 7,
-    "unsettledNumber": 3,
-    "settlementAmount": 703.50,
-    "canRequestReturn": true
-  }
+    "delivery": {
+      "id": "cuid_delivery_123",
+      "deliveryNumber": 10,
+      "status": "PARTIALLY_SETTLED",
+      "deliveredAt": "2024-03-02T14:30:00Z",
+      "transportationFee": "50.00",
+      "deliveredNumber": 10,
+      "settledNumber": 7,
+      "unsettledNumber": 3,
+      "settlementAmount": "703.50",
+      "canRequestReturn": true,
+      "returnStatus": {
+        "requested": false,
+        "returnFacilityId": null,
+        "returnTransportationFee": null,
+        "returnCompletedAt": null
+      }
+    },
+    "mtoRequirement": {
+      "id": 1,
+      "status": "SETTLING",
+      "purchaseGoldPrice": "100.50",
+      "basePurchaseNumber": 100,
+      "releaseTime": "2024-03-01T00:00:00Z",
+      "settlementTime": "2024-03-05T00:00:00Z",
+      "settlementCompletedAt": "2024-03-05T00:15:30Z",
+      "overallPurchaseNumber": 10000,
+      "overallPurchaseBudget": "1005000.00",
+      "baseCountPopulationNumber": 1000,
+      "actualSpentBudget": "850000.00",
+      "actualPurchasedNumber": 8460,
+      "fulfillmentRate": "84.60"
+    },
+    "managerFormula": {
+      "id": 2,
+      "productName": "Standard Package A",
+      "description": "Basic product package for general use",
+      "materials": [
+        {
+          "rawMaterialId": 101,
+          "quantity": 2,
+          "rawMaterial": {
+            "nameEn": "Iron Ore",
+            "nameZh": "铁矿石",
+            "unit": "kg"
+          }
+        },
+        {
+          "rawMaterialId": 102,
+          "quantity": 3,
+          "rawMaterial": {
+            "nameEn": "Coal",
+            "nameZh": "煤炭",
+            "unit": "kg"
+          }
+        }
+      ],
+      "craftCategories": [
+        {
+          "craftCategoryId": 201,
+          "craftCategory": {
+            "categoryType": "PRODUCTION",
+            "nameEn": "Smelting",
+            "nameZh": "冶炼"
+          }
+        }
+      ]
+    },
+    "tileLocation": {
+      "tileId": 42,
+      "tileName": "Industrial Zone A",
+      "axialQ": 10,
+      "axialR": 8,
+      "tilePopulation": 5500,
+      "tileRequirement": {
+        "initialRequirementNumber": 550,
+        "adjustedRequirementNumber": 500,
+        "deliveredNumber": 350,
+        "settledNumber": 320,
+        "remainingNumber": 180,
+        "spentBudget": "32160.00",
+        "requirementBudget": "50250.00"
+      }
+    },
+    "submittedProducts": [
+      {
+        "inventoryItemId": "cuid_item1",
+        "productName": "Standard Package A",
+        "quantity": 1,
+        "unitSpaceOccupied": "1.5",
+        "teamProductFormulaId": 156,
+        "teamProductFormula": {
+          "id": 156,
+          "formulaNumber": 42,
+          "productName": "Standard Package A",
+          "productDescription": "Team's implementation of Standard Package A",
+          "totalMaterialCost": "5.00",
+          "productFormulaCarbonEmission": "15.50",
+          "materials": [
+            {
+              "rawMaterialId": 101,
+              "quantity": 2,
+              "rawMaterial": {
+                "nameEn": "Iron Ore",
+                "nameZh": "铁矿石"
+              }
+            },
+            {
+              "rawMaterialId": 102,
+              "quantity": 3,
+              "rawMaterial": {
+                "nameEn": "Coal",
+                "nameZh": "煤炭"
+              }
+            }
+          ],
+          "craftCategories": [
+            {
+              "craftCategoryId": 201,
+              "craftCategory": {
+                "categoryType": "PRODUCTION",
+                "nameEn": "Smelting",
+                "nameZh": "冶炼"
+              }
+            }
+          ]
+        },
+        "formulaValidation": {
+          "isValid": true,
+          "matchesManagerFormula": true,
+          "errors": []
+        },
+        "settlementStatus": "SETTLED",
+        "paymentReceived": "100.50"
+      },
+      {
+        "inventoryItemId": "cuid_item2",
+        "productName": "Standard Package A",
+        "quantity": 1,
+        "unitSpaceOccupied": "1.5",
+        "formulaValidation": {
+          "isValid": false,
+          "errors": ["Material quantity mismatch for Iron Ore"]
+        },
+        "settlementStatus": "REJECTED",
+        "paymentReceived": "0.00"
+      }
+    ],
+    "settlementDetails": {
+      "settlementStatus": "PARTIALLY_COMPLETED",
+      "settledAt": "2024-03-05T00:15:30Z",
+      "settledBy": "SYSTEM",
+      "validationSummary": {
+        "totalValidated": 10,
+        "totalValid": 7,
+        "totalRejected": 3,
+        "rejectionBreakdown": [
+          {
+            "reason": "Material quantity mismatch",
+            "count": 2,
+            "affectedProducts": ["cuid_item2", "cuid_item5"]
+          },
+          {
+            "reason": "Craft categories mismatch",
+            "count": 1,
+            "affectedProducts": ["cuid_item8"]
+          }
+        ]
+      },
+      "paymentSummary": {
+        "unitPrice": "100.50",
+        "totalSettledQuantity": 7,
+        "totalPaymentAmount": "703.50",
+        "paymentStatus": "COMPLETED",
+        "paymentTransactionId": "TXN_123456",
+        "paymentMethod": "SYSTEM_CREDIT",
+        "paymentProcessedAt": "2024-03-05T00:16:00Z"
+      }
+    },
+    "teamInfo": {
+      "teamId": "cuid_team_456",
+      "teamName": "Team Alpha",
+      "sourceFacility": {
+        "facilityInstanceId": "cuid_facility_123",
+        "facilityType": "WAREHOUSE",
+        "facilityLevel": 3,
+        "axialQ": 5,
+        "axialR": 3
+      }
+    },
+    "timestamps": {
+      "mtoReleased": "2024-03-01T00:00:00Z",
+      "deliverySubmitted": "2024-03-02T14:30:00Z",
+      "settlementStarted": "2024-03-05T00:00:00Z",
+      "settlementCompleted": "2024-03-05T00:15:30Z",
+      "paymentProcessed": "2024-03-05T00:16:00Z"
+    }
+  },
+  "timestamp": "2024-03-05T10:30:00Z",
+  "path": "/api/team/mto-type1/deliveries/cuid_delivery_123"
+}
+```
+
+**Error Responses:**
+- `403`: Forbidden - Not the owner of this delivery
+- `404`: Not Found - Delivery not found
+
+### 2.12 Get All Team Deliveries (Summary View)
+
+**Purpose:** Students get a summary view of all their MTO Type 1 deliveries across different requirements
+
+**Endpoint:** `GET /api/team/mto-type1/deliveries`
+
+**Authorization:** Student team member
+
+**Query Parameters:**
+```typescript
+{
+  // Filtering
+  "mtoType1Id"?: number;                      // Filter by specific MTO requirement
+  "status"?: DeliverySettlementStatus;        // PENDING, PARTIALLY_SETTLED, FULLY_SETTLED, etc.
+  "tileId"?: number;                          // Filter by delivery tile
+  "settlementStatus"?: "settled" | "unsettled" | "mixed";  // Quick filter
+
+  // Date range filters
+  "fromDate"?: string;                        // ISO 8601 date
+  "toDate"?: string;                          // ISO 8601 date
+  "dateType"?: "delivered" | "settled";       // Which date to filter by (default: "delivered")
+
+  // Amount filters
+  "minAmount"?: number;                       // Minimum settlement amount
+  "maxAmount"?: number;                       // Maximum settlement amount
+
+  // Pagination
+  "page"?: number;                            // Page number (default: 1)
+  "limit"?: number;                           // Items per page (default: 20, max: 100)
+
+  // Sorting
+  "sortBy"?: "deliveredAt" | "settlementAmount" | "deliveryNumber" | "status";
+  "sortOrder"?: "asc" | "desc";               // Sort direction (default: "desc")
+
+  // Display options
+  "includeFormula"?: boolean;                 // Include formula summary (default: false)
+  "includeTileInfo"?: boolean;                // Include tile location details (default: true)
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "businessCode": 0,
+  "message": "Team deliveries retrieved successfully",
+  "data": {
+    "deliveries": [
+      {
+        "id": "cuid_delivery_123",
+        "mtoType1Id": 1,
+        "mtoStatus": "SETTLING",
+        "deliveryNumber": 10,
+        "deliveryStatus": "PARTIALLY_SETTLED",
+        "deliveredAt": "2024-03-02T14:30:00Z",
+        "settledAt": "2024-03-05T00:15:30Z",
+        "tile": {
+          "tileId": 42,
+          "tileName": "Industrial Zone A",
+          "axialQ": 10,
+          "axialR": 8
+        },
+        "formulaSummary": {
+          "formulaId": 2,
+          "productName": "Standard Package A",
+          "purchasePrice": "100.50"
+        },
+        "quantities": {
+          "delivered": 10,
+          "settled": 7,
+          "unsettled": 3,
+          "rejected": 3
+        },
+        "financial": {
+          "transportationFee": "50.00",
+          "settlementAmount": "703.50",
+          "totalRevenue": "653.50"
+        },
+        "canRequestReturn": true
+      }
+    ],
+    "summary": {
+      "totalDeliveries": 15,
+      "totalDelivered": 150,
+      "totalSettled": 120,
+      "totalUnsettled": 30,
+      "totalRevenue": "12060.00",
+      "totalTransportationCost": "750.00",
+      "netProfit": "11310.00",
+      "averageSettlementRate": "80.00%"
+    }
+  },
+  "extra": {
+    "pagination": {
+      "total": 15,
+      "page": 1,
+      "limit": 20,
+      "pages": 1,
+      "hasNext": false,
+      "hasPrev": false
+    }
+  },
+  "timestamp": "2024-03-05T10:30:00Z"
 }
 ```
 
