@@ -48,7 +48,7 @@ All responses follow the standard format:
 **Request Body**:
 ```json
 {
-  "rawMaterialId": 1,
+  "rawMaterialId": 1, // materialNumber
   "unitPrice": 12.50,
   "quantityToSell": 1000  // Optional, null = unlimited
 }
@@ -201,6 +201,79 @@ All responses follow the standard format:
 ---
 
 ### Purchase Transactions (Students)
+
+### 1. Get Team's Facility Space Overview
+**Endpoint**: `GET /api/user/facility-space/team/overview`
+
+**Description**: Get an overview of all facilities with storage space owned by the user's current team in their active activity.
+
+**Authentication**: User JWT token required
+
+**Query Parameters**: None (team and activity are determined from user context)
+
+**Response**:
+```json
+{
+  "success": true,
+  "businessCode": 200,
+  "message": "Team facility space overview retrieved successfully",
+  "data": {
+    "teamId": "team123",
+    "teamName": "Innovation Squad",
+    "activityId": "activity456",
+    "summary": {
+      "totalFacilities": 5,
+      "storageFacilities": 3,
+      "totalSpaceCapacity": 8500,
+      "totalSpaceUsed": 4250,
+      "totalSpaceAvailable": 4250,
+      "utilizationRate": 50.0
+    },
+    "facilities": [
+      {
+        "facilityInstanceId": "facility789",
+        "inventoryId": "inv123abc",
+        "facilityType": "WAREHOUSE",
+        "facilityName": "Central Warehouse",
+        "tileCoordinates": {
+          "q": 10,
+          "r": 5,
+          "s": -15
+        },
+        "level": 3,
+        "spaceMetrics": {
+          "totalSpace": 5000,
+          "usedSpace": 2500,
+          "availableSpace": 2500,
+          "utilizationRate": 50.0,
+          "rawMaterialSpace": 1500,
+          "productSpace": 1000
+        }
+      },
+      {
+        "facilityInstanceId": "facility790",
+        "inventoryId": "inv456def",
+        "facilityType": "FACTORY",
+        "facilityName": "Production Plant A",
+        "tileCoordinates": {
+          "q": 12,
+          "r": 8,
+          "s": -20
+        },
+        "level": 2,
+        "spaceMetrics": {
+          "totalSpace": 2500,
+          "usedSpace": 1750,
+          "availableSpace": 750,
+          "utilizationRate": 70.0,
+          "rawMaterialSpace": 1000,
+          "productSpace": 750
+        }
+      }
+    ]
+  }
+}
+```
 
 #### 9. Create Purchase Order
 **POST** `/api/shop/purchase`
