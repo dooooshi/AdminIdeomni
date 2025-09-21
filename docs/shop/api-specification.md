@@ -36,6 +36,53 @@ All responses follow the standard format:
 
 ## API Endpoints
 
+### Shop Browsing (All Users)
+
+#### 1. Browse Shop Materials
+**GET** `/api/shop/materials`
+
+**Description**: Get all materials in the activity shop
+
+**Authorization**: `UserAuthGuard`
+
+**Query Parameters**:
+- `origin`: Filter by material origin (MINE, FARM, etc.)
+- `minPrice`: Minimum unit price
+- `maxPrice`: Maximum unit price
+- `sortBy`: Sort field (price, name, materialNumber)
+- `sortOrder`: asc or desc
+
+**Response** (200):
+```json
+{
+  "success": true,
+  "businessCode": 0,
+  "message": "Materials retrieved",
+  "data": {
+    "shopId": 1,
+    "materials": [
+      {
+        "id": 1,
+        "rawMaterialId": 1,
+        "material": {
+          "materialNumber": 1,
+          "nameEn": "Eggs",
+          "nameZh": "蛋类",
+          "origin": "RANCH",
+        },
+        "unitPrice": "12.50",
+        "quantityToSell": null,
+        "quantitySold": 245
+      }
+    ],
+    "totalMaterials": 15
+  }
+}
+```
+
+---
+
+
 ### Material Management (Manager Only)
 
 #### 2. Add Material to Shop
@@ -148,61 +195,9 @@ All responses follow the standard format:
 - No min/max constraints
 
 ---
-
-### Shop Browsing (All Users)
-
-#### 6. Browse Shop Materials
-**GET** `/api/shop/materials`
-
-**Description**: Get all materials in the activity shop
-
-**Authorization**: `UserAuthGuard`
-
-**Query Parameters**:
-- `origin`: Filter by material origin (MINE, FARM, etc.)
-- `minPrice`: Minimum unit price
-- `maxPrice`: Maximum unit price
-- `sortBy`: Sort field (price, name, materialNumber)
-- `sortOrder`: asc or desc
-
-**Response** (200):
-```json
-{
-  "success": true,
-  "businessCode": 0,
-  "message": "Materials retrieved",
-  "data": {
-    "shopId": 1,
-    "materials": [
-      {
-        "id": 1,
-        "rawMaterialId": 1,
-        "material": {
-          "materialNumber": 1,
-          "nameEn": "Eggs",
-          "nameZh": "蛋类",
-          "origin": "RANCH",
-          "baseCost": "8.00",
-          "waterRequired": "3.00",
-          "powerRequired": "0.00",
-          "goldCost": "5.00",
-          "carbonEmission": "0.08"
-        },
-        "unitPrice": "12.50",
-        "quantityToSell": null,
-        "quantitySold": 245
-      }
-    ],
-    "totalMaterials": 15
-  }
-}
-```
-
----
-
 ### Purchase Transactions (Students)
 
-### 1. Get Team's Facility Space Overview
+### 5. Get Team's Facility Space Overview
 **Endpoint**: `GET /api/user/facility-space/team/overview`
 
 **Description**: Get an overview of all facilities with storage space owned by the user's current team in their active activity.
@@ -275,7 +270,7 @@ All responses follow the standard format:
 }
 ```
 
-#### 9. Create Purchase Order
+#### 6. Purchase material
 **POST** `/api/shop/purchase`
 
 **Description**: Purchase materials from shop with instant delivery
@@ -344,7 +339,7 @@ All responses follow the standard format:
 
 ---
 
-#### 10. Get Team Purchase History
+#### 7. Get Team Purchase History
 **GET** `/api/shop/team-transactions`
 
 **Description**: Get purchase history for student's own team (from auth context)
@@ -444,9 +439,9 @@ All responses follow the standard format:
 
 ---
 
-### Shop History & Analytics
+### Shop History 
 
-#### 11. Get Shop History (Manager)
+#### 8. Get Shop History (Manager)
 **GET** `/api/shop/history`
 
 **Description**: Get complete shop activity history for current activity
@@ -517,7 +512,7 @@ All responses follow the standard format:
 
 ---
 
-#### 12. Get Shop Transactions
+#### 9. Get Shop Transactions
 **GET** `/api/shop/transactions`
 
 **Description**: Get purchase transactions (filtered by role)

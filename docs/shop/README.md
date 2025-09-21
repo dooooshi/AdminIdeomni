@@ -6,35 +6,10 @@
 - **Primary Users**: Students - Team members who purchase raw materials for production
 - **Secondary Users**: Managers - Activity managers who collectively manage the shop and set prices
 
-### Expected Impact
-- **Business Metrics**:
-  - Enable centralized material distribution within activities
-  - Track material flow and consumption patterns
-  - Create controlled economy simulation for learning
-- **User Benefits**:
-  - Managers control pricing and availability
-  - Students buy at fixed prices (non-negotiable)
-  - Teams learn resource management and market dynamics
-- **Technical Benefits**:
-  - Activity-scoped resource management
-  - Simplified pricing model with fixed rates
-  - Complete transaction and history tracking
-
-### Platform Overview
-The Raw Material Shop module provides a centralized marketplace for each activity where managers control material pricing and availability. The shop serves all teams within the activity, offering the standardized raw material catalog (172 materials across 7 categories) at fixed prices set by managers. "Fixed pricing" means students cannot negotiate - they buy at whatever price managers set. Managers can update prices anytime. Students purchase materials that are instantly delivered to their designated facility spaces.
-
-**Technology Stack**:
-- **Framework**: NestJS with Fastify adapter (port 2999)
-- **Database**: PostgreSQL with Prisma ORM
-- **Language**: TypeScript
-- **Package Manager**: pnpm (always use pnpm, never npm)
-- **Authentication**: JWT with role-based system (Manager, Student, Worker)
-- **i18n**: English and Chinese language support
-
 ## Core Concepts
 
 ### Shop Structure
-- One shop per activity, shared by all teams in that activity
+- One shop shared by all teams in that activity
 - Shop starts empty - managers must add materials they want to sell
 - All managers can add/remove materials and set/update prices
 - Shop can offer any selection from the 172 raw materials catalog
@@ -84,25 +59,6 @@ Note: Activity context is automatically determined from the user's authenticatio
 - [Raw Material List](/docs/facility/raw_material/raw_material_list/) - Material catalog reference
 - [API Documentation](http://localhost:2999/docs) - Swagger UI
 - [Prisma Studio](http://localhost:5555) - Database management
-
-## MVP Scope
-
-### Phase 1 Features (Current)
-- Activity-based shop with multi-manager control
-- Shop starts empty - managers explicitly add materials
-- Manager-controlled pricing (set and update anytime)
-- Control which materials to sell and in what quantity
-- Purchase transactions with instant delivery
-- Team purchase history for students (transparency within teams)
-- Shop history tracking all changes (additions, removals, price updates)
-- Account history integration
-
-### Future Enhancements
-- Material availability scheduling
-- Bulk purchase options
-- Material consumption forecasting
-- Budget allocation tools
-- Automated restocking
 
 ## Notes & Decisions Log
 
