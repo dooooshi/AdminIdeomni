@@ -15,9 +15,19 @@ http://localhost:2999/api
 All endpoints require JWT authentication with role-based access control:
 - **Manager endpoints**: Require manager role authentication
 - **MALL endpoints**: Require user authentication with MALL ownership
+- **Student/Team endpoints**: Require student role authentication
 - **Public endpoints**: Require basic user authentication
 
 ## API Endpoints
+
+The API endpoints are organized into the following sections:
+
+1. **Manager Management APIs** - For managers to create, configure, and monitor MTO Type 2
+2. **MALL Owner APIs** - For teams with MALL facilities to submit products and manage returns
+3. **Student/Team APIs** - For students to view requirement details and budget allocations
+4. **Public Query APIs** - For general market information accessible to all users
+5. **Batch Operations** - For bulk processing and administrative tasks
+6. **Analytics APIs** - For market analysis and price trend data
 
 ### 1. Manager Management APIs
 
@@ -761,9 +771,678 @@ GET /api/user/manager/mto-type2/calculation-histories?calculationType=SETTLEMENT
 }
 ```
 
-### 3. Public Query APIs
+### 3. Student/Team APIs
 
-#### 3.1 Get MTO Type 2 Details
+#### 3.1 Get MTO Type 2 Requirement Details
+
+**Endpoint**: `GET /api/team/mto-type-2/:id/requirement`
+
+**Description**: Get detailed MTO Type 2 requirement information for students/teams, including product formula specifications and per-tile budget allocations.
+
+**Authorization**: User with student role
+
+**Authentication Context**:
+- The team's current `activityId` is automatically determined from authentication
+- Only MTO Type 2 for the team's enrolled activity are accessible
+- Available only when status is RELEASED, IN_PROGRESS, SETTLING, or SETTLED
+
+**Response** (200 OK):
+```typescript
+{
+  success: true,
+  businessCode: 20000,
+  message: "MTO Type 2 requirement details retrieved",
+  data: {
+    id: number;
+    status: "RELEASED" | "IN_PROGRESS" | "SETTLING" | "SETTLED";
+    releaseTime: string;
+    settlementTime: string;
+    overallPurchaseBudget: string;
+
+  productFormula: {
+      id: number;
+      name: string;
+      description?: string;
+      craftCategories: Array<{
+        id: number;
+        name: string;
+        description?: string;
+      }>;
+      rawMaterials: Array<{
+        id: number;
+        name: string;
+        quantity: number;
+        unit: string;
+      }>;
+      productionProcess?: {
+        steps?: string[];
+        duration?: number; // minutes
+        complexity?: "LOW" | "MEDIUM" | "HIGH";
+      };
+    };
+
+    // Per-Tile Budget Allocations
+    tileBudgetAllocations: Array<{
+      tileId: number;
+      tileName: string;
+      axialQ: number;
+      axialR: number;
+
+      // Population and allocation details
+      tilePopulation: number;
+      populationRatio: number; // percentage of total population
+      allocatedBudget: string; // calculated budget for this tile
+
+      // MALL information for this tile
+      mallsInTile: Array<{
+        mallId: string;
+        mallName: string;
+        mallLevel: number; // 1-5
+        teamId: string;
+        teamName: string;
+      }>;
+
+      // Settlement progress (only visible during/after settlement)
+      settlementProgress?: {
+        spentBudget: string;
+        remainingBudget: string;
+        purchasedQuantity: number;
+        participatingTeams: number;
+      };
+    }>;
+
+  }
+}
+```
+
+**Error Responses**:
+- `404 Not Found`: MTO Type 2 not found
+- `403 Forbidden`: MTO Type 2 not yet released or not accessible
+
+**Notes**:
+- Budget allocations are calculated in real-time based on current population data
+- During RELEASED status, shows potential budget allocations
+- During SETTLING/SETTLED status, shows actual budget allocations used
+- Teams can only see detailed MALL information for public visibility
+- Formula details include all specifications needed to produce matching products
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "businessCode": 20000,
+  "message": "MTO Type 2 requirement details retrieved",
+  "data": {
+    "id": 1,
+    "status": "IN_PROGRESS",
+    "releaseTime": "2025-01-15T10:00:00Z",
+    "settlementTime": "2025-01-16T10:00:00Z",
+    "overallPurchaseBudget": "100000.00",
+    "productFormula": {
+      "id": 15,
+      "name": "Wooden Chair",
+      "description": "Standard wooden office chair",
+      "craftCategories": [
+        {
+          "id": 1,
+          "name": "Woodworking",
+          "description": "Wood crafting and carpentry"
+        }
+      ],
+      "rawMaterials": [
+        {
+          "id": 10,
+          "name": "Wood Planks",
+          "quantity": 5,
+          "unit": "pieces"
+        },
+        {
+          "id": 11,
+          "name": "Metal Screws",
+          "quantity": 20,
+          "unit": "pieces"
+        }
+      ],
+      "productionProcess": {
+        "steps": ["Cut wood", "Sand surfaces", "Assemble", "Finish"],
+        "duration": 120,
+        "complexity": "MEDIUM"
+      }
+    },
+    "tileBudgetAllocations": [
+      {
+        "tileId": 101,
+        "tileName": "Downtown District",
+        "axialQ": 0,
+        "axialR": 0,
+        "tilePopulation": 15000,
+        "populationRatio": 0.30,
+        "allocatedBudget": "30000.00",
+        "mallsInTile": [
+          {
+            "mallId": "cm1234abc",
+            "mallName": "Central Mall",
+            "mallLevel": 3,
+            "teamId": "tm5678def",
+            "teamName": "Alpha Trading Co"
+          },
+          {
+            "mallId": "cm4567ghi",
+            "mallName": "Plaza Mall",
+            "mallLevel": 2,
+            "teamId": "tm8901jkl",
+            "teamName": "Beta Commerce"
+          }
+        ]
+      },
+      {
+        "tileId": 102,
+        "tileName": "Industrial Zone",
+        "axialQ": 1,
+        "axialR": -1,
+        "tilePopulation": 10000,
+        "populationRatio": 0.20,
+        "allocatedBudget": "20000.00",
+        "mallsInTile": [
+          {
+            "mallId": "cm7890mno",
+            "mallName": "Factory Outlet",
+            "mallLevel": 1,
+            "teamId": "tm2345pqr",
+            "teamName": "Gamma Industries"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+#### 3.2 List Available MTO Type 2 Requirements
+
+**Endpoint**: `GET /api/team/mto-type-2/requirements`
+
+**Description**: List all available MTO Type 2 requirements for students/teams in their activity.
+
+**Authorization**: User with student role
+
+**Authentication Context**:
+- The team's current `activityId` is automatically determined from authentication
+- Only MTO Type 2 for the team's enrolled activity are shown
+- Shows requirements in RELEASED, IN_PROGRESS, SETTLING, or SETTLED status
+
+**Query Parameters**:
+```typescript
+{
+  status?: "RELEASED" | "IN_PROGRESS" | "SETTLING" | "SETTLED";
+  includeSettled?: boolean; // default: false
+  page?: number; // default: 1
+  limit?: number; // default: 20, max: 100
+  sortBy?: "releaseTime" | "settlementTime" | "budget";
+  sortOrder?: "asc" | "desc";
+}
+```
+
+**Response** (200 OK):
+```typescript
+{
+  success: true,
+  businessCode: 20000,
+  message: "MTO Type 2 requirements retrieved",
+  data: {
+    items: Array<{
+      id: number;
+      status: string;
+      releaseTime: string;
+      settlementTime: string;
+      overallPurchaseBudget: string;
+
+      // Basic formula info
+      productFormula: {
+        id: number;
+        name: string;
+        craftCategories: string[];
+      };
+
+      // Market summary
+      marketSummary: {
+        totalMalls: number;
+        totalTilesWithMalls: number;
+        averageBudgetPerTile: string;
+        currentSubmissions?: number; // Only for IN_PROGRESS/SETTLING
+      };
+
+      // Team participation status
+      teamStatus: {
+        canParticipate: boolean;
+        hasMALL: boolean;
+        mallCount?: number;
+        submissionCount?: number; // Number of submissions team has made
+      };
+
+      // Time indicators
+      timeInfo: {
+        isOpen: boolean; // Can submit now
+        hoursUntilRelease?: number; // If not yet released
+        hoursUntilSettlement?: number; // If open
+        timeSinceSettlement?: number; // If settled
+      };
+    }>;
+
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  }
+}
+```
+
+**Example Request**:
+```bash
+GET /api/team/mto-type-2/requirements?status=IN_PROGRESS&page=1&limit=10
+```
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "businessCode": 20000,
+  "message": "MTO Type 2 requirements retrieved",
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "status": "IN_PROGRESS",
+        "releaseTime": "2025-01-15T10:00:00Z",
+        "settlementTime": "2025-01-16T10:00:00Z",
+        "overallPurchaseBudget": "100000.00",
+        "productFormula": {
+          "id": 15,
+          "name": "Wooden Chair",
+          "craftCategories": ["Woodworking", "Assembly"]
+        },
+        "marketSummary": {
+          "totalMalls": 8,
+          "totalTilesWithMalls": 5,
+          "averageBudgetPerTile": "20000.00",
+          "currentSubmissions": 12
+        },
+        "teamStatus": {
+          "canParticipate": true,
+          "hasMALL": true,
+          "mallCount": 1,
+          "submissionCount": 0
+        },
+        "timeInfo": {
+          "isOpen": true,
+          "hoursUntilSettlement": 18.5
+        }
+      }
+    ],
+    "pagination": {
+      "total": 1,
+      "page": 1,
+      "limit": 10,
+      "totalPages": 1
+    }
+  }
+}
+```
+
+#### 3.3 Get Submission Eligibility and Inventory
+
+**Endpoint**: `GET /api/team/mto-type-2/:id/submission-eligibility`
+
+**Description**: Retrieve eligible MALL facilities and their available inventory for MTO Type 2 submission. Only returns MALLs that meet all requirements (infrastructure, budget allocation, no prior submission).
+
+**Authorization**: User with student role
+
+**Authentication Context**:
+- The team's current `activityId` is automatically determined from authentication
+- Only shows data for the authenticated user's team
+- MTO Type 2 must be in RELEASED or IN_PROGRESS status
+
+**Path Parameters**:
+- `id` (number) - The MTO Type 2 requirement ID
+
+**Response** (200 OK):
+```typescript
+{
+  success: true,
+  businessCode: 20000,
+  message: "Submission eligibility retrieved",
+  data: {
+    mtoType2: {
+      id: number;
+      status: "RELEASED" | "IN_PROGRESS";
+      releaseTime: string;
+      settlementTime: string;
+      isOpenForSubmission: boolean; // Can submit now
+    };
+
+    // Team information
+    teamInfo: {
+      teamId: string;
+      teamName: string;
+      totalMALLs: number;
+      eligibleMALLs: number;
+    };
+
+    // Only eligible MALL facilities (all requirements met)
+    eligibleFacilities: Array<{
+      facilityId: string;
+      facilityName: string;
+      mallLevel: number; // 1-5
+
+      // Tile information
+      tile: {
+        tileId: number;
+        tileName: string;
+        axialQ: number;
+        axialR: number;
+        population: number;
+
+        // Budget allocation for this tile
+        budgetAllocation: {
+          allocatedBudget: string;
+          remainingBudget?: string; // If in SETTLING/SETTLED status
+          populationRatio: number;
+        };
+      };
+
+      // Existing submission status
+      submissionStatus: {
+        hasSubmitted: boolean;
+        submittedAt?: string;
+        submittedQuantity?: number;
+        submittedPrice?: string;
+      };
+
+      // Available inventory in this MALL
+      inventory: {
+        totalSpaceCapacity: number;
+        usedSpace: number;
+        availableSpace: number;
+
+        // All products in inventory
+        products: Array<{
+          inventoryItemId: string;
+          productFormulaId: number;
+          productName: string;
+          quantity: number;
+          unitSpaceRequired: number;
+          totalSpaceUsed: number;
+
+          // Product details
+          productDetails: {
+            materials: Array<{
+              id: number;
+              name: string;
+              quantity: number;
+            }>;
+            craftCategories: string[];
+            productionDate?: string;
+            qualityLevel?: string;
+          };
+        }>;
+
+        // Raw materials available
+        rawMaterials?: Array<{
+          inventoryItemId: string;
+          materialId: number;
+          name: string;
+          quantity: number;
+          unit: string;
+        }>;
+      };
+    }>;
+  }
+}
+```
+
+**Error Responses**:
+- `404 Not Found`: MTO Type 2 not found
+- `403 Forbidden`: MTO Type 2 not yet released or team not enrolled in activity
+- `400 Bad Request`: Invalid parameters
+
+**Business Logic**:
+1. **Eligibility Criteria**:
+   - MALL must be in a tile with allocated budget for this MTO Type 2
+   - Tile must meet all infrastructure requirements (power, water, transport)
+   - MALL must not have already submitted to this MTO Type 2
+   - Submission window must be open (after release, before settlement)
+
+2. **Product Matching**:
+   - Products must have the exact same materials and quantities
+   - Products must have the required craft categories
+   - Quality level may affect settlement priority but not eligibility
+
+3. **Infrastructure Check**:
+   - Power infrastructure required for MALL operations
+   - Water infrastructure required for certain production
+   - Transport infrastructure required for product delivery
+
+**Example Request**:
+```bash
+GET /api/team/mto-type-2/123/submission-eligibility?onlyWithMatchingProducts=true
+```
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "businessCode": 20000,
+  "message": "Submission eligibility retrieved",
+  "data": {
+    "mtoType2": {
+      "id": 123,
+      "status": "IN_PROGRESS",
+      "releaseTime": "2025-01-15T10:00:00Z",
+      "settlementTime": "2025-01-16T10:00:00Z",
+      "isOpenForSubmission": true,
+      "productFormula": {
+        "id": 15,
+        "name": "Wooden Chair",
+        "description": "Standard office chair",
+        "requiredMaterials": [
+          {
+            "id": 10,
+            "name": "Wood Planks",
+            "quantity": 5,
+            "unit": "pieces"
+          },
+          {
+            "id": 11,
+            "name": "Metal Screws",
+            "quantity": 20,
+            "unit": "pieces"
+          }
+        ],
+        "requiredCraftCategories": [
+          {
+            "id": 1,
+            "name": "Woodworking"
+          }
+        ]
+      }
+    },
+    "teamInfo": {
+      "teamId": "tm5678def",
+      "teamName": "Alpha Trading Co",
+      "totalMALLs": 3,
+      "eligibleMALLs": 2
+    },
+    "eligibleFacilities": [
+      {
+        "facilityId": "cm1234abc",
+        "facilityName": "Central Mall",
+        "mallLevel": 3,
+        "tile": {
+          "tileId": 101,
+          "tileName": "Downtown District",
+          "axialQ": 0,
+          "axialR": 0,
+          "population": 15000,
+          "budgetAllocation": {
+            "allocatedBudget": "30000.00",
+            "populationRatio": 0.30
+          },
+          "infrastructure": {
+            "hasPower": true,
+            "hasWater": true,
+            "hasTransport": true,
+            "allRequirementsMet": true
+          }
+        },
+        "submissionStatus": {
+          "hasSubmitted": false
+        },
+        "inventory": {
+          "totalSpaceCapacity": 1000,
+          "usedSpace": 450,
+          "availableSpace": 550,
+          "matchingProducts": [
+            {
+              "inventoryItemId": "inv789xyz",
+              "productFormulaId": 25,
+              "productName": "Premium Wooden Chair",
+              "quantity": 150,
+              "unitSpaceRequired": 2,
+              "totalSpaceUsed": 300,
+              "formulaMatch": {
+                "materialsMatch": true,
+                "categoriesMatch": true,
+                "isFullyCompatible": true
+              },
+              "productDetails": {
+                "materials": [
+                  {
+                    "id": 10,
+                    "name": "Wood Planks",
+                    "quantity": 5
+                  },
+                  {
+                    "id": 11,
+                    "name": "Metal Screws",
+                    "quantity": 20
+                  }
+                ],
+                "craftCategories": ["Woodworking"],
+                "productionDate": "2025-01-14T08:00:00Z",
+                "qualityLevel": "HIGH"
+              }
+            }
+          ],
+          "otherProducts": [
+            {
+              "inventoryItemId": "inv456def",
+              "itemType": "PRODUCT",
+              "name": "Wooden Table",
+              "quantity": 50,
+              "spaceUsed": 150
+            }
+          ]
+        },
+        "eligibility": {
+          "canSubmit": true,
+          "reasons": ["All requirements met", "Has matching products in inventory"],
+          "checklist": {
+            "hasBudgetAllocation": true,
+            "infrastructureRequirementsMet": true,
+            "hasMatchingProducts": true,
+            "hasNotSubmittedYet": true,
+            "withinSubmissionWindow": true
+          }
+        }
+      },
+      {
+        "facilityId": "cm4567ghi",
+        "facilityName": "North Mall",
+        "mallLevel": 2,
+        "tile": {
+          "tileId": 105,
+          "tileName": "Northern District",
+          "axialQ": 0,
+          "axialR": -1,
+          "population": 8000,
+          "budgetAllocation": {
+            "allocatedBudget": "16000.00",
+            "populationRatio": 0.16
+          },
+          "infrastructure": {
+            "hasPower": true,
+            "hasWater": true,
+            "hasTransport": false,
+            "allRequirementsMet": false
+          }
+        },
+        "submissionStatus": {
+          "hasSubmitted": false
+        },
+        "inventory": {
+          "totalSpaceCapacity": 800,
+          "usedSpace": 200,
+          "availableSpace": 600,
+          "matchingProducts": []
+        },
+        "eligibility": {
+          "canSubmit": false,
+          "reasons": [
+            "Transport infrastructure not available",
+            "No matching products in inventory"
+          ],
+          "checklist": {
+            "hasBudgetAllocation": true,
+            "infrastructureRequirementsMet": false,
+            "hasMatchingProducts": false,
+            "hasNotSubmittedYet": true,
+            "withinSubmissionWindow": true
+          }
+        }
+      }
+    ],
+    "summary": {
+      "totalEligibleFacilities": 1,
+      "totalMatchingProducts": 150,
+      "totalAvailableQuantity": 150,
+      "estimatedMaxValue": "22500.00",
+      "recommendations": [
+        {
+          "priority": "HIGH",
+          "action": "Submit from Central Mall",
+          "facilityId": "cm1234abc",
+          "reason": "Has 150 matching products ready for submission"
+        },
+        {
+          "priority": "MEDIUM",
+          "action": "Fix transport infrastructure for North Mall",
+          "facilityId": "cm4567ghi",
+          "reason": "Would enable participation but lacks matching products"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Usage Notes**:
+1. This endpoint should be called before attempting submission to verify eligibility
+2. The `matchingProducts` array only includes products that exactly match the formula
+3. Infrastructure requirements are checked in real-time based on current tile state
+4. Budget allocations are calculated dynamically based on population distribution
+5. The endpoint considers all business rules including submission windows and prior submissions
+
+**Implementation Considerations**:
+- Cache budget allocations for performance (invalidate on population changes)
+- Index facility inventories by product formula for faster matching
+- Consider pagination for facilities with large inventories
+- Infrastructure status should reflect real-time tile state
+
+### 4. Public Query APIs
+
+#### 4.1 Get MTO Type 2 Details
 
 **Endpoint**: `GET /api/public/mto-type-2/:id`
 
@@ -799,7 +1478,7 @@ GET /api/user/manager/mto-type2/calculation-histories?calculationType=SETTLEMENT
 }
 ```
 
-#### 3.2 Get Market Overview
+#### 4.2 Get Market Overview
 
 **Endpoint**: `GET /api/public/mto-type-2/market`
 
@@ -846,9 +1525,9 @@ GET /api/user/manager/mto-type2/calculation-histories?calculationType=SETTLEMENT
 }
 ```
 
-### 4. Batch Operations
+### 5. Batch Operations
 
-#### 4.1 Bulk Settlement Status
+#### 5.1 Bulk Settlement Status
 
 **Endpoint**: `POST /api/user/manager/mto-type2/bulk-settle`
 
@@ -878,9 +1557,9 @@ GET /api/user/manager/mto-type2/calculation-histories?calculationType=SETTLEMENT
 }
 ```
 
-### 5. Analytics APIs
+### 6. Analytics APIs
 
-#### 5.1 Price Trends
+#### 6.1 Price Trends
 
 **Endpoint**: `GET /api/analytics/mto-type-2/price-trends`
 

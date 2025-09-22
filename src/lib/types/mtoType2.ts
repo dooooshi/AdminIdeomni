@@ -195,9 +195,9 @@ export interface MtoType2UpdateRequest {
 
 export interface MtoType2SubmissionRequest {
   requirementId: number;
-  productQuantity: number;
+  facilityInstanceId: string;
+  productNumber: number;
   unitPrice: number;
-  mallFacilitySpaceId: number;
 }
 
 export interface MtoType2UnsettledReturnRequest {
@@ -459,6 +459,84 @@ export interface MtoType2RequirementDetails {
       remainingBudget: string;
       purchasedQuantity: number;
       participatingTeams: number;
+    };
+  }>;
+}
+
+export interface MtoType2SubmissionEligibility {
+  mtoType2: {
+    id: number;
+    status: "RELEASED" | "IN_PROGRESS";
+    releaseTime: string;
+    settlementTime: string;
+    isOpenForSubmission: boolean;
+  };
+
+  teamInfo: {
+    teamId: string;
+    teamName: string;
+    totalMALLs: number;
+    eligibleMALLs: number;
+  };
+
+  eligibleFacilities: Array<{
+    facilityId: string;
+    facilityName: string;
+    mallLevel: number; // 1-5
+
+    tile: {
+      tileId: number;
+      tileName: string;
+      axialQ: number;
+      axialR: number;
+      population: number;
+
+      budgetAllocation: {
+        allocatedBudget: string;
+        remainingBudget?: string;
+        populationRatio: number;
+      };
+    };
+
+    submissionStatus: {
+      hasSubmitted: boolean;
+      submittedAt?: string;
+      submittedQuantity?: number;
+      submittedPrice?: string;
+    };
+
+    inventory: {
+      totalSpaceCapacity: number;
+      usedSpace: number;
+      availableSpace: number;
+
+      products: Array<{
+        inventoryItemId: string;
+        productFormulaId: number;
+        productName: string;
+        quantity: number;
+        unitSpaceRequired: number;
+        totalSpaceUsed: number;
+
+        productDetails: {
+          materials: Array<{
+            id: number;
+            name: string;
+            quantity: number;
+          }>;
+          craftCategories: string[];
+          productionDate?: string;
+          qualityLevel?: string;
+        };
+      }>;
+
+      rawMaterials?: Array<{
+        inventoryItemId: string;
+        materialId: number;
+        name: string;
+        quantity: number;
+        unit: string;
+      }>;
     };
   }>;
 }

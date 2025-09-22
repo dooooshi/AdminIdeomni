@@ -23,7 +23,8 @@ import {
   MtoType2BulkSettleRequest,
   MtoType2BulkSettleResponse,
   MtoType2AuditTrail,
-  MtoType2RequirementDetails
+  MtoType2RequirementDetails,
+  MtoType2SubmissionEligibility
 } from '@/lib/types/mtoType2';
 
 export interface ApiResponse<T> {
@@ -340,7 +341,11 @@ export class MtoType2Service {
   static async createSubmission(
     data: MtoType2SubmissionRequest
   ): Promise<MtoType2Submission> {
-    const response = await apiClient.post(`${this.MALL_BASE_PATH}/submissions`, data);
+    const { requirementId, ...submitData } = data;
+    const response = await apiClient.post(
+      `${this.MALL_BASE_PATH}/${requirementId}/submit`,
+      submitData
+    );
     return this.extractResponseData<MtoType2Submission>(response);
   }
 
@@ -528,6 +533,16 @@ export class MtoType2Service {
       `/team/mto-type-2/${requirementId}/requirement`
     );
     return this.extractResponseData<MtoType2RequirementDetails>(response);
+  }
+
+  // Student-specific endpoint for getting submission eligibility
+  static async getSubmissionEligibility(
+    requirementId: number
+  ): Promise<MtoType2SubmissionEligibility> {
+    const response = await apiClient.get(
+      `/team/mto-type-2/${requirementId}/submission-eligibility`
+    );
+    return this.extractResponseData<MtoType2SubmissionEligibility>(response);
   }
 
   // New methods for missing features

@@ -18,12 +18,14 @@ import {
 } from '@mui/material';
 import {
   Visibility as VisibilityIcon,
-  Refresh as RefreshIcon
+  Refresh as RefreshIcon,
+  Send as SendIcon
 } from '@mui/icons-material';
 
 import { MtoType2Service } from '@/lib/services/mtoType2Service';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import MtoType2RequirementDetailsModal from './MtoType2RequirementDetailsModal';
+import MtoType2StudentSubmissionModal from './MtoType2StudentSubmissionModal';
 
 interface MtoType2Opportunity {
   requirementId: number;
@@ -47,6 +49,8 @@ export const MtoType2StudentView: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
+  const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
+  const [selectedRequirementForSubmission, setSelectedRequirementForSubmission] = useState<{ id: number; name: string } | null>(null);
 
   const loadOpportunities = async () => {
     try {
@@ -117,6 +121,25 @@ export const MtoType2StudentView: React.FC = () => {
     setSelectedRequirementId(null);
   };
 
+  const handleSubmitProducts = (requirementId: number, requirementName: string) => {
+    setSelectedRequirementForSubmission({ id: requirementId, name: requirementName });
+    setSubmissionModalOpen(true);
+  };
+
+  const handleCloseSubmissionModal = () => {
+    setSubmissionModalOpen(false);
+    setSelectedRequirementForSubmission(null);
+  };
+
+  const handleSubmissionCreated = () => {
+    handleCloseSubmissionModal();
+    loadOpportunities(); // Refresh the list
+  };
+
+  const canSubmit = (status: string) => {
+    return status === 'ACTIVE' || status === 'IN_PROGRESS' || status === 'RELEASED';
+  };
+
   if (loading && opportunities.length === 0) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
@@ -151,7 +174,7 @@ export const MtoType2StudentView: React.FC = () => {
               <TableCell>{t('mto.type2.student.tableFormulaName')}</TableCell>
               <TableCell>{t('mto.type2.student.tableStatus')}</TableCell>
               <TableCell>{t('mto.type2.student.tableSettlementDate')}</TableCell>
-              <TableCell align="center">{t('mto.type2.student.tableActions')}</TableCell>
+              <TableCell align="center" width="150">{t('mto.type2.student.tableActions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -184,11 +207,24 @@ export const MtoType2StudentView: React.FC = () => {
                   </TableCell>
                   <TableCell>{formatDate(opportunity.settlementTime)}</TableCell>
                   <TableCell align="center">
-                    <Tooltip title={t('mto.type2.student.viewDetailsTooltip')}>
-                      <IconButton size="small" onClick={() => handleViewDetails(opportunity.requirementId)}>
-                        <VisibilityIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                    <Box display="flex" justifyContent="center" gap={0.5}>
+                      <Tooltip title={t('mto.type2.student.viewDetailsTooltip')}>
+                        <IconButton size="small" onClick={() => handleViewDetails(opportunity.requirementId)}>
+                          <VisibilityIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      {canSubmit(opportunity.status) && (
+                        <Tooltip title={t('mto.type2.student.submitProductsTooltip')}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleSubmitProducts(opportunity.requirementId, opportunity.requirementName)}
+                            color="primary"
+                          >
+                            <SendIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    </Box>
                   </TableCell>
                 </TableRow>
               ))
@@ -202,6 +238,15 @@ export const MtoType2StudentView: React.FC = () => {
         open={detailsModalOpen}
         requirementId={selectedRequirementId}
         onClose={handleCloseDetailsModal}
+      />
+
+      {/* Student Submission Modal */}
+      <MtoType2StudentSubmissionModal
+        open={submissionModalOpen}
+        requirementId={selectedRequirementForSubmission?.id || null}
+        requirementName={selectedRequirementForSubmission?.name}
+        onClose={handleCloseSubmissionModal}
+        onSubmissionCreated={handleSubmissionCreated}
       />
     </Box>
   );

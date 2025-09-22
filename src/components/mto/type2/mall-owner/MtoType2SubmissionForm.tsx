@@ -175,9 +175,9 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
       const submissionData: MtoType2SubmissionRequest = {
         requirementId: requirement.requirementId,
-        productQuantity: formData.productQuantity,
+        facilityInstanceId: String(formData.mallFacilitySpaceId), // Convert to string for API
+        productNumber: formData.productQuantity,
         unitPrice: formData.unitPrice,
-        mallFacilitySpaceId: formData.mallFacilitySpaceId,
       };
 
       await MtoType2Service.createSubmission(submissionData);

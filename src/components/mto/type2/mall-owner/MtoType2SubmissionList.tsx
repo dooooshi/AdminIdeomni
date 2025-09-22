@@ -237,7 +237,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
 
     try {
       const updatedData: Partial<MtoType2SubmissionRequest> = {
-        productQuantity: editFormData.productQuantity,
+        productNumber: editFormData.productQuantity,
         unitPrice: editFormData.unitPrice,
       };
 
