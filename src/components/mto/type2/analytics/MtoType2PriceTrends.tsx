@@ -82,12 +82,12 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
 
   const loadFormulas = async () => {
     try {
-      const data = await MtoType2Service.getManagerFormulas();
-      setFormulas(data);
-      if (data.length > 0 && !selectedFormula) {
-        setSelectedFormula(data[0].id);
+      const response = await MtoType2Service.getManagerFormulas();
+      setFormulas(response.items);
+      if (response.items.length > 0 && !selectedFormula) {
+        setSelectedFormula(response.items[0].id);
       }
-    } catch (error: any) {
+    } catch (error) {
       showError(t('mto.type2.errors.loadFormulas'));
     }
   };
@@ -99,7 +99,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
     try {
       const data = await MtoType2Service.getPriceTrends(selectedFormula, period);
       setPriceTrend(data);
-    } catch (error: any) {
+    } catch (error) {
       showError(t('mto.type2.errors.loadPriceTrends'));
     } finally {
       setLoading(false);

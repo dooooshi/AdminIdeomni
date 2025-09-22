@@ -52,7 +52,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
     managerProductFormulaId: editData?.managerProductFormulaId || 0,
     releaseTime: editData?.releaseTime || new Date(Date.now() + 10 * 60 * 1000).toISOString(), // 10 minutes from now
     settlementTime: editData?.settlementTime || new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 minutes from now
-    overallPurchaseBudget: editData?.overallPurchaseBudget || 10000,
+    overallPurchaseBudget: Number(editData?.overallPurchaseBudget) || 10000,
     metadata: editData?.metadata || {
       name: '',
       description: '',
@@ -113,7 +113,10 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
     if (editData) {
       setFormData({
         ...initialFormData,
-        ...editData
+        ...editData,
+        overallPurchaseBudget: typeof editData.overallPurchaseBudget === 'string'
+          ? Number(editData.overallPurchaseBudget)
+          : editData.overallPurchaseBudget
       });
     } else {
       setFormData(initialFormData);
@@ -146,7 +149,14 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
       setLoading(true);
 
       if (editData) {
-        await MtoType2Service.updateRequirement(editData.id, formData);
+        // Only send the fields that are allowed for update
+        const updateData = {
+          releaseTime: formData.releaseTime,
+          settlementTime: formData.settlementTime,
+          overallPurchaseBudget: formData.overallPurchaseBudget,
+          metadata: formData.metadata
+        };
+        await MtoType2Service.updateRequirement(editData.id, updateData);
         showSuccess(t('mto.type2.messages.updateSuccess'));
         onSuccess();
         handleClose();

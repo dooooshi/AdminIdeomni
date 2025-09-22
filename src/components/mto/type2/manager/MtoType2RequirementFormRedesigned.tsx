@@ -113,7 +113,7 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
   const [availableFormulas, setAvailableFormulas] = useState(managerFormulas);
   const [activeStep, setActiveStep] = useState(0);
   const [tabValue, setTabValue] = useState(0);
-  const [selectedFormula, setSelectedFormula] = useState<any>(null);
+  const [selectedFormula, setSelectedFormula] = useState<{ id: number; name: string; productName?: string; totalMaterialCost?: string } | null>(null);
   const [formulaSearch, setFormulaSearch] = useState('');
   const [showFormulaPreview, setShowFormulaPreview] = useState(false);
 
@@ -121,7 +121,7 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
     managerProductFormulaId: editData?.managerProductFormulaId || 0,
     releaseTime: editData?.releaseTime || new Date(Date.now() + 10 * 60 * 1000).toISOString(),
     settlementTime: editData?.settlementTime || new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-    overallPurchaseBudget: editData?.overallPurchaseBudget || 10000,
+    overallPurchaseBudget: Number(editData?.overallPurchaseBudget) || 10000,
     metadata: editData?.metadata || {
       name: '',
       description: '',
@@ -165,7 +165,10 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
     if (editData) {
       setFormData({
         ...initialFormData,
-        ...editData
+        ...editData,
+        overallPurchaseBudget: typeof editData.overallPurchaseBudget === 'string'
+          ? Number(editData.overallPurchaseBudget)
+          : editData.overallPurchaseBudget
       });
       const formula = availableFormulas.find(f => f.id === editData.managerProductFormulaId);
       if (formula) {
@@ -258,7 +261,14 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
       setLoading(true);
 
       if (editData) {
-        await MtoType2Service.updateRequirement(editData.id, formData);
+        // Only send the fields that are allowed for update
+        const updateData = {
+          releaseTime: formData.releaseTime,
+          settlementTime: formData.settlementTime,
+          overallPurchaseBudget: formData.overallPurchaseBudget,
+          metadata: formData.metadata
+        };
+        await MtoType2Service.updateRequirement(editData.id, updateData);
         showSuccess(t('mto.type2.messages.updateSuccess'));
       } else {
         await MtoType2Service.createRequirement(formData);
@@ -594,7 +604,7 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
                     </Grid>
 
                     <Grid size={{ xs: 12 }}>
-                      <Paper sx={{ p: 2, bgcolor: 'info.light', bgcolor: 'rgba(33, 150, 243, 0.08)' }}>
+                      <Paper sx={{ p: 2, bgcolor: 'rgba(33, 150, 243, 0.08)' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <InfoIcon color="info" />
                           <Box>
@@ -660,7 +670,7 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
                     </Grid>
 
                     <Grid size={{ xs: 12, md: 4 }}>
-                      <Paper sx={{ p: 2, bgcolor: 'warning.light', bgcolor: 'rgba(255, 152, 0, 0.08)' }}>
+                      <Paper sx={{ p: 2, bgcolor: 'rgba(255, 152, 0, 0.08)' }}>
                         <TrendingUpIcon color="warning" sx={{ mb: 1 }} />
                         <Typography variant="subtitle2" color="text.secondary">
                           {t('mto.type2.budgetAnalysis')}
@@ -724,7 +734,7 @@ export const MtoType2RequirementFormRedesigned: React.FC<MtoType2RequirementForm
                   </Grid>
 
                   {/* Review Summary */}
-                  <Paper sx={{ p: 3, mt: 3, bgcolor: 'success.light', bgcolor: 'rgba(76, 175, 80, 0.08)' }}>
+                  <Paper sx={{ p: 3, mt: 3, bgcolor: 'rgba(76, 175, 80, 0.08)' }}>
                     <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                       {t('mto.type2.reviewSummary')}
                     </Typography>

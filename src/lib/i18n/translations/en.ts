@@ -311,6 +311,7 @@ export const enTranslations = {
   'common.cancel': 'Cancel',
   'common.edit': 'Edit',
   'common.close': 'Close',
+  'common.system': 'System',
   'common.clearFilters': 'Clear Filters',
   'common.itemsPerPage': 'Items per page',
   'common.of': 'of',

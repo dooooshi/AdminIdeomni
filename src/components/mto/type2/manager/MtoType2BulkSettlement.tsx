@@ -75,13 +75,13 @@ const MtoType2BulkSettlement: React.FC<MtoType2BulkSettlementProps> = ({
         status: 'IN_PROGRESS'
       });
       // Filter requirements that are ready for settlement
-      const readyForSettlement = data.filter(r => {
+      const readyForSettlement = data.items.filter(r => {
         const now = new Date();
         const settlementTime = new Date(r.settlementTime);
         return settlementTime <= now && r.status === 'IN_PROGRESS';
       });
       setRequirements(readyForSettlement);
-    } catch (error: any) {
+    } catch (error) {
       showError(t('mto.type2.errors.loadRequirements'));
     } finally {
       setLoading(false);
@@ -163,8 +163,8 @@ const MtoType2BulkSettlement: React.FC<MtoType2BulkSettlementProps> = ({
       // Reload requirements
       loadRequirements();
       setSelected([]);
-    } catch (error: any) {
-      showError(error.message || t('mto.type2.errors.bulkSettle'));
+    } catch (error) {
+      showError((error as Error).message || t('mto.type2.errors.bulkSettle'));
     } finally {
       setSettling(false);
       setProgress(0);

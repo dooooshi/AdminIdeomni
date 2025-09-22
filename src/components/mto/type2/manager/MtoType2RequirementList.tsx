@@ -38,13 +38,15 @@ import {
   Store as MallIcon,
   TrendingUp as BiddingIcon,
   CheckCircle,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  History as HistoryIcon
 } from '@mui/icons-material';
 import { MtoType2Requirement } from '@/lib/types/mtoType2';
 import MtoType2Service from '@/lib/services/mtoType2Service';
 import { enqueueSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { MtoType2RequirementFormWithPagination as MtoType2RequirementForm } from './MtoType2RequirementFormWithPagination';
+import MtoType2CalculationHistoryModal from './MtoType2CalculationHistoryModal';
 
 const statusIcons: Record<string, React.ReactElement> = {
   DRAFT: <WarningIcon color="disabled" />,
@@ -78,6 +80,8 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [historyModalOpen, setHistoryModalOpen] = useState(false);
+  const [historyRequirement, setHistoryRequirement] = useState<MtoType2Requirement | null>(null);
 
   useEffect(() => {
     loadRequirements();
@@ -88,22 +92,11 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
     try {
       const data = await MtoType2Service.getRequirements();
       // Handle paginated response structure
-      let requirementsArray = [];
-
-      if (data && typeof data === 'object') {
-        if (data.items && Array.isArray(data.items)) {
-          // Paginated response structure
-          requirementsArray = data.items;
-        } else if (Array.isArray(data)) {
-          // Direct array response
-          requirementsArray = data;
-        } else if (data.data && Array.isArray(data.data)) {
-          // Alternative structure with data property
-          requirementsArray = data.data;
-        }
+      if (data && data.items && Array.isArray(data.items)) {
+        setRequirements(data.items);
+      } else {
+        setRequirements([]);
       }
-
-      setRequirements(requirementsArray);
     } catch (error) {
       console.error('Failed to load requirements:', error);
       enqueueSnackbar(t('mto.type2.errors.loadFailed'), { variant: 'error' });
@@ -198,9 +191,7 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
             <TableRow>
               <TableCell align="center">{t('mto.type2.id')}</TableCell>
               <TableCell align="center">{t('mto.type2.name')}</TableCell>
-              <TableCell align="center">{t('mto.type2.formula')}</TableCell>
               <TableCell align="center">{t('mto.type2.budgetPool')}</TableCell>
-              <TableCell align="center">{t('mto.type2.mallCount')}</TableCell>
               <TableCell align="center">{t('mto.type2.releaseTime')}</TableCell>
               <TableCell align="center">{t('mto.type2.settlementTime')}</TableCell>
               <TableCell align="center">{t('mto.type2.status')}</TableCell>
@@ -217,20 +208,7 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Stack spacing={0.5} alignItems="center">
-                    <Typography variant="body2">
-                      {req.managerProductFormula?.productName || `Formula #${req.managerProductFormulaId}`}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      ${req.managerProductFormula?.totalMaterialCost || 0}
-                    </Typography>
-                  </Stack>
-                </TableCell>
-                <TableCell align="center">
                   {formatCurrency(req.overallPurchaseBudget)}
-                </TableCell>
-                <TableCell align="center">
-                  {req.participatingMalls || req.participatingMallIds?.length || 0}
                 </TableCell>
                 <TableCell align="center">
                   {format(new Date(req.releaseTime), 'MM/dd/yyyy HH:mm')}
@@ -248,6 +226,17 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
                 </TableCell>
                 <TableCell align="center">
                   <Stack direction="row" spacing={1} justifyContent="center">
+                    <Tooltip title={t('mto.type2.history.viewHistory')}>
+                      <IconButton
+                        size="small"
+                        onClick={() => {
+                          setHistoryRequirement(req);
+                          setHistoryModalOpen(true);
+                        }}
+                      >
+                        <HistoryIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     {req.status === 'DRAFT' && (
                       <>
                         <Tooltip title={t('common.edit')}>
@@ -421,6 +410,19 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
         }}
         editData={selectedRequirement}
       />
+
+      {/* Calculation History Modal */}
+      {historyRequirement && (
+        <MtoType2CalculationHistoryModal
+          open={historyModalOpen}
+          onClose={() => {
+            setHistoryModalOpen(false);
+            setHistoryRequirement(null);
+          }}
+          mtoType2Id={historyRequirement.id}
+          mtoType2Name={historyRequirement.metadata?.name || historyRequirement.managerProductFormula?.productName || `Requirement #${historyRequirement.id}`}
+        />
+      )}
     </Box>
   );
 };

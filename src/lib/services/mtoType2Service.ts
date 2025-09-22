@@ -188,12 +188,30 @@ export class MtoType2Service {
   }
 
   static async getCalculationHistory(
-    requirementId: number
-  ): Promise<MtoType2CalculationHistory[]> {
+    requirementId: number,
+    params?: {
+      calculationType?: 'BUDGET_DISTRIBUTION' | 'SETTLEMENT_PROCESS' | 'ADJUSTMENT' | 'CANCELLATION';
+      limit?: number;
+      offset?: number;
+      sortOrder?: 'asc' | 'desc';
+    }
+  ): Promise<{
+    mtoType2Id: number;
+    histories: MtoType2CalculationHistory[];
+    total: number;
+  }> {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      if (params.calculationType) queryParams.append('calculationType', params.calculationType);
+      if (params.limit) queryParams.append('limit', params.limit.toString());
+      if (params.offset) queryParams.append('offset', params.offset.toString());
+      if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
+    }
+
     const response = await apiClient.get(
-      `${this.MANAGER_BASE_PATH}/${requirementId}/calculation-history`
+      `${this.MANAGER_BASE_PATH}/${requirementId}/calculation-history${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
     );
-    return this.extractResponseData<MtoType2CalculationHistory[]>(response);
+    return this.extractResponseData(response);
   }
 
   static async getSettlementHistory(
@@ -252,7 +270,21 @@ export class MtoType2Service {
     const response = await apiClient.get(
       `/user/manager/mto/formulas${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
     );
-    const data = this.extractResponseData(response);
+    const data = this.extractResponseData<{
+      items?: Array<{
+        id: number;
+        name: string;
+        productName?: string;
+        formulaNumber?: number;
+        totalMaterialCost?: string;
+        materialCount?: number;
+        craftCategoryCount?: number;
+        isLocked?: boolean;
+      }>;
+      total?: number;
+      page?: number;
+      limit?: number;
+    }>(response);
 
     // The API returns { items: [...], total, page, limit }
     if (data?.items && Array.isArray(data.items)) {
@@ -270,7 +302,7 @@ export class MtoType2Service {
 
     // Fallback for backward compatibility
     return {
-      items: data || [],
+      items: [],
       pagination: {
         page: 1,
         limit: 20,
@@ -389,6 +421,52 @@ export class MtoType2Service {
       `${this.PUBLIC_BASE_PATH}/${requirementId}/insights`
     );
     return this.extractResponseData(response);
+  }
+
+  // Student-specific endpoint for viewing opportunities
+  static async getOpportunitiesForStudents(): Promise<Array<{
+    requirementId: number;
+    requirementName: string;
+    status: string;
+    totalBudget: number;
+    releaseTime: string;
+    settlementTime: string;
+    productFormulaName: string;
+    marketInsights?: {
+      participatingMalls: number;
+      averagePrice?: number;
+      priceRange?: {
+        min: number;
+        max: number;
+      };
+      totalSubmissions: number;
+    };
+  }>> {
+    try {
+      // Use the public endpoint to get non-sensitive data
+      const publicData = await this.getPublicRequirements();
+
+      // Transform and filter data for student view
+      return publicData.map((item) => ({
+        requirementId: item.requirementId,
+        requirementName: item.requirementName || `Requirement ${item.requirementId}`,
+        status: item.status,
+        totalBudget: item.totalBudget,
+        releaseTime: item.releaseTime,
+        settlementTime: item.settlementTime,
+        productFormulaName: item.productFormula?.name || 'Standard Formula',
+        marketInsights: {
+          participatingMalls: 0,
+          averagePrice: undefined,
+          priceRange: undefined,
+          totalSubmissions: 0
+        }
+      }));
+    } catch (error) {
+      console.error('Error fetching student opportunities:', error);
+      // Return empty array on error
+      return [];
+    }
   }
 
   // New methods for missing features

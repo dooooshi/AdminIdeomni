@@ -179,13 +179,12 @@ export const shopTranslationsZh = {
   'shop.MAX_PRICE': '最高价格',
   'shop.MATERIALS_AVAILABLE': '{{count}} 个材料可用',
   'shop.AVAILABLE': '可用',
-  'shop.OUT_OF_STOCK': '缺货',
   'shop.PURCHASE': '购买',
   'shop.TRY_ADJUSTING_FILTERS': '尝试调整筛选条件',
   'shop.CHECK_BACK_LATER': '稍后再来查看可用材料',
 
   // Additional PurchaseDialog translations
-  'shop.PURCHASE_MATERIAL': '购买材料',
+  'shop.PURCHASE_MATERIAL_TITLE': '购买材料',
   'shop.MATERIAL_NUMBER': '材料 #{{number}}',
   'shop.UNLIMITED_STOCK': '无限库存',
   'shop.DELIVERY_FACILITY': '配送设施空间',
@@ -218,6 +217,5 @@ export const shopTranslationsZh = {
   'shop.YOUR_PURCHASE_HISTORY': '您的购买历史将显示在这里',
   'shop.NOT_AVAILABLE': '不可用',
   'shop.STATUS_DELIVERED': '已交付',
-  'shop.STATUS_PENDING': '待处理',
-  'shop.ORIGIN': '来源',
+  'shop.STATUS_PENDING': '待处理'
 };

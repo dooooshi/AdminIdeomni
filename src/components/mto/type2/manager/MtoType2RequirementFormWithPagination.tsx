@@ -69,17 +69,18 @@ interface MtoType2RequirementFormWithPaginationProps {
 
 interface FormulaData {
   id: number;
-  formulaNumber: number;
-  productName: string;
+  formulaNumber?: number;
+  productName?: string;
+  name: string;
   productDescription?: string;
-  totalMaterialCost: string;
+  totalMaterialCost?: string;
   totalSetupWaterCost?: number;
   totalSetupPowerCost?: number;
   totalSetupGoldCost?: string;
   materialCount?: number;
   craftCategoryCount?: number;
-  materials?: any[];
-  craftCategories?: any[];
+  materials?: Array<{ id: number; name: string; quantity?: number }>;
+  craftCategories?: Array<{ id: number; name: string; count?: number }>;
   isLocked?: boolean;
 }
 
@@ -305,7 +306,6 @@ const FormulaSelector: React.FC<{
                             onClick={() => handleSelect(formula)}
                             sx={{
                               '&.Mui-selected': {
-                                bgcolor: 'primary.light',
                                 bgcolor: 'rgba(25, 118, 210, 0.08)',
                                 borderLeft: 3,
                                 borderColor: 'primary.main'
@@ -392,7 +392,7 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
     managerProductFormulaId: editData?.managerProductFormulaId || 0,
     releaseTime: editData?.releaseTime || new Date(Date.now() + 10 * 60 * 1000).toISOString(),
     settlementTime: editData?.settlementTime || new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-    overallPurchaseBudget: editData?.overallPurchaseBudget || 10000,
+    overallPurchaseBudget: Number(editData?.overallPurchaseBudget) || 10000,
     metadata: editData?.metadata || {
       name: '',
       description: '',
@@ -405,9 +405,19 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
 
   useEffect(() => {
     if (editData) {
+      // Only copy the fields that can be edited
       setFormData({
-        ...initialFormData,
-        ...editData
+        managerProductFormulaId: editData.managerProductFormulaId,
+        releaseTime: editData.releaseTime,
+        settlementTime: editData.settlementTime,
+        overallPurchaseBudget: typeof editData.overallPurchaseBudget === 'string'
+          ? Number(editData.overallPurchaseBudget)
+          : editData.overallPurchaseBudget,
+        metadata: editData.metadata || {
+          name: '',
+          description: '',
+          notes: ''
+        }
       });
       // Load the selected formula if editing
       if (editData.managerProductFormulaId) {
@@ -416,6 +426,7 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
         setSelectedFormula({
           id: editData.managerProductFormulaId,
           formulaNumber: 0,
+          name: editData.metadata?.name || 'Formula',
           productName: editData.metadata?.name || 'Formula',
           totalMaterialCost: '0'
         });
@@ -462,7 +473,14 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
       setLoading(true);
 
       if (editData) {
-        await MtoType2Service.updateRequirement(editData.id, formData);
+        // Only send the fields that are allowed for update
+        const updateData = {
+          releaseTime: formData.releaseTime,
+          settlementTime: formData.settlementTime,
+          overallPurchaseBudget: formData.overallPurchaseBudget,
+          metadata: formData.metadata
+        };
+        await MtoType2Service.updateRequirement(editData.id, updateData);
         showSuccess(t('mto.type2.messages.updateSuccess'));
       } else {
         await MtoType2Service.createRequirement(formData);
@@ -471,9 +489,9 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
 
       onSuccess();
       handleClose();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Failed to save requirement:', error);
-      showError(error.message || t('mto.type2.errors.saveFailed'));
+      showError((error as Error).message || t('mto.type2.errors.saveFailed'));
     } finally {
       setLoading(false);
     }
@@ -586,7 +604,7 @@ export const MtoType2RequirementFormWithPagination: React.FC<MtoType2Requirement
 
             <Grid size={{ xs: 12, md: 6 }}>
               {selectedFormula && (
-                <Paper sx={{ p: 2, bgcolor: 'info.light', bgcolor: 'rgba(33, 150, 243, 0.08)' }}>
+                <Paper sx={{ p: 2, bgcolor: 'rgba(33, 150, 243, 0.08)' }}>
                   <Typography variant="body2" color="text.secondary">
                     {t('mto.type2.estimatedUnits')}
                   </Typography>

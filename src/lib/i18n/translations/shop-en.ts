@@ -179,13 +179,12 @@ export const shopTranslationsEn = {
   'shop.MAX_PRICE': 'Max Price',
   'shop.MATERIALS_AVAILABLE': '{{count}} material{{plural}} available',
   'shop.AVAILABLE': 'available',
-  'shop.OUT_OF_STOCK': 'Out of Stock',
   'shop.PURCHASE': 'Purchase',
   'shop.TRY_ADJUSTING_FILTERS': 'Try adjusting your filters',
   'shop.CHECK_BACK_LATER': 'Check back later for available materials',
 
   // Additional PurchaseDialog translations
-  'shop.PURCHASE_MATERIAL': 'Purchase Material',
+  'shop.PURCHASE_MATERIAL_TITLE': 'Purchase Material',
   'shop.MATERIAL_NUMBER': 'Material #{{number}}',
   'shop.UNLIMITED_STOCK': 'Unlimited stock',
   'shop.DELIVERY_FACILITY': 'Delivery Facility Space',
@@ -218,6 +217,5 @@ export const shopTranslationsEn = {
   'shop.YOUR_PURCHASE_HISTORY': 'Your purchase history will appear here',
   'shop.NOT_AVAILABLE': 'N/A',
   'shop.STATUS_DELIVERED': 'DELIVERED',
-  'shop.STATUS_PENDING': 'PENDING',
-  'shop.ORIGIN': 'Origin',
+  'shop.STATUS_PENDING': 'PENDING'
 };

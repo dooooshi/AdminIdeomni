@@ -575,6 +575,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					url: '/student/mto-deliveries',
 					translate: 'MTO_STUDENT_DELIVERIES',
 					auth: ['user']
+				},
+				{
+					id: 'mto-student.type2-market',
+					title: 'MALL Market Opportunities',
+					type: 'item',
+					icon: 'heroicons-outline:building-storefront',
+					url: '/student/mto-type2-market',
+					translate: 'MTO_TYPE2_STUDENT_MARKET',
+					auth: ['user']
 				}
 			]
 		});

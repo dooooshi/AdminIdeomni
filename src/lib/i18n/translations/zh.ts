@@ -403,6 +403,7 @@ export const zhTranslations = {
   'common.select': '选择',
   'common.edit': '编辑',
   'common.close': '关闭',
+  'common.system': '系统',
   'common.clearFilters': '清除筛选',
   'common.itemsPerPage': '每页条目',
   'common.of': '共',
