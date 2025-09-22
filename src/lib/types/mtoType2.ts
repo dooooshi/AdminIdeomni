@@ -406,3 +406,59 @@ export interface MtoType2AuditTrail {
   ipAddress?: string;
   userAgent?: string;
 }
+
+export interface MtoType2RequirementDetails {
+  id: number;
+  status: "RELEASED" | "IN_PROGRESS" | "SETTLING" | "SETTLED";
+  releaseTime: string;
+  settlementTime: string;
+  overallPurchaseBudget: string;
+
+  productFormula: {
+    id: number;
+    name: string;
+    description?: string;
+    craftCategories: Array<{
+      id: number;
+      name: string;
+      description?: string;
+    }>;
+    rawMaterials: Array<{
+      id: number;
+      name: string;
+      quantity: number;
+      unit: string;
+    }>;
+    productionProcess?: {
+      steps?: string[];
+      duration?: number; // minutes
+      complexity?: "LOW" | "MEDIUM" | "HIGH";
+    };
+  };
+
+  tileBudgetAllocations: Array<{
+    tileId: number;
+    tileName: string;
+    axialQ: number;
+    axialR: number;
+
+    tilePopulation: number;
+    populationRatio: number; // percentage of total population
+    allocatedBudget: string; // calculated budget for this tile
+
+    mallsInTile: Array<{
+      mallId: string;
+      mallName: string;
+      mallLevel: number; // 1-5
+      teamId: string;
+      teamName: string;
+    }>;
+
+    settlementProgress?: {
+      spentBudget: string;
+      remainingBudget: string;
+      purchasedQuantity: number;
+      participatingTeams: number;
+    };
+  }>;
+}

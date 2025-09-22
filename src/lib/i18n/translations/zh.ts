@@ -172,6 +172,7 @@ export const zhTranslations = {
   'transportation.TO': '到',
   'transportation.TRANSFER_DETAILS': '转运详情',
   'transportation.EXECUTE_TRANSFER': '执行转运',
+  'transportation.EXECUTING': '执行中...',
   'transportation.NEW_TRANSFER': '新建转运',
   'transportation.TRANSFER_HISTORY': '转运历史',
   'transportation.QUANTITY': '数量',
@@ -403,6 +404,7 @@ export const zhTranslations = {
   'common.select': '选择',
   'common.edit': '编辑',
   'common.close': '关闭',
+  'common.minutes': '分钟',
   'common.system': '系统',
   'common.clearFilters': '清除筛选',
   'common.itemsPerPage': '每页条目',
@@ -3452,7 +3454,8 @@ export const zhTranslations = {
   'infrastructure.CURRENT_ANNUAL_FEE': '当前年费',
   'infrastructure.PRICE_MUST_BE_POSITIVE': '价格必须是正数',
   'infrastructure.PRICE_MUST_BE_HIGHER_THAN_UNIT': '建议价格必须至少为 ${{unitPrice}}（当前单价）',
-  
+  'infrastructure.PRICE_MUST_BE_HIGHER_THAN_ANNUAL': '建议年费必须高于 ${{annualFee}}（当前年费）',
+
   // Error messages
   'infrastructure.ERROR_LOADING_DATA': '加载数据时出错',
   'infrastructure.ERROR_PROCESSING_REQUEST': '处理请求时出错',

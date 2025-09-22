@@ -22,7 +22,8 @@ import {
   MtoType2PriceTrend,
   MtoType2BulkSettleRequest,
   MtoType2BulkSettleResponse,
-  MtoType2AuditTrail
+  MtoType2AuditTrail,
+  MtoType2RequirementDetails
 } from '@/lib/types/mtoType2';
 
 export interface ApiResponse<T> {
@@ -517,6 +518,16 @@ export class MtoType2Service {
       // Return empty array on error
       return [];
     }
+  }
+
+  // Student-specific endpoint for viewing MTO Type 2 requirement details
+  static async getRequirementDetailsForStudent(
+    requirementId: number
+  ): Promise<MtoType2RequirementDetails> {
+    const response = await apiClient.get(
+      `/team/mto-type-2/${requirementId}/requirement`
+    );
+    return this.extractResponseData<MtoType2RequirementDetails>(response);
   }
 
   // New methods for missing features

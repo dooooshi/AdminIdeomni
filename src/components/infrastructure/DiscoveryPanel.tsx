@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -56,7 +56,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
 }) => {
   const { t } = useTranslation();
   const [selectedFacility, setSelectedFacility] = useState<string>('');
-  const [searchType, setSearchType] = useState<'connections' | 'services'>('connections');
+  const [searchType, setSearchType] = useState<'connections' | 'services'>('connections'); // Default to Water & Power
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [providers, setProviders] = useState<{
@@ -72,10 +72,17 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
   const [priceError, setPriceError] = useState<string | null>(null);
 
   // Filter facilities that need infrastructure
-  const consumerFacilities = facilities.filter(f => 
+  const consumerFacilities = facilities.filter(f =>
     ['MINE', 'QUARRY', 'FOREST', 'FARM', 'RANCH', 'FISHERY', 'FACTORY', 'MALL', 'WAREHOUSE']
       .includes(f.facilityType)
   );
+
+  // Auto-trigger search when facility is selected or search type changes
+  useEffect(() => {
+    if (selectedFacility) {
+      handleSearch();
+    }
+  }, [selectedFacility, searchType]);
 
   const handleSearch = async () => {
     if (!selectedFacility) return;
@@ -99,13 +106,13 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
 
   const validatePrice = (price: string): boolean => {
     if (!price) return true; // Empty is valid (will use default)
-    
+
     const priceValue = parseFloat(price);
     if (isNaN(priceValue) || priceValue < 0) {
       setPriceError(t('infrastructure.PRICE_MUST_BE_POSITIVE'));
       return false;
     }
-    
+
     // For connections, check if price is at least the unit price
     if (searchType === 'connections' && selectedProvider && 'unitPrice' in selectedProvider) {
       if (priceValue < selectedProvider.unitPrice) {
@@ -113,7 +120,15 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
         return false;
       }
     }
-    
+
+    // For services, check if price is greater than the annual fee
+    if (searchType === 'services' && selectedProvider && 'annualFee' in selectedProvider) {
+      if (priceValue <= selectedProvider.annualFee) {
+        setPriceError(t('infrastructure.PRICE_MUST_BE_HIGHER_THAN_ANNUAL', { annualFee: selectedProvider.annualFee }));
+        return false;
+      }
+    }
+
     setPriceError(null);
     return true;
   };
@@ -196,7 +211,10 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               <InputLabel>{t('infrastructure.SELECT_FACILITY')}</InputLabel>
               <Select
                 value={selectedFacility}
-                onChange={(e) => setSelectedFacility(e.target.value)}
+                onChange={(e) => {
+                  setSelectedFacility(e.target.value);
+                  // Search will be triggered automatically by useEffect
+                }}
                 label={t('infrastructure.SELECT_FACILITY')}
               >
                 {consumerFacilities.map(facility => (
@@ -211,7 +229,10 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               <InputLabel>{t('infrastructure.SEARCH_TYPE')}</InputLabel>
               <Select
                 value={searchType}
-                onChange={(e) => setSearchType(e.target.value as 'connections' | 'services')}
+                onChange={(e) => {
+                  setSearchType(e.target.value as 'connections' | 'services');
+                  // Search will be triggered automatically by useEffect
+                }}
                 label={t('infrastructure.SEARCH_TYPE')}
               >
                 <MenuItem value="connections">
@@ -238,7 +259,7 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
               startIcon={<SearchIcon />}
               sx={{ minWidth: 120 }}
             >
-              {t('infrastructure.SEARCH')}
+              {loading ? t('infrastructure.SEARCHING') : t('infrastructure.REFRESH')}
             </Button>
           </Box>
           
@@ -537,10 +558,12 @@ const DiscoveryPanel: React.FC<DiscoveryPanelProps> = ({
             onChange={(e) => handlePriceChange(e.target.value)}
             error={!!priceError}
             helperText={
-              priceError || 
+              priceError ||
               (searchType === 'connections' && selectedProvider && 'unitPrice' in selectedProvider
                 ? `Leave blank for default (2x unit price = $${selectedProvider.unitPrice * 2})`
-                : t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT'))
+                : searchType === 'services' && selectedProvider && 'annualFee' in selectedProvider
+                  ? `Must be greater than $${selectedProvider.annualFee}. Leave blank for default.`
+                  : t('infrastructure.OPTIONAL_LEAVE_BLANK_FOR_DEFAULT'))
             }
           />
         </DialogContent>

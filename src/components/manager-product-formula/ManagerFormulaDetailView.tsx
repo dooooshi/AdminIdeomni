@@ -275,7 +275,7 @@ const ManagerFormulaDetailView: React.FC<ManagerFormulaDetailViewProps> = ({
                     {formula.craftCategories?.map((category) => (
                       <TableRow key={category.id}>
                         <TableCell>
-                          {category.craftCategory?.nameEn}
+                          {category.craftCategory?.name || category.craftCategory?.nameEn}
                         </TableCell>
                         <TableCell>
                           <Chip

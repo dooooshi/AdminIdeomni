@@ -92,6 +92,7 @@ export default function TransportationPage() {
   const [transferResult, setTransferResult] = useState<TransferResult | null>(null);
   const [inventoryItems, setInventoryItems] = useState<InventoryItemForTransport[]>([]);
   const [loadingItems, setLoadingItems] = useState(false);
+  const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
     fetchFacilities();
@@ -274,8 +275,10 @@ export default function TransportationPage() {
 
   const executeTransfer = async () => {
     if (!sourceFacility || !destFacility || !selectedItem || !costPreview) return;
+    if (isExecuting) return; // Prevent double execution
 
     try {
+      setIsExecuting(true);
       setLoading(true);
       const availableTier = costPreview.availableTiers.find(t => t.available);
       if (!availableTier) {
@@ -294,7 +297,7 @@ export default function TransportationPage() {
       setTransferResult(result as TransferResult);
       setConfirmDialog(false);
       setSuccessDialog(true);
-      
+
       // Refresh data
       await fetchFacilities();
       await fetchTransferHistory();
@@ -302,6 +305,7 @@ export default function TransportationPage() {
       console.error('Failed to execute transfer:', error);
     } finally {
       setLoading(false);
+      setIsExecuting(false);
     }
   };
 
@@ -577,9 +581,9 @@ export default function TransportationPage() {
                 size="large"
                 startIcon={<LocalShippingIcon />}
                 onClick={() => setConfirmDialog(true)}
-                disabled={loading || !costPreview}
+                disabled={loading || !costPreview || isExecuting}
               >
-                {t('transportation.EXECUTE_TRANSFER')}
+                {isExecuting ? t('transportation.EXECUTING') : t('transportation.EXECUTE_TRANSFER')}
               </Button>
             </Box>
           </Box>
@@ -657,31 +661,31 @@ export default function TransportationPage() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t('common.DATE')}</TableCell>
-                <TableCell>{t('transportation.FROM')}</TableCell>
-                <TableCell>{t('transportation.TO')}</TableCell>
-                <TableCell>{t('transportation.ITEM')}</TableCell>
-                <TableCell align="right">{t('transportation.QUANTITY')}</TableCell>
-                <TableCell>{t('transportation.TIER')}</TableCell>
-                <TableCell align="right">{t('transportation.COST')}</TableCell>
-                <TableCell>{t('common.STATUS')}</TableCell>
+                <TableCell align="center">{t('common.DATE')}</TableCell>
+                <TableCell align="center">{t('transportation.FROM')}</TableCell>
+                <TableCell align="center">{t('transportation.TO')}</TableCell>
+                <TableCell align="center">{t('transportation.ITEM')}</TableCell>
+                <TableCell align="center">{t('transportation.QUANTITY')}</TableCell>
+                <TableCell align="center">{t('transportation.TIER')}</TableCell>
+                <TableCell align="center">{t('transportation.COST')}</TableCell>
+                <TableCell align="center">{t('common.STATUS')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {transferHistory.map((order: any) => (
                 <TableRow key={order.orderId || order.id}>
-                  <TableCell>
+                  <TableCell align="center">
                     {new Date(order.timestamp || order.createdAt).toLocaleDateString()}
                   </TableCell>
-                  <TableCell>{order.sourceFacility || order.sourceFacilityId || '-'}</TableCell>
-                  <TableCell>{order.destFacility || order.destFacilityId || '-'}</TableCell>
-                  <TableCell>{order.itemName || order.itemType || '-'}</TableCell>
-                  <TableCell align="right">{order.quantity || 0}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">{order.sourceFacility || order.sourceFacilityId || '-'}</TableCell>
+                  <TableCell align="center">{order.destFacility || order.destFacilityId || '-'}</TableCell>
+                  <TableCell align="center">{order.itemName || order.itemType || '-'}</TableCell>
+                  <TableCell align="center">{order.quantity || 0}</TableCell>
+                  <TableCell align="center">
                     <Chip size="small" label={order.tier || 'N/A'} />
                   </TableCell>
-                  <TableCell align="right">{t('transportation.TOTAL_GOLD_COST', { cost: order.totalCost || order.totalGoldCost || 0 })}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">{t('transportation.TOTAL_GOLD_COST', { cost: order.totalCost || order.totalGoldCost || 0 })}</TableCell>
+                  <TableCell align="center">
                     <Chip
                       size="small"
                       label={order.status || 'UNKNOWN'}
@@ -705,19 +709,24 @@ export default function TransportationPage() {
       </Paper>
 
       {/* Confirmation Dialog */}
-      <Dialog open={confirmDialog} onClose={() => setConfirmDialog(false)}>
+      <Dialog open={confirmDialog} onClose={() => !isExecuting && setConfirmDialog(false)}>
         <DialogTitle>{t('transportation.CONFIRM_TRANSFER')}</DialogTitle>
         <DialogContent>
           <Typography>
             {t('transportation.CONFIRM_TRANSFER_MESSAGE')}
           </Typography>
+          {isExecuting && (
+            <Box mt={2} display="flex" justifyContent="center">
+              <CircularProgress size={24} />
+            </Box>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setConfirmDialog(false)}>
+          <Button onClick={() => setConfirmDialog(false)} disabled={isExecuting}>
             {t('common.CANCEL')}
           </Button>
-          <Button onClick={executeTransfer} variant="contained" color="primary">
-            {t('common.CONFIRM')}
+          <Button onClick={executeTransfer} variant="contained" color="primary" disabled={isExecuting}>
+            {isExecuting ? t('transportation.EXECUTING') : t('common.CONFIRM')}
           </Button>
         </DialogActions>
       </Dialog>

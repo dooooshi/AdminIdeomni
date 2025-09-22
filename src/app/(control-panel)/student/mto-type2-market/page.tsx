@@ -91,21 +91,6 @@ export default function StudentMtoType2MarketPage() {
         </Stack>
       </Stack>
 
-      {/* Information Box */}
-      <Paper sx={{ p: 2, mb: 3, bgcolor: 'background.default' }}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <MallIcon color="primary" />
-          <Box flex={1}>
-            <Typography variant="subtitle1" fontWeight="medium">
-              {t('mto.type2.student.understandingTitle')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {t('mto.type2.student.understandingDesc')}
-            </Typography>
-          </Box>
-        </Stack>
-      </Paper>
-
       {/* Main Content */}
       <MtoType2StudentView />
     </Container>

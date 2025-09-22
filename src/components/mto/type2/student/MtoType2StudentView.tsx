@@ -23,6 +23,7 @@ import {
 
 import { MtoType2Service } from '@/lib/services/mtoType2Service';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import MtoType2RequirementDetailsModal from './MtoType2RequirementDetailsModal';
 
 interface MtoType2Opportunity {
   requirementId: number;
@@ -44,6 +45,8 @@ export const MtoType2StudentView: React.FC = () => {
 
   const [opportunities, setOpportunities] = useState<MtoType2Opportunity[]>([]);
   const [loading, setLoading] = useState(false);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
 
   const loadOpportunities = async () => {
     try {
@@ -86,6 +89,15 @@ export const MtoType2StudentView: React.FC = () => {
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'ACTIVE': return t('mto.type2.student.statusActive');
+      case 'SETTLED': return t('mto.type2.student.statusSettled');
+      case 'CANCELLED': return t('mto.type2.student.statusCancelled');
+      default: return status;
+    }
+  };
+
   const formatDate = (dateString: string) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleString();
@@ -93,6 +105,16 @@ export const MtoType2StudentView: React.FC = () => {
 
   const formatCurrency = (amount: number) => {
     return `$${amount.toLocaleString()}`;
+  };
+
+  const handleViewDetails = (requirementId: number) => {
+    setSelectedRequirementId(requirementId);
+    setDetailsModalOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setDetailsModalOpen(false);
+    setSelectedRequirementId(null);
   };
 
   if (loading && opportunities.length === 0) {
@@ -108,7 +130,7 @@ export const MtoType2StudentView: React.FC = () => {
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h5" component="h2">
-          MTO Type 2 Market Opportunities
+          {t('mto.type2.student.marketOpportunities')}
         </Typography>
         <Button
           variant="outlined"
@@ -125,11 +147,11 @@ export const MtoType2StudentView: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Formula Name</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Settlement Date</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>{t('mto.type2.student.tableId')}</TableCell>
+              <TableCell>{t('mto.type2.student.tableFormulaName')}</TableCell>
+              <TableCell>{t('mto.type2.student.tableStatus')}</TableCell>
+              <TableCell>{t('mto.type2.student.tableSettlementDate')}</TableCell>
+              <TableCell align="center">{t('mto.type2.student.tableActions')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -137,7 +159,7 @@ export const MtoType2StudentView: React.FC = () => {
               <TableRow>
                 <TableCell colSpan={5} align="center">
                   <Alert severity="info" sx={{ justifyContent: 'center' }}>
-                    No opportunities available at the moment
+                    {t('mto.type2.student.noOpportunitiesAvailable')}
                   </Alert>
                 </TableCell>
               </TableRow>
@@ -155,15 +177,15 @@ export const MtoType2StudentView: React.FC = () => {
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={opportunity.status}
+                      label={getStatusLabel(opportunity.status)}
                       color={getStatusColor(opportunity.status)}
                       size="small"
                     />
                   </TableCell>
                   <TableCell>{formatDate(opportunity.settlementTime)}</TableCell>
                   <TableCell align="center">
-                    <Tooltip title="View Details">
-                      <IconButton size="small">
+                    <Tooltip title={t('mto.type2.student.viewDetailsTooltip')}>
+                      <IconButton size="small" onClick={() => handleViewDetails(opportunity.requirementId)}>
                         <VisibilityIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
@@ -174,6 +196,13 @@ export const MtoType2StudentView: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Requirement Details Modal */}
+      <MtoType2RequirementDetailsModal
+        open={detailsModalOpen}
+        requirementId={selectedRequirementId}
+        onClose={handleCloseDetailsModal}
+      />
     </Box>
   );
 };

@@ -16,7 +16,6 @@ import {
   ShoppingCart as ShoppingCartIcon,
   History as HistoryIcon,
   Refresh as RefreshIcon,
-  AccountBalanceWallet as WalletIcon,
 } from '@mui/icons-material';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchMaterials, fetchFacilitySpaces } from '@/store/shopSlice';
@@ -51,9 +50,6 @@ export default function StudentShopPage() {
   const [activeTab, setActiveTab] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Mock team balance - in real app, this would come from team state/API
-  const teamBalance = 5000.00;
-
   useEffect(() => {
     // Load initial data
     dispatch(fetchMaterials(undefined));
@@ -87,29 +83,6 @@ export default function StudentShopPage() {
         </Box>
 
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          {/* Team Balance Display */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              px: 2,
-              py: 1,
-              backgroundColor: 'primary.light',
-              borderRadius: 2,
-            }}
-          >
-            <WalletIcon color="primary" />
-            <Box>
-              <Typography variant="caption" color="textSecondary">
-                {t('shop.MY_BALANCE')}
-              </Typography>
-              <Typography variant="h6" color="primary" fontWeight="bold">
-                {teamBalance.toFixed(2)}
-              </Typography>
-            </Box>
-          </Box>
-
           <Button
             variant="outlined"
             startIcon={<HistoryIcon />}

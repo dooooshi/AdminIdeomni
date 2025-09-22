@@ -34,9 +34,6 @@ import {
   Visibility as ViewIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  ContentCopy as CloneIcon,
-  Lock as LockIcon,
-  LockOpen as UnlockIcon,
   Factory as FactoryIcon,
   Science as ScienceIcon
 } from '@mui/icons-material';
@@ -131,25 +128,6 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
     }
   };
 
-  const handleClone = async (formula: ManagerProductFormula) => {
-    try {
-      await ManagerProductFormulaService.cloneProductFormula(formula.id, {
-        productName: `${formula.productName} ${t('managerProductFormula.copy')}`
-      });
-      enqueueSnackbar(t('managerProductFormula.cloneSuccess'), { variant: 'success' });
-      loadFormulas();
-    } catch (error) {
-      enqueueSnackbar(t('managerProductFormula.errors.cloneFailed'), { variant: 'error' });
-    }
-  };
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(value);
-  };
-
   return (
     <Box>
       <Stack direction="row" spacing={2} sx={{ mb: 3 }} alignItems="center">
@@ -203,16 +181,13 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                   <TableCell align="center">{t('managerProductFormula.productName')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.materials')}</TableCell>
                   <TableCell align="center">{t('managerProductFormula.craftCategories')}</TableCell>
-                  <TableCell align="center">{t('managerProductFormula.totalCost')}</TableCell>
-                  <TableCell align="center">{t('managerProductFormula.status')}</TableCell>
-                  <TableCell align="center">{t('managerProductFormula.mtoUsage')}</TableCell>
                   <TableCell align="center">{t('common.actions')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {formulas.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} align="center">
+                    <TableCell colSpan={5} align="center">
                       <Typography variant="body2" color="textSecondary" py={4}>
                         {t('managerProductFormula.noFormulas')}
                       </Typography>
@@ -253,34 +228,6 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                         </Stack>
                       </TableCell>
                       <TableCell align="center">
-                        <Typography variant="body2" fontWeight="medium">
-                          ${formatCurrency(formula.totalMaterialCost)}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={t('managerProductFormula.active')}
-                          size="small"
-                          color="success"
-                          icon={<UnlockIcon fontSize="small" />}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Stack direction="row" spacing={0.5} justifyContent="center">
-                          {formula.usedInMTOType1 && (
-                            <Chip label={t('managerProductFormula.type1')} size="small" color="primary" />
-                          )}
-                          {formula.usedInMTOType2 && (
-                            <Chip label={t('managerProductFormula.type2')} size="small" color="secondary" />
-                          )}
-                          {!formula.usedInMTOType1 && !formula.usedInMTOType2 && (
-                            <Typography variant="caption" color="textSecondary">
-                              {t('managerProductFormula.notUsed')}
-                            </Typography>
-                          )}
-                        </Stack>
-                      </TableCell>
-                      <TableCell align="center">
                         <Stack direction="row" spacing={0.5} justifyContent="center">
                           <Tooltip title={t('common.view')}>
                             <IconButton
@@ -296,14 +243,6 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
                               onClick={() => onEditClick(formula)}
                             >
                               <EditIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title={t('managerProductFormula.clone')}>
-                            <IconButton
-                              size="small"
-                              onClick={() => handleClone(formula)}
-                            >
-                              <CloneIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={t('common.delete')}>

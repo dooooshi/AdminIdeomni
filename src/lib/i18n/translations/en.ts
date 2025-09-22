@@ -172,6 +172,7 @@ export const enTranslations = {
   'transportation.TO': 'To',
   'transportation.TRANSFER_DETAILS': 'Transfer Details',
   'transportation.EXECUTE_TRANSFER': 'Execute Transfer',
+  'transportation.EXECUTING': 'Executing...',
   'transportation.NEW_TRANSFER': 'New Transfer',
   'transportation.TRANSFER_HISTORY': 'Transfer History',
   'transportation.QUANTITY': 'Quantity',
@@ -311,6 +312,7 @@ export const enTranslations = {
   'common.cancel': 'Cancel',
   'common.edit': 'Edit',
   'common.close': 'Close',
+  'common.minutes': 'minutes',
   'common.system': 'System',
   'common.clearFilters': 'Clear Filters',
   'common.itemsPerPage': 'Items per page',
@@ -3317,7 +3319,8 @@ export const enTranslations = {
   'infrastructure.CURRENT_ANNUAL_FEE': 'Current Annual Fee',
   'infrastructure.PRICE_MUST_BE_POSITIVE': 'Price must be a positive number',
   'infrastructure.PRICE_MUST_BE_HIGHER_THAN_UNIT': 'Proposed price must be at least ${{unitPrice}} (current unit price)',
-  
+  'infrastructure.PRICE_MUST_BE_HIGHER_THAN_ANNUAL': 'Proposed annual fee must be greater than ${{annualFee}} (current annual fee)',
+
   // Operational Status
   'infrastructure.FULL': 'Full',
   'infrastructure.PARTIAL': 'Partial',

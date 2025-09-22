@@ -290,13 +290,13 @@ function TransferHistoryPage() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{t('teamManagement.DATE')}</TableCell>
-                      <TableCell>{t('teamManagement.DIRECTION')}</TableCell>
-                      <TableCell>{t('teamManagement.PARTNER_TEAM')}</TableCell>
-                      <TableCell>{t('teamManagement.RESOURCE')}</TableCell>
-                      <TableCell>{t('teamManagement.AMOUNT')}</TableCell>
-                      <TableCell>{t('teamManagement.DESCRIPTION')}</TableCell>
-                      <TableCell>{t('teamManagement.USER')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.DATE')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.DIRECTION')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.PARTNER_TEAM')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.RESOURCE')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.AMOUNT')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.DESCRIPTION')}</TableCell>
+                      <TableCell align="center">{t('teamManagement.USER')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -309,15 +309,17 @@ function TransferHistoryPage() {
                     ) : transfersData?.data && transfersData.data.length > 0 ? (
                       transfersData.data.map((transfer) => (
                         <TableRow key={transfer.id} hover>
-                          <TableCell>
-                            <Typography variant="body2">
-                              {new Date(transfer.createdAt).toLocaleDateString()}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {new Date(transfer.createdAt).toLocaleTimeString()}
-                            </Typography>
+                          <TableCell align="center">
+                            <div>
+                              <Typography variant="body2">
+                                {new Date(transfer.createdAt).toLocaleDateString()}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {new Date(transfer.createdAt).toLocaleTimeString()}
+                              </Typography>
+                            </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <Chip
                               size="small"
                               label={transfer.operationType === 'TRANSFER_OUT' ? t('teamManagement.OUTGOING') : t('teamManagement.INCOMING')}
@@ -332,7 +334,7 @@ function TransferHistoryPage() {
                               }
                             />
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <div className="flex items-center gap-2">
                               <div className="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-semibold">
                                 {transfer.operationType === 'TRANSFER_OUT' 
@@ -348,7 +350,7 @@ function TransferHistoryPage() {
                               </Typography>
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <div className="flex items-center gap-2">
                               {transfer.resourceType === TeamResourceType.GOLD ? (
                                 <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
@@ -360,7 +362,7 @@ function TransferHistoryPage() {
                               </Typography>
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <Typography 
                               variant="body2" 
                               className={`font-medium flex items-center gap-1 ${
@@ -376,12 +378,12 @@ function TransferHistoryPage() {
                               {TeamTransferService.formatTransferAmount(transfer.amount)}
                             </Typography>
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <Typography variant="body2" color="text.secondary">
                               {transfer.description || '-'}
                             </Typography>
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <Typography variant="body2">
                               {transfer.user.firstName && transfer.user.lastName
                                 ? `${transfer.user.firstName} ${transfer.user.lastName}`
