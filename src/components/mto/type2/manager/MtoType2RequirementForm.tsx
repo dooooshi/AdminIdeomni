@@ -124,9 +124,9 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
   const loadManagerFormulas = async () => {
     try {
       setLoadingFormulas(true);
-      const formulas = await MtoType2Service.getManagerFormulas();
-      if (formulas) {
-        setAvailableFormulas(formulas);
+      const response = await MtoType2Service.getManagerFormulas({ limit: 100 });
+      if (response?.items) {
+        setAvailableFormulas(response.items);
       }
     } catch (error) {
       console.error('Failed to load formulas:', error);

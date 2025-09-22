@@ -15,6 +15,7 @@ http://localhost:2999/api
 - User endpoints require JWT authentication via User authentication system
 - Admin endpoints require JWT authentication with appropriate admin privileges
 - Student-accessible endpoints automatically determine team and activity from user context
+- The user's current activityId is retrieved from the database based on their authentication token, not from request parameters
 
 ### Standard Response Format
 ```typescript
@@ -36,13 +37,15 @@ interface ApiResponse<T> {
 #### 1.1 Get Simplified Building Compatibility Matrix
 **Endpoint**: `GET /api/user/facility-land-compatibility/matrix`
 
-**Description**: Returns a simplified matrix view of facility-land type compatibility for quick reference and UI display.
+**Description**: Returns a simplified matrix view of facility-land type compatibility for quick reference and UI display. The compatibility rules are based on the user's current activity's map template.
 
 **Authentication**: User JWT token required (Student role)
 
 **Query Parameters**:
-- `activityId` (optional): Override the default activity context
 - `format` (optional): Response format - "simple" (default) or "detailed"
+
+**Headers Required**:
+- `Authorization`: Bearer {JWT_TOKEN}
 
 **Response Structure (Simple Format)**:
 ```json
@@ -90,8 +93,10 @@ interface ApiResponse<T> {
 **Authentication**: User JWT token required (Student role)
 
 **Query Parameters**:
-- `activityId` (optional): Override the default activity context
-- `landType` (optional): Filter for specific land type
+- `landType` (optional): Filter for specific land type (e.g., "PLAIN", "MARINE", "MOUNTAINS")
+
+**Headers Required**:
+- `Authorization`: Bearer {JWT_TOKEN}
 
 **Response Structure**:
 ```json
@@ -137,25 +142,44 @@ interface ApiResponse<T> {
 }
 ```
 
-## Implementation Notes
+## Implementation Details
+
+### Data Model
+The facility-land compatibility rules are stored in the `TileFacilityBuildConfig` table:
+```prisma
+model TileFacilityBuildConfig {
+  id           Int          @id @default(autoincrement())
+  templateId   Int
+  facilityType FacilityType
+  landType     LandType
+  isAllowed    Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  mapTemplate  MapTemplate  @relation(fields: [templateId], references: [id])
+
+  @@unique([templateId, facilityType, landType])
+}
+```
+
+### Implementation Architecture
+- **Controller**: `FacilityLandCompatibilityController` handles HTTP requests with JWT authentication
+- **Service**: `FacilityLandCompatibilityService` implements business logic and data retrieval
+- **Repository**: `TileFacilityBuildConfigRepository` extends `AbstractBaseRepository` for database access
+- **DTOs**: Type-safe request/response objects with validation decorators
 
 ### Data Source
-The facility-land compatibility rules should be configured at the map template level, allowing different activities to have different building rules based on their scenarios.
-
-### Caching Strategy
-- Compatibility rules should be cached per template since they don't change frequently
-- Cache invalidation should occur when template configurations are updated
-- Consider using Redis for caching with a TTL of 1 hour
+The facility-land compatibility rules are configured at the map template level, allowing different activities to have different building rules based on their scenarios.
 
 ### Performance Considerations
-- The matrix endpoint should use efficient data structures to minimize payload size
-- Consider implementing pagination for detailed rules if the dataset grows large
-- Use database indexes on template_id, facility_type, and land_type for quick lookups
+- The matrix endpoint uses efficient data structures to minimize payload size
+- Database indexes on template_id, facility_type, and land_type for quick lookups
+- Results are computed on-demand based on the user's current activity
 
 ### Business Logic Integration
-- Rules should integrate with existing facility placement validation
-- Consider terrain modifiers and special conditions from the activity configuration
-- Efficiency ratings should affect production rates and operational costs
+- Rules integrate with existing facility placement validation
+- User's current activity is determined from their authentication context
+- Map template ID is retrieved from the activity configuration
 
 ### Future Enhancements
 1. **Dynamic Rules**: Support for activity-specific rule overrides

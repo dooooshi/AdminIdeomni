@@ -12,19 +12,37 @@ export interface MtoType2Requirement {
   managerProductFormulaId: number;
   releaseTime: string;
   settlementTime: string;
-  overallPurchaseBudget: number;
+  overallPurchaseBudget: string | number;
   budgetPool?: number;
   requirementName?: string;
   participatingMallIds?: string[];
+  participatingMalls?: number;
   status: keyof MtoType2Status;
   createdAt?: string;
   updatedAt?: string;
+  createdBy?: string;
+  actualSpentBudget?: string | null;
+  actualPurchasedNumber?: number;
+  totalSubmissions?: number;
+  averageUnitPrice?: string | null;
+  lowestUnitPrice?: string | null;
+  highestUnitPrice?: string | null;
+  settlementStartedAt?: string | null;
+  settlementCompletedAt?: string | null;
   metadata?: {
     name?: string;
     description?: string;
     notes?: string;
   };
-  totalSubmissions?: number;
+  managerProductFormula?: {
+    id: number;
+    formulaNumber: number;
+    productName: string;
+    productDescription?: string;
+    totalMaterialCost: string;
+    isLocked?: boolean;
+    [key: string]: any;
+  };
 }
 
 export interface MtoType2Submission {

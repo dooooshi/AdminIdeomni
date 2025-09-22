@@ -1,11 +1,13 @@
 import { enExtendedTranslations } from './en-extended';
 import { tradeTranslationsEn } from './trade-en';
 import { mtoTranslationsEn } from './mto-en';
+import { shopTranslationsEn } from './shop-en';
 
 export const enTranslations = {
   ...enExtendedTranslations,
   ...tradeTranslationsEn,
   ...mtoTranslationsEn,
+  ...shopTranslationsEn,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO Management',
   'MTO_MANAGEMENT_SUBTITLE': 'Made-To-Order system management',
@@ -4281,4 +4283,8 @@ export const enTranslations = {
   'trade.operation.cancelled': 'Trade cancelled',
   'trade.operation.completed': 'Trade completed',
   'trade.operation.failed': 'Trade failed',
+
+  // Common translations
+  'common.locked': 'Locked',
+  'common.validation.fixErrors': 'Please fix the errors before submitting',
 };

@@ -168,11 +168,11 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
   const priceChartData = Object.values(priceDistributionData);
 
   const settlementSteps = [
-    'Validate Submissions',
-    'Calculate Priorities',
-    'Allocate Budget',
-    'Process Payments',
-    'Complete Settlement',
+    t('mto.type2.settlement.validateSubmissions'),
+    t('mto.type2.settlement.calculatePriorities'),
+    t('mto.type2.settlement.allocateBudget'),
+    t('mto.type2.settlement.processPayments'),
+    t('mto.type2.settlement.completeSettlement'),
   ];
 
   const canSettle = requirement.status === 'IN_PROGRESS' && pendingSubmissions === 0 && validatedSubmissions > 0;
@@ -317,7 +317,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
       {requirement.status === 'IN_PROGRESS' && (
         <Card sx={{ mb: 4 }}>
           <CardHeader
-            title="Settlement Process"
+            title={t('mto.type2.settlement.settlementProcess')}
             avatar={<TimelineIcon />}
           />
           <CardContent>
@@ -342,7 +342,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, md: 6 }}>
           <Card>
-            <CardHeader title="Price Distribution Analysis" />
+            <CardHeader title={t('mto.type2.settlement.priceDistributionAnalysis')} />
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={priceChartData}>

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Dialog,
   DialogTitle,
@@ -28,6 +29,8 @@ export default function RemoveMaterialConfirm({
   onConfirm,
   material,
 }: RemoveMaterialConfirmProps) {
+  const { t } = useTranslation();
+
   if (!material) {
     return null;
   }
@@ -37,13 +40,13 @@ export default function RemoveMaterialConfirm({
       <DialogTitle>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <WarningIcon color="warning" />
-          Remove Material from Shop
+          {t('shop.REMOVE_CONFIRM_TITLE')}
         </Box>
       </DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
           <Alert severity="warning">
-            Are you sure you want to remove this material from the shop? This action cannot be undone.
+            {t('shop.REMOVE_CONFIRM_MESSAGE', { material: material.material.nameEn || material.material.nameZh })}
           </Alert>
 
           <Box sx={{ p: 2, backgroundColor: 'grey.100', borderRadius: 1 }}>
@@ -54,23 +57,22 @@ export default function RemoveMaterialConfirm({
               {material.material.nameZh}
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              Current Price: {ShopService.formatPrice(material.unitPrice)} gold
+              {t('shop.CURRENT_PRICE')}: {ShopService.formatPrice(material.unitPrice)}
             </Typography>
             <Typography variant="body2">
-              Units Sold: {material.quantitySold}
+              {t('shop.QUANTITY')}: {material.quantitySold}
             </Typography>
           </Box>
 
           <Typography variant="body2" color="textSecondary">
-            Students will no longer be able to purchase this material from the shop.
-            You can add it back later if needed.
+            {t('shop.REMOVE_CONFIRM_MESSAGE', { material: material.material.nameEn || material.material.nameZh })}
           </Typography>
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('shop.CANCEL')}</Button>
         <Button onClick={onConfirm} color="error" variant="contained">
-          Remove Material
+          {t('shop.REMOVE')}
         </Button>
       </DialogActions>
     </Dialog>

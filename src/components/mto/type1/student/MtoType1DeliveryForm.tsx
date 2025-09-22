@@ -178,7 +178,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
       // Use requirement.id or requirement.requirementId depending on the data structure
       const requirementId = (requirement as any).id || requirement.requirementId;
       if (!requirementId) {
-        console.error('Requirement ID is missing:', requirement);
+        console.error(t('mto.type1.delivery.requirementIdMissing'), requirement);
         enqueueSnackbar(t('mto.student.errors.invalidRequirement'), { variant: 'error' });
         return;
       }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Dialog,
   DialogTitle,
@@ -76,6 +77,7 @@ const originColors: Record<string, string> = {
 };
 
 export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const availableRawMaterials = shopState?.availableRawMaterials || [];
@@ -173,14 +175,14 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
     // Validation
     const price = parseFloat(data.unitPrice);
     if (isNaN(price) || price <= 0) {
-      setError(`Invalid price for ${materialName}`);
+      setError(t('shop.INVALID_PRICE'));
       return;
     }
 
     if (data.hasQuantityLimit) {
       const quantity = parseInt(data.quantityToSell);
       if (isNaN(quantity) || quantity <= 0) {
-        setError(`Invalid quantity for ${materialName}`);
+        setError(t('shop.INVALID_QUANTITY'));
         return;
       }
     }
@@ -212,7 +214,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
         expanded: false,
       });
 
-      setSuccessMessage(`${materialName} added to shop successfully!`);
+      setSuccessMessage(t('shop.MATERIAL_ADDED'));
 
       // Refresh materials list
       await dispatch(fetchMaterials(undefined));
@@ -221,7 +223,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (err: any) {
       console.error('Failed to add material:', err);
-      setError(err.message || 'Failed to add material');
+      setError(err.message || t('shop.ADD_FAILED'));
     } finally {
       setLoading(false);
     }
@@ -247,9 +249,9 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
     <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
       <DialogTitle>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h6">Add Materials to Shop</Typography>
+          <Typography variant="h6">{t('shop.ADD_MATERIAL_TITLE')}</Typography>
           <Typography variant="body2" color="textSecondary">
-            {filteredMaterials.length} materials available
+            {t('shop.SHOWING_RESULTS', { count: filteredMaterials.length })}
           </Typography>
         </Box>
       </DialogTitle>
@@ -272,7 +274,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <TextField
               size="small"
-              placeholder="Search materials..."
+              placeholder={t('shop.SEARCH_MATERIALS')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -293,10 +295,10 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
             />
 
             <FormControl size="small" sx={{ minWidth: 150 }}>
-              <InputLabel>Origin</InputLabel>
+              <InputLabel>{t('shop.ORIGIN')}</InputLabel>
               <Select
                 value={originFilter}
-                label="Origin"
+                label={t('shop.ORIGIN')}
                 onChange={(e) => setOriginFilter(e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">
@@ -304,7 +306,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                   </InputAdornment>
                 }
               >
-                <MenuItem value="">All Origins</MenuItem>
+                <MenuItem value="">{t('shop.ALL_ORIGINS')}</MenuItem>
                 {['MINE', 'QUARRY', 'FOREST', 'FARM', 'RANCH', 'FISHERY', 'SHOPS'].map((origin) => (
                   <MenuItem key={origin} value={origin}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -328,7 +330,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
           {rawMaterialsLoading && (
             <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
               <Typography variant="body1" color="textSecondary">
-                Loading available materials...
+                {t('shop.LOADING')}
               </Typography>
             </Box>
           )}
@@ -336,7 +338,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
           {/* Error State */}
           {rawMaterialsError && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              Failed to load materials: {rawMaterialsError}
+              {t('shop.ERROR_LOADING')}: {rawMaterialsError}
             </Alert>
           )}
 
@@ -347,12 +349,12 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
               <TableHead>
                 <TableRow>
                   <TableCell width={50} />
-                  <TableCell>Material</TableCell>
-                  <TableCell align="center">Origin</TableCell>
-                  <TableCell align="center">Material #</TableCell>
-                  <TableCell align="right">Unit Price</TableCell>
-                  <TableCell align="center">Stock Limit</TableCell>
-                  <TableCell align="center" width={120}>Action</TableCell>
+                  <TableCell>{t('shop.MATERIAL')}</TableCell>
+                  <TableCell align="center">{t('shop.ORIGIN')}</TableCell>
+                  <TableCell align="center">{t('shop.MATERIAL_CODE')}</TableCell>
+                  <TableCell align="right">{t('shop.UNIT_PRICE')}</TableCell>
+                  <TableCell align="center">{t('shop.STOCK')}</TableCell>
+                  <TableCell align="center" width={120}>{t('shop.ACTIONS')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -404,7 +406,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                             </Typography>
                           ) : (
                             <Typography variant="body2" color="textSecondary">
-                              Not set
+                              {t('shop.ENTER_PRICE')}
                             </Typography>
                           )}
                         </TableCell>
@@ -412,7 +414,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                           {hasQuantityLimit && quantityToSell ? (
                             <Chip label={`${quantityToSell} units`} size="small" variant="outlined" />
                           ) : (
-                            <Chip label="Unlimited" size="small" variant="outlined" color="success" />
+                            <Chip label={t('shop.UNLIMITED')} size="small" variant="outlined" color="success" />
                           )}
                         </TableCell>
                         <TableCell align="center">
@@ -423,7 +425,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                             onClick={() => handleAddMaterial(data)}
                             disabled={!isReady || loading}
                           >
-                            Add
+                            {t('shop.ADD')}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -434,7 +436,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                           <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <Box sx={{ p: 3, backgroundColor: 'grey.50' }}>
                               <Typography variant="subtitle2" gutterBottom>
-                                Configure {material.name || material.nameZh}
+                                {t('shop.EDIT_MATERIAL')}: {material.name || material.nameZh}
                               </Typography>
                               <Divider sx={{ mb: 2 }} />
 
@@ -443,7 +445,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                   <TextField
                                     fullWidth
                                     size="small"
-                                    label="Unit Price"
+                                    label={t('shop.UNIT_PRICE')}
                                     type="number"
                                     value={unitPrice}
                                     onChange={(e) => updateMaterialData(material.id, { unitPrice: e.target.value })}
@@ -456,7 +458,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                       endAdornment: <InputAdornment position="end"></InputAdornment>,
                                       inputProps: { min: 0.01, step: 0.01 },
                                     }}
-                                    helperText="Set the price per unit"
+                                    helperText={t('shop.ENTER_PRICE')}
                                   />
                                 </Grid>
 
@@ -472,14 +474,14 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                           })}
                                         />
                                       }
-                                      label="Set quantity limit"
+                                      label={t('shop.STOCK')}
                                     />
 
                                     {hasQuantityLimit && (
                                       <TextField
                                         fullWidth
                                         size="small"
-                                        label="Maximum Quantity"
+                                        label={t('shop.QUANTITY')}
                                         type="number"
                                         value={quantityToSell}
                                         onChange={(e) => updateMaterialData(material.id, { quantityToSell: e.target.value })}
@@ -492,7 +494,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                           endAdornment: <InputAdornment position="end">units</InputAdornment>,
                                           inputProps: { min: 1, step: 1 },
                                         }}
-                                        helperText="Leave blank for unlimited stock"
+                                        helperText={t('shop.UNLIMITED')}
                                       />
                                     )}
                                   </Box>
@@ -512,17 +514,17 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                                   }}
                                 >
                                   <Typography variant="body2" color="textSecondary" gutterBottom>
-                                    Preview
+                                    {t('shop.VIEW_DETAILS')}
                                   </Typography>
                                   <Typography variant="body2">
                                     <strong>{material.name || material.nameZh}</strong> (#{material.materialNumber})
                                   </Typography>
                                   <Typography variant="body2" color="primary">
-                                    Price: {ShopService.formatPrice(unitPrice)} per unit
+                                    {t('shop.PRICE_PER_UNIT')}: {ShopService.formatPrice(unitPrice)}
                                   </Typography>
                                   {hasQuantityLimit && quantityToSell && (
                                     <Typography variant="body2">
-                                      Stock limit: {quantityToSell} units
+                                      {t('shop.STOCK')}: {quantityToSell} {t('shop.QUANTITY')}
                                     </Typography>
                                   )}
                                 </Box>
@@ -539,10 +541,10 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                   <TableRow>
                     <TableCell colSpan={7} align="center" sx={{ py: 8 }}>
                       <Typography variant="h6" color="textSecondary" gutterBottom>
-                        No materials found
+                        {t('shop.NO_RESULTS')}
                       </Typography>
                       <Typography variant="body2" color="textSecondary">
-                        Try adjusting your search criteria
+                        {t('shop.CLEAR_FILTERS')}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -569,7 +571,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
 
       <DialogActions>
         <Button onClick={onClose}>
-          Close
+          {t('shop.CANCEL')}
         </Button>
       </DialogActions>
     </Dialog>

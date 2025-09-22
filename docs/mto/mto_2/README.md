@@ -70,9 +70,10 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 - Fair opportunity for all MALL locations
 - Transparent allocation formulas and history
 
-### 4. Level and Price-Based Fulfillment
-- **Priority given to highest level MALLs** (Level 5 → Level 1)
-- Within same level, sorted by unit price (ascending)
+### 4. MALL Level and Price-Based Fulfillment
+- **Primary priority: MALL level** (descending - Level 5 → Level 1)
+- Secondary: Unit price within same level (ascending - lowest price first)
+- Tertiary: Submission timestamp (earliest first)
 - Sequential purchase until budget depletion
 - Partial order fulfillment support
 - Clear settlement priority visibility
@@ -86,7 +87,7 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 ### 6. Unsettled Product Management
 - Clear identification of unsettled inventory
 - Flexible return options to any facility
-- Transportation fee calculation for returns
+- No transportation fees for returns
 - Time-limited retrieval windows
 
 ### 7. Internationalization (i18n)
@@ -115,7 +116,7 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 - **Facility Management System**: MALL verification and capacity checks
 - **Product Formula System**: Specification validation
 - **Team Account Module**: Financial transactions
-- **Transportation System**: Delivery and return logistics
+- **Facility System**: Product storage and retrieval
 - **Population System**: Dynamic budget allocation basis
 
 ## User Journey
@@ -209,28 +210,45 @@ MTO Type 2 implements a sophisticated competitive marketplace where:
 - **Time Validation**: Release and settlement time constraints enforced
 - **MALL Verification**: Only teams with MALL facilities can submit
 - **Unique Constraints**: One submission per team per tile enforced
+- **Automated Scheduler**: Cron-based automatic release and settlement (@Cron every minute)
+- **Settlement Logic**: Complete settlement algorithm with budget allocation
+- **Budget Allocation**: Population-based budget distribution with special zero-population handling
+- **Price Ordering**: Submission sorting by price (lowest first) implemented
+- **Formula Validation**: Product formula verification against manager requirements
+- **Payment Processing**: Team payment integration for settled submissions
+- **Return Process**: Unsettled product returns with target facility validation
+- **Transportation Fees**: Distance-based return transportation calculation
+- **Error Recovery**: Automatic retry on settlement failures with status rollback
+- **Mall Budget ID**: Dynamic retrieval and assignment of mall budget IDs
 
-### ⚠️ In Progress
-- **Settlement Logic**: Core settlement algorithm needs implementation (TODO at line 570 in mto-type2.service.ts)
-- **Budget Allocation**: Population-based budget distribution not implemented
-- **Price Ordering**: Submission sorting by price not implemented
-- **Formula Validation**: Product formula verification missing
+### ✅ Automation Features
+- **Automatic Release**: MTO Type 2 automatically releases at configured releaseTime
+- **Automatic Settlement**: Settlement process triggers automatically at settlementTime
+- **Status Transitions**: Automatic progression through status lifecycle
+- **Budget Calculation**: Dynamic budget allocation based on real-time population data
+- **Error Handling**: Failed settlements automatically retry in next scheduler cycle
+- **Logging**: Comprehensive logging for all automated actions
 
-### ❌ Not Yet Implemented
-- **Payment Processing**: Team payment integration pending
-- **Return Process**: Unsettled product returns not implemented
-- **Transportation Fees**: Return transportation calculation missing
-- **Settlement History**: Audit trail and reporting incomplete
+### 📊 Settlement Algorithm Details
+- **MALL Level Priority**: Submissions sorted first by MALL level (highest first: Level 5 → Level 1)
+- **Price Ordering Within Level**: Within same MALL level, sorted by unit price (lowest first)
+- **Tie Breaking**: Equal level and price resolved by submission timestamp, then submission ID
+- **Partial Fulfillment**: Supports partial order fulfillment when budget insufficient
+- **Formula Validation**: Products validated against manager formula before purchase
+- **Atomic Transactions**: All settlement operations wrapped in database transactions
 
-### 📝 Notes on Documentation vs Requirements
-- **Mall Level Priority**: Documentation mentions "Priority given to highest level MALLs" but requirements specify price-only ordering
-- **Clarification Needed**: Confirm if mall level should be considered or pure price-based ordering
+### 🔧 Recent Fixes (Completed)
+1. **Scheduler Fix**: Updated to call `settle()` instead of just `initiateSettlement()`
+2. **Mall Budget ID**: Fixed hardcoded ID issue with dynamic retrieval
+3. **Formula Validation**: Implemented actual product-formula matching logic
+4. **Error Recovery**: Added automatic status rollback on settlement failures
+5. **Logger Integration**: Added proper logging throughout the service
 
-### 🚧 Development Priority
-1. **Urgent**: Implement complete settlement algorithm with budget allocation
-2. **High**: Add formula validation and payment processing
-3. **Medium**: Implement return process with transportation fees
-4. **Low**: Add comprehensive reporting and analytics
+### 📝 Configuration Notes
+- **Scheduler Frequency**: Runs every minute (configurable via CronExpression)
+- **Auto Mode**: Settlement runs with `auto=true` flag for scheduler-triggered settlements
+- **Manual Override**: Managers can still manually trigger settlements
+- **Population Handling**: Zero population tiles receive equal budget distribution
 
 ## Success Metrics
 

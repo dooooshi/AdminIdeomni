@@ -186,7 +186,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
             disabled={calculating || requirement.status !== 'DRAFT'}
             color="primary"
           >
-            {calculating ? <CircularProgress size={20} /> : 'Calculate Budgets'}
+            {calculating ? <CircularProgress size={20} /> : t('mto.type2.budget.calculateBudgets')}
           </Button>
         </Box>
       </Box>
@@ -201,7 +201,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
 
       {budgets.length === 0 ? (
         <Alert severity="warning">
-          No budget allocation found. Click "Calculate Budgets" to generate the allocation based on tile population and MALL distribution.
+          {t('mto.type2.budget.noBudgetFound')}
         </Alert>
       ) : (
         <>
@@ -299,7 +299,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
           <Grid container spacing={3} sx={{ mb: 4 }}>
             <Grid size={{ xs: 12, md: 6 }}>
               <Card>
-                <CardHeader title="Budget Distribution by Tile" />
+                <CardHeader title={t('mto.type2.budget.distributionByTile')} />
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
@@ -326,7 +326,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <Card>
-                <CardHeader title="Budget Allocation vs Usage" />
+                <CardHeader title={t('mto.type2.budget.allocationVsUsage')} />
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={barChartData}>
@@ -347,7 +347,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
 
           {/* Detailed Table */}
           <Card>
-            <CardHeader title="Detailed Budget Allocation by Tile" />
+            <CardHeader title={t('mto.type2.budget.detailedAllocation')} />
             <CardContent>
               <TableContainer component={Paper} elevation={0}>
                 <Table>
@@ -405,7 +405,7 @@ export const MtoType2BudgetAllocation: React.FC<MtoType2BudgetAllocationProps> =
                             />
                           </TableCell>
                           <TableCell align="center">
-                            <Tooltip title="View Details">
+                            <Tooltip title={t('mto.type2.budget.viewDetails')}>
                               <IconButton
                                 size="small"
                                 onClick={() => handleTileClick(budget)}

@@ -258,7 +258,7 @@ mto.type2.
   "mto.type2.messages.budgetAllocated": "Budget has been allocated based on MALL tile populations",
   "mto.type2.messages.pricesHidden": "Submission prices are hidden until settlement",
   "mto.type2.messages.returnDeadline": "Return deadline: {deadline}",
-  "mto.type2.messages.transportationFee": "Transportation fee: {fee} gold"
+  "mto.type2.messages.returnCompleted": "Products returned successfully to selected facility"
 }
 ```
 
@@ -272,7 +272,7 @@ mto.type2.
   "mto.type2.messages.budgetAllocated": "预算已根据商城地块人口分配",
   "mto.type2.messages.pricesHidden": "提交价格在结算前保密",
   "mto.type2.messages.returnDeadline": "退货截止日期：{deadline}",
-  "mto.type2.messages.transportationFee": "运输费用：{fee} 金币"
+  "mto.type2.messages.returnCompleted": "产品已成功退还到所选设施"
 }
 ```
 
@@ -323,7 +323,7 @@ mto.type2.
   "mto.type2.errors.paymentFailed": "Payment processing failed",
   "mto.type2.errors.noUnsettledProducts": "No unsettled products to return",
   "mto.type2.errors.returnDeadlinePassed": "Return deadline has passed",
-  "mto.type2.errors.insufficientBalance": "Insufficient balance for transportation fee",
+  "mto.type2.errors.insufficientCapacity": "Target facility has insufficient capacity",
   "mto.type2.errors.facilityCapacityExceeded": "Target facility capacity exceeded"
 }
 ```
@@ -337,7 +337,7 @@ mto.type2.
   "mto.type2.errors.paymentFailed": "支付处理失败",
   "mto.type2.errors.noUnsettledProducts": "没有未结算产品可退回",
   "mto.type2.errors.returnDeadlinePassed": "退货截止日期已过",
-  "mto.type2.errors.insufficientBalance": "余额不足以支付运输费",
+  "mto.type2.errors.insufficientCapacity": "目标设施容量不足",
   "mto.type2.errors.facilityCapacityExceeded": "目标设施容量已满"
 }
 ```
@@ -492,15 +492,13 @@ const message = i18n.interpolate(
 );
 // Result: "Settlement completed successfully"
 
-// Transportation fee message
-const feeMessage = i18n.interpolate(
-  'mto.type2.messages.transportationFee',
-  {
-    fee: 150.50
-  },
+// Return completed message
+const returnMessage = i18n.interpolate(
+  'mto.type2.messages.returnCompleted',
+  {},
   'zh'
 );
-// Result: "运输费用：150.50 金币"
+// Result: "产品已成功退还到所选设施"
 ```
 
 ## 10. Implementation Guidelines

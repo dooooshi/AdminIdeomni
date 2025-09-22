@@ -282,6 +282,253 @@ All endpoints require JWT authentication with role-based access control:
 }
 ```
 
+#### 1.8 Get Calculation History
+
+**Endpoint**: `GET /api/user/manager/mto-type2/:id/calculation-history`
+
+**Description**: Retrieve calculation history and audit trail for an MTO Type 2, including budget distribution calculations and settlement process details. This provides complete transparency into all calculations performed during the MTO lifecycle.
+
+**Authorization**: Manager role only
+
+**Query Parameters**:
+```typescript
+{
+  calculationType?: "BUDGET_DISTRIBUTION" | "SETTLEMENT_PROCESS" | "ADJUSTMENT" | "CANCELLATION";
+  limit?: number; // default: 50, max: 100
+  offset?: number; // for pagination
+  sortOrder?: "asc" | "desc"; // default: "desc" (newest first)
+}
+```
+
+**Response** (200 OK):
+```typescript
+{
+  success: true,
+  businessCode: 20000,
+  message: "Calculation history retrieved",
+  data: {
+    mtoType2Id: number;
+    histories: Array<{
+      id: number;
+      calculationType: "BUDGET_DISTRIBUTION" | "SETTLEMENT_PROCESS" | "ADJUSTMENT" | "CANCELLATION";
+      createdAt: string;
+      createdBy: string | null;
+
+      // Fields populated for BUDGET_DISTRIBUTION type
+      totalPopulation: number | null;
+      participatingTiles: number | null;
+      totalMalls: number | null;
+      overallBudget: string | null; // Decimal as string
+
+      // Fields populated for SETTLEMENT_PROCESS type
+      totalSubmissions: number | null;
+      processedSubmissions: number | null;
+      totalSettled: number | null;
+      totalSpent: string | null; // Decimal as string
+      settlementDuration: number | null; // milliseconds
+
+      // Detailed calculation data (JSON field contents)
+      calculationDetails: {
+        // For BUDGET_DISTRIBUTION: tile-by-tile breakdown
+        tiles?: Array<{
+          mapTileId: number;
+          tileName: string;
+          population: number;
+          mallCount: number;
+          populationRatio: number;
+          allocatedBudget: string;
+        }>;
+
+        // For SETTLEMENT_PROCESS: per-tile settlement results
+        settlementResults?: Array<{
+          tileId: number;
+          submissions: number;
+          settled: number;
+          spent: string;
+          failed: number;
+        }>;
+
+        // For ADJUSTMENT: adjustment details
+        adjustmentReason?: string;
+        originalValues?: object;
+        newValues?: object;
+
+        // For CANCELLATION: cancellation impact
+        cancellationReason?: string;
+        affectedSubmissions?: number;
+        refundedAmount?: string;
+
+        // Additional flexible data based on calculation type
+        [key: string]: any;
+      };
+    }>;
+    total: number;
+  }
+}
+```
+
+**Data Model Alignment**:
+This endpoint directly maps to the `MtoType2CalculationHistory` Prisma model:
+- Core fields (`id`, `calculationType`, `createdAt`, `createdBy`) are directly mapped
+- Type-specific nullable fields are populated based on the calculation type
+- `calculationDetails` JSON field provides flexible storage for detailed breakdowns
+- Decimal fields are converted to strings for JSON compatibility
+
+**Example Request**:
+```bash
+GET /api/user/manager/mto-type2/123/calculation-history?calculationType=BUDGET_DISTRIBUTION&limit=10
+```
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "businessCode": 20000,
+  "message": "Calculation history retrieved",
+  "data": {
+    "mtoType2Id": 123,
+    "histories": [
+      {
+        "id": 456,
+        "calculationType": "BUDGET_DISTRIBUTION",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "createdBy": "SYSTEM",
+        "totalPopulation": 50000,
+        "participatingTiles": 10,
+        "totalMalls": 15,
+        "overallBudget": "100000.00",
+        "totalSubmissions": null,
+        "processedSubmissions": null,
+        "totalSettled": null,
+        "totalSpent": null,
+        "settlementDuration": null,
+        "calculationDetails": {
+          "tiles": [
+            {
+              "mapTileId": 1,
+              "tileName": "Downtown",
+              "population": 10000,
+              "mallCount": 3,
+              "populationRatio": 0.20,
+              "allocatedBudget": "20000.00"
+            }
+          ],
+          "method": "POPULATION_BASED_ALLOCATION",
+          "timestamp": "2024-01-15T10:30:00Z"
+        }
+      }
+    ],
+    "total": 1
+  }
+}
+```
+
+**Error Responses**:
+- `404 Not Found`: MTO Type 2 not found
+- `403 Forbidden`: Manager does not have access to this MTO Type 2
+
+#### 1.9 Get All Calculation Histories
+
+**Endpoint**: `GET /api/user/manager/mto-type2/calculation-histories`
+
+**Description**: Retrieve calculation histories across all MTO Type 2 requirements for the manager's activities. This provides a summary view for cross-MTO analysis and reporting.
+
+**Authorization**: Manager role only
+
+**Query Parameters**:
+```typescript
+{
+  activityId?: string; // Filter by specific activity
+  calculationType?: "BUDGET_DISTRIBUTION" | "SETTLEMENT_PROCESS" | "ADJUSTMENT" | "CANCELLATION";
+  fromDate?: string; // ISO 8601
+  toDate?: string; // ISO 8601
+  page?: number; // default: 1
+  limit?: number; // default: 20, max: 100
+}
+```
+
+**Response** (200 OK):
+```typescript
+{
+  success: true,
+  businessCode: 20000,
+  message: "Calculation histories retrieved",
+  data: {
+    items: Array<{
+      id: number;
+      mtoType2Id: number;
+      calculationType: "BUDGET_DISTRIBUTION" | "SETTLEMENT_PROCESS" | "ADJUSTMENT" | "CANCELLATION";
+      createdAt: string;
+      createdBy: string | null;
+
+      // Summary fields based on calculation type
+      // For BUDGET_DISTRIBUTION
+      totalPopulation?: number;
+      participatingTiles?: number;
+      overallBudget?: string;
+
+      // For SETTLEMENT_PROCESS
+      totalSubmissions?: number;
+      totalSettled?: number;
+      totalSpent?: string;
+      settlementDuration?: number;
+
+      // Quick summary extracted from calculationDetails
+      summary: string; // Brief text summary of the calculation
+    }>;
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  }
+}
+```
+
+**Summary Generation**:
+The `summary` field provides a human-readable description based on calculation type:
+- BUDGET_DISTRIBUTION: "Allocated budget to {n} tiles with {m} MALLs"
+- SETTLEMENT_PROCESS: "Settled {x}/{y} submissions, spent {amount}"
+- ADJUSTMENT: Shows the adjustment reason from calculationDetails
+- CANCELLATION: Shows the cancellation reason from calculationDetails
+
+**Example Request**:
+```bash
+GET /api/user/manager/mto-type2/calculation-histories?calculationType=SETTLEMENT_PROCESS&page=1&limit=20
+```
+
+**Example Response**:
+```json
+{
+  "success": true,
+  "businessCode": 20000,
+  "message": "Calculation histories retrieved",
+  "data": {
+    "items": [
+      {
+        "id": 789,
+        "mtoType2Id": 123,
+        "calculationType": "SETTLEMENT_PROCESS",
+        "createdAt": "2024-01-15T14:00:00Z",
+        "createdBy": "SYSTEM",
+        "totalSubmissions": 45,
+        "totalSettled": 38,
+        "totalSpent": "87500.00",
+        "settlementDuration": 3500,
+        "summary": "Settled 38/45 submissions, spent 87500.00"
+      }
+    ],
+    "pagination": {
+      "total": 1,
+      "page": 1,
+      "limit": 20,
+      "totalPages": 1
+    }
+  }
+}
+```
+
 ### 2. MALL Owner APIs
 
 #### 2.1 Get Available MTO Type 2
@@ -493,13 +740,7 @@ All endpoints require JWT authentication with role-based access control:
 
 **Authorization**: User with MALL facility
 
-**Request Body**:
-```typescript
-{
-  targetFacilityInstanceId: string; // Destination facility instance (cuid)
-  confirmTransportFee: boolean;
-}
-```
+**Request Body**: Empty (no parameters needed - returns to original MALL automatically)
 
 **Response** (200 OK):
 ```typescript
@@ -510,14 +751,12 @@ All endpoints require JWT authentication with role-based access control:
   data: {
     submissionId: number;
     unsettledQuantity: number;
-    targetFacility: {
-      id: number;
+    originalMall: {
+      id: string;
       name: string;
       tileName: string;
     };
-    transportationFee: string;
-    estimatedDeliveryTime: string;
-    returnStatus: "IN_TRANSIT";
+    returnStatus: "COMPLETED";
   }
 }
 ```

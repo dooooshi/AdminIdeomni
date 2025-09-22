@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -48,6 +49,7 @@ const originColors: Record<string, string> = {
 };
 
 export default function ShopMaterialsList() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const materials = shopState?.materials || [];
@@ -97,7 +99,7 @@ export default function ShopMaterialsList() {
 
     const newPrice = parseFloat(editDialog.newPrice);
     if (isNaN(newPrice) || newPrice <= 0) {
-      setError('Please enter a valid price');
+      setError(t('shop.INVALID_PRICE'));
       return;
     }
 
@@ -111,7 +113,7 @@ export default function ShopMaterialsList() {
       handleCloseEditDialog();
       setError(null);
     } catch (err: any) {
-      setError(err.message || 'Failed to update price');
+      setError(err.message || t('shop.UPDATE_FAILED'));
     }
   };
 
@@ -123,7 +125,7 @@ export default function ShopMaterialsList() {
       setDeleteConfirm(null);
       setError(null);
     } catch (err: any) {
-      setError(err.message || 'Failed to remove material');
+      setError(err.message || t('shop.REMOVE_FAILED'));
     }
   };
 
@@ -138,10 +140,10 @@ export default function ShopMaterialsList() {
         <CardContent>
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              No Materials in Shop
+              {t('shop.NO_MATERIALS')}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              Click "Add Material" to add materials to your shop
+              {t('shop.ADD_MATERIAL')}
             </Typography>
           </Box>
         </CardContent>
@@ -154,7 +156,7 @@ export default function ShopMaterialsList() {
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Shop Materials
+            {t('shop.MATERIALS_LIST')}
           </Typography>
 
           {error && (
@@ -167,13 +169,13 @@ export default function ShopMaterialsList() {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Material</TableCell>
-                  <TableCell align="center">Material #</TableCell>
-                  <TableCell align="center">Origin</TableCell>
-                  <TableCell align="right">Unit Price</TableCell>
-                  <TableCell align="center">Stock</TableCell>
-                  <TableCell align="center">Sold</TableCell>
-                  <TableCell align="center">Actions</TableCell>
+                  <TableCell>{t('shop.MATERIAL')}</TableCell>
+                  <TableCell align="center">{t('shop.MATERIAL_CODE')}</TableCell>
+                  <TableCell align="center">{t('shop.ORIGIN')}</TableCell>
+                  <TableCell align="right">{t('shop.UNIT_PRICE')}</TableCell>
+                  <TableCell align="center">{t('shop.STOCK')}</TableCell>
+                  <TableCell align="center">{t('shop.QUANTITY')}</TableCell>
+                  <TableCell align="center">{t('shop.ACTIONS')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -248,7 +250,7 @@ export default function ShopMaterialsList() {
                             </Box>
                           </Box>
                         ) : (
-                          <Chip label="Unlimited" size="small" color="success" variant="outlined" />
+                          <Chip label={t('shop.UNLIMITED')} size="small" color="success" variant="outlined" />
                         )}
                       </TableCell>
                       <TableCell align="center">
@@ -256,7 +258,7 @@ export default function ShopMaterialsList() {
                       </TableCell>
                       <TableCell align="center">
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                          <Tooltip title="Edit Price">
+                          <Tooltip title={t('shop.UPDATE_PRICE')}>
                             <IconButton
                               size="small"
                               color="primary"
@@ -265,7 +267,7 @@ export default function ShopMaterialsList() {
                               <EditIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Remove Material">
+                          <Tooltip title={t('shop.REMOVE_MATERIAL')}>
                             <IconButton
                               size="small"
                               color="error"
@@ -284,7 +286,7 @@ export default function ShopMaterialsList() {
                   <TableRow>
                     <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
                       <Typography variant="body2" color="textSecondary">
-                        No materials in shop
+                        {t('shop.NO_MATERIALS')}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -309,16 +311,16 @@ export default function ShopMaterialsList() {
 
       {/* Edit Price Dialog */}
       <Dialog open={editDialog.open} onClose={handleCloseEditDialog} maxWidth="xs" fullWidth>
-        <DialogTitle>Edit Material Price</DialogTitle>
+        <DialogTitle>{t('shop.UPDATE_PRICE_TITLE')}</DialogTitle>
         <DialogContent>
           {editDialog.material && (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
               <Typography variant="body2" color="textSecondary">
-                Material: <strong>{editDialog.material?.material?.nameZh} ({editDialog.material?.material?.nameEn})</strong>
+                {t('shop.MATERIAL')}: <strong>{editDialog.material?.material?.nameZh} ({editDialog.material?.material?.nameEn})</strong>
               </Typography>
               <TextField
                 fullWidth
-                label="Unit Price"
+                label={t('shop.UNIT_PRICE')}
                 type="number"
                 value={editDialog.newPrice}
                 onChange={(e) =>
@@ -328,15 +330,15 @@ export default function ShopMaterialsList() {
                   startAdornment: <PriceIcon color="action" sx={{ mr: 1 }} />,
                   inputProps: { min: 0.01, step: 0.01 },
                 }}
-                helperText="Enter the new price per unit"
+                helperText={t('shop.ENTER_PRICE')}
               />
             </Box>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Cancel</Button>
+          <Button onClick={handleCloseEditDialog}>{t('shop.CANCEL')}</Button>
           <Button onClick={handleUpdatePrice} variant="contained" color="primary">
-            Update Price
+            {t('shop.UPDATE')}
           </Button>
         </DialogActions>
       </Dialog>
@@ -348,17 +350,16 @@ export default function ShopMaterialsList() {
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>Remove Material</DialogTitle>
+        <DialogTitle>{t('shop.REMOVE_CONFIRM_TITLE')}</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to remove{' '}
-            <strong>{deleteConfirm?.material?.material?.nameZh || deleteConfirm?.material?.material?.nameEn}</strong> from the shop?
+            {t('shop.REMOVE_CONFIRM_MESSAGE', { material: deleteConfirm?.material?.material?.nameZh || deleteConfirm?.material?.material?.nameEn })}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteConfirm(null)}>Cancel</Button>
+          <Button onClick={() => setDeleteConfirm(null)}>{t('shop.CANCEL')}</Button>
           <Button onClick={handleDeleteMaterial} variant="contained" color="error">
-            Remove
+            {t('shop.REMOVE')}
           </Button>
         </DialogActions>
       </Dialog>

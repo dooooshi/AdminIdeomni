@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Dialog,
   DialogTitle,
@@ -61,6 +62,7 @@ const originColors: Record<MaterialOrigin, string> = {
 };
 
 export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const {
     purchaseFlow,
@@ -95,7 +97,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
     if (selectedMaterial) {
       const remainingStock = ShopService.getRemainingStock(selectedMaterial);
       if (remainingStock !== null && value > remainingStock) {
-        setLocalError(`Maximum available: ${remainingStock}`);
+        setLocalError(t('shop.MAXIMUM_AVAILABLE', { max: remainingStock }));
         return;
       }
     }
@@ -113,17 +115,17 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
     });
 
     if (!selectedMaterial) {
-      setLocalError('No material selected');
+      setLocalError(t('shop.NO_MATERIAL_SELECTED'));
       return;
     }
 
     if (!selectedFacilityId) {
-      setLocalError('Please select a facility space');
+      setLocalError(t('shop.SELECT_FACILITY'));
       return;
     }
 
     if (!validation.valid) {
-      setLocalError(validation.error || 'Invalid purchase');
+      setLocalError(validation.error || t('shop.INVALID_PURCHASE'));
       return;
     }
 
@@ -166,7 +168,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h6">Purchase Material</Typography>
+          <Typography variant="h6">{t('shop.PURCHASE_MATERIAL')}</Typography>
           <Chip
             label={selectedMaterial.material.origin}
             size="small"
@@ -189,7 +191,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
               {selectedMaterial.material.nameEn}
             </Typography>
             <Typography variant="caption" color="textSecondary">
-              Material #{selectedMaterial.material.materialNumber}
+              {t('shop.MATERIAL_NUMBER', { number: selectedMaterial.material.materialNumber })}
             </Typography>
           </Box>
 
@@ -198,11 +200,11 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
             <StockIcon color="action" />
             {remainingStock !== null ? (
               <Typography variant="body1">
-                {remainingStock} / {selectedMaterial.quantityToSell} available
+                {remainingStock} / {selectedMaterial.quantityToSell} {t('shop.AVAILABLE')}
               </Typography>
             ) : (
               <Typography variant="body1" color="success.main">
-                Unlimited stock
+                {t('shop.UNLIMITED_STOCK')}
               </Typography>
             )}
           </Box>
@@ -210,7 +212,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
           {/* Quantity Selector */}
           <Box>
             <Typography variant="subtitle2" gutterBottom>
-              Quantity
+              {t('shop.QUANTITY')}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <IconButton
@@ -247,10 +249,10 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
 
           {/* Facility Selection */}
           <FormControl fullWidth>
-            <InputLabel>Delivery Facility Space</InputLabel>
+            <InputLabel>{t('shop.DELIVERY_FACILITY')}</InputLabel>
             <Select
               value={selectedFacilityId || ''}
-              label="Delivery Facility Space"
+              label={t('shop.DELIVERY_FACILITY')}
               onChange={(e) => dispatch(selectFacilitySpace(e.target.value))}
               disabled={isProcessing || facilitySpacesLoading}
               startAdornment={
@@ -260,16 +262,16 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
               }
             >
               {facilitySpacesLoading ? (
-                <MenuItem value="">Loading facilities...</MenuItem>
+                <MenuItem value="">{t('shop.LOADING_FACILITIES')}</MenuItem>
               ) : facilitySpaces.length === 0 ? (
-                <MenuItem value="">No facility spaces available</MenuItem>
+                <MenuItem value="">{t('shop.NO_FACILITIES')}</MenuItem>
               ) : (
                 facilitySpaces.map((facility) => (
                   <MenuItem key={facility.facilityInstanceId} value={facility.inventoryId}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <Typography variant="body1">{facility.facilityName}</Typography>
                       <Typography variant="caption" color="textSecondary">
-                        Level {facility.level} | Available: {facility.spaceMetrics.availableSpace}/{facility.spaceMetrics.totalSpace}
+                        {t('shop.LEVEL')} {facility.level} | {t('shop.AVAILABLE_SPACE')}: {facility.spaceMetrics.availableSpace}/{facility.spaceMetrics.totalSpace}
                       </Typography>
                     </Box>
                   </MenuItem>
@@ -284,7 +286,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
           <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
               <Typography variant="body2" color="textSecondary">
-                Unit Price:
+                {t('shop.UNIT_PRICE')}:
               </Typography>
               <Typography variant="body2">
                 {ShopService.formatPrice(selectedMaterial.unitPrice)}
@@ -292,13 +294,13 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
               <Typography variant="body2" color="textSecondary">
-                Quantity:
+                {t('shop.QUANTITY')}:
               </Typography>
               <Typography variant="body2">×{quantity}</Typography>
             </Box>
             <Divider sx={{ my: 1 }} />
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="h6">Total Cost:</Typography>
+              <Typography variant="h6">{t('shop.TOTAL_COST')}:</Typography>
               <Typography variant="h6" color="primary" fontWeight="bold">
                 {ShopService.formatPrice(totalCost)}
               </Typography>
@@ -316,7 +318,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
 
       <DialogActions>
         <Button onClick={handleClose} disabled={isProcessing}>
-          Cancel
+          {t('shop.CANCEL')}
         </Button>
         <Button
           onClick={handlePurchase}
@@ -335,7 +337,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
             )
           }
         >
-          {isProcessing ? 'Processing...' : `Purchase for ${ShopService.formatPrice(totalCost)}`}
+          {isProcessing ? t('shop.PROCESSING') : t('shop.PURCHASE_FOR', { price: ShopService.formatPrice(totalCost) })}
         </Button>
       </DialogActions>
     </Dialog>

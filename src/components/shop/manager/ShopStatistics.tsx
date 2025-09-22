@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -30,6 +31,7 @@ import { MaterialOrigin, ShopActionType } from '@/types/shop';
 import ShopService from '@/lib/services/shopService';
 
 export default function ShopStatistics() {
+  const { t } = useTranslation();
   const shopState = useSelector((state: RootState) => state.shop);
   const materials = shopState?.materials || [];
   const shopHistory = shopState?.shopHistory || [];
@@ -89,13 +91,13 @@ export default function ShopStatistics() {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <MoneyIcon color="primary" sx={{ mr: 1 }} />
-                <Typography variant="h6">Total Revenue</Typography>
+                <Typography variant="h6">{t('shop.TOTAL_REVENUE')}</Typography>
               </Box>
               <Typography variant="h4" color="primary" fontWeight="bold">
                 {ShopService.formatPrice(totalRevenue)}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                From {totalTransactions} transactions
+                {totalTransactions} {t('shop.TRANSACTION_HISTORY')}
               </Typography>
             </CardContent>
           </Card>
@@ -106,13 +108,13 @@ export default function ShopStatistics() {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <CartIcon color="primary" sx={{ mr: 1 }} />
-                <Typography variant="h6">Avg Transaction</Typography>
+                <Typography variant="h6">{t('shop.AVERAGE_TRANSACTION')}</Typography>
               </Box>
               <Typography variant="h4" color="primary" fontWeight="bold">
                 {ShopService.formatPrice(avgTransactionValue)}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                Per purchase
+                {t('shop.CONFIRM_PURCHASE')}
               </Typography>
             </CardContent>
           </Card>
@@ -123,13 +125,13 @@ export default function ShopStatistics() {
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <InventoryIcon color="primary" sx={{ mr: 1 }} />
-                <Typography variant="h6">Active Materials</Typography>
+                <Typography variant="h6">{t('shop.ACTIVE_MATERIALS')}</Typography>
               </Box>
               <Typography variant="h4" color="primary" fontWeight="bold">
                 {materials.length}
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-                Available for purchase
+                {t('shop.AVAILABILITY')}
               </Typography>
             </CardContent>
           </Card>
@@ -140,7 +142,7 @@ export default function ShopStatistics() {
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Price Change Activity
+            {t('shop.UPDATE_PRICE')}
           </Typography>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 12, sm: 6 }}>

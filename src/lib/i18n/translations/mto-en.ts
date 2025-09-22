@@ -178,9 +178,20 @@ export const mtoTranslationsEn = {
   // Statuses (Type 2)
   'mto.type2.statuses.draft': 'Draft',
   'mto.type2.statuses.released': 'Released',
-  'mto.type2.statuses.inProgress': 'In Progress',
+  'mto.type2.statuses.in_progress': 'In Progress',
+  'mto.type2.statuses.inProgress': 'In Progress', // Keep for backward compatibility
   'mto.type2.statuses.settled': 'Settled',
   'mto.type2.statuses.cancelled': 'Cancelled',
+
+  // Formula Selection
+  'mto.type2.selectFormula': 'Select Product Formula',
+  'mto.type2.selectProductFormula': 'Select Product Formula',
+  'mto.type2.searchFormulas': 'Search formulas by name or number...',
+  'mto.type2.noFormulasFound': 'No formulas found matching your search',
+  'mto.type2.noFormulasAvailable': 'No formulas available',
+  'mto.type2.estimatedUnits': 'Estimated Units',
+  'mto.type2.helpers.selectFormulaFromList': 'Click to select a product formula from the list',
+  'mto.type2.helpers.nameAutoFilled': 'Name will use the formula name if left empty',
 
   // Student/Team views
   'mto.student.availableRequirements': 'Available Requirements',
@@ -1093,5 +1104,74 @@ export const mtoTranslationsEn = {
   'mto.student.deliveries.summary.transportationCosts': 'Total transportation fees',
   'mto.student.deliveries.summary.afterTransportCosts': 'After transportation costs',
   'mto.student.deliveries.table.fee': 'Fee',
-  'mto.student.deliveries.table.unknownTile': 'Unknown Tile'
+  'mto.student.deliveries.table.unknownTile': 'Unknown Tile',
+
+  // Additional MTO Type 2 Submission List translations
+  'mto.type2.submissions.title': 'My Submissions & Settlement Status',
+  'mto.type2.submissions.partiallySettled': 'Partially Settled',
+  'mto.type2.submissions.statusDistribution': 'Submission Status Distribution',
+  'mto.type2.submissions.settlementProgress': 'Settlement Progress',
+  'mto.type2.submissions.viewDetails': 'View Details',
+  'mto.type2.submissions.editSubmission': 'Edit Submission',
+  'mto.type2.submissions.withdrawSubmission': 'Withdraw Submission',
+  'mto.type2.submissions.tileId': 'Tile ID',
+  'mto.type2.submissions.dateFrom': 'Date From',
+  'mto.type2.submissions.dateTo': 'Date To',
+  'mto.type2.submissions.minValue': 'Min Value',
+  'mto.type2.submissions.maxValue': 'Max Value',
+  'mto.type2.submissions.productQuantity': 'Product Quantity',
+  'mto.type2.submissions.unitPrice': 'Unit Price',
+  'mto.type2.submissions.updateSuccess': 'Submission updated successfully',
+  'mto.type2.submissions.updateFailed': 'Failed to update submission',
+  'mto.type2.submissions.withdrawSuccess': 'Submission withdrawn successfully',
+  'mto.type2.submissions.withdrawFailed': 'Failed to withdraw submission',
+  'mto.type2.submissions.filters': 'Filters',
+  'mto.type2.submissions.refresh': 'Refresh',
+  'mto.type2.submissions.export': 'Export',
+
+  // MTO Type 2 Unsettled Returns
+  'mto.type2.unsettled.mainWarehouse': 'Main Warehouse',
+  'mto.type2.unsettled.secondaryStorage': 'Secondary Storage',
+  'mto.type2.unsettled.distributionCenter': 'Distribution Center',
+
+  // MTO Type 2 Budget Allocation
+  'mto.type2.budget.calculateBudgets': 'Calculate Budgets',
+  'mto.type2.budget.noBudgetFound': 'No budget allocation found. Click "Calculate Budgets" to generate the allocation based on tile population and MALL distribution.',
+  'mto.type2.budget.distributionByTile': 'Budget Distribution by Tile',
+  'mto.type2.budget.allocationVsUsage': 'Budget Allocation vs Usage',
+  'mto.type2.budget.detailedAllocation': 'Detailed Budget Allocation by Tile',
+  'mto.type2.budget.viewDetails': 'View Details',
+
+  // MTO Type 2 Settlement Manager
+  'mto.type2.settlement.validateSubmissions': 'Validate Submissions',
+  'mto.type2.settlement.calculatePriorities': 'Calculate Priorities',
+  'mto.type2.settlement.allocateBudget': 'Allocate Budget',
+  'mto.type2.settlement.processPayments': 'Process Payments',
+  'mto.type2.settlement.completeSettlement': 'Complete Settlement',
+  'mto.type2.settlement.settlementProcess': 'Settlement Process',
+  'mto.type2.settlement.priceDistributionAnalysis': 'Price Distribution Analysis',
+
+  // MTO Type 1 Delivery Form
+  'mto.type1.delivery.requirementIdMissing': 'Requirement ID is missing',
+
+  // Common MTO translations
+  'mto.common.cost': 'Cost',
+  'mto.common.notAvailable': 'Not Available',
+  'mto.common.calculatingCosts': 'Calculating costs...',
+  'mto.common.loading': 'Loading...',
+  'mto.common.noDataFound': 'No data found',
+  'mto.common.unknownError': 'Unknown error',
+  'mto.common.confirm': 'Confirm',
+  'mto.common.cancel': 'Cancel',
+  'mto.common.save': 'Save',
+  'mto.common.update': 'Update',
+  'mto.common.delete': 'Delete',
+  'mto.common.edit': 'Edit',
+  'mto.common.view': 'View',
+  'mto.common.withdraw': 'Withdraw',
+  'mto.common.apply': 'Apply',
+  'mto.common.clearFilters': 'Clear Filters',
+  'mto.common.resetFilters': 'Reset Filters',
+  'mto.common.applyFilters': 'Apply Filters',
+  'mto.common.allStatuses': 'All Statuses'
 };

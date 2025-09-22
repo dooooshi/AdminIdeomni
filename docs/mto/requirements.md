@@ -38,7 +38,7 @@ to the Settlement time, the system will conduct the settlement process:
 
 NOTE that the only team build the facility type MALL can participate
 
-add a data model manager_requirement_product_type_2 
+add a data model manager_requirement_product_type_2
 1. manager product formula id
 2. (time) release time
 3. (time) settlement time
@@ -46,21 +46,25 @@ add a data model manager_requirement_product_type_2
 
 at the release time, the  user will see the MTO type 2 details,
 
-befor the settlement time, the team with  MALL facility can submit the products to its MALL with traget MTO (need the products within the MALL facility’s space)with 
-1. (int) product number 
+befor the settlement time, the team with  MALL facility can submit the products to its MALL with traget MTO (need the products within the MALL facility's space)with
+1. (int) product number
 2. (decimal) product sell price per unit
+3. (int) mall level (automatically captured from the MALL facility level: 1-5)
 
 (for per MTO, the team can submit one time in per tile)
 
-at the settlement time, 
-- do a calculation for all tiles (with MALL facility in this tile) 's population ,   
-- evey tile ’s budget would be  this tile’s population /  all tiles (with MALL facility) ’s population * 
+at the settlement time,
+- do a calculation for all tiles (with MALL facility in this tile) 's population ,
+- evey tile 's budget would be  this tile's population /  all tiles (with MALL facility) 's population *
 overall_purchase_budget
-- for each tile ’s all MALL ’s product for this MTO_type_2, order based on product sell price per unit, start from the lowest, 
-- check the products’s formula align with manager product formula, if correct , count this, all deduct the budget from this tile’s all budget, and team get the gold, until the budget cannot afford 1 unit of product
+- for each tile 's all MALL 's product for this MTO_type_2, apply sorting priority:
+  * First priority: MALL level (descending order: Level 5 → Level 4 → Level 3 → Level 2 → Level 1)
+  * Second priority: product sell price per unit within same MALL level (ascending order: lowest price first)
+  * Third priority: submission timestamp (earliest submission first for same level and price)
+- check the products's formula align with manager product formula, if correct , count this, all deduct the budget from this tile's all budget, and team get the gold, until the budget cannot afford 1 unit of product
 
-after the settlement time, team can pay the transporattion fee to get the unsettled products 
-to the selected facility space
+after the settlement time, team can retrieve the unsettled products
+to the selected facility space (no transportation fee required)
 
 
 

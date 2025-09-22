@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -57,6 +58,7 @@ const originColors: Record<MaterialOrigin, string> = {
 };
 
 export default function MaterialList() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const materials = useSelector(selectFilteredMaterials);
   const { materialsLoading, filters } = useSelector((state: RootState) => state.shop);
@@ -160,7 +162,7 @@ export default function MaterialList() {
                   </Box>
                 ) : (
                   <Typography variant="body2" color="textSecondary">
-                    Unlimited stock
+                    {t('shop.UNLIMITED')}
                   </Typography>
                 )}
               </Box>
@@ -177,13 +179,13 @@ export default function MaterialList() {
             {/* Last Updated */}
             {material.lastPriceSetAt && (
               <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 2 }}>
-                Last updated: {new Date(material.lastPriceSetAt).toLocaleDateString()}
+                {t('shop.DATE')}: {new Date(material.lastPriceSetAt).toLocaleDateString()}
               </Typography>
             )}
           </CardContent>
 
           <CardActions sx={{ justifyContent: 'flex-end' }}>
-            <Tooltip title="Update Price">
+            <Tooltip title={t('shop.UPDATE_PRICE')}>
               <IconButton
                 size="small"
                 color="primary"
@@ -192,7 +194,7 @@ export default function MaterialList() {
                 <EditIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Remove from Shop">
+            <Tooltip title={t('shop.REMOVE_MATERIAL')}>
               <IconButton
                 size="small"
                 color="error"
@@ -213,7 +215,7 @@ export default function MaterialList() {
       <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         <TextField
           size="small"
-          placeholder="Search materials..."
+          placeholder={t('shop.SEARCH_MATERIALS')}
           value={filters.searchTerm || ''}
           onChange={handleSearchChange}
           InputProps={{
@@ -227,13 +229,13 @@ export default function MaterialList() {
         />
 
         <FormControl size="small" sx={{ minWidth: 150 }}>
-          <InputLabel>Origin</InputLabel>
+          <InputLabel>{t('shop.ORIGIN')}</InputLabel>
           <Select
             value={filters.origin || ''}
-            label="Origin"
+            label={t('shop.ORIGIN')}
             onChange={(e) => handleOriginFilter(e.target.value as MaterialOrigin | '')}
           >
-            <MenuItem value="">All Origins</MenuItem>
+            <MenuItem value="">{t('shop.ALL_ORIGINS')}</MenuItem>
             {Object.values(MaterialOrigin).map((origin) => (
               <MenuItem key={origin} value={origin}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -258,14 +260,14 @@ export default function MaterialList() {
             onClick={() => dispatch(clearFilters())}
             startIcon={<FilterIcon />}
           >
-            Clear Filters
+            {t('shop.CLEAR_FILTERS')}
           </Button>
         )}
 
         <Box sx={{ flexGrow: 1 }} />
 
         <Typography variant="body2" color="textSecondary">
-          {materials.length} material{materials.length !== 1 ? 's' : ''} found
+          {t('shop.SHOWING_RESULTS', { count: materials.length })}
         </Typography>
       </Box>
 
@@ -293,12 +295,12 @@ export default function MaterialList() {
         <Card>
           <CardContent sx={{ textAlign: 'center', py: 8 }}>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              No materials in shop
+              {t('shop.NO_MATERIALS')}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {filters.searchTerm || filters.origin
-                ? 'Try adjusting your filters'
-                : 'Add materials to start selling'}
+                ? t('shop.CLEAR_FILTERS')
+                : t('shop.ADD_MATERIAL')}
             </Typography>
           </CardContent>
         </Card>

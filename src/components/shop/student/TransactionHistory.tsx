@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -54,6 +55,7 @@ const originColors: Record<string, string> = {
 };
 
 export default function TransactionHistory() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const teamTransactions = shopState?.teamTransactions || [];
@@ -178,7 +180,7 @@ export default function TransactionHistory() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <MoneyIcon fontSize="small" color="primary" sx={{ mr: 1 }} />
                 <Typography variant="body2" color="textSecondary">
-                  Total Spent
+                  {t('shop.TOTAL_SPENT')}
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
@@ -192,7 +194,7 @@ export default function TransactionHistory() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <ReceiptIcon fontSize="small" color="primary" sx={{ mr: 1 }} />
                 <Typography variant="body2" color="textSecondary">
-                  Total Transactions
+                  {t('shop.TOTAL_TRANSACTIONS')}
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
@@ -206,7 +208,7 @@ export default function TransactionHistory() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <MoneyIcon fontSize="small" color="primary" sx={{ mr: 1 }} />
                 <Typography variant="body2" color="textSecondary">
-                  Average Transaction
+                  {t('shop.AVERAGE_TRANSACTION')}
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
@@ -220,7 +222,7 @@ export default function TransactionHistory() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <ReceiptIcon fontSize="small" color="primary" sx={{ mr: 1 }} />
                 <Typography variant="body2" color="textSecondary">
-                  Unique Materials
+                  {t('shop.UNIQUE_MATERIALS')}
                 </Typography>
               </Box>
               <Typography variant="h5" fontWeight="bold">
@@ -235,7 +237,7 @@ export default function TransactionHistory() {
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         <TextField
           size="small"
-          placeholder="Search transactions..."
+          placeholder={t('shop.SEARCH_TRANSACTIONS')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
@@ -256,13 +258,13 @@ export default function TransactionHistory() {
         />
 
         <FormControl size="small" sx={{ minWidth: 150 }}>
-          <InputLabel>Origin</InputLabel>
+          <InputLabel>{t('shop.ORIGIN')}</InputLabel>
           <Select
             value={originFilter}
-            label="Origin"
+            label={t('shop.ORIGIN')}
             onChange={(e) => setOriginFilter(e.target.value)}
           >
-            <MenuItem value="">All Origins</MenuItem>
+            <MenuItem value="">{t('shop.ALL_ORIGINS')}</MenuItem>
             {['MINE', 'QUARRY', 'FOREST', 'FARM', 'RANCH', 'FISHERY', 'SHOPS'].map((origin) => (
               <MenuItem key={origin} value={origin}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -282,16 +284,16 @@ export default function TransactionHistory() {
         </FormControl>
 
         <FormControl size="small" sx={{ minWidth: 120 }}>
-          <InputLabel>Period</InputLabel>
+          <InputLabel>{t('shop.PERIOD')}</InputLabel>
           <Select
             value={dateFilter}
-            label="Period"
+            label={t('shop.PERIOD')}
             onChange={(e) => setDateFilter(e.target.value as any)}
           >
-            <MenuItem value="all">All Time</MenuItem>
-            <MenuItem value="today">Today</MenuItem>
-            <MenuItem value="week">Last 7 Days</MenuItem>
-            <MenuItem value="month">Last Month</MenuItem>
+            <MenuItem value="all">{t('shop.ALL_TIME')}</MenuItem>
+            <MenuItem value="today">{t('shop.TODAY')}</MenuItem>
+            <MenuItem value="week">{t('shop.LAST_7_DAYS')}</MenuItem>
+            <MenuItem value="month">{t('shop.LAST_MONTH')}</MenuItem>
           </Select>
         </FormControl>
 
@@ -304,7 +306,7 @@ export default function TransactionHistory() {
           startIcon={<DownloadIcon />}
           disabled={!filteredTransactions.length}
         >
-          Export CSV
+          {t('shop.EXPORT_CSV')}
         </Button>
 
         <IconButton onClick={handleRefresh} disabled={transactionsLoading}>
@@ -324,14 +326,14 @@ export default function TransactionHistory() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Date & Time</TableCell>
-              <TableCell>Material</TableCell>
-              <TableCell align="center">Origin</TableCell>
-              <TableCell align="right">Quantity</TableCell>
-              <TableCell align="right">Unit Price</TableCell>
-              <TableCell align="right">Total Cost</TableCell>
-              <TableCell>Facility</TableCell>
-              <TableCell align="center">Status</TableCell>
+              <TableCell>{t('shop.DATE_TIME')}</TableCell>
+              <TableCell>{t('shop.MATERIAL')}</TableCell>
+              <TableCell align="center">{t('shop.ORIGIN')}</TableCell>
+              <TableCell align="right">{t('shop.QUANTITY')}</TableCell>
+              <TableCell align="right">{t('shop.UNIT_PRICE')}</TableCell>
+              <TableCell align="right">{t('shop.TOTAL_COST')}</TableCell>
+              <TableCell>{t('shop.FACILITY')}</TableCell>
+              <TableCell align="center">{t('shop.STATUS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -339,7 +341,7 @@ export default function TransactionHistory() {
               <TableRow>
                 <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
                   <Typography variant="body1" color="textSecondary">
-                    Loading transactions...
+                    {t('shop.LOADING_TRANSACTIONS')}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -347,12 +349,12 @@ export default function TransactionHistory() {
               <TableRow>
                 <TableCell colSpan={8} align="center" sx={{ py: 8 }}>
                   <Typography variant="h6" color="textSecondary" gutterBottom>
-                    No transactions found
+                    {t('shop.NO_TRANSACTIONS')}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     {searchTerm || originFilter || dateFilter !== 'all'
-                      ? 'Try adjusting your filters'
-                      : 'Your purchase history will appear here'}
+                      ? t('shop.TRY_ADJUSTING_FILTERS')
+                      : t('shop.YOUR_PURCHASE_HISTORY')}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -406,13 +408,13 @@ export default function TransactionHistory() {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <FacilityIcon fontSize="small" color="action" />
                       <Typography variant="body2">
-                        {transaction.delivery.facilityName || 'N/A'}
+                        {transaction.delivery.facilityName || t('shop.NOT_AVAILABLE')}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell align="center">
                     <Chip
-                      label={transaction.delivery.status}
+                      label={t(`shop.STATUS_${transaction.delivery.status}`)}
                       size="small"
                       color={transaction.delivery.status === 'DELIVERED' ? 'success' : 'default'}
                       variant="outlined"

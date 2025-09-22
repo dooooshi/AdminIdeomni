@@ -1,11 +1,13 @@
 import { zhExtendedTranslations } from './zh-extended';
 import { tradeTranslationsZh } from './trade-zh';
 import { mtoTranslationsZh } from './mto-zh';
+import { shopTranslationsZh } from './shop-zh';
 
 export const zhTranslations = {
   ...zhExtendedTranslations,
   ...tradeTranslationsZh,
   ...mtoTranslationsZh,
+  ...shopTranslationsZh,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO管理',
   'MTO_MANAGEMENT_SUBTITLE': '按订单制造系统管理',
@@ -4297,5 +4299,9 @@ export const zhTranslations = {
   'TRADE_HISTORY': '贸易历史',
   'navigation.TRADE_HUB': '贸易中心',
   'navigation.CREATE_TRADE': '创建贸易',
-  'navigation.TRADE_HISTORY': '贸易历史'
+  'navigation.TRADE_HISTORY': '贸易历史',
+
+  // Common translations
+  'common.locked': '已锁定',
+  'common.validation.fixErrors': '请在提交前修复错误'
 };

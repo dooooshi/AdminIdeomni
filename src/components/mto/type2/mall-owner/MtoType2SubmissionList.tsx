@@ -171,7 +171,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
     { name: 'Pending', value: pendingSubmissions, color: COLORS[0] },
     { name: 'Validated', value: validatedSubmissions, color: COLORS[1] },
     { name: 'Settled', value: settledSubmissions, color: COLORS[2] },
-    { name: 'Partially Settled', value: partiallySettledSubmissions, color: COLORS[3] },
+    { name: t('mto.type2.submissions.partiallySettled'), value: partiallySettledSubmissions, color: COLORS[3] },
     { name: 'Unsettled', value: unsettledSubmissions, color: COLORS[4] },
   ].filter(item => item.value > 0);
 
@@ -242,12 +242,12 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       };
 
       await MtoType2Service.updateSubmission(selectedSubmission.id, updatedData);
-      showSuccess('Submission updated successfully');
+      showSuccess(t('mto.type2.submissions.updateSuccess'));
       setEditFormOpen(false);
       loadData();
     } catch (error) {
       console.error('Error updating submission:', error);
-      showError('Failed to update submission', error instanceof Error ? error.message : 'Unknown error');
+      showError(t('mto.type2.submissions.updateFailed'), error instanceof Error ? error.message : t('mto.common.unknownError'));
     }
   };
 
@@ -256,13 +256,13 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
 
     try {
       await MtoType2Service.withdrawSubmission(submissionToWithdraw.id);
-      showSuccess('Submission withdrawn successfully');
+      showSuccess(t('mto.type2.submissions.withdrawSuccess'));
       setWithdrawConfirmOpen(false);
       setSubmissionToWithdraw(null);
       loadData();
     } catch (error) {
       console.error('Error withdrawing submission:', error);
-      showError('Failed to withdraw submission', error instanceof Error ? error.message : 'Unknown error');
+      showError(t('mto.type2.submissions.withdrawFailed'), error instanceof Error ? error.message : t('mto.common.unknownError'));
     }
   };
 
@@ -290,7 +290,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4" component="h1">
-          My Submissions & Settlement Status
+          {t('mto.type2.submissions.title')}
         </Typography>
         <Box display="flex" gap={2}>
           <Button
@@ -398,7 +398,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, md: 6 }}>
           <Card>
-            <CardHeader title="Submission Status Distribution" />
+            <CardHeader title={t('mto.type2.submissions.statusDistribution')} />
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
@@ -425,7 +425,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Card>
-            <CardHeader title="Settlement Progress" />
+            <CardHeader title={t('mto.type2.submissions.settlementProgress')} />
             <CardContent>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" gutterBottom>
@@ -552,7 +552,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                             </TableCell>
                             <TableCell align="center">
                               <Box display="flex" gap={1}>
-                                <Tooltip title="View Details">
+                                <Tooltip title={t('mto.type2.submissions.viewDetails')}>
                                   <IconButton
                                     size="small"
                                     onClick={() => handleViewDetails(submission)}
@@ -561,7 +561,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                                   </IconButton>
                                 </Tooltip>
                                 {canEdit(submission) && (
-                                  <Tooltip title="Edit Submission">
+                                  <Tooltip title={t('mto.type2.submissions.editSubmission')}>
                                     <IconButton
                                       size="small"
                                       onClick={() => handleEditSubmission(submission)}
@@ -571,7 +571,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                                   </Tooltip>
                                 )}
                                 {canWithdraw(submission) && (
-                                  <Tooltip title="Withdraw Submission">
+                                  <Tooltip title={t('mto.type2.submissions.withdrawSubmission')}>
                                     <IconButton
                                       size="small"
                                       color="error"
@@ -627,7 +627,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 <Select
                   value={filters.tileId}
                   onChange={(e) => setFilters(prev => ({ ...prev, tileId: e.target.value }))}
-                  label="Tile ID"
+                  label={t('mto.type2.submissions.tileId')}
                 >
                   <MenuItem value="ALL">All Tiles</MenuItem>
                   {uniqueTiles.map(tileId => (
@@ -639,7 +639,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
-                label="Date From"
+                label={t('mto.type2.submissions.dateFrom')}
                 type="date"
                 value={filters.dateFrom}
                 onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
@@ -649,7 +649,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
-                label="Date To"
+                label={t('mto.type2.submissions.dateTo')}
                 type="date"
                 value={filters.dateTo}
                 onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
@@ -659,7 +659,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
-                label="Min Value"
+                label={t('mto.type2.submissions.minValue')}
                 type="number"
                 value={filters.minValue || ''}
                 onChange={(e) => setFilters(prev => ({ ...prev, minValue: parseInt(e.target.value) || 0 }))}
@@ -669,7 +669,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
-                label="Max Value"
+                label={t('mto.type2.submissions.maxValue')}
                 type="number"
                 value={filters.maxValue || ''}
                 onChange={(e) => setFilters(prev => ({ ...prev, maxValue: parseInt(e.target.value) || 0 }))}
@@ -823,7 +823,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Product Quantity"
+                label={t('mto.type2.submissions.productQuantity')}
                 type="number"
                 value={editFormData.productQuantity}
                 onChange={(e) => setEditFormData(prev => ({
@@ -836,7 +836,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Unit Price"
+                label={t('mto.type2.submissions.unitPrice')}
                 type="number"
                 value={editFormData.unitPrice}
                 onChange={(e) => setEditFormData(prev => ({

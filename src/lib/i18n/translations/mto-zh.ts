@@ -178,9 +178,20 @@ export const mtoTranslationsZh = {
   // Statuses (Type 2)
   'mto.type2.statuses.draft': '草稿',
   'mto.type2.statuses.released': '已发布',
-  'mto.type2.statuses.inProgress': '进行中',
+  'mto.type2.statuses.in_progress': '进行中',
+  'mto.type2.statuses.inProgress': '进行中', // Keep for backward compatibility
   'mto.type2.statuses.settled': '已结算',
   'mto.type2.statuses.cancelled': '已取消',
+
+  // Formula Selection
+  'mto.type2.selectFormula': '选择产品配方',
+  'mto.type2.selectProductFormula': '选择产品配方',
+  'mto.type2.searchFormulas': '按名称或编号搜索配方...',
+  'mto.type2.noFormulasFound': '未找到符合搜索条件的配方',
+  'mto.type2.noFormulasAvailable': '没有可用的配方',
+  'mto.type2.estimatedUnits': '预估单位数量',
+  'mto.type2.helpers.selectFormulaFromList': '点击从列表中选择产品配方',
+  'mto.type2.helpers.nameAutoFilled': '如果留空将使用配方名称',
 
   // Student/Team views
   'mto.student.availableRequirements': '可用需求',
@@ -1092,5 +1103,74 @@ export const mtoTranslationsZh = {
   'mto.student.deliveries.summary.transportationCosts': '总运输费',
   'mto.student.deliveries.summary.afterTransportCosts': '扣除运输成本后',
   'mto.student.deliveries.table.fee': '费用',
-  'mto.student.deliveries.table.unknownTile': '未知地块'
+  'mto.student.deliveries.table.unknownTile': '未知地块',
+
+  // Additional MTO Type 2 Submission List translations
+  'mto.type2.submissions.title': '我的提交与结算状态',
+  'mto.type2.submissions.partiallySettled': '部分结算',
+  'mto.type2.submissions.statusDistribution': '提交状态分布',
+  'mto.type2.submissions.settlementProgress': '结算进度',
+  'mto.type2.submissions.viewDetails': '查看详情',
+  'mto.type2.submissions.editSubmission': '编辑提交',
+  'mto.type2.submissions.withdrawSubmission': '撤回提交',
+  'mto.type2.submissions.tileId': '地块ID',
+  'mto.type2.submissions.dateFrom': '开始日期',
+  'mto.type2.submissions.dateTo': '结束日期',
+  'mto.type2.submissions.minValue': '最小值',
+  'mto.type2.submissions.maxValue': '最大值',
+  'mto.type2.submissions.productQuantity': '产品数量',
+  'mto.type2.submissions.unitPrice': '单价',
+  'mto.type2.submissions.updateSuccess': '提交更新成功',
+  'mto.type2.submissions.updateFailed': '更新提交失败',
+  'mto.type2.submissions.withdrawSuccess': '提交撤回成功',
+  'mto.type2.submissions.withdrawFailed': '撤回提交失败',
+  'mto.type2.submissions.filters': '筛选器',
+  'mto.type2.submissions.refresh': '刷新',
+  'mto.type2.submissions.export': '导出',
+
+  // MTO Type 2 Unsettled Returns
+  'mto.type2.unsettled.mainWarehouse': '主仓库',
+  'mto.type2.unsettled.secondaryStorage': '二级存储',
+  'mto.type2.unsettled.distributionCenter': '配送中心',
+
+  // MTO Type 2 Budget Allocation
+  'mto.type2.budget.calculateBudgets': '计算预算',
+  'mto.type2.budget.noBudgetFound': '未找到预算分配。点击"计算预算"根据地块人口和商城分布生成分配。',
+  'mto.type2.budget.distributionByTile': '按地块的预算分配',
+  'mto.type2.budget.allocationVsUsage': '预算分配与使用对比',
+  'mto.type2.budget.detailedAllocation': '按地块的详细预算分配',
+  'mto.type2.budget.viewDetails': '查看详情',
+
+  // MTO Type 2 Settlement Manager
+  'mto.type2.settlement.validateSubmissions': '验证提交',
+  'mto.type2.settlement.calculatePriorities': '计算优先级',
+  'mto.type2.settlement.allocateBudget': '分配预算',
+  'mto.type2.settlement.processPayments': '处理付款',
+  'mto.type2.settlement.completeSettlement': '完成结算',
+  'mto.type2.settlement.settlementProcess': '结算流程',
+  'mto.type2.settlement.priceDistributionAnalysis': '价格分布分析',
+
+  // MTO Type 1 Delivery Form
+  'mto.type1.delivery.requirementIdMissing': '需求ID缺失',
+
+  // Common MTO translations
+  'mto.common.cost': '成本',
+  'mto.common.notAvailable': '不可用',
+  'mto.common.calculatingCosts': '正在计算成本...',
+  'mto.common.loading': '加载中...',
+  'mto.common.noDataFound': '未找到数据',
+  'mto.common.unknownError': '未知错误',
+  'mto.common.confirm': '确认',
+  'mto.common.cancel': '取消',
+  'mto.common.save': '保存',
+  'mto.common.update': '更新',
+  'mto.common.delete': '删除',
+  'mto.common.edit': '编辑',
+  'mto.common.view': '查看',
+  'mto.common.withdraw': '撤回',
+  'mto.common.apply': '应用',
+  'mto.common.clearFilters': '清除筛选',
+  'mto.common.resetFilters': '重置筛选',
+  'mto.common.applyFilters': '应用筛选',
+  'mto.common.allStatuses': '所有状态'
 };

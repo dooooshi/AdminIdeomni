@@ -24,9 +24,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  Tab,
-  Tabs
+  DialogActions
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -46,28 +44,7 @@ import { MtoType2Requirement } from '@/lib/types/mtoType2';
 import MtoType2Service from '@/lib/services/mtoType2Service';
 import { enqueueSnackbar } from 'notistack';
 import { format } from 'date-fns';
-import { MtoType2RequirementForm } from './MtoType2RequirementForm';
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`mto2-tabpanel-${index}`}
-      aria-labelledby={`mto2-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ py: 2 }}>{children}</Box>}
-    </div>
-  );
-}
+import { MtoType2RequirementFormWithPagination as MtoType2RequirementForm } from './MtoType2RequirementFormWithPagination';
 
 const statusIcons: Record<string, React.ReactElement> = {
   DRAFT: <WarningIcon color="disabled" />,
@@ -100,7 +77,6 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [formDialogOpen, setFormDialogOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [tabValue, setTabValue] = useState(0);
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
@@ -111,8 +87,22 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
     setLoading(true);
     try {
       const data = await MtoType2Service.getRequirements();
-      // Ensure we always have an array
-      const requirementsArray = Array.isArray(data) ? data : [];
+      // Handle paginated response structure
+      let requirementsArray = [];
+
+      if (data && typeof data === 'object') {
+        if (data.items && Array.isArray(data.items)) {
+          // Paginated response structure
+          requirementsArray = data.items;
+        } else if (Array.isArray(data)) {
+          // Direct array response
+          requirementsArray = data;
+        } else if (data.data && Array.isArray(data.data)) {
+          // Alternative structure with data property
+          requirementsArray = data.data;
+        }
+      }
+
       setRequirements(requirementsArray);
     } catch (error) {
       console.error('Failed to load requirements:', error);
@@ -173,7 +163,8 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
 
     if (searchTerm) {
       filtered = filtered.filter(req =>
-        req.requirementName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        req.metadata?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        req.managerProductFormula?.productName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         req.id.toString().includes(searchTerm)
       );
     }
@@ -181,13 +172,14 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
     return filtered;
   };
 
-  const formatCurrency = (value: number) => {
+  const formatCurrency = (value: number | string) => {
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 2
-    }).format(value).replace('$', '');
+    }).format(numValue || 0);
   };
 
   const renderRequirementsTable = (reqs: MtoType2Requirement[]) => {
@@ -204,13 +196,13 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{t('mto.type2.id')}</TableCell>
-              <TableCell>{t('mto.type2.name')}</TableCell>
-              <TableCell>{t('mto.type2.formula')}</TableCell>
-              <TableCell align="right">{t('mto.type2.budgetPool')}</TableCell>
-              <TableCell align="right">{t('mto.type2.mallCount')}</TableCell>
-              <TableCell>{t('mto.type2.releaseTime')}</TableCell>
-              <TableCell>{t('mto.type2.settlementTime')}</TableCell>
+              <TableCell align="center">{t('mto.type2.id')}</TableCell>
+              <TableCell align="center">{t('mto.type2.name')}</TableCell>
+              <TableCell align="center">{t('mto.type2.formula')}</TableCell>
+              <TableCell align="center">{t('mto.type2.budgetPool')}</TableCell>
+              <TableCell align="center">{t('mto.type2.mallCount')}</TableCell>
+              <TableCell align="center">{t('mto.type2.releaseTime')}</TableCell>
+              <TableCell align="center">{t('mto.type2.settlementTime')}</TableCell>
               <TableCell align="center">{t('mto.type2.status')}</TableCell>
               <TableCell align="center">{t('common.actions')}</TableCell>
             </TableRow>
@@ -218,29 +210,32 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
           <TableBody>
             {reqs.map((req) => (
               <TableRow key={req.id}>
-                <TableCell>#{req.id}</TableCell>
-                <TableCell>
+                <TableCell align="center">#{req.id}</TableCell>
+                <TableCell align="center">
                   <Typography variant="body2" fontWeight="medium">
-                    {req.requirementName || `Requirement #${req.id}`}
+                    {req.metadata?.name || req.managerProductFormula?.productName || `Requirement #${req.id}`}
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Chip
-                    label={`Formula #${req.managerProductFormulaId}`}
-                    size="small"
-                    variant="outlined"
-                  />
+                <TableCell align="center">
+                  <Stack spacing={0.5} alignItems="center">
+                    <Typography variant="body2">
+                      {req.managerProductFormula?.productName || `Formula #${req.managerProductFormulaId}`}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      ${req.managerProductFormula?.totalMaterialCost || 0}
+                    </Typography>
+                  </Stack>
                 </TableCell>
-                <TableCell align="right">
-                  {formatCurrency(req.budgetPool)}
+                <TableCell align="center">
+                  {formatCurrency(req.overallPurchaseBudget)}
                 </TableCell>
-                <TableCell align="right">
-                  {req.participatingMallIds?.length || 0}
+                <TableCell align="center">
+                  {req.participatingMalls || req.participatingMallIds?.length || 0}
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   {format(new Date(req.releaseTime), 'MM/dd/yyyy HH:mm')}
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   {format(new Date(req.settlementTime), 'MM/dd/yyyy HH:mm')}
                 </TableCell>
                 <TableCell align="center">
@@ -303,10 +298,6 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
       </Box>
     );
   }
-
-  const draftCount = getFilteredRequirements('DRAFT').length;
-  const releasedCount = getFilteredRequirements('RELEASED').length;
-  const settledCount = getFilteredRequirements('SETTLED').length;
 
   return (
     <Box>
@@ -379,27 +370,9 @@ const MtoType2RequirementList: React.FC<MtoType2RequirementListProps> = ({
         />
       </Paper>
 
-      {/* Tabs */}
-      <Paper sx={{ width: '100%' }}>
-        <Tabs value={tabValue} onChange={(e, v) => setTabValue(v)}>
-          <Tab label={t('common.all')} />
-          <Tab label={`${t('mto.type2.statuses.draft')} (${draftCount})`} />
-          <Tab label={`${t('mto.type2.statuses.released')} (${releasedCount})`} />
-          <Tab label={`${t('mto.type2.statuses.settled')} (${settledCount})`} />
-        </Tabs>
-
-        <TabPanel value={tabValue} index={0}>
-          {renderRequirementsTable(getFilteredRequirements())}
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          {renderRequirementsTable(getFilteredRequirements('DRAFT'))}
-        </TabPanel>
-        <TabPanel value={tabValue} index={2}>
-          {renderRequirementsTable(getFilteredRequirements('RELEASED'))}
-        </TabPanel>
-        <TabPanel value={tabValue} index={3}>
-          {renderRequirementsTable(getFilteredRequirements('SETTLED'))}
-        </TabPanel>
+      {/* Requirements Table */}
+      <Paper sx={{ width: '100%', p: 2 }}>
+        {renderRequirementsTable(getFilteredRequirements())}
       </Paper>
 
       {/* Delete Confirmation Dialog */}

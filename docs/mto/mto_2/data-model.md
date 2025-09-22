@@ -115,7 +115,6 @@ model MtoType2Submission {
   // Return handling
   returnRequested              Boolean   @default(false)
   returnFacilityInstanceId     String?   // Target facility instance for returns
-  returnTransportationFee      Decimal?  @db.Decimal(10, 2)
   returnCompletedAt            DateTime?
 
   // Metadata

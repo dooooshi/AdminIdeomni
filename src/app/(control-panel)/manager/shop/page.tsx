@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Container,
   Typography,
@@ -45,6 +46,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function ShopManagerPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const materialsLoading = shopState?.materialsLoading || false;
@@ -75,7 +77,7 @@ export default function ShopManagerPage() {
       <Box sx={{ py: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h4" component="h1">
-            Raw Material Shop Management
+            {t('SHOP_DASHBOARD')}
           </Typography>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Button
@@ -84,14 +86,14 @@ export default function ShopManagerPage() {
               onClick={handleRefresh}
               disabled={materialsLoading}
             >
-              Refresh
+              {t('shop.RETRY')}
             </Button>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={() => setAddMaterialOpen(true)}
             >
-              Add Material
+              {t('shop.ADD_MATERIAL')}
             </Button>
           </Box>
         </Box>
@@ -104,9 +106,9 @@ export default function ShopManagerPage() {
 
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
-            <Tab label="Materials" />
-            <Tab label="Statistics" />
-            <Tab label="History" />
+            <Tab label={t('shop.MATERIALS_LIST')} />
+            <Tab label={t('shop.STATISTICS')} />
+            <Tab label={t('shop.TRANSACTION_HISTORY')} />
           </Tabs>
         </Box>
 

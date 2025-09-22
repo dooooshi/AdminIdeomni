@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Table,
@@ -46,6 +47,7 @@ const categoryColors: Record<ActionCategory, string> = {
 };
 
 export default function ShopHistoryTable() {
+  const { t } = useTranslation();
   const shopState = useSelector((state: RootState) => state.shop);
   const shopHistory = shopState?.shopHistory || [];
   const shopHistoryLoading = shopState?.shopHistoryLoading || false;
@@ -99,12 +101,12 @@ export default function ShopHistoryTable() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Time</TableCell>
-              <TableCell>Action</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Actor</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell align="right">Details</TableCell>
+              <TableCell>{t('shop.DATE')}</TableCell>
+              <TableCell>{t('shop.ACTIONS')}</TableCell>
+              <TableCell>{t('shop.ORIGIN')}</TableCell>
+              <TableCell>{t('shop.BUYER')}</TableCell>
+              <TableCell>{t('shop.DESCRIPTION')}</TableCell>
+              <TableCell align="right">{t('shop.VIEW_DETAILS')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -112,7 +114,7 @@ export default function ShopHistoryTable() {
               <TableRow>
                 <TableCell colSpan={6} align="center">
                   <Typography variant="body2" color="textSecondary" sx={{ py: 4 }}>
-                    No history records found
+                    {t('shop.NO_TRANSACTIONS')}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -152,11 +154,11 @@ export default function ShopHistoryTable() {
                           <Box>
                             {record.previousValue && (
                               <Typography variant="caption">
-                                Previous: {JSON.stringify(record.previousValue)}
+                                {t('shop.CURRENT_PRICE')}: {JSON.stringify(record.previousValue)}
                               </Typography>
                             )}
                             <Typography variant="caption">
-                              New: {JSON.stringify(record.newValue)}
+                              {t('shop.NEW_PRICE')}: {JSON.stringify(record.newValue)}
                             </Typography>
                           </Box>
                         }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -54,6 +55,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function ShopManagementPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const materials = shopState?.materials || [];
@@ -99,7 +101,7 @@ export default function ShopManagementPage() {
       {/* Header */}
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h4" component="h1" fontWeight="bold">
-          Shop Management
+          {t('SHOP_DASHBOARD')}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
@@ -107,12 +109,12 @@ export default function ShopManagementPage() {
             startIcon={<AddIcon />}
             onClick={() => setAddMaterialOpen(true)}
           >
-            Add Material
+            {t('shop.ADD_MATERIAL')}
           </Button>
           <IconButton
             onClick={handleRefresh}
             disabled={refreshing}
-            title="Refresh data"
+            title={t('shop.RETRY')}
           >
             <RefreshIcon className={refreshing ? 'animate-spin' : ''} />
           </IconButton>
@@ -134,14 +136,14 @@ export default function ShopManagementPage() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <InventoryIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom>
-                  Total Materials
+                  {t('shop.TOTAL_MATERIALS')}
                 </Typography>
               </Box>
               <Typography variant="h4" component="div">
                 {materialsLoading ? <Skeleton width={60} /> : totalMaterials}
               </Typography>
               <Typography variant="body2" color="success.main" sx={{ mt: 1 }}>
-                Active in shop
+                {t('shop.ACTIVE_MATERIALS')}
               </Typography>
             </CardContent>
           </Card>
@@ -153,7 +155,7 @@ export default function ShopManagementPage() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <MoneyIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom>
-                  Total Revenue
+                  {t('shop.TOTAL_REVENUE')}
                 </Typography>
               </Box>
               <Typography variant="h4" component="div">
@@ -172,7 +174,7 @@ export default function ShopManagementPage() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <TrendingUpIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom>
-                  Recent Sales
+                  {t('shop.TODAY_TRANSACTIONS')}
                 </Typography>
               </Box>
               <Typography variant="h4" component="div">
@@ -191,7 +193,7 @@ export default function ShopManagementPage() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <HistoryIcon color="primary" sx={{ mr: 1 }} />
                 <Typography color="textSecondary" gutterBottom>
-                  Price Changes
+                  {t('shop.UPDATE_PRICE')}
                 </Typography>
               </Box>
               <Typography variant="h4" component="div">
@@ -217,7 +219,7 @@ export default function ShopManagementPage() {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <InventoryIcon fontSize="small" />
-                  Materials
+                  {t('shop.MATERIALS_LIST')}
                   <Chip label={totalMaterials} size="small" />
                 </Box>
               }
@@ -228,7 +230,7 @@ export default function ShopManagementPage() {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <HistoryIcon fontSize="small" />
-                  History
+                  {t('shop.TRANSACTION_HISTORY')}
                 </Box>
               }
               id="shop-tab-1"
@@ -238,7 +240,7 @@ export default function ShopManagementPage() {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <TrendingUpIcon fontSize="small" />
-                  Analytics
+                  {t('shop.STATISTICS')}
                 </Box>
               }
               id="shop-tab-2"

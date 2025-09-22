@@ -106,9 +106,9 @@ const MtoType2UnsettledReturns: React.FC<MtoType2UnsettledReturnsProps> = ({
     try {
       // Mock loading facilities - replace with actual API call
       const mockFacilities = [
-        { id: 'facility-1', name: 'Main Warehouse', type: 'WAREHOUSE', tileId: 'tile-1' },
-        { id: 'facility-2', name: 'Secondary Storage', type: 'STORAGE', tileId: 'tile-2' },
-        { id: 'facility-3', name: 'Distribution Center', type: 'WAREHOUSE', tileId: 'tile-3' }
+        { id: 'facility-1', name: t('mto.type2.unsettled.mainWarehouse'), type: 'WAREHOUSE', tileId: 'tile-1' },
+        { id: 'facility-2', name: t('mto.type2.unsettled.secondaryStorage'), type: 'STORAGE', tileId: 'tile-2' },
+        { id: 'facility-3', name: t('mto.type2.unsettled.distributionCenter'), type: 'WAREHOUSE', tileId: 'tile-3' }
       ];
       setFacilities(mockFacilities);
     } catch (error: any) {

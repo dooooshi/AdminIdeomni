@@ -49,11 +49,6 @@ This document defines the comprehensive business rules for MTO Type 2, a MALL-ex
 - Settlement time must be after release time
 - Budget must be greater than 0
 - Product formula must be active and valid
-- **Formula Lock**: Upon MTO creation, the referenced formula is locked
-  - Sets `ManagerProductFormula.isLocked = true`
-  - Records `lockedAt` timestamp and `lockedBy` = MTO Type 2 ID
-  - Formula cannot be modified while locked
-  - Unlocked only after MTO reaches SETTLED or CANCELLED status
 
 ### 2.2 Status Transitions
 
@@ -190,19 +185,15 @@ For each tile with MALL facilities:
 
 ### 5.2 MALL Level and Price-Based Fulfillment
 
-> **⚠️ CLARIFICATION NEEDED**: The original requirements in `/docs/mto/requirements.md` specify pure price-based ordering without mention of MALL levels. This documentation includes MALL level priority. Confirm which approach should be implemented.
-
-**Current Rule (As Documented)**: Products purchased prioritizing highest MALL levels first, then by ascending price order until budget exhaustion.
-
-**Original Requirement**: "order based on product sell price per unit, start from the lowest"
+**Rule**: Products purchased prioritizing highest MALL levels first (Level 5 → Level 1), then by ascending price order within each level until budget exhaustion.
 
 **Algorithm per Tile**:
 ```typescript
 function settleTile(tileId: number, allocatedBudget: decimal) {
   // Get all submissions for this tile
   submissions = getSubmissionsForTile(tileId)
-    .sortBy('mallLevel', 'DESC')    // Highest MALL level first
-    .thenBy('unitPrice', 'ASC')     // Then lowest price
+    .sortBy('mallLevel', 'DESC')    // Highest MALL level first (5 → 1)
+    .thenBy('unitPrice', 'ASC')     // Then lowest price within same level
     .thenBy('submittedAt', 'ASC')   // Then earliest submission
 
   remainingBudget = allocatedBudget
@@ -242,8 +233,8 @@ function settleTile(tileId: number, allocatedBudget: decimal) {
 **Rule**: Settlement prioritizes higher-level MALLs, then lower prices, then earlier submissions.
 
 **Sorting Order**:
-1. Primary: MALL level (descending - highest level first)
-2. Secondary: Unit price (ascending - lowest price first)
+1. Primary: MALL level (descending - highest level first, Level 5 → Level 1)
+2. Secondary: Unit price (ascending - lowest price first within same level)
 3. Tertiary: Submission timestamp (earliest first)
 4. Quaternary: Submission ID (for absolute determinism)
 
@@ -296,18 +287,16 @@ unsettledNumber = submittedNumber - settledNumber
 **Rule**: Teams can retrieve unsettled products after settlement.
 
 **Process**:
-1. Team selects target facility for return
-2. **System validates target facility capacity**
-3. System calculates transportation fee
-4. Team confirms and pays fee
-5. Products transferred to target facility
-6. Submission marked as RETURNED
+1. Team requests return of unsettled products
+2. Products automatically return to original MALL facility
+3. No fees required for return
+4. Submission marked as RETURNED
 
-**Capacity Validation**:
-- Check available space: `targetFacility.capacity - targetFacility.currentInventory`
-- If insufficient: `availableSpace < unsettledQuantity`
-- Error: "Target facility has insufficient capacity for {quantity} products"
-- Team must select different facility or free up space
+**Automatic MALL Return**:
+- Products always return to the same MALL they were submitted from
+- No need to select target facility
+- Ensures MALL has space since products originated there
+- Instant return process with no transportation time
 
 ### 7.3 Return Availability
 

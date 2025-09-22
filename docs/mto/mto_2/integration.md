@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document details how MTO Type 2 integrates with existing platform systems. MTO Type 2 requires deep integration with facility management, product validation, financial systems, and transportation services.
+This document details how MTO Type 2 integrates with existing platform systems. MTO Type 2 requires deep integration with facility management, product validation, and financial systems.
 
 ## 1. Facility Management Integration
 
@@ -409,40 +409,33 @@ async function processSettlementPayments(
 }
 ```
 
-## 5. Transportation System Integration
+## 5. Return System Integration
 
-### 5.1 Return Logistics
+### 5.1 Product Returns
 
-Unsettled products require transportation for returns.
+Unsettled products can be returned to any facility without transportation fees.
 
-**Transportation Service Interface**:
+**Return Service Interface**:
 ```typescript
-interface TransportationService {
-  // Calculate transportation cost
-  calculateTransportCost(
-    fromTileId: number,
-    toTileId: number,
-    productWeight: number,
-    productVolume: number
-  ): Promise<TransportCost>;
+interface ReturnService {
+  // Process product return
+  processReturn(
+    submissionId: number,
+    targetFacilityInstanceId: string
+  ): Promise<ReturnResult>;
 
-  // Get distance between tiles
-  getTileDistance(
-    fromTileId: number,
-    toTileId: number
-  ): Promise<{
-    hexDistance: number;
-    terrainCost: number;
-    totalCost: number;
-  }>;
+  // Validate facility capacity
+  validateTargetCapacity(
+    facilityInstanceId: string,
+    quantity: number
+  ): Promise<boolean>;
 
-  // Schedule transport
-  scheduleTransport(
+  // Transfer products
+  transferProducts(
     fromFacilityInstanceId: string,
     toFacilityInstanceId: string,
-    products: Product[],
-    scheduledTime: Date
-  ): Promise<TransportSchedule>;
+    products: Product[]
+  ): Promise<TransferResult>;
 }
 ```
 
@@ -451,11 +444,9 @@ interface TransportationService {
 **Product Return Flow**:
 ```typescript
 async function processProductReturn(
-  submissionId: number,
-  targetFacilityInstanceId: string
+  submissionId: number
 ): Promise<ReturnResult> {
   const submission = await getSubmission(submissionId);
-  const targetFacility = await getFacilityInstance(targetFacilityInstanceId);
 
   // Calculate unsettled quantity
   const unsettledQuantity = submission.productNumber - submission.settledNumber;
@@ -464,51 +455,29 @@ async function processProductReturn(
     throw new ValidationException('No unsettled products to return');
   }
 
-  // Validate target facility capacity
-  const availableCapacity = targetFacility.capacity - targetFacility.spaceInventory.currentUsed;
-  if (availableCapacity < unsettledQuantity) {
-    throw new ValidationException(
-      `Target facility has insufficient capacity. Available: ${availableCapacity}, Required: ${unsettledQuantity}`
-    );
-  }
+  // Products automatically return to original MALL facility
+  // No capacity validation needed since products originated there
+  const originalMall = submission.facilityInstanceId;
 
-  // Calculate transportation fee
-  const transportCost = await transportationService.calculateTransportCost(
-    submission.mapTileId,
-    targetFacility.tileId,
-    unsettledQuantity * PRODUCT_WEIGHT,
-    unsettledQuantity * PRODUCT_VOLUME
-  );
-
-  // Charge transportation fee
-  await teamAccountService.debitAccount(
-    submission.teamId,
-    transportCost.totalCost,
-    `RETURN-${submissionId}`,
-    'MTO Type 2 product return transportation'
-  );
-
-  // Schedule transport
-  const schedule = await transportationService.scheduleTransport(
+  // Transfer products directly back to original MALL (no fees)
+  const transfer = await returnService.transferProducts(
     submission.facilityInstanceId,
-    targetFacilityInstanceId,
-    products,
-    new Date()
+    originalMall, // Same as source - returns to original location
+    products
   );
 
   // Update submission status
   await updateSubmissionReturn(submissionId, {
     returnRequested: true,
-    returnFacilityInstanceId: targetFacilityInstanceId,
-    returnTransportationFee: transportCost.totalCost,
-    returnSchedule: schedule
+    returnFacilityInstanceId: originalMall,
+    returnCompletedAt: new Date()
   });
 
   return {
     submissionId,
     unsettledQuantity,
-    transportationFee: transportCost.totalCost,
-    estimatedDelivery: schedule.estimatedArrival
+    originalMall,
+    returnStatus: 'COMPLETED'
   };
 }
 ```
@@ -756,9 +725,177 @@ async function settlementWithRecovery(
 }
 ```
 
-## 11. Integration Testing
+## 11. Scheduler & Automation Integration
 
-### 11.1 Test Scenarios
+### 11.1 Automated Scheduler Service
+
+MTO Type 2 integrates with NestJS Schedule module for automatic release and settlement.
+
+**Scheduler Service Implementation**:
+```typescript
+@Injectable()
+export class MtoSchedulerService {
+  private readonly logger = new Logger(MtoSchedulerService.name);
+
+  constructor(
+    private readonly mtoType2Service: MtoType2Service,
+    private readonly mtoType2Repository: MtoType2Repository,
+  ) {}
+
+  /**
+   * Check for MTO Type 2 releases and settlements every minute
+   */
+  @Cron(CronExpression.EVERY_MINUTE)
+  async checkMtoType2Tasks() {
+    try {
+      await this.checkMtoType2Releases();
+      await this.checkMtoType2Settlements();
+    } catch (error) {
+      this.logger.error('Error in MTO Type 2 scheduler:', error);
+    }
+  }
+
+  private async checkMtoType2Releases() {
+    const now = new Date();
+    const mtoType2sToRelease = await this.mtoType2Repository.findMany({
+      where: {
+        status: MtoType2Status.DRAFT,
+        releaseTime: { lte: now },
+      },
+    });
+
+    for (const mtoType2 of mtoType2sToRelease) {
+      try {
+        await this.mtoType2Service.release(mtoType2.id);
+        this.logger.log(
+          `MTO Type 2 ${mtoType2.id} released automatically at ${now.toISOString()}`
+        );
+      } catch (error) {
+        this.logger.error(`Failed to release MTO Type 2 ${mtoType2.id}:`, error);
+      }
+    }
+  }
+
+  private async checkMtoType2Settlements() {
+    const now = new Date();
+    const mtoType2sToSettle = await this.mtoType2Repository.findMany({
+      where: {
+        status: {
+          in: [MtoType2Status.RELEASED, MtoType2Status.IN_PROGRESS],
+        },
+        settlementTime: { lte: now },
+      },
+    });
+
+    for (const mtoType2 of mtoType2sToSettle) {
+      try {
+        // Call settle with auto=true for automatic settlement
+        await this.mtoType2Service.settle(mtoType2.id, true);
+        this.logger.log(
+          `MTO Type 2 ${mtoType2.id} settled automatically at ${now.toISOString()}`
+        );
+      } catch (error) {
+        this.logger.error(`Failed to settle MTO Type 2 ${mtoType2.id}:`, error);
+
+        // Rollback to IN_PROGRESS for retry in next cycle
+        try {
+          await this.mtoType2Repository.updateStatus(
+            mtoType2.id,
+            MtoType2Status.IN_PROGRESS
+          );
+        } catch (rollbackError) {
+          this.logger.error(
+            `Failed to rollback MTO Type 2 ${mtoType2.id} status:`,
+            rollbackError
+          );
+        }
+      }
+    }
+  }
+}
+```
+
+### 11.2 Automation Features
+
+**Key Automation Behaviors**:
+
+1. **Automatic Status Transitions**:
+   - DRAFT → RELEASED: At releaseTime
+   - RELEASED → IN_PROGRESS: On first submission
+   - IN_PROGRESS → SETTLING: At settlementTime
+   - SETTLING → SETTLED: Upon successful settlement
+   - Error → IN_PROGRESS: On settlement failure (retry enabled)
+
+2. **Dynamic Budget Allocation**:
+   - Calculated at settlement time based on current population
+   - Special handling for zero-population tiles (equal distribution)
+   - Budget records created/updated automatically
+
+3. **Settlement Process**:
+   - Validates product formulas against manager requirements
+   - Sorts submissions by price (lowest first)
+   - Processes payments atomically
+   - Creates settlement history for audit
+
+4. **Error Recovery**:
+   - Failed settlements automatically retry in next scheduler cycle
+   - Status rollback to IN_PROGRESS on failure
+   - Comprehensive logging for troubleshooting
+   - No data loss on partial failures
+
+### 11.3 Module Configuration
+
+**Schedule Module Setup**:
+```typescript
+@Module({
+  imports: [
+    ScheduleModule.forRoot(),
+    // other imports...
+  ],
+  providers: [
+    MtoSchedulerService,
+    MtoType2Service,
+    // other providers...
+  ],
+})
+export class MtoModule {}
+```
+
+### 11.4 Automation Monitoring
+
+**Health Check Implementation**:
+```typescript
+@Cron(CronExpression.EVERY_HOUR)
+async healthCheck() {
+  this.logger.log('MTO Scheduler Service is running - Health check passed');
+}
+```
+
+**Key Metrics to Monitor**:
+- Scheduler execution frequency
+- Release/settlement success rates
+- Average settlement processing time
+- Failed settlement retry counts
+- Budget utilization rates
+
+### 11.5 Manual Override Capabilities
+
+While automation handles normal flow, manual interventions are supported:
+
+```typescript
+// Manual release (bypasses time check)
+await mtoType2Service.release(mtoId);
+
+// Manual settlement with override
+await mtoType2Service.settle(mtoId, false); // auto=false for manual
+
+// Force status update
+await mtoType2Repository.updateStatus(mtoId, MtoType2Status.SETTLED);
+```
+
+## 12. Integration Testing
+
+### 12.1 Test Scenarios
 
 **Critical Integration Tests**:
 
@@ -790,7 +927,7 @@ async function settlementWithRecovery(
    - Verify transportation fee charged
    - Verify products returned
 
-### 11.2 Integration Test Framework
+### 12.2 Integration Test Framework
 
 ```typescript
 describe('MTO Type 2 Integration', () => {
@@ -816,9 +953,9 @@ describe('MTO Type 2 Integration', () => {
 });
 ```
 
-## 12. Migration & Deployment
+## 13. Migration & Deployment
 
-### 12.1 System Dependencies
+### 13.1 System Dependencies
 
 **Required Systems for MTO Type 2**:
 - Facility Management System (v2.0+)
@@ -826,8 +963,9 @@ describe('MTO Type 2 Integration', () => {
 - Team Account System (v3.0+)
 - Transportation System (v1.2+)
 - Population System (v2.1+)
+- Scheduler Module (NestJS Schedule)
 
-### 12.2 Deployment Checklist
+### 13.2 Deployment Checklist
 
 - [ ] Verify all dependent services are running
 - [ ] Run database migrations
@@ -839,6 +977,10 @@ describe('MTO Type 2 Integration', () => {
 - [ ] Check monitoring metrics
 - [ ] Run integration test suite
 - [ ] Verify audit logging
+- [ ] Confirm scheduler is running (check logs for health check)
+- [ ] Verify automatic release at configured times
+- [ ] Test automatic settlement triggers
+- [ ] Validate error recovery mechanisms
 
 ## Appendix: Service Contracts
 

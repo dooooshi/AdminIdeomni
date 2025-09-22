@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -50,6 +51,7 @@ const originColors: Record<string, string> = {
 };
 
 export default function ShopBrowseView() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const shopState = useSelector((state: RootState) => state.shop);
   const materials = shopState?.materials || [];
@@ -109,7 +111,7 @@ export default function ShopBrowseView() {
     return (
       <Card>
         <CardContent>
-          <Typography>Loading shop materials...</Typography>
+          <Typography>{t('shop.LOADING')}</Typography>
         </CardContent>
       </Card>
     );
@@ -130,14 +132,14 @@ export default function ShopBrowseView() {
       <Card>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            Raw Material Shop
+            {t('shop.BROWSE_MATERIALS')}
           </Typography>
 
           {/* Search and Filters */}
           <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
             <TextField
               size="small"
-              placeholder="Search materials..."
+              placeholder={t('shop.SEARCH_MATERIALS')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{

@@ -87,7 +87,15 @@ export class MtoType2Service {
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<MtoType2Requirement[]> {
+  }): Promise<{
+    items: MtoType2Requirement[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  }> {
     const queryParams = new URLSearchParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -99,9 +107,8 @@ export class MtoType2Service {
     const response = await apiClient.get(
       `${this.MANAGER_BASE_PATH}?${queryParams.toString()}`
     );
-    const data = this.extractResponseData<MtoType2Requirement[]>(response);
-    // Ensure we always return an array
-    return Array.isArray(data) ? data : [];
+    // Return the full response data including items and pagination
+    return this.extractResponseData(response);
   }
 
   static async searchRequirements(
@@ -130,7 +137,7 @@ export class MtoType2Service {
     const response = await apiClient.get(
       `${this.MANAGER_BASE_PATH}?${queryParams.toString()}`
     );
-    return response.data;
+    return this.extractResponseData(response);
   }
 
   static async releaseRequirement(id: number): Promise<MtoType2Requirement> {
@@ -215,11 +222,62 @@ export class MtoType2Service {
     return this.extractResponseData(response);
   }
 
-  static async getManagerFormulas(): Promise<Array<{ id: number; name: string; }>> {
+  static async getManagerFormulas(params?: {
+    page?: number;
+    limit?: number;
+    searchTerm?: string;
+  }): Promise<{
+    items: Array<{
+      id: number;
+      name: string;
+      productName?: string;
+      formulaNumber?: number;
+      totalMaterialCost?: string;
+      materialCount?: number;
+      craftCategoryCount?: number;
+      isLocked?: boolean;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    const queryParams = new URLSearchParams();
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+    if (params?.searchTerm) queryParams.append('searchTerm', params.searchTerm);
+
     const response = await apiClient.get(
-      `/api/admin/manager-product-formulas`
+      `/user/manager/mto/formulas${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
     );
-    return this.extractResponseData(response);
+    const data = this.extractResponseData(response);
+
+    // The API returns { items: [...], total, page, limit }
+    if (data?.items && Array.isArray(data.items)) {
+      const totalPages = Math.ceil((data.total || 0) / (data.limit || params?.limit || 20));
+      return {
+        items: data.items,
+        pagination: {
+          page: data.page || params?.page || 1,
+          limit: data.limit || params?.limit || 20,
+          total: data.total || 0,
+          totalPages
+        }
+      };
+    }
+
+    // Fallback for backward compatibility
+    return {
+      items: data || [],
+      pagination: {
+        page: 1,
+        limit: 20,
+        total: 0,
+        totalPages: 0
+      }
+    };
   }
 
   // MALL Owner Endpoints
@@ -349,7 +407,7 @@ export class MtoType2Service {
     mtoType2Id: number
   ): Promise<MtoType2FormulaLock> {
     const response = await apiClient.post(
-      `/api/admin/manager-product-formulas/${formulaId}/lock`,
+      `/user/manager/mto/formulas/${formulaId}/lock`,
       { mtoType2Id }
     );
     return this.extractResponseData<MtoType2FormulaLock>(response);
@@ -357,7 +415,7 @@ export class MtoType2Service {
 
   static async unlockFormula(formulaId: number): Promise<MtoType2FormulaLock> {
     const response = await apiClient.post(
-      `/api/admin/manager-product-formulas/${formulaId}/unlock`
+      `/user/manager/mto/formulas/${formulaId}/unlock`
     );
     return this.extractResponseData<MtoType2FormulaLock>(response);
   }

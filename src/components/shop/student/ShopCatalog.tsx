@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Card,
@@ -58,6 +59,7 @@ const originColors: Record<MaterialOrigin, string> = {
 };
 
 export default function ShopCatalog({}: ShopCatalogProps) {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const materials = useSelector(selectFilteredMaterials);
   const { materialsLoading, filters } = useSelector((state: RootState) => state.shop);
@@ -165,12 +167,12 @@ export default function ShopCatalog({}: ShopCatalogProps) {
                 {material.quantityToSell ? (
                   <Box>
                     <Typography variant="body2" color={isInStock ? 'textSecondary' : 'error'}>
-                      {remainingStock} / {material.quantityToSell} available
+                      {remainingStock} / {material.quantityToSell} {t('shop.AVAILABLE')}
                     </Typography>
                   </Box>
                 ) : (
                   <Typography variant="body2" color="success.main">
-                    In Stock
+                    {t('shop.IN_STOCK')}
                   </Typography>
                 )}
               </Box>
@@ -179,7 +181,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <CategoryIcon fontSize="small" color="action" />
                 <Typography variant="body2" color="textSecondary">
-                  Material #{material.material.materialNumber}
+                  {t('shop.MATERIAL_NUMBER', { number: material.material.materialNumber })}
                 </Typography>
               </Box>
             </Box>
@@ -196,7 +198,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
               disabled={!isInStock}
               fullWidth={viewMode === 'grid'}
             >
-              {!isInStock ? 'Out of Stock' : 'Purchase'}
+              {!isInStock ? t('shop.OUT_OF_STOCK') : t('shop.PURCHASE')}
             </Button>
           </CardActions>
         </Card>
@@ -210,7 +212,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
       <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
         <TextField
           size="small"
-          placeholder="Search materials..."
+          placeholder={t('shop.SEARCH_MATERIALS')}
           value={filters.searchTerm || ''}
           onChange={handleSearchChange}
           InputProps={{
@@ -224,13 +226,13 @@ export default function ShopCatalog({}: ShopCatalogProps) {
         />
 
         <FormControl size="small" sx={{ minWidth: 150 }}>
-          <InputLabel>Origin</InputLabel>
+          <InputLabel>{t('shop.ORIGIN')}</InputLabel>
           <Select
             value={filters.origin || ''}
-            label="Origin"
+            label={t('shop.ORIGIN')}
             onChange={(e) => handleOriginFilter(e.target.value as MaterialOrigin | '')}
           >
-            <MenuItem value="">All Origins</MenuItem>
+            <MenuItem value="">{t('shop.ALL_ORIGINS')}</MenuItem>
             {Object.values(MaterialOrigin).map((origin) => (
               <MenuItem key={origin} value={origin}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -252,7 +254,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
         <TextField
           size="small"
           type="number"
-          placeholder="Min Price"
+          placeholder={t('shop.MIN_PRICE')}
           value={filters.minPrice || ''}
           onChange={(e) => handlePriceFilter('min', e.target.value)}
           InputProps={{
@@ -264,7 +266,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
         <TextField
           size="small"
           type="number"
-          placeholder="Max Price"
+          placeholder={t('shop.MAX_PRICE')}
           value={filters.maxPrice || ''}
           onChange={(e) => handlePriceFilter('max', e.target.value)}
           InputProps={{
@@ -279,14 +281,14 @@ export default function ShopCatalog({}: ShopCatalogProps) {
             onClick={() => dispatch(clearFilters())}
             startIcon={<FilterIcon />}
           >
-            Clear Filters
+            {t('shop.CLEAR_FILTERS')}
           </Button>
         )}
 
         <Box sx={{ flexGrow: 1 }} />
 
         <Typography variant="body2" color="textSecondary">
-          {materials.length} material{materials.length !== 1 ? 's' : ''} available
+          {t('shop.MATERIALS_AVAILABLE', { count: materials.length, plural: materials.length !== 1 ? 's' : '' })}
         </Typography>
 
         <ToggleButtonGroup
@@ -326,12 +328,12 @@ export default function ShopCatalog({}: ShopCatalogProps) {
         <Card>
           <CardContent sx={{ textAlign: 'center', py: 8 }}>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              No materials available
+              {t('shop.NO_MATERIALS')}
             </Typography>
             <Typography variant="body2" color="textSecondary">
               {filters.searchTerm || filters.origin || filters.minPrice || filters.maxPrice
-                ? 'Try adjusting your filters'
-                : 'Check back later for available materials'}
+                ? t('shop.TRY_ADJUSTING_FILTERS')
+                : t('shop.CHECK_BACK_LATER')}
             </Typography>
           </CardContent>
         </Card>

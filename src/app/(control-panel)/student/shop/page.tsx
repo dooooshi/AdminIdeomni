@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Typography,
@@ -44,6 +45,7 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export default function StudentShopPage() {
+  const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const { materialsError } = useSelector((state: RootState) => state.shop);
   const [activeTab, setActiveTab] = useState(0);
@@ -77,10 +79,10 @@ export default function StudentShopPage() {
       <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography variant="h4" component="h1" fontWeight="bold">
-            Material Shop
+            {t('shop.STUDENT_TITLE')}
           </Typography>
           <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Purchase raw materials for your team's production needs
+            {t('shop.STUDENT_SUBTITLE')}
           </Typography>
         </Box>
 
@@ -100,7 +102,7 @@ export default function StudentShopPage() {
             <WalletIcon color="primary" />
             <Box>
               <Typography variant="caption" color="textSecondary">
-                Team Balance
+                {t('shop.MY_BALANCE')}
               </Typography>
               <Typography variant="h6" color="primary" fontWeight="bold">
                 {teamBalance.toFixed(2)}
@@ -113,13 +115,13 @@ export default function StudentShopPage() {
             startIcon={<HistoryIcon />}
             onClick={() => setActiveTab(1)}
           >
-            View History
+            {t('shop.TRANSACTION_HISTORY')}
           </Button>
 
           <IconButton
             onClick={handleRefresh}
             disabled={refreshing}
-            title="Refresh data"
+            title={t('shop.RETRY')}
           >
             <RefreshIcon className={refreshing ? 'animate-spin' : ''} />
           </IconButton>
@@ -141,7 +143,7 @@ export default function StudentShopPage() {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <ShoppingCartIcon fontSize="small" />
-                  Shop Catalog
+                  {t('shop.CATALOG')}
                 </Box>
               }
               id="student-shop-tab-0"
@@ -151,7 +153,7 @@ export default function StudentShopPage() {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <HistoryIcon fontSize="small" />
-                  Purchase History
+                  {t('shop.TRANSACTION_HISTORY')}
                 </Box>
               }
               id="student-shop-tab-1"
