@@ -25,7 +25,7 @@ import {
   Divider,
   CircularProgress
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   Schedule as ScheduleIcon,
   Publish as PublishIcon,
@@ -305,7 +305,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
                     )}
                     {step.status === 'IN_PROGRESS' && requirement.status === 'IN_PROGRESS' && (
                       <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mto.type1.statusTracker.deliveries')}
                           </Typography>
@@ -313,7 +313,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
                             {formatNumber(requirement.totalDeliveredNumber || 0)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mto.type1.statusTracker.teams')}
                           </Typography>
@@ -333,7 +333,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
                     )}
                     {step.status === 'SETTLED' && requirement.status === 'SETTLED' && (
                       <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mto.type1.statusTracker.fulfillmentRate')}
                           </Typography>
@@ -341,7 +341,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
                             {formatPercentage(requirement.fulfillmentRate || 0)}
                           </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mto.type1.statusTracker.totalSettled')}
                           </Typography>
@@ -382,7 +382,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
           <Divider sx={{ my: 2 }} />
 
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <Paper variant="outlined" sx={{ p: 1, textAlign: 'center' }}>
                 <Typography variant="body2" color="textSecondary">
                   {t('mto:mto.type1.statusTracker.requirement')}
@@ -392,7 +392,7 @@ const MtoType1StatusTracker: React.FC<Props> = ({
                 </Typography>
               </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <Paper variant="outlined" sx={{ p: 1, textAlign: 'center' }}>
                 <Typography variant="body2" color="textSecondary">
                   {t('mto:mto.type1.statusTracker.progress')}

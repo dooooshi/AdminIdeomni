@@ -33,7 +33,7 @@ import {
   TimelineDot,
   TimelineOppositeContent
 } from '@mui/lab';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   ExpandMore as ExpandMoreIcon,
   LocationOn as LocationIcon,
@@ -262,7 +262,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
 
       {/* Summary Statistics */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -274,7 +274,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -286,7 +286,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -298,7 +298,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={3}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -310,7 +310,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -322,7 +322,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">
@@ -334,7 +334,7 @@ const MtoType1SettlementHistoryViewerV2: React.FC<Props> = ({ mtoType1Id, mockMo
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom variant="subtitle2">

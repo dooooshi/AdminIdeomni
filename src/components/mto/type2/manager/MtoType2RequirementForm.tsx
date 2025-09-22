@@ -18,7 +18,7 @@ import {
   Box,
   FormHelperText
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -212,7 +212,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
           )}
 
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label={t('mto.type2.fields.requirementName')}
@@ -233,7 +233,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth required error={!!errors.managerProductFormulaId}>
                 <InputLabel>{t('mto.type2.fields.productFormula')}</InputLabel>
                 <Select
@@ -267,7 +267,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 required
@@ -285,7 +285,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.releaseTime')}
@@ -305,7 +305,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               </LocalizationProvider>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label={t('mto.type2.fields.settlementTime')}
@@ -325,7 +325,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               </LocalizationProvider>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline
@@ -337,7 +337,7 @@ export const MtoType2RequirementForm: React.FC<MtoType2RequirementFormProps> = (
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 multiline

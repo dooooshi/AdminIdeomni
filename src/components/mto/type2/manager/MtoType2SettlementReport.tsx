@@ -25,7 +25,7 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';import {
+import Grid from '@mui/material/Grid';import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   AttachMoney as MoneyIcon,
@@ -236,7 +236,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
 
         {/* Summary Cards */}
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -254,7 +254,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -285,7 +285,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -303,7 +303,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <Card>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -335,7 +335,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
         {/* Overview Tab */}
         <TabPanel value={tabValue} index={0}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   {t('mto.type2.settlementReport.budgetUtilization')}
@@ -357,7 +357,7 @@ const MtoType2SettlementReport: React.FC<MtoType2SettlementReportProps> = ({
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <Paper variant="outlined" sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   {t('mto.type2.settlementReport.priceStatistics')}

@@ -25,7 +25,7 @@ import {
   Tooltip,
   IconButton
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   Calculate as CalculateIcon,
   LocalShipping as ShippingIcon,
@@ -150,7 +150,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
         </Box>
 
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <TextField
               fullWidth
               label={t('mto:mtoType1.transportation.origin')}
@@ -167,7 +167,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <TextField
               fullWidth
               label={t('mto:mtoType1.transportation.destination')}
@@ -184,7 +184,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box>
               <Typography gutterBottom>
                 {t('mto:mtoType1.transportation.quantity')}: {quantity}
@@ -207,7 +207,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
               <InputLabel>{t('mto:mtoType1.transportation.mode')}</InputLabel>
               <Select
@@ -237,7 +237,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Button
               variant="contained"
               fullWidth
@@ -264,7 +264,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
             </Paper>
 
             <Grid container spacing={2} sx={{ mt: 2 }}>
-              <Grid item xs={6} md={3}>
+              <Grid size={{ xs: 6, md: 3 }}>
                 <Box textAlign="center">
                   <Chip
                     icon={<RouteIcon />}
@@ -278,7 +278,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
                 </Box>
               </Grid>
 
-              <Grid item xs={6} md={3}>
+              <Grid size={{ xs: 6, md: 3 }}>
                 <Box textAlign="center">
                   <Chip
                     icon={<InventoryIcon />}
@@ -292,7 +292,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
                 </Box>
               </Grid>
 
-              <Grid item xs={6} md={3}>
+              <Grid size={{ xs: 6, md: 3 }}>
                 <Box textAlign="center">
                   <Chip
                     icon={<MoneyIcon />}
@@ -306,7 +306,7 @@ const TransportationFeeCalculator: React.FC<Props> = ({
                 </Box>
               </Grid>
 
-              <Grid item xs={6} md={3}>
+              <Grid size={{ xs: 6, md: 3 }}>
                 <Box textAlign="center">
                   <Chip
                     icon={<SpeedIcon />}

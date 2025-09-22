@@ -26,7 +26,7 @@ import {
   Button,
   Divider
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
@@ -212,7 +212,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                 <Card variant="outlined" sx={{ mb: 2 }}>
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid item xs={12} md={4}>
+                      <Grid size={{ xs: 12, md: 4 }}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.initialRequirement')}
                         </Typography>
@@ -220,7 +220,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                           {formatNumber(step.totalCalculatedRequirement || 0)}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} md={4}>
+                      <Grid size={{ xs: 12, md: 4 }}>
                         <Typography variant="body2" color="textSecondary">
                           {t('mto:mtoType1.calculationHistory.adjustedRequirement')}
                         </Typography>
@@ -229,7 +229,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                         </Typography>
                       </Grid>
                       {step.excludedTiles > 0 && (
-                        <Grid item xs={12} md={4}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                           <Typography variant="body2" color="textSecondary">
                             {t('mto:mtoType1.calculationHistory.tilesEliminated')}
                           </Typography>
@@ -239,7 +239,7 @@ const MtoType1CalculationHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMod
                         </Grid>
                       )}
                       {step.adjustmentReason && (
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }}>
                           <Alert severity="info" variant="outlined">
                             <Typography variant="body2">
                               {step.adjustmentReason}

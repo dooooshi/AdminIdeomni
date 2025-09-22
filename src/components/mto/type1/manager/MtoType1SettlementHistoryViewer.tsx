@@ -36,7 +36,7 @@ import {
   TimelineDot,
   TimelineOppositeContent
 } from '@mui/lab';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   ExpandMore as ExpandMoreIcon,
   LocationOn as LocationIcon,
@@ -204,7 +204,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
       </Typography>
 
       <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -216,7 +216,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -228,7 +228,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid size={{ xs: 12, md: 4 }}>
           <Card variant="outlined">
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
@@ -325,7 +325,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                             <Box mt={2}>
                               <Grid container spacing={1}>
                                 {step.productsValidated !== undefined && (
-                                  <Grid item xs={4}>
+                                  <Grid size={{ xs: 4 }}>
                                     <Typography variant="body2" color="textSecondary">
                                       {t('mto:mtoType1.settlementHistory.validated')}
                                     </Typography>
@@ -335,7 +335,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                   </Grid>
                                 )}
                                 {step.productsSettled !== undefined && (
-                                  <Grid item xs={4}>
+                                  <Grid size={{ xs: 4 }}>
                                     <Typography variant="body2" color="textSecondary">
                                       {t('mto:mtoType1.settlementHistory.settled')}
                                     </Typography>
@@ -345,7 +345,7 @@ const MtoType1SettlementHistoryViewer: React.FC<Props> = ({ mtoType1Id, mockMode
                                   </Grid>
                                 )}
                                 {step.productsRejected !== undefined && step.productsRejected > 0 && (
-                                  <Grid item xs={4}>
+                                  <Grid size={{ xs: 4 }}>
                                     <Typography variant="body2" color="textSecondary">
                                       {t('mto:mtoType1.settlementHistory.rejected')}
                                     </Typography>

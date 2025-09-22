@@ -33,7 +33,7 @@ import {
   IconButton,
   Badge,
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   PlayArrow as PlayArrowIcon,
   Refresh as RefreshIcon,
@@ -232,7 +232,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -249,7 +249,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -269,7 +269,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -289,7 +289,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -340,7 +340,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
 
       {/* Price Distribution Chart */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Price Distribution Analysis" />
             <CardContent>
@@ -357,7 +357,7 @@ export const MtoType2SettlementManager: React.FC<MtoType2SettlementManagerProps>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Submission Status Distribution" />
             <CardContent>

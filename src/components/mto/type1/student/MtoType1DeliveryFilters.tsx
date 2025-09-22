@@ -165,7 +165,7 @@ export default function MtoType1DeliveryFilters({
         <Box>
           <Grid container spacing={2} sx={{ mt: 0 }}>
             {/* MTO Requirement Filter */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 select
                 fullWidth
@@ -186,7 +186,7 @@ export default function MtoType1DeliveryFilters({
             </Grid>
 
             {/* Tile Filter */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 select
                 fullWidth
@@ -207,7 +207,7 @@ export default function MtoType1DeliveryFilters({
             </Grid>
 
             {/* Settlement Status Filter */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 select
                 fullWidth
@@ -226,7 +226,7 @@ export default function MtoType1DeliveryFilters({
             </Grid>
 
             {/* Date Type Filter */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 select
                 fullWidth
@@ -241,7 +241,7 @@ export default function MtoType1DeliveryFilters({
             </Grid>
 
             {/* Date Range */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={t('mto.student.deliveries.filters.from')}
@@ -257,7 +257,7 @@ export default function MtoType1DeliveryFilters({
               </LocalizationProvider>
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={t('mto.student.deliveries.filters.to')}
@@ -274,7 +274,7 @@ export default function MtoType1DeliveryFilters({
             </Grid>
 
             {/* Amount Range */}
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -288,7 +288,7 @@ export default function MtoType1DeliveryFilters({
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <TextField
                 fullWidth
                 type="number"

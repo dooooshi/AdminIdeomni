@@ -41,7 +41,7 @@ import {
   Inventory as InventoryIcon
 } from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { MtoType1DeliveryDetail } from '@/lib/types/mtoType1';
+import type { MtoType1DeliveryDetail } from '@/lib/types/mtoType1';
 import MtoType1Service from '@/lib/services/mtoType1Service';
 import { format } from 'date-fns';
 
@@ -256,7 +256,7 @@ export default function MtoType1DeliveryDetail({
             <TabPanel value={tabValue} index={0}>
               {/* Overview Tab */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('mto.student.deliveries.details.mtoRequirement')}
                   </Typography>
@@ -298,7 +298,7 @@ export default function MtoType1DeliveryDetail({
                   </Card>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <Typography variant="subtitle2" gutterBottom>
                     {t('mto.student.deliveries.details.tileLocation')}
                   </Typography>
@@ -468,14 +468,14 @@ export default function MtoType1DeliveryDetail({
             <TabPanel value={tabValue} index={2}>
               {/* Settlement Breakdown Tab */}
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Card variant="outlined">
                     <CardContent>
                       <Typography variant="h6" gutterBottom>
                         {t('mto.student.deliveries.details.settlementSummary')}
                       </Typography>
                       <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <Box sx={{ mb: 2 }}>
                             <Typography variant="body2" color="text.secondary">
                               {t('mto.student.deliveries.details.totalDelivered')}
@@ -483,7 +483,7 @@ export default function MtoType1DeliveryDetail({
                             <Typography variant="h4">{delivery.quantities?.delivered || 0}</Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <Box sx={{ mb: 2 }}>
                             <Typography variant="body2" color="text.secondary">
                               {t('mto.student.deliveries.details.productsSettled')}
@@ -493,7 +493,7 @@ export default function MtoType1DeliveryDetail({
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <Box sx={{ mb: 2 }}>
                             <Typography variant="body2" color="text.secondary">
                               {t('mto.student.deliveries.details.productsRejected')}
@@ -503,7 +503,7 @@ export default function MtoType1DeliveryDetail({
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <Box sx={{ mb: 2 }}>
                             <Typography variant="body2" color="text.secondary">
                               {t('mto.student.deliveries.details.settlementRate')}
@@ -542,7 +542,7 @@ export default function MtoType1DeliveryDetail({
                 </Grid>
 
                 {delivery.returnStatus && (
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Card variant="outlined">
                       <CardContent>
                         <Typography variant="h6" gutterBottom>
@@ -590,12 +590,12 @@ export default function MtoType1DeliveryDetail({
                 <Card variant="outlined">
                   <CardContent>
                     <Grid container spacing={2} alignItems="center">
-                      <Grid item xs={12} sm={3}>
+                      <Grid size={{ xs: 12, sm: 3 }}>
                         <Typography variant="body2" color="text.secondary">
                           {delivery.timestamps?.deliveredAt ? format(new Date(delivery.timestamps.deliveredAt), 'PPp') : t('mto.student.deliveries.details.na')}
                         </Typography>
                       </Grid>
-                      <Grid item xs={12} sm={1}>
+                      <Grid size={{ xs: 12, sm: 1 }}>
                         <Box sx={{
                           display: 'flex',
                           justifyContent: 'center',
@@ -609,7 +609,7 @@ export default function MtoType1DeliveryDetail({
                           <ShippingIcon />
                         </Box>
                       </Grid>
-                      <Grid item xs={12} sm={8}>
+                      <Grid size={{ xs: 12, sm: 8 }}>
                         <Typography variant="h6" gutterBottom>
                           {t('mto.student.deliveries.details.deliverySubmitted')}
                         </Typography>
@@ -626,12 +626,12 @@ export default function MtoType1DeliveryDetail({
                   <Card variant="outlined">
                     <CardContent>
                       <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} sm={3}>
+                        <Grid size={{ xs: 12, sm: 3 }}>
                           <Typography variant="body2" color="text.secondary">
                             {delivery.timestamps?.settledAt ? format(new Date(delivery.timestamps.settledAt), 'PPp') : t('mto.student.deliveries.details.na')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={1}>
+                        <Grid size={{ xs: 12, sm: 1 }}>
                           <Box sx={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -645,7 +645,7 @@ export default function MtoType1DeliveryDetail({
                             <PaymentIcon />
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={8}>
+                        <Grid size={{ xs: 12, sm: 8 }}>
                           <Typography variant="h6" gutterBottom>
                             {t('mto.student.deliveries.details.settlementCompleted')}
                           </Typography>
@@ -663,12 +663,12 @@ export default function MtoType1DeliveryDetail({
                   <Card variant="outlined">
                     <CardContent>
                       <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} sm={3}>
+                        <Grid size={{ xs: 12, sm: 3 }}>
                           <Typography variant="body2" color="text.secondary">
                             {delivery.timestamps?.returnRequestedAt ? format(new Date(delivery.timestamps.returnRequestedAt), 'PPp') : t('mto.student.deliveries.details.na')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={1}>
+                        <Grid size={{ xs: 12, sm: 1 }}>
                           <Box sx={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -682,7 +682,7 @@ export default function MtoType1DeliveryDetail({
                             <WarningIcon />
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={8}>
+                        <Grid size={{ xs: 12, sm: 8 }}>
                           <Typography variant="h6" gutterBottom>
                             {t('mto.student.deliveries.details.returnRequestedStatus')}
                           </Typography>
@@ -700,12 +700,12 @@ export default function MtoType1DeliveryDetail({
                   <Card variant="outlined">
                     <CardContent>
                       <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} sm={3}>
+                        <Grid size={{ xs: 12, sm: 3 }}>
                           <Typography variant="body2" color="text.secondary">
                             {delivery.timestamps?.returnCompletedAt ? format(new Date(delivery.timestamps.returnCompletedAt), 'PPp') : t('mto.student.deliveries.details.na')}
                           </Typography>
                         </Grid>
-                        <Grid item xs={12} sm={1}>
+                        <Grid size={{ xs: 12, sm: 1 }}>
                           <Box sx={{
                             display: 'flex',
                             justifyContent: 'center',
@@ -719,7 +719,7 @@ export default function MtoType1DeliveryDetail({
                             <CheckIcon />
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={8}>
+                        <Grid size={{ xs: 12, sm: 8 }}>
                           <Typography variant="h6" gutterBottom>
                             {t('mto.student.deliveries.details.returnCompleted')}
                           </Typography>

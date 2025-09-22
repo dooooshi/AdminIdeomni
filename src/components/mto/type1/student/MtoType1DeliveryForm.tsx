@@ -32,7 +32,7 @@ import {
   Step,
   StepLabel
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -380,7 +380,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
         </Box>
       ) : (
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <FormControl fullWidth>
               <InputLabel>{t('mto.student.sourceFacility')}</InputLabel>
               <Select
@@ -415,7 +415,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
           </Grid>
 
           {selectedFacility && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('mto.student.availableProducts')}
               </Typography>
@@ -474,7 +474,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
           )}
 
           {selectedItem && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 type="number"
@@ -521,7 +521,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
           );
 
           return (
-            <Grid item xs={12} sm={6} md={4} key={tileId}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={tileId}>
               <Card
                 variant={isSelected ? 'elevation' : 'outlined'}
                 sx={{
@@ -625,7 +625,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
           {t('mto.student.deliverySummary')}
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body2" color="text.secondary">
               {t('mto.student.from')}:
             </Typography>
@@ -633,7 +633,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
               {selectedFacility?.facilityType} (Level {selectedFacility?.level})
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body2" color="text.secondary">
               {t('mto.student.to')}:
             </Typography>
@@ -641,7 +641,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
               {selectedTile?.tileName || t('mto.student.tile', { id: selectedTile?.mapTileId || selectedTile?.tileId })}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body2" color="text.secondary">
               {t('mto.student.product')}:
             </Typography>
@@ -649,7 +649,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
               {selectedItem?.productName || selectedItem?.name}
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid size={{ xs: 6 }}>
             <Typography variant="body2" color="text.secondary">
               {t('mto.student.quantity')}:
             </Typography>
@@ -679,7 +679,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
         {transportCosts.length > 0 ? (
           <Grid container spacing={2}>
             {transportCosts.map((tier) => (
-              <Grid item xs={12} md={6} key={tier.tier}>
+              <Grid size={{ xs: 12, md: 6 }} key={tier.tier}>
                 <Card
                   variant={selectedTier === tier.tier ? 'elevation' : 'outlined'}
                   sx={{

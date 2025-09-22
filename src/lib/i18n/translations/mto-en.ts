@@ -1093,6 +1093,5 @@ export const mtoTranslationsEn = {
   'mto.student.deliveries.summary.transportationCosts': 'Total transportation fees',
   'mto.student.deliveries.summary.afterTransportCosts': 'After transportation costs',
   'mto.student.deliveries.table.fee': 'Fee',
-  'mto.student.deliveries.table.settled': 'Settled',
   'mto.student.deliveries.table.unknownTile': 'Unknown Tile'
 };

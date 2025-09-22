@@ -22,7 +22,7 @@ import {
   IconButton,
   Badge
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   CheckCircle as CheckIcon,
   Cancel as ErrorIcon,
@@ -302,7 +302,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
 
                 <Collapse in={expandedSections.has('summary')}>
                   <Grid container spacing={2} sx={{ mt: 1 }}>
-                    <Grid item xs={4}>
+                    <Grid size={{ xs: 4 }}>
                       <Badge badgeContent={validationResult.errors.length} color="error">
                         <Chip
                           icon={<ErrorIcon />}
@@ -312,7 +312,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                         />
                       </Badge>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={{ xs: 4 }}>
                       <Badge badgeContent={validationResult.warnings?.length || 0} color="warning">
                         <Chip
                           icon={<WarningIcon />}
@@ -322,7 +322,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                         />
                       </Badge>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={{ xs: 4 }}>
                       <Badge badgeContent={validationResult.info?.length || 0} color="info">
                         <Chip
                           icon={<InfoIcon />}
@@ -411,7 +411,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                       </Typography>
                       <Grid container spacing={1} sx={{ mb: 2 }}>
                         {formulaValidation.craftCategories.required.map(cat => (
-                          <Grid item xs="auto" key={cat}>
+                          <Grid size="auto" key={cat}>
                             <Chip
                               label={cat}
                               color={formulaValidation.craftCategories.provided.includes(cat) ? 'success' : 'error'}
@@ -420,7 +420,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           </Grid>
                         ))}
                         {formulaValidation.craftCategories.extra.map(cat => (
-                          <Grid item xs="auto" key={cat}>
+                          <Grid size="auto" key={cat}>
                             <Chip
                               label={`${cat} (extra)`}
                               color="warning"
@@ -481,7 +481,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                   <Collapse in={expandedSections.has('delivery')}>
                     <Paper variant="outlined" sx={{ p: 2, mt: 1 }}>
                       <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                           <Box display="flex" alignItems="center" mb={1}>
                             <BalanceIcon sx={{ mr: 1 }} />
                             <Typography variant="body2" color="textSecondary">
@@ -498,7 +498,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           </Typography>
                         </Grid>
 
-                        <Grid item xs={12} md={6}>
+                        <Grid size={{ xs: 12, md: 6 }}>
                           <Box display="flex" alignItems="center" mb={1}>
                             <LocationIcon sx={{ mr: 1 }} />
                             <Typography variant="body2" color="textSecondary">
@@ -515,7 +515,7 @@ const DeliveryValidationFeedback: React.FC<Props> = ({
                           </Typography>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid size={{ xs: 12 }}>
                           <List dense>
                             <ListItem>
                               <ListItemIcon>

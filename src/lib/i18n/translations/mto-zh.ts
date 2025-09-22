@@ -1092,6 +1092,5 @@ export const mtoTranslationsZh = {
   'mto.student.deliveries.summary.transportationCosts': '总运输费',
   'mto.student.deliveries.summary.afterTransportCosts': '扣除运输成本后',
   'mto.student.deliveries.table.fee': '费用',
-  'mto.student.deliveries.table.settled': '已结算',
   'mto.student.deliveries.table.unknownTile': '未知地块'
 };

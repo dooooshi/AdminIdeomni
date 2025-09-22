@@ -21,7 +21,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';import {
+import Grid from '@mui/material/Grid';import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   TrendingFlat as FlatIcon,
@@ -207,7 +207,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
 
         {/* Controls */}
         <Grid container spacing={2} mb={3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth size="small">
               <InputLabel>{t('mto.type2.priceTrends.selectFormula')}</InputLabel>
               <Select
@@ -224,7 +224,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <ToggleButtonGroup
               value={period}
               exclusive
@@ -238,7 +238,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
             </ToggleButtonGroup>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <ToggleButtonGroup
               value={chartType}
               exclusive
@@ -260,7 +260,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
           <>
             {/* Summary Cards */}
             <Grid container spacing={2} mb={3}>
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -284,7 +284,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -306,7 +306,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
@@ -326,7 +326,7 @@ const MtoType2PriceTrends: React.FC<MtoType2PriceTrendsProps> = ({
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Stack direction="row" justifyContent="space-between" alignItems="flex-start">

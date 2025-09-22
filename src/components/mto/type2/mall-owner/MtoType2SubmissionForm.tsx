@@ -30,7 +30,7 @@ import {
   IconButton,
   InputAdornment,
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   Send as SendIcon,
   Preview as PreviewIcon,
@@ -211,7 +211,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
         <CardContent>
           <Grid container spacing={3}>
             {/* MALL Selection */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <FormControl fullWidth error={!!errors.mallFacilitySpaceId}>
                 <InputLabel>Select Your MALL</InputLabel>
                 <Select
@@ -242,7 +242,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
             {/* Selected MALL Info */}
             {selectedMall && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="info" icon={<StoreIcon />}>
                   <Typography variant="subtitle2" gutterBottom>
                     MALL Information
@@ -274,7 +274,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
             )}
 
             {/* Product Quantity */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label="Product Quantity"
@@ -293,7 +293,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
             </Grid>
 
             {/* Unit Price */}
-            <Grid item xs={12} md={6}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
                 label="Unit Price"
@@ -314,14 +314,14 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
             {/* Calculation Summary */}
             {formData.productQuantity > 0 && formData.unitPrice > 0 && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Typography variant="subtitle2" gutterBottom>
                       Submission Summary
                     </Typography>
                     <Grid container spacing={2}>
-                      <Grid item xs={12} sm={4}>
+                      <Grid size={{ xs: 12, sm: 4 }}>
                         <Box textAlign="center">
                           <Typography variant="h6" color="primary">
                             ${calculateTotalValue().toLocaleString()}
@@ -331,7 +331,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
                           </Typography>
                         </Box>
                       </Grid>
-                      <Grid item xs={12} sm={4}>
+                      <Grid size={{ xs: 12, sm: 4 }}>
                         <Box textAlign="center">
                           <Typography variant="h6" color="success.main">
                             ${calculateExpectedRevenue().toLocaleString()}
@@ -341,7 +341,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
                           </Typography>
                         </Box>
                       </Grid>
-                      <Grid item xs={12} sm={4}>
+                      <Grid size={{ xs: 12, sm: 4 }}>
                         <Box textAlign="center">
                           {competitivenessInfo && (
                             <Chip
@@ -363,7 +363,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
             {/* Competitor Analysis */}
             {competitorAnalysis && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Card variant="outlined">
                   <CardHeader
                     title="Competitor Analysis"
@@ -454,7 +454,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
             {/* Market Insights */}
             {requirement.marketInsights && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="info">
                   <Typography variant="subtitle2" gutterBottom>
                     Market Insights
@@ -476,7 +476,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
 
             {/* Warnings */}
             {selectedMall && calculateTotalValue() > selectedMall.estimatedBudgetShare && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="warning" icon={<WarningIcon />}>
                   Your submission value exceeds the estimated budget share for this tile.
                   Consider reducing quantity or price to improve settlement chances.
@@ -485,7 +485,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
             )}
 
             {competitorAnalysis?.estimatedCompetition === 'HIGH' && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Alert severity="warning">
                   High competition detected in this tile. Consider competitive pricing to improve your chances.
                 </Alert>
@@ -493,7 +493,7 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
             )}
 
             {/* Action Buttons */}
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Divider sx={{ my: 2 }} />
               <Box display="flex" gap={2} justifyContent="flex-end">
                 {onClose && (
@@ -539,37 +539,37 @@ export const MtoType2SubmissionForm: React.FC<MtoType2SubmissionFormProps> = ({
           {selectedMall && (
             <Box sx={{ pt: 2 }}>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">MALL:</Typography>
                   <Typography variant="body2">
                     Tile {selectedMall.tileId}, Level {selectedMall.level}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">Quantity:</Typography>
                   <Typography variant="body2">
                     {formData.productQuantity.toLocaleString()}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">Unit Price:</Typography>
                   <Typography variant="body2">
                     ${formData.unitPrice.toLocaleString()}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">Total Value:</Typography>
                   <Typography variant="body2" color="primary" fontWeight="bold">
                     ${calculateTotalValue().toLocaleString()}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">Expected Revenue:</Typography>
                   <Typography variant="body2" color="success.main" fontWeight="bold">
                     ${calculateExpectedRevenue().toLocaleString()}
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid size={{ xs: 6 }}>
                   <Typography variant="subtitle2">Competition Level:</Typography>
                   <Typography variant="body2">
                     {selectedMall.competitorCount} competitors

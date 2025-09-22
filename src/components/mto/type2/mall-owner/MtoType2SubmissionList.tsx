@@ -38,7 +38,7 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
+import Grid from '@mui/material/Grid';
 import {
   Visibility as VisibilityIcon,
   Edit as EditIcon,
@@ -313,7 +313,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
 
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -330,7 +330,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -350,7 +350,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -370,7 +370,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -396,7 +396,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
 
       {/* Status Distribution Chart */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Submission Status Distribution" />
             <CardContent>
@@ -423,7 +423,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card>
             <CardHeader title="Settlement Progress" />
             <CardContent>
@@ -603,7 +603,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
         <DialogTitle>Filter Submissions</DialogTitle>
         <DialogContent>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel>Status</InputLabel>
                 <Select
@@ -621,7 +621,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <FormControl fullWidth>
                 <InputLabel>Tile ID</InputLabel>
                 <Select
@@ -636,7 +636,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
                 label="Date From"
@@ -646,7 +646,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
                 label="Date To"
@@ -656,7 +656,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
                 label="Min Value"
@@ -666,7 +666,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 InputProps={{ inputProps: { min: 0 } }}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid size={{ xs: 6 }}>
               <TextField
                 fullWidth
                 label="Max Value"
@@ -699,7 +699,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
           {selectedSubmission && (
             <Box sx={{ pt: 2 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2">Requirement ID:</Typography>
                   <Typography variant="body2" gutterBottom>
                     {selectedSubmission.requirementId}
@@ -721,7 +721,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <Typography variant="subtitle2">Product Quantity:</Typography>
                   <Typography variant="body2" gutterBottom>
                     {selectedSubmission.productQuantity.toLocaleString()}
@@ -746,7 +746,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   />
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Divider sx={{ my: 2 }} />
                   <Typography variant="subtitle2">Settlement Information:</Typography>
                   {selectedSubmission.settledQuantity ? (
@@ -771,7 +771,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 </Grid>
 
                 {selectedSubmission.validationErrors && selectedSubmission.validationErrors.length > 0 && (
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Alert severity="error">
                       <Typography variant="subtitle2" gutterBottom>
                         Validation Errors:
@@ -790,7 +790,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                   </Grid>
                 )}
 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Typography variant="body2" color="textSecondary">
                     Submitted: {new Date(selectedSubmission.submittedAt).toLocaleString()}
                   </Typography>
@@ -820,7 +820,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
         <DialogTitle>Edit Submission</DialogTitle>
         <DialogContent>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Product Quantity"
@@ -833,7 +833,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 InputProps={{ inputProps: { min: 1 } }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Unit Price"
@@ -846,7 +846,7 @@ export const MtoType2SubmissionList: React.FC<MtoType2SubmissionListProps> = ({
                 InputProps={{ inputProps: { min: 0.01, step: 0.01 } }}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Alert severity="info">
                 <Typography variant="body2">
                   Total Value: ${(editFormData.productQuantity * editFormData.unitPrice).toLocaleString()}
