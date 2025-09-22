@@ -392,8 +392,22 @@ export class MtoType2Service {
     activityId?: string
   ): Promise<MtoType2PublicView[]> {
     const params = activityId ? `?activityId=${activityId}` : '';
-    const response = await apiClient.get(`${this.PUBLIC_BASE_PATH}/available${params}`);
-    return this.extractResponseData<MtoType2PublicView[]>(response);
+    const response = await apiClient.get(`${this.PUBLIC_BASE_PATH}/market${params}`);
+    const data = this.extractResponseData<{
+      active: MtoType2PublicView[];
+      recentlySettled: Array<{
+        id: number;
+        formulaName: string;
+        formulaDescription: string;
+        formulaNumber: number;
+        settledAt: string;
+        budgetUtilization: number;
+        averagePrice: string;
+      }>;
+    }>(response);
+
+    // Return the active requirements for public view
+    return data?.active || [];
   }
 
   static async getPublicRequirement(
@@ -443,18 +457,34 @@ export class MtoType2Service {
     };
   }>> {
     try {
-      // Use the public endpoint to get non-sensitive data
-      const publicData = await this.getPublicRequirements();
+      // Get the market data directly
+      const response = await apiClient.get(`${this.PUBLIC_BASE_PATH}/market`);
+      const data = this.extractResponseData<{
+        active: Array<any>;
+        recentlySettled: Array<{
+          id: number;
+          formulaName: string;
+          formulaDescription: string;
+          formulaNumber: number;
+          settledAt: string;
+          budgetUtilization: number;
+          averagePrice: string;
+        }>;
+      }>(response);
 
-      // Transform and filter data for student view
-      return publicData.map((item) => ({
-        requirementId: item.requirementId,
-        requirementName: item.requirementName || `Requirement ${item.requirementId}`,
-        status: item.status,
-        totalBudget: item.totalBudget,
-        releaseTime: item.releaseTime,
-        settlementTime: item.settlementTime,
-        productFormulaName: item.productFormula?.name || 'Standard Formula',
+      // Combine active and recently settled for student view
+      const activeData = data?.active || [];
+      const settledData = data?.recentlySettled || [];
+
+      // Transform active requirements
+      const activeOpportunities = activeData.map((item: any) => ({
+        requirementId: item.id || item.requirementId,
+        requirementName: item.requirementName || item.formulaName || `Requirement ${item.id || item.requirementId}`,
+        status: item.status || 'ACTIVE',
+        totalBudget: item.totalBudget || 0,
+        releaseTime: item.releaseTime || '',
+        settlementTime: item.settlementTime || '',
+        productFormulaName: item.productFormula?.name || item.formulaName || 'Standard Formula',
         marketInsights: {
           participatingMalls: 0,
           averagePrice: undefined,
@@ -462,6 +492,26 @@ export class MtoType2Service {
           totalSubmissions: 0
         }
       }));
+
+      // Transform recently settled data
+      const settledOpportunities = settledData.map((item) => ({
+        requirementId: item.id,
+        requirementName: item.formulaName || `Requirement ${item.id}`,
+        status: 'SETTLED',
+        totalBudget: 0,
+        releaseTime: '',
+        settlementTime: item.settledAt,
+        productFormulaName: item.formulaName,
+        marketInsights: {
+          participatingMalls: 0,
+          averagePrice: parseFloat(item.averagePrice) || undefined,
+          priceRange: undefined,
+          totalSubmissions: 0
+        }
+      }));
+
+      // Combine both arrays
+      return [...activeOpportunities, ...settledOpportunities];
     } catch (error) {
       console.error('Error fetching student opportunities:', error);
       // Return empty array on error
