@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Box, Container, Typography, Paper } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import CreateContractForm from '@/components/contract/CreateContractForm';
 import { useAuth } from '@/lib/auth/auth-context';
 

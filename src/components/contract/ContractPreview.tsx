@@ -1,16 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   Paper,
   Typography,
   Divider,
   Chip,
-  Stack,
   Avatar,
-  AvatarGroup,
   List,
   ListItem,
   ListItemAvatar,
@@ -50,7 +48,8 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // Fetch team details
-  const fetchTeams = async () => {
+  const fetchTeams = useCallback(async () => {
+    setLoading(true);
     try {
       setError(null);
       const response = await contractService.getAvailableTeams();
@@ -64,7 +63,7 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [t, teamIds]);
 
   // Fetch teams when teamIds change
   useEffect(() => {
@@ -74,7 +73,14 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
       setTeams([]);
       setLoading(false);
     }
-  }, [teamIds]);
+  }, [teamIds, fetchTeams]);
+
+  const contractNumberSample = useMemo(() => {
+    const year = new Date().getFullYear();
+    return `CTR-${year}-XXXX`;
+  }, []);
+
+  const totalTeams = teamIds.length + (userTeamId ? 1 : 0);
 
   return (
     <Box>
@@ -91,7 +97,7 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
 
         {/* Contract Number (Example) */}
         <Typography variant="caption" color="textSecondary" display="block" mb={1}>
-          {t('contract.CONTRACT_NUMBER')}: CTR-{new Date().getFullYear()}-XXXX
+          {t('contract.CONTRACT_NUMBER_SAMPLE', { number: contractNumberSample })}
         </Typography>
 
         {/* Title */}
@@ -135,7 +141,7 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
               {t('contract.PARTICIPATING_TEAMS')}
             </Typography>
             <Chip 
-              label={`${teamIds.length + (userTeamId ? 1 : 0)} ${t('contract.TEAMS')}`}
+              label={t('contract.TEAM_COUNT', { count: totalTeams })}
               size="small"
               color="primary"
               variant="outlined"
@@ -146,10 +152,10 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
             <Box display="flex" justifyContent="center" py={2}>
               <CircularProgress size={24} />
             </Box>
-          ) : error ? (
-            <Alert severity="error">
-              {error}
-            </Alert>
+      ) : error ? (
+        <Alert severity="error">
+          {error}
+        </Alert>
           ) : (
             <List>
               {/* User's Team (Auto-included) */}
@@ -163,11 +169,11 @@ const ContractPreview: React.FC<ContractPreviewProps> = ({
                   <ListItemText
                     primary={t('contract.YOUR_TEAM')}
                     secondary={
-                      <Chip 
-                        label={t('contract.CREATOR_TEAM')} 
-                        size="small" 
-                        color="primary"
-                      />
+                    <Chip 
+                      label={t('contract.CREATOR_TEAM')} 
+                      size="small" 
+                      color="primary"
+                    />
                     }
                   />
                 </ListItem>

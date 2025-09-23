@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import { useRouter } from 'next/navigation';
 import {
   Box,

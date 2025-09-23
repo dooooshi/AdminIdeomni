@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import {
   Box,
   List,
@@ -53,7 +53,8 @@ const TeamSelector: React.FC<TeamSelectorProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch available teams
-  const fetchTeams = async () => {
+  const fetchTeams = useCallback(async () => {
+    setLoading(true);
     try {
       setError(null);
       const response = await contractService.getAvailableTeams();
@@ -65,12 +66,12 @@ const TeamSelector: React.FC<TeamSelectorProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
 
   // Initial load
   useEffect(() => {
     fetchTeams();
-  }, []);
+  }, [fetchTeams]);
 
   // Handle team toggle
   const handleToggle = (teamId: string) => {

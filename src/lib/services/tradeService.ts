@@ -19,6 +19,7 @@ import {
   isTradeError,
   toNumber,
   TradeListItem,
+  TradeStatusTranslationKeys,
 } from '@/types/trade';
 
 /**
@@ -345,15 +346,18 @@ export class TradeService {
   /**
    * Get trade status display text
    */
-  static getStatusText(status: TradeStatus): string {
-    const statusTexts: Record<TradeStatus, string> = {
-      [TradeStatus.PENDING]: 'Pending',
-      [TradeStatus.ACCEPTED]: 'Accepted',
-      [TradeStatus.REJECTED]: 'Rejected',
-      [TradeStatus.CANCELLED]: 'Cancelled',
-      [TradeStatus.COMPLETED]: 'Completed',
-    };
-    return statusTexts[status] || status;
+  static getStatusText(
+    status: TradeStatus,
+    translate?: (key: string, options?: Record<string, unknown>) => string
+  ): string {
+    const translationKey = TradeStatusTranslationKeys[status];
+    const fallbackLabel = status.charAt(0) + status.slice(1).toLowerCase();
+
+    if (translationKey && translate) {
+      return translate(translationKey, { defaultValue: fallbackLabel });
+    }
+
+    return translationKey ? fallbackLabel : status;
   }
 
   /**

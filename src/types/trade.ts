@@ -409,20 +409,20 @@ export const TradeStatusColors: Record<TradeStatus, string> = {
   [TradeStatus.COMPLETED]: 'success',
 };
 
-export const TradeStatusLabels: Record<TradeStatus, string> = {
-  [TradeStatus.PENDING]: 'Pending',
-  [TradeStatus.ACCEPTED]: 'Accepted',
-  [TradeStatus.REJECTED]: 'Rejected',
-  [TradeStatus.CANCELLED]: 'Cancelled',
-  [TradeStatus.COMPLETED]: 'Completed',
+export const TradeStatusTranslationKeys: Record<TradeStatus, string> = {
+  [TradeStatus.PENDING]: 'trade.status.pending',
+  [TradeStatus.ACCEPTED]: 'trade.status.accepted',
+  [TradeStatus.REJECTED]: 'trade.status.rejected',
+  [TradeStatus.CANCELLED]: 'trade.status.cancelled',
+  [TradeStatus.COMPLETED]: 'trade.status.completed',
 };
 
-export const TradeOperationLabels: Record<TradeOperation, string> = {
-  [TradeOperation.CREATED]: 'Trade created',
-  [TradeOperation.PREVIEWED]: 'Trade previewed',
-  [TradeOperation.ACCEPTED]: 'Trade accepted',
-  [TradeOperation.REJECTED]: 'Trade rejected',
-  [TradeOperation.CANCELLED]: 'Trade cancelled',
-  [TradeOperation.COMPLETED]: 'Trade completed',
-  [TradeOperation.FAILED]: 'Trade failed',
+export const TradeOperationTranslationKeys: Record<TradeOperation, string> = {
+  [TradeOperation.CREATED]: 'trade.operation.created',
+  [TradeOperation.PREVIEWED]: 'trade.operation.previewed',
+  [TradeOperation.ACCEPTED]: 'trade.operation.accepted',
+  [TradeOperation.REJECTED]: 'trade.operation.rejected',
+  [TradeOperation.CANCELLED]: 'trade.operation.cancelled',
+  [TradeOperation.COMPLETED]: 'trade.operation.completed',
+  [TradeOperation.FAILED]: 'trade.operation.failed',
 };

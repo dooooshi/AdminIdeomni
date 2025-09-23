@@ -149,7 +149,7 @@ export const TradeDetailsModal: React.FC<TradeDetailsModalProps> = ({ open, trad
     return null;
   }
 
-  const statusLabel = TradeService.getStatusText(trade.status);
+  const statusLabel = TradeService.getStatusText(trade.status, t);
   const statusColor = TradeService.getStatusColor(trade.status);
   const createdAt = trade.createdAt
     ? TradeService.formatTradeDate(trade.createdAt)
