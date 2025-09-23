@@ -27,23 +27,81 @@ export enum InventoryItemType {
   PRODUCT = 'PRODUCT',
 }
 
+export interface TradeTeamSummary {
+  id: string;
+  name: string;
+}
+
+export interface TradeFacilityLocation {
+  q: number;
+  r: number;
+}
+
+export interface TradeFacilitySummary {
+  id: string;
+  type: string;
+  name?: string;
+  location?: TradeFacilityLocation;
+}
+
+export interface TradeFormulaMaterial {
+  materialId: number;
+  materialName: string;
+  quantity: number;
+  unit: string;
+  materialCost: number;
+  carbonEmission?: number;
+}
+
+export interface TradeFormulaCraftCategory {
+  categoryId: number;
+  categoryName: string;
+  categoryType: string;
+}
+
+export interface TradeFormulaSetupCosts {
+  [key: string]: number | undefined;
+  water?: number;
+  power?: number;
+  gold?: number;
+}
+
+export interface TradeFormulaVariableCostPercents {
+  [key: string]: number | undefined;
+  water?: number;
+  power?: number;
+  gold?: number;
+  total?: number;
+}
+
+export interface TradeFormulaDetails {
+  formulaNumber?: number;
+  description?: string | null;
+  totalMaterialCost?: number;
+  materials?: TradeFormulaMaterial[];
+  craftCategories?: TradeFormulaCraftCategory[];
+  setupCosts?: TradeFormulaSetupCosts;
+  variableCostPercents?: TradeFormulaVariableCostPercents;
+  carbonEmission?: number;
+}
+
 // ==================== CORE MODELS ====================
 
 export interface TradeOrder {
   id: string;
-  activityId: string;
-  senderTeamId: string;
-  senderTeam?: Team;
-  sourceFacilityId: string;
-  sourceFacility?: TileFacilityInstance;
-  targetTeamId: string;
-  targetTeam?: Team;
+  activityId?: string;
+  senderTeamId?: string;
+  senderTeam?: TradeTeamSummary;
+  sourceFacilityId?: string;
+  sourceFacility?: TradeFacilitySummary;
+  targetTeamId?: string;
+  targetTeam?: TradeTeamSummary;
   destInventoryId?: string;
   destInventory?: FacilitySpaceInventory;
   message?: string;
   totalPrice: DecimalValue;
   status: TradeStatus;
-  createdBy: string;
+  createdBy?: string;
   createdByUser?: User;
   respondedAt?: Date | string;
   respondedBy?: string;
@@ -53,21 +111,22 @@ export interface TradeOrder {
   transaction?: TradeTransaction;
   history?: TradeHistory[];
   createdAt: Date | string;
-  updatedAt: Date | string;
+  updatedAt?: Date | string;
 }
 
 export interface TradeItem {
-  id: string;
-  tradeOrderId: string;
-  inventoryItemId: string;
+  id?: string;
+  tradeOrderId?: string;
+  inventoryItemId?: string;
   inventoryItem?: FacilityInventoryItem;
-  sourceInventoryId: string;
+  sourceInventoryId?: string;
   sourceInventory?: FacilitySpaceInventory;
   itemName: string;
-  itemType: InventoryItemType;
+  itemType: InventoryItemType | string;
   quantity: DecimalValue;
-  unitSpace: DecimalValue;
-  createdAt: Date | string;
+  unitSpace?: DecimalValue;
+  createdAt?: Date | string;
+  formulaDetails?: TradeFormulaDetails | null;
 }
 
 export interface TradeTransaction {
@@ -185,6 +244,11 @@ export interface TradeListItem {
 export interface TradeDetailsResponse {
   success: boolean;
   data: TradeOrder;
+  message?: string;
+  businessCode?: number;
+  timestamp?: string;
+  extra?: Record<string, any>;
+  path?: string;
 }
 
 // ==================== SUPPORTING TYPES ====================

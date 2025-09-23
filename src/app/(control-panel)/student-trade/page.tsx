@@ -368,7 +368,7 @@ export default function StudentTradePage() {
               variant="contained"
               startIcon={<AddIcon />}
               onClick={() => setCreateModalOpen(true)}
-              className="bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 dark:text-gray-900"
+              className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-white dark:hover:bg-gray-100 dark:text-gray-900"
             >
               {t('trade.actions.create')}
             </Button>
@@ -382,7 +382,7 @@ export default function StudentTradePage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <Typography variant="caption" className="text-gray-500 dark:text-gray-400">
-                        {t('trade.stats.totalTrades', 'Total Trades')}
+                        {t('trade.stats.totalTrades')}
                       </Typography>
                       <Typography variant="h5" className="font-light text-gray-900 dark:text-white">
                         {stats.totalTrades}
@@ -545,7 +545,7 @@ export default function StudentTradePage() {
                   <Grid item xs={12} md={6}>
                     <Paper variant="outlined" className="p-4">
                       <Typography variant="h6" className="font-medium mb-4">
-                        {t('trade.analytics.distribution', 'Trade Distribution')}
+                        {t('trade.analytics.distribution')}
                       </Typography>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
@@ -575,7 +575,7 @@ export default function StudentTradePage() {
                   <Grid item xs={12} md={6}>
                     <Paper variant="outlined" className="p-4">
                       <Typography variant="h6" className="font-medium mb-4">
-                        {t('trade.analytics.financialSummary', 'Financial Summary')}
+                        {t('trade.analytics.financialSummary')}
                       </Typography>
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">

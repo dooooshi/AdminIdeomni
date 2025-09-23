@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -9,559 +9,245 @@ import {
   Button,
   Box,
   Typography,
-  Paper,
   Stack,
+  Paper,
   Chip,
   Divider,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  IconButton,
-  Tooltip,
-  Alert,
-  LinearProgress,
 } from '@mui/material';
-import {
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineOppositeContent,
-} from '@mui/lab';
-import {
-  AttachMoney,
-  LocalShipping,
-  Inventory,
-  Store,
-  CheckCircle,
-  Cancel,
-  Schedule,
-  SwapHoriz,
-  Info,
-  Person,
-  CalendarToday,
-  Close,
-  ArrowForward,
-  ArrowBack,
-  LocationOn,
-  AccountBalance,
-  Visibility,
-} from '@mui/icons-material';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
-import { TradeService } from '@/lib/services/tradeService';
 import {
+  InventoryItemType,
+  TradeFormulaDetails,
+  TradeItem,
   TradeOrder,
-  TradeHistory,
-  TradeStatus,
-  TradeOperation,
   toNumber,
-  TradeOperationLabels,
 } from '@/types/trade';
-import TradeStatusBadge from './TradeStatusBadge';
+import { TradeService } from '@/lib/services/tradeService';
 
 interface TradeDetailsModalProps {
   open: boolean;
-  trade: TradeOrder | any;
+  trade: TradeOrder | null;
   onClose: () => void;
 }
 
-export const TradeDetailsModal: React.FC<TradeDetailsModalProps> = ({
-  open,
-  trade,
-  onClose,
-}) => {
+const formatCurrency = (value?: number | string | null, fallback = '—'): string => {
+  if (value === null || value === undefined || value === '') {
+    return fallback;
+  }
+  return TradeService.formatCurrency(value, false);
+};
+
+const FormulaDetails: React.FC<{ details: TradeFormulaDetails }> = ({ details }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
-  const [tradeHistory, setTradeHistory] = useState<TradeHistory[]>([]);
 
-  useEffect(() => {
-    if (open && trade) {
-      loadTradeHistory();
-    }
-  }, [open, trade]);
+  return (
+    <Stack spacing={1.5} mt={1.5}>
+      <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+        <Typography variant="subtitle2">
+          {t('trade.product.formulaLabel', {
+            id: details.formulaNumber ?? '—',
+          })}
+        </Typography>
+        {details.carbonEmission !== undefined && (
+          <Typography variant="caption" color="text.secondary">
+            {t('trade.product.carbonEmission')}: {Number(details.carbonEmission).toFixed(2)}
+          </Typography>
+        )}
+      </Stack>
 
-  const loadTradeHistory = async () => {
-    if (!trade) return;
+      {details.description && (
+        <Typography variant="body2" color="text.secondary">
+          {details.description}
+        </Typography>
+      )}
 
-    setLoading(true);
-    try {
-      // Mock history data for now
-      const mockHistory: TradeHistory[] = [
-        {
-          id: 'h1',
-          tradeOrderId: trade.id,
-          operation: TradeOperation.CREATED,
-          previousStatus: undefined,
-          newStatus: TradeStatus.PENDING,
-          actorId: trade.createdBy || 'user_1',
-          actor: trade.createdByUser || { id: 'user_1', name: 'Sender User' },
-          actorTeamId: trade.senderTeamId || 'team_1',
-          actorTeam: trade.senderTeam,
-          description: `Trade offer created with ${trade.items?.length || 0} items`,
-          metadata: {
-            itemsCost: toNumber(trade.totalPrice),
-          },
-          createdAt: trade.createdAt,
-        },
-      ];
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="body2" color="text.secondary">
+          {t('trade.product.materialCost')}
+        </Typography>
+        <Typography variant="body2" fontWeight={500}>
+          {formatCurrency(details.totalMaterialCost, '0')}
+        </Typography>
+      </Stack>
 
-      // Add additional history based on current status
-      if (trade.status === TradeStatus.ACCEPTED || trade.status === TradeStatus.COMPLETED) {
-        mockHistory.push({
-          id: 'h2',
-          tradeOrderId: trade.id,
-          operation: TradeOperation.ACCEPTED,
-          previousStatus: TradeStatus.PENDING,
-          newStatus: TradeStatus.ACCEPTED,
-          actorId: trade.respondedBy || 'user_2',
-          actor: trade.respondedByUser || { id: 'user_2', name: 'Receiver User' },
-          actorTeamId: trade.targetTeamId || 'team_2',
-          actorTeam: trade.targetTeam,
-          description: 'Trade offer accepted',
-          metadata: {
-            destinationInventoryId: trade.destInventoryId,
-          },
-          createdAt: trade.respondedAt || new Date().toISOString(),
-        });
-      }
+      {details.materials && details.materials.length > 0 && (
+        <Stack spacing={0.75}>
+          <Typography variant="caption" color="text.secondary">
+            {t('trade.product.materials')}
+          </Typography>
+          {details.materials.map((material) => (
+            <Box
+              key={material.materialId}
+              display="flex"
+              justifyContent="space-between"
+              gap={1}
+            >
+              <Typography variant="body2" sx={{ flex: 1 }}>
+                {material.materialName}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {material.quantity} {material.unit}
+              </Typography>
+              <Typography variant="body2" fontWeight={500}>
+                {formatCurrency(material.materialCost, '0')}
+              </Typography>
+            </Box>
+          ))}
+        </Stack>
+      )}
 
-      if (trade.status === TradeStatus.COMPLETED) {
-        mockHistory.push({
-          id: 'h3',
-          tradeOrderId: trade.id,
-          operation: TradeOperation.COMPLETED,
-          previousStatus: TradeStatus.ACCEPTED,
-          newStatus: TradeStatus.COMPLETED,
-          actorId: 'system',
-          actor: { id: 'system', name: 'System' },
-          actorTeamId: '',
-          description: 'Trade completed successfully',
-          metadata: {
-            transportCost: trade.transaction?.transportCost,
-            totalPaid: trade.transaction?.totalPaid,
-          },
-          createdAt: trade.transaction?.executedAt || new Date().toISOString(),
-        });
-      }
+      {details.craftCategories && details.craftCategories.length > 0 && (
+        <Stack spacing={0.5}>
+          <Typography variant="caption" color="text.secondary">
+            {t('trade.product.craftCategories')}
+          </Typography>
+          <Stack direction="row" spacing={1} flexWrap="wrap">
+            {details.craftCategories.map((category) => (
+              <Chip key={category.categoryId} label={category.categoryName} size="small" variant="outlined" />
+            ))}
+          </Stack>
+        </Stack>
+      )}
+    </Stack>
+  );
+};
 
-      if (trade.status === TradeStatus.REJECTED) {
-        mockHistory.push({
-          id: 'h2',
-          tradeOrderId: trade.id,
-          operation: TradeOperation.REJECTED,
-          previousStatus: TradeStatus.PENDING,
-          newStatus: TradeStatus.REJECTED,
-          actorId: trade.respondedBy || 'user_2',
-          actor: trade.respondedByUser || { id: 'user_2', name: 'Receiver User' },
-          actorTeamId: trade.targetTeamId || 'team_2',
-          actorTeam: trade.targetTeam,
-          description: trade.responseReason || 'Trade offer rejected',
-          metadata: {
-            rejectionReason: trade.responseReason,
-          },
-          createdAt: trade.respondedAt || new Date().toISOString(),
-        });
-      }
+const TradeItemCard: React.FC<{ item: TradeItem }> = ({ item }) => {
+  const { t } = useTranslation();
+  const quantity = toNumber(item.quantity);
+  const isProduct = String(item.itemType).toUpperCase() === InventoryItemType.PRODUCT;
 
-      setTradeHistory(mockHistory);
-    } catch (error) {
-      console.error('Failed to load trade history:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  return (
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Stack spacing={1.5}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Box>
+            <Typography variant="subtitle1" fontWeight={600}>
+              {item.itemName}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {isProduct
+                ? t('trade.itemType.product')
+                : t('trade.itemType.material')}
+            </Typography>
+          </Box>
+          <Chip label={`${quantity}`} size="small" variant="outlined" />
+        </Stack>
 
-  const getOperationIcon = (operation: TradeOperation) => {
-    switch (operation) {
-      case TradeOperation.CREATED:
-        return <SwapHoriz className="text-white" />;
-      case TradeOperation.ACCEPTED:
-        return <CheckCircle className="text-white" />;
-      case TradeOperation.REJECTED:
-        return <Cancel className="text-white" />;
-      case TradeOperation.COMPLETED:
-        return <LocalShipping className="text-white" />;
-      case TradeOperation.CANCELLED:
-        return <Cancel className="text-white" />;
-      case TradeOperation.PREVIEWED:
-        return <Visibility className="text-white" />;
-      default:
-        return <Info className="text-white" />;
-    }
-  };
+        {isProduct && item.formulaDetails && (
+          <FormulaDetails details={item.formulaDetails} />
+        )}
+      </Stack>
+    </Paper>
+  );
+};
 
-  const getOperationColor = (operation: TradeOperation): 'primary' | 'success' | 'error' | 'warning' | 'grey' => {
-    switch (operation) {
-      case TradeOperation.CREATED:
-        return 'primary';
-      case TradeOperation.ACCEPTED:
-      case TradeOperation.COMPLETED:
-        return 'success';
-      case TradeOperation.REJECTED:
-      case TradeOperation.CANCELLED:
-        return 'error';
-      case TradeOperation.PREVIEWED:
-        return 'warning';
-      default:
-        return 'grey';
-    }
-  };
+export const TradeDetailsModal: React.FC<TradeDetailsModalProps> = ({ open, trade, onClose }) => {
+  const { t } = useTranslation();
 
-  if (!trade) return null;
+  if (!trade) {
+    return null;
+  }
 
-  const totalPrice = toNumber(trade.totalPrice);
+  const statusLabel = TradeService.getStatusText(trade.status);
+  const statusColor = TradeService.getStatusColor(trade.status);
+  const createdAt = trade.createdAt
+    ? TradeService.formatTradeDate(trade.createdAt)
+    : t('trade.misc.notAvailable');
+  const totalPrice = TradeService.formatCurrency(toNumber(trade.totalPrice));
+  const senderName = trade.senderTeam?.name || t('trade.misc.unknownTeam');
+  const targetName = trade.targetTeam?.name || t('trade.misc.unknownTeam');
+  const facilityLabel =
+    trade.sourceFacility?.name ||
+    trade.sourceFacility?.type ||
+    t('trade.misc.unknownFacility');
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Box display="flex" alignItems="center" gap={2}>
-            <Typography variant="h6">
-              {t('trade.detailsTitle')}
-            </Typography>
-            <TradeStatusBadge status={trade.status} />
-          </Box>
-          <IconButton onClick={onClose} size="small">
-            <Close />
-          </IconButton>
-        </Box>
-      </DialogTitle>
-      <DialogContent>
+      <DialogTitle>{t('trade.detailsTitle')}</DialogTitle>
+      <DialogContent dividers>
         <Stack spacing={3}>
-          {/* Basic Information */}
           <Paper variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              {t('trade.summary.basicInfo', 'Basic Information')}
-            </Typography>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gap={2}>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  {t('trade.table.id')}
-                </Typography>
-                <Typography variant="body2" className="font-mono">
-                  {trade.id}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  {t('trade.table.created')}
-                </Typography>
-                <Typography variant="body2">
-                  {new Date(trade.createdAt).toLocaleString()}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  {t('trade.table.sender')}
-                </Typography>
-                <Typography variant="body2">
-                  {trade.senderTeam?.name || 'Unknown'}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  {t('trade.table.receiver')}
-                </Typography>
-                <Typography variant="body2">
-                  {trade.targetTeam?.name || 'Unknown'}
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
+            <Stack spacing={2}>
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                justifyContent="space-between"
+                spacing={1.5}
+              >
+                <Box>
+                  <Typography variant="overline" color="text.secondary">
+                    {t('trade.field.from')}
+                  </Typography>
+                  <Typography variant="h6">{senderName}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {facilityLabel}
+                  </Typography>
+                </Box>
+                <Stack spacing={1} alignItems={{ xs: 'flex-start', sm: 'flex-end' }}>
+                  <Chip label={statusLabel} color={statusColor} size="small" />
+                  <Typography variant="caption" color="text.secondary">
+                    {t('trade.field.createdAt')}: {createdAt}
+                  </Typography>
+                </Stack>
+              </Stack>
 
-          {/* Items */}
-          <Paper variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              <Inventory sx={{ mr: 1, verticalAlign: 'middle' }} />
-              {t('trade.field.items')}
-            </Typography>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>{t('trade.field.itemName')}</TableCell>
-                    <TableCell align="right">{t('trade.field.quantity')}</TableCell>
-                    <TableCell align="right">{t('trade.field.unitSpace', 'Unit Space')}</TableCell>
-                    <TableCell align="right">{t('trade.field.totalSpace', 'Total Space')}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {trade.items?.map((item: any, index: number) => (
-                    <TableRow key={index}>
-                      <TableCell>{item.itemName}</TableCell>
-                      <TableCell align="right">{toNumber(item.quantity)}</TableCell>
-                      <TableCell align="right">{toNumber(item.unitSpace || 0)}</TableCell>
-                      <TableCell align="right">
-                        {toNumber(item.quantity) * toNumber(item.unitSpace || 0)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
+              <Divider />
 
-          {/* Pricing Information */}
-          <Paper variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              <AttachMoney sx={{ mr: 1, verticalAlign: 'middle' }} />
-              {t('trade.summary.price')}
-            </Typography>
-            <Stack spacing={1}>
-              <Box display="flex" justifyContent="space-between">
-                <Typography variant="body2">
-                  {t('trade.field.itemsCost')}:
-                </Typography>
-                <Typography variant="body2" fontWeight="medium">
-                  {TradeService.formatCurrency(totalPrice)} 🪙
-                </Typography>
-              </Box>
-              {trade.transaction && (
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                justifyContent="space-between"
+                spacing={1.5}
+              >
+                <Box>
+                  <Typography variant="overline" color="text.secondary">
+                    {t('trade.field.to')}
+                  </Typography>
+                  <Typography variant="h6">{targetName}</Typography>
+                </Box>
+                <Box textAlign={{ xs: 'left', sm: 'right' }}>
+                  <Typography variant="overline" color="text.secondary">
+                    {t('trade.field.price')}
+                  </Typography>
+                  <Typography variant="h5" fontWeight={600}>
+                    {totalPrice} 🪙
+                  </Typography>
+                </Box>
+              </Stack>
+
+              {trade.message && (
                 <>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography variant="body2">
-                      {t('trade.field.transportCost')}:
-                    </Typography>
-                    <Typography variant="body2">
-                      {TradeService.formatCurrency(toNumber(trade.transaction.transportCost))} 🪙
-                    </Typography>
-                  </Box>
                   <Divider />
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography variant="body1" fontWeight="bold">
-                      {t('trade.field.totalPaid', 'Total Paid')}:
-                    </Typography>
-                    <Typography variant="body1" fontWeight="bold" color="primary">
-                      {TradeService.formatCurrency(toNumber(trade.transaction.totalPaid))} 🪙
-                    </Typography>
-                  </Box>
+                  <Typography variant="body2" color="text.secondary">
+                    {trade.message}
+                  </Typography>
                 </>
               )}
             </Stack>
           </Paper>
 
-          {/* Location Information */}
-          {(trade.sourceFacility || trade.destInventory) && (
-            <Paper variant="outlined" sx={{ p: 2 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                <Store sx={{ mr: 1, verticalAlign: 'middle' }} />
-                {t('trade.summary.location')}
-              </Typography>
-              <Stack spacing={2}>
-                {trade.sourceFacility && (
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      {t('trade.field.sourceLocation', 'Source Location')}
-                    </Typography>
-                    <Typography variant="body2">
-                      {trade.sourceFacility.name} (Level {trade.sourceFacility.level})
-                    </Typography>
-                    {trade.sourceFacility.location && (
-                      <Typography variant="caption">
-                        Location: ({trade.sourceFacility.location.q}, {trade.sourceFacility.location.r})
-                      </Typography>
-                    )}
-                  </Box>
-                )}
-                {trade.destInventory && (
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      {t('trade.field.destinationLocation', 'Destination Location')}
-                    </Typography>
-                    <Typography variant="body2">
-                      {trade.destInventory.facility?.name}
-                    </Typography>
-                  </Box>
-                )}
+          <Stack spacing={2}>
+            <Typography variant="subtitle1">
+              {t('trade.field.items')}
+            </Typography>
+
+            {trade.items && trade.items.length > 0 ? (
+              <Stack spacing={1.5}>
+                {trade.items.map((item, index) => (
+                  <TradeItemCard key={`${item.itemName}-${index}`} item={item} />
+                ))}
               </Stack>
-            </Paper>
-          )}
-
-          {/* Message */}
-          {trade.message && (
-            <Paper variant="outlined" sx={{ p: 2 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                {t('trade.field.message')}
-              </Typography>
-              <Typography variant="body2">
-                {trade.message}
-              </Typography>
-            </Paper>
-          )}
-
-          {/* Trade History Timeline */}
-          <Paper variant="outlined" sx={{ p: 2 }}>
-            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-              <Typography variant="subtitle2">
-                <CalendarToday sx={{ mr: 1, verticalAlign: 'middle' }} />
-                {t('trade.historyTimeline')}
-              </Typography>
-              {trade.status === TradeStatus.PENDING && (
-                <Chip
-                  icon={<Schedule />}
-                  label={t('trade.status.waitingForResponse')}
-                  size="small"
-                  color="warning"
-                  variant="outlined"
-                />
-              )}
-            </Box>
-
-            {/* Progress Indicator */}
-            {trade.status === TradeStatus.PENDING && (
-              <LinearProgress
-                variant="indeterminate"
-                sx={{ mb: 2, height: 2 }}
-                color="warning"
-              />
-            )}
-
-            <Timeline position="alternate" sx={{ mt: 2, '& .MuiTimelineItem-root:before': { flex: 0.3 } }}>
-              {tradeHistory.map((history, index) => {
-                const isLast = index === tradeHistory.length - 1;
-                const operationColor = getOperationColor(history.operation);
-
-                return (
-                  <TimelineItem key={history.id}>
-                    <TimelineOppositeContent sx={{ m: 'auto 0' }}>
-                      <Box textAlign={index % 2 === 0 ? 'right' : 'left'}>
-                        <Typography variant="caption" color="text.secondary">
-                          {new Date(history.createdAt).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="caption" display="block" color="text.secondary">
-                          {new Date(history.createdAt).toLocaleTimeString()}
-                        </Typography>
-                        {history.actor && (
-                          <Box display="flex" alignItems="center" gap={0.5}
-                            justifyContent={index % 2 === 0 ? 'flex-end' : 'flex-start'} mt={0.5}>
-                            <Person sx={{ fontSize: 14 }} />
-                            <Typography variant="caption" fontWeight="medium">
-                              {history.actor.name}
-                            </Typography>
-                          </Box>
-                        )}
-                      </Box>
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                      <TimelineConnector sx={{ display: index === 0 ? 'none' : 'block' }} />
-                      <TimelineDot
-                        color={operationColor}
-                        variant={isLast ? 'filled' : 'outlined'}
-                        sx={{
-                          boxShadow: isLast ? 3 : 1,
-                          width: isLast ? 48 : 40,
-                          height: isLast ? 48 : 40,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        {getOperationIcon(history.operation)}
-                      </TimelineDot>
-                      <TimelineConnector sx={{ display: isLast ? 'none' : 'block' }} />
-                    </TimelineSeparator>
-                    <TimelineContent sx={{ py: '12px', px: 2 }}>
-                      <Paper elevation={isLast ? 2 : 0} sx={{ p: 2, bgcolor: isLast ? 'action.hover' : 'transparent' }}>
-                        <Typography variant="body2" fontWeight="bold" gutterBottom>
-                          {t(`trade.operation.${history.operation.toLowerCase()}`) || TradeOperationLabels[history.operation]}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" display="block" mb={1}>
-                          {history.description}
-                        </Typography>
-
-                        {/* Team Info */}
-                        {history.actorTeam && (
-                          <Box display="flex" alignItems="center" gap={1} mb={1}>
-                            <AccountBalance sx={{ fontSize: 14, color: 'text.secondary' }} />
-                            <Typography variant="caption" color="text.secondary">
-                              {history.actorTeam.name}
-                            </Typography>
-                          </Box>
-                        )}
-
-                        {/* Metadata Chips */}
-                        {history.metadata && Object.keys(history.metadata).length > 0 && (
-                          <Box mt={1} display="flex" flexWrap="wrap" gap={0.5}>
-                            {Object.entries(history.metadata).map(([key, value]) => {
-                              if (!value) return null;
-
-                              let icon = null;
-                              let label = '';
-                              let color: any = 'default';
-
-                              if (key === 'itemsCost' || key === 'totalPaid') {
-                                icon = <AttachMoney sx={{ fontSize: 14 }} />;
-                                label = TradeService.formatCurrency(Number(value));
-                                color = 'warning';
-                              } else if (key === 'transportCost') {
-                                icon = <LocalShipping sx={{ fontSize: 14 }} />;
-                                label = TradeService.formatCurrency(Number(value));
-                                color = 'info';
-                              } else if (key === 'destinationInventoryId') {
-                                icon = <LocationOn sx={{ fontSize: 14 }} />;
-                                label = t('trade.field.destinationSelected', 'Destination Selected');
-                                color = 'success';
-                              } else if (key === 'rejectionReason') {
-                                icon = <Info sx={{ fontSize: 14 }} />;
-                                label = String(value);
-                                color = 'error';
-                              } else {
-                                label = `${key}: ${value}`;
-                              }
-
-                              return (
-                                <Chip
-                                  key={key}
-                                  icon={icon}
-                                  label={label}
-                                  size="small"
-                                  variant="outlined"
-                                  color={color}
-                                />
-                              );
-                            })}
-                          </Box>
-                        )}
-
-                        {/* Flow Direction for Transfers */}
-                        {history.operation === TradeOperation.CREATED && (
-                          <Box display="flex" alignItems="center" gap={1} mt={1}>
-                            <Typography variant="caption" color="primary">
-                              {trade.senderTeam?.name}
-                            </Typography>
-                            <ArrowForward sx={{ fontSize: 16, color: 'primary.main' }} />
-                            <Typography variant="caption" color="secondary">
-                              {trade.targetTeam?.name}
-                            </Typography>
-                          </Box>
-                        )}
-                      </Paper>
-                    </TimelineContent>
-                  </TimelineItem>
-                );
-              })}
-            </Timeline>
-
-            {/* Pending Action Alert */}
-            {trade.status === TradeStatus.PENDING && (
-              <Alert severity="info" sx={{ mt: 2 }}>
-                <Typography variant="caption">
-                  {t('trade.misc.waitingResponse', 'This trade is waiting for response from {{team}}', { team: trade.targetTeam?.name })}
+            ) : (
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                  {t('trade.field.noItems')}
                 </Typography>
-              </Alert>
+              </Paper>
             )}
-          </Paper>
+          </Stack>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>
-          {t('trade.misc.close')}
-        </Button>
+        <Button onClick={onClose}>{t('trade.misc.close')}</Button>
       </DialogActions>
     </Dialog>
   );

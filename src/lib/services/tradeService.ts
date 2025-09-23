@@ -162,7 +162,8 @@ export class TradeService {
       const response = await apiClient.get<TradeDetailsResponse>(
         `${this.TRADES_BASE_PATH}/${tradeId}`
       );
-      return this.extractResponseData<TradeOrder>(response);
+      const data = this.extractResponseData<TradeOrder>(response);
+      return this.normalizeTrade(data);
     } catch (error) {
       this.handleError(error);
     }
@@ -195,7 +196,8 @@ export class TradeService {
         this.TRADES_BASE_PATH,
         request
       );
-      return this.extractResponseData<TradeOrder>(response);
+      const data = this.extractResponseData<TradeOrder>(response);
+      return this.normalizeTrade(data);
     } catch (error) {
       this.handleError(error);
     }
@@ -256,7 +258,7 @@ export class TradeService {
         });
       }
 
-      return data;
+      return this.normalizeTrade(data);
     } catch (error) {
       this.handleError(error);
     }
@@ -275,7 +277,8 @@ export class TradeService {
         `${this.TRADES_BASE_PATH}/${tradeId}/reject`,
         request
       );
-      return this.extractResponseData<TradeOrder>(response);
+      const data = this.extractResponseData<TradeOrder>(response);
+      return this.normalizeTrade(data);
     } catch (error) {
       this.handleError(error);
     }
@@ -290,10 +293,37 @@ export class TradeService {
       const response = await apiClient.delete<TradeDetailsResponse>(
         `${this.TRADES_BASE_PATH}/${tradeId}`
       );
-      return this.extractResponseData<TradeOrder>(response);
+      const data = this.extractResponseData<TradeOrder>(response);
+      return this.normalizeTrade(data);
     } catch (error) {
       this.handleError(error);
     }
+  }
+
+  /**
+   * Ensure trade summary fields are present regardless of backend omissions
+   */
+  private static normalizeTrade(trade: TradeOrder): TradeOrder {
+    if (!trade) {
+      return trade;
+    }
+
+    const senderTeamId = trade.senderTeamId || trade.senderTeam?.id;
+    const targetTeamId = trade.targetTeamId || trade.targetTeam?.id;
+    const sourceFacilityId = trade.sourceFacilityId || trade.sourceFacility?.id;
+
+    if (senderTeamId === trade.senderTeamId &&
+        targetTeamId === trade.targetTeamId &&
+        sourceFacilityId === trade.sourceFacilityId) {
+      return trade;
+    }
+
+    return {
+      ...trade,
+      senderTeamId,
+      targetTeamId,
+      sourceFacilityId,
+    };
   }
 
   // ==================== UTILITY METHODS ====================
@@ -366,8 +396,8 @@ export class TradeService {
     trade: TradeOrder,
     currentTeamId: string
   ): boolean {
-    return trade.status === TradeStatus.PENDING &&
-           trade.targetTeamId === currentTeamId;
+    const targetTeamId = trade.targetTeamId || trade.targetTeam?.id;
+    return trade.status === TradeStatus.PENDING && targetTeamId === currentTeamId;
   }
 
   /**
@@ -377,8 +407,8 @@ export class TradeService {
     trade: TradeOrder,
     currentTeamId: string
   ): boolean {
-    return trade.status === TradeStatus.PENDING &&
-           trade.senderTeamId === currentTeamId;
+    const senderTeamId = trade.senderTeamId || trade.senderTeam?.id;
+    return trade.status === TradeStatus.PENDING && senderTeamId === currentTeamId;
   }
 
   /**
@@ -388,7 +418,8 @@ export class TradeService {
     trade: TradeOrder,
     currentTeamId: string
   ): 'incoming' | 'outgoing' {
-    return trade.targetTeamId === currentTeamId ? 'incoming' : 'outgoing';
+    const targetTeamId = trade.targetTeamId || trade.targetTeam?.id;
+    return targetTeamId === currentTeamId ? 'incoming' : 'outgoing';
   }
 
   /**

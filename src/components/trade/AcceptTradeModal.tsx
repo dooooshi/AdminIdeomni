@@ -180,6 +180,10 @@ export const AcceptTradeModal: React.FC<AcceptTradeModalProps> = ({
   if (!trade) return null;
 
   const totalPrice = toNumber(trade.totalPrice);
+  const facilityLabel =
+    trade.sourceFacility?.name ||
+    trade.sourceFacility?.type ||
+    t('trade.misc.unknownFacility');
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -206,7 +210,7 @@ export const AcceptTradeModal: React.FC<AcceptTradeModalProps> = ({
               {trade.senderTeam?.name}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              {trade.sourceFacility?.name}
+              {facilityLabel}
             </Typography>
           </Paper>
 
