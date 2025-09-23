@@ -14,18 +14,23 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Tooltip
+  Tooltip,
+  Tabs,
+  Tab
 } from '@mui/material';
 import {
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  Send as SendIcon
+  Send as SendIcon,
+  History as HistoryIcon,
+  LocalOffer as OfferIcon
 } from '@mui/icons-material';
 
 import { MtoType2Service } from '@/lib/services/mtoType2Service';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import MtoType2RequirementDetailsModal from './MtoType2RequirementDetailsModal';
 import MtoType2StudentSubmissionModal from './MtoType2StudentSubmissionModal';
+import MtoType2SubmissionHistory from './MtoType2SubmissionHistory';
 
 interface MtoType2Opportunity {
   requirementId: number;
@@ -51,6 +56,7 @@ export const MtoType2StudentView: React.FC = () => {
   const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
   const [selectedRequirementForSubmission, setSelectedRequirementForSubmission] = useState<{ id: number; name: string } | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   const loadOpportunities = async () => {
     try {
@@ -140,6 +146,10 @@ export const MtoType2StudentView: React.FC = () => {
     return status === 'ACTIVE' || status === 'IN_PROGRESS' || status === 'RELEASED';
   };
 
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
   if (loading && opportunities.length === 0) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
@@ -150,88 +160,118 @@ export const MtoType2StudentView: React.FC = () => {
 
   return (
     <Box>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h5" component="h2">
-          {t('mto.type2.student.marketOpportunities')}
-        </Typography>
-        <Button
-          variant="outlined"
-          startIcon={<RefreshIcon />}
-          onClick={loadOpportunities}
-          disabled={loading}
+      {/* Tabs */}
+      <Paper sx={{ mb: 3 }}>
+        <Tabs
+          value={activeTab}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
         >
-          {t('common.refresh')}
-        </Button>
-      </Box>
+          <Tab
+            icon={<OfferIcon />}
+            label={t('mto.type2.student.marketOpportunities')}
+            iconPosition="start"
+          />
+          <Tab
+            icon={<HistoryIcon />}
+            label={t('mto.type2.student.submissionHistory')}
+            iconPosition="start"
+          />
+        </Tabs>
+      </Paper>
 
-      {/* Data Table */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('mto.type2.student.tableId')}</TableCell>
-              <TableCell>{t('mto.type2.student.tableFormulaName')}</TableCell>
-              <TableCell>{t('mto.type2.student.tableStatus')}</TableCell>
-              <TableCell>{t('mto.type2.student.tableSettlementDate')}</TableCell>
-              <TableCell align="center" width="150">{t('mto.type2.student.tableActions')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {opportunities.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  <Alert severity="info" sx={{ justifyContent: 'center' }}>
-                    {t('mto.type2.student.noOpportunitiesAvailable')}
-                  </Alert>
-                </TableCell>
-              </TableRow>
-            ) : (
-              opportunities.map((opportunity) => (
-                <TableRow key={opportunity.requirementId}>
-                  <TableCell>{opportunity.requirementId}</TableCell>
-                  <TableCell>
-                    <Typography variant="body2">
-                      {opportunity.requirementName}
-                    </Typography>
-                    <Typography variant="caption" color="textSecondary">
-                      {opportunity.productFormulaName}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Chip
-                      label={getStatusLabel(opportunity.status)}
-                      color={getStatusColor(opportunity.status)}
-                      size="small"
-                    />
-                  </TableCell>
-                  <TableCell>{formatDate(opportunity.settlementTime)}</TableCell>
-                  <TableCell align="center">
-                    <Box display="flex" justifyContent="center" gap={0.5}>
-                      <Tooltip title={t('mto.type2.student.viewDetailsTooltip')}>
-                        <IconButton size="small" onClick={() => handleViewDetails(opportunity.requirementId)}>
-                          <VisibilityIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                      {canSubmit(opportunity.status) && (
-                        <Tooltip title={t('mto.type2.student.submitProductsTooltip')}>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleSubmitProducts(opportunity.requirementId, opportunity.requirementName)}
-                            color="primary"
-                          >
-                            <SendIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                    </Box>
-                  </TableCell>
+      {/* Tab Content */}
+      {activeTab === 0 ? (
+        // Opportunities Tab
+        <Box>
+          {/* Header */}
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+            <Typography variant="h5" component="h2">
+              {t('mto.type2.student.marketOpportunities')}
+            </Typography>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={loadOpportunities}
+              disabled={loading}
+            >
+              {t('common.refresh')}
+            </Button>
+          </Box>
+
+          {/* Data Table */}
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{t('mto.type2.student.tableId')}</TableCell>
+                  <TableCell>{t('mto.type2.student.tableFormulaName')}</TableCell>
+                  <TableCell>{t('mto.type2.student.tableStatus')}</TableCell>
+                  <TableCell>{t('mto.type2.student.tableSettlementDate')}</TableCell>
+                  <TableCell align="center" width="150">{t('mto.type2.student.tableActions')}</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              </TableHead>
+              <TableBody>
+                {opportunities.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} align="center">
+                      <Alert severity="info" sx={{ justifyContent: 'center' }}>
+                        {t('mto.type2.student.noOpportunitiesAvailable')}
+                      </Alert>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  opportunities.map((opportunity) => (
+                    <TableRow key={opportunity.requirementId}>
+                      <TableCell>{opportunity.requirementId}</TableCell>
+                      <TableCell>
+                        <Typography variant="body2">
+                          {opportunity.requirementName}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          {opportunity.productFormulaName}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={getStatusLabel(opportunity.status)}
+                          color={getStatusColor(opportunity.status)}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell>{formatDate(opportunity.settlementTime)}</TableCell>
+                      <TableCell align="center">
+                        <Box display="flex" justifyContent="center" gap={0.5}>
+                          <Tooltip title={t('mto.type2.student.viewDetailsTooltip')}>
+                            <IconButton size="small" onClick={() => handleViewDetails(opportunity.requirementId)}>
+                              <VisibilityIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                          {canSubmit(opportunity.status) && (
+                            <Tooltip title={t('mto.type2.student.submitProductsTooltip')}>
+                              <IconButton
+                                size="small"
+                                onClick={() => handleSubmitProducts(opportunity.requirementId, opportunity.requirementName)}
+                                color="primary"
+                              >
+                                <SendIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      ) : (
+        // History Tab
+        <MtoType2SubmissionHistory />
+      )}
 
       {/* Requirement Details Modal */}
       <MtoType2RequirementDetailsModal

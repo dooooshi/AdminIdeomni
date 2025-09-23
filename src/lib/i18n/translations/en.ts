@@ -2,12 +2,14 @@ import { enExtendedTranslations } from './en-extended';
 import { tradeTranslationsEn } from './trade-en';
 import { mtoTranslationsEn } from './mto-en';
 import { shopTranslationsEn } from './shop-en';
+import { mtoType2HistoryTranslations } from '../mto-type2-history';
 
 export const enTranslations = {
   ...enExtendedTranslations,
   ...tradeTranslationsEn,
   ...mtoTranslationsEn,
   ...shopTranslationsEn,
+  ...mtoType2HistoryTranslations.en,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO Management',
   'MTO_MANAGEMENT_SUBTITLE': 'Made-To-Order system management',
@@ -2382,6 +2384,8 @@ export const enTranslations = {
   'teamManagement.FACILITY_EXPENSE': 'Facility Expense',
   'teamManagement.FACILITY_BUILD': 'Facility Build',
   'teamManagement.RAW_MATERIAL_PRODUCTION': 'Raw Material Production',
+  'teamManagement.MTO_TYPE1_SETTLEMENT': 'MTO Type 1 Settlement',
+  'teamManagement.MTO_TYPE2_SETTLEMENT': 'MTO Type 2 Settlement',
   'teamManagement.UTILITY_PRODUCTION': 'Utility Production',
   'teamManagement.UTILITY_SALE': 'Utility Sale',
   'teamManagement.UTILITY_PURCHASE': 'Utility Purchase',

@@ -463,6 +463,170 @@ export interface MtoType2RequirementDetails {
   }>;
 }
 
+// Submission History Types
+export interface MtoType2SubmissionHistoryItem {
+  // Submission identification
+  submissionId: number;
+  submissionNumber: number;
+  mtoType2Id: number;
+  teamId: string;
+  facilityInstanceId: string;
+
+  // MTO Type 2 details
+  mtoType2: {
+    id: number;
+    status: 'DRAFT' | 'RELEASED' | 'IN_PROGRESS' | 'SETTLING' | 'SETTLED' | 'CANCELLED';
+    releaseTime: string;
+    settlementTime: string;
+    overallPurchaseBudget: string;
+  };
+
+  // Manager's required product formula
+  managerProductFormula: {
+    id: number;
+    formulaNumber: number;
+    productName: string;
+    productDescription?: string;
+
+    // Material requirements
+    materials: Array<{
+      id: number;
+      rawMaterialId: number;
+      rawMaterialName: string;
+      quantity: string;
+      unit: string;
+      materialCost: string;
+    }>;
+
+    // Craft category requirements
+    craftCategories: Array<{
+      id: number;
+      categoryId: number;
+      categoryName: string;
+      categoryType: string;
+      categoryLevel: number;
+    }>;
+
+    // Cost components
+    totalMaterialCost: string;
+    totalSetupWaterCost: number;
+    totalSetupPowerCost: number;
+    totalSetupGoldCost: string;
+    totalWaterPercent: string;
+    totalPowerPercent: string;
+    totalGoldPercent: string;
+    totalPercent: string;
+    productFormulaCarbonEmission: string;
+  };
+
+  // Product validation (only available after settlement)
+  productValidation?: {
+    formulaValidated: boolean;
+    validationTimestamp?: string;
+
+    validationDetails?: {
+      materialsMatch: boolean;
+      categoriesMatch: boolean;
+      isFullyCompatible: boolean;
+
+      materialsDifference?: Array<{
+        materialId: number;
+        materialName: string;
+        requiredQuantity: string;
+        actualQuantity?: string;
+        difference?: string;
+        unit: string;
+      }>;
+      missingCategories?: string[];
+      extraCategories?: string[];
+
+      notes?: string;
+    };
+  };
+
+  // Submission details
+  submission: {
+    productNumber: number;
+    unitPrice: string;
+    totalValue: string;
+    submittedAt: string;
+    modifiedAt: string;
+  };
+
+  // MALL facility information
+  mallInfo: {
+    facilityInstanceId: string;
+    facilityName: string;
+    mallLevel: number;
+    mapTileId: number;
+    tileName: string;
+    axialQ: number;
+    axialR: number;
+    tilePopulation: number;
+  };
+
+  // Settlement results
+  settlementResults: {
+    settlementStatus: 'PENDING' | 'PARTIAL' | 'FULL' | 'UNSETTLED' | 'RETURNED';
+    settledNumber: number;
+    settledValue: string;
+    unsettledNumber: number;
+    settlementOrder?: number;
+    settledAt?: string;
+
+    // Return handling
+    returnRequested: boolean;
+    returnFacilityInstanceId?: string;
+    returnCompletedAt?: string;
+
+    // Performance metrics
+    fulfillmentRate: number;
+    averageSettledPrice?: string;
+
+    // Settlement details (if settled)
+    settlementDetails?: {
+      paymentStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+      paymentTransactionId?: string;
+      paymentCompletedAt?: string;
+      validationDetails?: {
+        formulaValidated: boolean;
+        validationNotes?: string;
+      };
+    };
+  };
+
+  // Budget allocation for the tile
+  tileBudgetInfo: {
+    allocatedBudget: string;
+    spentBudget: string;
+    remainingBudget: string;
+    populationRatio: number;
+    processedSubmissions: number;
+  };
+}
+
+export interface MtoType2SubmissionHistoryParams {
+  mtoType2Id?: number;
+  facilityInstanceId?: string;
+  status?: 'PENDING' | 'PARTIAL' | 'FULL' | 'UNSETTLED' | 'RETURNED';
+  fromDate?: string;
+  toDate?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'submittedAt' | 'settlementTime' | 'unitPrice' | 'settledNumber' | 'totalValue';
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface MtoType2SubmissionHistoryResponse {
+  items: MtoType2SubmissionHistoryItem[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 export interface MtoType2SubmissionEligibility {
   mtoType2: {
     id: number;
@@ -539,4 +703,168 @@ export interface MtoType2SubmissionEligibility {
       }>;
     };
   }>;
+}
+
+// Submission History Types
+export interface MtoType2SubmissionHistoryItem {
+  // Submission identification
+  submissionId: number;
+  submissionNumber: number;
+  mtoType2Id: number;
+  teamId: string;
+  facilityInstanceId: string;
+
+  // MTO Type 2 details
+  mtoType2: {
+    id: number;
+    status: 'DRAFT' | 'RELEASED' | 'IN_PROGRESS' | 'SETTLING' | 'SETTLED' | 'CANCELLED';
+    releaseTime: string;
+    settlementTime: string;
+    overallPurchaseBudget: string;
+  };
+
+  // Manager's required product formula
+  managerProductFormula: {
+    id: number;
+    formulaNumber: number;
+    productName: string;
+    productDescription?: string;
+
+    // Material requirements
+    materials: Array<{
+      id: number;
+      rawMaterialId: number;
+      rawMaterialName: string;
+      quantity: string;
+      unit: string;
+      materialCost: string;
+    }>;
+
+    // Craft category requirements
+    craftCategories: Array<{
+      id: number;
+      categoryId: number;
+      categoryName: string;
+      categoryType: string;
+      categoryLevel: number;
+    }>;
+
+    // Cost components
+    totalMaterialCost: string;
+    totalSetupWaterCost: number;
+    totalSetupPowerCost: number;
+    totalSetupGoldCost: string;
+    totalWaterPercent: string;
+    totalPowerPercent: string;
+    totalGoldPercent: string;
+    totalPercent: string;
+    productFormulaCarbonEmission: string;
+  };
+
+  // Product validation (only available after settlement)
+  productValidation?: {
+    formulaValidated: boolean;
+    validationTimestamp?: string;
+
+    validationDetails?: {
+      materialsMatch: boolean;
+      categoriesMatch: boolean;
+      isFullyCompatible: boolean;
+
+      materialsDifference?: Array<{
+        materialId: number;
+        materialName: string;
+        requiredQuantity: string;
+        actualQuantity?: string;
+        difference?: string;
+        unit: string;
+      }>;
+      missingCategories?: string[];
+      extraCategories?: string[];
+
+      notes?: string;
+    };
+  };
+
+  // Submission details
+  submission: {
+    productNumber: number;
+    unitPrice: string;
+    totalValue: string;
+    submittedAt: string;
+    modifiedAt: string;
+  };
+
+  // MALL facility information
+  mallInfo: {
+    facilityInstanceId: string;
+    facilityName: string;
+    mallLevel: number;
+    mapTileId: number;
+    tileName: string;
+    axialQ: number;
+    axialR: number;
+    tilePopulation: number;
+  };
+
+  // Settlement results
+  settlementResults: {
+    settlementStatus: 'PENDING' | 'PARTIAL' | 'FULL' | 'UNSETTLED' | 'RETURNED';
+    settledNumber: number;
+    settledValue: string;
+    unsettledNumber: number;
+    settlementOrder?: number;
+    settledAt?: string;
+
+    // Return handling
+    returnRequested: boolean;
+    returnFacilityInstanceId?: string;
+    returnCompletedAt?: string;
+
+    // Performance metrics
+    fulfillmentRate: number;
+    averageSettledPrice?: string;
+
+    // Settlement details (if settled)
+    settlementDetails?: {
+      paymentStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
+      paymentTransactionId?: string;
+      paymentCompletedAt?: string;
+      validationDetails?: {
+        formulaValidated: boolean;
+        validationNotes?: string;
+      };
+    };
+  };
+
+  // Budget allocation for the tile
+  tileBudgetInfo: {
+    allocatedBudget: string;
+    spentBudget: string;
+    remainingBudget: string;
+    populationRatio: number;
+    processedSubmissions: number;
+  };
+}
+
+export interface MtoType2SubmissionHistoryParams {
+  mtoType2Id?: number;
+  facilityInstanceId?: string;
+  status?: 'PENDING' | 'PARTIAL' | 'FULL' | 'UNSETTLED' | 'RETURNED';
+  fromDate?: string;
+  toDate?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'submittedAt' | 'settlementTime' | 'unitPrice' | 'settledNumber' | 'totalValue';
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface MtoType2SubmissionHistoryResponse {
+  items: MtoType2SubmissionHistoryItem[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }

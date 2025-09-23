@@ -310,7 +310,7 @@ function HistoryOverviewPage() {
                               {TeamTransferService.getOperationTypeDisplayName(operation.operationType)}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
-                              {new Date(operation.createdAt).toLocaleDateString()} • {operation.user.firstName ? `${operation.user.firstName} ${operation.user.lastName}` : operation.user.username}
+                              {new Date(operation.createdAt).toLocaleDateString()} • {operation.user?.firstName ? `${operation.user.firstName} ${operation.user.lastName}` : operation.user?.username || 'System'}
                             </Typography>
                           </div>
                         </div>

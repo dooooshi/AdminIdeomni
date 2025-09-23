@@ -348,9 +348,9 @@ function AllOperationsPage() {
                           </TableCell>
                           <TableCell>
                             <Typography variant="body2">
-                              {operation.user.firstName && operation.user.lastName
+                              {operation.user?.firstName && operation.user?.lastName
                                 ? `${operation.user.firstName} ${operation.user.lastName}`
-                                : operation.user.username}
+                                : operation.user?.username || 'System'}
                             </Typography>
                           </TableCell>
                         </TableRow>

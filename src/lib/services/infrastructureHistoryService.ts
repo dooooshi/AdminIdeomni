@@ -10,6 +10,12 @@ import {
 class InfrastructureHistoryService {
   async getConnectionLifecycle(connectionId: string): Promise<ConnectionLifecycle> {
     const response = await apiClient.get(`/infrastructure/history/connection/${connectionId}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 
@@ -41,27 +47,18 @@ class InfrastructureHistoryService {
     }
 
     const response = await apiClient.get(`/infrastructure/history/team?${params.toString()}`);
-    
-    // Handle deeply nested data structure from API
-    if (response.data && response.data.data && response.data.data.data) {
-      return {
-        logs: response.data.data.data || [],
-        total: response.data.data.total || 0,
-        page: query.page || 1,
-        pageSize: response.data.data.limit || 50
-      };
-    }
-    
-    // Handle nested data structure from API
+
+    // Handle the actual API response structure: response.data.data contains { data: [], total, limit, offset }
     if (response.data && response.data.data) {
+      const responseData = response.data.data;
       return {
-        logs: response.data.data || [],
-        total: response.data.total || 0,
+        logs: responseData.data || responseData || [],
+        total: responseData.total || 0,
         page: query.page || 1,
-        pageSize: response.data.limit || 50
+        pageSize: responseData.limit || query.pageSize || 50
       };
     }
-    
+
     // Fallback for direct data structure
     return {
       logs: response.data || [],
@@ -73,6 +70,12 @@ class InfrastructureHistoryService {
 
   async getTerminationDetails(connectionId: string): Promise<ConnectionTerminationDetail | null> {
     const response = await apiClient.get(`/infrastructure/history/termination/${connectionId}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 
@@ -83,29 +86,44 @@ class InfrastructureHistoryService {
     dateTo?: string;
   }): Promise<HistoryStatistics> {
     const params = new URLSearchParams();
-    
+
     if (query.teamId) params.append('teamId', query.teamId);
     if (query.activityId) params.append('activityId', query.activityId);
     if (query.dateFrom) params.append('dateFrom', query.dateFrom);
     if (query.dateTo) params.append('dateTo', query.dateTo);
 
     const response = await apiClient.get(`/infrastructure/history/statistics?${params.toString()}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 
   async getRecentOperations(limit: number = 10): Promise<InfrastructureOperationLog[]> {
     const response = await apiClient.get(`/infrastructure/history/recent?limit=${limit}`);
-    
-    // Handle deeply nested data structure from API
-    if (response.data && response.data.data && response.data.data.data) {
-      return response.data.data.data || [];
-    }
-    
-    // Handle nested data structure from API
+
+    // Handle the actual API response structure: response.data.data contains the array
     if (response.data && response.data.data) {
-      return response.data.data || [];
+      // If data.data is an object with a data property (triple nesting)
+      if (typeof response.data.data === 'object' && response.data.data.data) {
+        return response.data.data.data || [];
+      }
+      // If data.data is the array directly
+      if (Array.isArray(response.data.data)) {
+        return response.data.data;
+      }
+      // If data.data is an object with items/logs property
+      if (response.data.data.items) {
+        return response.data.data.items;
+      }
+      if (response.data.data.logs) {
+        return response.data.data.logs;
+      }
     }
-    
+
     // Fallback for direct data structure
     return response.data || [];
   }
@@ -134,12 +152,27 @@ class InfrastructureHistoryService {
   }): Promise<InfrastructureOperationLog[]> {
     const params = new URLSearchParams();
     params.append('search', searchTerm);
-    
+
     if (filters?.entityType) params.append('entityType', filters.entityType);
     if (filters?.operationType) params.append('operationType', filters.operationType);
 
     const response = await apiClient.get(`/infrastructure/history/search?${params.toString()}`);
-    return response.data;
+
+    // Handle the nested data structure from API
+    if (response.data && response.data.data) {
+      if (Array.isArray(response.data.data)) {
+        return response.data.data;
+      }
+      // If data.data is an object with items/logs property
+      if (response.data.data.items) {
+        return response.data.data.items;
+      }
+      if (response.data.data.logs) {
+        return response.data.data.logs;
+      }
+    }
+
+    return response.data || [];
   }
 
   async getConnectionsByFacility(facilityId: string, role: 'provider' | 'consumer'): Promise<{
@@ -148,6 +181,12 @@ class InfrastructureHistoryService {
     pending: InfrastructureOperationLog[];
   }> {
     const response = await apiClient.get(`/infrastructure/history/facility/${facilityId}?role=${role}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 
@@ -164,13 +203,19 @@ class InfrastructureHistoryService {
     total: number;
   }[]> {
     const params = new URLSearchParams();
-    
+
     if (query.activityId) params.append('activityId', query.activityId);
     if (query.dateFrom) params.append('dateFrom', query.dateFrom);
     if (query.dateTo) params.append('dateTo', query.dateTo);
     params.append('groupBy', query.groupBy);
 
     const response = await apiClient.get(`/infrastructure/history/termination-trends?${params.toString()}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 
@@ -202,6 +247,12 @@ class InfrastructureHistoryService {
     topConsumers: { teamId: string; teamName: string; connectionCount: number }[];
   }> {
     const response = await apiClient.get(`/infrastructure/history/activity-summary/${activityId}`);
+
+    // Handle nested data structure from API
+    if (response.data && response.data.data) {
+      return response.data.data;
+    }
+
     return response.data;
   }
 }

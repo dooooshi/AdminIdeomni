@@ -128,6 +128,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
   const [selectedTier, setSelectedTier] = useState<string>('');
   const [calculatingCost, setCalculatingCost] = useState(false);
   const [isFeasible, setIsFeasible] = useState(true);
+  const [transportResponse, setTransportResponse] = useState<any>(null);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -256,6 +257,9 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
           { variant: 'warning' }
         );
       }
+
+      // Store the full response for detailed display
+      setTransportResponse(response);
 
       // Map the response to our transport cost structure
       if (response.availableTiers) {
@@ -660,6 +664,78 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
         </Grid>
       </Paper>
 
+      {/* Item and Space Details */}
+      {transportResponse?.itemDetails && (
+        <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+          <Typography variant="subtitle1" gutterBottom>
+            Item Details
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="body2" color="text.secondary">
+                Unit Space:
+              </Typography>
+              <Typography variant="body1">
+                {formatCurrency(transportResponse.itemDetails.unitSpaceOccupied)}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="body2" color="text.secondary">
+                Total Space:
+              </Typography>
+              <Typography variant="body1">
+                {formatCurrency(transportResponse.itemDetails.totalSpaceOccupied)}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Paper>
+      )}
+
+      {/* Destination Tile Details */}
+      {transportResponse?.destinationTile && (
+        <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
+          <Typography variant="subtitle1" gutterBottom>
+            Destination Details
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="body2" color="text.secondary">
+                Land Type:
+              </Typography>
+              <Typography variant="body1">
+                {transportResponse.destinationTile.landType}
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="body2" color="text.secondary">
+                Distance:
+              </Typography>
+              <Typography variant="body1">
+                {transportResponse.destinationTile.distance} tiles
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 6 }}>
+              <Typography variant="body2" color="text.secondary">
+                Transport Units:
+              </Typography>
+              <Typography variant="body1">
+                {transportResponse.destinationTile.transportCostUnits}
+              </Typography>
+            </Grid>
+            {transportResponse.destinationTile.currentFacility && (
+              <Grid size={{ xs: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  Current Facility:
+                </Typography>
+                <Typography variant="body1">
+                  {transportResponse.destinationTile.currentFacility.type}
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Paper>
+      )}
+
       {/* Transportation Cost Options */}
       <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
@@ -700,6 +776,12 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                       </Typography>
                       <Divider />
                       <Stack direction="row" justifyContent="space-between">
+                        <Typography variant="body2">Unit Cost:</Typography>
+                        <Typography variant="body2">
+                          {formatCurrency(tier.costPerSpaceUnit)} Gold/unit
+                        </Typography>
+                      </Stack>
+                      <Stack direction="row" justifyContent="space-between">
                         <Typography variant="body2">{t('mto.student.cost')}:</Typography>
                         <Typography variant="body2" fontWeight="bold" color="primary">
                           {formatCurrency(tier.totalCost)} Gold
@@ -711,6 +793,14 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                           {formatCurrency(tier.carbonEmission)}
                         </Typography>
                       </Stack>
+                      {transportResponse?.transportationCost?.deliveryTime && tier.tier === transportResponse.transportationCost.requiredTier && (
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2">Delivery Time:</Typography>
+                          <Typography variant="body2">
+                            {transportResponse.transportationCost.deliveryTime}
+                          </Typography>
+                        </Stack>
+                      )}
                       {!tier.available && (
                         <Chip
                           label={t('mto.student.notAvailable')}
@@ -789,6 +879,16 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                     </Typography>
                   </TableCell>
                 </TableRow>
+                {transportResponse?.teamBalance && (
+                  <TableRow>
+                    <TableCell>{t('mto.student.teamBalance')}</TableCell>
+                    <TableCell align="right">
+                      <Typography color="info.main">
+                        {formatCurrency(transportResponse.teamBalance)} Gold
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>

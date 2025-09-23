@@ -92,6 +92,7 @@ export const mtoTranslationsZh = {
   'mto.type1.statuses.draft': '草稿',
   'mto.type1.statuses.released': '已发布',
   'mto.type1.statuses.inProgress': '进行中',
+  'mto.type1.statuses.in_progress': '进行中',
   'mto.type1.statuses.settled': '已结算',
   'mto.type1.statuses.cancelled': '已取消',
 

@@ -2,12 +2,14 @@ import { zhExtendedTranslations } from './zh-extended';
 import { tradeTranslationsZh } from './trade-zh';
 import { mtoTranslationsZh } from './mto-zh';
 import { shopTranslationsZh } from './shop-zh';
+import { mtoType2HistoryTranslations } from '../mto-type2-history';
 
 export const zhTranslations = {
   ...zhExtendedTranslations,
   ...tradeTranslationsZh,
   ...mtoTranslationsZh,
   ...shopTranslationsZh,
+  ...mtoType2HistoryTranslations.zh,
   // MTO Management
   'MTO_MANAGEMENT': 'MTO管理',
   'MTO_MANAGEMENT_SUBTITLE': '按订单制造系统管理',
@@ -2408,6 +2410,8 @@ export const zhTranslations = {
   'teamManagement.FACILITY_EXPENSE': '设施支出',
   'teamManagement.FACILITY_BUILD': '设施建造',
   'teamManagement.RAW_MATERIAL_PRODUCTION': '原材料生产',
+  'teamManagement.MTO_TYPE1_SETTLEMENT': 'MTO 类型1 结算',
+  'teamManagement.MTO_TYPE2_SETTLEMENT': 'MTO 类型2 结算',
   'teamManagement.UTILITY_PRODUCTION': '水电生产',
   'teamManagement.UTILITY_SALE': '水电销售',
   'teamManagement.UTILITY_PURCHASE': '水电购买',

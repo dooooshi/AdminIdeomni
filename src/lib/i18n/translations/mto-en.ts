@@ -92,6 +92,7 @@ export const mtoTranslationsEn = {
   'mto.type1.statuses.draft': 'Draft',
   'mto.type1.statuses.released': 'Released',
   'mto.type1.statuses.inProgress': 'In Progress',
+  'mto.type1.statuses.in_progress': 'In Progress',
   'mto.type1.statuses.settled': 'Settled',
   'mto.type1.statuses.cancelled': 'Cancelled',
 
@@ -272,6 +273,7 @@ export const mtoTranslationsEn = {
   'mto.student.costCalculation': 'Cost & Profit Calculation',
   'mto.student.revenue': 'Revenue',
   'mto.student.estimatedProfit': 'Estimated Profit',
+  'mto.student.teamBalance': 'Team Balance',
   'mto.student.transportDistance': 'Transport Distance: {km} km',
   'mto.student.submitDelivery': 'Submit Delivery',
   'mto.student.deliveryWarning': 'Once submitted, deliveries cannot be modified. Please review carefully before submitting.',

@@ -24,7 +24,10 @@ import {
   MtoType2BulkSettleResponse,
   MtoType2AuditTrail,
   MtoType2RequirementDetails,
-  MtoType2SubmissionEligibility
+  MtoType2SubmissionEligibility,
+  MtoType2SubmissionHistoryItem,
+  MtoType2SubmissionHistoryParams,
+  MtoType2SubmissionHistoryResponse
 } from '@/lib/types/mtoType2';
 
 export interface ApiResponse<T> {
@@ -657,6 +660,40 @@ export class MtoType2Service {
     );
     return this.extractResponseData(response);
   }
+
+  // Get submission history for MALL teams
+  static async getSubmissionHistory(
+    params?: MtoType2SubmissionHistoryParams
+  ): Promise<MtoType2SubmissionHistoryResponse> {
+    const queryParams = new URLSearchParams();
+
+    if (params) {
+      if (params.mtoType2Id) queryParams.append('mtoType2Id', params.mtoType2Id.toString());
+      if (params.facilityInstanceId) queryParams.append('facilityInstanceId', params.facilityInstanceId);
+      if (params.status) queryParams.append('status', params.status);
+      if (params.fromDate) queryParams.append('fromDate', params.fromDate);
+      if (params.toDate) queryParams.append('toDate', params.toDate);
+      if (params.page) queryParams.append('page', params.page.toString());
+      if (params.limit) queryParams.append('limit', params.limit.toString());
+      if (params.sortBy) queryParams.append('sortBy', params.sortBy);
+      if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
+    }
+
+    const response = await apiClient.get(
+      `${this.MALL_BASE_PATH}/submission-history${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+    );
+
+    // Handle the nested data structure from the API response
+    const responseData = this.extractResponseData<any>(response);
+
+    // The actual data is nested in responseData.data
+    if (responseData && responseData.data) {
+      return responseData.data as MtoType2SubmissionHistoryResponse;
+    }
+
+    // Fallback to direct response if structure is different
+    return responseData as MtoType2SubmissionHistoryResponse;
+  }
 }
 
 // Create a singleton instance for easier import and use
@@ -708,7 +745,8 @@ export const mtoType2Service = {
   bulkSettle: MtoType2Service.bulkSettle.bind(MtoType2Service),
   getAuditTrail: MtoType2Service.getAuditTrail.bind(MtoType2Service),
   calculateTransportationFee: MtoType2Service.calculateTransportationFee.bind(MtoType2Service),
-  validateFacilityCapacity: MtoType2Service.validateFacilityCapacity.bind(MtoType2Service)
+  validateFacilityCapacity: MtoType2Service.validateFacilityCapacity.bind(MtoType2Service),
+  getSubmissionHistory: MtoType2Service.getSubmissionHistory.bind(MtoType2Service)
 };
 
 export default MtoType2Service;

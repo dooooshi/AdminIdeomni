@@ -175,14 +175,6 @@ function TeamDashboard() {
                     {team.members.filter(m => m.status === 'ACTIVE').length} {t('common.of')} {team.maxMembers}
                   </Typography>
                 </div>
-                <div>
-                  <Typography variant="caption" className="text-gray-500 dark:text-gray-400 uppercase tracking-wider text-xs font-medium">
-                    {t('teamManagement.CREATED')}
-                  </Typography>
-                  <Typography variant="body2" className="font-medium text-gray-900 dark:text-white mt-2">
-                    {TeamAccountService.formatDate(team.createdAt, i18n.language)}
-                  </Typography>
-                </div>
               </div>
             </Paper>
 
