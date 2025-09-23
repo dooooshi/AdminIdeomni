@@ -56,7 +56,14 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat('en-US').format(num);
   };
-  
+
+  const formatDecimal = (num: number, decimals: number = 2) => {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals
+    }).format(num);
+  };
+
   const formatCurrency = (num: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -132,7 +139,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                   {t('productProduction.expectedOutput')}
                 </Typography>
                 <Typography variant="h4" color="success.main">
-                  {formatNumber(output.expectedQuantity)}
+                  {formatDecimal(output.expectedQuantity, 2)}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
                   {t('productProduction.yieldRate', { rate: output.combinedYield.toFixed(1) })}%
@@ -217,48 +224,65 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
           <Typography variant="h6" gutterBottom>
             {t('productProduction.spaceImpact')}
           </Typography>
-          
+
           <Stack spacing={2}>
             <Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                 <Typography variant="body2">
-                  {t('productProduction.spaceAfterProduction')}
+                  {t('productProduction.currentAvailableSpace')}
                 </Typography>
                 <Typography variant="body2" fontWeight="medium">
-                  {formatNumber(space.spaceAfterProduction)} / {formatNumber(space.currentAvailableSpace + space.currentUsedSpace)}
+                  {formatDecimal(space?.currentAvailableSpace ?? 0, 3)}
                 </Typography>
               </Box>
-              <LinearProgress
-                variant="determinate"
-                value={(space.spaceAfterProduction / (space.currentAvailableSpace + space.currentUsedSpace)) * 100}
-                color={space.hasEnoughSpace ? 'primary' : 'error'}
-              />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                <Typography variant="body2">
+                  {t('productProduction.spaceAfterProduction')}
+                </Typography>
+                <Typography variant="body2" fontWeight="medium" color={(space?.netSpaceChange ?? 0) > 0 ? 'success.main' : 'text.primary'}>
+                  {formatDecimal(space?.spaceAfterProduction ?? 0, 3)}
+                </Typography>
+              </Box>
             </Box>
-            
-            {!space.hasEnoughSpace && (
+
+            {space && !space.hasEnoughSpace && (
               <Alert severity="error">
                 {t('productProduction.insufficientSpace')}
               </Alert>
             )}
-            
+
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Paper variant="outlined" sx={{ p: 1.5 }}>
                   <Typography variant="caption" color="text.secondary">
                     {t('productProduction.materialSpaceFreed')}
                   </Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    -{formatNumber(space.materialSpaceToFree)}
+                  <Typography variant="body2" fontWeight="medium" color="success.main">
+                    +{formatDecimal(space?.materialSpaceToFree ?? 0, 3)}
                   </Typography>
                 </Paper>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Paper variant="outlined" sx={{ p: 1.5 }}>
                   <Typography variant="caption" color="text.secondary">
-                    {t('productProduction.productSpaceNeeded')}
+                    {t('productProduction.productSpaceUsed')}
                   </Typography>
-                  <Typography variant="body2" fontWeight="medium">
-                    +{formatNumber(space.productSpaceNeeded)}
+                  <Typography variant="body2" fontWeight="medium" color="error.main">
+                    -{formatDecimal(space?.productSpaceNeeded ?? 0, 3)}
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper variant="outlined" sx={{ p: 1.5 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    {t('productProduction.netSpaceChange')}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontWeight="medium"
+                    color={(space?.netSpaceChange ?? 0) > 0 ? 'success.main' : (space?.netSpaceChange ?? 0) < 0 ? 'error.main' : 'text.primary'}
+                  >
+                    {(space?.netSpaceChange ?? 0) > 0 ? '+' : ''}{formatDecimal(space?.netSpaceChange ?? 0, 3)}
                   </Typography>
                 </Paper>
               </Grid>
@@ -276,7 +300,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
               {t('productProduction.carbonEmission')}
             </Typography>
             <Chip
-              label={`${formatNumber(output.carbonEmission)} CO₂`}
+              label={`${formatDecimal(output.carbonEmission, 2)} CO₂`}
               color="warning"
               size="small"
             />

@@ -754,22 +754,22 @@ export default function ProductProductionPage() {
                     <Typography variant="body2" color="text.secondary">
                       {t('productProduction.currentAvailable')}
                     </Typography>
-                    <Typography variant="h6">{formatNumber(costData.space?.currentAvailableSpace || 0)} {t('productProduction.units')}</Typography>
+                    <Typography variant="h6">{formatNumber(costData.space?.currentAvailableSpace || 0, 3)} {t('productProduction.units')}</Typography>
                   </Box>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
                       {t('productProduction.materialSpaceFreed')}
                     </Typography>
                     <Typography variant="h6" color="success.main">
-                      -{formatNumber(costData.space?.materialSpaceToFree || 0)} {t('productProduction.units')}
+                      +{formatNumber(costData.space?.materialSpaceToFree || 0, 3)} {t('productProduction.units')}
                     </Typography>
                   </Box>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      {t('productProduction.productSpaceNeeded')}
+                      {t('productProduction.productSpaceUsed')}
                     </Typography>
-                    <Typography variant="h6" color="warning.main">
-                      +{formatNumber(costData.space?.productSpaceNeeded || 0)} {t('productProduction.units')}
+                    <Typography variant="h6" color="error.main">
+                      -{formatNumber(costData.space?.productSpaceNeeded || 0, 3)} {t('productProduction.units')}
                     </Typography>
                   </Box>
                   <Divider />
@@ -777,11 +777,11 @@ export default function ProductProductionPage() {
                     <Typography variant="body2" color="text.secondary">
                       {t('productProduction.netChange')}
                     </Typography>
-                    <Typography 
-                      variant="h6" 
-                      color={costData.space?.netSpaceChange < 0 ? 'success.main' : 'warning.main'}
+                    <Typography
+                      variant="h6"
+                      color={costData.space?.netSpaceChange > 0 ? 'success.main' : costData.space?.netSpaceChange < 0 ? 'error.main' : 'text.primary'}
                     >
-                      {costData.space?.netSpaceChange < 0 ? '' : '+'}{formatNumber(costData.space?.netSpaceChange)} {t('productProduction.units')}
+                      {costData.space?.netSpaceChange > 0 ? '+' : ''}{formatNumber(costData.space?.netSpaceChange || 0, 3)} {t('productProduction.units')}
                     </Typography>
                   </Box>
                 </Stack>

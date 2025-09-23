@@ -91,10 +91,10 @@ function TeamAdministrationOverview() {
           <motion.div variants={item} className="flex items-center justify-between">
             <div>
               <Typography variant="h3" className="font-semibold">
-                {t('teamAdministration:TEAM_ADMINISTRATION')}
+                {t('teamAdministration.TEAM_ADMINISTRATION')}
               </Typography>
               <Typography color="text.secondary" className="mt-2">
-                {t('teamAdministration:TEAMS_OVERVIEW')}
+                {t('teamAdministration.TEAMS_OVERVIEW')}
               </Typography>
             </div>
             <Button
@@ -102,7 +102,7 @@ function TeamAdministrationOverview() {
               onClick={() => router.push('/team-administration/teams')}
               startIcon={<IdeomniSvgIcon>heroicons-outline:user-group</IdeomniSvgIcon>}
             >
-              {t('teamAdministration:MANAGE_TEAMS')}
+              {t('teamAdministration.MANAGE_TEAMS')}
             </Button>
           </motion.div>
 
@@ -119,7 +119,7 @@ function TeamAdministrationOverview() {
                       {statistics.totalTeams}
                     </Typography>
                     <Typography color="text.secondary">
-                      {t('teamAdministration:TOTAL_TEAMS')}
+                      {t('teamAdministration.TOTAL_TEAMS')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -133,7 +133,7 @@ function TeamAdministrationOverview() {
                       {statistics.totalMembers}
                     </Typography>
                     <Typography color="text.secondary">
-                      {t('teamAdministration:TOTAL_MEMBERS')}
+                      {t('teamAdministration.TOTAL_MEMBERS')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -147,7 +147,7 @@ function TeamAdministrationOverview() {
                       {statistics.averageTeamSize?.toFixed(1)}
                     </Typography>
                     <Typography color="text.secondary">
-                      {t('teamAdministration:MEMBER_DISTRIBUTION')}
+                      {t('teamAdministration.MEMBER_DISTRIBUTION')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -161,7 +161,7 @@ function TeamAdministrationOverview() {
                       {statistics.teamsWithOpenSlots}
                     </Typography>
                     <Typography color="text.secondary">
-                      {t('teamAdministration:ACTIVE_TEAMS')}
+                      {t('teamAdministration.ACTIVE_TEAMS')}
                     </Typography>
                   </Paper>
                 </Grid>
@@ -174,7 +174,7 @@ function TeamAdministrationOverview() {
             <Paper className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <Typography variant="h6">
-                  {t('teamAdministration:RECENT_TEAMS')}
+                  {t('teamAdministration.RECENT_TEAMS')}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -182,7 +182,7 @@ function TeamAdministrationOverview() {
                   onClick={() => router.push('/team-administration/teams')}
                   endIcon={<IdeomniSvgIcon>heroicons-outline:arrow-right</IdeomniSvgIcon>}
                 >
-                  {t('teamAdministration:VIEW')}
+                  {t('teamAdministration.VIEW')}
                 </Button>
               </div>
               
@@ -194,10 +194,10 @@ function TeamAdministrationOverview() {
                     heroicons-outline:user-group
                   </IdeomniSvgIcon>
                   <Typography variant="h6" className="mb-2">
-                    {t('teamAdministration:NO_TEAMS_FOUND')}
+                    {t('teamAdministration.NO_TEAMS_FOUND')}
                   </Typography>
                   <Typography color="text.secondary">
-                    {t('teamAdministration:NO_TEAMS_MESSAGE')}
+                    {t('teamAdministration.NO_TEAMS_MESSAGE')}
                   </Typography>
                 </div>
               ) : (
@@ -218,7 +218,7 @@ function TeamAdministrationOverview() {
                             {team.name}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {team.description || t('common:NO_DESCRIPTION')}
+                            {team.description || t('common.NO_DESCRIPTION')}
                           </Typography>
                         </div>
                       </div>
@@ -226,7 +226,7 @@ function TeamAdministrationOverview() {
                       <div className="flex items-center gap-6">
                         <div className="text-center">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:MEMBERS')}
+                            {t('teamAdministration.MEMBERS')}
                           </Typography>
                           <Typography variant="subtitle2">
                             {team.currentMembers}/{team.maxMembers}
@@ -235,7 +235,7 @@ function TeamAdministrationOverview() {
                         
                         <div className="text-center">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:LEADER')}
+                            {t('teamAdministration.LEADER')}
                           </Typography>
                           <Typography variant="subtitle2">
                             {team.leader.firstName && team.leader.lastName
@@ -246,13 +246,13 @@ function TeamAdministrationOverview() {
                         
                         <div className="text-center">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:STATUS')}
+                            {t('teamAdministration.STATUS')}
                           </Typography>
                           <Typography 
                             variant="subtitle2" 
                             className={team.isOpen ? 'text-green-600' : 'text-gray-600'}
                           >
-                            {team.isOpen ? t('teamAdministration:OPEN') : t('teamAdministration:CLOSED')}
+                            {team.isOpen ? t('teamAdministration.OPEN') : t('teamAdministration.CLOSED')}
                           </Typography>
                         </div>
 
@@ -264,7 +264,7 @@ function TeamAdministrationOverview() {
                   ))
                     : <div className="text-center py-8">
                         <Typography color="text.secondary">
-                          {t('teamAdministration:NO_TEAMS_FOUND')}
+                          {t('teamAdministration.NO_TEAMS_FOUND')}
                         </Typography>
                       </div>
                   }
@@ -277,7 +277,7 @@ function TeamAdministrationOverview() {
           <motion.div variants={item}>
             <Paper className="p-6">
               <Typography variant="h6" className="mb-4">
-                {t('teamAdministration:ACTIONS')}
+                {t('teamAdministration.ACTIONS')}
               </Typography>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Button
@@ -289,10 +289,10 @@ function TeamAdministrationOverview() {
                 >
                   <div className="text-left">
                     <Typography variant="subtitle1" className="font-medium">
-                      {t('teamAdministration:MANAGE_TEAMS')}
+                      {t('teamAdministration.MANAGE_TEAMS')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamAdministration:TEAMS_OVERVIEW')}
+                      {t('teamAdministration.TEAMS_OVERVIEW')}
                     </Typography>
                   </div>
                 </Button>
@@ -306,10 +306,10 @@ function TeamAdministrationOverview() {
                 >
                   <div className="text-left">
                     <Typography variant="subtitle1" className="font-medium">
-                      {t('teamAdministration:OPEN')} {t('teamAdministration:TOTAL_TEAMS')}
+                      {t('teamAdministration.OPEN')} {t('teamAdministration.TOTAL_TEAMS')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamAdministration:ACTIVE_TEAMS')}
+                      {t('teamAdministration.ACTIVE_TEAMS')}
                     </Typography>
                   </div>
                 </Button>
@@ -323,10 +323,10 @@ function TeamAdministrationOverview() {
                 >
                   <div className="text-left">
                     <Typography variant="subtitle1" className="font-medium">
-                      {t('teamAdministration:FULL')} {t('teamAdministration:TOTAL_TEAMS')}
+                      {t('teamAdministration.FULL')} {t('teamAdministration.TOTAL_TEAMS')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {t('teamAdministration:TOTAL_MEMBERS')}
+                      {t('teamAdministration.TOTAL_MEMBERS')}
                     </Typography>
                   </div>
                 </Button>

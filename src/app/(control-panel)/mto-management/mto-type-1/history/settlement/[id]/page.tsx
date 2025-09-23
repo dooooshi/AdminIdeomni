@@ -23,7 +23,6 @@ import {
   NavigateNext as NavigateNextIcon,
   Receipt as ReceiptIcon,
   ArrowBack as ArrowBackIcon,
-  FileDownload as DownloadIcon
 } from '@mui/icons-material';
 import MtoType1SettlementHistoryViewerV2 from '@/components/mto/type1/manager/MtoType1SettlementHistoryViewerV2';
 import { MtoType1Requirement } from '@/lib/types/mtoType1';
@@ -61,65 +60,6 @@ export default function MtoType1SettlementHistoryDetailPage() {
     router.push('/mto-management/mto-type-1/history');
   };
 
-  const handleExport = async () => {
-    try {
-      // Export settlement history to CSV
-      const response = await MtoType1Service.getSettlementHistoryV2(Number(requirementId));
-      const historyData = response.data;
-
-      // Convert to CSV format
-      const csvHeaders = [
-        t('mto.type1.settlementHistory.csv.step'),
-        t('mto.type1.settlementHistory.csv.stepType'),
-        t('mto.type1.settlementHistory.csv.description'),
-        t('mto.type1.settlementHistory.csv.timestamp'),
-        t('mto.type1.settlementHistory.csv.tileName'),
-        t('mto.type1.settlementHistory.csv.productsValidated'),
-        t('mto.type1.settlementHistory.csv.productsSettled'),
-        t('mto.type1.settlementHistory.csv.productsRejected'),
-        t('mto.type1.settlementHistory.csv.processingDuration')
-      ];
-      const csvRows = historyData.steps.map(step => [
-        step.step,
-        step.stepType,
-        step.stepDescription,
-        step.timestamp,
-        step.tileName || '',
-        step.productsValidated,
-        step.productsSettled,
-        step.productsRejected,
-        step.processingDuration || ''
-      ]);
-
-      // Add summary row
-      const summaryRow = [
-        t('mto.type1.settlementHistory.csv.summary'),
-        '',
-        `${t('mto.type1.settlementHistory.csv.totalTiles')}: ${historyData.summary.totalTilesProcessed}`,
-        '',
-        '',
-        historyData.summary.totalProductsValidated,
-        historyData.summary.totalProductsSettled,
-        historyData.summary.totalProductsRejected,
-        historyData.summary.totalProcessingTime
-      ];
-      csvRows.push(summaryRow);
-
-      const csvContent = [
-        csvHeaders.join(','),
-        ...csvRows.map(row => row.join(','))
-      ].join('\n');
-
-      // Download CSV file
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `mto_type1_settlement_history_${requirementId}_${new Date().toISOString()}.csv`;
-      link.click();
-    } catch (error) {
-      console.error('Failed to export settlement history:', error);
-    }
-  };
 
   const getStatusColor = (status: string): 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' => {
     const colors: Record<string, 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info'> = {
@@ -241,15 +181,6 @@ export default function MtoType1SettlementHistoryDetailPage() {
           >
             {t('common.back')}
           </Button>
-          {isSettlementAvailable && (
-            <Button
-              variant="contained"
-              startIcon={<DownloadIcon />}
-              onClick={handleExport}
-            >
-              {t('common.export')}
-            </Button>
-          )}
         </Stack>
       </Stack>
 

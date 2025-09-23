@@ -23,7 +23,6 @@ import {
 } from '@mui/material';
 import {
   Refresh as RefreshIcon,
-  FileDownload as ExportIcon,
   Water as WaterIcon,
   Power as PowerIcon,
   AttachMoney as MoneyIcon
@@ -162,47 +161,6 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
     return labels[purpose] || purpose;
   };
 
-  const handleExport = async () => {
-    try {
-      const allTransactions = await resourceConsumptionService.getConsumptionHistory({
-        facilityId,
-        teamId,
-        limit: 500
-      });
-      
-      const csv = convertToCSV(allTransactions);
-      downloadCSV(csv, 'resource-consumption-history.csv');
-    } catch (error) {
-      console.error('Failed to export data:', error);
-    }
-  };
-
-  const convertToCSV = (data: ResourceTransaction[]) => {
-    const headers = ['Date', 'Resource', 'Quantity', 'Unit Price', 'Total Amount', 'Purpose', 'Status', 'Facility', 'Team'];
-    const rows = data.map(tx => [
-      formatDate(tx.transactionDate),
-      tx.resourceType,
-      tx.quantity,
-      tx.unitPrice,
-      tx.totalAmount,
-      tx.purpose,
-      tx.status,
-      tx.consumerFacilityId,
-      tx.consumerTeamId
-    ]);
-    
-    return [headers, ...rows].map(row => row.join(',')).join('\n');
-  };
-
-  const downloadCSV = (csv: string, filename: string) => {
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
 
   return (
     <Box>
@@ -213,11 +171,6 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
               {t('resources.history.title')}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <Tooltip title={t('resources.export')}>
-                <IconButton onClick={handleExport}>
-                  <ExportIcon />
-                </IconButton>
-              </Tooltip>
               <Tooltip title={t('common.refresh')}>
                 <IconButton onClick={loadTransactions} disabled={loading}>
                   <RefreshIcon />

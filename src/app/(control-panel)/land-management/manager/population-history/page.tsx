@@ -35,7 +35,6 @@ import {
 import Grid from '@mui/material/GridLegacy';
 import {
   Refresh as RefreshIcon,
-  Download as DownloadIcon,
   ExpandMore as ExpandMoreIcon,
   ChevronRight as ChevronRightIcon,
   FilterList as FilterIcon,
@@ -154,28 +153,6 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
     setPage(0);
   };
 
-  const handleExportCSV = () => {
-    const csvContent = [
-      ['Tile ID', 'Team', 'Timestamp', 'Previous Population', 'New Population', 'Change', 'Type', 'Reason'].join(','),
-      ...history.map(entry => [
-        entry.tileId,
-        entry.teamName,
-        new Date(entry.timestamp).toLocaleString(),
-        entry.previousPopulation,
-        entry.newPopulation,
-        entry.changeAmount,
-        entry.changeType,
-        `"${entry.changeReason}"`
-      ].join(','))
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `population-history-${new Date().toISOString()}.csv`;
-    link.click();
-  };
 
 
   const renderFilters = () => (
@@ -280,11 +257,6 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
           <Tooltip title={t('population.TOOLTIP_FILTERS')}>
             <IconButton onClick={() => setShowFilters(!showFilters)}>
               <FilterIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={t('population.TOOLTIP_EXPORT')}>
-            <IconButton onClick={handleExportCSV}>
-              <DownloadIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title={t('population.TOOLTIP_REFRESH')}>

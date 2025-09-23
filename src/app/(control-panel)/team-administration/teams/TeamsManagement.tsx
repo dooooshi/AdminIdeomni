@@ -159,14 +159,14 @@ function TeamsManagement() {
                   onClick={() => router.push('/team-administration/overview')}
                   startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
                 >
-                  {t('teamAdministration:TEAM_ADMIN_OVERVIEW')}
+                  {t('teamAdministration.TEAM_ADMIN_OVERVIEW')}
                 </Button>
               </div>
               <Typography variant="h3" className="font-semibold">
-                {t('teamAdministration:MANAGE_TEAMS')}
+                {t('teamAdministration.MANAGE_TEAMS')}
               </Typography>
               <Typography color="text.secondary" className="mt-1">
-                {t('teamAdministration:TEAMS_OVERVIEW')}
+                {t('teamAdministration.TEAMS_OVERVIEW')}
               </Typography>
             </div>
           </motion.div>
@@ -179,7 +179,7 @@ function TeamsManagement() {
                 <div className="flex gap-3 flex-1">
                   <TextField
                     fullWidth
-                    placeholder={t('teamAdministration:SEARCH_BY_TEAM_NAME')}
+                    placeholder={t('teamAdministration.SEARCH_BY_TEAM_NAME')}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -196,32 +196,32 @@ function TeamsManagement() {
                     onClick={handleSearch}
                     startIcon={<IdeomniSvgIcon>heroicons-outline:search</IdeomniSvgIcon>}
                   >
-                    {t('teamAdministration:SEARCH_TEAMS')}
+                    {t('teamAdministration.SEARCH_TEAMS')}
                   </Button>
                 </div>
 
                 {/* Filters */}
                 <div className="flex gap-2">
                   <Chip
-                    label={t('teamAdministration:FILTER_ALL')}
+                    label={t('teamAdministration.FILTER_ALL')}
                     variant={filter === 'all' ? 'filled' : 'outlined'}
                     onClick={() => setFilter('all')}
                     color={filter === 'all' ? 'primary' : 'default'}
                   />
                   <Chip
-                    label={t('teamAdministration:OPEN')}
+                    label={t('teamAdministration.OPEN')}
                     variant={filter === 'open' ? 'filled' : 'outlined'}
                     onClick={() => setFilter('open')}
                     color={filter === 'open' ? 'success' : 'default'}
                   />
                   <Chip
-                    label={t('teamAdministration:CLOSED')}
+                    label={t('teamAdministration.CLOSED')}
                     variant={filter === 'closed' ? 'filled' : 'outlined'}
                     onClick={() => setFilter('closed')}
                     color={filter === 'closed' ? 'warning' : 'default'}
                   />
                   <Chip
-                    label={t('teamAdministration:FULL')}
+                    label={t('teamAdministration.FULL')}
                     variant={filter === 'full' ? 'filled' : 'outlined'}
                     onClick={() => setFilter('full')}
                     color={filter === 'full' ? 'error' : 'default'}
@@ -235,7 +235,7 @@ function TeamsManagement() {
           {teamsResponse && (
             <motion.div variants={item}>
               <Typography color="text.secondary">
-                {t('teamAdministration:SHOWING_TEAMS')} {filteredTeams.length} {t('teamAdministration:OF_TOTAL_TEAMS')} {teamsResponse.total} {t('teamAdministration:TOTAL_TEAMS').toLowerCase()}
+                {t('teamAdministration.SHOWING_TEAMS')} {filteredTeams.length} {t('teamAdministration.OF_TOTAL_TEAMS')} {teamsResponse.total} {t('teamAdministration.TOTAL_TEAMS').toLowerCase()}
               </Typography>
             </motion.div>
           )}
@@ -248,10 +248,10 @@ function TeamsManagement() {
                   heroicons-outline:exclamation-triangle
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  {t('teamAdministration:TEAMS_LOAD_ERROR')}
+                  {t('teamAdministration.TEAMS_LOAD_ERROR')}
                 </Typography>
                 <Typography color="text.secondary">
-                  {t('teamAdministration:TEAMS_LOAD_ERROR')}
+                  {t('teamAdministration.TEAMS_LOAD_ERROR')}
                 </Typography>
               </Paper>
             </motion.div>
@@ -262,10 +262,10 @@ function TeamsManagement() {
                   heroicons-outline:user-group
                 </IdeomniSvgIcon>
                 <Typography variant="h6" className="mb-2">
-                  {t('teamAdministration:NO_TEAMS_FOUND')}
+                  {t('teamAdministration.NO_TEAMS_FOUND')}
                 </Typography>
                 <Typography color="text.secondary">
-                  {t('teamAdministration:NO_TEAMS_MESSAGE')}
+                  {t('teamAdministration.NO_TEAMS_MESSAGE')}
                 </Typography>
               </Paper>
             </motion.div>
@@ -291,21 +291,21 @@ function TeamsManagement() {
                             </Typography>
                             <Chip
                               size="small"
-                              label={team.isOpen ? t('teamAdministration:OPEN') : t('teamAdministration:CLOSED')}
+                              label={team.isOpen ? t('teamAdministration.OPEN') : t('teamAdministration.CLOSED')}
                               color={team.isOpen ? 'success' : 'default'}
                               variant="outlined"
                             />
                             {team.currentMembers >= team.maxMembers && (
                               <Chip
                                 size="small"
-                                label={t('teamAdministration:FULL')}
+                                label={t('teamAdministration.FULL')}
                                 color="error"
                                 variant="outlined"
                               />
                             )}
                           </div>
                           <Typography variant="body2" color="text.secondary" className="truncate">
-                            {team.description || t('common:NO_DESCRIPTION')}
+                            {team.description || t('common.NO_DESCRIPTION')}
                           </Typography>
                         </div>
                       </div>
@@ -313,7 +313,7 @@ function TeamsManagement() {
                       <div className="flex items-center gap-8">
                         <div className="text-center">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:MEMBERS')}
+                            {t('teamAdministration.MEMBERS')}
                           </Typography>
                           <Typography variant="subtitle1" className="font-medium">
                             {team.currentMembers}/{team.maxMembers}
@@ -322,7 +322,7 @@ function TeamsManagement() {
                         
                         <div className="text-center min-w-0">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:LEADER')}
+                            {t('teamAdministration.LEADER')}
                           </Typography>
                           <Typography variant="subtitle1" className="font-medium truncate">
                             {team.leader.firstName && team.leader.lastName
@@ -333,7 +333,7 @@ function TeamsManagement() {
                         
                         <div className="text-center">
                           <Typography variant="body2" color="text.secondary">
-                            {t('teamAdministration:CREATED')}
+                            {t('teamAdministration.CREATED')}
                           </Typography>
                           <Typography variant="subtitle1" className="font-medium">
                             {new Date(team.createdAt).toLocaleDateString()}
@@ -346,7 +346,7 @@ function TeamsManagement() {
                           onClick={(e) => handleTeamAction(e, team)}
                           startIcon={<IdeomniSvgIcon>heroicons-outline:cog</IdeomniSvgIcon>}
                         >
-                          {t('teamAdministration:ACTIONS')}
+                          {t('teamAdministration.ACTIONS')}
                         </Button>
                       </div>
                     </div>
@@ -383,7 +383,7 @@ function TeamsManagement() {
           handleCloseActionMenu();
         }}>
           <IdeomniSvgIcon className="mr-2">heroicons-outline:eye</IdeomniSvgIcon>
-          {t('teamAdministration:VIEW_TEAM_DETAILS')}
+          {t('teamAdministration.VIEW_TEAM_DETAILS')}
         </MenuItem>
         <MenuItem 
           onClick={() => {
@@ -392,7 +392,7 @@ function TeamsManagement() {
           className="text-red-600"
         >
           <IdeomniSvgIcon className="mr-2">heroicons-outline:trash</IdeomniSvgIcon>
-          {t('teamAdministration:DISBAND_TEAM')}
+          {t('teamAdministration.DISBAND_TEAM')}
         </MenuItem>
       </Menu>
 
@@ -408,20 +408,20 @@ function TeamsManagement() {
             <IdeomniSvgIcon className="text-red-500">
               heroicons-outline:exclamation-triangle
             </IdeomniSvgIcon>
-            {t('teamAdministration:DISBAND_TEAM_CONFIRMATION')}
+            {t('teamAdministration.DISBAND_TEAM_CONFIRMATION')}
           </div>
         </DialogTitle>
         <DialogContent>
           <Typography className="mb-4">
-            {t('teamAdministration:DISBAND_WARNING')}: <strong>{selectedTeam?.name}</strong>?
+            {t('teamAdministration.DISBAND_WARNING')}: <strong>{selectedTeam?.name}</strong>?
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {t('teamAdministration:DISBAND_WARNING')} {t('teamAdministration:CANNOT_UNDO')}
+            {t('teamAdministration.DISBAND_WARNING')} {t('teamAdministration.CANNOT_UNDO')}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowDisbandDialog(false)}>
-            {t('teamAdministration:CANCEL')}
+            {t('teamAdministration.CANCEL')}
           </Button>
           <Button
             color="error"
@@ -430,7 +430,7 @@ function TeamsManagement() {
             disabled={isDisbanding}
             startIcon={<IdeomniSvgIcon>heroicons-outline:trash</IdeomniSvgIcon>}
           >
-            {isDisbanding ? t('teamAdministration:DISBANDING') : t('teamAdministration:DISBAND_TEAM')}
+            {isDisbanding ? t('teamAdministration.DISBANDING') : t('teamAdministration.DISBAND_TEAM')}
           </Button>
         </DialogActions>
       </Dialog>

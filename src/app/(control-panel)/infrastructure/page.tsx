@@ -148,7 +148,7 @@ const InfrastructurePage: React.FC = () => {
               onClick={handleRefresh}
               disabled={loading}
             >
-              {t('infrastructure.REFRESH')}
+              {loading ? t('infrastructure.REFRESHING') : t('infrastructure.REFRESH')}
             </Button>
           </Box>
 

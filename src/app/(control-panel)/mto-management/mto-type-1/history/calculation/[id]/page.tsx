@@ -38,7 +38,6 @@ import {
   NavigateNext as NavigateNextIcon,
   Timeline as TimelineIcon,
   ArrowBack as ArrowBackIcon,
-  FileDownload as DownloadIcon,
   Assessment as AssessmentIcon,
   LocalShipping as DeliveryIcon,
   ExpandMore as ExpandMoreIcon,
@@ -121,65 +120,6 @@ export default function MtoType1CalculationHistoryDetailPage() {
     });
   };
 
-  const handleExport = async () => {
-    try {
-      const csvContent = generateCSVContent();
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `mto_type1_history_${requirementId}_${new Date().toISOString()}.csv`;
-      link.click();
-    } catch (error) {
-      console.error('Failed to export history:', error);
-    }
-  };
-
-  const generateCSVContent = () => {
-    if (!requirement) return '';
-
-    const headers = [
-      'Category', 'Field', 'Value'
-    ];
-
-    const rows = [
-      ['Basic Info', 'ID', requirement.id],
-      ['Basic Info', 'Activity ID', requirement.activityId],
-      ['Basic Info', 'Status', requirement.status],
-      ['Basic Info', 'Purchase Gold Price', requirement.purchaseGoldPrice],
-      ['Basic Info', 'Base Purchase Number', requirement.basePurchaseNumber],
-      ['Basic Info', 'Overall Purchase Number', requirement.overallPurchaseNumber],
-      ['Basic Info', 'Overall Purchase Budget', requirement.overallPurchaseBudget],
-      ['Basic Info', 'Base Count Population', requirement.baseCountPopulationNumber],
-      ['Basic Info', 'Release Time', requirement.releaseTime],
-      ['Basic Info', 'Settlement Time', requirement.settlementTime],
-      ['Performance', 'Actual Spent Budget', requirement.actualSpentBudget || 'N/A'],
-      ['Performance', 'Actual Purchased Number', requirement.actualPurchasedNumber],
-      ['Performance', 'Fulfillment Rate', requirement.fulfillmentRate ? `${requirement.fulfillmentRate}%` : 'N/A']
-    ];
-
-    // Add tile requirements
-    requirement.tileRequirements?.forEach((tile: any) => {
-      rows.push([
-        'Tile Requirements',
-        tile.tileName,
-        `Pop: ${tile.tilePopulation}, Req: ${tile.adjustedRequirementNumber}, Delivered: ${tile.deliveredNumber}`
-      ]);
-    });
-
-    // Add calculation history
-    requirement.calculationHistory?.forEach((calc: any) => {
-      rows.push([
-        'Calculation History',
-        `Step ${calc.calculationStep}`,
-        calc.stepDescription
-      ]);
-    });
-
-    return [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
-    ].join('\n');
-  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -303,13 +243,6 @@ export default function MtoType1CalculationHistoryDetailPage() {
             onClick={handleBack}
           >
             {t('common.back')}
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<DownloadIcon />}
-            onClick={handleExport}
-          >
-            {t('mto.type1.calculationHistory.exportCSV')}
           </Button>
         </Stack>
       </Stack>

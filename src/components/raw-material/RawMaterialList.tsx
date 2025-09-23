@@ -46,7 +46,6 @@ import {
   Refresh as RefreshIcon,
   Visibility as ViewIcon,
   Restore as RestoreIcon,
-  FileDownload as ExportIcon,
   FileUpload as ImportIcon,
   History as HistoryIcon,
   FilterList as FilterIcon,
@@ -241,36 +240,6 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
     }
   };
 
-  // Handle export
-  const handleExport = async () => {
-    try {
-      const params: RawMaterialSearchParams = {
-        page: 1,
-        limit: 10000,
-        sort: filters.sortBy,
-        order: filters.sortOrder,
-        isActive: filters.isActive,
-        isDeleted: filters.showDeleted,
-      };
-      
-      if (filters.search) params.search = filters.search;
-      if (filters.origin) params.origin = filters.origin as RawMaterialOrigin;
-      if (filters.minCost) params.minCost = parseFloat(filters.minCost);
-      if (filters.maxCost) params.maxCost = parseFloat(filters.maxCost);
-      if (filters.minCarbon) params.minCarbon = parseFloat(filters.minCarbon);
-      if (filters.maxCarbon) params.maxCarbon = parseFloat(filters.maxCarbon);
-      
-      const blob = await RawMaterialService.exportRawMaterials(params);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `raw-materials-${new Date().toISOString()}.csv`;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } catch (err: any) {
-      setError(err.message || t('rawMaterial.error.exportFailed'));
-    }
-  };
 
   // Get origin icon
   const getOriginIcon = (origin: RawMaterialOrigin) => {
@@ -429,13 +398,6 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                       onClick={onCreateMaterial}
                     >
                       {t('rawMaterial.create')}
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<ExportIcon />}
-                      onClick={handleExport}
-                    >
-                      {t('rawMaterial.export')}
                     </Button>
                   </>
                 )}

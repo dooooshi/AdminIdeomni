@@ -26,7 +26,6 @@ import {
   Group as GroupIcon,
   Assignment as AssignmentIcon,
   Analytics as AnalyticsIcon,
-  Download as DownloadIcon,
   Refresh as RefreshIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
@@ -40,7 +39,6 @@ import AdminUserActivityService, {
 import UserSearchAndAssignment from './UserSearchAndAssignment';
 import TeamManagementPanel from './TeamManagementPanel';
 import StatisticsPanel from './StatisticsPanel';
-import ExportPanel from './ExportPanel';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -291,12 +289,6 @@ const AdminUserActivityDashboard: React.FC = () => {
               iconPosition="start"
               {...a11yProps(2)} 
             />
-            <Tab 
-              label={t('activityManagement.EXPORT_REPORTS')} 
-              icon={<DownloadIcon />} 
-              iconPosition="start"
-              {...a11yProps(3)} 
-            />
           </Tabs>
         </Box>
 
@@ -323,9 +315,6 @@ const AdminUserActivityDashboard: React.FC = () => {
           />
         </TabPanel>
 
-        <TabPanel value={activeTab} index={3}>
-          <ExportPanel />
-        </TabPanel>
       </Card>
     </Box>
   );

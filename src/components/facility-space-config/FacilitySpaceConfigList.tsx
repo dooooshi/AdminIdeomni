@@ -42,7 +42,6 @@ import {
   PowerSettingsNew as PowerIcon,
   School as SchoolIcon,
   Refresh as RefreshIcon,
-  Download as DownloadIcon,
   Upload as UploadIcon,
   ContentCopy as CopyIcon,
 } from '@mui/icons-material';
@@ -137,17 +136,6 @@ const FacilitySpaceConfigList: React.FC<FacilitySpaceConfigListProps> = ({
     return FacilitySpaceConfigService.calculateSpace(config, level);
   };
 
-  // Export configurations
-  const handleExport = () => {
-    const jsonData = FacilitySpaceConfigService.exportConfigs(configs);
-    const blob = new Blob([jsonData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `facility-space-configs-template-${templateId}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   // Get category icon
   const getCategoryIcon = (category: FacilityCategory) => {
@@ -332,11 +320,6 @@ const FacilitySpaceConfigList: React.FC<FacilitySpaceConfigListProps> = ({
         subheader={t('facilitySpace.SPACE_CONFIG_DESCRIPTION')}
         action={
           <Stack direction="row" spacing={1}>
-            <Tooltip title={t('facilitySpace.EXPORT_CONFIGS')}>
-              <IconButton onClick={handleExport}>
-                <DownloadIcon />
-              </IconButton>
-            </Tooltip>
             <Tooltip title={t('common.REFRESH')}>
               <IconButton onClick={loadConfigs}>
                 <RefreshIcon />

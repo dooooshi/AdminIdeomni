@@ -80,7 +80,7 @@ export default function TransportationPage() {
   const [historyPage, setHistoryPage] = useState(0);
   const [historyRowsPerPage, setHistoryRowsPerPage] = useState(10);
   const [historyTotal, setHistoryTotal] = useState(0);
-  
+
   // Transfer state
   const [sourceFacility, setSourceFacility] = useState<FacilityForTransport | null>(null);
   const [destFacility, setDestFacility] = useState<FacilityForTransport | null>(null);
@@ -93,6 +93,11 @@ export default function TransportationPage() {
   const [inventoryItems, setInventoryItems] = useState<InventoryItemForTransport[]>([]);
   const [loadingItems, setLoadingItems] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
+
+  // Validation state for quantity input
+  const [quantityError, setQuantityError] = useState<string>('');
+  const [isValidatingQuantity, setIsValidatingQuantity] = useState(false);
+  const [quantityInputValue, setQuantityInputValue] = useState<string>('1');
 
   useEffect(() => {
     fetchFacilities();
@@ -108,11 +113,20 @@ export default function TransportationPage() {
       fetchInventoryItems();
       setSelectedItem(null); // Reset selected item when source changes
       setTransferQuantity(1);
+      setQuantityInputValue('1');
+      setQuantityError('');
     } else {
       setInventoryItems([]);
       setSelectedItem(null);
     }
   }, [sourceFacility]);
+
+  // Validate quantity whenever selectedItem changes
+  useEffect(() => {
+    if (selectedItem) {
+      validateQuantity(quantityInputValue);
+    }
+  }, [selectedItem]);
 
   const fetchFacilities = async () => {
     try {
@@ -250,7 +264,115 @@ export default function TransportationPage() {
     setDestFacility(null);
     setSelectedItem(null);
     setTransferQuantity(1);
+    setQuantityInputValue('1');
+    setQuantityError('');
     setCostPreview(null);
+  };
+
+  // Validate quantity input with detailed error messages
+  const validateQuantity = (value: string): boolean => {
+    if (!selectedItem) {
+      setQuantityError('');
+      return false;
+    }
+
+    // Check if empty
+    if (value === '' || value === null || value === undefined) {
+      setQuantityError(t('transportation.QUANTITY_REQUIRED'));
+      return false;
+    }
+
+    // Check if valid number
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) {
+      setQuantityError(t('transportation.INVALID_NUMBER'));
+      return false;
+    }
+
+    // Check minimum value
+    if (numValue <= 0) {
+      setQuantityError(t('transportation.QUANTITY_MUST_BE_POSITIVE'));
+      return false;
+    }
+
+    // Check if too small
+    if (numValue < 0.01) {
+      setQuantityError(t('transportation.QUANTITY_MIN', { min: '0.01' }));
+      return false;
+    }
+
+    // Check maximum value
+    const max = selectedItem.availableQuantity || 0;
+    if (numValue > max) {
+      setQuantityError(t('transportation.QUANTITY_EXCEEDS_AVAILABLE', { max: max.toFixed(2) }));
+      return false;
+    }
+
+    // Check decimal places (max 2)
+    const decimalPlaces = (value.split('.')[1] || '').length;
+    if (decimalPlaces > 2) {
+      setQuantityError(t('transportation.MAX_TWO_DECIMALS'));
+      return false;
+    }
+
+    setQuantityError('');
+    return true;
+  };
+
+  // Handle quantity input change with debounced validation
+  const handleQuantityChange = (inputValue: string) => {
+    setQuantityInputValue(inputValue);
+    setIsValidatingQuantity(true);
+
+    // Allow empty input temporarily
+    if (inputValue === '') {
+      setTransferQuantity(0);
+      setQuantityError(t('transportation.QUANTITY_REQUIRED'));
+      setIsValidatingQuantity(false);
+      return;
+    }
+
+    // Basic format validation - allow only numbers and one decimal point
+    if (!/^\d*\.?\d*$/.test(inputValue)) {
+      setQuantityError(t('transportation.INVALID_NUMBER_FORMAT'));
+      setIsValidatingQuantity(false);
+      return;
+    }
+
+    // Perform validation
+    const isValid = validateQuantity(inputValue);
+
+    if (isValid) {
+      const numValue = parseFloat(inputValue);
+      const max = selectedItem?.availableQuantity || 1;
+      const validValue = Math.min(Math.max(0.01, numValue), max);
+      setTransferQuantity(Math.round(validValue * 100) / 100);
+    } else {
+      setTransferQuantity(0);
+    }
+
+    setIsValidatingQuantity(false);
+  };
+
+  // Handle input blur to auto-correct values
+  const handleQuantityBlur = () => {
+    if (!selectedItem) return;
+
+    const numValue = parseFloat(quantityInputValue);
+
+    if (isNaN(numValue) || numValue <= 0) {
+      // Reset to minimum valid value
+      setQuantityInputValue('0.01');
+      setTransferQuantity(0.01);
+      setQuantityError('');
+    } else {
+      const max = selectedItem.availableQuantity || 1;
+      const validValue = Math.min(Math.max(0.01, numValue), max);
+      const roundedValue = Math.round(validValue * 100) / 100;
+      setQuantityInputValue(roundedValue.toString());
+      setTransferQuantity(roundedValue);
+      setQuantityError('');
+    }
   };
 
   const calculateTransferCost = async () => {
@@ -425,6 +547,8 @@ export default function TransportationPage() {
                       if (item) {
                         setSelectedItem(item);
                         setTransferQuantity(1);
+                        setQuantityInputValue('1');
+                        setQuantityError('');
                       }
                     }}
                     disabled={inventoryItems.length === 0}
@@ -446,33 +570,54 @@ export default function TransportationPage() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     fullWidth
-                    type="number"
+                    type="text"
                     label={t('transportation.QUANTITY')}
-                    value={isNaN(transferQuantity) ? 1 : transferQuantity}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue === '') {
-                        setTransferQuantity(1);
-                        return;
-                      }
-                      const value = parseFloat(inputValue);
-                      if (isNaN(value)) {
-                        setTransferQuantity(1);
-                        return;
-                      }
-                      // Round to 2 decimal places
-                      const roundedValue = Math.round(value * 100) / 100;
-                      const max = selectedItem?.availableQuantity || 1;
-                      setTransferQuantity(Math.min(Math.max(0.01, roundedValue), max));
-                    }}
+                    value={quantityInputValue}
+                    onChange={(e) => handleQuantityChange(e.target.value)}
+                    onBlur={handleQuantityBlur}
                     disabled={!selectedItem}
-                    inputProps={{
-                      min: 0.01,
-                      max: selectedItem?.availableQuantity || 1,
-                      step: 0.01
+                    error={!!quantityError}
+                    helperText={
+                      quantityError ||
+                      (selectedItem
+                        ? `${t('common.MAX')}: ${selectedItem.availableQuantity.toFixed(2)}`
+                        : '')
+                    }
+                    InputProps={{
+                      endAdornment: isValidatingQuantity ? (
+                        <CircularProgress size={20} sx={{ mr: 1 }} />
+                      ) : quantityError ? (
+                        <Tooltip title={quantityError}>
+                          <CloseIcon color="error" sx={{ mr: 1 }} />
+                        </Tooltip>
+                      ) : transferQuantity > 0 && !quantityError ? (
+                        <CheckIcon color="success" sx={{ mr: 1 }} />
+                      ) : null
                     }}
-                    helperText={selectedItem ? `${t('common.MAX')}: ${selectedItem.availableQuantity.toFixed(2)}` : ''}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '&.Mui-error': {
+                          '& fieldset': {
+                            borderColor: 'error.main',
+                            borderWidth: 2
+                          }
+                        },
+                        '&:not(.Mui-error):has(input:valid:not(:placeholder-shown))': {
+                          '& fieldset': {
+                            borderColor: transferQuantity > 0 && !quantityError ? 'success.main' : 'inherit'
+                          }
+                        }
+                      }
+                    }}
                   />
+                  {selectedItem && transferQuantity > 0 && !quantityError && (
+                    <Box mt={1} display="flex" alignItems="center" gap={1}>
+                      <CheckIcon fontSize="small" color="success" />
+                      <Typography variant="caption" color="success.main">
+                        {t('transportation.QUANTITY_VALID', { amount: transferQuantity.toFixed(2) })}
+                      </Typography>
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
             )}
@@ -636,7 +781,7 @@ export default function TransportationPage() {
                   disabled={
                     (activeStep === 0 && !sourceFacility) ||
                     (activeStep === 1 && !destFacility) ||
-                    (activeStep === 2 && (!selectedItem || transferQuantity <= 0))
+                    (activeStep === 2 && (!selectedItem || transferQuantity <= 0 || !!quantityError))
                   }
                 >
                   {t('common.NEXT')}
@@ -739,24 +884,6 @@ export default function TransportationPage() {
             {t('transportation.TRANSFER_SUCCESS')}
           </Box>
         </DialogTitle>
-        <DialogContent>
-          <Typography>
-            {t('transportation.TRANSFER_SUCCESS_MESSAGE')}
-          </Typography>
-          {transferResult && (
-            <Box mt={2}>
-              <Typography variant="body2">
-                {t('transportation.ORDER_ID')}: {transferResult.orderId}
-              </Typography>
-              <Typography variant="body2">
-                {t('transportation.GOLD_DEDUCTED')}: {transferResult.goldDeducted}
-              </Typography>
-              <Typography variant="body2">
-                {t('transportation.CARBON_EMITTED_RESULT')}: {transferResult.carbonEmitted}
-              </Typography>
-            </Box>
-          )}
-        </DialogContent>
         <DialogActions>
           <Button onClick={() => {
             setSuccessDialog(false);

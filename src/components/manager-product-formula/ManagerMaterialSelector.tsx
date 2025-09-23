@@ -171,12 +171,14 @@ const ManagerMaterialSelector: React.FC<ManagerMaterialSelectorProps> = ({
       </Stack>
 
       {materials.length === 0 ? (
-        <Alert severity="info">
-          {t('managerProductFormula.noMaterialsAdded')}
-        </Alert>
+        <Box display="flex" justifyContent="center" py={4}>
+          <Alert severity="info" sx={{ maxWidth: 400 }}>
+            {t('managerProductFormula.noMaterialsAdded')}
+          </Alert>
+        </Box>
       ) : (
-        <TableContainer component={Paper} variant="outlined">
-          <Table size="small">
+        <TableContainer component={Paper} variant="outlined" sx={{ border: '0.5px solid rgba(0, 0, 0, 0.12)' }}>
+          <Table size="small" sx={{ '& .MuiTableCell-root': { borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)' } }}>
             <TableHead>
               <TableRow>
                 <TableCell>{t('managerProductFormula.materialNumber')}</TableCell>
@@ -271,8 +273,8 @@ const ManagerMaterialSelector: React.FC<ManagerMaterialSelectorProps> = ({
             </Box>
           ) : (
             <>
-              <TableContainer component={Paper} variant="outlined" sx={{ maxHeight: 400 }}>
-                <Table stickyHeader size="small">
+              <TableContainer component={Paper} variant="outlined" sx={{ maxHeight: 400, border: '0.5px solid rgba(0, 0, 0, 0.12)' }}>
+                <Table stickyHeader size="small" sx={{ '& .MuiTableCell-root': { borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)' } }}>
                   <TableHead>
                     <TableRow>
                       <TableCell padding="checkbox">{t('common.select')}</TableCell>

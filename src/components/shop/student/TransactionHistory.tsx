@@ -35,7 +35,6 @@ import {
   CalendarMonth as DateIcon,
   Refresh as RefreshIcon,
   Home as FacilityIcon,
-  FileDownload as DownloadIcon,
   Clear as ClearIcon,
 } from '@mui/icons-material';
 import { RootState, AppDispatch } from '@/store/store';
@@ -86,37 +85,6 @@ export default function TransactionHistory() {
     setPage(0);
   };
 
-  const handleExportCSV = () => {
-    if (!teamTransactions || teamTransactions.length === 0) return;
-
-    const headers = ['Date', 'Material (CN)', 'Material (EN)', 'Origin', 'Quantity', 'Unit Price', 'Total Cost', 'Facility', 'Status'];
-    const rows = teamTransactions.map(tx => [
-      new Date(tx.purchasedAt).toLocaleString(),
-      tx.material.nameZh,
-      tx.material.nameEn,
-      tx.material.origin,
-      tx.quantity,
-      tx.unitPrice,
-      tx.totalAmount,
-      tx.delivery.facilityName || 'N/A',
-      tx.delivery.status,
-    ]);
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.map(cell => `"${cell}"`).join(',')),
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `purchase_history_${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  };
 
   // Filter transactions
   const filteredTransactions = React.useMemo(() => {
@@ -299,15 +267,6 @@ export default function TransactionHistory() {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Button
-          size="small"
-          variant="outlined"
-          onClick={handleExportCSV}
-          startIcon={<DownloadIcon />}
-          disabled={!filteredTransactions.length}
-        >
-          {t('shop.EXPORT_CSV')}
-        </Button>
 
         <IconButton onClick={handleRefresh} disabled={transactionsLoading}>
           <RefreshIcon />

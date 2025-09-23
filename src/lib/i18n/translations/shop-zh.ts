@@ -156,7 +156,7 @@ export const shopTranslationsZh = {
   'shop.ORIGIN_QUARRY': '采石场',
   'shop.ORIGIN_FOREST': '森林',
   'shop.ORIGIN_FARM': '农场',
-  'shop.ORIGIN_RANCH': '牧场',
+  'shop.ORIGIN_RANCH': '养殖场',
   'shop.ORIGIN_FISHERY': '渔场',
   'shop.ORIGIN_SHOPS': '商店',
   'shop.ORIGIN_FACTORY': '工厂',
