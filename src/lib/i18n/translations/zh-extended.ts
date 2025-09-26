@@ -526,7 +526,7 @@ export const zhExtendedTranslations = {
   'managerProductFormula.createdAt': '创建时间',
   'managerProductFormula.createdBy': '创建者',
   'managerProductFormula.activity': '活动',
-  'managerProductFormula.mtoUsageInfo': '在{{type1Count}}个类型1和{{type2Count}}个类型2的MTO要求中使用',
+  'managerProductFormula.mtoUsageInfo': '在{{type1Count}}个抢单和{{type2Count}}个竞标的MTO要求中使用',
   'managerProductFormula.costSummary': '成本摘要',
 
   // Delete confirmation
@@ -555,8 +555,8 @@ export const zhExtendedTranslations = {
 
   // Additional translations
   'managerProductFormula.copy': '(副本)',
-  'managerProductFormula.type1': '类型 1',
-  'managerProductFormula.type2': '类型 2',
+  'managerProductFormula.type1': '抢单',
+  'managerProductFormula.type2': '竞标',
   'managerProductFormula.level1': '等级 1',
   'managerProductFormula.level2': '等级 2',
   'managerProductFormula.level3': '等级 3',

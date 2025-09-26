@@ -1,6 +1,6 @@
 {
   "common": {
-    "title": "MTO类型1 - 基于人口的采购",
+    "title": "抢单 - 基于人口的采购",
     "requirement": "需求",
     "delivery": "交付",
     "settlement": "结算",
@@ -54,7 +54,7 @@
   },
   "messages": {
     "requirement": {
-      "created": "MTO类型1需求创建成功",
+      "created": "抢单需求创建成功",
       "updated": "需求更新成功",
       "released": "需求已发布给团队",
       "cancelled": "需求已取消",

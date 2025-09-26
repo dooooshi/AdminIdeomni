@@ -60,7 +60,7 @@ mto.type1.
 mto.type1.common:
   title:
     en: "MTO Type 1 - Population-Based Procurement"
-    zh: "MTO类型1 - 基于人口的采购"
+    zh: "抢单 - 基于人口的采购"
 
   requirement:
     en: "Requirement"
@@ -216,7 +216,7 @@ mto.type1.messages:
   requirement:
     created:
       en: "MTO Type 1 requirement created successfully"
-      zh: "MTO类型1需求创建成功"
+      zh: "抢单需求创建成功"
 
     updated:
       en: "Requirement updated successfully"

@@ -189,7 +189,7 @@ export const mtoType2HistoryTranslations = {
 
     // Modal details
     'mto.type2.history.submissionDetails': '提交详情',
-    'mto.type2.history.mtoOverview': 'MTO 类型 2 概览',
+    'mto.type2.history.mtoOverview': '竞标概览',
     'mto.type2.history.mtoId': 'MTO 编号',
     'mto.type2.history.mtoStatus': 'MTO 状态',
     'mto.type2.history.releaseTime': '发布时间',

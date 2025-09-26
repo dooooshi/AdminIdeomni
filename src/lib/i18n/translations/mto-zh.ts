@@ -1,11 +1,11 @@
 export const mtoTranslationsZh = {
   // Navigation
   'navigation.mtoManagement': 'MTO 管理',
-  'MTO_TYPE1_TITLE': 'MTO 类型 1 - 基于人口',
-  'MTO_TYPE2_TITLE': 'MTO 类型 2 - 基于商场',
-  'MTO_STUDENT_MARKET': 'MTO 抢单市场',
-  'MTO_TYPE2_STUDENT_MARKET': '商场市场机会',
-  'MTO_ORDERS': 'MTO 订单',
+  'MTO_TYPE1_TITLE': '抢单 - 基于人口',
+  'MTO_TYPE2_TITLE': '竞标 - 基于商场',
+  'MTO_STUDENT_MARKET': '抢单市场',
+  'MTO_TYPE2_STUDENT_MARKET': '竞标市场',
+  'MTO_ORDERS': '市场订单',
   'MTO_ORDERS_SUBTITLE': '查看并履行按订单制造需求',
 
   // Common
@@ -23,7 +23,7 @@ export const mtoTranslationsZh = {
   'common.home': '首页',
 
   // MTO Type 1
-  'mto.type1.title': 'MTO 类型 1 - 基于人口',
+  'mto.type1.title': '抢单 - 基于人口',
   'mto.type1.description': '基于人口的订制采购系统，具有自动需求分配功能',
   'mto.type1.populationBased': '基于人口',
 
@@ -162,13 +162,13 @@ export const mtoTranslationsZh = {
   'mto.type1.analytics.comingSoon': '分析和报告功能即将推出',
 
   // MTO Type 2
-  'mto.type2.title': 'MTO 类型 2 - 基于商场',
+  'mto.type2.title': '竞标 - 基于商场',
   'mto.type2.description': '商场独享的竞价采购系统',
   'mto.type2.mallBased': '基于商场',
   'mto.type2.competitiveBidding': '竞价投标',
 
   // Coming soon
-  'mto.type2.comingSoon.title': 'MTO 类型 2 即将推出',
+  'mto.type2.comingSoon.title': '竞标即将推出',
   'mto.type2.comingSoon.description': '基于商场的竞价投标系统正在开发中',
   'mto.type2.comingSoon.features': '功能将包括：商场独享参与、竞争定价机制、动态预算分配和自动结算处理',
 
@@ -220,8 +220,8 @@ export const mtoTranslationsZh = {
 
   // Additional Student Translations
   'navigation.student': '学生',
-  'mto.student.market': 'MTO 抢单市场',
-  'mto.student.marketTitle': 'MTO 抢单市场 - 可用需求',
+  'mto.student.market': '抢单市场',
+  'mto.student.marketTitle': '抢单市场 - 可用需求',
   'mto.student.marketDescription': '浏览并履行订制需求，为团队赚取收入',
   'mto.student.openMarket': '开放市场',
   'mto.student.competitivePricing': '竞争性定价',
@@ -443,7 +443,7 @@ export const mtoTranslationsZh = {
 
   // Settlement Management
   'mto.type1.settlement.title': '结算管理',
-  'mto.type1.settlement.pageTitle': 'MTO 类型 1 结算管理',
+  'mto.type1.settlement.pageTitle': '抢单结算管理',
   'mto.type1.settlement.pageDescription': '处理已发布需求的结算并跟踪结算历史',
   'mto.type1.settlement.autoSettle': '自动结算',
   'mto.type1.settlement.tracking': '结算跟踪',
@@ -556,11 +556,11 @@ export const mtoTranslationsZh = {
   'mto.type2.validation.releaseTimeRequired': '发布时间不能为空',
   'mto.type2.validation.settlementTimeRequired': '结算时间不能为空且必须晚于发布时间',
 
-  'mto.type2.messages.createSuccess': 'MTO 类型 2 需求创建成功',
-  'mto.type2.messages.updateSuccess': 'MTO 类型 2 需求更新成功',
-  'mto.type2.messages.deleteSuccess': 'MTO 类型 2 需求删除成功',
-  'mto.type2.messages.releaseSuccess': 'MTO 类型 2 需求发布成功',
-  'mto.type2.messages.cancelSuccess': 'MTO 类型 2 需求取消成功',
+  'mto.type2.messages.createSuccess': '竞标需求创建成功',
+  'mto.type2.messages.updateSuccess': '竞标需求更新成功',
+  'mto.type2.messages.deleteSuccess': '竞标需求删除成功',
+  'mto.type2.messages.releaseSuccess': '竞标需求发布成功',
+  'mto.type2.messages.cancelSuccess': '竞标需求取消成功',
   'mto.type2.messages.reportGenerated': '结算报告生成成功',
 
   'mto.type2.errors.fetchFailed': '获取需求失败',
@@ -571,11 +571,11 @@ export const mtoTranslationsZh = {
 
   'mto.type2.warnings.onlyDraftEditable': '只能编辑草稿需求',
 
-  'mto.type2.confirmDelete.title': '删除 MTO 类型 2 需求',
+  'mto.type2.confirmDelete.title': '删除竞标需求',
   'mto.type2.confirmDelete.message': '确定要删除 "{name}" 吗？此操作无法撤销。',
-  'mto.type2.confirmRelease.title': '发布 MTO 类型 2 需求',
+  'mto.type2.confirmRelease.title': '发布竞标需求',
   'mto.type2.confirmRelease.message': '一旦发布，拥有商场设施的团队可以开始提交报价。继续吗？',
-  'mto.type2.confirmCancel.title': '取消 MTO 类型 2 需求',
+  'mto.type2.confirmCancel.title': '取消竞标需求',
   'mto.type2.confirmCancel.message': '这将取消需求并通知所有参与团队。继续吗？',
   'mto.type2.confirmCancel.reasonLabel': '取消原因',
 
@@ -586,14 +586,14 @@ export const mtoTranslationsZh = {
   'mto.type2.actions.cancel': '取消需求',
 
   'mto.type2.mallMarket': '商场市场',
-  'mto.type2.mallMarketTitle': 'MTO 类型 2 - 商场市场',
+  'mto.type2.mallMarketTitle': '竞标 - 商场市场',
   'mto.type2.mallMarketDescription': '浏览并竞标商场独享的订制机会',
   'mto.type2.mallSubmissions': '商场提交',
   'mto.type2.mallSubmissionsTitle': '我的商场提交',
   'mto.type2.mallSubmissionsDescription': '跟踪和管理您的商场提交和结算状态',
   'mto.type2.mallExclusive': '商场独享',
   'mto.type2.mallOwnerRequired': '需要商场所有权',
-  'mto.type2.mallOwnerRequiredDescription': '只有拥有商场设施的团队才能参与 MTO 类型 2 采购',
+  'mto.type2.mallOwnerRequiredDescription': '只有拥有商场设施的团队才能参与竞标采购',
   'mto.type2.mallOwnerOnly': '仅限商场所有者',
   'mto.type2.submissionTracking': '提交跟踪',
   'mto.type2.settlementStatus': '结算状态',
@@ -1219,9 +1219,9 @@ export const mtoTranslationsZh = {
   'mto.type2.history.updatedAt': '更新时间',
 
   // MTO Type 2 Student View
-  'mto.type2.student.title': 'MTO 类型 2 - 商场市场',
+  'mto.type2.student.title': '竞标 - 商场市场',
   'mto.type2.student.description': '查看商场业主的竞争性投标机会',
-  'mto.type2.student.marketOpportunities': 'MTO 类型 2 市场机会',
+  'mto.type2.student.marketOpportunities': '竞标市场机会',
   'mto.type2.student.tableId': '编号',
   'mto.type2.student.tableFormulaName': '配方名称',
   'mto.type2.student.tableStatus': '状态',
@@ -1245,11 +1245,11 @@ export const mtoTranslationsZh = {
   'mto.type2.student.mallExclusive': '商场专属',
   'mto.type2.student.competitiveBidding': '竞争性投标',
   'mto.type2.student.dynamicPricing': '动态定价',
-  'mto.type2.student.understandingTitle': '了解 MTO 类型 2',
-  'mto.type2.student.understandingDesc': 'MTO 类型 2 是一个竞争性市场，商场业主可以自主定价竞标采购机会',
+  'mto.type2.student.understandingTitle': '了解竞标',
+  'mto.type2.student.understandingDesc': '竞标是一个竞争性市场，商场业主可以自主定价竞标采购机会',
   'mto.type2.student.activeOpportunities': '活跃机会',
   'mto.type2.student.totalSubmissions': '总提交数',
-  'mto.type2.student.noOpportunities': '目前没有可用的 MTO 类型 2 机会',
+  'mto.type2.student.noOpportunities': '目前没有可用的竞标机会',
   'mto.type2.student.noMatchingOpportunities': '没有符合您当前筛选条件的机会',
   'mto.type2.student.budget': '预算',
   'mto.type2.student.timeRemaining': '剩余时间',
@@ -1263,9 +1263,9 @@ export const mtoTranslationsZh = {
   'mto.type2.student.releaseTime': '发布时间',
   'mto.type2.student.settlementTime': '结算时间',
   'mto.type2.student.priceRange': '价格范围',
-  'mto.type2.student.howToParticipate': '如何参与 MTO 类型 2',
+  'mto.type2.student.howToParticipate': '如何参与竞标',
   'mto.type2.student.requirementTitle': '需要商场设施',
-  'mto.type2.student.requirementDesc': '要参与 MTO 类型 2，您的团队必须拥有并运营至少一个商场设施',
+  'mto.type2.student.requirementDesc': '要参与竞标，您的团队必须拥有并运营至少一个商场设施',
   'mto.type2.student.stepsTitle': '参与步骤：',
   'mto.type2.student.step1': '拥有或获取商场设施',
   'mto.type2.student.step2': '储备符合所需配方的产品',
@@ -1275,10 +1275,10 @@ export const mtoTranslationsZh = {
   'mto.type2.student.benefit1': '自主定价以获得最大利润',
   'mto.type2.student.benefit2': '与其他商场业主直接竞争',
   'mto.type2.student.benefit3': '获得高价值采购合同',
-  'mto.type2.student.loadError': '加载 MTO 类型 2 机会失败',
+  'mto.type2.student.loadError': '加载竞标机会失败',
 
   // 需求详情模态框
-  'mto.type2.student.requirementDetails': 'MTO 类型 2 需求详情',
+  'mto.type2.student.requirementDetails': '竞标需求详情',
   'mto.type2.student.errorLoadingDetails': '加载需求详情失败',
   'mto.type2.student.overallBudget': '总预算',
   'mto.type2.student.totalTiles': '总地块数',
@@ -1308,7 +1308,7 @@ export const mtoTranslationsZh = {
 
   // 学生提交模态框
   'mto.type2.student.submitProducts': '提交产品',
-  'mto.type2.student.submitProductsTooltip': '提交产品到 MTO 类型 2',
+  'mto.type2.student.submitProductsTooltip': '提交产品到竞标',
   'mto.type2.student.noMallFacilities': '您的团队没有任何商场设施。需要拥有商场才能提交产品。',
   'mto.type2.student.noEligibleFacilities': '您的团队有商场设施，但没有符合此机会要求的。请检查要求。',
   'mto.type2.student.eligibilityLoadError': '加载提交资格失败',
@@ -1324,7 +1324,7 @@ export const mtoTranslationsZh = {
   'mto.type2.student.eligibleMalls': '合格商场',
   'mto.type2.student.submissionsOpen': '提交开放',
   'mto.type2.student.submissionsClosed': '提交关闭',
-  'mto.type2.student.noMallOwnership': '您的团队需要拥有商场设施才能参与 MTO 类型 2',
+  'mto.type2.student.noMallOwnership': '您的团队需要拥有商场设施才能参与竞标',
   'mto.type2.student.noEligibleMalls': '此机会没有合格的商场',
   'mto.type2.student.submissionsNotOpen': '此机会的提交当前未开放',
   'mto.type2.student.selectMall': '选择您的商场',
