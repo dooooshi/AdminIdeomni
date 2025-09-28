@@ -168,8 +168,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     setLoading(true);
     try {
       await infrastructureService.cancelConnectionRequest(
-        selectedRequest.id,
-        reason
+        selectedRequest.id
       );
       setCancelDialogOpen(false);
       setSelectedRequest(null);

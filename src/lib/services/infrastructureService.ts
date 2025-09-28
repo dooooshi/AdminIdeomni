@@ -510,10 +510,8 @@ class InfrastructureService {
     return response.data.data;
   }
 
-  async cancelConnectionRequest(requestId: string, reason?: string): Promise<any> {
-    const response = await apiClient.delete(`/infrastructure/connections/requests/${requestId}/cancel`, {
-      data: { reason }
-    });
+  async cancelConnectionRequest(requestId: string): Promise<any> {
+    const response = await apiClient.delete(`/infrastructure/connections/requests/${requestId}`);
     return response.data.data;
   }
 
