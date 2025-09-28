@@ -1102,6 +1102,7 @@ export default function ProductProductionPage() {
               setRowsPerPage(parseInt(e.target.value, 10));
               setPage(0);
             }}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         </CardContent>
       </Card>

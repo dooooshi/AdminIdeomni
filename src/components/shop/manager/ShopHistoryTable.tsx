@@ -183,6 +183,7 @@ export default function ShopHistoryTable() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage={t('common.rowsPerPage')}
       />
     </Paper>
   );

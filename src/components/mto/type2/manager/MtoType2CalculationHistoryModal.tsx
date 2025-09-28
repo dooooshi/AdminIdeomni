@@ -516,6 +516,7 @@ export const MtoType2CalculationHistoryModal: React.FC<MtoType2CalculationHistor
                 setPage(0);
               }}
               rowsPerPageOptions={[5, 10, 25, 50]}
+              labelRowsPerPage={t('common.rowsPerPage')}
             />
           </TableContainer>
         )}

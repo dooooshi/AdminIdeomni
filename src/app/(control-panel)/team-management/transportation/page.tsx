@@ -503,7 +503,7 @@ export default function TransportationPage() {
                           <WarehouseIcon color="action" />
                         </Box>
                         <Typography variant="body2" color="text.secondary">
-                          Location: ({facility.tileX}, {facility.tileY})
+                          {t('transportation.LOCATION')}: ({facility.tileX}, {facility.tileY})
                         </Typography>
                         <Box mt={1}>
                           <Chip
@@ -850,6 +850,7 @@ export default function TransportationPage() {
           onPageChange={(e, page) => setHistoryPage(page)}
           rowsPerPage={historyRowsPerPage}
           onRowsPerPageChange={(e) => setHistoryRowsPerPage(parseInt(e.target.value, 10))}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       </Paper>
 

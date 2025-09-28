@@ -370,6 +370,7 @@ const FormulaSelector: React.FC<{
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[5, 10, 20, 50]}
             sx={{ borderTop: 1, borderColor: 'divider' }}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         </DialogContent>
       </Dialog>

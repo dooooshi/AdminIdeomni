@@ -275,6 +275,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={onRowsPerPageChange}
           rowsPerPageOptions={[5, 10, 25, 50]}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       )}
     </Paper>

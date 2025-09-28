@@ -297,6 +297,7 @@ export default function InfrastructureHistoryViewer() {
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage={t('common.rowsPerPage')}
               />
             </>
           ) : (

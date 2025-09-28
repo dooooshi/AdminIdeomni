@@ -271,6 +271,7 @@ const ManagerProductFormulaList: React.FC<ManagerProductFormulaListProps> = ({
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[5, 10, 20, 50]}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         </>
       )}

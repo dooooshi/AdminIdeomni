@@ -587,6 +587,7 @@ const RawMaterialList: React.FC<RawMaterialListProps> = ({
                 setPage(0);
               }}
               rowsPerPageOptions={[20, 50, 100]}
+              labelRowsPerPage={t('common.rowsPerPage')}
             />
           </>
         )}

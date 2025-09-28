@@ -313,6 +313,7 @@ const MtoType1HistoryDashboard: React.FC = () => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       </TableContainer>
     </Box>

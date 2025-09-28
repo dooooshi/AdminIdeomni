@@ -462,6 +462,7 @@ const RawMaterialAuditLog: React.FC<RawMaterialAuditLogProps> = ({
                   setPage(0);
                 }}
                 rowsPerPageOptions={[25, 50, 100]}
+                labelRowsPerPage={t('common.rowsPerPage')}
               />
             </>
           )}

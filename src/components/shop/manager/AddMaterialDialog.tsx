@@ -564,6 +564,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 25]}
+              labelRowsPerPage={t('common.rowsPerPage')}
             />
           )}
         </Box>

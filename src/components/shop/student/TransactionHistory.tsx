@@ -393,6 +393,7 @@ export default function TransactionHistory() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         )}
       </TableContainer>

@@ -553,6 +553,7 @@ const UserActivityHistory: React.FC<UserActivityHistoryProps> = ({
                 rowsPerPage={pageSize}
                 onRowsPerPageChange={handlePageSizeChange}
                 rowsPerPageOptions={[10, 20, 50, 100]}
+                labelRowsPerPage={t('common.rowsPerPage')}
               />
             )}
           </>

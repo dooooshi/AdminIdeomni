@@ -445,6 +445,7 @@ const ActivityTileStateManagementPage: React.FC = () => {
                 setPage(0);
               }}
               rowsPerPageOptions={[10, 20, 50, 100]}
+              labelRowsPerPage={t('common.rowsPerPage')}
             />
           </Paper>
 

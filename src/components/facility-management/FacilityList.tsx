@@ -590,6 +590,7 @@ const FacilityList: React.FC<FacilityListProps> = ({
               setPageSize(parseInt(event.target.value, 10));
               setPage(0);
             }}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         )}
       </Paper>

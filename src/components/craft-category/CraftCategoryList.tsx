@@ -749,6 +749,7 @@ const CraftCategoryList: React.FC<CraftCategoryListProps> = ({
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[5, 10, 25, 50]}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         )}
         </TableContainer>

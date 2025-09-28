@@ -332,6 +332,7 @@ export default function MtoType1DeliveryTable({
           page={pagination.page}
           onPageChange={(event, newPage) => onPageChange?.(newPage)}
           onRowsPerPageChange={(event) => onRowsPerPageChange?.(parseInt(event.target.value, 10))}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       )}
     </Paper>

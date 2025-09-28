@@ -404,6 +404,7 @@ const ResourceConsumptionHistory: React.FC<ResourceConsumptionHistoryProps> = ({
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[5, 10, 25, 50]}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         </>
       )}

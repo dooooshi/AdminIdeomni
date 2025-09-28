@@ -401,6 +401,7 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         )}
       </Paper>

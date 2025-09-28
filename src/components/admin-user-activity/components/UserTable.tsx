@@ -303,6 +303,7 @@ const UserTable: React.FC<UserTableProps> = ({
           rowsPerPage={pageSize}
           onRowsPerPageChange={onPageSizeChange}
           rowsPerPageOptions={[10, 20, 50, 100]}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       )}
     </>

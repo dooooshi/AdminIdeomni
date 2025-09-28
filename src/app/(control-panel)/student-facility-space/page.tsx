@@ -28,7 +28,7 @@ import {
   Refresh as RefreshIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import StudentFacilitySpaceService from '@/lib/services/studentFacilitySpaceService';
 import type {
   TeamFacilitySpaceOverviewResponse,
@@ -485,6 +485,7 @@ export default function StudentFacilitySpacePage() {
               setRowsPerPage(parseInt(e.target.value, 10));
               setPage(0);
             }}
+            labelRowsPerPage={t('common.rowsPerPage')}
             sx={{
               borderTop: 1,
               borderColor: 'divider',

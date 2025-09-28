@@ -522,6 +522,7 @@ const AdminList: React.FC<AdminListProps> = ({
           rowsPerPageOptions={[10, 20, 50, 100]}
           showFirstButton
           showLastButton
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       </TableContainer>
 

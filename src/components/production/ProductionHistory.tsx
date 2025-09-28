@@ -253,6 +253,7 @@ const ProductionHistory: React.FC<ProductionHistoryProps> = ({
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[10, 20, 50, 100]}
+            labelRowsPerPage={t('common.rowsPerPage')}
           />
         </>
       )}

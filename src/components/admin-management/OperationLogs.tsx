@@ -619,6 +619,7 @@ const OperationLogs: React.FC<OperationLogsProps> = ({
                 rowsPerPage={pageSize}
                 onRowsPerPageChange={handlePageSizeChange}
                 rowsPerPageOptions={[10, 20, 50, 100]}
+                labelRowsPerPage={t('common.rowsPerPage')}
                 showFirstButton
                 showLastButton
               />

@@ -318,6 +318,7 @@ export default function ShopBrowseView() {
               rowsPerPage={rowsPerPage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 25]}
+              labelRowsPerPage={t('common.rowsPerPage')}
             />
           )}
         </CardContent>

@@ -446,6 +446,7 @@ const ManagerPopulationHistoryPage: React.FC<ManagerPopulationHistoryPageProps> 
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t('common.rowsPerPage')}
         />
       </TableContainer>
     </Box>
