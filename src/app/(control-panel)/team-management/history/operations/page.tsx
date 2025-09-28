@@ -128,16 +128,6 @@ function AllOperationsPage() {
         >
           {/* Header */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <Button
-                variant="text"
-                onClick={() => router.push('/team-management/history')}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.BACK')}
-              </Button>
-            </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
               {t('teamManagement.ALL_OPERATIONS')}
             </Typography>
@@ -283,7 +273,7 @@ function AllOperationsPage() {
                                 <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
                               )}
                               <Typography variant="body2">
-                                {operation.resourceType}
+                                {t(`teamManagement.${operation.resourceType}`)}
                               </Typography>
                             </div>
                           </TableCell>

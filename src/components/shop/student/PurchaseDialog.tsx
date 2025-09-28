@@ -170,7 +170,7 @@ export default function PurchaseDialog({ open, onClose }: PurchaseDialogProps) {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h6">{t('shop.PURCHASE_MATERIAL')}</Typography>
           <Chip
-            label={selectedMaterial.material.origin}
+            label={t(`shop.ORIGIN_${selectedMaterial.material.origin}`)}
             size="small"
             sx={{
               backgroundColor: originColors[selectedMaterial.material.origin as MaterialOrigin],

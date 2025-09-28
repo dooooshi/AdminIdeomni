@@ -83,11 +83,6 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
               </TableCell>
               <TableCell align="center">
                 <Typography variant="body2" fontWeight={600}>
-                  {t('facilityManagement.STATUS')}
-                </Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography variant="body2" fontWeight={600}>
                   {t('facilityManagement.LEVEL')}
                 </Typography>
               </TableCell>
@@ -112,8 +107,6 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
           </TableHead>
           <TableBody>
             {facilities.map((facility) => {
-              const statusColor = StudentFacilityService.getStatusColor(facility.status);
-              const statusText = StudentFacilityService.getStatusText(facility.status);
               const facilityIcon = StudentFacilityService.getFacilityIcon(facility.facilityType);
               const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`);
               const needsAttention = StudentFacilityService.needsAttention(facility);
@@ -171,21 +164,6 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body2">{facility.tileId}</Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip
-                      label={statusText}
-                      size="small"
-                      sx={{
-                        height: 22,
-                        fontSize: '0.75rem',
-                        fontWeight: 500,
-                        backgroundColor: `${statusColor}.50`,
-                        color: `${statusColor}.800`,
-                        border: `1px solid`,
-                        borderColor: `${statusColor}.200`,
-                      }}
-                    />
                   </TableCell>
                   <TableCell align="center">
                     <Typography variant="body2" fontWeight={500}>
@@ -253,7 +231,7 @@ const FacilityTable: React.FC<FacilityTableProps> = ({
             {facilities.length === 0 && !loading && (
               <TableRow>
                 <TableCell
-                  colSpan={showActions ? 7 : 6}
+                  colSpan={showActions ? 6 : 5}
                   align="center"
                   sx={{ py: 8 }}
                 >

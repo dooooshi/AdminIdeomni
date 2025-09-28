@@ -34,23 +34,23 @@ const ContractStatusBadge: React.FC<ContractStatusBadgeProps> = ({
     
     if (statusStr === 'PENDING_APPROVAL' || status === ContractStatus.PENDING_APPROVAL) {
       return {
-        label: t('contract.STATUS_PENDING_APPROVAL') || 'PENDING_APPROVAL',
+        label: t('contract.STATUS_PENDING_APPROVAL'),
         color: 'warning',
         icon: showIcon ? <PendingIcon /> : undefined
       };
     }
-    
+
     if (statusStr === 'SIGNED' || status === ContractStatus.SIGNED) {
       return {
-        label: t('contract.STATUS_SIGNED') || 'SIGNED',
+        label: t('contract.STATUS_SIGNED'),
         color: 'success',
         icon: showIcon ? <SignedIcon /> : undefined
       };
     }
-    
+
     if (statusStr === 'REJECTED' || status === ContractStatus.REJECTED) {
       return {
-        label: t('contract.STATUS_REJECTED') || 'REJECTED',
+        label: t('contract.STATUS_REJECTED'),
         color: 'error',
         icon: showIcon ? <RejectedIcon /> : undefined
       };

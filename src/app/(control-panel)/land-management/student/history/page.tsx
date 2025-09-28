@@ -7,17 +7,10 @@ import {
   Typography,
   Card,
   CardContent,
-
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
   Avatar,
-  Chip,
   Alert,
   CircularProgress,
   Button,
-  Divider,
   IconButton,
   Tooltip,
   Table,
@@ -26,27 +19,12 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TablePagination,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Badge
+  TablePagination
 } from '@mui/material';
 import Grid from '@mui/material/GridLegacy';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   Refresh as RefreshIcon,
-  Landscape as LandscapeIcon,
-  AttachMoney as MoneyIcon,
-  Timeline as TimelineIcon,
-  FilterList as FilterIcon,
-  TrendingUp as TrendingUpIcon,
   LocationOn as LocationIcon,
-  CalendarToday as CalendarIcon,
   Assessment as AssessmentIcon
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
@@ -73,17 +51,6 @@ const StatsCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-const FilterContainer = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginBottom: theme.spacing(3),
-  border: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[100]}`,
-  boxShadow: 'none',
-  display: 'flex',
-  gap: theme.spacing(2),
-  alignItems: 'center',
-  flexWrap: 'wrap',
-}));
-
 interface StudentPortfolioPageProps {}
 
 const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
@@ -101,14 +68,11 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   
-  // Filter state
-  const [showFilters, setShowFilters] = useState(false);
+  // Query state
   const [filters, setFilters] = useState<LandPurchaseHistoryQuery>({
     page: 1,
     pageSize: 10,
   });
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
 
   // Load initial data
   useEffect(() => {
@@ -149,8 +113,6 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         ...filters,
         page: page + 1, // Convert 0-based to 1-based
         pageSize: rowsPerPage,
-        startDate: startDate?.toISOString(),
-        endDate: endDate?.toISOString(),
       };
 
       const historyData = await LandService.getPurchaseHistory(queryParams);
@@ -176,29 +138,6 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
     setPage(0);
   };
 
-  const handleFilterChange = (key: keyof LandPurchaseHistoryQuery, value: any) => {
-    setFilters(prev => ({
-      ...prev,
-      [key]: value
-    }));
-    setPage(0); // Reset to first page
-  };
-
-  const clearFilters = () => {
-    setFilters({ page: 1, pageSize: rowsPerPage });
-    setStartDate(null);
-    setEndDate(null);
-    setPage(0);
-  };
-
-  const hasActiveFilters = () => {
-    return !!(
-      filters.tileId ||
-      filters.status ||
-      startDate ||
-      endDate
-    );
-  };
 
   const renderStatCard = (
     title: string,
@@ -232,81 +171,6 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
     </StatsCard>
   );
 
-  const renderFilters = () => (
-    <FilterContainer elevation={1}>
-      <IconButton
-        onClick={() => setShowFilters(!showFilters)}
-        color={hasActiveFilters() ? 'primary' : 'default'}
-      >
-        <Badge color="primary" variant="dot" invisible={!hasActiveFilters()}>
-          <FilterIcon />
-        </Badge>
-      </IconButton>
-      
-      <Typography variant="subtitle2" sx={{ minWidth: 'max-content' }}>
-        {t('landManagement.FILTERS')}:
-      </Typography>
-
-      <TextField
-        label={t('landManagement.TILE_ID')}
-        size="small"
-        type="number"
-        value={filters.tileId || ''}
-        onChange={(e) => handleFilterChange('tileId', e.target.value ? Number(e.target.value) : undefined)}
-        sx={{ minWidth: 120 }}
-      />
-
-      <FormControl size="small" sx={{ minWidth: 120 }}>
-        <InputLabel>{t('landManagement.STATUS')}</InputLabel>
-        <Select
-          value={filters.status || ''}
-          label="Status"
-          onChange={(e) => handleFilterChange('status', e.target.value || undefined)}
-        >
-          <MenuItem value="">{t('common.ALL')}</MenuItem>
-          <MenuItem value="ACTIVE">{t('landManagement.ACTIVE')}</MenuItem>
-          <MenuItem value="CANCELLED">{t('landManagement.CANCELLED')}</MenuItem>
-          <MenuItem value="EXPIRED">{t('landManagement.EXPIRED')}</MenuItem>
-        </Select>
-      </FormControl>
-
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <MuiDatePicker
-          label={t('landManagement.START_DATE')}
-          value={startDate}
-          onChange={setStartDate}
-          slotProps={{ textField: { size: 'small' } }}
-        />
-        
-        <MuiDatePicker
-          label={t('landManagement.END_DATE')}
-          value={endDate}
-          onChange={setEndDate}
-          slotProps={{ textField: { size: 'small' } }}
-        />
-      </LocalizationProvider>
-
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={clearFilters}
-        disabled={!hasActiveFilters()}
-        className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white"
-      >
-        {t('landManagement.CLEAR_FILTERS')}
-      </Button>
-
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={loadPurchaseHistory}
-        className="border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900"
-        startIcon={<FilterIcon />}
-      >
-        {t('landManagement.APPLY_FILTERS')}
-      </Button>
-    </FilterContainer>
-  );
 
   const renderPurchaseHistoryTable = () => {
     if (!purchaseHistory) return null;
@@ -467,9 +331,6 @@ const StudentPortfolioPage: React.FC<StudentPortfolioPageProps> = () => {
         {/* Team Summary Cards */}
         <Grid container spacing={6} sx={{ mb: 6 }}>
         </Grid>
-
-        {/* Filters */}
-        {renderFilters()}
 
         {/* Purchase History Table */}
         {renderPurchaseHistoryTable()}

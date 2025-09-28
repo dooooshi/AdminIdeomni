@@ -114,7 +114,7 @@ export default function MaterialList() {
                 </Typography>
               </Box>
               <Chip
-                label={material.material.origin}
+                label={t(`shop.ORIGIN_${material.material.origin}`)}
                 size="small"
                 sx={{
                   backgroundColor: originColors[material.material.origin as MaterialOrigin],
@@ -247,7 +247,7 @@ export default function MaterialList() {
                       backgroundColor: originColors[origin],
                     }}
                   />
-                  {origin}
+                  {t(`shop.ORIGIN_${origin}`)}
                 </Box>
               </MenuItem>
             ))}

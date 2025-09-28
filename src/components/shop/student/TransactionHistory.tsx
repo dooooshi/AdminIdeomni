@@ -244,7 +244,7 @@ export default function TransactionHistory() {
                       backgroundColor: originColors[origin],
                     }}
                   />
-                  {origin}
+                  {t(`shop.ORIGIN_${origin}`)}
                 </Box>
               </MenuItem>
             ))}
@@ -342,7 +342,7 @@ export default function TransactionHistory() {
                   </TableCell>
                   <TableCell align="center">
                     <Chip
-                      label={transaction.material.origin}
+                      label={t(`shop.ORIGIN_${transaction.material.origin}`)}
                       size="small"
                       sx={{
                         backgroundColor: originColors[transaction.material.origin],

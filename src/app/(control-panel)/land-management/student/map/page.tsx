@@ -637,10 +637,11 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <ResetZoomIcon />
             </IconButton>
           </Tooltip>
+          {/* Commented out Enable/Disable Animations button - not showing for now
           <Tooltip title={animationsEnabled ? t('land.DISABLE_ANIMATIONS') : t('land.ENABLE_ANIMATIONS')}>
-            <IconButton 
+            <IconButton
               onClick={handleToggleAnimations}
-              sx={{ 
+              sx={{
                 bgcolor: 'background.paper',
                 boxShadow: 1,
                 '&:hover': { boxShadow: 2 },
@@ -650,6 +651,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
               <AnimationIcon />
             </IconButton>
           </Tooltip>
+          */}
           
         </ControlsContainer>
 

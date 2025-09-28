@@ -1512,6 +1512,18 @@ export const enTranslations = {
   'land.CANCEL': 'Cancel',
   'land.PURCHASE_AREA_ON_TILE_FORMATTED': 'Purchase {{amount}} units on {{landType}} tile {{tileId}}',
 
+  // Land Types
+  'land.type.PLAIN': 'Plain',
+  'land.type.COASTAL': 'Coastal',
+  'land.type.MARINE': 'Marine',
+  'land.type.GRASSLANDS': 'Grasslands',
+  'land.type.FORESTS': 'Forests',
+  'land.type.HILLS': 'Hills',
+  'land.type.MOUNTAINS': 'Mountains',
+  'land.type.PLATEAUS': 'Plateaus',
+  'land.type.DESERTS': 'Deserts',
+  'land.type.WETLANDS': 'Wetlands',
+
   // LandManagement namespace
   'landManagement.LAND_MANAGEMENT': 'Land Management',
   'landManagement.LAND': 'Land',
@@ -2343,6 +2355,7 @@ export const enTranslations = {
   'teamManagement.NO_OPERATIONS_YET': 'No Operations Yet',
   'teamManagement.START_BY_MAKING_TRANSFER': 'Start by making a transfer or receiving resources',
   'teamManagement.TRANSFER_HISTORY': 'Transfer History',
+  'teamManagement.TRANSFER_HISTORY_DESCRIPTION': 'View all resource transfers sent and received by your team',
   'teamManagement.NO_TRANSFERS_FOUND': 'No Transfers Found',
   'teamManagement.TRY_ADJUSTING_FILTERS': 'Try adjusting your filters or make your first transfer',
   'teamManagement.BALANCE_HISTORY': 'Balance History',
@@ -3462,6 +3475,8 @@ export const enTranslations = {
   'infrastructure.history.types.power': 'Power',
   'infrastructure.history.types.baseStation': 'Base Station',
   'infrastructure.history.types.fireStation': 'Fire Station',
+  'infrastructure.history.types.basestation': 'Base Station',
+  'infrastructure.history.types.firestation': 'Fire Station',
   'infrastructure.history.operations.CONNECTION_REQUESTED': 'Connection Requested',
   'infrastructure.history.operations.CONNECTION_ACCEPTED': 'Connection Accepted',
   'infrastructure.history.operations.CONNECTION_REJECTED': 'Connection Rejected',
@@ -4214,6 +4229,7 @@ export const enTranslations = {
   
   // Contract Preview
   'contract.PREVIEW': 'Preview',
+  'contract.CONTRACT_PREVIEW': 'Contract Preview',
   'contract.PREVIEW_CONTRACT': 'Preview Contract',
   'contract.BACK_TO_EDIT': 'Back to Edit',
   'contract.SUBMIT_CONTRACT': 'Submit Contract',
@@ -4424,4 +4440,93 @@ export const enTranslations = {
   // Common translations
   'common.locked': 'Locked',
   'common.validation.fixErrors': 'Please fix the errors before submitting',
+
+  // Announcement translations
+  'ANNOUNCEMENTS': 'Announcements',
+  'announcement.title': 'Announcements',
+  'announcement.create': 'Create Announcement',
+  'announcement.edit': 'Edit Announcement',
+  'announcement.delete': 'Delete Announcement',
+  'announcement.confirmDelete': 'Are you sure you want to delete this announcement?',
+  'announcement.viewDetails': 'View Details',
+  'announcement.managerDescription': 'Create and manage announcements for your activity participants',
+  'announcement.studentDescription': 'Stay updated with important announcements from your activity',
+
+  // Announcement states
+  'announcement.activeAnnouncements': 'Active',
+  'announcement.archivedAnnouncements': 'Archived',
+  'announcement.noAnnouncements': 'No announcements yet',
+  'announcement.noArchivedAnnouncements': 'No archived announcements',
+  'announcement.noAnnouncementsManagerHint': 'Create your first announcement to share important information with participants',
+  'announcement.noAnnouncementsStudentHint': 'Check back later for updates from your activity manager',
+
+  // Form fields
+  'announcement.form.title': 'Title',
+  'announcement.form.content': 'Content',
+
+  // Table headers
+  'announcement.table.title': 'Title',
+  'announcement.table.content': 'Content',
+  'announcement.table.reactions': 'Reactions',
+  'announcement.table.createdAt': 'Created',
+  'announcement.table.status': 'Status',
+  'announcement.table.actions': 'Actions',
+
+  // Stats
+  'announcement.stats.total': 'Total Announcements',
+  'announcement.stats.likes': 'Total Likes',
+  'announcement.stats.totalLikes': 'Total likes received',
+  'announcement.stats.dislikes': 'Total Dislikes',
+  'announcement.stats.totalDislikes': 'Total dislikes received',
+  'announcement.stats.engagement': 'Engagement',
+  'announcement.stats.engagementRate': 'Average engagement rate',
+  'announcement.engagementStats': 'Engagement Statistics',
+  'announcement.stats.totalReactions': '{{count}} total reactions',
+  'announcement.stats.likesCount': '{{count}} likes',
+  'announcement.stats.dislikesCount': '{{count}} dislikes',
+
+  // Reactions
+  'announcement.like': 'Like',
+  'announcement.dislike': 'Dislike',
+  'announcement.reactions': 'Reactions',
+
+  // Validation messages
+  'announcement.validation.titleRequired': 'Title is required',
+  'announcement.validation.contentRequired': 'Content is required',
+  'announcement.validation.titleMaxLength': 'Title must be less than 200 characters',
+
+  // Success messages
+  'announcement.success.created': 'Announcement created successfully',
+  'announcement.success.updated': 'Announcement updated successfully',
+  'announcement.success.deleted': 'Announcement deleted successfully',
+  'announcement.success.reactionAdded': 'Your reaction has been recorded',
+  'announcement.success.reactionRemoved': 'Your reaction has been removed',
+
+  // Error messages
+  'announcement.error.loadFailed': 'Failed to load announcements',
+  'announcement.error.createFailed': 'Failed to create announcement',
+  'announcement.error.updateFailed': 'Failed to update announcement',
+  'announcement.error.deleteFailed': 'Failed to delete announcement',
+  'announcement.error.reactionFailed': 'Failed to update reaction',
+
+  // Common additions (only new ones not already defined)
+  'common.archived': 'Archived',
+  'common.restore': 'Restore',
+  'common.creating': 'Creating...',
+  'common.readMore': 'Read More',
+  'common.characters': 'characters',
+
+  // Time-related translations for announcements
+  'time.justNow': 'Just now',
+  'time.minuteAgo': '{{count}} minute ago',
+  'time.minutesAgo': '{{count}} minutes ago',
+  'time.hourAgo': '{{count}} hour ago',
+  'time.hoursAgo': '{{count}} hours ago',
+  'time.dayAgo': '{{count}} day ago',
+  'time.daysAgo': '{{count}} days ago',
+  'time.weekAgo': '{{count}} week ago',
+  'time.weeksAgo': '{{count}} weeks ago',
+  'time.monthAgo': '{{count}} month ago',
+  'time.monthsAgo': '{{count}} months ago',
+  'time.edited': '(edited)',
 };

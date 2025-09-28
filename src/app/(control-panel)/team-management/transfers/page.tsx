@@ -262,44 +262,6 @@ function TransferHubPage() {
             </Paper>
           )}
 
-          {/* Quick Actions */}
-          <div>
-            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement.QUICK_ACTIONS')}
-            </Typography>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/history')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<AccessTimeOutlined />}
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.VIEW_ACCOUNT_HISTORY')}</div>
-                </div>
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/dashboard')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<HomeOutlined />}
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.TEAM_DASHBOARD')}</div>
-                </div>
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/browse')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-4 h-auto"
-                startIcon={<SearchOutlined />}
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.BROWSE_OTHER_TEAMS')}</div>
-                </div>
-              </Button>
-            </div>
-          </div>
         </motion.div>
       </div>
     </div>

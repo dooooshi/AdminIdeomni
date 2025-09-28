@@ -318,7 +318,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                           backgroundColor: originColors[origin],
                         }}
                       />
-                      {origin}
+                      {t(`shop.ORIGIN_${origin}`)}
                     </Box>
                   </MenuItem>
                 ))}
@@ -385,7 +385,7 @@ export default function AddMaterialDialog({ open, onClose }: AddMaterialDialogPr
                         </TableCell>
                         <TableCell align="center">
                           <Chip
-                            label={material.origin}
+                            label={t(`shop.ORIGIN_${material.origin}`)}
                             size="small"
                             sx={{
                               backgroundColor: originColors[material.origin],

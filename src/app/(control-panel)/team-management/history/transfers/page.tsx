@@ -128,21 +128,11 @@ function TransferHistoryPage() {
         >
           {/* Header */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <Button
-                variant="text"
-                onClick={() => router.push('/team-management/history')}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                startIcon={<IdeomniSvgIcon>heroicons-outline:arrow-left</IdeomniSvgIcon>}
-              >
-                {t('teamManagement.BACK')}
-              </Button>
-            </div>
             <Typography variant="h4" className="font-light text-gray-900 dark:text-white mb-2">
               {t('teamManagement.TRANSFER_HISTORY')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              View all resource transfers sent and received by your team
+              {t('teamManagement.TRANSFER_HISTORY_DESCRIPTION')}
             </Typography>
           </div>
 
@@ -335,48 +325,50 @@ function TransferHistoryPage() {
                             />
                           </TableCell>
                           <TableCell align="center">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-center gap-2">
                               <div className="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-semibold">
-                                {transfer.operationType === 'TRANSFER_OUT' 
+                                {transfer.operationType === 'TRANSFER_OUT'
                                   ? transfer.targetTeam?.name?.[0] || '?'
                                   : transfer.sourceTeam?.name?.[0] || '?'
                                 }
                               </div>
                               <Typography variant="body2">
-                                {transfer.operationType === 'TRANSFER_OUT' 
-                                  ? transfer.targetTeam?.name || 'Unknown Team'
-                                  : transfer.sourceTeam?.name || 'Unknown Team'
+                                {transfer.operationType === 'TRANSFER_OUT'
+                                  ? transfer.targetTeam?.name || t('common.UNKNOWN_TEAM')
+                                  : transfer.sourceTeam?.name || t('common.UNKNOWN_TEAM')
                                 }
                               </Typography>
                             </div>
                           </TableCell>
                           <TableCell align="center">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-center gap-2">
                               {transfer.resourceType === TeamResourceType.GOLD ? (
                                 <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
                               ) : (
                                 <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
                               )}
                               <Typography variant="body2">
-                                {transfer.resourceType}
+                                {t(`teamManagement.${transfer.resourceType}`)}
                               </Typography>
                             </div>
                           </TableCell>
                           <TableCell align="center">
-                            <Typography 
-                              variant="body2" 
-                              className={`font-medium flex items-center gap-1 ${
-                                transfer.operationType === 'TRANSFER_OUT' ? 'text-red-600' : 'text-green-600'
-                              }`}
-                            >
-                              {transfer.operationType === 'TRANSFER_OUT' ? '-' : '+'}
-                              {transfer.resourceType === 'GOLD' ? (
-                                <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
-                              ) : (
-                                <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
-                              )}
-                              {TeamTransferService.formatTransferAmount(transfer.amount)}
-                            </Typography>
+                            <div className="flex justify-center">
+                              <Typography
+                                variant="body2"
+                                className={`font-medium flex items-center gap-1 ${
+                                  transfer.operationType === 'TRANSFER_OUT' ? 'text-red-600' : 'text-green-600'
+                                }`}
+                              >
+                                {transfer.operationType === 'TRANSFER_OUT' ? '-' : '+'}
+                                {transfer.resourceType === TeamResourceType.GOLD ? (
+                                  <MonetizationOn sx={{ fontSize: 16 }} className="text-yellow-600" />
+                                ) : (
+                                  <NatureIcon sx={{ fontSize: 16 }} className="text-green-600" />
+                                )}
+                                {TeamTransferService.formatTransferAmount(transfer.amount)}
+                              </Typography>
+                            </div>
                           </TableCell>
                           <TableCell align="center">
                             <Typography variant="body2" color="text.secondary">

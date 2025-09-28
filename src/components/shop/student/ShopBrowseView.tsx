@@ -171,7 +171,7 @@ export default function ShopBrowseView() {
                   </InputAdornment>
                 }
               >
-                <MenuItem value="">All Origins</MenuItem>
+                <MenuItem value="">{t('shop.ALL_ORIGINS')}</MenuItem>
                 {['MINE', 'QUARRY', 'FOREST', 'FARM', 'RANCH', 'FISHERY', 'SHOPS'].map((origin) => (
                   <MenuItem key={origin} value={origin}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -183,7 +183,7 @@ export default function ShopBrowseView() {
                           backgroundColor: originColors[origin],
                         }}
                       />
-                      {origin}
+                      {t(`shop.ORIGIN_${origin}`)}
                     </Box>
                   </MenuItem>
                 ))}
@@ -230,7 +230,7 @@ export default function ShopBrowseView() {
                       </TableCell>
                       <TableCell align="center">
                         <Chip
-                          label={material.material.origin}
+                          label={t(`shop.ORIGIN_${material.material.origin}`)}
                           size="small"
                           sx={{
                             backgroundColor: originColors[material.material.origin],

@@ -435,6 +435,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							auth: ['user']
 						}
 					]
+				},
+				{
+					id: 'team-management.announcements',
+					title: 'Announcements',
+					type: 'item',
+					icon: 'heroicons-outline:bell',
+					url: '/student/announcements',
+					translate: 'ANNOUNCEMENTS',
+					auth: ['user']
 				}
 			]
 		});
@@ -690,6 +699,15 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:currency-dollar',
 					url: '/team-administration/accounts',
 					translate: 'TEAM_ACCOUNTS',
+					auth: ['user']
+				},
+				{
+					id: 'team-administration.announcements',
+					title: 'Announcements',
+					type: 'item',
+					icon: 'heroicons-outline:megaphone',
+					url: '/manager/announcements',
+					translate: 'ANNOUNCEMENTS',
 					auth: ['user']
 				}
 			]

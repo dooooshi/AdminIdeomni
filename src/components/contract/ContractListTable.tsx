@@ -283,7 +283,6 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
                   <TableCell>{t('contract.TITLE')}</TableCell>
                   <TableCell align="center">{t('contract.STATUS')}</TableCell>
                   <TableCell align="center">{t('contract.TEAMS')}</TableCell>
-                  <TableCell>{t('contract.CREATED_BY')}</TableCell>
                   <TableCell>{t('contract.CREATED_AT')}</TableCell>
                   <TableCell align="center">{t('common.actions')}</TableCell>
                 </TableRow>
@@ -291,7 +290,7 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
               <TableBody>
                 {contracts.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} align="center">
+                    <TableCell colSpan={6} align="center">
                       <Box py={4}>
                         <Typography variant="body2" color="textSecondary">
                           {t('contract.NO_CONTRACTS')}
@@ -345,15 +344,6 @@ const ContractListTable: React.FC<ContractListTableProps> = ({ teamId }) => {
                             ({contract.teamCount})
                           </Typography>
                         </Box>
-                      </TableCell>
-                      <TableCell>
-                        {contract.createdBy ? (
-                          <Typography variant="body2">
-                            {contract.createdBy.firstName} {contract.createdBy.lastName}
-                          </Typography>
-                        ) : (
-                          '-'
-                        )}
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" color="textSecondary">

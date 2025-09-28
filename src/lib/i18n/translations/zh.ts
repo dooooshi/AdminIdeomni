@@ -1615,6 +1615,18 @@ export const zhTranslations = {
   'land.CANCEL': '取消',
   'land.PURCHASE_AREA_ON_TILE_FORMATTED': '在{{landType}}地块{{tileId}}上购买{{amount}}单位',
 
+  // Land Types
+  'land.type.PLAIN': '平原',
+  'land.type.COASTAL': '海岸',
+  'land.type.MARINE': '海洋',
+  'land.type.GRASSLANDS': '草原',
+  'land.type.FORESTS': '森林',
+  'land.type.HILLS': '丘陵',
+  'land.type.MOUNTAINS': '山脉',
+  'land.type.PLATEAUS': '高原',
+  'land.type.DESERTS': '沙漠',
+  'land.type.WETLANDS': '湿地',
+
   // LandManagement namespace
   'landManagement.LAND_MANAGEMENT': '土地管理',
   'landManagement.LAND': '土地',
@@ -2360,7 +2372,7 @@ export const zhTranslations = {
   'teamManagement.TRANSFER_CARBON': '转账碳排放指数',
   'teamManagement.ACCOUNT_HISTORY': '账户历史',
   'teamManagement.GOLD': '黄金',
-  'teamManagement.CARBON': '碳排放指数',
+  'teamManagement.CARBON': '碳排放',
   'teamManagement.NOT_IN_TEAM_YET': '尚未加入团队',
   'teamManagement.JOIN_OR_CREATE_TEAM': '您需要加入或创建团队才能访问资源转移功能',
   'teamManagement.SEND_RESOURCES_SUBTITLE': '向活动中的其他团队发送资源',
@@ -2445,6 +2457,7 @@ export const zhTranslations = {
   'teamManagement.NO_OPERATIONS_YET': '暂无操作',
   'teamManagement.START_BY_MAKING_TRANSFER': '从转账或接收资源开始',
   'teamManagement.TRANSFER_HISTORY': '转账历史',
+  'teamManagement.TRANSFER_HISTORY_DESCRIPTION': '查看您团队发送和接收的所有资源转账',
   'teamManagement.NO_TRANSFERS_FOUND': '未找到转账记录',
   'teamManagement.TRY_ADJUSTING_FILTERS': '请尝试调整筛选条件或进行您的第一笔转账',
   'teamManagement.BALANCE_HISTORY': '余额历史',
@@ -3638,6 +3651,8 @@ export const zhTranslations = {
   'infrastructure.history.types.power': '电力',
   'infrastructure.history.types.baseStation': '基站',
   'infrastructure.history.types.fireStation': '消防站',
+  'infrastructure.history.types.basestation': '基站',
+  'infrastructure.history.types.firestation': '消防站',
   'infrastructure.history.operations.CONNECTION_REQUESTED': '连接请求',
   'infrastructure.history.operations.CONNECTION_ACCEPTED': '连接已接受',
   'infrastructure.history.operations.CONNECTION_REJECTED': '连接已拒绝',
@@ -4399,6 +4414,7 @@ export const zhTranslations = {
   
   // Contract Preview
   'contract.PREVIEW': '预览',
+  'contract.CONTRACT_PREVIEW': '合约预览',
   'contract.PREVIEW_CONTRACT': '预览合约',
   'contract.BACK_TO_EDIT': '返回编辑',
   'contract.SUBMIT_CONTRACT': '提交合约',
@@ -4440,5 +4456,94 @@ export const zhTranslations = {
 
   // Common translations
   'common.locked': '已锁定',
-  'common.validation.fixErrors': '请在提交前修复错误'
+  'common.validation.fixErrors': '请在提交前修复错误',
+
+  // Announcement translations - 公告翻译
+  'ANNOUNCEMENTS': '公告',
+  'announcement.title': '公告',
+  'announcement.create': '创建公告',
+  'announcement.edit': '编辑公告',
+  'announcement.delete': '删除公告',
+  'announcement.confirmDelete': '您确定要删除这条公告吗？',
+  'announcement.viewDetails': '查看详情',
+  'announcement.managerDescription': '为活动参与者创建和管理公告',
+  'announcement.studentDescription': '获取活动的重要公告更新',
+
+  // Announcement states - 公告状态
+  'announcement.activeAnnouncements': '有效',
+  'announcement.archivedAnnouncements': '已归档',
+  'announcement.noAnnouncements': '暂无公告',
+  'announcement.noArchivedAnnouncements': '暂无归档公告',
+  'announcement.noAnnouncementsManagerHint': '创建您的第一条公告，与参与者分享重要信息',
+  'announcement.noAnnouncementsStudentHint': '稍后再来查看活动管理员的更新',
+
+  // Form fields - 表单字段
+  'announcement.form.title': '标题',
+  'announcement.form.content': '内容',
+
+  // Table headers - 表格标题
+  'announcement.table.title': '标题',
+  'announcement.table.content': '内容',
+  'announcement.table.reactions': '反应',
+  'announcement.table.createdAt': '创建时间',
+  'announcement.table.status': '状态',
+  'announcement.table.actions': '操作',
+
+  // Stats - 统计
+  'announcement.stats.total': '公告总数',
+  'announcement.stats.likes': '点赞总数',
+  'announcement.stats.totalLikes': '收到的点赞总数',
+  'announcement.stats.dislikes': '点踩总数',
+  'announcement.stats.totalDislikes': '收到的点踩总数',
+  'announcement.stats.engagement': '参与度',
+  'announcement.stats.engagementRate': '平均参与率',
+  'announcement.engagementStats': '参与统计',
+  'announcement.stats.totalReactions': '{{count}} 个反应',
+  'announcement.stats.likesCount': '{{count}} 个赞',
+  'announcement.stats.dislikesCount': '{{count}} 个踩',
+
+  // Reactions - 反应
+  'announcement.like': '点赞',
+  'announcement.dislike': '点踩',
+  'announcement.reactions': '反应',
+
+  // Validation messages - 验证消息
+  'announcement.validation.titleRequired': '标题不能为空',
+  'announcement.validation.contentRequired': '内容不能为空',
+  'announcement.validation.titleMaxLength': '标题必须少于200个字符',
+
+  // Success messages - 成功消息
+  'announcement.success.created': '公告创建成功',
+  'announcement.success.updated': '公告更新成功',
+  'announcement.success.deleted': '公告删除成功',
+  'announcement.success.reactionAdded': '您的反应已记录',
+  'announcement.success.reactionRemoved': '您的反应已移除',
+
+  // Error messages - 错误消息
+  'announcement.error.loadFailed': '加载公告失败',
+  'announcement.error.createFailed': '创建公告失败',
+  'announcement.error.updateFailed': '更新公告失败',
+  'announcement.error.deleteFailed': '删除公告失败',
+  'announcement.error.reactionFailed': '更新反应失败',
+
+  // Common additions - 通用添加 (only new ones not already defined)
+  'common.archived': '已归档',
+  'common.restore': '恢复',
+  'common.creating': '创建中...',
+  'common.readMore': '阅读更多',
+  'common.characters': '字符',
+
+  // Time-related translations for announcements - 公告时间相关翻译
+  'time.justNow': '刚刚',
+  'time.minuteAgo': '{{count}} 分钟前',
+  'time.minutesAgo': '{{count}} 分钟前',
+  'time.hourAgo': '{{count}} 小时前',
+  'time.hoursAgo': '{{count}} 小时前',
+  'time.dayAgo': '{{count}} 天前',
+  'time.daysAgo': '{{count}} 天前',
+  'time.weekAgo': '{{count}} 周前',
+  'time.weeksAgo': '{{count}} 周前',
+  'time.monthAgo': '{{count}} 个月前',
+  'time.monthsAgo': '{{count}} 个月前',
+  'time.edited': '(已编辑)',
 };

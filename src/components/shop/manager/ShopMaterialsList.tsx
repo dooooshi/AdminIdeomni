@@ -206,7 +206,7 @@ export default function ShopMaterialsList() {
                       </TableCell>
                       <TableCell align="center">
                         <Chip
-                          label={material.material.origin}
+                          label={t(`shop.ORIGIN_${material.material.origin}`)}
                           size="small"
                           sx={{
                             backgroundColor: originColors[material.material.origin],

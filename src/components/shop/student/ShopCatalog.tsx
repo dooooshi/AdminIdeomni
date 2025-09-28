@@ -121,7 +121,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
                 </Box>
                 {viewMode === 'grid' && (
                   <Chip
-                    label={material.material.origin}
+                    label={t(`shop.ORIGIN_${material.material.origin}`)}
                     size="small"
                     sx={{
                       backgroundColor: originColors[material.material.origin as MaterialOrigin],
@@ -143,7 +143,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
               {viewMode === 'list' && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Chip
-                    label={material.material.origin}
+                    label={t(`shop.ORIGIN_${material.material.origin}`)}
                     size="small"
                     sx={{
                       backgroundColor: originColors[material.material.origin as MaterialOrigin],
@@ -244,7 +244,7 @@ export default function ShopCatalog({}: ShopCatalogProps) {
                       backgroundColor: originColors[origin],
                     }}
                   />
-                  {origin}
+                  {t(`shop.ORIGIN_${origin}`)}
                 </Box>
               </MenuItem>
             ))}

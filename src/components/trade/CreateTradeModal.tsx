@@ -628,17 +628,9 @@ export const CreateTradeModal: React.FC<CreateTradeModalProps> = ({
               >
                 {availableTeams.map(team => (
                   <MenuItem key={team.id} value={team.id}>
-                    <Box>
-                      <Typography variant="body1">
-                        {team.name}
-                      </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        {t('trade.team.resources', '🪙 {{gold}} • 🌳 {{carbon}}', {
-                          gold: team.resources?.gold || 0,
-                          carbon: team.resources?.carbon || 0,
-                        })}
-                      </Typography>
-                    </Box>
+                    <Typography variant="body1">
+                      {team.name}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Select>

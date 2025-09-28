@@ -3,27 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import {
   Typography,
-
   Card,
   CardContent,
   Button,
-  TextField,
-  InputAdornment,
-  MenuItem,
   Alert,
   CircularProgress,
-  Chip,
-  Divider,
   Stack,
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
 import {
-  SearchOutlined,
   AddOutlined,
   RefreshOutlined,
-  ListAltOutlined,
 } from '@mui/icons-material';
-import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { FacilityTable, BuildFacilityModalSimplified, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
@@ -45,10 +35,6 @@ const StudentFacilitiesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  // Filters and search
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<FacilityInstanceStatus | 'ALL'>('ALL');
-  const [typeFilter, setTypeFilter] = useState<FacilityType | 'ALL'>('ALL');
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -65,12 +51,12 @@ const StudentFacilitiesPage: React.FC = () => {
     loadFacilityData();
   }, []);
 
-  // Reload when filters change
+  // Reload when page changes
   useEffect(() => {
     if (!loading) {
       loadFacilities();
     }
-  }, [statusFilter, typeFilter, page]);
+  }, [page]);
 
   const loadFacilityData = async () => {
     try {
@@ -105,8 +91,6 @@ const StudentFacilitiesPage: React.FC = () => {
         pageSize: 20,
       };
 
-      if (statusFilter !== 'ALL') params.status = statusFilter as FacilityInstanceStatus;
-      if (typeFilter !== 'ALL') params.facilityType = typeFilter as FacilityType;
 
       const response = await StudentFacilityService.getTeamFacilities(params);
       setFacilities(response?.data || []);
@@ -163,18 +147,8 @@ const StudentFacilitiesPage: React.FC = () => {
     setSelectedFacilityForUpgrade(null);
   };
 
-  // Filter facilities based on search term
-  const filteredFacilities = (facilities && facilities.length > 0) ? facilities.filter(facility => {
-    if (!searchTerm) return true;
-    
-    const searchLower = searchTerm.toLowerCase();
-    const facilityName = t(`facilityManagement.FACILITY_TYPE_${facility.facilityType}`).toLowerCase();
-    const description = facility.description?.toLowerCase() || '';
-    
-    return facilityName.includes(searchLower) || 
-           description.includes(searchLower) ||
-           facility.tileId.toString().includes(searchLower);
-  }) : [];
+  // Use all facilities without filtering
+  const filteredFacilities = facilities || [];
 
   if (loading && !summary) {
     return (
@@ -241,111 +215,6 @@ const StudentFacilitiesPage: React.FC = () => {
 
       {/* Facilities List */}
         <div>
-          {/* Search and Filters */}
-          <Card variant="outlined" sx={{ mb: 4 }}>
-            <CardContent>
-              <Grid container spacing={3} alignItems="end">
-                <Grid item xs={12} md={5}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    placeholder={t('facilityManagement.SEARCH_PLACEHOLDER')}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchOutlined sx={{ fontSize: 20 }} />
-                        </InputAdornment>
-                      ),
-                    }}
-                    variant="outlined"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    select
-                    label={t('facilityManagement.STATUS')}
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value as FacilityInstanceStatus | 'ALL')}
-                  >
-                    <MenuItem value="ALL">{t('facilityManagement.ALL_STATUSES')}</MenuItem>
-                    <MenuItem value="ACTIVE">{t('facilityManagement.ACTIVE')}</MenuItem>
-                    <MenuItem value="UNDER_CONSTRUCTION">{t('facilityManagement.UNDER_CONSTRUCTION')}</MenuItem>
-                    <MenuItem value="MAINTENANCE">{t('facilityManagement.MAINTENANCE')}</MenuItem>
-                    <MenuItem value="DAMAGED">{t('facilityManagement.DAMAGED')}</MenuItem>
-                  </TextField>
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    select
-                    label={t('facilityManagement.TYPE')}
-                    value={typeFilter}
-                    onChange={(e) => setTypeFilter(e.target.value as FacilityType | 'ALL')}
-                  >
-                    <MenuItem value="ALL">{t('facilityManagement.ALL_TYPES')}</MenuItem>
-                    {FacilityType && Object.values(FacilityType) ? Object.values(FacilityType).map((type) => (
-                      <MenuItem key={type} value={type}>
-                        {t(`facilityManagement.FACILITY_TYPE_${type}`)}
-                      </MenuItem>
-                    )) : null}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      setSearchTerm('');
-                      setStatusFilter('ALL');
-                      setTypeFilter('ALL');
-                    }}
-                    sx={{ minWidth: 'auto', px: 2 }}
-                  >
-                    {t('facilityManagement.CLEAR_FILTERS')}
-                  </Button>
-                </Grid>
-              </Grid>
-              
-              {/* Active Filters */}
-              {(searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL') && (
-                <div className="mt-2">
-                  <Divider sx={{ mb: 2 }} />
-                  <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
-                    <Typography variant="caption" color="text.secondary">
-                      {t('facilityManagement.FILTERS')}:
-                    </Typography>
-                    {searchTerm && (
-                      <Chip
-                        label={`"${searchTerm}"`}
-                        size="small"
-                        onDelete={() => setSearchTerm('')}
-                      />
-                    )}
-                    {statusFilter !== 'ALL' && (
-                      <Chip
-                        label={t(`facilityManagement.${statusFilter}`)}
-                        size="small"
-                        onDelete={() => setStatusFilter('ALL')}
-                      />
-                    )}
-                    {typeFilter !== 'ALL' && (
-                      <Chip
-                        label={t(`facilityManagement.FACILITY_TYPE_${typeFilter}`)}
-                        size="small"
-                        onDelete={() => setTypeFilter('ALL')}
-                      />
-                    )}
-                  </Stack>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
           {/* Facilities Grid */}
           {(filteredFacilities?.length || 0) > 0 ? (
             <div>
@@ -375,32 +244,14 @@ const StudentFacilitiesPage: React.FC = () => {
             <Card variant="outlined">
               <CardContent sx={{ textAlign: 'center', py: 8 }}>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
-                  {searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL'
-                    ? t('facilityManagement.NO_FACILITIES_MATCH_FILTERS')
-                    : t('facilityManagement.NO_FACILITIES_BUILT')
-                  }
+                  {t('facilityManagement.NO_FACILITIES_BUILT')}
                 </Typography>
-                
+
                 <Typography variant="body2" color="text.secondary" mb={3}>
-                  {searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL'
-                    ? t('facilityManagement.TRY_DIFFERENT_FILTERS')
-                    : t('facilityManagement.BUILD_YOUR_FIRST_FACILITY_DESCRIPTION')
-                  }
+                  {t('facilityManagement.BUILD_YOUR_FIRST_FACILITY_DESCRIPTION')}
                 </Typography>
-                
+
                 <Stack direction="row" spacing={2} justifyContent="center">
-                  {(searchTerm || statusFilter !== 'ALL' || typeFilter !== 'ALL') && (
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        setSearchTerm('');
-                        setStatusFilter('ALL');
-                        setTypeFilter('ALL');
-                      }}
-                    >
-                      {t('facilityManagement.CLEAR_FILTERS')}
-                    </Button>
-                  )}
                   <Button
                     variant="contained"
                     startIcon={<AddOutlined />}
