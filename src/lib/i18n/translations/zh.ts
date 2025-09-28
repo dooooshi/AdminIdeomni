@@ -3187,6 +3187,10 @@ export const zhTranslations = {
   'userManagement.PASSWORD_LABEL': '密码',
   'userManagement.PASSWORD_PLACEHOLDER': '输入密码',
   'userManagement.PASSWORD_EDIT_HINT': '（留空保持当前密码）',
+  'userManagement.PASSWORD_NOT_EDITABLE': '使用重置密码来更改',
+  'userManagement.PASSWORD_RESET_NOTE': '要更改密码，请使用重置密码操作',
+  'userManagement.PASSWORD_EDIT_INFO': '密码不能直接编辑。请从用户列表使用"重置密码"操作来生成新的临时密码。',
+  'userManagement.CUSTOM_PASSWORD_NOT_SUPPORTED': '不支持设置自定义密码。请使用重置密码操作来生成临时密码。',
   'userManagement.CONFIRM_PASSWORD_LABEL': '确认密码',
   'userManagement.CONFIRM_PASSWORD_PLACEHOLDER': '再次输入密码',
   'userManagement.USER_FORM_PERMISSIONS': '权限与状态',
@@ -3225,7 +3229,12 @@ export const zhTranslations = {
   'userManagement.REQUIRE_CHANGE': '下次登录时要求更改密码',
   'userManagement.SEND_EMAIL': '发送通知邮件',
   'userManagement.RESET_PASSWORD': '重置密码',
-  
+  'userManagement.PASSWORD_RESET_SUCCESS': '密码重置成功',
+  'userManagement.PASSWORD_RESET_SUCCESS_MESSAGE': '密码已成功重置。请将新密码提供给用户。',
+  'userManagement.NEW_PASSWORD': '新密码',
+  'userManagement.PASSWORD_SECURITY_WARNING': '请安全地将此密码共享给用户。如果选择了该选项，他们将在首次登录时被要求更改密码。',
+  'userManagement.COPY_PASSWORD': '复制密码',
+
   // 标签页
   'userManagement.USER_ANALYTICS': '用户分析',
   'userManagement.DATA_EXPORT': '数据导出',

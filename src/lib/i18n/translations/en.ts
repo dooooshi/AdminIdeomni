@@ -2597,6 +2597,10 @@ export const enTranslations = {
   'userManagement.PASSWORD_LABEL': 'Password',
   'userManagement.PASSWORD_PLACEHOLDER': 'Enter password',
   'userManagement.PASSWORD_EDIT_HINT': '(Leave blank to keep current)',
+  'userManagement.PASSWORD_NOT_EDITABLE': 'Use Reset Password to change',
+  'userManagement.PASSWORD_RESET_NOTE': 'To change password, use the Reset Password action',
+  'userManagement.PASSWORD_EDIT_INFO': 'Password cannot be directly edited. Use the "Reset Password" action from the user list to generate a new temporary password.',
+  'userManagement.CUSTOM_PASSWORD_NOT_SUPPORTED': 'Setting a custom password is not supported. Please use the Reset Password action to generate a temporary password.',
   'userManagement.CONFIRM_PASSWORD_LABEL': 'Confirm Password',
   'userManagement.CONFIRM_PASSWORD_PLACEHOLDER': 'Re-enter password',
   'userManagement.USER_FORM_PERMISSIONS': 'Permissions & Status',
@@ -2634,7 +2638,12 @@ export const enTranslations = {
   'userManagement.REQUIRE_CHANGE': 'Require password change on next login',
   'userManagement.SEND_EMAIL': 'Send notification email',
   'userManagement.RESET_PASSWORD': 'Reset Password',
-  
+  'userManagement.PASSWORD_RESET_SUCCESS': 'Password Reset Successful',
+  'userManagement.PASSWORD_RESET_SUCCESS_MESSAGE': 'The password has been successfully reset. Please provide the new password to the user.',
+  'userManagement.NEW_PASSWORD': 'New Password',
+  'userManagement.PASSWORD_SECURITY_WARNING': 'Please share this password securely with the user. They will be required to change it upon first login if the option was selected.',
+  'userManagement.COPY_PASSWORD': 'Copy Password',
+
   // Tabs
   'userManagement.USER_ANALYTICS': 'User Analytics',
   'userManagement.DATA_EXPORT': 'Data Export',

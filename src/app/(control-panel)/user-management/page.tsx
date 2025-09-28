@@ -54,6 +54,8 @@ const UserManagementPage: React.FC = () => {
     requireChange: true,
     sendEmail: false,
   });
+  const [passwordResetResult, setPasswordResetResult] = useState<{ username: string; password: string } | null>(null);
+  const [passwordResultDialogOpen, setPasswordResultDialogOpen] = useState(false);
 
   const handleCreateUser = () => {
     setEditingUser(null);
@@ -100,7 +102,17 @@ const UserManagementPage: React.FC = () => {
     if (!resetPasswordUser) return;
 
     try {
-      await UserService.resetUserPassword(resetPasswordUser.id, passwordResetSettings);
+      const result = await UserService.resetUserPassword(resetPasswordUser.id, passwordResetSettings);
+
+      // Store the result to show the new password
+      if (result.temporaryPassword) {
+        setPasswordResetResult({
+          username: resetPasswordUser.username,
+          password: result.temporaryPassword
+        });
+        setPasswordResultDialogOpen(true);
+      }
+
       setPasswordResetOpen(false);
       setResetPasswordUser(null);
       setRefreshTrigger(prev => prev + 1);
@@ -463,6 +475,98 @@ const UserManagementPage: React.FC = () => {
             onClose={() => setBulkImportOpen(false)}
             onSuccess={handleBulkImportSuccess}
           />
+
+          {/* Password Reset Success Dialog */}
+          <Dialog
+            open={passwordResultDialogOpen}
+            onClose={() => {
+              setPasswordResultDialogOpen(false);
+              setPasswordResetResult(null);
+            }}
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle>
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Typography variant="h6">
+                  {t('userManagement.PASSWORD_RESET_SUCCESS')}
+                </Typography>
+                <IconButton
+                  onClick={() => {
+                    setPasswordResultDialogOpen(false);
+                    setPasswordResetResult(null);
+                  }}
+                  size="small"
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+            </DialogTitle>
+            <DialogContent dividers>
+              {passwordResetResult && (
+                <Box>
+                  <Alert severity="success" sx={{ mb: 3 }}>
+                    {t('userManagement.PASSWORD_RESET_SUCCESS_MESSAGE')}
+                  </Alert>
+
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {t('userManagement.USERNAME')}
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 600, mb: 2 }}>
+                        {passwordResetResult.username}
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        {t('userManagement.NEW_PASSWORD')}
+                      </Typography>
+                      <Box
+                        sx={{
+                          p: 2,
+                          bgcolor: 'grey.100',
+                          borderRadius: 1,
+                          fontFamily: 'monospace',
+                          fontSize: '1.1rem',
+                          wordBreak: 'break-all'
+                        }}
+                      >
+                        {passwordResetResult.password}
+                      </Box>
+                    </Grid>
+                  </Grid>
+
+                  <Alert severity="warning" sx={{ mt: 3 }}>
+                    {t('userManagement.PASSWORD_SECURITY_WARNING')}
+                  </Alert>
+                </Box>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  // Copy password to clipboard
+                  if (passwordResetResult) {
+                    navigator.clipboard.writeText(passwordResetResult.password);
+                  }
+                }}
+                variant="outlined"
+              >
+                {t('userManagement.COPY_PASSWORD')}
+              </Button>
+              <Button
+                onClick={() => {
+                  setPasswordResultDialogOpen(false);
+                  setPasswordResetResult(null);
+                }}
+                variant="contained"
+              >
+                {t('userManagement.CLOSE')}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       }
     />

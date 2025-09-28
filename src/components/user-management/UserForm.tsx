@@ -21,7 +21,6 @@ import {
   CircularProgress,
   IconButton,
   InputAdornment,
-
   Divider,
   Chip,
   Autocomplete,
@@ -146,27 +145,26 @@ const UserForm: React.FC<UserFormProps> = ({
         setError(null);
 
         if (isEditMode && user) {
-          // Edit mode - only send changed fields
-          const updateData: AdminUpdateUserDto = {};
-          
-          if (values.firstName !== user.firstName) updateData.firstName = values.firstName;
-          if (values.lastName !== user.lastName) updateData.lastName = values.lastName;
-          if (values.email !== user.email) updateData.email = values.email;
-          if (values.userType !== user.userType) updateData.userType = values.userType;
-          if (values.isActive !== user.isActive) updateData.isActive = values.isActive;
-          if (JSON.stringify(values.roles) !== JSON.stringify(user.roles)) updateData.roles = values.roles;
+          // Edit mode - send all fields that have values (not just changed fields)
+          const updateData: AdminUpdateUserDto = {
+            firstName: values.firstName || undefined,
+            lastName: values.lastName || undefined,
+            email: values.email,
+            userType: values.userType,
+            isActive: values.isActive,
+            roles: values.roles && values.roles.length > 0 ? values.roles : undefined,
+          };
+
+          // Note: The API doesn't support setting a custom password during update
+          // Password can only be reset to a generated temporary password
+          // We'll show a warning if the user tries to set a password
+          if (values.password) {
+            setError(t('userManagement.CUSTOM_PASSWORD_NOT_SUPPORTED'));
+            setLoading(false);
+            return;
+          }
 
           const updatedUser = await UserService.updateUser(user.id, updateData);
-          
-          // Handle password reset separately if provided
-          if (values.password) {
-            await UserService.resetUserPassword(user.id, {
-              generateTemporary: false,
-              requireChange: false,
-              sendEmail: false,
-            });
-          }
-          
           onSuccess(updatedUser);
         } else {
           // Create mode
@@ -337,16 +335,16 @@ const UserForm: React.FC<UserFormProps> = ({
               name="password"
               type={showPassword ? 'text' : 'password'}
               label={t('userManagement.PASSWORD_LABEL')}
-              placeholder={t('userManagement.PASSWORD_PLACEHOLDER')}
+              placeholder={isEditMode ? t('userManagement.PASSWORD_NOT_EDITABLE') : t('userManagement.PASSWORD_PLACEHOLDER')}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={
                 formik.touched.password && formik.errors.password ||
-                (isEditMode ? t('userManagement.PASSWORD_EDIT_HINT') : '')
+                (isEditMode ? t('userManagement.PASSWORD_RESET_NOTE') : '')
               }
-              disabled={loading}
+              disabled={loading || isEditMode}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -367,7 +365,7 @@ const UserForm: React.FC<UserFormProps> = ({
             />
           </Grid>
 
-          {!isEditMode && (
+          {!isEditMode ? (
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -399,6 +397,12 @@ const UserForm: React.FC<UserFormProps> = ({
                   ),
                 }}
               />
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <Alert severity="info">
+                {t('userManagement.PASSWORD_EDIT_INFO')}
+              </Alert>
             </Grid>
           )}
         </Grid>
