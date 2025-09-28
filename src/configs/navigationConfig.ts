@@ -417,15 +417,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					auth: ['user'],
 					children: [
 						{
-							id: 'team-management.history.dashboard',
-							title: 'History Overview',
-							type: 'item',
-							icon: 'heroicons-outline:chart-bar',
-							url: '/team-management/history',
-							translate: 'HISTORY_OVERVIEW',
-							auth: ['user']
-						},
-						{
 							id: 'team-management.history.operations',
 							title: 'All Operations',
 							type: 'item',

@@ -403,7 +403,6 @@ export const enTranslations = {
   VIEW_CONTRACTS: 'View Contracts',
   CREATE_CONTRACT: 'Create Contract',
   ACCOUNT_HISTORY: 'Account History',
-  HISTORY_OVERVIEW: 'History Overview',
   ALL_OPERATIONS: 'All Operations',
   TRANSFER_HISTORY: 'Transfer History',
   BALANCE_HISTORY: 'Balance History',
@@ -2071,7 +2070,6 @@ export const enTranslations = {
   'navigation.TRANSFER_CARBON': 'Transfer Carbon',
   'navigation.FACILITY_TRANSPORTATION': 'Facility Transportation',
   'navigation.ACCOUNT_HISTORY': 'Account History',
-  'navigation.HISTORY_OVERVIEW': 'History Overview',
   'navigation.ALL_OPERATIONS': 'All Operations',
   'navigation.TRANSFER_HISTORY': 'Transfer History',
   'navigation.BALANCE_HISTORY': 'Balance History',
@@ -2331,7 +2329,6 @@ export const enTranslations = {
   'teamManagement.CANT_FIND_RIGHT_TEAM': 'Can\'t find the right team?',
   'teamManagement.CREATE_OWN_TEAM_MESSAGE': 'Create your own team and invite others to join you.',
   // History page
-  'teamManagement.HISTORY_OVERVIEW': 'History Overview',
   'teamManagement.TRACK_ALL_OPERATIONS': 'Track all team operations and resource movements',
   'teamManagement.GOLD_BALANCE': 'Gold Balance',
   'teamManagement.CARBON_BALANCE': 'Carbon Balance',

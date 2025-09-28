@@ -2172,7 +2172,6 @@ export const zhTranslations = {
   'navigation.TRANSFER_GOLD': '转移黄金',
   'navigation.TRANSFER_CARBON': '转移碳排放',
   'navigation.ACCOUNT_HISTORY': '账户历史',
-  'navigation.HISTORY_OVERVIEW': '历史概览',
   'navigation.ALL_OPERATIONS': '所有操作',
   'navigation.TRANSFER_HISTORY': '转账历史',
   'navigation.BALANCE_HISTORY': '余额历史',
@@ -2432,7 +2431,6 @@ export const zhTranslations = {
   'teamManagement.CANT_FIND_RIGHT_TEAM': '找不到合适的团队？',
   'teamManagement.CREATE_OWN_TEAM_MESSAGE': '创建您自己的团队并邀请他人加入。',
   // History page
-  'teamManagement.HISTORY_OVERVIEW': '历史概览',
   'teamManagement.TRACK_ALL_OPERATIONS': '跟踪所有团队操作和资源流动',
   'teamManagement.GOLD_BALANCE': '黄金余额',
   'teamManagement.CARBON_BALANCE': '碳排放指数余额',
@@ -3340,7 +3338,6 @@ export const zhTranslations = {
   VIEW_CONTRACTS: '查看合约',
   CREATE_CONTRACT: '创建合约',
   ACCOUNT_HISTORY: '账户历史',
-  HISTORY_OVERVIEW: '历史概览',
   ALL_OPERATIONS: '所有操作',
   TRANSFER_HISTORY: '转账历史',
   BALANCE_HISTORY: '余额历史',
