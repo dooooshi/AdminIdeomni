@@ -66,6 +66,23 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
 }) => {
   const { t } = useTranslation();
 
+  // Helper function to get translated land type
+  const getLandTypeLabel = (landType: string) => {
+    if (!landType) return '';
+
+    // Convert to uppercase to match translation keys
+    const upperLandType = landType.toUpperCase();
+    const translationKey = `facilityManagement.LAND_TYPE_${upperLandType}`;
+    const translated = t(translationKey);
+
+    // If translation not found, return formatted fallback
+    if (translated === translationKey || !translated || translated.includes('LAND_TYPE_')) {
+      return landType.charAt(0).toUpperCase() + landType.slice(1).toLowerCase();
+    }
+
+    return translated;
+  };
+
   // State management
   const [availableTiles, setAvailableTiles] = useState<OwnedTileForBuilding[]>([]);
   const [selectedTile, setSelectedTile] = useState<OwnedTileForBuilding | null>(null);
@@ -268,7 +285,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
                           {t('facilityManagement.TILE')} {tile.tileId}
                         </Typography>
                         <Stack direction="row" spacing={0.5} mt={0.5}>
-                          <Chip label={tile.landType} size="small" sx={{ height: 18, fontSize: '0.7rem' }} />
+                          <Chip label={getLandTypeLabel(tile.landType)} size="small" sx={{ height: 18, fontSize: '0.7rem' }} />
                           <Chip label={`${tile.availableArea}`} size="small" color="success" sx={{ height: 18, fontSize: '0.7rem' }} />
                         </Stack>
                       </CardContent>
@@ -285,9 +302,9 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
               <Typography variant="body2">
                 {t('facilityManagement.TILE')} {selectedTile?.tileId || selectedTileId}
               </Typography>
-              <Chip 
-                label={selectedTile?.landType || tileLandType} 
-                size="small" 
+              <Chip
+                label={getLandTypeLabel(selectedTile?.landType || tileLandType)}
+                size="small"
                 sx={{ height: 18, fontSize: '0.7rem' }}
               />
               {(selectedTile || tileOwnership) && (

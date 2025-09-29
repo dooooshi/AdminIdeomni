@@ -1376,7 +1376,19 @@ export const zhTranslations = {
   'facilityManagement.VALIDATING': '验证中...',
   'facilityManagement.CANNOT_BUILD_HERE': '无法在此处建造该设施',
   'facilityManagement.SELECT_FACILITY_TO_VIEW_COSTS': '选择设施以查看成本',
-  
+
+  // Land Type translations for facilities
+  'facilityManagement.LAND_TYPE_MARINE': '海洋',
+  'facilityManagement.LAND_TYPE_COASTAL': '海岸',
+  'facilityManagement.LAND_TYPE_PLAIN': '平原',
+  'facilityManagement.LAND_TYPE_GRASSLANDS': '草原',
+  'facilityManagement.LAND_TYPE_FORESTS': '森林',
+  'facilityManagement.LAND_TYPE_HILLS': '丘陵',
+  'facilityManagement.LAND_TYPE_MOUNTAINS': '山脉',
+  'facilityManagement.LAND_TYPE_PLATEAUS': '高原',
+  'facilityManagement.LAND_TYPE_DESERTS': '沙漠',
+  'facilityManagement.LAND_TYPE_WETLANDS': '湿地',
+
   // Additional facility management keys
   'facilityManagement.DASHBOARD': '仪表板',
   'facilityManagement.FACILITY_LIST_TAB': '设施列表',

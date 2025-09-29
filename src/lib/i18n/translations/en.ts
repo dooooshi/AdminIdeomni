@@ -1274,7 +1274,19 @@ export const enTranslations = {
   'facilityManagement.HIGHER_PRODUCTION': 'Higher resource production',
   'facilityManagement.CONFIRM_UPGRADE': 'Confirm Upgrade',
   'facilityManagement.FACILITY_AT_MAX_LEVEL': 'This facility is already at maximum level',
-  
+
+  // Land Type translations for facilities
+  'facilityManagement.LAND_TYPE_MARINE': 'Marine',
+  'facilityManagement.LAND_TYPE_COASTAL': 'Coastal',
+  'facilityManagement.LAND_TYPE_PLAIN': 'Plain',
+  'facilityManagement.LAND_TYPE_GRASSLANDS': 'Grasslands',
+  'facilityManagement.LAND_TYPE_FORESTS': 'Forests',
+  'facilityManagement.LAND_TYPE_HILLS': 'Hills',
+  'facilityManagement.LAND_TYPE_MOUNTAINS': 'Mountains',
+  'facilityManagement.LAND_TYPE_PLATEAUS': 'Plateaus',
+  'facilityManagement.LAND_TYPE_DESERTS': 'Deserts',
+  'facilityManagement.LAND_TYPE_WETLANDS': 'Wetlands',
+
   // Additional facility management keys
   'facilityManagement.DASHBOARD': 'Dashboard',
   'facilityManagement.FACILITY_LIST_TAB': 'Facility List',

@@ -292,6 +292,24 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  // Helper function to get translated land type with fallback
+  const getLandTypeLabel = (landType: string) => {
+    if (!landType) return '';
+
+    // Convert to uppercase to match translation keys
+    const upperLandType = landType.toUpperCase();
+    const translationKey = `facilityManagement.LAND_TYPE_${upperLandType}`;
+    const translated = t(translationKey);
+
+    // If the translation is not found (returns the key), fallback to formatting
+    if (translated === translationKey || !translated || translated.includes('LAND_TYPE_')) {
+      // Fallback: format the landType for display
+      return landType.charAt(0).toUpperCase() + landType.slice(1).toLowerCase();
+    }
+
+    return translated;
+  };
+
   // State management
   const [activeStep, setActiveStep] = useState(0);
   const [availableTiles, setAvailableTiles] = useState<OwnedTileForBuilding[]>([]);
@@ -535,9 +553,9 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                   {t('facilityManagement.TILE')} {selectedTile?.tileId || selectedTileId}
                 </Typography>
                 <Stack direction="row" spacing={1} mt={0.5}>
-                  <Chip 
-                    label={selectedTile?.landType || tileLandType} 
-                    size="small" 
+                  <Chip
+                    label={getLandTypeLabel(selectedTile?.landType || tileLandType)}
+                    size="small"
                     sx={{ height: 20, fontSize: '0.75rem' }}
                   />
                   {selectedTile ? (
@@ -626,7 +644,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                               {t('facilityManagement.TILE')} {tile.tileId}
                             </Typography>
                             <Chip
-                              label={tile.landType}
+                              label={getLandTypeLabel(tile.landType)}
                               size="small"
                               sx={{ height: 20, fontSize: '0.75rem' }}
                             />
@@ -830,7 +848,7 @@ const BuildFacilityModal: React.FC<BuildFacilityModalProps> = ({
                         {t('facilityManagement.LOCATION')}
                       </Typography>
                       <Typography variant="body1" fontWeight="medium">
-                        {t('facilityManagement.TILE')} {selectedTile?.tileId} ({selectedTile?.landType})
+                        {t('facilityManagement.TILE')} {selectedTile?.tileId} ({getLandTypeLabel(selectedTile?.landType || '')})
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
