@@ -269,7 +269,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
                         </Typography>
                         <Stack direction="row" spacing={0.5} mt={0.5}>
                           <Chip label={tile.landType} size="small" sx={{ height: 18, fontSize: '0.7rem' }} />
-                          <Chip label={`${tile.teamOwnedArea}`} size="small" color="success" sx={{ height: 18, fontSize: '0.7rem' }} />
+                          <Chip label={`${tile.availableArea}`} size="small" color="success" sx={{ height: 18, fontSize: '0.7rem' }} />
                         </Stack>
                       </CardContent>
                     </Card>
@@ -292,7 +292,7 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
               />
               {(selectedTile || tileOwnership) && (
                 <Chip 
-                  label={`${t('facilityManagement.OWNED')}: ${selectedTile?.teamOwnedArea || tileOwnership?.ownedArea}`}
+                  label={`${t('facilityManagement.AVAILABLE_AREA')}: ${selectedTile?.availableArea || tileOwnership?.ownedArea}`}
                   size="small" 
                   color="success"
                   sx={{ height: 18, fontSize: '0.7rem' }}
