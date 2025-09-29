@@ -4347,6 +4347,7 @@ export const zhTranslations = {
   'contract.APPROVED': '已批准',
   'contract.REJECTED': '已拒绝',
   'contract.PENDING': '待处理',
+  'contract.SIGNED': '已签署',
   
   // Contract Form
   'contract.TITLE': '标题',

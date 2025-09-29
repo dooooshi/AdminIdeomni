@@ -4158,6 +4158,7 @@ export const enTranslations = {
   'contract.APPROVED': 'Approved',
   'contract.REJECTED': 'Rejected',
   'contract.PENDING': 'Pending',
+  'contract.SIGNED': 'Signed',
   
   // Contract Form
   'contract.TITLE': 'Title',
