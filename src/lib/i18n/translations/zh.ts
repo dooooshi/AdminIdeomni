@@ -4073,7 +4073,7 @@ export const zhTranslations = {
   'productProduction.notConnected': '未连接',
   'productProduction.connected': '已连接',
   'productProduction.errorLoadingFactories': '加载工厂失败',
-  'productProduction.noFactoriesAvailable': '没有可用的工厂。请先建造一个工厂。',
+  'productProduction.noFactoriesAvailable': '没有可用(基础设施完善)的工厂。',
   'productProduction.levelAndTile': '等级 {{level}} - 地块 {{tileId}}',
   
   // Formula Selection

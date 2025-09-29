@@ -168,7 +168,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({
                         {option.name || `${option.nameEn || ''} (${option.nameZh || ''})`.trim()}
                       </Typography>
                       <Chip
-                        label={option.origin}
+                        label={t(`rawMaterial.origin.${option.origin}`)}
                         size="small"
                         color={getOriginColor(option.origin)}
                       />
@@ -241,7 +241,7 @@ const MaterialSelector: React.FC<MaterialSelectorProps> = ({
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={material.rawMaterial?.origin}
+                      label={material.rawMaterial?.origin ? t(`rawMaterial.origin.${material.rawMaterial.origin}`) : ''}
                       size="small"
                       color={getOriginColor(material.rawMaterial?.origin || '')}
                     />

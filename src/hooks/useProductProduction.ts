@@ -123,10 +123,10 @@ export const useProductProduction = (): UseProductProductionReturn => {
       if (response.success && response.data) {
         setCostData(response.data);
       } else {
-        setCostError(response.error?.message || 'Failed to calculate costs');
+        setCostError(response.details?.message || response.error?.message || response.message || 'Failed to calculate costs');
       }
-    } catch (error) {
-      setCostError('Failed to calculate costs');
+    } catch (error: any) {
+      setCostError(error.response?.data?.details?.message || error.response?.data?.message || 'Failed to calculate costs');
     } finally {
       setCalculatingCost(false);
     }
@@ -158,11 +158,11 @@ export const useProductProduction = (): UseProductProductionReturn => {
         setCostData(null);
         return true;
       } else {
-        setProductionError(response.error?.message || 'Production failed');
+        setProductionError(response.details?.message || response.error?.message || response.message || 'Production failed');
         return false;
       }
-    } catch (error) {
-      setProductionError('Production failed');
+    } catch (error: any) {
+      setProductionError(error.response?.data?.details?.message || error.response?.data?.message || 'Production failed');
       return false;
     } finally {
       setProducing(false);

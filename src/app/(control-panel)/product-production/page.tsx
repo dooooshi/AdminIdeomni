@@ -230,8 +230,13 @@ export default function ProductProductionPage() {
       } else if (response.success && response.data) {
         setCostData(response.data);
       }
-    } catch (error) {
-      enqueueSnackbar(t('productProduction.errorCalculatingCost'), { variant: 'error' });
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.details?.message ||
+                          error.response?.data?.message ||
+                          error.details?.message ||
+                          error.message ||
+                          t('productProduction.errorCalculatingCost');
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     } finally {
       setCalculating(false);
     }
@@ -267,13 +272,19 @@ export default function ProductProductionPage() {
         loadFactories();
         loadProductionHistory();
       } else if (response.error) {
-        enqueueSnackbar(
-          `${t('productProduction.productionFailed')}: ${response.error.message || response.message}`,
-          { variant: 'error' }
-        );
+        const errorMessage = response.details?.message ||
+                            response.error?.message ||
+                            response.message ||
+                            t('productProduction.productionFailed');
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
-    } catch (error) {
-      enqueueSnackbar(t('productProduction.errorExecutingProduction'), { variant: 'error' });
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.details?.message ||
+                          error.response?.data?.message ||
+                          error.details?.message ||
+                          error.message ||
+                          t('productProduction.errorExecutingProduction');
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     } finally {
       setLoading(false);
     }
