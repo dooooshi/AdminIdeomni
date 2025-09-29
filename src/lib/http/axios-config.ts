@@ -46,13 +46,15 @@ export class ApiError extends Error {
   public httpStatus?: number;
   public timestamp?: string;
   public path?: string;
+  public details?: any;
 
   constructor(
     message: string,
     businessCode?: number,
     httpStatus?: number,
     timestamp?: string,
-    path?: string
+    path?: string,
+    details?: any
   ) {
     super(message);
     this.name = 'ApiError';
@@ -60,6 +62,7 @@ export class ApiError extends Error {
     this.httpStatus = httpStatus;
     this.timestamp = timestamp;
     this.path = path;
+    this.details = details;
   }
 }
 
@@ -235,6 +238,31 @@ axiosInstance.interceptors.response.use(
       });
     }
 
+    // Check if the response indicates a business logic error (success: false)
+    if (response.data && typeof response.data === 'object' && 'success' in response.data && response.data.success === false) {
+      // Convert business logic errors to ApiError
+      const errorData = response.data;
+      const apiError = new ApiError(
+        errorData.message || 'Request failed',
+        errorData.businessCode,
+        response.status,
+        errorData.timestamp,
+        errorData.path,
+        errorData.details
+      );
+
+      if (process.env.NODE_ENV === 'development') {
+        console.error('❌ Business Logic Error:', {
+          message: apiError.message,
+          businessCode: apiError.businessCode,
+          details: apiError.details,
+          url: response.config.url,
+        });
+      }
+
+      return Promise.reject(apiError);
+    }
+
     return response;
   },
   async (error: AxiosError) => {
@@ -290,7 +318,8 @@ axiosInstance.interceptors.response.use(
           errorData.businessCode,
           error.response.status,
           errorData.timestamp,
-          errorData.path
+          errorData.path,
+          errorData.details
         );
       } else if (errorData.message) {
         // Legacy format or other error formats

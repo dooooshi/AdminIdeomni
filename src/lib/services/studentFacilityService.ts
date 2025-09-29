@@ -294,11 +294,19 @@ export class StudentFacilityService {
     if (params.fromLevel) queryParams.fromLevel = params.fromLevel;
     if (params.landType) queryParams.landType = params.landType;
 
-    const response = await apiClient.get<ApiResponse<UpgradeCostCalculation>>(
-      `${this.CONFIGS_BASE_PATH}/upgrade-costs`,
-      { params: queryParams }
-    );
-    return this.extractResponseData(response);
+    try {
+      const response = await apiClient.get<ApiResponse<UpgradeCostCalculation>>(
+        `${this.CONFIGS_BASE_PATH}/upgrade-costs`,
+        { params: queryParams }
+      );
+      return this.extractResponseData(response);
+    } catch (error: any) {
+      // Re-throw the error with additional details if it's an API error
+      if (error.businessCode) {
+        throw error; // ApiError from axios interceptor already has all details
+      }
+      throw error;
+    }
   }
 
   /**

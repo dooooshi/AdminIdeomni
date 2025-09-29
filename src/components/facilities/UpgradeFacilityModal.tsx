@@ -23,6 +23,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
+import { ApiError } from '@/lib/http/axios-config';
 import type {
   TileFacilityInstance,
   UpgradeFacilityRequest,
@@ -94,9 +95,15 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
       });
 
       setUpgradeCalculation(calculation);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to calculate upgrade costs:', err);
-      setError(t('facilityManagement.UPGRADE_CALCULATION_ERROR'));
+
+      // Use the localized message from the API response
+      const errorMessage = err instanceof ApiError && err.message
+        ? err.message
+        : t('facilityManagement.UPGRADE_CALCULATION_ERROR');
+
+      setError(errorMessage);
       setUpgradeCalculation(null);
     } finally {
       setLoading(false);
@@ -117,9 +124,15 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
       const upgradedFacility = await StudentFacilityService.upgradeFacility(facility.id, request);
       onSuccess(upgradedFacility);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error('Upgrade failed:', err);
-      setError(t('facilityManagement.FACILITY_UPGRADE_ERROR'));
+
+      // Use the localized message from the API response
+      const errorMessage = err instanceof ApiError && err.message
+        ? err.message
+        : t('facilityManagement.FACILITY_UPGRADE_ERROR');
+
+      setError(errorMessage);
     } finally {
       setUpgrading(false);
     }
