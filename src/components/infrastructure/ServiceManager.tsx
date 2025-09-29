@@ -36,7 +36,6 @@ import {
   Stack,
   Skeleton,
 } from '@mui/material';
-import GridLegacy from '@mui/material/GridLegacy';
 import {
   CellTower as BaseStationIcon,
   LocalFireDepartment as FireStationIcon,
@@ -282,14 +281,14 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
         
         <Box sx={{ minHeight: '600px' }}>
           <Skeleton variant="text" width={150} height={24} sx={{ mb: 1 }} />
-          <GridLegacy container spacing={2} sx={{ mb: 3 }}>
-            <GridLegacy item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
+            <Box sx={{ flex: '1 1 calc(50% - 16px)', minWidth: '300px' }}>
               <SkeletonCard />
-            </GridLegacy>
-            <GridLegacy item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 calc(50% - 16px)', minWidth: '300px' }}>
               <SkeletonCard />
-            </GridLegacy>
-          </GridLegacy>
+            </Box>
+          </Box>
           
           <Skeleton variant="text" width={150} height={24} sx={{ mb: 1 }} />
           <Skeleton variant="rectangular" width="100%" height={200} />
@@ -350,60 +349,87 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
           </Typography>
           
           {!subscriptions || subscriptions.filter(s => s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE).length === 0 ? (
-            <Alert severity="info" sx={{ minHeight: '56px' }}>
+            <Alert severity="info" sx={{ minHeight: '56px', mb: 3 }}>
               {t('infrastructure.NO_ACTIVE_SUBSCRIPTIONS')}
             </Alert>
           ) : (
-            <GridLegacy container spacing={2} sx={{ mb: 3 }}>
-              {subscriptions
-                .filter(s => s && (s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE))
-                .map((subscription, index) => (
-                  <GridLegacy key={subscription.id || `active-sub-${index}`} item xs={12} md={6}>
-                    <Card>
-                      <CardContent>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <TableContainer component={Paper} sx={{ mb: 3 }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>{t('infrastructure.SERVICE_TYPE')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER_FACILITY')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER_TILE')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER_FACILITY')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER_TILE')}</TableCell>
+                    <TableCell>{t('infrastructure.ANNUAL_FEE')}</TableCell>
+                    <TableCell>{t('infrastructure.STATUS')}</TableCell>
+                    <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {subscriptions
+                    .filter(s => s && (s.status === 'ACTIVE' || s.status === SubscriptionStatus.ACTIVE))
+                    .map((subscription, index) => (
+                      <TableRow key={subscription.id || `active-sub-${index}`}>
+                        <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             {getServiceIcon(subscription.serviceType)}
-                            <Typography variant="h6">
+                            <Typography variant="body2">
                               {t(`infrastructure.${subscription.serviceType || 'SERVICE'}`)}
                             </Typography>
                           </Box>
+                        </TableCell>
+                        <TableCell>{subscription.providerTeamName || t('infrastructure.UNKNOWN')}</TableCell>
+                        <TableCell>{
+                          typeof subscription.providerFacility === 'string'
+                            ? t(`infrastructure.${subscription.providerFacility}`)
+                            : subscription.providerFacility?.facilityType
+                              ? t(`infrastructure.${subscription.providerFacility.facilityType}`)
+                              : t('infrastructure.UNKNOWN')
+                        }</TableCell>
+                        <TableCell>{
+                          subscription.providerFacilityTileId ||
+                          (typeof subscription.providerFacility === 'object' ? subscription.providerFacility?.tileId : undefined) ||
+                          '-'
+                        }</TableCell>
+                        <TableCell>{
+                          typeof subscription.consumerFacility === 'string'
+                            ? t(`infrastructure.${subscription.consumerFacility}`)
+                            : subscription.consumerFacility?.facilityType
+                              ? t(`infrastructure.${subscription.consumerFacility.facilityType}`)
+                              : t('infrastructure.UNKNOWN')
+                        }</TableCell>
+                        <TableCell>{
+                          subscription.consumerFacilityTileId ||
+                          (typeof subscription.consumerFacility === 'object' ? subscription.consumerFacility?.tileId : undefined) ||
+                          '-'
+                        }</TableCell>
+                        <TableCell>${subscription.annualFee || 0}</TableCell>
+                        <TableCell>
                           <Chip
                             icon={<ActiveIcon />}
                             label={t('infrastructure.ACTIVE')}
                             color="success"
                             size="small"
                           />
-                        </Box>
-                        
-                        <Typography variant="body2" color="text.secondary">
-                          {t('infrastructure.PROVIDER')}: {subscription.providerTeamName || t('infrastructure.UNKNOWN')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('infrastructure.FACILITY')}: {subscription.providerFacility || t('infrastructure.UNKNOWN')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {t('infrastructure.ANNUAL_FEE')}: ${subscription.annualFee || 0}
-                        </Typography>
-                        {subscription.nextBillingDate && (
-                          <Typography variant="body2" color="text.secondary">
-                            {t('infrastructure.NEXT_BILLING')}: {new Date(subscription.nextBillingDate).toLocaleDateString()}
-                          </Typography>
-                        )}
-                        
-                        <Button
-                          size="small"
-                          color="error"
-                          onClick={() => handleCancelSubscription(subscription.id)}
-                          sx={{ mt: 2 }}
-                        >
-                          {t('infrastructure.CANCEL_SUBSCRIPTION')}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </GridLegacy>
-              ))}
-            </GridLegacy>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            size="small"
+                            color="error"
+                            startIcon={<CancelIcon />}
+                            onClick={() => handleCancelSubscription(subscription.id)}
+                          >
+                            {t('infrastructure.CANCEL')}
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           )}
           
           <Typography variant="subtitle1" gutterBottom sx={{ mt: 3, mb: 1 }}>
@@ -421,6 +447,10 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                   <TableRow>
                     <TableCell>{t('infrastructure.SERVICE_TYPE')}</TableCell>
                     <TableCell>{t('infrastructure.PROVIDER')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER_FACILITY')}</TableCell>
+                    <TableCell>{t('infrastructure.PROVIDER_TILE')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER_FACILITY')}</TableCell>
+                    <TableCell>{t('infrastructure.CONSUMER_TILE')}</TableCell>
                     <TableCell>{t('infrastructure.ANNUAL_FEE')}</TableCell>
                     <TableCell>{t('infrastructure.STATUS')}</TableCell>
                     <TableCell>{t('infrastructure.ACTIONS')}</TableCell>
@@ -438,6 +468,30 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                         </Box>
                       </TableCell>
                       <TableCell>{request.providerTeamName || t('infrastructure.UNKNOWN')}</TableCell>
+                      <TableCell>{
+                        typeof request.providerFacility === 'string'
+                          ? t(`infrastructure.${request.providerFacility}`)
+                          : request.providerFacility?.facilityType
+                            ? t(`infrastructure.${request.providerFacility.facilityType}`)
+                            : '-'
+                      }</TableCell>
+                      <TableCell>{
+                        request.providerFacilityTileId ||
+                        (typeof request.providerFacility === 'object' ? request.providerFacility?.tileId : undefined) ||
+                        '-'
+                      }</TableCell>
+                      <TableCell>{
+                        typeof request.consumerFacility === 'string'
+                          ? t(`infrastructure.${request.consumerFacility}`)
+                          : request.consumerFacility?.facilityType
+                            ? t(`infrastructure.${request.consumerFacility.facilityType}`)
+                            : '-'
+                      }</TableCell>
+                      <TableCell>{
+                        request.consumerFacilityTileId ||
+                        (typeof request.consumerFacility === 'object' ? request.consumerFacility?.tileId : undefined) ||
+                        '-'
+                      }</TableCell>
                       <TableCell>${request.annualFee}</TableCell>
                       <TableCell>
                         <Chip 
@@ -476,9 +530,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
             {t('infrastructure.MY_SERVICE_FACILITIES')}
           </Typography>
           
-          <GridLegacy container spacing={2} sx={{ mb: 3 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 3 }}>
             {providerFacilities.map((facility) => (
-              <GridLegacy key={facility.facilityId} item xs={12} md={6}>
+              <Box key={facility.facilityId} sx={{ flex: '1 1 calc(50% - 16px)', minWidth: '300px' }}>
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -505,9 +559,9 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                     </Box>
                   </CardContent>
                 </Card>
-              </GridLegacy>
+              </Box>
             ))}
-          </GridLegacy>
+          </Box>
           
           {/* Active Provider Subscriptions */}
           <Typography variant="subtitle1" gutterBottom sx={{ mt: 3, mb: 1 }}>
@@ -528,7 +582,6 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                     <TableCell>{t('infrastructure.FACILITY')}</TableCell>
                     <TableCell>{t('infrastructure.LOCATION')}</TableCell>
                     <TableCell>{t('infrastructure.ANNUAL_FEE')}</TableCell>
-                    <TableCell>{t('infrastructure.NEXT_BILLING')}</TableCell>
                     <TableCell>{t('infrastructure.STATUS')}</TableCell>
                   </TableRow>
                 </TableHead>
@@ -539,14 +592,31 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           {getServiceIcon(subscription.serviceType)}
                           <Typography variant="body2">
-                            {t(subscription.serviceType)}
+                            {t(`infrastructure.${subscription.serviceType}`)}
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell>{subscription.consumerFacility?.teamName || t('infrastructure.UNKNOWN')}</TableCell>
-                      <TableCell>{subscription.consumerFacility?.facilityType || t('infrastructure.UNKNOWN')}</TableCell>
+                      <TableCell>{
+                        typeof subscription.consumerFacility === 'object' && subscription.consumerFacility?.teamName
+                          ? subscription.consumerFacility.teamName
+                          : t('infrastructure.UNKNOWN')
+                      }</TableCell>
+                      <TableCell>{
+                        typeof subscription.consumerFacility === 'string'
+                          ? t(`infrastructure.${subscription.consumerFacility}`)
+                          : subscription.consumerFacility && typeof subscription.consumerFacility === 'object' && subscription.consumerFacility.facilityType
+                            ? t(`infrastructure.${subscription.consumerFacility.facilityType}`)
+                            : t('infrastructure.UNKNOWN')
+                      }</TableCell>
                       <TableCell>
-                        {subscription.consumerFacility?.location ? (
+                        {(typeof subscription.consumerFacility === 'object' && subscription.consumerFacility?.tileId) ? (
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" color="action" />
+                            <Typography variant="body2">
+                              {t('infrastructure.TILE')} {subscription.consumerFacility.tileId}
+                            </Typography>
+                          </Box>
+                        ) : (typeof subscription.consumerFacility === 'object' && subscription.consumerFacility?.location) ? (
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <LocationIcon fontSize="small" color="action" />
                             <Typography variant="body2">
@@ -560,11 +630,6 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                           <MoneyIcon fontSize="small" color="action" />
                           ${subscription.annualFee}
                         </Box>
-                      </TableCell>
-                      <TableCell>
-                        {subscription.nextBillingDate 
-                          ? new Date(subscription.nextBillingDate).toLocaleDateString() 
-                          : '-'}
                       </TableCell>
                       <TableCell>
                         <Chip 
@@ -621,10 +686,27 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
                           </Typography>
                         </Box>
                       </TableCell>
-                      <TableCell>{request.consumerFacility?.teamName || t('infrastructure.UNKNOWN')}</TableCell>
-                      <TableCell>{request.consumerFacility?.facilityType || t('infrastructure.UNKNOWN')}</TableCell>
+                      <TableCell>{
+                        typeof request.consumerFacility === 'object' && request.consumerFacility?.teamName
+                          ? request.consumerFacility.teamName
+                          : t('infrastructure.UNKNOWN')
+                      }</TableCell>
+                      <TableCell>{
+                        typeof request.consumerFacility === 'string'
+                          ? t(`infrastructure.${request.consumerFacility}`)
+                          : request.consumerFacility && typeof request.consumerFacility === 'object' && request.consumerFacility.facilityType
+                            ? t(`infrastructure.${request.consumerFacility.facilityType}`)
+                            : t('infrastructure.UNKNOWN')
+                      }</TableCell>
                       <TableCell>
-                        {request.consumerFacility?.location ? (
+                        {(typeof request.consumerFacility === 'object' && request.consumerFacility?.tileId) ? (
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <LocationIcon fontSize="small" color="action" />
+                            <Typography variant="body2">
+                              {t('infrastructure.TILE')} {request.consumerFacility.tileId}
+                            </Typography>
+                          </Box>
+                        ) : (typeof request.consumerFacility === 'object' && request.consumerFacility?.location) ? (
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                             <LocationIcon fontSize="small" color="action" />
                             <Typography variant="body2">
@@ -671,10 +753,13 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
         <DialogTitle>{t('infrastructure.ACCEPT_SERVICE_REQUEST')}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" gutterBottom>
-            {t('infrastructure.ACCEPTING_REQUEST_FROM')}: {selectedRequest?.consumerFacility?.teamName}
+            {t('infrastructure.ACCEPTING_REQUEST_FROM')}: {
+              (typeof selectedRequest?.consumerFacility === 'object' && selectedRequest?.consumerFacility?.teamName) ||
+              selectedRequest?.providerTeamName
+            }
           </Typography>
           <Typography variant="body2" gutterBottom>
-            {t('infrastructure.SERVICE_TYPE')}: {selectedRequest && t(selectedRequest.serviceType)}
+            {t('infrastructure.SERVICE_TYPE')}: {selectedRequest && t(`infrastructure.${selectedRequest.serviceType}`)}
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ mt: 2 }}>
             {t('infrastructure.ACCEPT_SERVICE_CONFIRMATION')}
@@ -703,10 +788,13 @@ const ServiceManager: React.FC<ServiceManagerProps> = ({ facilities, onUpdate })
         <DialogTitle>{t('infrastructure.REJECT_SERVICE_REQUEST')}</DialogTitle>
         <DialogContent>
           <Typography variant="body2" gutterBottom>
-            {t('infrastructure.REJECTING_REQUEST_FROM')}: {selectedRequest?.consumerFacility?.teamName}
+            {t('infrastructure.REJECTING_REQUEST_FROM')}: {
+              (typeof selectedRequest?.consumerFacility === 'object' && selectedRequest?.consumerFacility?.teamName) ||
+              selectedRequest?.providerTeamName
+            }
           </Typography>
           <Typography variant="body2" gutterBottom>
-            {t('infrastructure.SERVICE_TYPE')}: {selectedRequest && t(selectedRequest.serviceType)}
+            {t('infrastructure.SERVICE_TYPE')}: {selectedRequest && t(`infrastructure.${selectedRequest.serviceType}`)}
           </Typography>
           <TextField
             autoFocus

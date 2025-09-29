@@ -209,9 +209,23 @@ const BuildFacilityModalSimplified: React.FC<BuildFacilityModalSimplifiedProps> 
       onSuccess(facility);
       onClose();
 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Build failed:', err);
-      setError(t('facilityManagement.FACILITY_CREATE_ERROR'));
+
+      // Handle specific business error codes
+      if (err.businessCode === 4002) {
+        // Duplicate facility error
+        const facilityType = err.details?.facilityType || selectedFacilityType;
+        setError(t('facilityManagement.DUPLICATE_FACILITY_ERROR', {
+          facilityType: facilityType
+        }));
+      } else if (err.message) {
+        // Use the backend error message if available
+        setError(err.message);
+      } else {
+        // Fallback to generic error
+        setError(t('facilityManagement.FACILITY_CREATE_ERROR'));
+      }
     } finally {
       setBuilding(false);
     }

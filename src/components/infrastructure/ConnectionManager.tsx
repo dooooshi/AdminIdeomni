@@ -283,7 +283,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{connection.providerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {connection.providerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {connection.providerFacility?.level || 0})
+                            {connection.providerFacility?.facilityType ? t(`infrastructure.${connection.providerFacility.facilityType}`) : '-'} ({t('infrastructure.LEVEL')} {connection.providerFacility?.level || 0})
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Tile ID: {connection.providerFacility?.tileId || '-'}
                           </Typography>
                         </Box>
                       </TableCell>
@@ -350,7 +353,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{request.providerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {request.providerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {request.providerFacility?.level || 0})
+                            {request.providerFacility?.facilityType ? t(`infrastructure.${request.providerFacility.facilityType}`) : '-'} ({t('infrastructure.LEVEL')} {request.providerFacility?.level || 0})
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Tile ID: {request.providerFacility?.tileId || '-'}
                           </Typography>
                         </Box>
                       </TableCell>
@@ -431,7 +437,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{connection.consumerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {connection.consumerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {connection.consumerFacility?.level || 0})
+                            {connection.consumerFacility?.facilityType ? t(`infrastructure.${connection.consumerFacility.facilityType}`) : '-'} ({t('infrastructure.LEVEL')} {connection.consumerFacility?.level || 0})
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Tile ID: {connection.consumerFacility?.tileId || '-'}
                           </Typography>
                         </Box>
                       </TableCell>
@@ -498,7 +507,10 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
                         <Box>
                           <Typography variant="body2">{request.consumerTeam?.name || '-'}</Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {request.consumerFacility?.facilityType || '-'} ({t('infrastructure.LEVEL')} {request.consumerFacility?.level || 0})
+                            {request.consumerFacility?.facilityType ? t(`infrastructure.${request.consumerFacility.facilityType}`) : '-'} ({t('infrastructure.LEVEL')} {request.consumerFacility?.level || 0})
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            Tile ID: {request.consumerFacility?.tileId || '-'}
                           </Typography>
                         </Box>
                       </TableCell>

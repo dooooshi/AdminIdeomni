@@ -107,38 +107,52 @@ export interface UpdateTransportationConfigDto extends CreateTransportationConfi
 
 export interface TransportationOrder {
   id: string;
+  orderId?: string;
   configId: string;
-  
+
   sourceInventoryId: string;
   sourceFacilityId: string;
+  sourceFacility?: string;
+  sourceFacilityType?: string;
+  sourceTileId?: number;
   destInventoryId: string;
   destFacilityId: string;
-  
+  destFacility?: string;
+  destFacilityType?: string;
+  destTileId?: number;
+
   inventoryItemId: string;
   itemType: InventoryItemType;
+  itemName?: string;
   rawMaterialId?: number;
   productFormulaId?: number;
-  
+
   quantity: number;
   unitSpaceOccupied: number;
   totalSpaceTransferred: number;
-  
+
   tier: string;
   hexDistance: number;
   transportCostUnits: number;
   distanceCategory: string;
-  
+
   unitCost: number;
   totalGoldCost: number;
+  totalCost?: string;
   carbonEmissionRate: number;
   totalCarbonEmission: number;
-  
+  carbonEmission?: string;
+
   senderTeamId: string;
   receiverTeamId: string;
+  otherTeam?: string;
   initiatedBy: string;
   activityId: string;
-  
-  status: TransportStatus;
+  role?: string;
+
+  status: TransportStatus | string;
+  statusCode?: string;
+  timestamp?: string;
   completedAt: string;
   metadata?: Record<string, unknown>;
   createdAt: string;

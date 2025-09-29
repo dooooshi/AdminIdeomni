@@ -234,55 +234,6 @@ function TeamDashboard() {
               </div>
             </div>
           </Paper>
-
-          {/* Actions */}
-          <div>
-            <Typography variant="h6" className="font-medium text-gray-900 dark:text-white mb-6">
-              {t('teamManagement.ACTIONS')}
-            </Typography>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/transfers')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.TRANSFER_RESOURCES')}</div>
-                  <div className="text-sm opacity-70 mt-1">{t('teamManagement.SEND_RESOURCES_TO_MEMBERS')}</div>
-                </div>
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/history')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.VIEW_HISTORY')}</div>
-                  <div className="text-sm opacity-70 mt-1">{t('teamManagement.REVIEW_TEAM_TRANSACTIONS')}</div>
-                </div>
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/transfers/gold')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.SEND_GOLD')}</div>
-                  <div className="text-sm opacity-70 mt-1">{t('teamManagement.TRANSFER_GOLD_RESOURCES')}</div>
-                </div>
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => router.push('/team-management/transfers/carbon')}
-                className="border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white justify-start p-6 h-auto"
-              >
-                <div className="text-left">
-                  <div className="font-medium">{t('teamManagement.SEND_CARBON')}</div>
-                  <div className="text-sm opacity-70 mt-1">{t('teamManagement.TRANSFER_CARBON_CREDITS')}</div>
-                </div>
-              </Button>
-            </div>
-          </div>
         </motion.div>
       </div>
 

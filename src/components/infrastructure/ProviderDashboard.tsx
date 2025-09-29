@@ -10,7 +10,6 @@ import {
   Alert,
   Chip,
 } from '@mui/material';
-import Grid from '@mui/material/GridLegacy';
 import {
   WaterDrop as WaterIcon,
   PowerSettingsNew as PowerIcon,
@@ -76,7 +75,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
         {t('infrastructure.YOUR_INFRASTRUCTURE_OPERATIONS')}
       </Typography>
       
-      <Grid container spacing={2}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {facilities.map((facility) => {
           const capacity = capacityData.get(facility.facilityId);
           const utilizationPercentage = capacity 
@@ -84,7 +83,7 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
             : 0;
             
           return (
-            <Grid key={`provider-${facility.facilityId}`} item xs={12} md={6}>
+            <Box key={`provider-${facility.facilityId}`} sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '300px' }}>
               <Card>
                 <CardContent>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -92,11 +91,19 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                     <Typography variant="h6">
                       {t(`infrastructure.${facility.facilityType}`)}
                     </Typography>
-                    <Chip 
+                    <Chip
                       label={`${t('infrastructure.LEVEL')} ${facility.level}`}
                       size="small"
                       color="primary"
                     />
+                    {facility.tileCoordinates && (
+                      <Chip
+                        label={`${t('infrastructure.COORDINATES')}: (${facility.tileCoordinates.q}, ${facility.tileCoordinates.r})`}
+                        size="small"
+                        color="default"
+                        variant="outlined"
+                      />
+                    )}
                   </Box>
 
                   {capacity && (
@@ -140,10 +147,10 @@ const ProviderDashboard: React.FC<ProviderDashboardProps> = ({ facilities, onUpd
                   )}
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           );
         })}
-      </Grid>
+      </Box>
     </Box>
   );
 };

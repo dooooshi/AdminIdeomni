@@ -184,7 +184,6 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
                     <TableCell align="center">{t('production.materials.gold')}</TableCell>
                     <TableCell align="center">{t('production.materials.totalCost')}</TableCell>
                     <TableCell align="center">{t('production.materials.carbon')}</TableCell>
-                    <TableCell align="center">{t('production.materials.status')}</TableCell>
                     <TableCell align="center">{t('common.actions')}</TableCell>
                   </TableRow>
                 </TableHead>
@@ -251,14 +250,6 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
                         </Box>
                       </TableCell>
                       <TableCell align="center">
-                        <Chip
-                          label={material.isActive ? t('common.active') : t('common.inactive')}
-                          size="small"
-                          color={material.isActive ? 'success' : 'default'}
-                          variant={material.isActive ? 'filled' : 'outlined'}
-                        />
-                      </TableCell>
-                      <TableCell align="center">
                         <Tooltip title={t('production.produce')}>
                           <IconButton
                             size="small"
@@ -274,7 +265,7 @@ const MaterialsTable: React.FC<MaterialsTableProps> = ({
                   ))}
                   {materials.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={10} align="center">
+                      <TableCell colSpan={9} align="center">
                         <Typography variant="body2" color="text.secondary" sx={{ py: 2 }}>
                           {t('production.materials.noData')}
                         </Typography>

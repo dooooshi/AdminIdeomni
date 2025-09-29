@@ -295,8 +295,30 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 	}
 
 
-	// Add Team Management (Collaborate with your team) only for Students (userType: 3)
+	// Add Announcements at the top for Students (userType: 3)
 	if (regularUserType === 3) {
+		navigation.push({
+			id: 'announcements',
+			title: 'Announcements',
+			subtitle: 'View important announcements',
+			type: 'group',
+			icon: 'heroicons-outline:bell',
+			translate: 'ANNOUNCEMENTS',
+			translateSubtitle: 'ANNOUNCEMENTS_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'announcements.view',
+					title: 'View Announcements',
+					type: 'item',
+					icon: 'heroicons-outline:bell',
+					url: '/student/announcements',
+					translate: 'VIEW_ANNOUNCEMENTS',
+					auth: ['user']
+				}
+			]
+		});
+
 		navigation.push({
 			id: 'team-management',
 			title: 'Team Management',
@@ -435,15 +457,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 							auth: ['user']
 						}
 					]
-				},
-				{
-					id: 'team-management.announcements',
-					title: 'Announcements',
-					type: 'item',
-					icon: 'heroicons-outline:bell',
-					url: '/student/announcements',
-					translate: 'ANNOUNCEMENTS',
-					auth: ['user']
 				}
 			]
 		});
@@ -662,8 +675,30 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 		});
 	}
 
-	// Add Team Administration for Managers (userType: 1)
+	// Add Announcements at the top for Managers (userType: 1)
 	if (regularUserType === 1) {
+		navigation.push({
+			id: 'announcements',
+			title: 'Announcements',
+			subtitle: 'Manage announcements',
+			type: 'group',
+			icon: 'heroicons-outline:megaphone',
+			translate: 'ANNOUNCEMENTS',
+			translateSubtitle: 'ANNOUNCEMENTS_MANAGER_SUBTITLE',
+			auth: ['user'],
+			children: [
+				{
+					id: 'announcements.manage',
+					title: 'Manage Announcements',
+					type: 'item',
+					icon: 'heroicons-outline:megaphone',
+					url: '/manager/announcements',
+					translate: 'MANAGE_ANNOUNCEMENTS',
+					auth: ['user']
+				}
+			]
+		});
+
 		navigation.push({
 			id: 'team-administration',
 			title: 'Team Administration',
@@ -699,15 +734,6 @@ export function getUserNavigationConfig(regularUserType?: 1 | 2 | 3): IdeomniNav
 					icon: 'heroicons-outline:currency-dollar',
 					url: '/team-administration/accounts',
 					translate: 'TEAM_ACCOUNTS',
-					auth: ['user']
-				},
-				{
-					id: 'team-administration.announcements',
-					title: 'Announcements',
-					type: 'item',
-					icon: 'heroicons-outline:megaphone',
-					url: '/manager/announcements',
-					translate: 'ANNOUNCEMENTS',
 					auth: ['user']
 				}
 			]

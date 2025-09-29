@@ -143,6 +143,7 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
               <TableRow>
                 <TableCell>{t('infrastructure.FACILITY')}</TableCell>
                 <TableCell>{t('infrastructure.TYPE')}</TableCell>
+                <TableCell>{t('infrastructure.COORDINATES')}</TableCell>
                 <TableCell align="center">
                   <WaterIcon fontSize="small" /> {t('infrastructure.WATER')}
                 </TableCell>
@@ -173,6 +174,11 @@ const InfrastructureOverview: React.FC<InfrastructureOverviewProps> = ({
                   <TableCell>
                     <Typography variant="body2">
                       {t(`infrastructure.${facility.facilityType}`)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2">
+                      {facility.tileCoordinates ? `(${facility.tileCoordinates.q}, ${facility.tileCoordinates.r})` : '-'}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">

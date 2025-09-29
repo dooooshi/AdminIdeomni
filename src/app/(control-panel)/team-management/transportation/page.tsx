@@ -808,7 +808,9 @@ export default function TransportationPage() {
               <TableRow>
                 <TableCell align="center">{t('common.DATE')}</TableCell>
                 <TableCell align="center">{t('transportation.FROM')}</TableCell>
+                <TableCell align="center">{t('transportation.FROM_TILE')}</TableCell>
                 <TableCell align="center">{t('transportation.TO')}</TableCell>
+                <TableCell align="center">{t('transportation.TO_TILE')}</TableCell>
                 <TableCell align="center">{t('transportation.ITEM')}</TableCell>
                 <TableCell align="center">{t('transportation.QUANTITY')}</TableCell>
                 <TableCell align="center">{t('transportation.TIER')}</TableCell>
@@ -823,7 +825,9 @@ export default function TransportationPage() {
                     {new Date(order.timestamp || order.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="center">{order.sourceFacility || order.sourceFacilityId || '-'}</TableCell>
+                  <TableCell align="center">{order.sourceTileId || '-'}</TableCell>
                   <TableCell align="center">{order.destFacility || order.destFacilityId || '-'}</TableCell>
+                  <TableCell align="center">{order.destTileId || '-'}</TableCell>
                   <TableCell align="center">{order.itemName || order.itemType || '-'}</TableCell>
                   <TableCell align="center">{order.quantity || 0}</TableCell>
                   <TableCell align="center">

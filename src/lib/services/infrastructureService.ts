@@ -289,20 +289,30 @@ export interface Connection {
 }
 
 export interface ServiceSubscription {
-  id: string; // Changed from subscriptionId
+  id: string;
   serviceType: string; // Can be 'BASE_STATION' or 'FIRE_STATION'
-  // For consumer view
+
+  // Consumer View uses flat structure
   providerTeamId?: string;
   providerTeamName?: string;
-  providerFacility?: string;
-  // For provider view
-  consumerFacility?: {
+  providerFacility?: string | {
+    facilityId: string;
+    facilityType: string;
+    tileId: number;
+  };
+  providerFacilityTileId?: number;
+
+  // Both views have consumer facility info, but in different formats
+  consumerFacility?: string | {
     facilityId: string;
     teamId: string;
     teamName: string;
     facilityType: string;
+    tileId: number;
     location?: Coordinates;
   };
+  consumerFacilityTileId?: number;
+
   annualFee: number;
   status: SubscriptionStatus | string;
   requestedAt?: string;
