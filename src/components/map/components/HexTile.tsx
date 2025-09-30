@@ -394,9 +394,36 @@ const HexTile: React.FC<HexTileProps> = ({
 							</Box>
 						)}
 
+						{/* Available Area for Purchase (Student Land Management) */}
+						{tile.availableArea !== undefined && tile.availableArea !== null && typeof tile.availableArea === 'number' && (
+							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+								<Typography
+									variant="caption"
+									sx={{
+										color: 'text.secondary',
+										fontSize: '0.75rem',
+										fontWeight: 500
+									}}
+								>
+									{t('map.AVAILABLE_LAND')}:
+								</Typography>
+								<Typography
+									variant="caption"
+									sx={{
+										color: tile.availableArea > 0 ? 'info.main' : 'text.disabled',
+										fontSize: '0.75rem',
+										fontWeight: 600,
+										fontFamily: 'monospace'
+									}}
+								>
+									{tile.availableArea} {t('map.UNITS')}
+								</Typography>
+							</Box>
+						)}
+
 						{tile.currentPopulation !== undefined && tile.currentPopulation !== null && typeof tile.currentPopulation === 'number' && (
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-								<Typography 
+								<Typography
 									variant="caption" 
 									sx={{ 
 										color: 'text.secondary',

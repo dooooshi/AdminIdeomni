@@ -462,6 +462,7 @@ export class MapTemplateService {
   /**
    * Get default land type configuration values
    * NEW: Updated for dual pricing system - all tiles start with zero pricing
+   * NEW: Added availableLand defaults based on land type
    */
   static getDefaultConfiguration(landType: 'MARINE' | 'COASTAL' | 'PLAIN' | 'GRASSLANDS' | 'FORESTS' | 'HILLS' | 'MOUNTAINS' | 'PLATEAUS' | 'DESERTS' | 'WETLANDS') {
     const defaults = {
@@ -471,6 +472,8 @@ export class MapTemplateService {
         initialCarbonPrice: 0.0,
         initialPopulation: 0,
         transportationCostUnit: 8.00,
+        // NEW: Available land for student purchases (marine tiles cannot be purchased)
+        availableLand: 0,
       },
       COASTAL: {
         // NEW: Dual pricing system
@@ -478,6 +481,7 @@ export class MapTemplateService {
         initialCarbonPrice: 0.0,
         initialPopulation: 500,
         transportationCostUnit: 5.00,
+        availableLand: 8,
       },
       PLAIN: {
         // NEW: Dual pricing system
@@ -485,48 +489,56 @@ export class MapTemplateService {
         initialCarbonPrice: 0.0,
         initialPopulation: 1000,
         transportationCostUnit: 3.00,
+        availableLand: 10,
       },
       GRASSLANDS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 800,
         transportationCostUnit: 3.50,
+        availableLand: 10,
       },
       FORESTS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 300,
         transportationCostUnit: 4.50,
+        availableLand: 5,
       },
       HILLS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 400,
         transportationCostUnit: 5.50,
+        availableLand: 3,
       },
       MOUNTAINS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 100,
         transportationCostUnit: 7.00,
+        availableLand: 2,
       },
       PLATEAUS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 600,
         transportationCostUnit: 4.00,
+        availableLand: 8,
       },
       DESERTS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 50,
         transportationCostUnit: 6.00,
+        availableLand: 3,
       },
       WETLANDS: {
         initialGoldPrice: 0.0,
         initialCarbonPrice: 0.0,
         initialPopulation: 200,
         transportationCostUnit: 5.00,
+        availableLand: 8,
       }
     };
     return defaults[landType];
@@ -771,6 +783,7 @@ export class MapTemplateService {
   /**
    * Validate tile configuration values
    * NEW: Updated for dual pricing system
+   * NEW: Added availableLand validation
    */
   static validateTileConfiguration(config: UpdateTileDto): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
@@ -792,7 +805,6 @@ export class MapTemplateService {
       }
     }
 
-
     if (config.initialPopulation !== undefined) {
       if (config.initialPopulation < 0) {
         errors.initialPopulation = 'Population cannot be negative';
@@ -809,6 +821,16 @@ export class MapTemplateService {
       }
     }
 
+    // NEW: Available land validation
+    if (config.availableLand !== undefined) {
+      if (config.availableLand < 0) {
+        errors.availableLand = 'Available land cannot be negative';
+      } else if (config.availableLand > 1000) {
+        errors.availableLand = 'Available land cannot exceed 1000 units';
+      }
+      // Note: Marine tiles should have availableLand = 0, but this is enforced at the UI level
+    }
+
     return {
       isValid: Object.keys(errors).length === 0,
       errors
@@ -818,6 +840,7 @@ export class MapTemplateService {
   /**
    * Validate bulk tile update parameters for dual pricing system
    * NEW: Updated to support gold/carbon pricing
+   * NEW: Added availableLand validation
    */
   static validateBulkTileUpdateByLandType(updateData: BulkUpdateTilesByLandTypeDto): { isValid: boolean; errors: Record<string, string> } {
     const errors: Record<string, string> = {};
@@ -865,6 +888,14 @@ export class MapTemplateService {
       const transportValidation = this.validateTileConfiguration({ transportationCostUnit: updateData.fixedTransportationCost });
       if (!transportValidation.isValid && transportValidation.errors.transportationCostUnit) {
         errors.fixedTransportationCost = transportValidation.errors.transportationCostUnit;
+      }
+    }
+
+    // NEW: Validate fixedAvailableLand
+    if (updateData.fixedAvailableLand !== undefined) {
+      const availableLandValidation = this.validateTileConfiguration({ availableLand: updateData.fixedAvailableLand });
+      if (!availableLandValidation.isValid && availableLandValidation.errors.availableLand) {
+        errors.fixedAvailableLand = availableLandValidation.errors.availableLand;
       }
     }
 

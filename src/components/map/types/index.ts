@@ -9,6 +9,8 @@ export interface MapTile {
 	initialCarbonPrice?: number;
 	initialPopulation?: number;
 	transportationCostUnit?: number;
+	// NEW: Available land limit for student purchases (shared across all teams)
+	availableLand?: number; // Total available land units for purchase on this tile
 	// Economic data for activity mode (backward compatibility)
 	currentPrice?: number; // Deprecated: use currentGoldPrice
 	currentGoldPrice?: number;
@@ -157,6 +159,8 @@ export interface CreateTileDto {
 	initialCarbonPrice?: number;
 	initialPopulation?: number;
 	transportationCostUnit?: number;
+	// NEW: Available land limit configuration
+	availableLand?: number;
 }
 
 export interface UpdateTileDto {
@@ -166,6 +170,8 @@ export interface UpdateTileDto {
 	initialCarbonPrice?: number;
 	initialPopulation?: number;
 	transportationCostUnit?: number;
+	// NEW: Available land limit configuration
+	availableLand?: number;
 }
 
 export interface ActivityTileState {
@@ -234,12 +240,14 @@ export interface BulkUpdateTilesByLandTypeDto {
 	carbonPriceMultiplier?: number;
 	populationMultiplier?: number;
 	transportationCostMultiplier?: number;
-	
+
 	// Fixed value updates (absolute values - overrides multipliers)
 	fixedGoldPrice?: number;
 	fixedCarbonPrice?: number;
 	fixedPopulation?: number;
 	fixedTransportationCost?: number;
+	// NEW: Available land limit configuration
+	fixedAvailableLand?: number;
 }
 
 export interface MapTileBulkUpdateResponseDto {

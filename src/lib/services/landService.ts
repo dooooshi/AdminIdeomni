@@ -371,16 +371,15 @@ export class LandService {
   // ==========================================
 
   /**
-   * Get effective available area - Updated for unlimited purchases
+   * Get effective available area - Use actual value from API
    */
   static getEffectiveAvailableArea(tile: AvailableTile): number {
-    // NEW: If backend hasn't been updated yet, we simulate unlimited area
-    // Backend should return 999999 for unlimited, but we handle legacy data
-    if (tile.availableArea && tile.availableArea >= 999000) {
-      return 999999; // Unlimited
+    // Return the actual availableArea from the API response
+    // If undefined or null, return 0
+    if (tile.availableArea !== undefined && tile.availableArea !== null) {
+      return tile.availableArea;
     }
-    // For display purposes, treat any tile as having unlimited area
-    return 999999;
+    return 0;
   }
 
   /**

@@ -259,9 +259,17 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
 
           {/* Area Selection */}
           <Box>
-            <Typography variant="body2" color="text.secondary" mb={1.5} sx={{ fontSize: '13px' }}>
-              {t('land.AREA')}
-            </Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="baseline" mb={1.5}>
+              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '13px' }}>
+                {t('land.AREA')}
+              </Typography>
+              {/* Display available area from API */}
+              {tile.availableArea !== undefined && (
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '12px' }}>
+                  {t('land.AVAILABLE')}: {tile.availableArea} {t('land.UNITS')}
+                </Typography>
+              )}
+            </Box>
             <Typography variant="h6" fontWeight={300} mb={2} sx={{ fontSize: '24px' }}>
               {area} {area === 1 ? t('land.UNIT') : t('land.UNITS')}
             </Typography>
@@ -269,9 +277,9 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
               value={area}
               onChange={handleAreaChange}
               min={1}
-              max={6}
+              max={Math.min(6, tile.availableArea || 6)} // Limit slider to available area
               step={1}
-              disabled={purchasing}
+              disabled={purchasing || (tile.availableArea !== undefined && tile.availableArea === 0)}
               sx={{
                 '& .MuiSlider-thumb': {
                   width: 16,
@@ -289,6 +297,19 @@ const LandPurchaseModal: React.FC<LandPurchaseModalProps> = ({
                 },
               }}
             />
+            {/* Show warning if no available area */}
+            {tile.availableArea === 0 && (
+              <Alert
+                severity="warning"
+                sx={{
+                  mt: 1,
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                }}
+              >
+                {t('land.NO_AVAILABLE_AREA')}
+              </Alert>
+            )}
           </Box>
 
           {/* Cost Display */}

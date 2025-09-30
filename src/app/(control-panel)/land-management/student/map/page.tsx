@@ -501,7 +501,7 @@ const StudentLandMapPage: React.FC<StudentLandMapPageProps> = () => {
         currentPopulation: tile.currentPopulation ?? undefined, // Ensure null becomes undefined
         // Additional properties for visualization
         isOwned: (tile.teamOwnedArea || 0) > 0,
-        availableArea: LandService.getEffectiveAvailableArea(tile), // NEW: Unlimited area
+        availableArea: tile.availableArea ?? 0, // Use actual availableArea from API response
         canPurchase: tile.canPurchase,
         totalCost: goldPrice + carbonPrice,
       };

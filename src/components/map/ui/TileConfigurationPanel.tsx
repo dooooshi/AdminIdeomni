@@ -44,6 +44,7 @@ import {
   People as PeopleIcon,
   LocalShipping as LocalShippingIcon,
   Info as InfoIcon,
+  Landscape as LandscapeIcon, // NEW: Icon for available land
 } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
@@ -95,6 +96,8 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
         initialCarbonPrice: selectedTile.initialCarbonPrice ?? defaults.initialCarbonPrice,
         initialPopulation: selectedTile.initialPopulation ?? defaults.initialPopulation,
         transportationCostUnit: selectedTile.transportationCostUnit ?? defaults.transportationCostUnit,
+        // NEW: Available land configuration
+        availableLand: selectedTile.availableLand ?? defaults.availableLand,
       };
       setFormData(initialData);
       setOriginalData(initialData);
@@ -141,9 +144,14 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
             : t('map.VALIDATION_POPULATION_TOO_HIGH');
           break;
         case 'transportationCostUnit':
-          errors.transportationCostUnit = message.includes('negative') 
-            ? t('map.VALIDATION_TRANSPORT_NEGATIVE') 
+          errors.transportationCostUnit = message.includes('negative')
+            ? t('map.VALIDATION_TRANSPORT_NEGATIVE')
             : t('map.VALIDATION_TRANSPORT_TOO_HIGH');
+          break;
+        case 'availableLand':
+          errors.availableLand = message.includes('negative')
+            ? t('map.VALIDATION_AVAILABLE_LAND_NEGATIVE')
+            : t('map.VALIDATION_AVAILABLE_LAND_TOO_HIGH');
           break;
         default:
           errors[field] = message;
@@ -198,6 +206,8 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
         initialCarbonPrice: defaults.initialCarbonPrice,
         initialPopulation: defaults.initialPopulation,
         transportationCostUnit: defaults.transportationCostUnit,
+        // NEW: Available land configuration
+        availableLand: defaults.availableLand,
       };
       // Check if the data has changed compared to original
       setHasChanges(JSON.stringify(updated) !== JSON.stringify(originalData));
@@ -408,6 +418,31 @@ const TileConfigurationPanel: React.FC<TileConfigurationPanelProps> = ({
                   startAdornment: (
                     <InputAdornment position="start">
                       <LocalShippingIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+
+            {/* NEW: Available Land Configuration */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label={t('map.AVAILABLE_LAND')}
+                type="number"
+                value={formData.availableLand || ''}
+                onChange={(e) => handleFieldChange('availableLand', e.target.value === '' ? undefined : parseInt(e.target.value))}
+                disabled={readOnly || formData.landType === 'MARINE'}
+                error={!!validationErrors.availableLand}
+                helperText={
+                  formData.landType === 'MARINE'
+                    ? t('map.MARINE_TILES_CANNOT_BE_PURCHASED')
+                    : validationErrors.availableLand || t('map.AVAILABLE_LAND_HELP_TEXT')
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LandscapeIcon />
                     </InputAdornment>
                   ),
                 }}

@@ -40,6 +40,7 @@ import {
   AttachMoney as AttachMoneyIcon,
   People as PeopleIcon,
   LocalShipping as LocalShippingIcon,
+  Landscape as LandscapeIcon, // NEW: Icon for available land
 } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
@@ -75,6 +76,8 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
   const [fixedCarbonPrice, setFixedCarbonPrice] = useState<number | ''>('');
   const [fixedPopulation, setFixedPopulation] = useState<number | ''>('');
   const [fixedTransportCost, setFixedTransportCost] = useState<number | ''>('');
+  // NEW: Available land configuration
+  const [fixedAvailableLand, setFixedAvailableLand] = useState<number | ''>('');
 
   // Preset scenarios
   const [presetScenario, setPresetScenario] = useState<'reset' | 'custom'>('custom');
@@ -87,13 +90,16 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
 
   const handlePresetScenarioChange = (scenario: typeof presetScenario) => {
     setPresetScenario(scenario);
-    
+
     switch (scenario) {
       case 'reset':
+        const defaults = MapTemplateService.getDefaultConfiguration(selectedLandType);
         setFixedGoldPrice(0);
         setFixedCarbonPrice(0);
-        setFixedPopulation(MapTemplateService.getDefaultConfiguration(selectedLandType).initialPopulation);
-        setFixedTransportCost(MapTemplateService.getDefaultConfiguration(selectedLandType).transportationCostUnit);
+        setFixedPopulation(defaults.initialPopulation);
+        setFixedTransportCost(defaults.transportationCostUnit);
+        // NEW: Set available land to default based on land type
+        setFixedAvailableLand(defaults.availableLand);
         break;
       case 'custom':
         // Keep current values
@@ -108,6 +114,8 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
     if (fixedCarbonPrice !== '') updateData.fixedCarbonPrice = Number(fixedCarbonPrice);
     if (fixedPopulation !== '') updateData.fixedPopulation = Number(fixedPopulation);
     if (fixedTransportCost !== '') updateData.fixedTransportationCost = Number(fixedTransportCost);
+    // NEW: Include available land in update data
+    if (fixedAvailableLand !== '') updateData.fixedAvailableLand = Number(fixedAvailableLand);
 
     return updateData;
   };
@@ -184,6 +192,7 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
     setFixedCarbonPrice('');
     setFixedPopulation('');
     setFixedTransportCost('');
+    setFixedAvailableLand(''); // NEW: Reset available land
     setPresetScenario('custom');
   };
 
@@ -308,6 +317,25 @@ const BulkTileManagementPanel: React.FC<BulkTileManagementPanelProps> = ({
               onChange={(e) => setFixedTransportCost(e.target.value === '' ? '' : Number(e.target.value))}
               InputProps={{
                 startAdornment: <InputAdornment position="start"><LocalShippingIcon /></InputAdornment>,
+              }}
+            />
+          </Grid>
+
+          {/* NEW: Available Land field */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label={t('mapTemplate.FIXED_AVAILABLE_LAND')}
+              value={fixedAvailableLand}
+              onChange={(e) => setFixedAvailableLand(e.target.value === '' ? '' : Number(e.target.value))}
+              helperText={
+                selectedLandType === LandType.MARINE
+                  ? t('mapTemplate.MARINE_TILES_CANNOT_BE_PURCHASED')
+                  : t('mapTemplate.AVAILABLE_LAND_HELP_TEXT')
+              }
+              InputProps={{
+                startAdornment: <InputAdornment position="start"><LandscapeIcon /></InputAdornment>,
               }}
             />
           </Grid>
