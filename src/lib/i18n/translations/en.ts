@@ -4569,4 +4569,178 @@ export const enTranslations = {
   'time.monthAgo': '{{count}} month ago',
   'time.monthsAgo': '{{count}} months ago',
   'time.edited': '(edited)',
+
+  // Manager Team Status Dashboard
+  'manager.teamStatus.title.dashboard': 'Team Status Dashboard',
+  'manager.teamStatus.title.teamList': 'All Teams',
+  'manager.teamStatus.title.teamDetails': 'Team Details',
+  'manager.teamStatus.title.operations': 'Operation History',
+  'manager.teamStatus.title.facilities': 'Facilities',
+  'manager.teamStatus.title.landOwnership': 'Land Ownership',
+  'manager.teamStatus.title.members': 'Team Members',
+  'manager.teamStatus.title.balanceHistory': 'Balance History',
+
+  // Table Headers
+  'manager.teamStatus.table.header.teamName': 'Team Name',
+  'manager.teamStatus.table.header.leader': 'Team Leader',
+  'manager.teamStatus.table.header.members': 'Members',
+  'manager.teamStatus.table.header.goldBalance': 'Gold Balance',
+  'manager.teamStatus.table.header.carbonBalance': 'Carbon Balance',
+  'manager.teamStatus.table.header.status': 'Status',
+  'manager.teamStatus.table.header.lastActivity': 'Last Activity',
+  'manager.teamStatus.table.header.createdAt': 'Created Date',
+  'manager.teamStatus.table.header.actions': 'Actions',
+
+  // Table Cell Values
+  'manager.teamStatus.table.cell.memberCount': '{{current}}/{{max}} members',
+  'manager.teamStatus.table.cell.openStatus': 'Open',
+  'manager.teamStatus.table.cell.closedStatus': 'Closed',
+  'manager.teamStatus.table.cell.viewDetails': 'View Details',
+
+  // Filters
+  'manager.teamStatus.filter.label.search': 'Search teams...',
+  'manager.teamStatus.filter.label.status': 'Team Status',
+  'manager.teamStatus.filter.label.sortBy': 'Sort By',
+  'manager.teamStatus.filter.label.order': 'Order',
+  'manager.teamStatus.filter.option.allStatus': 'All Status',
+  'manager.teamStatus.filter.option.open': 'Open Teams',
+  'manager.teamStatus.filter.option.closed': 'Closed Teams',
+  'manager.teamStatus.filter.option.ascending': 'Ascending',
+  'manager.teamStatus.filter.option.descending': 'Descending',
+
+  // Team Detail Sections
+  'manager.teamStatus.detail.section.overview': 'Overview',
+  'manager.teamStatus.detail.section.financial': 'Financial Status',
+  'manager.teamStatus.detail.section.statistics': 'Statistics',
+  'manager.teamStatus.detail.section.recentActivity': 'Recent Activity',
+
+  // Detail Fields
+  'manager.teamStatus.detail.field.teamId': 'Team ID',
+  'manager.teamStatus.detail.field.description': 'Description',
+  'manager.teamStatus.detail.field.leader': 'Team Leader',
+  'manager.teamStatus.detail.field.createdAt': 'Created',
+  'manager.teamStatus.detail.field.updatedAt': 'Last Updated',
+  'manager.teamStatus.detail.field.goldBalance': 'Gold Balance',
+  'manager.teamStatus.detail.field.carbonBalance': 'Carbon Balance',
+  'manager.teamStatus.detail.field.totalMembers': 'Total Members',
+  'manager.teamStatus.detail.field.activeMembers': 'Active Members',
+  'manager.teamStatus.detail.field.totalLandOwned': 'Total Land Owned',
+  'manager.teamStatus.detail.field.totalFacilities': 'Total Facilities',
+  'manager.teamStatus.detail.field.activeFacilities': 'Active Facilities',
+
+  // Operation Types
+  'manager.teamStatus.operations.type.ACCOUNT_CREATED': 'Account Created',
+  'manager.teamStatus.operations.type.TRANSFER_OUT': 'Transfer Out',
+  'manager.teamStatus.operations.type.TRANSFER_IN': 'Transfer In',
+  'manager.teamStatus.operations.type.FACILITY_BUILD': 'Facility Built',
+  'manager.teamStatus.operations.type.FACILITY_UPGRADE': 'Facility Upgraded',
+  'manager.teamStatus.operations.type.LAND_PURCHASE': 'Land Purchased',
+  'manager.teamStatus.operations.type.RAW_MATERIAL_PRODUCTION': 'Raw Material Produced',
+  'manager.teamStatus.operations.type.PRODUCT_SALE': 'Product Sold',
+  'manager.teamStatus.operations.type.UTILITY_CONSUMPTION': 'Utility Consumed',
+  'manager.teamStatus.operations.type.TRADE_PURCHASE': 'Trade Purchase',
+
+  // Operation Columns
+  'manager.teamStatus.operations.column.date': 'Date',
+  'manager.teamStatus.operations.column.type': 'Operation Type',
+  'manager.teamStatus.operations.column.resource': 'Resource',
+  'manager.teamStatus.operations.column.amount': 'Amount',
+  'manager.teamStatus.operations.column.balance': 'Balance',
+  'manager.teamStatus.operations.column.operator': 'Operator',
+  'manager.teamStatus.operations.column.description': 'Description',
+
+  // Facility Status
+  'manager.teamStatus.facilities.status.UNDER_CONSTRUCTION': 'Under Construction',
+  'manager.teamStatus.facilities.status.ACTIVE': 'Active',
+  'manager.teamStatus.facilities.status.MAINTENANCE': 'Maintenance',
+  'manager.teamStatus.facilities.status.DAMAGED': 'Damaged',
+  'manager.teamStatus.facilities.status.DECOMMISSIONED': 'Decommissioned',
+
+  // Facility Categories
+  'manager.teamStatus.facilities.category.RAW_MATERIAL_PRODUCTION': 'Raw Material Production',
+  'manager.teamStatus.facilities.category.FUNCTIONAL': 'Functional Facilities',
+  'manager.teamStatus.facilities.category.INFRASTRUCTURE': 'Infrastructure',
+  'manager.teamStatus.facilities.category.POPULATION_GROWTH': 'Population Growth',
+
+  // Facility Types
+  'manager.teamStatus.facilities.type.MINE': 'Mine',
+  'manager.teamStatus.facilities.type.QUARRY': 'Quarry',
+  'manager.teamStatus.facilities.type.FOREST': 'Forest',
+  'manager.teamStatus.facilities.type.FARM': 'Farm',
+  'manager.teamStatus.facilities.type.RANCH': 'Ranch',
+  'manager.teamStatus.facilities.type.FISHERY': 'Fishery',
+  'manager.teamStatus.facilities.type.FACTORY': 'Factory',
+  'manager.teamStatus.facilities.type.MALL': 'Mall',
+  'manager.teamStatus.facilities.type.WAREHOUSE': 'Warehouse',
+  'manager.teamStatus.facilities.type.WATER_PLANT': 'Water Plant',
+  'manager.teamStatus.facilities.type.POWER_PLANT': 'Power Plant',
+  'manager.teamStatus.facilities.type.BASE_STATION': 'Base Station',
+  'manager.teamStatus.facilities.type.FIRE_STATION': 'Fire Station',
+  'manager.teamStatus.facilities.type.SCHOOL': 'School',
+  'manager.teamStatus.facilities.type.HOSPITAL': 'Hospital',
+  'manager.teamStatus.facilities.type.PARK': 'Park',
+  'manager.teamStatus.facilities.type.CINEMA': 'Cinema',
+
+  // Land Fields
+  'manager.teamStatus.land.field.tileLocation': 'Tile Location',
+  'manager.teamStatus.land.field.landType': 'Land Type',
+  'manager.teamStatus.land.field.ownedArea': 'Owned Area',
+  'manager.teamStatus.land.field.totalInvestment': 'Total Investment',
+  'manager.teamStatus.land.field.purchaseCount': 'Purchase Count',
+  'manager.teamStatus.land.field.firstPurchase': 'First Purchase',
+  'manager.teamStatus.land.field.lastPurchase': 'Last Purchase',
+
+  // Member Status
+  'manager.teamStatus.members.status.ACTIVE': 'Active',
+  'manager.teamStatus.members.status.INACTIVE': 'Inactive',
+  'manager.teamStatus.members.status.PENDING': 'Pending',
+
+  // User Types
+  'manager.teamStatus.members.userType.1': 'Manager',
+  'manager.teamStatus.members.userType.2': 'Worker',
+  'manager.teamStatus.members.userType.3': 'Student',
+
+  // Member Columns
+  'manager.teamStatus.members.column.username': 'Username',
+  'manager.teamStatus.members.column.email': 'Email',
+  'manager.teamStatus.members.column.fullName': 'Full Name',
+  'manager.teamStatus.members.column.userType': 'User Type',
+  'manager.teamStatus.members.column.status': 'Status',
+  'manager.teamStatus.members.column.joinedAt': 'Joined Date',
+  'manager.teamStatus.members.column.lastLogin': 'Last Login',
+
+  // Pagination
+  'manager.teamStatus.pagination.showing': 'Showing {{start}}-{{end}} of {{total}}',
+  'manager.teamStatus.pagination.rowsPerPage': 'Rows per page:',
+  'manager.teamStatus.pagination.page': 'Page {{current}} of {{total}}',
+  'manager.teamStatus.pagination.previous': 'Previous',
+  'manager.teamStatus.pagination.next': 'Next',
+  'manager.teamStatus.pagination.first': 'First',
+  'manager.teamStatus.pagination.last': 'Last',
+
+  // Messages
+  'manager.teamStatus.message.loading': 'Loading team data...',
+  'manager.teamStatus.message.noData': 'No teams found',
+  'manager.teamStatus.message.success.dataLoaded': 'Team data loaded successfully',
+  'manager.teamStatus.message.success.exported': 'Data exported successfully',
+  'manager.teamStatus.message.error.loadFailed': 'Failed to load team data',
+  'manager.teamStatus.message.error.teamNotFound': 'Team not found',
+  'manager.teamStatus.message.error.unauthorized': 'You are not authorized to view this data',
+  'manager.teamStatus.message.error.noActivity': 'No active activity enrollment found',
+
+  // Actions
+  'manager.teamStatus.action.refresh': 'Refresh',
+  'manager.teamStatus.action.export': 'Export',
+  'manager.teamStatus.action.viewDetails': 'View Details',
+  'manager.teamStatus.action.back': 'Back to List',
+  'manager.teamStatus.action.filter': 'Filter',
+  'manager.teamStatus.action.clearFilter': 'Clear Filters',
+
+  // Summary Statistics
+  'manager.teamStatus.summary.totalTeams': 'Total Teams',
+  'manager.teamStatus.summary.totalMembers': 'Total Members',
+  'manager.teamStatus.summary.totalGold': 'Total Gold',
+  'manager.teamStatus.summary.totalCarbon': 'Total Carbon',
+  'manager.teamStatus.summary.openTeams': 'Open Teams',
+  'manager.teamStatus.summary.closedTeams': 'Closed Teams',
 };

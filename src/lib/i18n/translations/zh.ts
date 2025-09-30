@@ -4590,4 +4590,178 @@ export const zhTranslations = {
   'time.monthAgo': '{{count}} 个月前',
   'time.monthsAgo': '{{count}} 个月前',
   'time.edited': '(已编辑)',
+
+  // Manager Team Status Dashboard - 经理团队状态仪表板
+  'manager.teamStatus.title.dashboard': '团队状态仪表板',
+  'manager.teamStatus.title.teamList': '所有团队',
+  'manager.teamStatus.title.teamDetails': '团队详情',
+  'manager.teamStatus.title.operations': '操作历史',
+  'manager.teamStatus.title.facilities': '设施',
+  'manager.teamStatus.title.landOwnership': '土地所有权',
+  'manager.teamStatus.title.members': '团队成员',
+  'manager.teamStatus.title.balanceHistory': '余额历史',
+
+  // Table Headers - 表头
+  'manager.teamStatus.table.header.teamName': '团队名称',
+  'manager.teamStatus.table.header.leader': '团队负责人',
+  'manager.teamStatus.table.header.members': '成员',
+  'manager.teamStatus.table.header.goldBalance': '黄金余额',
+  'manager.teamStatus.table.header.carbonBalance': '碳积分余额',
+  'manager.teamStatus.table.header.status': '状态',
+  'manager.teamStatus.table.header.lastActivity': '最后活动',
+  'manager.teamStatus.table.header.createdAt': '创建日期',
+  'manager.teamStatus.table.header.actions': '操作',
+
+  // Table Cell Values - 表格单元格值
+  'manager.teamStatus.table.cell.memberCount': '{{current}}/{{max}} 成员',
+  'manager.teamStatus.table.cell.openStatus': '开放',
+  'manager.teamStatus.table.cell.closedStatus': '关闭',
+  'manager.teamStatus.table.cell.viewDetails': '查看详情',
+
+  // Filters - 筛选器
+  'manager.teamStatus.filter.label.search': '搜索团队...',
+  'manager.teamStatus.filter.label.status': '团队状态',
+  'manager.teamStatus.filter.label.sortBy': '排序方式',
+  'manager.teamStatus.filter.label.order': '排序',
+  'manager.teamStatus.filter.option.allStatus': '全部状态',
+  'manager.teamStatus.filter.option.open': '开放团队',
+  'manager.teamStatus.filter.option.closed': '关闭团队',
+  'manager.teamStatus.filter.option.ascending': '升序',
+  'manager.teamStatus.filter.option.descending': '降序',
+
+  // Team Detail Sections - 团队详情部分
+  'manager.teamStatus.detail.section.overview': '概览',
+  'manager.teamStatus.detail.section.financial': '财务状态',
+  'manager.teamStatus.detail.section.statistics': '统计数据',
+  'manager.teamStatus.detail.section.recentActivity': '最近活动',
+
+  // Detail Fields - 详情字段
+  'manager.teamStatus.detail.field.teamId': '团队ID',
+  'manager.teamStatus.detail.field.description': '描述',
+  'manager.teamStatus.detail.field.leader': '团队负责人',
+  'manager.teamStatus.detail.field.createdAt': '创建时间',
+  'manager.teamStatus.detail.field.updatedAt': '最后更新',
+  'manager.teamStatus.detail.field.goldBalance': '黄金余额',
+  'manager.teamStatus.detail.field.carbonBalance': '碳积分余额',
+  'manager.teamStatus.detail.field.totalMembers': '总成员数',
+  'manager.teamStatus.detail.field.activeMembers': '活跃成员',
+  'manager.teamStatus.detail.field.totalLandOwned': '拥有土地总量',
+  'manager.teamStatus.detail.field.totalFacilities': '设施总数',
+  'manager.teamStatus.detail.field.activeFacilities': '活跃设施',
+
+  // Operation Types - 操作类型
+  'manager.teamStatus.operations.type.ACCOUNT_CREATED': '账户创建',
+  'manager.teamStatus.operations.type.TRANSFER_OUT': '转出',
+  'manager.teamStatus.operations.type.TRANSFER_IN': '转入',
+  'manager.teamStatus.operations.type.FACILITY_BUILD': '设施建造',
+  'manager.teamStatus.operations.type.FACILITY_UPGRADE': '设施升级',
+  'manager.teamStatus.operations.type.LAND_PURCHASE': '土地购买',
+  'manager.teamStatus.operations.type.RAW_MATERIAL_PRODUCTION': '原材料生产',
+  'manager.teamStatus.operations.type.PRODUCT_SALE': '产品销售',
+  'manager.teamStatus.operations.type.UTILITY_CONSUMPTION': '公用事业消费',
+  'manager.teamStatus.operations.type.TRADE_PURCHASE': '贸易采购',
+
+  // Operation Columns - 操作列
+  'manager.teamStatus.operations.column.date': '日期',
+  'manager.teamStatus.operations.column.type': '操作类型',
+  'manager.teamStatus.operations.column.resource': '资源',
+  'manager.teamStatus.operations.column.amount': '金额',
+  'manager.teamStatus.operations.column.balance': '余额',
+  'manager.teamStatus.operations.column.operator': '操作员',
+  'manager.teamStatus.operations.column.description': '描述',
+
+  // Facility Status - 设施状态
+  'manager.teamStatus.facilities.status.UNDER_CONSTRUCTION': '建设中',
+  'manager.teamStatus.facilities.status.ACTIVE': '运行中',
+  'manager.teamStatus.facilities.status.MAINTENANCE': '维护中',
+  'manager.teamStatus.facilities.status.DAMAGED': '已损坏',
+  'manager.teamStatus.facilities.status.DECOMMISSIONED': '已停用',
+
+  // Facility Categories - 设施类别
+  'manager.teamStatus.facilities.category.RAW_MATERIAL_PRODUCTION': '原料生产设施',
+  'manager.teamStatus.facilities.category.FUNCTIONAL': '功能性设施',
+  'manager.teamStatus.facilities.category.INFRASTRUCTURE': '基础设施',
+  'manager.teamStatus.facilities.category.POPULATION_GROWTH': '人口增长设施',
+
+  // Facility Types - 设施类型
+  'manager.teamStatus.facilities.type.MINE': '矿场',
+  'manager.teamStatus.facilities.type.QUARRY': '采石场',
+  'manager.teamStatus.facilities.type.FOREST': '林场',
+  'manager.teamStatus.facilities.type.FARM': '农场',
+  'manager.teamStatus.facilities.type.RANCH': '养殖场',
+  'manager.teamStatus.facilities.type.FISHERY': '渔场',
+  'manager.teamStatus.facilities.type.FACTORY': '工厂',
+  'manager.teamStatus.facilities.type.MALL': '商场',
+  'manager.teamStatus.facilities.type.WAREHOUSE': '仓库',
+  'manager.teamStatus.facilities.type.WATER_PLANT': '水厂',
+  'manager.teamStatus.facilities.type.POWER_PLANT': '电厂',
+  'manager.teamStatus.facilities.type.BASE_STATION': '基站',
+  'manager.teamStatus.facilities.type.FIRE_STATION': '消防站',
+  'manager.teamStatus.facilities.type.SCHOOL': '学校',
+  'manager.teamStatus.facilities.type.HOSPITAL': '医院',
+  'manager.teamStatus.facilities.type.PARK': '公园',
+  'manager.teamStatus.facilities.type.CINEMA': '影院',
+
+  // Land Fields - 土地字段
+  'manager.teamStatus.land.field.tileLocation': '地块位置',
+  'manager.teamStatus.land.field.landType': '土地类型',
+  'manager.teamStatus.land.field.ownedArea': '拥有面积',
+  'manager.teamStatus.land.field.totalInvestment': '总投资',
+  'manager.teamStatus.land.field.purchaseCount': '购买次数',
+  'manager.teamStatus.land.field.firstPurchase': '首次购买',
+  'manager.teamStatus.land.field.lastPurchase': '最近购买',
+
+  // Member Status - 成员状态
+  'manager.teamStatus.members.status.ACTIVE': '活跃',
+  'manager.teamStatus.members.status.INACTIVE': '非活跃',
+  'manager.teamStatus.members.status.PENDING': '待定',
+
+  // User Types - 用户类型
+  'manager.teamStatus.members.userType.1': '经理',
+  'manager.teamStatus.members.userType.2': '员工',
+  'manager.teamStatus.members.userType.3': '学生',
+
+  // Member Columns - 成员列
+  'manager.teamStatus.members.column.username': '用户名',
+  'manager.teamStatus.members.column.email': '邮箱',
+  'manager.teamStatus.members.column.fullName': '全名',
+  'manager.teamStatus.members.column.userType': '用户类型',
+  'manager.teamStatus.members.column.status': '状态',
+  'manager.teamStatus.members.column.joinedAt': '加入日期',
+  'manager.teamStatus.members.column.lastLogin': '最后登录',
+
+  // Pagination - 分页
+  'manager.teamStatus.pagination.showing': '显示 {{start}}-{{end}} 共 {{total}} 条',
+  'manager.teamStatus.pagination.rowsPerPage': '每页行数：',
+  'manager.teamStatus.pagination.page': '第 {{current}} 页，共 {{total}} 页',
+  'manager.teamStatus.pagination.previous': '上一页',
+  'manager.teamStatus.pagination.next': '下一页',
+  'manager.teamStatus.pagination.first': '首页',
+  'manager.teamStatus.pagination.last': '末页',
+
+  // Messages - 消息
+  'manager.teamStatus.message.loading': '正在加载团队数据...',
+  'manager.teamStatus.message.noData': '未找到团队',
+  'manager.teamStatus.message.success.dataLoaded': '团队数据加载成功',
+  'manager.teamStatus.message.success.exported': '数据导出成功',
+  'manager.teamStatus.message.error.loadFailed': '加载团队数据失败',
+  'manager.teamStatus.message.error.teamNotFound': '未找到团队',
+  'manager.teamStatus.message.error.unauthorized': '您无权查看此数据',
+  'manager.teamStatus.message.error.noActivity': '未找到活动注册',
+
+  // Actions - 操作
+  'manager.teamStatus.action.refresh': '刷新',
+  'manager.teamStatus.action.export': '导出',
+  'manager.teamStatus.action.viewDetails': '查看详情',
+  'manager.teamStatus.action.back': '返回列表',
+  'manager.teamStatus.action.filter': '筛选',
+  'manager.teamStatus.action.clearFilter': '清除筛选',
+
+  // Summary Statistics - 汇总统计
+  'manager.teamStatus.summary.totalTeams': '团队总数',
+  'manager.teamStatus.summary.totalMembers': '成员总数',
+  'manager.teamStatus.summary.totalGold': '黄金总量',
+  'manager.teamStatus.summary.totalCarbon': '碳积分总量',
+  'manager.teamStatus.summary.openTeams': '开放团队',
+  'manager.teamStatus.summary.closedTeams': '关闭团队',
 };

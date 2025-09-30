@@ -3,6 +3,7 @@ import apiService from './apiService';
 import { navigationSlice } from '@/components/theme-layouts/components/navigation/store/navigationSlice';
 import { shopSlice } from './shopSlice';
 import { announcementSlice } from './announcementSlice';
+import { managerTeamStatusSlice } from './managerTeamStatusSlice';
 
 export interface LazyLoadedSlices {
   // Define lazy loaded slices here as they are added
@@ -17,6 +18,7 @@ export const rootReducer = combineSlices(
 	navigationSlice,
 	shopSlice,
 	announcementSlice,
+	managerTeamStatusSlice,
 	/**
 	 * Lazy loaded slices
 	 */

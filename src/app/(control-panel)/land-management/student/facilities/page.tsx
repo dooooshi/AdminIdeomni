@@ -16,6 +16,7 @@ import {
 } from '@mui/icons-material';
 import { FacilityTable, BuildFacilityModalSimplified, UpgradeFacilityModal } from '@/components/facilities';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
+import { TeamAccountService } from '@/lib/services/teamAccountService';
 import { useTranslation } from '@/lib/i18n/hooks/useTranslation';
 import type { 
   TileFacilityInstance, 
@@ -32,6 +33,7 @@ const StudentFacilitiesPage: React.FC = () => {
   // State management
   const [facilities, setFacilities] = useState<TileFacilityInstance[]>([]);
   const [summary, setSummary] = useState<TeamFacilitySummary | null>(null);
+  const [teamBalance, setTeamBalance] = useState<{ gold: number; carbon: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -63,22 +65,28 @@ const StudentFacilitiesPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Load summary and facilities in parallel
-      const [summaryData, facilitiesData] = await Promise.all([
+      // Load summary, facilities, and team balance in parallel
+      const [summaryData, facilitiesData, teamAccountData] = await Promise.all([
         StudentFacilityService.getTeamFacilitySummary(),
-        StudentFacilityService.getTeamFacilities({ page: 1, pageSize: 20 })
+        StudentFacilityService.getTeamFacilities({ page: 1, pageSize: 20 }),
+        TeamAccountService.getCurrentUserTeamAccount()
       ]);
 
       setSummary(summaryData);
       setFacilities(facilitiesData?.data || []);
       setTotalPages(facilitiesData?.totalPages || 1);
       setHasMore(facilitiesData?.hasNext || false);
+      setTeamBalance({
+        gold: teamAccountData.gold,
+        carbon: teamAccountData.carbon
+      });
 
     } catch (err) {
       console.error('Failed to load facility data:', err);
       setError(t('facilityManagement.FACILITY_LOAD_ERROR'));
       setFacilities([]);
       setSummary(null);
+      setTeamBalance(null);
     } finally {
       setLoading(false);
     }
@@ -279,10 +287,7 @@ const StudentFacilitiesPage: React.FC = () => {
           onClose={handleCloseUpgradeModal}
           onSuccess={handleFacilityUpgraded}
           facility={selectedFacilityForUpgrade}
-          teamBalance={summary ? {
-            gold: 1000000, // Mock data - should come from team balance API
-            carbon: 50000, // Mock data - should come from team balance API
-          } : undefined}
+          teamBalance={teamBalance || undefined}
         />
       </div>
     </div>

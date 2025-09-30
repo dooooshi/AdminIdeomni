@@ -245,6 +245,7 @@ export interface UpgradeCostApiResponse {
   landType: LandType;
   currentLevel: number;
   targetLevel: number;
+  additionalLandRequired: number;
   upgradeCosts: {
     level: number;
     goldCost: number;
@@ -253,6 +254,14 @@ export interface UpgradeCostApiResponse {
   totalCost: {
     gold: number;
     carbon: number;
+  };
+  hasEnoughLand: boolean;
+  landAvailability: {
+    totalOwnedArea: number;
+    totalUsedArea: number;
+    totalAvailableArea: number;
+    hasEnoughLand: boolean;
+    landShortage: number;
   };
 }
 
