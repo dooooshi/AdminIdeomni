@@ -232,7 +232,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                   {t('productProduction.currentAvailableSpace')}
                 </Typography>
                 <Typography variant="body2" fontWeight="medium">
-                  {formatDecimal(space?.currentAvailableSpace ?? 0, 3)}
+                  {formatDecimal(space?.currentAvailable ?? 0, 3)}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
@@ -240,7 +240,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                   {t('productProduction.spaceAfterProduction')}
                 </Typography>
                 <Typography variant="body2" fontWeight="medium" color={(space?.netSpaceChange ?? 0) > 0 ? 'success.main' : 'text.primary'}>
-                  {formatDecimal(space?.spaceAfterProduction ?? 0, 3)}
+                  {formatDecimal(space?.afterProduction ?? 0, 3)}
                 </Typography>
               </Box>
             </Box>
@@ -258,7 +258,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                     {t('productProduction.materialSpaceFreed')}
                   </Typography>
                   <Typography variant="body2" fontWeight="medium" color="success.main">
-                    +{formatDecimal(space?.materialSpaceToFree ?? 0, 3)}
+                    +{formatDecimal(space?.materialSpaceFreed ?? 0, 3)}
                   </Typography>
                 </Paper>
               </Grid>
@@ -268,7 +268,7 @@ export const CostCalculationDisplay: React.FC<CostCalculationDisplayProps> = ({
                     {t('productProduction.productSpaceUsed')}
                   </Typography>
                   <Typography variant="body2" fontWeight="medium" color="error.main">
-                    -{formatDecimal(space?.productSpaceNeeded ?? 0, 3)}
+                    -{formatDecimal(space?.productSpaceUsed ?? 0, 3)}
                   </Typography>
                 </Paper>
               </Grid>

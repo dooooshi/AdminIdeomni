@@ -533,7 +533,11 @@ export default function MtoType1DeliveryDetail({
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Typography variant="h6">{t('mto.student.deliveries.details.totalSettlement')}</Typography>
                           <Typography variant="h6" color="primary.main">
-                            {formatCurrency(delivery.financial?.settlementAmount || 0)}
+                            {formatCurrency(
+                              delivery.financial?.settlementAmount && parseFloat(String(delivery.financial.settlementAmount)) > 0
+                                ? delivery.financial.settlementAmount
+                                : (delivery.quantities?.settled || 0) * parseFloat(String(delivery.financial?.unitPrice || 0))
+                            )}
                           </Typography>
                         </Box>
                       </Stack>
@@ -650,7 +654,11 @@ export default function MtoType1DeliveryDetail({
                             {t('mto.student.deliveries.details.settlementCompleted')}
                           </Typography>
                           <Typography color="text.secondary">
-                            {delivery.quantities?.settled || 0} {t('mto.student.deliveries.details.productsSettledPayment')} {formatCurrency(delivery.financial?.settlementAmount || 0)} {t('mto.student.deliveries.details.paid')}
+                            {delivery.quantities?.settled || 0} {t('mto.student.deliveries.details.productsSettledPayment')} {formatCurrency(
+                              delivery.financial?.settlementAmount && parseFloat(String(delivery.financial.settlementAmount)) > 0
+                                ? delivery.financial.settlementAmount
+                                : (delivery.quantities?.settled || 0) * parseFloat(String(delivery.financial?.unitPrice || 0))
+                            )} {t('mto.student.deliveries.details.paid')}
                           </Typography>
                         </Grid>
                       </Grid>

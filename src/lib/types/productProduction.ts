@@ -120,12 +120,12 @@ export interface ExpectedOutput {
 }
 
 export interface SpaceImpact {
-  currentUsedSpace: number;
-  currentAvailableSpace: number;
-  materialSpaceToFree: number;
-  productSpaceNeeded: number;
+  currentUsedSpace?: number;
+  currentAvailable: number;
+  materialSpaceFreed: number;
+  productSpaceUsed: number;
   netSpaceChange: number;
-  spaceAfterProduction: number;
+  afterProduction: number;
   hasEnoughSpace: boolean;
 }
 

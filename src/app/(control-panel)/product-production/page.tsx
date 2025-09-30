@@ -765,14 +765,14 @@ export default function ProductProductionPage() {
                     <Typography variant="body2" color="text.secondary">
                       {t('productProduction.currentAvailable')}
                     </Typography>
-                    <Typography variant="h6">{formatNumber(costData.space?.currentAvailableSpace || 0, 3)} {t('productProduction.units')}</Typography>
+                    <Typography variant="h6">{formatNumber(costData.space?.currentAvailable || 0, 3)} {t('productProduction.units')}</Typography>
                   </Box>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
                       {t('productProduction.materialSpaceFreed')}
                     </Typography>
                     <Typography variant="h6" color="success.main">
-                      +{formatNumber(costData.space?.materialSpaceToFree || 0, 3)} {t('productProduction.units')}
+                      +{formatNumber(costData.space?.materialSpaceFreed || 0, 3)} {t('productProduction.units')}
                     </Typography>
                   </Box>
                   <Box>
@@ -780,7 +780,7 @@ export default function ProductProductionPage() {
                       {t('productProduction.productSpaceUsed')}
                     </Typography>
                     <Typography variant="h6" color="error.main">
-                      -{formatNumber(costData.space?.productSpaceNeeded || 0, 3)} {t('productProduction.units')}
+                      -{formatNumber(costData.space?.productSpaceUsed || 0, 3)} {t('productProduction.units')}
                     </Typography>
                   </Box>
                   <Divider />

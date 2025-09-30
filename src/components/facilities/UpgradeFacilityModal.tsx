@@ -18,7 +18,7 @@ import {
 import {
   CloseOutlined,
   MonetizationOn,
-  Co2,
+  Nature,
 } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { StudentFacilityService } from '@/lib/services/studentFacilityService';
@@ -401,11 +401,11 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
                     </Stack>
                     
                     <Stack direction="row" alignItems="center" spacing={1}>
-                      <Co2 color="success" />
-                      <Typography 
-                        variant="body1" 
+                      <Nature color="success" />
+                      <Typography
+                        variant="body1"
                         fontWeight={500}
-                        sx={{ 
+                        sx={{
                           fontFamily: 'monospace',
                           minWidth: '60px',
                           textAlign: 'right'
@@ -423,85 +423,6 @@ const UpgradeFacilityModal: React.FC<UpgradeFacilityModalProps> = ({
               </Paper>
             </Box>
 
-            {/* Balance Check - Fixed Layout */}
-            {teamBalance && (
-              <Box sx={{ 
-                p: 2, 
-                borderRadius: 1, 
-                border: '1px solid', 
-                borderColor: (theme) => {
-                  const canAfford = upgradeCalculation && canAffordUpgrade();
-                  if (theme.palette.mode === 'dark') {
-                    return canAfford ? 'success.700' : 'error.700';
-                  }
-                  return canAfford ? 'success.200' : 'error.200';
-                },
-                backgroundColor: (theme) => {
-                  const canAfford = upgradeCalculation && canAffordUpgrade();
-                  if (theme.palette.mode === 'dark') {
-                    return canAfford ? 'success.900' : 'error.900';
-                  }
-                  return canAfford ? 'success.50' : 'error.50';
-                },
-                mb: 2,
-                minHeight: 76
-              }}>
-                <Typography 
-                  variant="caption" 
-                  color="text.secondary" 
-                  display="block" 
-                  sx={{ mb: 1 }}
-                >
-                  {t('facilityManagement.YOUR_BALANCE')}
-                </Typography>
-                <Stack direction="row" spacing={3}>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <MonetizationOn fontSize="small" color="warning" />
-                    <Typography 
-                      variant="body2"
-                      sx={{ 
-                        color: (theme) => {
-                          const hasEnough = upgradeCalculation && teamBalance.gold >= getTotalGoldCost(upgradeCalculation);
-                          return hasEnough ? 'success.main' : 'error.main';
-                        },
-                        fontFamily: 'monospace',
-                        minWidth: '80px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {new Intl.NumberFormat().format(teamBalance.gold)}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Co2 fontSize="small" color="success" />
-                    <Typography 
-                      variant="body2"
-                      sx={{ 
-                        color: (theme) => {
-                          const hasEnough = upgradeCalculation && teamBalance.carbon >= getTotalCarbonCost(upgradeCalculation);
-                          return hasEnough ? 'success.main' : 'error.main';
-                        },
-                        fontFamily: 'monospace',
-                        minWidth: '60px',
-                        textAlign: 'right'
-                      }}
-                    >
-                      {new Intl.NumberFormat().format(teamBalance.carbon)}
-                    </Typography>
-                  </Stack>
-                </Stack>
-                {upgradeCalculation && !canAffordUpgrade() && (
-                  <Typography 
-                    variant="caption" 
-                    color="error.main" 
-                    display="block" 
-                    sx={{ mt: 1, minHeight: 16 }}
-                  >
-                    {t('facilityManagement.INSUFFICIENT_RESOURCES')}
-                  </Typography>
-                )}
-              </Box>
-            )}
           </>
         )}
         
