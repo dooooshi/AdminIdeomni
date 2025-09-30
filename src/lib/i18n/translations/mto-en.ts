@@ -247,8 +247,12 @@ export const mtoTranslationsEn = {
   'mto.student.profitAnalysis': 'Profit Analysis',
   'mto.student.tile': 'Tile #{id}',
   'mto.student.remaining': '{count} Remaining',
-  'mto.student.distance': '{km} km',
+  'mto.student.distanceKm': '{km}',
   'mto.student.status': 'Status',
+  'mto.student.distance': 'Distance',
+  'mto.student.itemDetails': 'Item Details',
+  'mto.student.destinationDetails': 'Destination Details',
+  'mto.student.landType': 'Land Type',
   'mto.student.potentialRevenue': 'Potential Revenue',
   'mto.student.unitPrice': 'Unit Price',
   'mto.student.requirementId': 'Requirement ID',
@@ -274,7 +278,7 @@ export const mtoTranslationsEn = {
   'mto.student.revenue': 'Revenue',
   'mto.student.estimatedProfit': 'Estimated Profit',
   'mto.student.teamBalance': 'Team Balance',
-  'mto.student.transportDistance': 'Transport Distance: {km} km',
+  'mto.student.transportDistance': 'Transport Distance: {km}',
   'mto.student.submitDelivery': 'Submit Delivery',
   'mto.student.deliveryWarning': 'Once submitted, deliveries cannot be modified. Please review carefully before submitting.',
   'mto.student.deliveryId': 'Delivery ID',
@@ -433,6 +437,7 @@ export const mtoTranslationsEn = {
   'mto.student.validation.selectSourceFirst': 'Please select a source facility, product, and quantity first',
   'mto.student.validation.insufficientQuantity': 'Insufficient quantity available',
   'mto.student.validation.selectDestinationFirst': 'Please select a destination tile first',
+  'mto.student.validation.quantityMustBeAtLeastOne': 'Delivery quantity must be at least 1',
 
   // Delivery Error Messages
   'mto.student.errors.loadFacilitiesFailed': 'Failed to load facilities',
@@ -441,6 +446,17 @@ export const mtoTranslationsEn = {
   'mto.student.errors.noMatchingProducts': 'No matching products found in facility',
   'mto.student.errors.loadInventoryFailed': 'Failed to load inventory items',
   'mto.student.errors.calculateCostFailed': 'Failed to calculate transportation cost',
+
+  // Transportation Details (Additional)
+  'mto.student.transportUnits': 'Transport Units',
+  'mto.student.currentFacility': 'Current Facility',
+  'mto.student.tier': 'Tier',
+  'mto.student.unitCost': 'Unit Cost',
+  'mto.student.deliveryTime': 'Delivery Time',
+  'mto.student.tiles': 'tiles',
+  'mto.student.goldPerUnit': 'Gold/unit',
+  'mto.student.level': 'Level',
+  'mto.student.gold': 'Gold',
 
   // Settlement Management
   'mto.type1.settlement.title': 'Settlement Management',
@@ -749,7 +765,7 @@ export const mtoTranslationsEn = {
   // MTO Type 2 Additional
   'mto.type2.competitors': 'Competitors',
   'mto.type2.competitorCount': 'Competitors: {count}',
-  'mto.type2.distance': 'Distance: {km} km',
+  'mto.type2.distance': 'Distance: {km}',
   'mto.type2.tile': 'Tile {id}',
   'mto.type2.tileLevel': 'Tile {id} (L{level})',
   'mto.type2.validated': 'Validated',
@@ -1371,5 +1387,24 @@ export const mtoTranslationsEn = {
   'common.apply': 'Apply',
   'common.expired': 'Expired',
   'common.filterOptions': 'Filter Options',
-  'common.understood': 'Got it'
+  'common.understood': 'Got it',
+
+  // Facility Types
+  'facility.type.MINE': 'Mining Facility',
+  'facility.type.QUARRY': 'Quarry',
+  'facility.type.FOREST': 'Forest',
+  'facility.type.FARM': 'Farm',
+  'facility.type.RANCH': 'Ranch',
+  'facility.type.FISHERY': 'Fishery',
+  'facility.type.FACTORY': 'Factory',
+  'facility.type.MALL': 'Shopping Mall',
+  'facility.type.WAREHOUSE': 'Warehouse',
+  'facility.type.WATER_PLANT': 'Water Plant',
+  'facility.type.POWER_PLANT': 'Power Plant',
+  'facility.type.BASE_STATION': 'Base Station',
+  'facility.type.FIRE_STATION': 'Fire Station',
+  'facility.type.SCHOOL': 'School',
+  'facility.type.HOSPITAL': 'Hospital',
+  'facility.type.PARK': 'Park',
+  'facility.type.CINEMA': 'Cinema'
 };

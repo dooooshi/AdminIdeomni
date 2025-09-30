@@ -297,6 +297,12 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
 
       const quantity = parseFloat(deliveryQuantity);
       const available = parseFloat(selectedItem.quantity);
+
+      if (quantity < 1) {
+        enqueueSnackbar(t('mto.student.validation.quantityMustBeAtLeastOne'), { variant: 'error' });
+        return;
+      }
+
       if (quantity > available) {
         enqueueSnackbar(t('mto.student.validation.insufficientQuantity'), { variant: 'error' });
         return;
@@ -401,9 +407,9 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                   <MenuItem key={facility.inventoryId} value={facility.inventoryId}>
                     <Stack direction="row" spacing={2} alignItems="center" width="100%">
                       <WarehouseIcon fontSize="small" />
-                      <Typography>{facility.facilityType}</Typography>
+                      <Typography>{t(`facility.type.${facility.facilityType}`)}</Typography>
                       <Chip
-                        label={`Level ${facility.level}`}
+                        label={`${t('mto.student.level')} ${facility.level}`}
                         size="small"
                         color="primary"
                         variant="outlined"
@@ -488,6 +494,10 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                 helperText={t('mto.student.maxAvailable', {
                   max: formatCurrency(selectedItem.quantity)
                 })}
+                inputProps={{
+                  min: 1,
+                  step: 1
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -634,7 +644,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
               {t('mto.student.from')}:
             </Typography>
             <Typography variant="body1">
-              {selectedFacility?.facilityType} (Level {selectedFacility?.level})
+              {selectedFacility && t(`facility.type.${selectedFacility.facilityType}`)} ({t('mto.student.level')} {selectedFacility?.level})
             </Typography>
           </Grid>
           <Grid size={{ xs: 6 }}>
@@ -668,12 +678,12 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
       {transportResponse?.itemDetails && (
         <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
           <Typography variant="subtitle1" gutterBottom>
-            Item Details
+            {t('mto.student.itemDetails')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Unit Space:
+                {t('mto.student.unitSpace')}:
               </Typography>
               <Typography variant="body1">
                 {formatCurrency(transportResponse.itemDetails.unitSpaceOccupied)}
@@ -681,7 +691,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
             </Grid>
             <Grid size={{ xs: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Total Space:
+                {t('mto.student.totalSpace')}:
               </Typography>
               <Typography variant="body1">
                 {formatCurrency(transportResponse.itemDetails.totalSpaceOccupied)}
@@ -695,12 +705,12 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
       {transportResponse?.destinationTile && (
         <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
           <Typography variant="subtitle1" gutterBottom>
-            Destination Details
+            {t('mto.student.destinationDetails')}
           </Typography>
           <Grid container spacing={2}>
             <Grid size={{ xs: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Land Type:
+                {t('mto.student.landType')}:
               </Typography>
               <Typography variant="body1">
                 {transportResponse.destinationTile.landType}
@@ -708,15 +718,15 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
             </Grid>
             <Grid size={{ xs: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Distance:
+                {t('mto.student.distance')}:
               </Typography>
               <Typography variant="body1">
-                {transportResponse.destinationTile.distance} tiles
+                {transportResponse.destinationTile.distance} {t('mto.student.tiles')}
               </Typography>
             </Grid>
             <Grid size={{ xs: 6 }}>
               <Typography variant="body2" color="text.secondary">
-                Transport Units:
+                {t('mto.student.transportUnits')}:
               </Typography>
               <Typography variant="body1">
                 {transportResponse.destinationTile.transportCostUnits}
@@ -725,7 +735,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
             {transportResponse.destinationTile.currentFacility && (
               <Grid size={{ xs: 6 }}>
                 <Typography variant="body2" color="text.secondary">
-                  Current Facility:
+                  {t('mto.student.currentFacility')}:
                 </Typography>
                 <Typography variant="body1">
                   {transportResponse.destinationTile.currentFacility.type}
@@ -772,19 +782,19 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                         {tier.description || tier.tier.replace(/_/g, ' ')}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Tier: {tier.tier}
+                        {t('mto.student.tier')}: {tier.tier}
                       </Typography>
                       <Divider />
                       <Stack direction="row" justifyContent="space-between">
-                        <Typography variant="body2">Unit Cost:</Typography>
+                        <Typography variant="body2">{t('mto.student.unitCost')}:</Typography>
                         <Typography variant="body2">
-                          {formatCurrency(tier.costPerSpaceUnit)} Gold/unit
+                          {formatCurrency(tier.costPerSpaceUnit)} {t('mto.student.goldPerUnit')}
                         </Typography>
                       </Stack>
                       <Stack direction="row" justifyContent="space-between">
                         <Typography variant="body2">{t('mto.student.cost')}:</Typography>
                         <Typography variant="body2" fontWeight="bold" color="primary">
-                          {formatCurrency(tier.totalCost)} Gold
+                          {formatCurrency(tier.totalCost)} {t('mto.student.gold')}
                         </Typography>
                       </Stack>
                       <Stack direction="row" justifyContent="space-between">
@@ -795,7 +805,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                       </Stack>
                       {transportResponse?.transportationCost?.deliveryTime && tier.tier === transportResponse.transportationCost.requiredTier && (
                         <Stack direction="row" justifyContent="space-between">
-                          <Typography variant="body2">Delivery Time:</Typography>
+                          <Typography variant="body2">{t('mto.student.deliveryTime')}:</Typography>
                           <Typography variant="body2">
                             {transportResponse.transportationCost.deliveryTime}
                           </Typography>
@@ -834,7 +844,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                 <TableRow>
                   <TableCell>{t('mto.student.unitPrice')}</TableCell>
                   <TableCell align="right">
-                    {formatCurrency(requirement.unitPrice || 0)} Gold
+                    {formatCurrency((requirement as any).purchaseGoldPrice || requirement.unitPrice || 0)} {t('mto.student.gold')}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -845,7 +855,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                   <TableCell>{t('mto.student.revenue')}</TableCell>
                   <TableCell align="right">
                     <Typography color="success.main">
-                      {formatCurrency(parseFloat(deliveryQuantity || '0') * parseFloat(String(requirement.unitPrice || '0')))} Gold
+                      {formatCurrency(parseFloat(deliveryQuantity || '0') * parseFloat(String((requirement as any).purchaseGoldPrice || requirement.unitPrice || '0')))} {t('mto.student.gold')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -853,7 +863,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                   <TableCell>{t('mto.student.transportationCost')}</TableCell>
                   <TableCell align="right">
                     <Typography color="error.main">
-                      -{formatCurrency(transportCosts.find(t => t.tier === selectedTier)?.totalCost || 0)} Gold
+                      -{formatCurrency(transportCosts.find(t => t.tier === selectedTier)?.totalCost || 0)} {t('mto.student.gold')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -867,15 +877,15 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                     <Typography
                       fontWeight="bold"
                       color={
-                        (parseFloat(deliveryQuantity || '0') * parseFloat(String(requirement.unitPrice || '0')) -
+                        (parseFloat(deliveryQuantity || '0') * parseFloat(String((requirement as any).purchaseGoldPrice || requirement.unitPrice || '0')) -
                         parseFloat(transportCosts.find(t => t.tier === selectedTier)?.totalCost || '0')) > 0
                         ? 'success.main' : 'error.main'
                       }
                     >
                       {formatCurrency(
-                        parseFloat(deliveryQuantity || '0') * parseFloat(String(requirement.unitPrice || '0')) -
+                        parseFloat(deliveryQuantity || '0') * parseFloat(String((requirement as any).purchaseGoldPrice || requirement.unitPrice || '0')) -
                         parseFloat(transportCosts.find(t => t.tier === selectedTier)?.totalCost || '0')
-                      )} Gold
+                      )} {t('mto.student.gold')}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -884,7 +894,7 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
                     <TableCell>{t('mto.student.teamBalance')}</TableCell>
                     <TableCell align="right">
                       <Typography color="info.main">
-                        {formatCurrency(transportResponse.teamBalance)} Gold
+                        {formatCurrency(transportResponse.teamBalance)} {t('mto.student.gold')}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -905,8 +915,10 @@ const MtoType1DeliveryForm: React.FC<MtoType1DeliveryFormProps> = ({
 
       <Alert severity="info" sx={{ mb: 3 }}>
         {t('mto.student.deliveryInfo', {
-          requirement: requirement.requirementName || `#${(requirement as any).id || requirement.requirementId}`,
-          price: formatCurrency(requirement.unitPrice || 0)
+          requirement: (requirement as any).managerProductFormula?.productName ||
+                       requirement.requirementName ||
+                       `#${(requirement as any).id || requirement.requirementId}`,
+          price: formatCurrency((requirement as any).purchaseGoldPrice || requirement.unitPrice || 0)
         })}
       </Alert>
 

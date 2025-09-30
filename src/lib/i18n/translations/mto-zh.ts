@@ -205,6 +205,7 @@ export const mtoTranslationsZh = {
   'mto.student.transportationCost': '运输成本',
   'mto.student.expectedRevenue': '预期收入',
   'mto.student.netProfit': '净利润',
+  'mto.student.carbonEmission': '碳排放指数',
 
   // MALL owner specific
   'mto.mall.myMalls': '我的商场',
@@ -247,8 +248,13 @@ export const mtoTranslationsZh = {
   'mto.student.profitAnalysis': '利润分析',
   'mto.student.tile': '地块 #{id}',
   'mto.student.remaining': '剩余 {count}',
-  'mto.student.distance': '{km} 公里',
+  'mto.student.distanceKm': '{km}',
   'mto.student.status': '状态',
+  'mto.student.distance': '距离',
+  'mto.student.itemDetails': '物品详情',
+  'mto.student.destinationDetails': '目的地详情',
+  'mto.student.landType': '地块类型',
+  'mto.student.totalSpace': '总空间',
   'mto.student.potentialRevenue': '潜在收入',
   'mto.student.unitPrice': '单价',
   'mto.student.requirementId': '需求 ID',
@@ -273,7 +279,7 @@ export const mtoTranslationsZh = {
   'mto.student.costCalculation': '成本与利润计算',
   'mto.student.revenue': '收入',
   'mto.student.estimatedProfit': '预估利润',
-  'mto.student.transportDistance': '运输距离：{km} 公里',
+  'mto.student.transportDistance': '运输距离：{km}',
   'mto.student.submitDelivery': '提交交付',
   'mto.student.deliveryWarning': '一旦提交，交付无法修改。请提交前仔细检查。',
   'mto.student.deliveryId': '交付ID',
@@ -342,7 +348,6 @@ export const mtoTranslationsZh = {
   'mto.student.materialCost': '材料成本',
   'mto.student.waterCost': '水资源成本',
   'mto.student.powerCost': '电力成本',
-  'mto.student.carbonEmission': '碳排放',
   'mto.student.viewTileRequirements': '查看地块需求',
   'mto.student.tileRequirements': '地块需求分布',
   'mto.student.tileId': '地块ID',
@@ -432,6 +437,7 @@ export const mtoTranslationsZh = {
   'mto.student.validation.selectSourceFirst': '请先选择来源设施、产品和数量',
   'mto.student.validation.insufficientQuantity': '可用数量不足',
   'mto.student.validation.selectDestinationFirst': '请先选择目标地块',
+  'mto.student.validation.quantityMustBeAtLeastOne': '交付数量必须大于等于 1',
 
   // Delivery Error Messages
   'mto.student.errors.loadFacilitiesFailed': '加载设施失败',
@@ -440,6 +446,17 @@ export const mtoTranslationsZh = {
   'mto.student.errors.noMatchingProducts': '设施中没有找到匹配的产品',
   'mto.student.errors.loadInventoryFailed': '加载库存项目失败',
   'mto.student.errors.calculateCostFailed': '计算运输费用失败',
+
+  // Transportation Details (Additional)
+  'mto.student.transportUnits': '运输单位',
+  'mto.student.currentFacility': '当前设施',
+  'mto.student.tier': '等级',
+  'mto.student.unitCost': '单位成本',
+  'mto.student.deliveryTime': '交付时间',
+  'mto.student.tiles': '地块',
+  'mto.student.goldPerUnit': '黄金/单位',
+  'mto.student.level': '等级',
+  'mto.student.gold': '黄金',
 
   // Settlement Management
   'mto.type1.settlement.title': '结算管理',
@@ -748,7 +765,7 @@ export const mtoTranslationsZh = {
   // MTO Type 2 Additional
   'mto.type2.competitors': '竞争者',
   'mto.type2.competitorCount': '竞争者：{count}',
-  'mto.type2.distance': '距离：{km} 公里',
+  'mto.type2.distance': '距离：{km}',
   'mto.type2.tile': '地块 {id}',
   'mto.type2.tileLevel': '地块 {id} (L{level})',
   'mto.type2.validated': '已验证',
@@ -1369,5 +1386,24 @@ export const mtoTranslationsZh = {
   'common.apply': '应用',
   'common.expired': '已过期',
   'common.filterOptions': '筛选选项',
-  'common.understood': '明白了'
+  'common.understood': '明白了',
+
+  // Facility Types
+  'facility.type.MINE': '矿场',
+  'facility.type.QUARRY': '采石场',
+  'facility.type.FOREST': '林场',
+  'facility.type.FARM': '农场',
+  'facility.type.RANCH': '牧场',
+  'facility.type.FISHERY': '渔场',
+  'facility.type.FACTORY': '工厂',
+  'facility.type.MALL': '商场',
+  'facility.type.WAREHOUSE': '仓库',
+  'facility.type.WATER_PLANT': '水厂',
+  'facility.type.POWER_PLANT': '电厂',
+  'facility.type.BASE_STATION': '基站',
+  'facility.type.FIRE_STATION': '消防站',
+  'facility.type.SCHOOL': '学校',
+  'facility.type.HOSPITAL': '医院',
+  'facility.type.PARK': '公园',
+  'facility.type.CINEMA': '电影院'
 };
