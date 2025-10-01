@@ -2528,6 +2528,8 @@ export const zhTranslations = {
   'teamManagement.FACILITY_UPGRADE': '设施升级',
   'teamManagement.TRANSPORTATION_EXPENSE': '运输费用',
   'teamManagement.PRODUCT_PRODUCTION': '产品生产',
+  'teamManagement.TRADE_SALE': '交易销售',
+  'teamManagement.TRADE_PURCHASE': '交易购买',
   'teamManagement.RESOURCE_TYPE': '资源类型',
   'teamManagement.ALL_TYPES': '所有类型',
   'teamManagement.ALL_RESOURCES': '所有资源',

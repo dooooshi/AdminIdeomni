@@ -2426,6 +2426,8 @@ export const enTranslations = {
   'teamManagement.FACILITY_UPGRADE': 'Facility Upgrade',
   'teamManagement.TRANSPORTATION_EXPENSE': 'Transportation Expense',
   'teamManagement.PRODUCT_PRODUCTION': 'Product Production',
+  'teamManagement.TRADE_SALE': 'Trade Sale',
+  'teamManagement.TRADE_PURCHASE': 'Trade Purchase',
   'teamManagement.RESOURCE_TYPE': 'Resource Type',
   'teamManagement.ALL_TYPES': 'All Types',
   'teamManagement.ALL_RESOURCES': 'All Resources',
