@@ -1,4 +1,5 @@
 import apiClient from '@/lib/http/api-client';
+import { ApiError } from '@/lib/http/axios-config';
 import {
   TradeOrder,
   TradeStatus,
@@ -55,16 +56,63 @@ export class TradeService {
    * Handle API errors
    */
   private static handleError(error: any): never {
-    if (error.response?.data && isTradeError(error.response.data)) {
-      const tradeError = error.response.data as TradeError;
-      const errorMessage = tradeError.details
-        ? `${tradeError.message} (Required: ${tradeError.details.required}, Available: ${tradeError.details.available})`
-        : tradeError.message;
-      throw new Error(errorMessage);
+    if (error instanceof ApiError) {
+      const detailMessage = typeof error.details?.message === 'string'
+        ? error.details.message
+        : typeof error.details?.error === 'string'
+          ? error.details.error
+          : null;
+
+      if (detailMessage) {
+        throw new Error(detailMessage);
+      }
+
+      if (typeof error.message === 'string' && error.message) {
+        throw new Error(error.message);
+      }
+
+      throw error;
     }
 
-    if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
+    const responseData = error.response?.data;
+
+    if (responseData && isTradeError(responseData)) {
+      const tradeError = responseData as TradeError;
+
+      const detailMessage = typeof tradeError.details?.message === 'string'
+        ? tradeError.details.message
+        : typeof tradeError.details?.error === 'string'
+          ? tradeError.details.error
+          : null;
+
+      if (detailMessage) {
+        throw new Error(detailMessage);
+      }
+
+      const hasQuantityDetails = typeof tradeError.details?.required !== 'undefined'
+        && typeof tradeError.details?.available !== 'undefined';
+
+      if (hasQuantityDetails) {
+        throw new Error(
+          `${tradeError.message} (Required: ${tradeError.details?.required}, Available: ${tradeError.details?.available})`
+        );
+      }
+
+      throw new Error(tradeError.message);
+    }
+
+    const detailsMessage = typeof responseData?.details?.message === 'string'
+      ? responseData.details.message
+      : typeof responseData?.details?.error === 'string'
+        ? responseData.details.error
+        : null;
+
+    if (detailsMessage) {
+      throw new Error(detailsMessage);
+    }
+
+    if (typeof responseData?.message === 'string') {
+      throw new Error(responseData.message);
     }
 
     throw error;

@@ -258,7 +258,10 @@ export default function StudentTradePage() {
         <TableHead>
           <TableRow>
             <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.partner')}
+              {t('trade.table.sender')}
+            </TableCell>
+            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+              {t('trade.table.receiver')}
             </TableCell>
             <TableCell className="font-medium text-gray-600 dark:text-gray-400">
               {t('trade.table.items')}
@@ -283,7 +286,12 @@ export default function StudentTradePage() {
               <TableRow key={trade.id} hover>
                 <TableCell>
                   <Typography variant="body2" className="font-medium">
-                    {trade.targetTeam?.name || trade.senderTeam.name}
+                    {trade.senderTeam?.name || t('trade.team.unknown')}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="body2" className="font-medium">
+                    {trade.targetTeam?.name || t('trade.team.unknown')}
                   </Typography>
                 </TableCell>
                 <TableCell>
@@ -333,7 +341,7 @@ export default function StudentTradePage() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} align="center" className="py-12">
+              <TableCell colSpan={7} align="center" className="py-12">
                 <Typography color="text.secondary">
                   {t('trade.empty.noTrades')}
                 </Typography>

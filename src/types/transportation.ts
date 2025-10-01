@@ -146,6 +146,8 @@ export interface TransportationOrder {
   senderTeamId: string;
   receiverTeamId: string;
   otherTeam?: string;
+  sourceTeamName?: string;
+  destTeamName?: string;
   initiatedBy: string;
   activityId: string;
   role?: string;

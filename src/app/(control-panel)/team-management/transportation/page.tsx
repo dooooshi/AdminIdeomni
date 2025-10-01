@@ -807,8 +807,10 @@ export default function TransportationPage() {
             <TableHead>
               <TableRow>
                 <TableCell align="center">{t('common.DATE')}</TableCell>
+                <TableCell align="center">{t('transportation.SOURCE_TEAM')}</TableCell>
                 <TableCell align="center">{t('transportation.FROM')}</TableCell>
                 <TableCell align="center">{t('transportation.FROM_TILE')}</TableCell>
+                <TableCell align="center">{t('transportation.DEST_TEAM')}</TableCell>
                 <TableCell align="center">{t('transportation.TO')}</TableCell>
                 <TableCell align="center">{t('transportation.TO_TILE')}</TableCell>
                 <TableCell align="center">{t('transportation.ITEM')}</TableCell>
@@ -824,8 +826,10 @@ export default function TransportationPage() {
                   <TableCell align="center">
                     {new Date(order.timestamp || order.createdAt).toLocaleDateString()}
                   </TableCell>
+                  <TableCell align="center">{order.sourceTeamName || '-'}</TableCell>
                   <TableCell align="center">{order.sourceFacility || order.sourceFacilityId || '-'}</TableCell>
                   <TableCell align="center">{order.sourceTileId || '-'}</TableCell>
+                  <TableCell align="center">{order.destTeamName || order.otherTeam || '-'}</TableCell>
                   <TableCell align="center">{order.destFacility || order.destFacilityId || '-'}</TableCell>
                   <TableCell align="center">{order.destTileId || '-'}</TableCell>
                   <TableCell align="center">{order.itemName || order.itemType || '-'}</TableCell>
