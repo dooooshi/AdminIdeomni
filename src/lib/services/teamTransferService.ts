@@ -227,8 +227,10 @@ export class TeamTransferService {
    */
   static async getAvailableTeamsForTransfer(): Promise<AvailableTeam[]> {
     try {
-      // Try the dedicated endpoint first
-      const response = await apiClient.get<any>('/user/teams/available-for-transfer');
+      // Try the dedicated endpoint first with pageSize 100
+      const response = await apiClient.get<any>('/user/teams/available-for-transfer', {
+        params: { pageSize: 100 }
+      });
 
       // Handle nested response structure
       if (response.data?.success && response.data?.data?.data && Array.isArray(response.data.data.data)) {
