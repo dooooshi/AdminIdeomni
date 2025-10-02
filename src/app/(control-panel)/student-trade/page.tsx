@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'motion/react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -17,6 +17,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
+import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -26,23 +28,19 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
+import Alert from '@mui/material/Alert';
 import {
   Add as AddIcon,
   SwapHoriz,
   AttachMoney,
   CheckCircle,
-  Cancel,
   Schedule,
   TrendingUp,
   Search,
-  FilterList,
   Clear,
   Visibility,
   Check,
-  Close,
-  LocalShipping,
-  Timeline,
-  Assessment
+  Timeline
 } from '@mui/icons-material';
 import IdeomniSvgIcon from '@ideomni/core/IdeomniSvgIcon';
 import IdeomniLoading from '@ideomni/core/IdeomniLoading';
@@ -51,8 +49,8 @@ import { TradeService } from '@/lib/services/tradeService';
 import {
   TradeStatus,
   TradeListItem,
-  TradeType,
   TradeOrder,
+  TradeListParams,
   toNumber
 } from '@/types/trade';
 import TradeStatusBadge from '@/components/trade/TradeStatusBadge';
@@ -92,10 +90,11 @@ export default function StudentTradePage() {
   const [error, setError] = useState<string | null>(null);
 
   // Trade lists
-  const [allTrades, setAllTrades] = useState<TradeListItem[]>([]);
-  const [incomingTrades, setIncomingTrades] = useState<TradeListItem[]>([]);
-  const [outgoingTrades, setOutgoingTrades] = useState<TradeListItem[]>([]);
-  const [filteredTrades, setFilteredTrades] = useState<TradeListItem[]>([]);
+  const [tableTrades, setTableTrades] = useState<TradeListItem[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Statistics
   const [stats, setStats] = useState({
@@ -118,45 +117,7 @@ export default function StudentTradePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<TradeStatus | 'all'>('all');
 
-  useEffect(() => {
-    loadAllData();
-  }, []);
-
-  useEffect(() => {
-    applyFilters();
-  }, [tabValue, searchTerm, statusFilter, allTrades, incomingTrades, outgoingTrades]);
-
-  const loadAllData = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Load all trades
-      const [allResponse, incomingResponse, outgoingResponse] = await Promise.all([
-        TradeService.listTrades({ type: 'all' }),
-        TradeService.listTrades({ type: 'incoming' }),
-        TradeService.listTrades({ type: 'outgoing' }),
-      ]);
-
-      const all = allResponse.data || [];
-      const incoming = incomingResponse.data || [];
-      const outgoing = outgoingResponse.data || [];
-
-      setAllTrades(all);
-      setIncomingTrades(incoming);
-      setOutgoingTrades(outgoing);
-
-      // Calculate statistics
-      calculateStats(all);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('trade.error.loadTrades'));
-      console.error('Error loading trades:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calculateStats = (trades: TradeListItem[]) => {
+  const calculateStats = useCallback((trades: TradeListItem[]) => {
     const completed = trades.filter(t => t.status === TradeStatus.COMPLETED).length;
     const pending = trades.filter(t => t.status === TradeStatus.PENDING).length;
     const rejected = trades.filter(t => t.status === TradeStatus.REJECTED).length;
@@ -172,52 +133,118 @@ export default function StudentTradePage() {
       averageTradeValue: trades.length > 0 ? totalVolume / trades.length : 0,
       successRate: nonPending > 0 ? (completed / nonPending) * 100 : 0,
     });
-  };
+  }, []);
 
-  const applyFilters = () => {
-    let source: TradeListItem[] = [];
+  const loadStats = useCallback(async ({ showSpinner = false } = {}) => {
+    if (showSpinner) {
+      setLoading(true);
+    }
+    setError(null);
 
-    switch (tabValue) {
-      case 0: // Active trades (pending)
-        source = [...allTrades].filter(t => t.status === TradeStatus.PENDING);
-        break;
-      case 1: // Incoming
-        source = [...incomingTrades];
-        break;
-      case 2: // Outgoing
-        source = [...outgoingTrades];
-        break;
-      case 3: // History (completed + rejected)
-        source = [...allTrades].filter(t =>
-          t.status === TradeStatus.COMPLETED ||
-          t.status === TradeStatus.REJECTED ||
-          t.status === TradeStatus.CANCELLED
+    try {
+      const statsResponse = await TradeService.listTrades({ type: 'all', page: 1, limit: rowsPerPage });
+      const statTrades = statsResponse.data || [];
+      calculateStats(statTrades);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('trade.error.loadTrades'));
+      console.error('Error loading trades:', err);
+    } finally {
+      if (showSpinner) {
+        setLoading(false);
+      }
+    }
+  }, [t, calculateStats, rowsPerPage]);
+
+  const fetchTrades = useCallback(async (pageIndex: number, limitValue: number) => {
+    setTableLoading(true);
+    setError(null);
+
+    try {
+      const applyingSingleStatus = statusFilter !== 'all';
+
+      const params: TradeListParams = {
+        page: pageIndex + 1,
+        limit: limitValue,
+      };
+
+      switch (tabValue) {
+        case 0: // Active
+          params.type = 'all';
+          params.status = applyingSingleStatus ? statusFilter : TradeStatus.PENDING;
+          break;
+        case 1: // Incoming
+          params.type = 'incoming';
+          if (applyingSingleStatus) {
+            params.status = statusFilter;
+          }
+          break;
+        case 2: // Outgoing
+          params.type = 'outgoing';
+          if (applyingSingleStatus) {
+            params.status = statusFilter;
+          }
+          break;
+        case 3: // History
+          params.type = 'all';
+          if (applyingSingleStatus) {
+            params.status = statusFilter;
+          }
+          break;
+        default:
+          params.type = 'all';
+          if (applyingSingleStatus) {
+            params.status = statusFilter;
+          }
+      }
+
+      const response = await TradeService.listTrades(params);
+      let trades = response.data || [];
+      const paginationInfo = response.pagination;
+      const responseTotal = paginationInfo?.total ?? response.total ?? trades.length;
+      const responseLimit = paginationInfo?.limit ?? response.limit ?? limitValue;
+      const responsePage = paginationInfo?.page ?? response.page ?? params.page ?? 1;
+
+      if (searchTerm) {
+        const search = searchTerm.toLowerCase();
+        trades = trades.filter((t) =>
+          t.id.toLowerCase().includes(search) ||
+          t.senderTeam.name.toLowerCase().includes(search) ||
+          t.targetTeam?.name?.toLowerCase().includes(search) ||
+          t.message?.toLowerCase().includes(search)
         );
-        break;
-      case 4: // Analytics
-        return; // No filtering for analytics tab
-      default:
-        source = [...allTrades];
-    }
+      }
 
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      source = source.filter(t => t.status === statusFilter);
-    }
+      const total = searchTerm ? trades.length : responseTotal;
 
-    // Apply search filter
-    if (searchTerm) {
-      const search = searchTerm.toLowerCase();
-      source = source.filter(t =>
-        t.id.toLowerCase().includes(search) ||
-        t.senderTeam.name.toLowerCase().includes(search) ||
-        t.targetTeam?.name?.toLowerCase().includes(search) ||
-        t.message?.toLowerCase().includes(search)
-      );
-    }
+      if (responseLimit !== limitValue) {
+        setRowsPerPage(responseLimit);
+      }
 
-    setFilteredTrades(source);
-  };
+      if (responsePage - 1 !== pageIndex) {
+        setPage(responsePage - 1);
+      }
+
+      setTableTrades(trades);
+      setTotalCount(total);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t('trade.error.loadTrades'));
+      console.error('Error loading trades:', err);
+    } finally {
+      setTableLoading(false);
+    }
+  }, [statusFilter, tabValue, searchTerm, t]);
+
+  useEffect(() => {
+    loadStats({ showSpinner: true });
+  }, [loadStats]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [tabValue, statusFilter, searchTerm]);
+
+  useEffect(() => {
+    fetchTrades(page, rowsPerPage);
+  }, [fetchTrades, page, rowsPerPage]);
 
   const handleViewDetails = async (trade: TradeListItem) => {
     try {
@@ -240,7 +267,8 @@ export default function StudentTradePage() {
   };
 
   const handleTradeSuccess = () => {
-    loadAllData(); // Reload all data after successful trade action
+    fetchTrades(page, rowsPerPage);
+    loadStats();
   };
 
   const fadeIn = {
@@ -252,106 +280,162 @@ export default function StudentTradePage() {
     return <IdeomniLoading />;
   }
 
-  const renderTradeTable = (trades: TradeListItem[], showActions = false) => (
-    <TableContainer component={Paper} className="border border-gray-100 dark:border-gray-800 shadow-none">
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.sender')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.receiver')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.items')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.price')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.status')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400">
-              {t('trade.table.date')}
-            </TableCell>
-            <TableCell className="font-medium text-gray-600 dark:text-gray-400" align="center">
-              {t('trade.table.actions')}
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {trades.length > 0 ? (
-            trades.map((trade) => (
-              <TableRow key={trade.id} hover>
-                <TableCell>
-                  <Typography variant="body2" className="font-medium">
-                    {trade.senderTeam?.name || t('trade.team.unknown')}
-                  </Typography>
+  const formatDateTime = (value?: string | Date) => {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '-';
+    }
+
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    const hours = `${date.getHours()}`.padStart(2, '0');
+    const minutes = `${date.getMinutes()}`.padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
+
+  const renderTradeTable = (showActions = false) => {
+    return (
+      <Box>
+        {error && (
+          <Box mb={2}>
+            <Alert severity="error">{error}</Alert>
+          </Box>
+        )}
+        <TableContainer component={Paper} className="border border-gray-100 dark:border-gray-800 shadow-none">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.sender')}
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2" className="font-medium">
-                    {trade.targetTeam?.name || t('trade.team.unknown')}
-                  </Typography>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.receiver')}
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2">
-                    {trade.itemCount} {t('trade.units.items')}
-                  </Typography>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.items')}
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2" className="font-medium flex items-center gap-1">
-                    <AttachMoney className="text-yellow-600" sx={{ fontSize: 16 }} />
-                    {TradeService.formatCurrency(toNumber(trade.totalPrice))}
-                  </Typography>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.price')}
                 </TableCell>
-                <TableCell>
-                  <TradeStatusBadge status={trade.status} />
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.status')}
                 </TableCell>
-                <TableCell>
-                  <Typography variant="caption">
-                    {new Date(trade.createdAt).toLocaleDateString()}
-                  </Typography>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.createdAt')}
                 </TableCell>
-                <TableCell align="center">
-                  <Box display="flex" gap={1} justifyContent="center">
-                    <Tooltip title={t('trade.actions.view')}>
-                      <IconButton
-                        size="small"
-                        onClick={() => handleViewDetails(trade)}
-                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                      >
-                        <Visibility fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    {showActions && trade.status === TradeStatus.PENDING && (
-                      <Tooltip title={t('trade.actions.accept')}>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleAcceptTrade(trade)}
-                          className="text-green-600 hover:text-green-700"
-                        >
-                          <Check fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    )}
-                  </Box>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400">
+                  {t('trade.table.updatedAt')}
+                </TableCell>
+                <TableCell className="font-medium text-gray-600 dark:text-gray-400" align="center">
+                  {t('trade.table.actions')}
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={7} align="center" className="py-12">
-                <Typography color="text.secondary">
-                  {t('trade.empty.noTrades')}
-                </Typography>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+            </TableHead>
+            <TableBody>
+              {tableLoading ? (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" className="py-12">
+                    <CircularProgress size={24} />
+                  </TableCell>
+                </TableRow>
+              ) : tableTrades.length > 0 ? (
+                tableTrades.map((trade) => (
+                  <TableRow key={trade.id} hover>
+                    <TableCell>
+                      <Typography variant="body2" className="font-medium">
+                        {trade.senderTeam?.name || t('trade.team.unknown')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" className="font-medium">
+                        {trade.targetTeam?.name || t('trade.team.unknown')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">
+                        {trade.itemCount} {t('trade.units.items')}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" className="font-medium flex items-center gap-1">
+                        <AttachMoney className="text-yellow-600" sx={{ fontSize: 16 }} />
+                        {TradeService.formatCurrency(toNumber(trade.totalPrice))}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <TradeStatusBadge status={trade.status} />
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="caption" display="block">
+                        {formatDateTime(trade.createdAt)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="caption" display="block">
+                        {formatDateTime(trade.updatedAt)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Box display="flex" gap={1} justifyContent="center">
+                        <Tooltip title={t('trade.actions.view')}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleViewDetails(trade)}
+                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                          >
+                            <Visibility fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        {showActions && trade.status === TradeStatus.PENDING && (
+                          <Tooltip title={t('trade.actions.accept')}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleAcceptTrade(trade)}
+                              className="text-green-600 hover:text-green-700"
+                            >
+                              <Check fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} align="center" className="py-12">
+                    <Typography color="text.secondary">
+                      {t('trade.empty.noTrades')}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <TablePagination
+          component="div"
+          count={totalCount}
+          page={page}
+          onPageChange={(_, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          labelRowsPerPage={t('common.rowsPerPage')}
+        />
+      </Box>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-900">
@@ -523,94 +607,26 @@ export default function StudentTradePage() {
                 icon={<Timeline />}
                 iconPosition="start"
               />
-              <Tab
-                label={t('trade.tabs.analytics')}
-                icon={<Assessment />}
-                iconPosition="start"
-              />
             </Tabs>
 
             {/* Tab Panels */}
             <Box className="p-4">
               <TabPanel value={tabValue} index={0}>
-                {renderTradeTable(filteredTrades, true)}
+                {renderTradeTable(true)}
               </TabPanel>
 
               <TabPanel value={tabValue} index={1}>
-                {renderTradeTable(filteredTrades, true)}
+                {renderTradeTable(true)}
               </TabPanel>
 
               <TabPanel value={tabValue} index={2}>
-                {renderTradeTable(filteredTrades)}
+                {renderTradeTable()}
               </TabPanel>
 
               <TabPanel value={tabValue} index={3}>
-                {renderTradeTable(filteredTrades)}
+                {renderTradeTable()}
               </TabPanel>
 
-              <TabPanel value={tabValue} index={4}>
-                <Grid container spacing={4}>
-                  <Grid item xs={12} md={6}>
-                    <Paper variant="outlined" className="p-4">
-                      <Typography variant="h6" className="font-medium mb-4">
-                        {t('trade.analytics.distribution')}
-                      </Typography>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="text-green-500" sx={{ fontSize: 16 }} />
-                            <Typography variant="body2">{t('trade.status.completed')}</Typography>
-                          </div>
-                          <Chip label={stats.completedTrades} size="small" color="success" />
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <Schedule className="text-orange-500" sx={{ fontSize: 16 }} />
-                            <Typography variant="body2">{t('trade.status.pending')}</Typography>
-                          </div>
-                          <Chip label={stats.pendingTrades} size="small" color="warning" />
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <Cancel className="text-red-500" sx={{ fontSize: 16 }} />
-                            <Typography variant="body2">{t('trade.status.rejected')}</Typography>
-                          </div>
-                          <Chip label={stats.rejectedTrades} size="small" color="error" />
-                        </div>
-                      </div>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Paper variant="outlined" className="p-4">
-                      <Typography variant="h6" className="font-medium mb-4">
-                        {t('trade.analytics.financialSummary')}
-                      </Typography>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <Typography variant="body2">{t('trade.stats.averageValue')}</Typography>
-                          <Typography variant="body2" className="font-medium flex items-center gap-1">
-                            <AttachMoney className="text-yellow-600" sx={{ fontSize: 16 }} />
-                            {TradeService.formatCurrency(stats.averageTradeValue)}
-                          </Typography>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <Typography variant="body2">{t('trade.stats.totalVolume')}</Typography>
-                          <Typography variant="body2" className="font-medium flex items-center gap-1">
-                            <AttachMoney className="text-yellow-600" sx={{ fontSize: 16 }} />
-                            {TradeService.formatCurrency(stats.totalVolume)}
-                          </Typography>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <Typography variant="body2">{t('trade.stats.successRate')}</Typography>
-                          <Typography variant="body2" className="font-medium">
-                            {stats.successRate.toFixed(1)}%
-                          </Typography>
-                        </div>
-                      </div>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </TabPanel>
             </Box>
           </Paper>
         </motion.div>

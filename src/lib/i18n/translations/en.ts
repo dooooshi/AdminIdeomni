@@ -4377,6 +4377,8 @@ export const enTranslations = {
   'trade.table.items': 'Items',
   'trade.table.price': 'Price',
   'trade.table.status': 'Status',
+  'trade.table.createdAt': 'Created',
+  'trade.table.updatedAt': 'Updated',
   'trade.table.date': 'Date',
   'trade.table.actions': 'Actions',
   'trade.actions.create': 'Create Trade',

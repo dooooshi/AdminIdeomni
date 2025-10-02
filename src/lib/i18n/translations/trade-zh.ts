@@ -47,6 +47,8 @@ export const tradeTranslationsZh = {
   'trade.table.price': '价格',
   'trade.table.status': '状态',
   'trade.table.date': '日期',
+  'trade.table.createdAt': '创建时间',
+  'trade.table.updatedAt': '更新时间',
   'trade.table.created': '创建时间',
   'trade.table.actions': '操作',
   'trade.table.sender': '发送方',

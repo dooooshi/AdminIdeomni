@@ -48,6 +48,8 @@ export const tradeTranslationsEn = {
   'trade.table.price': 'Price',
   'trade.table.status': 'Status',
   'trade.table.date': 'Date',
+  'trade.table.createdAt': 'Created',
+  'trade.table.updatedAt': 'Updated',
   'trade.table.created': 'Created',
   'trade.table.actions': 'Actions',
   'trade.table.sender': 'Sender',

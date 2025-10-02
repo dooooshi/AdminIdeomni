@@ -174,29 +174,68 @@ export class TradeService {
       const queryParams: Record<string, any> = {};
 
       if (params.type) queryParams.type = params.type;
-      if (params.status) queryParams.status = params.status;
+      if (params.status) {
+        queryParams.status = Array.isArray(params.status)
+          ? params.status.join(',')
+          : params.status;
+      }
       if (params.page) queryParams.page = params.page;
-      if (params.pageSize) queryParams.pageSize = params.pageSize;
+      if (params.limit) {
+        const parsedLimit = Math.max(1, Math.min(params.limit, 100));
+        queryParams.limit = parsedLimit;
+      }
 
       const response = await apiClient.get<TradeListResponse>(
         this.TRADES_BASE_PATH,
         { params: queryParams }
       );
 
-      const data = this.extractResponseData<TradeListItem[]>(response);
+      const extracted = this.extractResponseData<any>(response);
 
-      // Ensure proper response structure
-      if (Array.isArray(data)) {
-        return {
-          success: true,
-          data: data,
-          total: data.length,
-          page: params.page || 1,
-          pageSize: params.pageSize || 20,
-        };
-      }
+      const normalizeData = (payload: any) => {
+        if (!payload || typeof payload !== 'object') {
+          return { items: Array.isArray(payload) ? payload : [], pagination: undefined };
+        }
 
-      return data as TradeListResponse;
+        if (Array.isArray(payload)) {
+          return { items: payload, pagination: undefined };
+        }
+
+        const nestedData = Array.isArray(payload.data)
+          ? payload.data
+          : Array.isArray(payload.items)
+            ? payload.items
+            : Array.isArray(payload.trades)
+              ? payload.trades
+              : Array.isArray(payload.results)
+                ? payload.results
+                : Array.isArray(payload.records)
+                  ? payload.records
+                  : Array.isArray(payload.list)
+                    ? payload.list
+                    : Array.isArray(payload)
+                      ? payload
+                      : Array.isArray(payload.data?.data)
+                        ? payload.data.data
+                        : [];
+
+        const pagination = payload.pagination || payload.meta || payload.pageInfo || payload.data?.pagination || undefined;
+
+        return { items: nestedData, pagination };
+      };
+
+      const { items, pagination } = normalizeData(extracted);
+
+      const result: TradeListResponse = {
+        success: response.data?.success ?? true,
+        data: items,
+        total: pagination?.total ?? extracted?.total ?? items.length,
+        page: pagination?.page ?? extracted?.page ?? params.page ?? 1,
+        limit: pagination?.limit ?? pagination?.pageSize ?? extracted?.limit ?? params.limit ?? 20,
+        pagination,
+      };
+
+      return result;
     } catch (error) {
       this.handleError(error);
     }

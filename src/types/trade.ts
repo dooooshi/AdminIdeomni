@@ -210,9 +210,16 @@ export interface TradePreviewResponse {
 
 export interface TradeListParams {
   type?: 'incoming' | 'outgoing' | 'all';
-  status?: TradeStatus;
+  status?: TradeStatus | TradeStatus[];
   page?: number;
-  pageSize?: number;
+  limit?: number;
+}
+
+export interface TradePaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  pages?: number;
 }
 
 export interface TradeListResponse {
@@ -220,7 +227,8 @@ export interface TradeListResponse {
   data: TradeListItem[];
   total?: number;
   page?: number;
-  pageSize?: number;
+  limit?: number;
+  pagination?: TradePaginationInfo;
 }
 
 export interface TradeListItem {
@@ -238,6 +246,7 @@ export interface TradeListItem {
   totalQuantity: number;
   status: TradeStatus;
   createdAt: Date | string;
+  updatedAt?: Date | string;
   message?: string;
 }
 
